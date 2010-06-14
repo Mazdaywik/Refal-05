@@ -30,7 +30,7 @@ $EXTERN
   TkName, TkNumber, TkVariable, TkChar;
 
 //FROM LibraryEx
-$EXTERN Inc;
+$EXTERN Inc, MapReduce;
 
 $ENUM LeftPtr, RightPtr;
 
@@ -249,10 +249,24 @@ GenPattern {
     );
 }
 
-$FORWARD DoSaveBrackets, DoSaveBrackets-Aux;
+$FORWARD DoSaveBrackets, DoSaveBrackets-Aux, Renumerate-Comment,
+  RenumerateSavedBrackets;
 
 SaveBrackets {
-  e.Commands = <DoSaveBrackets () e.Commands>;
+  e.Commands =
+    <Renumerate-Comment
+      <MapReduce
+        RenumerateSavedBrackets
+        ((0 0))
+        <DoSaveBrackets () e.Commands>
+      >
+    >;
+}
+
+Renumerate-Comment {
+  (e.RenumerateMap) e.Commands =
+    (CmdComment e.RenumerateMap)
+    e.Commands;
 }
 
 DoSaveBrackets {
@@ -300,6 +314,65 @@ CalcSavedBrackets {
       ( <Brackets-Set <Map ExtractBrackets e.Scanned>> )
       ( <Brackets-Set <Map ExtractBrackets e.Commands>> )
     >;
+}
+
+$FORWARD IncrementBySaved, IncrementSaved;
+
+RenumerateSavedBrackets {
+  (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+  (CmdOpenedE AlgLeft s.Bracket s.Mode e.Index (e.Saved)) =
+    (
+      <Map
+        (IncrementBySaved e.Saved)
+        e.Brackets-B (s.Bracket s.Nested) e.Brackets-E
+      >
+    )
+    (CmdComment 'Открытая e-переменная ' s.Mode '.' e.Index)
+    (CmdOpenedE
+      AlgLeft s.Bracket s.Nested s.Mode e.Index
+      (
+        <Map
+          (IncrementSaved
+            e.Brackets-B (s.Bracket s.Nested) e.Brackets-E
+          )
+          e.Saved
+        >
+      )
+    );
+
+  (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+  (CmdEmpty s.Bracket) =
+    (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+    (CmdEmpty s.Bracket s.Nested);
+
+  (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+  (CmdBrackets s.Direction s.Bracket s.Inner) =
+    (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E (s.Inner 0))
+    (CmdBrackets s.Direction s.Bracket s.Nested s.Inner);
+
+  (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+  (CmdADT s.Direction s.Bracket s.Inner e.Name) =
+    (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E (s.Inner 0))
+    (CmdADT s.Direction s.Bracket s.Nested s.Inner e.Name);
+
+  (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+  (s.Command s.Direction s.Bracket e.Info) =
+    (e.Brackets-B (s.Bracket s.Nested) e.Brackets-E)
+    (s.Command s.Direction s.Bracket s.Nested e.Info);
+}
+
+IncrementBySaved {
+  e.Saved-B s.Bracket e.Saved-E (s.Bracket s.Nested) =
+    (s.Bracket <Inc s.Nested>);
+
+  e.Saved (s.Bracket s.Nested) = (s.Bracket s.Nested);
+}
+
+IncrementSaved {
+  e.Numerated-B (s.Bracket s.Nested) e.Numerated-E s.Bracket =
+    (s.Bracket s.Nested);
+
+  // Все скобки должны быть учтены
 }
 
 ExtractBrackets {
@@ -556,7 +629,7 @@ GenResult {
 
   // Завершение просмотра
   (e.Vars) (e.Commands) s.Counter =
-    (e.Vars) ( e.Commands );
+    (e.Vars) ( <GenResult-Commands e.Commands> );
 }
 
 /*
@@ -566,7 +639,7 @@ GenResult {
   построение результата (в обратном порядке)
 */
 
-$FORWARD ConvertCommands-Separated;
+$FORWARD ConvertCommad, ConvertCommands-Separated;
 
 //FROM LibraryEx
 $EXTERN MapReduce, Map;
@@ -614,7 +687,8 @@ $EENUM
   CmdLinkBrackets,
   CmdPushStack,
   CmdInsertElem,
-  CmdInsertEVar;
+  CmdInsertEVar,
+  CmdCheckEVar;
 
 // Спецификаторы команд (элементы)
 $EENUM
@@ -724,26 +798,22 @@ $EENUM CmdEmptyResult, CmdReturnResult, CmdIfDef, CmdElse, CmdEndIf,
 
 GeneralizeResult-CopyVars {
   ( e.CommonVars ) ( e.Pattern ) ( e.CopiedVars ) ( e.Result ) =
-    <GenerateResult-Interp
-      (<Map MakeDeclaration e.CommonVars> e.Pattern)
-      (e.CopiedVars)
-      (e.Result)
-    >;
-}
-
-GenerateResult-Interp {
-  (e.Pattern) (e.CopiedVars) (e.Result) =
+    <Map MakeDeclaration e.CommonVars>
     e.Pattern
-    (CmdIfDef)
-    (CmdInitRAA)
-    <Map (MakeInterpCommands e.CopiedVars) e.Result>
-    (CmdFinRAA)
-    (CmdElse)
+    <Map
+      // Обнуление e-переменнных результата
+      {
+        (CmdInsertEVar s.Usings 'e' e.Index) =
+          (CmdCheckEVar s.Usings 'e' e.Index);
+
+        t.OtherCommand = /* пусто */;
+      }
+      e.Result
+    >
     (CmdEmptyResult)
     <Map MakeCopyVar e.CopiedVars>
-    <GenResult-Commands e.Result>
-    (CmdReturnResult)
-    (CmdEndIf);
+    e.Result
+    (CmdReturnResult);
 }
 
 $EENUM CmdDeclareEVar, CmdDeclareVar;
@@ -762,52 +832,4 @@ MakeCopyVar {
 
   ( s.Usings s.Mode e.Index ) =
     (CmdCopyVar s.Usings s.Mode e.Index);
-}
-
-$EENUM CmdArrChar, CmdArrFunc, CmdArrInt, CmdArrIdent, CmdArrOB, CmdArrCB,
-  CmdArrOADT, CmdArrCADT, CmdArrOC, CmdArrCC, CmdArrSplice, CmdArrCopy;
-
-MakeInterpCommands {
-  e.CopiedVars-B (s.Usings s.Mode e.Index) e.CopiedVars-E
-  (CtInsertVar s.Usings  s.Mode e.Index) =
-    (CmdArrCopy s.Mode e.Index);
-
-  e.CopiedVars (CtInsertVar s.Usings  s.Mode e.Index) =
-    (CmdArrSplice s.Usings s.Mode e.Index);
-
-  e.CopiedVars (CtBrackets e.CmdInfo) = ;
-  e.CopiedVars (CtInsert s.ElemNo) = ;
-
-  e.CopiedVars (CtAlloc StChar s.Counter s.Value) = 
-    (CmdArrChar s.Value);
-
-  e.CopiedVars (CtAlloc StName s.Counter e.Name) = 
-    (CmdArrFunc e.Name);
-
-  e.CopiedVars (CtAlloc StNumber s.Counter s.Number) = 
-    (CmdArrInt s.Number);
-
-  e.CopiedVars (CtAlloc StIdent s.Counter e.Name) = 
-    (CmdArrIdent e.Name);
-
-  e.CopiedVars (CtAlloc StOpenBracket s.Counter s.Num) = 
-    (CmdArrOB);
-
-  e.CopiedVars (CtAlloc StOpenADT s.Counter s.Num) = 
-    (CmdArrOADT);
-
-  e.CopiedVars (CtAlloc StOpenCall s.Counter s.Num) = 
-    (CmdArrOC);
-
-  e.CopiedVars (CtAlloc StCloseBracket s.Counter s.Num) = 
-    (CmdArrCB);
-
-  e.CopiedVars (CtAlloc StCloseADT s.Counter s.Num) = 
-    (CmdArrCADT);
-
-  e.CopiedVars (CtAlloc StCloseCall s.Counter s.Num) = 
-    (CmdArrCC);
-
-  e.CopiedVars (e.AnyCommand) =
-    (CmdComment e.AnyCommand ' ');
 }
