@@ -513,7 +513,7 @@ PrintMatchName {
   (e.Indent) s.Direction s.BracketNumber e.Name =
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
-      ('function') '& ' e.Name
+      ('function') e.Name
     >;
 }
 
@@ -540,7 +540,7 @@ PrintMatchADT {
       (e.Indent) s.Direction s.BracketNumber
       ('adt')
       <BracketsVars s.InnerNum> ', '
-      '& ' e.Name
+      e.Name
     >;
 }
 
@@ -641,7 +641,7 @@ SwAllocator {
 SwInfo {
   ElChar s.Char = ', ' '' <Escape s.Char> '';
 
-  ElName e.Name = ', & ' <PrintName e.Name> ', "' <PrintName e.Name> '"';
+  ElName e.Name = ', ' <PrintName e.Name> ', "' <PrintName e.Name> '"';
 
   ElNumber s.Number = ', ' <StrFromInt s.Number> 'UL';
 
