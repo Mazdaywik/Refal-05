@@ -159,6 +159,7 @@ $ENTRY GenSentence {
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_right( ' <BracketsVars 0> ' );')
+    ('    refalrts::start_sentence();')
     <Fetch
       <MapReduce GenCommand ('    ' /* отступ */) e.Algorithm>
       {
@@ -279,6 +280,7 @@ GenCommand {
     (e.Indent '  ')
     (e.Indent <PrintEVar-B 1 'e' e.Index> ' = 0;')
     (e.Indent <PrintEVar-E 1 'e' e.Index> ' = 0;')
+    (e.Indent 'refalrts::start_e_loop();')
     (e.Indent 'do {');
 
   (e.Indent '  ')
