@@ -3,22 +3,45 @@
 
 
 extern refalrts::FnResult CompileFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult Map(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult ArgList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult Fails(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult WriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult System(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 extern refalrts::FnResult Exit(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult Main(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Go(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ParseCommandLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult NoCompile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CompileCommand(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdLineError(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CompileList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CompileToTarget(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult LoadFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult SaveFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Seq(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult FindFiles(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Source(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Output(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult NotFound(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintNotFound(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ForEach(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult Link(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult GetFileName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult GetFileName_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult Lower(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult Renumerate(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult RestoreName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult DelAccumulator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult MapReduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 refalrts::FnResult Go(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -87,24 +110,6 @@ refalrts::FnResult Go(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult ParseCommandLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult NoCompile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult CompileCommand(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult CmdLineError(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult CompileList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult CompileToTarget(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult LoadFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult SaveFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult Main(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -277,18 +282,6 @@ static refalrts::FnResult Main(refalrts::Iter arg_begin, refalrts::Iter arg_end)
   );
 }
 
-extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult Seq(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult FindFiles(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult Source(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult Output(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult NotFound(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 //$LABEL CCompileCommand
 template <typename T>
 struct CCompileCommand {
@@ -313,16 +306,7 @@ struct CErrorFile {
   }
 };
 
-static refalrts::FnResult PrintNotFound(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-static refalrts::FnResult ForEach(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-static refalrts::FnResult Link(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_FindFiles_Compilers_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -1665,7 +1649,6 @@ static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts
 }
 
 static refalrts::FnResult ForEach(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_ForEach_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2099,7 +2082,6 @@ static refalrts::FnResult PrintNotFound(refalrts::Iter arg_begin, refalrts::Iter
 }
 
 static refalrts::FnResult Link(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_Link_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2390,12 +2372,7 @@ static refalrts::FnResult Link(refalrts::Iter arg_begin, refalrts::Iter arg_end)
   );
 }
 
-static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-static refalrts::FnResult GetFileName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_RenameFiles_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2778,8 +2755,6 @@ static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter a
   );
 }
 
-static refalrts::FnResult GetFileName_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult GetFileName(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2996,8 +2971,6 @@ static refalrts::FnResult GetFileName(refalrts::Iter arg_begin, refalrts::Iter a
   );
 }
 
-static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult GetFileName_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -3060,8 +3033,6 @@ static refalrts::FnResult GetFileName_Aux(refalrts::Iter arg_begin, refalrts::It
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-static refalrts::FnResult Lower(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -3224,7 +3195,6 @@ static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter
 }
 
 static refalrts::FnResult Lower(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_Lower_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -3865,10 +3835,6 @@ static refalrts::FnResult Lower(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-static refalrts::FnResult Renumerate(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-static refalrts::FnResult RestoreName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -4908,14 +4874,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
   );
 }
 
-extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult DelAccumulator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult MapReduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult Renumerate(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_Renumerate_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -5221,10 +5180,7 @@ static refalrts::FnResult Renumerate(refalrts::Iter arg_begin, refalrts::Iter ar
   );
 }
 
-extern refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult RestoreName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_RestoreName_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {

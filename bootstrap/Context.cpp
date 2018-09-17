@@ -2,6 +2,24 @@
 #include "refalrts.h"
 
 
+static refalrts::FnResult Context(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult FreeVarsSent(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult FreeVarsFunc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Dec(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
 static refalrts::FnResult Context(refalrts::Iter, refalrts::Iter) {
   refalrts::this_is_generated_function();
   return refalrts::FnResult(
@@ -135,8 +153,6 @@ struct CInvalidMode {
     return "CInvalidMode";
   }
 };
-
-static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -513,8 +529,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -940,8 +954,6 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
   );
 }
 
-extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 //$LABEL CAlreadyBounded
 template <typename T>
 struct CAlreadyBounded {
@@ -951,7 +963,6 @@ struct CAlreadyBounded {
 };
 
 extern refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2017,8 +2028,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
   );
 }
 
-static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
 refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2281,10 +2290,6 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-extern refalrts::FnResult Dec(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
