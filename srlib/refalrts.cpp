@@ -2108,11 +2108,15 @@ refalrts::FnResult refalrts::vm::execute_active(
 
 namespace {
 
-void print_indent(FILE *output, unsigned level)
+void print_indent(FILE *output, int level)
 {
   enum { cPERIOD = 4 };
   putc( '\n', output );
-  for( unsigned i = 0; i < level; ++i )
+  if (level < 0) {
+    putc( '!', output );
+    return;
+  }
+  for( int i = 0; i < level; ++i )
   {
     // Каждые cPERIOD позиций вместо пробела ставим точку.
     bool put_marker = ((i % cPERIOD) == (cPERIOD - 1));
@@ -2135,7 +2139,7 @@ void refalrts::vm::print_seq(
     cStateFinish
   } state = cStateView;
 
-  unsigned indent = 0;
+  int indent = 0;
   bool after_bracket = false;
   bool reset_after_bracket = true;
 

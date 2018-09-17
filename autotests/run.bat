@@ -75,7 +75,7 @@ setlocal
     erase %CPP%
     exit
   )
-  echo Ok! Compiler didn't chash on invalid syntax
+  echo Ok! Compiler didn't crash on invalid syntax
   echo.
 endlocal
 goto :EOF

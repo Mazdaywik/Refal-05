@@ -53,7 +53,7 @@ run_test_aux.BAD-SYNTAX() {
     exit
   fi
 
-  echo "Ok! Compiler didn't chash on invalid syntax"
+  echo "Ok! Compiler didn't crash on invalid syntax"
   echo
 }
 
