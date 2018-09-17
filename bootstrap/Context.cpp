@@ -31,6 +31,7 @@ refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     //
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -85,6 +86,7 @@ refalrts::FnResult Cntx_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // [Context  0 ]
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -144,6 +146,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter sMode_1_2;
@@ -171,6 +174,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     eIndex_1_e_1 = be_0;
     eVariables_B_1_b_1 = 0;
     eVariables_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -296,6 +300,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eIndex_1_b_1;
     static refalrts::Iter eIndex_1_e_1;
@@ -323,6 +328,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     eIndex_1_e_1 = be_0;
     eVariables_B_1_b_1 = 0;
     eVariables_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -416,6 +422,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
@@ -517,6 +524,7 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter sVarDepth_1_1;
     static refalrts::Iter eIndex_1_b_1;
@@ -550,6 +558,7 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
     eIndex_1_e_1 = be_1;
     eVariables_B_1_b_1 = 0;
     eVariables_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_4 = bb_0;
       refalrts::Iter be_4 = be_0;
@@ -732,6 +741,7 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
     static refalrts::Iter sMode_1_1;
@@ -780,6 +790,7 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter sVarDepth_1_1;
     static refalrts::Iter eIndex_1_b_1;
@@ -805,6 +816,7 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
     eIndex_1_e_1 = be_1;
     eVariables_B_1_b_1 = 0;
     eVariables_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_0;
       refalrts::Iter be_3 = be_0;
@@ -867,6 +879,7 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
     static refalrts::Iter sMode_1_1;
@@ -947,6 +960,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter eIndex_1_b_1;
@@ -997,6 +1011,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     eStack_1_e_1 = be_4;
     eLocalVars_B_2_b_1 = 0;
     eLocalVars_B_2_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_6 = bb_0;
       refalrts::Iter be_6 = be_0;
@@ -1124,6 +1139,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eIndex_1_b_1;
     static refalrts::Iter eIndex_1_e_1;
@@ -1175,6 +1191,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     eStack_1_e_1 = be_4;
     eLocalVars_B_2_b_1 = 0;
     eLocalVars_B_2_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_6 = bb_0;
       refalrts::Iter be_6 = be_0;
@@ -1306,6 +1323,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter eIndex_1_b_1;
@@ -1467,6 +1485,7 @@ refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter eIndex_1_b_1;
@@ -1492,6 +1511,7 @@ refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter 
     eIndex_1_e_1 = be_0;
     eLocalVars_1_b_1 = 0;
     eLocalVars_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_4 = bb_1;
       refalrts::Iter be_4 = be_1;
@@ -1657,6 +1677,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter sMode_1_1;
     static refalrts::Iter sMode_1_2;
@@ -1684,6 +1705,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     eIndex_1_e_1 = be_0;
     eVariables_B_1_b_1 = 0;
     eVariables_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1809,6 +1831,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eIndex_1_b_1;
     static refalrts::Iter eIndex_1_e_1;
@@ -1835,6 +1858,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     eIndex_1_e_1 = be_0;
     eVariables_B_1_b_1 = 0;
     eVariables_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1929,6 +1953,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
@@ -2002,6 +2027,7 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eFreeSent_1_b_1;
     static refalrts::Iter eFreeSent_1_e_1;
@@ -2022,6 +2048,7 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
       break;
     eLocals_1_b_1 = 0;
     eLocals_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_4 = bb_1;
       refalrts::Iter be_4 = be_1;
@@ -2147,6 +2174,7 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eBegin_1_b_1;
     static refalrts::Iter eBegin_1_e_1;
     static refalrts::Iter tCopy_1_1;
@@ -2158,6 +2186,7 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
     // e.Begin#1 t.Copy#1 e.Middle#1 t.Copy#1 e.End#1
     eBegin_1_b_1 = 0;
     eBegin_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_1 = bb_0;
       refalrts::Iter be_1 = be_0;
@@ -2165,6 +2194,7 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
         continue;
       eMiddle_1_b_1 = 0;
       eMiddle_1_e_1 = 0;
+      refalrts::start_e_loop();
       do {
         refalrts::Iter bb_2 = bb_1;
         refalrts::Iter be_2 = be_1;
@@ -2222,6 +2252,7 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eUniques_1_b_1;
     static refalrts::Iter eUniques_1_e_1;
     // e.Uniques#1
@@ -2263,6 +2294,7 @@ refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
@@ -2376,6 +2408,7 @@ refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eClosureContext_1_b_1;
     static refalrts::Iter eClosureContext_1_e_1;

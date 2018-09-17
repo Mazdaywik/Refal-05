@@ -20,6 +20,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 0
     if( ! refalrts::number_left( 0UL, bb_0, be_0 ) )
       break;
@@ -53,6 +54,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 1
     if( ! refalrts::number_left( 1UL, bb_0, be_0 ) )
       break;
@@ -86,6 +88,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 2
     if( ! refalrts::number_left( 2UL, bb_0, be_0 ) )
       break;
@@ -119,6 +122,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 3
     if( ! refalrts::number_left( 3UL, bb_0, be_0 ) )
       break;
@@ -152,6 +156,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 4
     if( ! refalrts::number_left( 4UL, bb_0, be_0 ) )
       break;
@@ -185,6 +190,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 5
     if( ! refalrts::number_left( 5UL, bb_0, be_0 ) )
       break;
@@ -218,6 +224,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 6
     if( ! refalrts::number_left( 6UL, bb_0, be_0 ) )
       break;
@@ -251,6 +258,7 @@ static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // 7
     if( ! refalrts::number_left( 7UL, bb_0, be_0 ) )
       break;
@@ -293,6 +301,7 @@ static refalrts::FnResult lambda_EscapeChar_0(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCode_2_1;
     static refalrts::Iter sOther_1_1;
     static refalrts::Iter sCode_2_2;
@@ -483,6 +492,7 @@ static refalrts::FnResult lambda_EscapeChar_0(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sOther_1_1;
     static refalrts::Iter sCompare_2_1;
     static refalrts::Iter sCode_2_1;
@@ -527,6 +537,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // '\n'
     if( ! refalrts::char_left( '\n', bb_0, be_0 ) )
       break;
@@ -565,6 +576,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // '\t'
     if( ! refalrts::char_left( '\t', bb_0, be_0 ) )
       break;
@@ -603,6 +615,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // '\r'
     if( ! refalrts::char_left( '\r', bb_0, be_0 ) )
       break;
@@ -641,6 +654,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // '\''
     if( ! refalrts::char_left( '\'', bb_0, be_0 ) )
       break;
@@ -679,6 +693,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // '\"'
     if( ! refalrts::char_left( '\"', bb_0, be_0 ) )
       break;
@@ -717,6 +732,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // '\\'
     if( ! refalrts::char_left( '\\', bb_0, be_0 ) )
       break;
@@ -755,6 +771,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sOther_1_1;
     static refalrts::Iter sOther_1_2;
     static refalrts::Iter sOther_1_3;

@@ -42,6 +42,7 @@ refalrts::FnResult FindFiles(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFolders_1_b_1;
     static refalrts::Iter eFolders_1_e_1;
     static refalrts::Iter eFiles_1_b_1;
@@ -131,6 +132,7 @@ static refalrts::FnResult AnalyzeFile_ByFolders(refalrts::Iter arg_begin, refalr
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFolders_1_b_1;
     static refalrts::Iter eFolders_1_e_1;
     static refalrts::Iter eFileName_1_b_1;
@@ -247,6 +249,7 @@ static refalrts::FnResult AnalyzeInFolder(refalrts::Iter arg_begin, refalrts::It
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     // e.FileName#1 & Current
@@ -296,6 +299,7 @@ static refalrts::FnResult AnalyzeInFolder(refalrts::Iter arg_begin, refalrts::It
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eFolder_1_b_1;
@@ -365,6 +369,7 @@ static refalrts::FnResult AnalyzeFile_CheckNotFound(refalrts::Iter arg_begin, re
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSource_1_b_1;
     static refalrts::Iter eSource_1_e_1;
     static refalrts::Iter eOutput_1_b_1;
@@ -444,6 +449,7 @@ static refalrts::FnResult AnalyzeFile_CheckNotFound(refalrts::Iter arg_begin, re
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutput_1_b_1;
     static refalrts::Iter eOutput_1_e_1;
     // ( e.FileName#1 ) ( & Output e.Output#1 ) e.Variants#1
@@ -502,6 +508,7 @@ static refalrts::FnResult AnalyzeFile_CheckNotFound(refalrts::Iter arg_begin, re
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eVariants_1_b_1;
@@ -577,6 +584,7 @@ static refalrts::FnResult AnalyzeFile_CheckNotFound(refalrts::Iter arg_begin, re
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     // ( e.FileName#1 )
@@ -648,6 +656,7 @@ static refalrts::FnResult ExistFile_T(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eFileName_1_b_2;
@@ -708,6 +717,7 @@ static refalrts::FnResult AnalyzeFile(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     // e.FileName#1 '.sref'
@@ -807,6 +817,7 @@ static refalrts::FnResult AnalyzeFile(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     // e.FileName#1 '.cpp'
@@ -899,6 +910,7 @@ static refalrts::FnResult AnalyzeFile(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eFileName_1_b_2;
@@ -1049,6 +1061,7 @@ static refalrts::FnResult AnalyzeSource_CheckExist(refalrts::Iter arg_begin, ref
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eUnitName_1_b_1;
     static refalrts::Iter eUnitName_1_e_1;
     static refalrts::Iter eUnitName_1_b_2;
@@ -1169,6 +1182,7 @@ static refalrts::FnResult AnalyzeSource_CheckExist(refalrts::Iter arg_begin, ref
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSourceName_1_b_1;
     static refalrts::Iter eSourceName_1_e_1;
     // & False e.SourceName#1
@@ -1224,6 +1238,7 @@ static refalrts::FnResult AnalyzeOutput_CheckExist(refalrts::Iter arg_begin, ref
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutName_1_b_1;
     static refalrts::Iter eOutName_1_e_1;
     // & True e.OutName#1
@@ -1272,6 +1287,7 @@ static refalrts::FnResult AnalyzeOutput_CheckExist(refalrts::Iter arg_begin, ref
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutName_1_b_1;
     static refalrts::Iter eOutName_1_e_1;
     // & False e.OutName#1
@@ -1327,6 +1343,7 @@ static refalrts::FnResult AnalyzeBoth_CheckExist(refalrts::Iter arg_begin, refal
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSourceName_1_b_1;
     static refalrts::Iter eSourceName_1_e_1;
     static refalrts::Iter eOutName_1_b_1;
@@ -1399,6 +1416,7 @@ static refalrts::FnResult AnalyzeBoth_CheckExist(refalrts::Iter arg_begin, refal
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutName_1_b_1;
     static refalrts::Iter eOutName_1_e_1;
     // ( & False e.SourceName#1 ) & True e.OutName#1
@@ -1454,6 +1472,7 @@ static refalrts::FnResult AnalyzeBoth_CheckExist(refalrts::Iter arg_begin, refal
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eUnitName_1_b_1;
     static refalrts::Iter eUnitName_1_e_1;
     static refalrts::Iter eUnitName_1_b_2;

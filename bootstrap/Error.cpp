@@ -17,6 +17,7 @@ refalrts::FnResult EL_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     //
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -66,6 +67,7 @@ refalrts::FnResult EL_AddError(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eErrors_1_b_1;
     static refalrts::Iter eErrors_1_e_1;
     static refalrts::Iter eMessage_1_b_1;
@@ -189,6 +191,7 @@ refalrts::FnResult EL_AddErrorAt(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eErrors_1_b_1;
     static refalrts::Iter eErrors_1_e_1;
     static refalrts::Iter sLineNumber_1_1;
@@ -358,6 +361,7 @@ refalrts::FnResult EL_AddUnexpected(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLineNumber_1_1;
     static refalrts::Iter eMessage_1_b_1;
@@ -422,6 +426,7 @@ refalrts::FnResult EL_AddUnexpected(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLineNumber_1_1;
     static refalrts::Iter eUnexpected_1_b_1;
@@ -591,6 +596,7 @@ refalrts::FnResult EL_AddUnexpected(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eExpected_1_b_1;
     static refalrts::Iter eExpected_1_e_1;
@@ -801,6 +807,7 @@ static refalrts::FnResult PrintError(refalrts::Iter arg_begin, refalrts::Iter ar
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eLine_1_b_1;
     static refalrts::Iter eLine_1_e_1;
     // ( e.Line#1 )
@@ -861,6 +868,7 @@ refalrts::FnResult EL_Print(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eErrors_1_b_1;
     static refalrts::Iter eErrors_1_e_1;
     static refalrts::Iter eErrors_1_b_2;
@@ -964,6 +972,7 @@ refalrts::FnResult EL_IsEmpty(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // ( & ErrorList )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -1003,6 +1012,7 @@ refalrts::FnResult EL_IsEmpty(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     // t.ErrorList#1
     if( ! refalrts::tvar_left( tErrorList_1_1, bb_0, be_0 ) )

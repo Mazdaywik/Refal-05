@@ -17,6 +17,7 @@ refalrts::FnResult ST_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     //
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -93,6 +94,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -120,6 +122,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -349,6 +352,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sScopeClass_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -376,6 +380,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -459,6 +464,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -484,6 +490,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -761,6 +768,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -786,6 +794,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1063,6 +1072,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eNames_1_b_1;
     static refalrts::Iter eNames_1_e_1;
@@ -1155,6 +1165,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sScopeClass_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -1182,6 +1193,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1265,6 +1277,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sScopeClass_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -1292,6 +1305,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1375,6 +1389,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -1400,6 +1415,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1677,6 +1693,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -1702,6 +1719,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -1979,6 +1997,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -2004,6 +2023,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -2276,6 +2296,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -2301,6 +2322,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -2573,6 +2595,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eNames_1_b_1;
     static refalrts::Iter eNames_1_e_1;
@@ -2665,6 +2688,7 @@ refalrts::FnResult ST_AddIdent(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter sLnNum_1_1;
     static refalrts::Iter eName_1_b_1;
@@ -2692,6 +2716,7 @@ refalrts::FnResult ST_AddIdent(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -2926,6 +2951,7 @@ refalrts::FnResult ST_AddIdent(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eNames_1_b_1;
     static refalrts::Iter eNames_1_e_1;
@@ -3018,6 +3044,7 @@ refalrts::FnResult ST_CheckDeclared(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eName_1_b_1;
     static refalrts::Iter eName_1_e_1;
@@ -3042,6 +3069,7 @@ refalrts::FnResult ST_CheckDeclared(refalrts::Iter arg_begin, refalrts::Iter arg
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -3125,6 +3153,7 @@ refalrts::FnResult ST_CheckDeclared(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eName_1_b_1;
     static refalrts::Iter eName_1_e_1;
@@ -3149,6 +3178,7 @@ refalrts::FnResult ST_CheckDeclared(refalrts::Iter arg_begin, refalrts::Iter arg
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -3232,6 +3262,7 @@ refalrts::FnResult ST_CheckDeclared(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter tSymTable_1_1;
     static refalrts::Iter sLnNum_1_1;
@@ -3411,6 +3442,7 @@ refalrts::FnResult ST_CheckIdent(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eName_1_b_1;
     static refalrts::Iter eName_1_e_1;
@@ -3435,6 +3467,7 @@ refalrts::FnResult ST_CheckIdent(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eName_1_e_1 = be_0;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;
@@ -3518,6 +3551,7 @@ refalrts::FnResult ST_CheckIdent(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter tSymTable_1_1;
     static refalrts::Iter sLnNum_1_1;
@@ -3707,6 +3741,7 @@ refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eName_1_b_1;
     static refalrts::Iter eName_1_e_1;
     static refalrts::Iter eNames_B_1_b_1;
@@ -3721,6 +3756,7 @@ refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_en
       break;
     eNames_B_1_b_1 = 0;
     eNames_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_1;
       refalrts::Iter be_3 = be_1;

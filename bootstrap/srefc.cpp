@@ -28,6 +28,7 @@ refalrts::FnResult Go(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     //
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -113,6 +114,7 @@ static refalrts::FnResult Main(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eProgName_1_b_1;
     static refalrts::Iter eProgName_1_e_1;
     static refalrts::Iter eConfig_1_b_1;
@@ -206,6 +208,7 @@ static refalrts::FnResult Main(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eArguments_1_b_1;
     static refalrts::Iter eArguments_1_e_1;
     // ( e.ProgName#1 ) e.Arguments#1
@@ -328,6 +331,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_0(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutputName1_4_b_1;
     static refalrts::Iter eOutputName1_4_e_1;
     // & Success e.OutputName1#4
@@ -371,6 +375,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_0(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // & Fails
     if( ! refalrts::function_left( Fails, bb_0, be_0 ) )
       break;
@@ -411,6 +416,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_1(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutputName_3_b_1;
     static refalrts::Iter eOutputName_3_e_1;
     static refalrts::Iter eOutputName_3_b_2;
@@ -528,6 +534,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_1(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSource_3_b_1;
     static refalrts::Iter eSource_3_e_1;
     static refalrts::Iter eOutputName_3_b_1;
@@ -716,6 +723,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_2(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // # CNone
     if( ! refalrts::ident_left(  & CNone<int>::name, bb_0, be_0 ) )
       break;
@@ -744,6 +752,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_2(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eErrorFileName_4_b_1;
     static refalrts::Iter eErrorFileName_4_e_1;
     // e.ErrorFileName#4
@@ -809,6 +818,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_3(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     static refalrts::Iter eOutputs_B_3_b_1;
     static refalrts::Iter eOutputs_B_3_e_1;
@@ -817,6 +827,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_3(refalrts::Iter arg_begin,
       break;
     eOutputs_B_3_b_1 = 0;
     eOutputs_B_3_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_1 = bb_0;
       refalrts::Iter be_1 = be_0;
@@ -888,6 +899,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_3(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     static refalrts::Iter eOutputs_3_b_1;
     static refalrts::Iter eOutputs_3_e_1;
@@ -1099,6 +1111,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_4(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_2_b_1;
     static refalrts::Iter eFileName_2_e_1;
     static refalrts::Iter eFiles_E_2_b_1;
@@ -1111,6 +1124,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_4(refalrts::Iter arg_begin,
       break;
     eFiles_B_2_b_1 = 0;
     eFiles_B_2_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_2 = bb_0;
       refalrts::Iter be_2 = be_0;
@@ -1190,6 +1204,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_4(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     static refalrts::Iter eFoundFiles_2_b_1;
     static refalrts::Iter eFoundFiles_2_e_1;
@@ -1332,6 +1347,7 @@ static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eMessage_1_b_1;
     static refalrts::Iter eMessage_1_e_1;
     // ( & CmdLineError e.Message#1 )
@@ -1487,6 +1503,7 @@ static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     // s.CommandLineInfo#1 & CompileToTarget ( e.Folders#1 ) ( e.Source#1 ) ( e.Output#1 )
     refalrts::Iter bb_1 = 0;
@@ -1533,6 +1550,7 @@ static refalrts::FnResult FindFiles_Compilers(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     static refalrts::Iter eFolders_1_b_1;
     static refalrts::Iter eFolders_1_e_1;
@@ -1656,6 +1674,7 @@ static refalrts::FnResult lambda_ForEach_0(refalrts::Iter arg_begin, refalrts::I
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sConverter_1_1;
     static refalrts::Iter eElems_2_b_1;
     static refalrts::Iter eElems_2_e_1;
@@ -1715,6 +1734,7 @@ static refalrts::FnResult ForEach(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sConverter_1_1;
     // s.Converter#1
     if( ! refalrts::svar_left( sConverter_1_1, bb_0, be_0 ) )
@@ -1775,6 +1795,7 @@ static refalrts::FnResult PrintNotFound(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     // ( & NotFound e.FileName#1 )
@@ -2005,6 +2026,7 @@ static refalrts::FnResult PrintNotFound(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // ( & Output e.FileName#1 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -2038,6 +2060,7 @@ static refalrts::FnResult PrintNotFound(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // ( & Source ( e.Source#1 ) e.Output#1 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -2085,6 +2108,7 @@ static refalrts::FnResult lambda_Link_0(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_3_b_1;
     static refalrts::Iter eFileName_3_e_1;
     // ( e.FileName#3 )
@@ -2143,6 +2167,7 @@ static refalrts::FnResult lambda_Link_1(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // ( e.Files#1 ) # CNone
     if( ! refalrts::ident_right(  & CNone<int>::name, bb_0, be_0 ) )
       break;
@@ -2176,6 +2201,7 @@ static refalrts::FnResult lambda_Link_1(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFiles_1_b_1;
     static refalrts::Iter eFiles_1_e_1;
     static refalrts::Iter eCommandLine_2_b_1;
@@ -2262,6 +2288,7 @@ static refalrts::FnResult Link(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     static refalrts::Iter eFiles_1_b_1;
     static refalrts::Iter eFiles_1_e_1;
@@ -2377,6 +2404,7 @@ static refalrts::FnResult lambda_RenameFiles_0(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSource_3_b_1;
     static refalrts::Iter eSource_3_e_1;
     static refalrts::Iter eOutput_3_b_1;
@@ -2452,6 +2480,7 @@ static refalrts::FnResult lambda_RenameFiles_0(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutput_3_b_1;
     static refalrts::Iter eOutput_3_e_1;
     // ( & Output e.Output#3 )
@@ -2513,6 +2542,7 @@ static refalrts::FnResult lambda_RenameFiles_1(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFiles_3_b_1;
     static refalrts::Iter eFiles_3_e_1;
     // e.Files#3
@@ -2589,6 +2619,7 @@ static refalrts::FnResult lambda_RenameFiles_2(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // # CNone
     if( ! refalrts::ident_left(  & CNone<int>::name, bb_0, be_0 ) )
       break;
@@ -2639,6 +2670,7 @@ static refalrts::FnResult lambda_RenameFiles_2(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // e.CommandLine#2
     // Unused closed variable e.CommandLine#2
 #ifdef INTERPRET
@@ -2676,6 +2708,7 @@ static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sCommandLineInfo_1_1;
     // s.CommandLineInfo#1
     if( ! refalrts::svar_left( sCommandLineInfo_1_1, bb_0, be_0 ) )
@@ -2755,6 +2788,7 @@ static refalrts::FnResult GetFileName(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eFileName_1_b_2;
@@ -2848,6 +2882,7 @@ static refalrts::FnResult GetFileName(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSource_1_b_1;
     static refalrts::Iter eSource_1_e_1;
     static refalrts::Iter eOutput_1_b_1;
@@ -2971,6 +3006,7 @@ static refalrts::FnResult GetFileName_Aux(refalrts::Iter arg_begin, refalrts::It
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     // e.FileName#1 '.cpp'
@@ -3035,6 +3071,7 @@ static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // e.FileName#1 '/'
     if( ! refalrts::char_right( '/', bb_0, be_0 ) )
       break;
@@ -3062,6 +3099,7 @@ static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     // e.FileName#1 '\\'
     if( ! refalrts::char_right( '\\', bb_0, be_0 ) )
       break;
@@ -3089,6 +3127,7 @@ static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sLast_1_1;
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
@@ -3158,6 +3197,7 @@ static refalrts::FnResult DoGetFileName(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     //
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -3193,6 +3233,7 @@ static refalrts::FnResult lambda_Lower_0(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sLower_3_1;
     static refalrts::Iter sChar_1_1;
     static refalrts::Iter sChar_1_2;
@@ -3203,6 +3244,7 @@ static refalrts::FnResult lambda_Lower_0(refalrts::Iter arg_begin, refalrts::Ite
       break;
     eUpLo_B_3_b_1 = 0;
     eUpLo_B_3_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_1 = bb_0;
       refalrts::Iter be_1 = be_0;
@@ -3244,6 +3286,7 @@ static refalrts::FnResult lambda_Lower_1(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sChar_1_1;
     static refalrts::Iter sChar_1_2;
     static refalrts::Iter eUppers_B_2_b_1;
@@ -3253,6 +3296,7 @@ static refalrts::FnResult lambda_Lower_1(refalrts::Iter arg_begin, refalrts::Ite
       break;
     eUppers_B_2_b_1 = 0;
     eUppers_B_2_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_1 = bb_0;
       refalrts::Iter be_1 = be_0;
@@ -3584,6 +3628,7 @@ static refalrts::FnResult lambda_Lower_1(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sChar_1_1;
     // s.Char#1 e.Uppers#2
     if( ! refalrts::svar_left( sChar_1_1, bb_0, be_0 ) )
@@ -3621,6 +3666,7 @@ static refalrts::FnResult Lower(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sChar_1_1;
     // s.Char#1
     if( ! refalrts::svar_left( sChar_1_1, bb_0, be_0 ) )
@@ -3832,6 +3878,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eOutput1_1_b_1;
@@ -3847,6 +3894,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     // e.Files_B#1 ( e.FileName#1 0 ( & Output e.Output1#1 ) ) e.Files_M#1 ( e.FileName#1 0 ( & Output e.Output2#1 ) ) e.Files_E#1
     eFiles_B_1_b_1 = 0;
     eFiles_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_5 = bb_0;
       refalrts::Iter be_5 = be_0;
@@ -3868,6 +3916,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
       eOutput1_1_e_1 = be_2;
       eFiles_M_1_b_1 = 0;
       eFiles_M_1_e_1 = 0;
+      refalrts::start_e_loop();
       do {
         refalrts::Iter bb_6 = bb_5;
         refalrts::Iter be_6 = be_5;
@@ -4245,6 +4294,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFiles_B_1_b_1;
     static refalrts::Iter eFiles_B_1_e_1;
     static refalrts::Iter tLocation_1_1;
@@ -4263,6 +4313,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     // e.Files_B#1 ( e.FileName#1 0 t.Location#1 ) e.Files_M#1 ( e.FileName#1 0 ( & Output e.Output#1 ) ) e.Files_E#1
     eFiles_B_1_b_1 = 0;
     eFiles_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_4 = bb_0;
       refalrts::Iter be_4 = be_0;
@@ -4278,6 +4329,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
       eFileName_1_e_1 = be_1;
       eFiles_M_1_b_1 = 0;
       eFiles_M_1_e_1 = 0;
+      refalrts::start_e_loop();
       do {
         refalrts::Iter bb_5 = bb_4;
         refalrts::Iter be_5 = be_4;
@@ -4437,6 +4489,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFiles_B_1_b_1;
     static refalrts::Iter eFiles_B_1_e_1;
     static refalrts::Iter eFileName_1_b_1;
@@ -4455,6 +4508,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     // e.Files_B#1 ( e.FileName#1 0 ( & Output e.Output#1 ) ) e.Files_M#1 ( e.FileName#1 0 t.Location#1 ) e.Files_E#1
     eFiles_B_1_b_1 = 0;
     eFiles_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_4 = bb_0;
       refalrts::Iter be_4 = be_0;
@@ -4476,6 +4530,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
       eOutput_1_e_1 = be_2;
       eFiles_M_1_b_1 = 0;
       eFiles_M_1_e_1 = 0;
+      refalrts::start_e_loop();
       do {
         refalrts::Iter bb_5 = bb_4;
         refalrts::Iter be_5 = be_4;
@@ -4629,6 +4684,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFiles_B_1_b_1;
     static refalrts::Iter eFiles_B_1_e_1;
     static refalrts::Iter tLocation1_1_1;
@@ -4646,6 +4702,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     // e.Files_B#1 ( e.FileName#1 0 t.Location1#1 ) e.Files_M#1 ( e.FileName#1 0 t.Location2#1 ) e.Files_E#1
     eFiles_B_1_b_1 = 0;
     eFiles_B_1_e_1 = 0;
+    refalrts::start_e_loop();
     do {
       refalrts::Iter bb_3 = bb_0;
       refalrts::Iter be_3 = be_0;
@@ -4661,6 +4718,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
       eFileName_1_e_1 = be_1;
       eFiles_M_1_b_1 = 0;
       eFiles_M_1_e_1 = 0;
+      refalrts::start_e_loop();
       do {
         refalrts::Iter bb_4 = bb_3;
         refalrts::Iter be_4 = be_3;
@@ -4798,6 +4856,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFiles_1_b_1;
     static refalrts::Iter eFiles_1_e_1;
     // e.Files#1
@@ -4865,6 +4924,7 @@ static refalrts::FnResult lambda_Renumerate_0(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eSource_2_b_1;
@@ -5000,6 +5060,7 @@ static refalrts::FnResult lambda_Renumerate_0(refalrts::Iter arg_begin, refalrts
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sNextNumber_2_1;
     static refalrts::Iter tNextFile_2_1;
     // ( e.FileName#1 ) s.NextNumber#2 t.NextFile#2
@@ -5048,6 +5109,7 @@ static refalrts::FnResult Renumerate(refalrts::Iter arg_begin, refalrts::Iter ar
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eFileName_1_b_1;
     static refalrts::Iter eFileName_1_e_1;
     static refalrts::Iter eFiles_1_b_1;
@@ -5171,6 +5233,7 @@ static refalrts::FnResult lambda_RestoreName_0(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutput1_2_b_1;
     static refalrts::Iter eOutput1_2_e_1;
     // 0 e.Output1#2
@@ -5203,6 +5266,7 @@ static refalrts::FnResult lambda_RestoreName_0(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sNumber_2_1;
     static refalrts::Iter eOutName_2_b_1;
     static refalrts::Iter eOutName_2_e_1;
@@ -5295,6 +5359,7 @@ static refalrts::FnResult RestoreName(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eOutputName_1_b_1;
     static refalrts::Iter eOutputName_1_e_1;
     static refalrts::Iter sNum_1_1;
@@ -5357,6 +5422,7 @@ static refalrts::FnResult RestoreName(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter eSource_1_b_1;
     static refalrts::Iter eSource_1_e_1;
     static refalrts::Iter eOutput_1_b_1;
