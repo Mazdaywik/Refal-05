@@ -4,13 +4,9 @@ $EXTERN LoadIniFile;
 //FROM LibraryEx
 $EXTERN ArgList, WriteLine, Map, Fetch;
 
-$FORWARD Main;
-
 $ENTRY Go {
   = <Main <ArgList>>;
 }
-
-$FORWARD PrintIni;
 
 //FROM Library
 $EXTERN StrFromInt;
@@ -68,8 +64,6 @@ WriteLineAt {
   s.LineNumber e.Text =
     <WriteLine <StrFromInt s.LineNumber> ': ' e.Text>;
 }
-
-$FORWARD PrintParameters;
 
 PrintIni {
   (e.FileName) e.FileContent =
