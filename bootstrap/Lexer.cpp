@@ -14,9 +14,17 @@ extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 extern refalrts::FnResult Map(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
+extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+extern refalrts::FnResult Reduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
 extern refalrts::FnResult Chr(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 extern refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+extern refalrts::FnResult Mul(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+extern refalrts::FnResult Add(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult LinearizeLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -904,9 +912,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, ']'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -917,13 +925,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, ']' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -947,9 +955,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '>'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -960,13 +968,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '>' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -990,9 +998,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '}'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1003,13 +1011,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '}' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1033,9 +1041,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, ')'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1046,13 +1054,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, ')' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1076,9 +1084,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, ','},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1089,13 +1097,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, ',' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1122,13 +1130,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '$'},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
       {refalrts::icFunc, (void*) & StrDirective, (void*) "StrDirective"},
       {refalrts::icSpliceSTVar, & sDirective_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1139,7 +1147,7 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '$' ) )
@@ -1154,7 +1162,7 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     if( ! refalrts::alloc_close_call( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_char( n5, '"' ) )
+    if( ! refalrts::alloc_char( n5, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n5 );
     refalrts::push_stack( n4 );
@@ -1364,9 +1372,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '#'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1377,13 +1385,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '#' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1549,9 +1557,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '['},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1562,13 +1570,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '[' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1592,9 +1600,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '<'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1605,13 +1613,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '<' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1635,9 +1643,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '{'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1648,13 +1656,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '{' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1678,9 +1686,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '('},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1691,13 +1699,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '(' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1721,9 +1729,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '='},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1734,13 +1742,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '=' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -1764,9 +1772,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, ';'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -1777,13 +1785,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, ';' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -2001,9 +2009,9 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '^'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -2014,13 +2022,13 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '"' ) )
+    if( ! refalrts::alloc_char( n0, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_char( n1, '^' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, '"' ) )
+    if( ! refalrts::alloc_char( n2, '\"' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -2150,6 +2158,20 @@ static refalrts::FnResult TkLiteral_Code(refalrts::Iter, refalrts::Iter) {
   );
 }
 
+static refalrts::FnResult TkLiteral_OCode(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult TkLiteral_XCode(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 static refalrts::FnResult TkLiteral_NewLine(refalrts::Iter, refalrts::Iter) {
   refalrts::this_is_generated_function();
   return refalrts::FnResult(
@@ -2165,6 +2187,34 @@ static refalrts::FnResult TkLiteral_CarriageReturn(refalrts::Iter, refalrts::Ite
 }
 
 static refalrts::FnResult TkLiteral_Tab(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult TkLiteral_Bell(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult TkLiteral_BS(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult TkLiteral_FF(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult TkLiteral_VT(refalrts::Iter, refalrts::Iter) {
   refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
@@ -2317,6 +2367,8 @@ static refalrts::FnResult NormalizeName(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
+
+static refalrts::FnResult CharFromNum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult NormalizeToken(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -2574,6 +2626,158 @@ static refalrts::FnResult NormalizeToken(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eOctCode_1_b_1;
+    static refalrts::Iter eOctCode_1_e_1;
+    // ( & TkLiteral_OCode e.OctCode#1 )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkLiteral_OCode, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+    eOctCode_1_b_1 = bb_1;
+    eOctCode_1_e_1 = be_1;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkChar, (void*) "TkChar"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & CharFromNum, (void*) "CharFromNum"},
+      {refalrts::icInt, 0, 0, 8 },
+      {refalrts::icSpliceEVar, & eOctCode_1_b_1, & eOctCode_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkChar, "TkChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, CharFromNum, "CharFromNum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_number( n4, 8UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eOctCode_1_b_1, eOctCode_1_e_1 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eHexCode_1_b_1;
+    static refalrts::Iter eHexCode_1_e_1;
+    // ( & TkLiteral_XCode e.HexCode#1 )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkLiteral_XCode, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+    eHexCode_1_b_1 = bb_1;
+    eHexCode_1_e_1 = be_1;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkChar, (void*) "TkChar"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & CharFromNum, (void*) "CharFromNum"},
+      {refalrts::icInt, 0, 0, 16 },
+      {refalrts::icSpliceEVar, & eHexCode_1_b_1, & eHexCode_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkChar, "TkChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, CharFromNum, "CharFromNum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_number( n4, 16UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eHexCode_1_b_1, eHexCode_1_e_1 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
     // ( & TkLiteral_NewLine 'n' )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -2724,6 +2928,234 @@ static refalrts::FnResult NormalizeToken(refalrts::Iter arg_begin, refalrts::Ite
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_char( n2, '\t' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    // ( & TkLiteral_Bell 'a' )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkLiteral_Bell, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::char_left( 'a', bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkChar, (void*) "TkChar"},
+      {refalrts::icChar, 0, 0, '\007'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkChar, "TkChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '\007' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    // ( & TkLiteral_BS 'b' )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkLiteral_BS, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::char_left( 'b', bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkChar, (void*) "TkChar"},
+      {refalrts::icChar, 0, 0, '\010'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkChar, "TkChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '\010' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    // ( & TkLiteral_FF 'f' )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkLiteral_FF, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::char_left( 'f', bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkChar, (void*) "TkChar"},
+      {refalrts::icChar, 0, 0, '\014'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkChar, "TkChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '\014' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    // ( & TkLiteral_VT 'v' )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkLiteral_VT, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::char_left( 'v', bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkChar, (void*) "TkChar"},
+      {refalrts::icChar, 0, 0, '\013'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkChar, "TkChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '\013' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
     if( ! refalrts::alloc_close_bracket( n3 ) )
@@ -3345,6 +3777,870 @@ static refalrts::FnResult NormalizeToken(refalrts::Iter arg_begin, refalrts::Ite
     res = refalrts::splice_elem( res, n8 );
     res = refalrts::splice_elem( res, n7 );
     res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult DoCharFromNum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult DigitFromChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult CharFromNum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult lambda_CharFromNum_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sBase_1_1;
+    static refalrts::Iter sAccum_2_1;
+    static refalrts::Iter sNext_2_1;
+    // s.Base#1 s.Accum#2 s.Next#2
+    if( ! refalrts::svar_left( sBase_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sAccum_2_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sNext_2_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Add, (void*) "Add"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Mul, (void*) "Mul"},
+      {refalrts::icSpliceSTVar, & sAccum_2_1},
+      {refalrts::icSpliceSTVar, & sBase_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icSpliceSTVar, & sNext_2_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, Add, "Add" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Mul, "Mul" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_stvar( res, sNext_2_1 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sBase_1_1 );
+    res = refalrts::splice_stvar( res, sAccum_2_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult CharFromNum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sBase_1_1;
+    static refalrts::Iter eChars_1_b_1;
+    static refalrts::Iter eChars_1_e_1;
+    // s.Base#1 e.Chars#1
+    if( ! refalrts::svar_left( sBase_1_1, bb_0, be_0 ) )
+      break;
+    eChars_1_b_1 = bb_0;
+    eChars_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Chr, (void*) "Chr"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Reduce, (void*) "Reduce"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & refalrts::create_closure, (void*) "refalrts::create_closure"},
+      {refalrts::icFunc, (void*) & lambda_CharFromNum_0, (void*) "lambda_CharFromNum_0"},
+      {refalrts::icSpliceSTVar, & sBase_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icInt, 0, 0, 0 },
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Map, (void*) "Map"},
+      {refalrts::icFunc, (void*) & DigitFromChar, (void*) "DigitFromChar"},
+      {refalrts::icSpliceEVar, & eChars_1_b_1, & eChars_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, Chr, "Chr" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Reduce, "Reduce" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, refalrts::create_closure, "refalrts::create_closure" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_name( n6, lambda_CharFromNum_0, "lambda_CharFromNum_0" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_number( n8, 0UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_open_call( n9 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_name( n10, Map, "Map" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_name( n11, DigitFromChar, "DigitFromChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_close_call( n12 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n13 = 0;
+    if( ! refalrts::alloc_close_call( n13 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n14 = 0;
+    if( ! refalrts::alloc_close_call( n14 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n14 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n14 );
+    refalrts::push_stack( n13 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n13 );
+    refalrts::push_stack( n12 );
+    refalrts::push_stack( n9 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_evar( res, eChars_1_b_1, eChars_1_e_1 );
+    res = refalrts::splice_elem( res, n11 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_elem( res, n8 );
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_stvar( res, sBase_1_1 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult DoCharFromNum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sBase_1_1;
+    static refalrts::Iter sAccum_1_1;
+    static refalrts::Iter sFirst_1_1;
+    static refalrts::Iter eDigits_1_b_1;
+    static refalrts::Iter eDigits_1_e_1;
+    static refalrts::Iter sBase_1_2;
+    // s.Base#1 s.Accum#1 s.First#1 e.Digits#1
+    if( ! refalrts::svar_left( sBase_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sAccum_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sFirst_1_1, bb_0, be_0 ) )
+      break;
+    eDigits_1_b_1 = bb_0;
+    eDigits_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & DoCharFromNum, (void*) "DoCharFromNum"},
+      {refalrts::icSpliceSTVar, & sBase_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Add, (void*) "Add"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Mul, (void*) "Mul"},
+      {refalrts::icSpliceSTVar, & sAccum_1_1},
+      {refalrts::icCopySTVar, & sBase_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icSpliceSTVar, & sFirst_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icSpliceEVar, & eDigits_1_b_1, & eDigits_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( sBase_1_2, sBase_1_1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, DoCharFromNum, "DoCharFromNum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Add, "Add" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, Mul, "Mul" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_call( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eDigits_1_b_1, eDigits_1_e_1 );
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_stvar( res, sFirst_1_1 );
+    refalrts::push_stack( n6 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_stvar( res, sBase_1_2 );
+    res = refalrts::splice_stvar( res, sAccum_1_1 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sBase_1_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sAccum_1_1;
+    static refalrts::Iter sBase_1_1;
+    // s.Base#1 s.Accum#1
+    if( ! refalrts::svar_left( sBase_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sAccum_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icSpliceSTVar, & sAccum_1_1},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    res = refalrts::splice_stvar( res, sAccum_1_1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult DigitFromChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult lambda_DigitFromChar_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sDigit_2_1;
+    static refalrts::Iter sChar_1_1;
+    static refalrts::Iter sChar_1_2;
+    static refalrts::Iter eAssoc_B_2_b_1;
+    static refalrts::Iter eAssoc_B_2_e_1;
+    static refalrts::Iter eVars_B_2_b_1;
+    static refalrts::Iter eVars_B_2_e_1;
+    // s.Char#1 e.Assoc_B#2 ( s.Digit#2 e.Vars_B#2 s.Char#1 e.Vars_E#2 ) e.Assoc_E#2
+    if( ! refalrts::svar_left( sChar_1_1, bb_0, be_0 ) )
+      break;
+    eAssoc_B_2_b_1 = 0;
+    eAssoc_B_2_e_1 = 0;
+    do {
+      refalrts::Iter bb_2 = bb_0;
+      refalrts::Iter be_2 = be_0;
+      refalrts::Iter bb_1 = 0;
+      refalrts::Iter be_1 = 0;
+      if( ! refalrts::brackets_left( bb_1, be_1, bb_2, be_2 ) )
+        continue;
+      // Unused closed variable e.Assoc_E#2
+      if( ! refalrts::svar_left( sDigit_2_1, bb_1, be_1 ) )
+        continue;
+      eVars_B_2_b_1 = 0;
+      eVars_B_2_e_1 = 0;
+      do {
+        refalrts::Iter bb_3 = bb_1;
+        refalrts::Iter be_3 = be_1;
+        if( ! refalrts::repeated_stvar_left( sChar_1_2, sChar_1_1, bb_3, be_3 ) )
+          continue;
+        // Unused closed variable e.Vars_E#2
+#ifdef INTERPRET
+        const static refalrts::ResultAction raa[] = {
+          {refalrts::icSpliceSTVar, & sDigit_2_1},
+          {refalrts::icEnd}
+        };
+        refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+        refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+        return res;
+#else
+
+        refalrts::reset_allocator();
+        refalrts::Iter res = arg_begin;
+        res = refalrts::splice_stvar( res, sDigit_2_1 );
+        refalrts::use( res );
+        refalrts::splice_to_freelist( arg_begin, arg_end );
+        return refalrts::cSuccess;
+#endif
+      } while ( refalrts::open_evar_advance( eVars_B_2_b_1, eVars_B_2_e_1, bb_1, be_1 ) );
+    } while ( refalrts::open_evar_advance( eAssoc_B_2_b_1, eAssoc_B_2_e_1, bb_0, be_0 ) );
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult DigitFromChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sChar_1_1;
+    // s.Char#1
+    if( ! refalrts::svar_left( sChar_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Fetch, (void*) "Fetch"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 0 },
+      {refalrts::icChar, 0, 0, '0'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 1 },
+      {refalrts::icChar, 0, 0, '1'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 2 },
+      {refalrts::icChar, 0, 0, '2'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 3 },
+      {refalrts::icChar, 0, 0, '3'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 4 },
+      {refalrts::icChar, 0, 0, '4'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 5 },
+      {refalrts::icChar, 0, 0, '5'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 6 },
+      {refalrts::icChar, 0, 0, '6'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 7 },
+      {refalrts::icChar, 0, 0, '7'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 8 },
+      {refalrts::icChar, 0, 0, '8'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 9 },
+      {refalrts::icChar, 0, 0, '9'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 10 },
+      {refalrts::icChar, 0, 0, 'A'},
+      {refalrts::icChar, 0, 0, 'a'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 11 },
+      {refalrts::icChar, 0, 0, 'B'},
+      {refalrts::icChar, 0, 0, 'b'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 12 },
+      {refalrts::icChar, 0, 0, 'C'},
+      {refalrts::icChar, 0, 0, 'c'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 13 },
+      {refalrts::icChar, 0, 0, 'D'},
+      {refalrts::icChar, 0, 0, 'd'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 14 },
+      {refalrts::icChar, 0, 0, 'E'},
+      {refalrts::icChar, 0, 0, 'e'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icInt, 0, 0, 15 },
+      {refalrts::icChar, 0, 0, 'F'},
+      {refalrts::icChar, 0, 0, 'f'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & refalrts::create_closure, (void*) "refalrts::create_closure"},
+      {refalrts::icFunc, (void*) & lambda_DigitFromChar_0, (void*) "lambda_DigitFromChar_0"},
+      {refalrts::icSpliceSTVar, & sChar_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, Fetch, "Fetch" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_number( n3, 0UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_char( n4, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_number( n7, 1UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_char( n8, '1' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_close_bracket( n9 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_open_bracket( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_number( n11, 2UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_char( n12, '2' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n13 = 0;
+    if( ! refalrts::alloc_close_bracket( n13 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n14 = 0;
+    if( ! refalrts::alloc_open_bracket( n14 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n15 = 0;
+    if( ! refalrts::alloc_number( n15, 3UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n16 = 0;
+    if( ! refalrts::alloc_char( n16, '3' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n17 = 0;
+    if( ! refalrts::alloc_close_bracket( n17 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n18 = 0;
+    if( ! refalrts::alloc_open_bracket( n18 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n19 = 0;
+    if( ! refalrts::alloc_number( n19, 4UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n20 = 0;
+    if( ! refalrts::alloc_char( n20, '4' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n21 = 0;
+    if( ! refalrts::alloc_close_bracket( n21 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n22 = 0;
+    if( ! refalrts::alloc_open_bracket( n22 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n23 = 0;
+    if( ! refalrts::alloc_number( n23, 5UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n24 = 0;
+    if( ! refalrts::alloc_char( n24, '5' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n25 = 0;
+    if( ! refalrts::alloc_close_bracket( n25 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n26 = 0;
+    if( ! refalrts::alloc_open_bracket( n26 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n27 = 0;
+    if( ! refalrts::alloc_number( n27, 6UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n28 = 0;
+    if( ! refalrts::alloc_char( n28, '6' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n29 = 0;
+    if( ! refalrts::alloc_close_bracket( n29 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n30 = 0;
+    if( ! refalrts::alloc_open_bracket( n30 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n31 = 0;
+    if( ! refalrts::alloc_number( n31, 7UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n32 = 0;
+    if( ! refalrts::alloc_char( n32, '7' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n33 = 0;
+    if( ! refalrts::alloc_close_bracket( n33 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n34 = 0;
+    if( ! refalrts::alloc_open_bracket( n34 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n35 = 0;
+    if( ! refalrts::alloc_number( n35, 8UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n36 = 0;
+    if( ! refalrts::alloc_char( n36, '8' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n37 = 0;
+    if( ! refalrts::alloc_close_bracket( n37 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n38 = 0;
+    if( ! refalrts::alloc_open_bracket( n38 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n39 = 0;
+    if( ! refalrts::alloc_number( n39, 9UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n40 = 0;
+    if( ! refalrts::alloc_char( n40, '9' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n41 = 0;
+    if( ! refalrts::alloc_close_bracket( n41 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n42 = 0;
+    if( ! refalrts::alloc_open_bracket( n42 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n43 = 0;
+    if( ! refalrts::alloc_number( n43, 10UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n44 = 0;
+    if( ! refalrts::alloc_char( n44, 'A' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n45 = 0;
+    if( ! refalrts::alloc_char( n45, 'a' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n46 = 0;
+    if( ! refalrts::alloc_close_bracket( n46 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n47 = 0;
+    if( ! refalrts::alloc_open_bracket( n47 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n48 = 0;
+    if( ! refalrts::alloc_number( n48, 11UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n49 = 0;
+    if( ! refalrts::alloc_char( n49, 'B' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n50 = 0;
+    if( ! refalrts::alloc_char( n50, 'b' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n51 = 0;
+    if( ! refalrts::alloc_close_bracket( n51 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n52 = 0;
+    if( ! refalrts::alloc_open_bracket( n52 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n53 = 0;
+    if( ! refalrts::alloc_number( n53, 12UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n54 = 0;
+    if( ! refalrts::alloc_char( n54, 'C' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n55 = 0;
+    if( ! refalrts::alloc_char( n55, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n56 = 0;
+    if( ! refalrts::alloc_close_bracket( n56 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n57 = 0;
+    if( ! refalrts::alloc_open_bracket( n57 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n58 = 0;
+    if( ! refalrts::alloc_number( n58, 13UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n59 = 0;
+    if( ! refalrts::alloc_char( n59, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n60 = 0;
+    if( ! refalrts::alloc_char( n60, 'd' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n61 = 0;
+    if( ! refalrts::alloc_close_bracket( n61 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n62 = 0;
+    if( ! refalrts::alloc_open_bracket( n62 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n63 = 0;
+    if( ! refalrts::alloc_number( n63, 14UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n64 = 0;
+    if( ! refalrts::alloc_char( n64, 'E' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n65 = 0;
+    if( ! refalrts::alloc_char( n65, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n66 = 0;
+    if( ! refalrts::alloc_close_bracket( n66 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n67 = 0;
+    if( ! refalrts::alloc_open_bracket( n67 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n68 = 0;
+    if( ! refalrts::alloc_number( n68, 15UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n69 = 0;
+    if( ! refalrts::alloc_char( n69, 'F' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n70 = 0;
+    if( ! refalrts::alloc_char( n70, 'f' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n71 = 0;
+    if( ! refalrts::alloc_close_bracket( n71 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n72 = 0;
+    if( ! refalrts::alloc_open_call( n72 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n73 = 0;
+    if( ! refalrts::alloc_name( n73, refalrts::create_closure, "refalrts::create_closure" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n74 = 0;
+    if( ! refalrts::alloc_name( n74, lambda_DigitFromChar_0, "lambda_DigitFromChar_0" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n75 = 0;
+    if( ! refalrts::alloc_close_call( n75 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n76 = 0;
+    if( ! refalrts::alloc_close_call( n76 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n76 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n76 );
+    refalrts::push_stack( n75 );
+    refalrts::push_stack( n72 );
+    res = refalrts::splice_elem( res, n75 );
+    res = refalrts::splice_stvar( res, sChar_1_1 );
+    res = refalrts::splice_elem( res, n74 );
+    res = refalrts::splice_elem( res, n73 );
+    res = refalrts::splice_elem( res, n72 );
+    refalrts::link_brackets( n67, n71 );
+    res = refalrts::splice_elem( res, n71 );
+    res = refalrts::splice_elem( res, n70 );
+    res = refalrts::splice_elem( res, n69 );
+    res = refalrts::splice_elem( res, n68 );
+    res = refalrts::splice_elem( res, n67 );
+    refalrts::link_brackets( n62, n66 );
+    res = refalrts::splice_elem( res, n66 );
+    res = refalrts::splice_elem( res, n65 );
+    res = refalrts::splice_elem( res, n64 );
+    res = refalrts::splice_elem( res, n63 );
+    res = refalrts::splice_elem( res, n62 );
+    refalrts::link_brackets( n57, n61 );
+    res = refalrts::splice_elem( res, n61 );
+    res = refalrts::splice_elem( res, n60 );
+    res = refalrts::splice_elem( res, n59 );
+    res = refalrts::splice_elem( res, n58 );
+    res = refalrts::splice_elem( res, n57 );
+    refalrts::link_brackets( n52, n56 );
+    res = refalrts::splice_elem( res, n56 );
+    res = refalrts::splice_elem( res, n55 );
+    res = refalrts::splice_elem( res, n54 );
+    res = refalrts::splice_elem( res, n53 );
+    res = refalrts::splice_elem( res, n52 );
+    refalrts::link_brackets( n47, n51 );
+    res = refalrts::splice_elem( res, n51 );
+    res = refalrts::splice_elem( res, n50 );
+    res = refalrts::splice_elem( res, n49 );
+    res = refalrts::splice_elem( res, n48 );
+    res = refalrts::splice_elem( res, n47 );
+    refalrts::link_brackets( n42, n46 );
+    res = refalrts::splice_elem( res, n46 );
+    res = refalrts::splice_elem( res, n45 );
+    res = refalrts::splice_elem( res, n44 );
+    res = refalrts::splice_elem( res, n43 );
+    res = refalrts::splice_elem( res, n42 );
+    refalrts::link_brackets( n38, n41 );
+    res = refalrts::splice_elem( res, n41 );
+    res = refalrts::splice_elem( res, n40 );
+    res = refalrts::splice_elem( res, n39 );
+    res = refalrts::splice_elem( res, n38 );
+    refalrts::link_brackets( n34, n37 );
+    res = refalrts::splice_elem( res, n37 );
+    res = refalrts::splice_elem( res, n36 );
+    res = refalrts::splice_elem( res, n35 );
+    res = refalrts::splice_elem( res, n34 );
+    refalrts::link_brackets( n30, n33 );
+    res = refalrts::splice_elem( res, n33 );
+    res = refalrts::splice_elem( res, n32 );
+    res = refalrts::splice_elem( res, n31 );
+    res = refalrts::splice_elem( res, n30 );
+    refalrts::link_brackets( n26, n29 );
+    res = refalrts::splice_elem( res, n29 );
+    res = refalrts::splice_elem( res, n28 );
+    res = refalrts::splice_elem( res, n27 );
+    res = refalrts::splice_elem( res, n26 );
+    refalrts::link_brackets( n22, n25 );
+    res = refalrts::splice_elem( res, n25 );
+    res = refalrts::splice_elem( res, n24 );
+    res = refalrts::splice_elem( res, n23 );
+    res = refalrts::splice_elem( res, n22 );
+    refalrts::link_brackets( n18, n21 );
+    res = refalrts::splice_elem( res, n21 );
+    res = refalrts::splice_elem( res, n20 );
+    res = refalrts::splice_elem( res, n19 );
+    res = refalrts::splice_elem( res, n18 );
+    refalrts::link_brackets( n14, n17 );
+    res = refalrts::splice_elem( res, n17 );
+    res = refalrts::splice_elem( res, n16 );
+    res = refalrts::splice_elem( res, n15 );
+    res = refalrts::splice_elem( res, n14 );
+    refalrts::link_brackets( n10, n13 );
+    res = refalrts::splice_elem( res, n13 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_elem( res, n11 );
+    res = refalrts::splice_elem( res, n10 );
+    refalrts::link_brackets( n6, n9 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::link_brackets( n2, n5 );
     res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_elem( res, n3 );
@@ -4669,6 +5965,14 @@ static refalrts::FnResult CComment_CheckEnd(refalrts::Iter arg_begin, refalrts::
 static refalrts::FnResult StringLiteral_Escape_Code(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult SL_E_C2(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult SL_E_OC1(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult SL_E_OC2(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult StringLiteral_Escape_OCode(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+static refalrts::FnResult StringLiteral_Escape_XCode(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult Root(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -33398,6 +34702,370 @@ static refalrts::FnResult StringLiteral_Escape(refalrts::Iter arg_begin, refalrt
     static refalrts::Iter eAccum_1_e_1;
     static refalrts::Iter eText_1_b_1;
     static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'a e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'a', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_Bell, (void*) "TkLiteral_Bell"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'a'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_Bell, "TkLiteral_Bell" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'a' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'b e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'b', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_BS, (void*) "TkLiteral_BS"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'b'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_BS, "TkLiteral_BS" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'b' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'f e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'f', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_FF, (void*) "TkLiteral_FF"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'f'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_FF, "TkLiteral_FF" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'f' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'v e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'v', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_VT, (void*) "TkLiteral_VT"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'v'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_VT, "TkLiteral_VT" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'v' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
     // ( e.Accum#1 ) '\\ e.Text#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -33576,6 +35244,97 @@ static refalrts::FnResult StringLiteral_Escape(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '\" e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '\"', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_Char, (void*) "TkLiteral_Char"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '\"'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_Char, "TkLiteral_Char" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '\"' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
     static refalrts::Iter eText_1_b_1;
     static refalrts::Iter eText_1_e_1;
     // ( e.Accum#1 ) 'd e.Text#1
@@ -33610,6 +35369,801 @@ static refalrts::FnResult StringLiteral_Escape(refalrts::Iter arg_begin, refalrt
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, StringLiteral_Escape_Code, "StringLiteral_Escape_Code" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'D e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'D', bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_Code, (void*) "StringLiteral_Escape_Code"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_Code, "StringLiteral_Escape_Code" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '0 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '0', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '0'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '1', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '1'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '1' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '2 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '2', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '2'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '2' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '3 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '3', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '3'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '3' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '4 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '4', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '4'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '4' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '5 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '5', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '5'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '5' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '6 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '6', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '6'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '6' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '7 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '7', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_OCode, (void*) "StringLiteral_Escape_OCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '7'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_OCode, "StringLiteral_Escape_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '7' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'x e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'x', bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'X e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'X', bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -36303,6 +38857,2742 @@ static refalrts::FnResult StringLiteral_Escape_Code(refalrts::Iter arg_begin, re
   );
 }
 
+static refalrts::FnResult StringLiteral_Escape_OCode(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '0 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '0', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '0'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '1', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '1'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '1' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '2 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '2', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '2'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '2' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '3 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '3', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '3'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '3' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '4 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '4', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '4'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '4' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '5 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '5', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '5'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '5' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '6 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '6', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '6'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '6' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '7 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '7', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC1, (void*) "SL_E_OC1"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '7'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC1, "SL_E_OC1" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '7' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sUnexpected_1_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) s.Unexpected#1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    if( ! refalrts::svar_left( sUnexpected_1_1, bb_0, be_0 ) )
+      break;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpected, (void*) "TokenUnexpected"},
+      {refalrts::icSpliceSTVar, & sUnexpected_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Root, (void*) "Root"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenUnexpected, "TokenUnexpected" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, Root, "Root" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sUnexpected_1_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    // ( e.Accum#1 )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenAccum, (void*) "TokenAccum"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpectedEOF, (void*) "TokenUnexpectedEOF"},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenAccum, "TokenAccum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, TokenUnexpectedEOF, "TokenUnexpectedEOF" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n3, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult StringLiteral_Escape_XCode(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '0 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '0', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '0'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '1', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '1'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '1' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '2 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '2', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '2'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '2' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '3 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '3', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '3'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '3' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '4 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '4', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '4'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '4' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '5 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '5', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '5'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '5' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '6 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '6', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '6'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '6' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '7 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '7', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '7'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '7' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '8 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '8', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '8'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '8' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '9 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '9', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '9'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '9' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'A e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'A', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'A'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'A' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'B e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'B', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'B'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'B' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'C e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'C', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'C'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'C' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'D e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'D', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'D'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'E e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'E'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'E' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'F e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'F', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'F'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'F' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'a e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'a', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'a'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'a' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'b e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'b', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'b'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'b' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'c e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'c', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'c'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'd e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'd', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'd'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'd' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'e e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'e', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'e'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) 'f e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'f', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral_Escape_XCode, (void*) "StringLiteral_Escape_XCode"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, 'f'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, StringLiteral_Escape_XCode, "StringLiteral_Escape_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'f' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_XCode, (void*) "TkLiteral_XCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_XCode, "TkLiteral_XCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sUnexpected_1_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) s.Unexpected#1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    if( ! refalrts::svar_left( sUnexpected_1_1, bb_0, be_0 ) )
+      break;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpected, (void*) "TokenUnexpected"},
+      {refalrts::icSpliceSTVar, & sUnexpected_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Root, (void*) "Root"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenUnexpected, "TokenUnexpected" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, Root, "Root" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sUnexpected_1_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    // ( e.Accum#1 )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenAccum, (void*) "TokenAccum"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpectedEOF, (void*) "TokenUnexpectedEOF"},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenAccum, "TokenAccum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, TokenUnexpectedEOF, "TokenUnexpectedEOF" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n3, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 static refalrts::FnResult SL_E_C1(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -37100,6 +42390,849 @@ static refalrts::FnResult SL_E_C1(refalrts::Iter arg_begin, refalrts::Iter arg_e
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, TkLiteral_Code, "TkLiteral_Code" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sUnexpected_1_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) s.Unexpected#1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    if( ! refalrts::svar_left( sUnexpected_1_1, bb_0, be_0 ) )
+      break;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpected, (void*) "TokenUnexpected"},
+      {refalrts::icSpliceSTVar, & sUnexpected_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Root, (void*) "Root"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenUnexpected, "TokenUnexpected" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, Root, "Root" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sUnexpected_1_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    // ( e.Accum#1 )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenAccum, (void*) "TokenAccum"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpectedEOF, (void*) "TokenUnexpectedEOF"},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenAccum, "TokenAccum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, TokenUnexpectedEOF, "TokenUnexpectedEOF" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n3, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult SL_E_OC1(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '0 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '0', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '0'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '1', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '1'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '1' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '2 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '2', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '2'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '2' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '3 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '3', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '3'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '3' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '4 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '4', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '4'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '4' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '5 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '5', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '5'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '5' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '6 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '6', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '6'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '6' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '7 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '7', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & SL_E_OC2, (void*) "SL_E_OC2"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '7'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, SL_E_OC2, "SL_E_OC2" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '7' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_close_bracket( n2 ) )
@@ -38253,6 +44386,977 @@ static refalrts::FnResult SL_E_C2(refalrts::Iter arg_begin, refalrts::Iter arg_e
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, TkLiteral_Code, "TkLiteral_Code" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter sUnexpected_1_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) s.Unexpected#1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Accum#1
+    if( ! refalrts::svar_left( sUnexpected_1_1, bb_0, be_0 ) )
+      break;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpected, (void*) "TokenUnexpected"},
+      {refalrts::icSpliceSTVar, & sUnexpected_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & Root, (void*) "Root"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenUnexpected, "TokenUnexpected" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, Root, "Root" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sUnexpected_1_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    // ( e.Accum#1 )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenAccum, (void*) "TokenAccum"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TokenUnexpectedEOF, (void*) "TokenUnexpectedEOF"},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TokenAccum, "TokenAccum" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, TokenUnexpectedEOF, "TokenUnexpectedEOF" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n3, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult SL_E_OC2(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '0 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '0', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '0'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '1 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '1', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '1'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '1' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '2 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '2', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '2'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '2' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '3 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '3', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '3'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '3' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '4 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '4', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '4'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '4' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '5 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '5', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '5'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '5' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '6 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '6', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '6'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '6' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) '7 e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '7', bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icChar, 0, 0, '7'},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '7' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_bracket( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_open_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_name( n5, StringLiteral, "StringLiteral" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_bracket( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n4 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eText_1_b_1, eText_1_e_1 );
+    refalrts::link_brackets( n6, n7 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::link_brackets( n0, n3 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eAccum_1_b_1, eAccum_1_e_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+#endif
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    static refalrts::Iter eAccum_1_b_1;
+    static refalrts::Iter eAccum_1_e_1;
+    static refalrts::Iter eText_1_b_1;
+    static refalrts::Iter eText_1_e_1;
+    // ( e.Accum#1 ) e.Text#1
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eAccum_1_b_1 = bb_1;
+    eAccum_1_e_1 = be_1;
+    eText_1_b_1 = bb_0;
+    eText_1_e_1 = be_0;
+#ifdef INTERPRET
+    const static refalrts::ResultAction raa[] = {
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icFunc, (void*) & TkLiteral_OCode, (void*) "TkLiteral_OCode"},
+      {refalrts::icSpliceEVar, & eAccum_1_b_1, & eAccum_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & StringLiteral, (void*) "StringLiteral"},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
+      {refalrts::icSpliceEVar, & eText_1_b_1, & eText_1_e_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
+      {refalrts::icEnd}
+    };
+    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
+    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
+    return res;
+#else
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkLiteral_OCode, "TkLiteral_OCode" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_close_bracket( n2 ) )

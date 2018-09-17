@@ -34,6 +34,10 @@ $ENTRY GenFnEnd {
     ('}') ();
 }
 
+$ENTRY GenFnEnd-Success {
+  = ('  //return refalrts::cRecognitionImpossible;') ('}') ();
+}
+
 $ENTRY GenEEnum {
   e.Name = <SwGenFnStart GN-Entry NakedArguments e.Name> <GenFnEnd>;
 }
@@ -484,13 +488,11 @@ PrintEVars {
 
 $FORWARD PrintMatch;
 
+//FROM Escape
+$EXTERN EscapeChar;
+
 Escape {
-  '\n' = '\\n';
-  '\t' = '\\t';
-  '\r' = '\\r';
-  '\\' = '\\\\';
-  '' = '\\' '';
-  s.Other = s.Other;
+  s.Char = <EscapeChar s.Char>;
 }
 
 PrintMatchChar {

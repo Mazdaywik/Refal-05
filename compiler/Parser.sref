@@ -272,7 +272,7 @@ ParseNameList-Tail {
 $EXTERN TkOpenBlock, TkCloseBlock;
 
 //FROM Generator
-$EXTERN GenFnStart, GenSentence, GenFnEnd;
+$EXTERN GenFnStart, GenSentence, GenFnEnd, GenFnEnd-Success;
 
 //FROM Context
 $EXTERN Cntx-Create, Cntx-Destroy;
@@ -387,6 +387,21 @@ ResolveLambdaName {
 }
 
 GenFunctionBody {
+  // Закомментированный код содержит вариант кодогенерации,
+  // при котором если последнее предложение имеет вид
+  // e.X = ...;, в конце не генерится возврат
+  // return RecognitionImpossible;
+
+  //s.ScopeClass (e.MainName) (e.Name)
+  //e.Sentences (((TkVariable 'e' e.Index)) (e.Result)) =
+  //  <GenFnStart s.ScopeClass e.Name>
+  //  <Map
+  //    <PrepareAndGenSentence e.MainName>
+  //    e.Sentences
+  //    (((TkVariable 'e' e.Index)) (e.Result))
+  //  >
+  //  <GenFnEnd-Success>;
+
   s.ScopeClass (e.MainName) (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
     <Fetch
@@ -476,7 +491,9 @@ DoParseBlock {
     ( <Cntx-PopScope t.Context> )
     (TkEOF s.LnNum) e.Tail;
 
-  (e.Functions) t.ErrorList t.SymTable t.Context (e.Sentences) e.Tokens =
+  (e.Functions)
+  t.ErrorList t.SymTable t.Context
+  (e.Sentences) e.Tokens =
     <DoParseBlock
       <ParseSentence
         (e.Functions) t.ErrorList t.SymTable t.Context
@@ -693,9 +710,10 @@ ParsePattern {
   /*
     Скобки.
 
-    Стратегия обработки ошибок: если мы встретили "не ту" закрывающую скобку,
-    считаем, что "та" была пропущена. Если имеем непарную открывающую скобку,
-    считаем, что соответствующая скобка была пропущена в конце выражения;
+    Стратегия обработки ошибок: если мы встретили "не ту" закрывающую
+    скобку, считаем, что "та" была пропущена.
+    Если имеем непарную открывающую скобку, считаем,
+    что соответствующая скобка была пропущена в конце выражения;
     если имеем непарную закрывающую скобку, считаем её лишней.
   */
 
@@ -942,13 +960,15 @@ ParseResult {
   /*
     Скобки.
 
-    Стратегия обработки ошибок: если мы встретили "не ту" закрывающую скобку,
-    считаем, что "та" была пропущена. Если имеем непарную открывающую скобку,
-    считаем, что соответствующая скобка была пропущена в конце выражения;
+    Стратегия обработки ошибок: если мы встретили "не ту"
+    закрывающую скобку, считаем, что "та" была пропущена.
+    Если имеем непарную открывающую скобку, считаем,
+    что соответствующая скобка была пропущена в конце выражения;
     если имеем непарную закрывающую скобку, считаем её лишней.
   */
 
-  // Хитро обрабатываются АДТ-скобки, т.к. требуется, чтобы после них было имя.
+  // Хитро обрабатываются АДТ-скобки,
+  // т.к. требуется, чтобы после них было имя.
 
   (e.Functions) t.ErrorList t.SymTable t.Context
   (e.MultiBracket)

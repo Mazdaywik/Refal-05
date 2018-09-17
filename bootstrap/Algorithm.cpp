@@ -6547,6 +6547,8 @@ static refalrts::FnResult TextFromPattern(refalrts::Iter arg_begin, refalrts::It
   );
 }
 
+extern refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
 static refalrts::FnResult Escape(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -6555,15 +6557,18 @@ static refalrts::FnResult Escape(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
-    // '\n'
-    if( ! refalrts::char_left( '\n', bb_0, be_0 ) )
+    static refalrts::Iter sChar_1_1;
+    // s.Char#1
+    if( ! refalrts::svar_left( sChar_1_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
 #ifdef INTERPRET
     const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icChar, 0, 0, 'n'},
+      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
+      {refalrts::icFunc, (void*) & EscapeChar, (void*) "EscapeChar"},
+      {refalrts::icSpliceSTVar, & sChar_1_1},
+      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icEnd}
     };
     refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
@@ -6574,234 +6579,20 @@ static refalrts::FnResult Escape(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\\' ) )
+    if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_char( n1, 'n' ) )
+    if( ! refalrts::alloc_name( n1, EscapeChar, "EscapeChar" ) )
       return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n2 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sChar_1_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-#endif
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    // '\r'
-    if( ! refalrts::char_left( '\r', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icChar, 0, 0, 'r'},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\\' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_char( n1, 'r' ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-#endif
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    // '\t'
-    if( ! refalrts::char_left( '\t', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icChar, 0, 0, 't'},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\\' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_char( n1, 't' ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-#endif
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    // '\\'
-    if( ! refalrts::char_left( '\\', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\\' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_char( n1, '\\' ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-#endif
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    // '\''
-    if( ! refalrts::char_left( '\'', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icChar, 0, 0, '\''},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\\' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_char( n1, '\'' ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-#endif
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    // '\"'
-    if( ! refalrts::char_left( '"', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icChar, 0, 0, '\\'},
-      {refalrts::icChar, 0, 0, '"'},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\\' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_char( n1, '"' ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-#endif
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    static refalrts::Iter sOther_1_1;
-    // s.Other#1
-    if( ! refalrts::svar_left( sOther_1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icSpliceSTVar, & sOther_1_1},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    res = refalrts::splice_stvar( res, sOther_1_1 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;

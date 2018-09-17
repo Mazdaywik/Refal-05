@@ -2768,6 +2768,8 @@ extern refalrts::FnResult GenSentence(refalrts::Iter arg_begin, refalrts::Iter a
 
 extern refalrts::FnResult GenFnEnd(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
+extern refalrts::FnResult GenFnEnd_Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
 extern refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 extern refalrts::FnResult Cntx_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -5447,9 +5449,9 @@ static refalrts::FnResult DoParseBlock(refalrts::Iter arg_begin, refalrts::Iter 
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 'd'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '}'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
@@ -5579,13 +5581,13 @@ static refalrts::FnResult DoParseBlock(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_char( n33, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n34 = 0;
-    if( ! refalrts::alloc_char( n34, '"' ) )
+    if( ! refalrts::alloc_char( n34, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n35 = 0;
     if( ! refalrts::alloc_char( n35, '}' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n36 = 0;
-    if( ! refalrts::alloc_char( n36, '"' ) )
+    if( ! refalrts::alloc_char( n36, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n37 = 0;
     if( ! refalrts::alloc_close_call( n37 ) )
@@ -9785,9 +9787,9 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 'r'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '['},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -9896,13 +9898,13 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_char( n23, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n24 = 0;
-    if( ! refalrts::alloc_char( n24, '"' ) )
+    if( ! refalrts::alloc_char( n24, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n25 = 0;
     if( ! refalrts::alloc_char( n25, '[' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n26 = 0;
-    if( ! refalrts::alloc_char( n26, '"' ) )
+    if( ! refalrts::alloc_char( n26, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n27 = 0;
     if( ! refalrts::alloc_close_call( n27 ) )
@@ -10648,12 +10650,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 't'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
       {refalrts::icFunc, (void*) & StrFromBracket, (void*) "StrFromBracket"},
       {refalrts::icSpliceSTVar, & sBracketsSign_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -10755,7 +10757,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_char( n22, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n23 = 0;
-    if( ! refalrts::alloc_char( n23, '"' ) )
+    if( ! refalrts::alloc_char( n23, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n24 = 0;
     if( ! refalrts::alloc_open_call( n24 ) )
@@ -10767,7 +10769,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_close_call( n26 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n27 = 0;
-    if( ! refalrts::alloc_char( n27, '"' ) )
+    if( ! refalrts::alloc_char( n27, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n28 = 0;
     if( ! refalrts::alloc_close_call( n28 ) )
@@ -10944,12 +10946,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 't'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
       {refalrts::icFunc, (void*) & StrFromBracket, (void*) "StrFromBracket"},
       {refalrts::icSpliceSTVar, & sCloseBracket_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -11039,7 +11041,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_char( n22, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n23 = 0;
-    if( ! refalrts::alloc_char( n23, '"' ) )
+    if( ! refalrts::alloc_char( n23, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n24 = 0;
     if( ! refalrts::alloc_open_call( n24 ) )
@@ -11051,7 +11053,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_close_call( n26 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n27 = 0;
-    if( ! refalrts::alloc_char( n27, '"' ) )
+    if( ! refalrts::alloc_char( n27, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n28 = 0;
     if( ! refalrts::alloc_close_call( n28 ) )
@@ -11207,12 +11209,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 't'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
       {refalrts::icFunc, (void*) & StrFromBracket, (void*) "StrFromBracket"},
       {refalrts::icSpliceSTVar, & sBracketsSign_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -11309,7 +11311,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_char( n22, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n23 = 0;
-    if( ! refalrts::alloc_char( n23, '"' ) )
+    if( ! refalrts::alloc_char( n23, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n24 = 0;
     if( ! refalrts::alloc_open_call( n24 ) )
@@ -11321,7 +11323,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     if( ! refalrts::alloc_close_call( n26 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n27 = 0;
-    if( ! refalrts::alloc_char( n27, '"' ) )
+    if( ! refalrts::alloc_char( n27, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n28 = 0;
     if( ! refalrts::alloc_close_call( n28 ) )
@@ -14026,9 +14028,9 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 'r'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '#'},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -14122,13 +14124,13 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_char( n23, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n24 = 0;
-    if( ! refalrts::alloc_char( n24, '"' ) )
+    if( ! refalrts::alloc_char( n24, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n25 = 0;
     if( ! refalrts::alloc_char( n25, '#' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n26 = 0;
-    if( ! refalrts::alloc_char( n26, '"' ) )
+    if( ! refalrts::alloc_char( n26, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n27 = 0;
     if( ! refalrts::alloc_close_call( n27 ) )
@@ -14718,9 +14720,9 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 'r'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icChar, 0, 0, '['},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -14835,13 +14837,13 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_char( n25, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n26 = 0;
-    if( ! refalrts::alloc_char( n26, '"' ) )
+    if( ! refalrts::alloc_char( n26, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n27 = 0;
     if( ! refalrts::alloc_char( n27, '[' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n28 = 0;
-    if( ! refalrts::alloc_char( n28, '"' ) )
+    if( ! refalrts::alloc_char( n28, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n29 = 0;
     if( ! refalrts::alloc_close_call( n29 ) )
@@ -15578,12 +15580,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 't'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
       {refalrts::icFunc, (void*) & StrFromBracket, (void*) "StrFromBracket"},
       {refalrts::icSpliceSTVar, & sBracketsSign_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -15686,7 +15688,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_char( n24, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n25 = 0;
-    if( ! refalrts::alloc_char( n25, '"' ) )
+    if( ! refalrts::alloc_char( n25, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n26 = 0;
     if( ! refalrts::alloc_open_call( n26 ) )
@@ -15698,7 +15700,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_close_call( n28 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n29 = 0;
-    if( ! refalrts::alloc_char( n29, '"' ) )
+    if( ! refalrts::alloc_char( n29, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n30 = 0;
     if( ! refalrts::alloc_close_call( n30 ) )
@@ -15875,12 +15877,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
       {refalrts::icChar, 0, 0, 'e'},
       {refalrts::icChar, 0, 0, 't'},
       {refalrts::icChar, 0, 0, ' '},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
       {refalrts::icFunc, (void*) & StrFromBracket, (void*) "StrFromBracket"},
       {refalrts::icSpliceSTVar, & sCloseBracket_1_1},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icChar, 0, 0, '"'},
+      {refalrts::icChar, 0, 0, '\"'},
       {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
       {refalrts::icSpliceSTVar, & tSymTable_1_1},
       {refalrts::icSpliceSTVar, & tContext_1_1},
@@ -15976,7 +15978,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_char( n24, ' ' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n25 = 0;
-    if( ! refalrts::alloc_char( n25, '"' ) )
+    if( ! refalrts::alloc_char( n25, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n26 = 0;
     if( ! refalrts::alloc_open_call( n26 ) )
@@ -15988,7 +15990,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_close_call( n28 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n29 = 0;
-    if( ! refalrts::alloc_char( n29, '"' ) )
+    if( ! refalrts::alloc_char( n29, '\"' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n30 = 0;
     if( ! refalrts::alloc_close_call( n30 ) )
