@@ -44,12 +44,9 @@ PatchReferences {
 }
 
 /**
-  <ST-AddDe****
-    t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name
-  >
+  <ST-AddDefined t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
     == t.ErrorList t.SymTable
 */
-
 $ENTRY ST-AddDefined {
   t.ErrorList
   [SymTable
@@ -79,6 +76,9 @@ $ENTRY ST-AddDefined {
     ];
 }
 
+/**
+  <ST-AddDeclared t.SymTable e.Name> == t.SymTable
+*/
 $ENTRY ST-AddDeclared {
   /*
     Можно повторно объявить имя не зависимо от того, было ли оно до этого
@@ -95,6 +95,9 @@ $ENTRY ST-AddDeclared {
     [SymTable e.Names (Declared e.Name) <PatchReferences (e.References) e.Name>];
 }
 
+/**
+  <ST-AddFunctionCall t.SymTable t.SrcPos e.Name> == t.SymTable
+*/
 $ENTRY ST-AddFunctionCall {
   [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)]
   t.SrcPos e.Name =
@@ -109,6 +112,9 @@ $ENTRY ST-AddFunctionCall {
     [SymTable e.Names (e.References (t.SrcPos e.Name))];
 }
 
+/**
+  <ST-AddIdent t.SymTable e.Name> == t.SymTable
+*/
 $ENTRY ST-AddIdent {
   [SymTable e.Names-B (Identifier Identifier e.Name) e.Names-E (e.References)]
   e.Name =
@@ -121,6 +127,10 @@ $ENTRY ST-AddIdent {
     [SymTable e.Names (Identifier Identifier e.Name) (e.References)];
 }
 
+/**
+  <ST-CheckUnresolved t.ErrorList t.SymTable>
+    == t.ErrorList t.SymTable
+*/
 $ENTRY ST-CheckUnresolved {
   t.ErrorList [SymTable e.Names (e.References)] =
     <Reduce
