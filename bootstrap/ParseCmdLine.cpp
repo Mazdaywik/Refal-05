@@ -40,6 +40,54 @@ struct CNone {
   }
 };
 
+//$LABEL CAddCompileCommand
+template <typename T>
+struct CAddCompileCommand {
+  static const char *name() {
+    return "CAddCompileCommand";
+  }
+};
+
+//$LABEL CAddErrorFile
+template <typename T>
+struct CAddErrorFile {
+  static const char *name() {
+    return "CAddErrorFile";
+  }
+};
+
+//$LABEL CGetInfo
+template <typename T>
+struct CGetInfo {
+  static const char *name() {
+    return "CGetInfo";
+  }
+};
+
+//$LABEL CAddFile
+template <typename T>
+struct CAddFile {
+  static const char *name() {
+    return "CAddFile";
+  }
+};
+
+//$LABEL CAddFolder
+template <typename T>
+struct CAddFolder {
+  static const char *name() {
+    return "CAddFolder";
+  }
+};
+
+//$LABEL CSetOutput
+template <typename T>
+struct CSetOutput {
+  static const char *name() {
+    return "CSetOutput";
+  }
+};
+
 refalrts::FnResult CmdLineError(refalrts::Iter, refalrts::Iter) {
   refalrts::this_is_generated_function();
   return refalrts::FnResult(
@@ -143,54 +191,6 @@ refalrts::FnResult ParseCommandLine(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-//$LABEL CAddCompileCommand
-template <typename T>
-struct CAddCompileCommand {
-  static const char *name() {
-    return "CAddCompileCommand";
-  }
-};
-
-//$LABEL CAddErrorFile
-template <typename T>
-struct CAddErrorFile {
-  static const char *name() {
-    return "CAddErrorFile";
-  }
-};
-
-//$LABEL CGetInfo
-template <typename T>
-struct CGetInfo {
-  static const char *name() {
-    return "CGetInfo";
-  }
-};
-
-//$LABEL CAddFile
-template <typename T>
-struct CAddFile {
-  static const char *name() {
-    return "CAddFile";
-  }
-};
-
-//$LABEL CAddFolder
-template <typename T>
-struct CAddFolder {
-  static const char *name() {
-    return "CAddFolder";
-  }
-};
-
-//$LABEL CSetOutput
-template <typename T>
-struct CSetOutput {
-  static const char *name() {
-    return "CSetOutput";
-  }
-};
 
 static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -1770,7 +1770,6 @@ static refalrts::FnResult DoParseFileNamesOnly(refalrts::Iter arg_begin, refalrt
   );
 }
 
-static refalrts::FnResult CollectorObject(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_CollectorObject_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2383,7 +2382,6 @@ static refalrts::FnResult CollectorObject(refalrts::Iter arg_begin, refalrts::It
   );
 }
 
-static refalrts::FnResult Collector_Compiler(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_Collector_Compiler_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -3403,7 +3401,6 @@ static refalrts::FnResult Collector_Error_CC(refalrts::Iter arg_begin, refalrts:
   );
 }
 
-static refalrts::FnResult Collector_ErrorFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_Collector_ErrorFile_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -4406,7 +4403,6 @@ static refalrts::FnResult Collector_Error_EF(refalrts::Iter arg_begin, refalrts:
   );
 }
 
-static refalrts::FnResult Collector_Compiler_ErrorFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_Collector_Compiler_ErrorFile_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -5198,7 +5194,6 @@ static refalrts::FnResult Collector_Compiler_ErrorFile(refalrts::Iter arg_begin,
   );
 }
 
-static refalrts::FnResult Collector_Error(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_Collector_Error_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {

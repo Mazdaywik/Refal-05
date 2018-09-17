@@ -98,6 +98,22 @@ static refalrts::FnResult SL_E_OC2(refalrts::Iter arg_begin, refalrts::Iter arg_
 static refalrts::FnResult StringLiteral_Escape_OCode(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult StringLiteral_Escape_XCode(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
+//$LABEL COpen
+template <typename T>
+struct COpen {
+  static const char *name() {
+    return "COpen";
+  }
+};
+
+//$LABEL CClose
+template <typename T>
+struct CClose {
+  static const char *name() {
+    return "CClose";
+  }
+};
+
 static refalrts::FnResult LinearizeLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -147,7 +163,6 @@ static refalrts::FnResult LinearizeLine(refalrts::Iter arg_begin, refalrts::Iter
   );
 }
 
-extern refalrts::FnResult LexFolding(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_LexFolding_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -1013,22 +1028,6 @@ static refalrts::FnResult StrDirective(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-//$LABEL COpen
-template <typename T>
-struct COpen {
-  static const char *name() {
-    return "COpen";
-  }
-};
-
-//$LABEL CClose
-template <typename T>
-struct CClose {
-  static const char *name() {
-    return "CClose";
-  }
-};
 
 refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -4012,7 +4011,6 @@ static refalrts::FnResult NormalizeToken(refalrts::Iter arg_begin, refalrts::Ite
   );
 }
 
-static refalrts::FnResult CharFromNum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_CharFromNum_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -4366,7 +4364,6 @@ static refalrts::FnResult DoCharFromNum(refalrts::Iter arg_begin, refalrts::Iter
   );
 }
 
-static refalrts::FnResult DigitFromChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_DigitFromChar_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {

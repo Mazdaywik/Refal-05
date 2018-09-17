@@ -112,6 +112,14 @@ static refalrts::FnResult PrintAllocate_Aux(refalrts::Iter arg_begin, refalrts::
 static refalrts::FnResult SwAllocator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult SwInfo(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
+//$LABEL CCreateClosure
+template <typename T>
+struct CCreateClosure {
+  static const char *name() {
+    return "CCreateClosure";
+  }
+};
+
 refalrts::FnResult GN_Local(refalrts::Iter, refalrts::Iter) {
   refalrts::this_is_generated_function();
   return refalrts::FnResult(
@@ -7234,7 +7242,6 @@ refalrts::FnResult GenCommonTailer(refalrts::Iter arg_begin, refalrts::Iter arg_
   );
 }
 
-extern refalrts::FnResult GenSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult lambda_GenSentence_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -8838,14 +8845,6 @@ static refalrts::FnResult BracketsVars(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
-
-//$LABEL CCreateClosure
-template <typename T>
-struct CCreateClosure {
-  static const char *name() {
-    return "CCreateClosure";
-  }
-};
 
 static refalrts::FnResult PrintName(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
