@@ -83,7 +83,6 @@ PrepareBracket {
     '$ENUM' NameList |
     '$EENUM' NameList |
     '$EXTERN' NameList |
-    '$FORWARD' NameList |
     '$SWAP' NameList |
     '$ESWAP' NameList |
     '$LABEL' NameList |
@@ -128,7 +127,6 @@ PrepareBracket {
     '$ENUM' NameList |
     '$EENUM' NameList |
     '$EXTERN' NameList |
-    '$FORWARD' NameList |
     '$SWAP' NameList |
     '$ESWAP' NameList |
     '$LABEL' NameList |
@@ -146,7 +144,7 @@ $EXTERN EL-AddError, EL-AddErrorAt, EL-AddUnexpected;
 //FROM Lexer
 $EXTERN
   TkDirective,
-  Enum, EEnum, Extern, Forward, Entry, Swap, ESwap, Ident,
+  Enum, EEnum, Extern, Entry, Swap, ESwap, Ident,
   TkName, TkEOF, TkSemicolon;
 
 //FROM Generator
@@ -225,7 +223,6 @@ GenFunctionsFromDirective {
   EEnum   = GenEEnum   ST-AddDefined  GN-Entry;
   Enum    = GenEnum    ST-AddDefined  GN-Local;
   Extern  = DontGen    ST-AddDeclared GN-Entry;
-  Forward = DontGen    ST-AddDeclared GN-Local;
   ESwap   = GenESwap   ST-AddDefined  GN-Entry;
   Swap    = GenSwap    ST-AddDefined  GN-Local;
   // Для меток не важно: entry или local.
