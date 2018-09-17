@@ -20,19 +20,16 @@ extern refalrts::FnResult EL_Create(refalrts::Iter arg_begin, refalrts::Iter arg
 extern refalrts::FnResult EL_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult EL_HasErrors(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult EL_NoErrors(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ESwap(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Entry(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Enum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Extern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Fails(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult Forward(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GN_Entry(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GN_Local(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenCommonHeaders(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenCommonTailer(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenEEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenESwap(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenFnEnd(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -41,7 +38,6 @@ extern refalrts::FnResult GenFnStart(refalrts::Iter arg_begin, refalrts::Iter ar
 extern refalrts::FnResult GenForward(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenIdent(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenSwap(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Ident(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult LexFolding(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -62,7 +58,6 @@ extern refalrts::FnResult Seq(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Sort(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult Swap(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkCloseADT(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkCloseBlock(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -84,6 +79,7 @@ extern refalrts::FnResult TkReplace(refalrts::Iter arg_begin, refalrts::Iter arg
 extern refalrts::FnResult TkSemicolon(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult AddContextToSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult AddExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult CheckAddVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult CheckUseVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult CreateContext(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -2174,106 +2170,10 @@ static refalrts::FnResult GenFunctionsFromDirective(refalrts::Iter arg_begin, re
     if( ! refalrts::alloc_name( n0, DontGen, "DontGen" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDeclared, "ST_AddDeclared" ) )
+    if( ! refalrts::alloc_name( n1, AddExtern, "AddExtern" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_name( n2, GN_Entry, "GN_Entry" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    // & Forward
-    if( ! refalrts::function_left( Forward, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, DontGen, "DontGen" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDeclared, "ST_AddDeclared" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Local, "GN_Local" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    // & ESwap
-    if( ! refalrts::function_left( ESwap, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, GenESwap, "GenESwap" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDefined, "ST_AddDefined" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Entry, "GN_Entry" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    // & Swap
-    if( ! refalrts::function_left( Swap, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, GenSwap, "GenSwap" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDefined, "ST_AddDefined" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Local, "GN_Local" ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
@@ -2310,6 +2210,62 @@ static refalrts::FnResult GenFunctionsFromDirective(refalrts::Iter arg_begin, re
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult AddExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1_1;
+    static refalrts::Iter tSymTable_1_1;
+    static refalrts::Iter eName_1_b_1;
+    static refalrts::Iter eName_1_e_1;
+    static refalrts::Iter sScopeClass_1_1;
+    static refalrts::Iter sLnNum_1_1;
+    // t.ErrorList#1 t.SymTable#1 s.ScopeClass#1 s.LnNum#1 e.Name#1
+    if( ! refalrts::tvar_left( tErrorList_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sScopeClass_1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sLnNum_1_1, bb_0, be_0 ) )
+      break;
+    eName_1_b_1 = bb_0;
+    eName_1_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ST_AddDeclared, "ST_AddDeclared" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n2 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eName_1_b_1, eName_1_e_1 );
+    res = refalrts::splice_stvar( res, tSymTable_1_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    res = refalrts::splice_stvar( res, tErrorList_1_1 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
