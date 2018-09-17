@@ -222,7 +222,7 @@ DontGen {
 GenFunctionsFromDirective {
   EEnum   = GenEEnum   ST-AddDefined  GN-Entry;
   Enum    = GenEnum    ST-AddDefined  GN-Local;
-  Extern  = DontGen    ST-AddDeclared GN-Entry;
+  Extern  = DontGen    AddExtern      GN-Entry;
   ESwap   = GenESwap   ST-AddDefined  GN-Entry;
   Swap    = GenSwap    ST-AddDefined  GN-Local;
   // Для меток не важно: entry или local.
@@ -233,6 +233,11 @@ GenFunctionsFromDirective {
         t.ErrorList <ST-AddIdent t.SymTable e.Name>;
     }
     GN-Entry;
+}
+
+AddExtern {
+  t.ErrorList t.SymTable s.ScopeClass s.LnNum e.Name =
+    t.ErrorList <ST-AddDeclared t.SymTable e.Name>;
 }
 
 ParseElement-SwDirective {
