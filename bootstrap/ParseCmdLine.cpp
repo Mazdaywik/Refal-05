@@ -40,7 +40,7 @@ refalrts::FnResult ParseCommandLine(refalrts::Iter arg_begin, refalrts::Iter arg
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseCommandLine, "DoParseCommandLine" ) )
+    if( ! refalrts::alloc_name( n1, DoParseCommandLine, "DoParseCommandLine" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -181,13 +181,13 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseFileNames, "DoParseFileNames" ) )
+    if( ! refalrts::alloc_name( n1, DoParseFileNames, "DoParseFileNames" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, & CompileCommand, "CompileCommand" ) )
+    if( ! refalrts::alloc_name( n3, CompileCommand, "CompileCommand" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
     if( ! refalrts::alloc_close_bracket( n4 ) )
@@ -331,7 +331,7 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & CmdLineError, "CmdLineError" ) )
+    if( ! refalrts::alloc_name( n1, CmdLineError, "CmdLineError" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_char( n2, 'A' ) )
@@ -627,7 +627,7 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseCommandLine, "DoParseCommandLine" ) )
+    if( ! refalrts::alloc_name( n1, DoParseCommandLine, "DoParseCommandLine" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -762,7 +762,7 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & CmdLineError, "CmdLineError" ) )
+    if( ! refalrts::alloc_name( n1, CmdLineError, "CmdLineError" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_char( n2, 'A' ) )
@@ -1006,13 +1006,13 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
+    if( ! refalrts::alloc_name( n1, DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, & NoCompile, "NoCompile" ) )
+    if( ! refalrts::alloc_name( n3, NoCompile, "NoCompile" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
     if( ! refalrts::alloc_close_bracket( n4 ) )
@@ -1119,7 +1119,7 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseCommandLine, "DoParseCommandLine" ) )
+    if( ! refalrts::alloc_name( n1, DoParseCommandLine, "DoParseCommandLine" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -1213,7 +1213,7 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & NoCompile, "NoCompile" ) )
+    if( ! refalrts::alloc_name( n1, NoCompile, "NoCompile" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_close_bracket( n2 ) )
@@ -1349,7 +1349,7 @@ static refalrts::FnResult DoParseFileNames(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & CmdLineError, "CmdLineError" ) )
+    if( ! refalrts::alloc_name( n1, CmdLineError, "CmdLineError" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_char( n2, 'M' ) )
@@ -1662,7 +1662,7 @@ static refalrts::FnResult DoParseFileNames(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & CmdLineError, "CmdLineError" ) )
+    if( ! refalrts::alloc_name( n1, CmdLineError, "CmdLineError" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_char( n2, 'A' ) )
@@ -1962,7 +1962,7 @@ static refalrts::FnResult DoParseFileNames(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseFileNames, "DoParseFileNames" ) )
+    if( ! refalrts::alloc_name( n1, DoParseFileNames, "DoParseFileNames" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -2101,7 +2101,7 @@ static refalrts::FnResult DoParseFileNames(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & CmdLineError, "CmdLineError" ) )
+    if( ! refalrts::alloc_name( n1, CmdLineError, "CmdLineError" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_char( n2, 'A' ) )
@@ -2346,7 +2346,7 @@ static refalrts::FnResult DoParseFileNames(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
+    if( ! refalrts::alloc_name( n1, DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -2451,7 +2451,7 @@ static refalrts::FnResult DoParseFileNames(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseFileNames, "DoParseFileNames" ) )
+    if( ! refalrts::alloc_name( n1, DoParseFileNames, "DoParseFileNames" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -2629,7 +2629,7 @@ static refalrts::FnResult DoParseFileNamesOnly(refalrts::Iter arg_begin, refalrt
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, & DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
+    if( ! refalrts::alloc_name( n1, DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
