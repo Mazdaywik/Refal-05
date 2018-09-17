@@ -1076,11 +1076,7 @@ bool refalrts::alloc_number(
   }
 }
 
-#ifdef MODULE_REFAL
-const char *unknown() { return "@unknown"; }
-#else
 const char *unknown = "@unknown";
-#endif
 
 bool refalrts::alloc_name(
   refalrts::Iter& res,
@@ -1874,13 +1870,7 @@ void refalrts::profiler::stop_e_loop() {
 // Виртуальная машина
 //==============================================================================
 
-#ifdef MODULE_REFAL
-#define GO_START_FUNCTION Entry_Go
-#else
-#define GO_START_FUNCTION Go
-#endif
-
-extern refalrts::FnResult GO_START_FUNCTION(
+extern refalrts::FnResult Go(
   refalrts::Iter, refalrts::Iter
 );
 
@@ -1935,19 +1925,6 @@ bool refalrts::vm::empty_stack() {
   return (g_stack_ptr == 0);
 }
 
-#ifdef MODULE_REFAL
-//$LABEL Go
-template <typename T>
-struct GoL_ {
-  static const char *name() {
-    return "Go";
-  }
-};
-#define GO_NAME GoL_<int>::name
-#else
-#define GO_NAME "Go"
-#endif
-
 bool refalrts::vm::init_view_field() {
   refalrts::reset_allocator();
   refalrts::Iter res = g_begin_view_field;
@@ -1955,7 +1932,7 @@ bool refalrts::vm::init_view_field() {
   if( ! refalrts::alloc_open_call( n0 ) )
     return false;
   refalrts::Iter n1 = 0;
-  if( ! refalrts::alloc_name( n1, GO_START_FUNCTION, GO_NAME ) )
+  if( ! refalrts::alloc_name( n1, Go, "Go" ) )
     return false;
   refalrts::Iter n2 = 0;
   if( ! refalrts::alloc_close_call( n2 ) )
@@ -2139,15 +2116,11 @@ void refalrts::vm::print_seq(
             continue;
 
           case refalrts::cDataFunction:
-#ifdef MODULE_REFAL
-            fprintf( output, "&%s ", (begin->function_info.name)() );
-#else
             if( begin->function_info.name[0] != 0 ) {
               fprintf( output, "&%s ", begin->function_info.name );
             } else {
               fprintf( output, "&%p ", begin->function_info.ptr );
             }
-#endif
             refalrts::move_left( begin, end );
             continue;
 

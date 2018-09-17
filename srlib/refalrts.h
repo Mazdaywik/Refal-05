@@ -35,11 +35,7 @@ typedef FnResult (*RefalFunctionPtr) ( Iter begin, Iter end );
 
 typedef const char *(*RefalIdentifier) ();
 
-#ifdef MODULE_REFAL
-typedef RefalIdentifier RefalFuncName;
-#else
 typedef const char * RefalFuncName;
-#endif
 
 typedef struct RefalFunction {
   RefalFunctionPtr ptr;
