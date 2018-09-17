@@ -214,7 +214,7 @@ AddLineNumber {
     <Inc s.LineNumber>;
 
   s.LineNumber (s.TokType e.Info) =
-    s.LineNumber (s.TokType s.LineNumber e.Info);
+    s.LineNumber (s.TokType (s.LineNumber 1) e.Info);
 }
 
 NormalizeTokens {

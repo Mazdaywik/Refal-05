@@ -33,7 +33,7 @@ $ENTRY EL-AddErrorAt {
 }
 
 StrFromSrcPos {
-  s.LnNum = <StrFromInt s.LnNum>;
+  (s.Line s.Col) = <StrFromInt s.Line> ':' <StrFromInt s.Col>;
 }
 
 $ENTRY EL-AddUnexpected {
