@@ -1,18 +1,37 @@
-//FROM Library
-$EXTERN Success, Fails;
+//FROM LibraryEx
+$EXTERN Fetch, Seq, Map, SaveFile, Sort, Inc, Dec;
 
 //FROM Lexer
-$EXTERN LexFolding;
-
-//FROM LibraryEx
-$EXTERN Map, Fetch, Seq, SaveFile;
-
-
-//FROM SymTable
-$EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy;
+$EXTERN LexFolding, TkOpenBracket, TkCloseBracket, TkOpenADT, TkCloseADT,
+  TkOpenCall, TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon,
+  EEnum, Enum, Extern, Ident, Entry, TkComma, TkOpenBlock, TkCloseBlock,
+  TkVariable, TkReplace, TkChar, TkNumber, TkIdentMarker, TkRedefinition;
 
 //FROM Error
-$EXTERN EL-Create, EL-Destroy, EL-HasErrors, EL-NoErrors;
+$EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
+  EL-AddErrorAt;
+
+//FROM SymTable
+$EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
+  ST-AllIdents, ST-AddDefined, ST-AddIdent, ST-AddDeclared, ST-AddFunctionCall,
+  ST-GetAnyName;
+
+//FROM Library
+$EXTERN Success, Fails, StrFromInt;
+
+//FROM Generator
+$EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward, GenIdent,
+  GenCommonTailer, GenEEnum, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
+  GenFnEnd;
+
+//FROM Context
+$EXTERN Cntx-Create, Cntx-Destroy, Cntx-PushScope, Cntx-PopScope,
+  Cntx-ResetAfterSentence, Cntx-AddNewVariable, Cntx-AddVariable,
+  Cntx-CheckVariable;
+
+//FROM Algorithm
+$EXTERN MakeAlgorithm, TkIdentifier;
+
 
 /**
   <CompileFile (e.SrcName) e.OutputName>
@@ -54,10 +73,6 @@ $ENTRY CompileFile {
       >
     >;
 }
-
-//FROM Lexer
-$EXTERN TkOpenBracket, TkCloseBracket, TkOpenADT, TkCloseADT,
-  TkOpenCall, TkCloseCall;
 
 $LABEL COpen, CClose;
 
@@ -130,26 +145,6 @@ PrepareBracket {
     Function .
 */
 
-//FROM SymTable
-$EXTERN ST-AllFunctions, ST-AllIdents,
-  ST-AddDeclared, ST-AddDefined, ST-AddIdent;
-
-//FROM Error
-$EXTERN EL-AddError, EL-AddErrorAt, EL-AddUnexpected;
-
-//FROM Lexer
-$EXTERN
-  TkDirective,
-  Enum, EEnum, Extern, Entry, Ident,
-  TkName, TkEOF, TkSemicolon;
-
-//FROM Generator
-$EXTERN GN-Entry, GN-Local, GenCommonHeaders, GenCommonTailer,
-  GenExtern, GenForward;
-
-//FROM LibraryEx
-$EXTERN Sort;
-
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
     t.ErrorList t.SymTable
@@ -208,9 +203,6 @@ ParseElements {
     >;
 }
 
-//FROM Generator
-$EXTERN GenEEnum, GenEnum, GenExtern, GenForward, GenIdent;
-
 DontGen {
   e.Name = /* пусто */;
 }
@@ -260,9 +252,6 @@ ParseElement-SwDirective {
   NameList = Name ',' NameList | Name ';' .
 */
 
-//FROM Lexer
-$EXTERN TkComma, TkSemicolon;
-
 ParseNameList {
   (e.Generated)
   t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass
@@ -308,30 +297,12 @@ ParseNameList-Tail {
   Function = Name '{' Sentence* '}'
 */
 
-//FROM Lexer
-$EXTERN TkOpenBlock, TkCloseBlock;
-
-//FROM Generator
-$EXTERN GenFnStart, GenSentence, GenFnEnd, GenFnEnd-Success;
-
-//FROM Context
-$EXTERN Cntx-Create, Cntx-Destroy;
-
-//FROM Library
-$EXTERN StrFromInt;
-
 CreateLambdaName {
   e.Name s.Number =
     'lambda_' e.Name '_' <StrFromInt s.Number>;
 }
 
 $LABEL CLambdaScope;
-
-//FROM Algorithm
-$EXTERN MakeAlgorithm;
-
-//FROM Lexer
-$EXTERN TkName;
 
 $LABEL CLambdaName;
 
@@ -434,12 +405,6 @@ GenFunctionBody {
     <GenFnEnd>;
 }
 
-//FROM Lexer
-$EXTERN TkVariable;
-
-//FROM Context
-$EXTERN Cntx-PushScope, Cntx-PopScope;
-
 /*
   <ParseBlock
     (e.FunctionBodies) t.ErrorList t.SymTable t.Context e.Tokens
@@ -461,9 +426,6 @@ ParseBlock {
       (/* sentences */) e.Tokens
     >;
 }
-
-//FROM LibraryEx
-$EXTERN Inc, Dec;
 
 DoParseBlock {
   (s.Number e.Functions)
@@ -536,15 +498,6 @@ CreateContext {
     >;
 }
 
-//FROM LibraryEx
-$EXTERN Seq;
-
-//FROM Lexer
-$EXTERN TkReplace;
-
-//FROM Context
-$EXTERN Cntx-ResetAfterSentence;
-
 ParseSentence {
   (e.Functions) t.ErrorList t.SymTable t.Context
   (e.Sentences) e.Tokens =
@@ -608,21 +561,6 @@ ParseSentence {
       >
     >;
 }
-
-
-//FROM Lexer
-$EXTERN TkChar, TkNumber, TkVariable, TkIdentMarker,
-  TkOpenBracket, TkCloseBracket, TkOpenADT, TkCloseADT,
-  TkRedefinition, TkOpenCall, TkCloseCall;
-
-//FROM Algorithm
-$EXTERN TkIdentifier;
-
-//FROM SymTable
-$EXTERN ST-AddFunctionCall, ST-GetAnyName;
-
-//FROM Context
-$EXTERN Cntx-AddNewVariable, Cntx-AddVariable;
 
 $LABEL CSuccess, CInvalidMode, CAlreadyBounded;
 
@@ -881,9 +819,6 @@ StrFromBracket {
   #ADT-Brackets = '[';
   #CallBrackets = '<';
 }
-
-//FROM Context
-$EXTERN Cntx-CheckVariable;
 
 /*
   <ParseResult

@@ -1,9 +1,13 @@
+//FROM LibraryEx
+$EXTERN Map;
+
+//FROM Library
+$EXTERN ExistFile, True, False;
+
+
 $EENUM Source, Output, NotFound;
 
 $ENUM Current;
-
-//FROM LibraryEx
-$EXTERN Map;
 
 /**
   <FindFiles (e.Folders) e.Files>
@@ -45,11 +49,6 @@ AnalyzeFile-CheckNotFound {
 
   (e.FileName) = (NotFound e.FileName);
 }
-
-//------------------------------------------------------------------------------
-
-//FROM Library
-$EXTERN ExistFile, True, False;
 
 ExistFile-T {
   e.FileName = <ExistFile e.FileName> e.FileName;

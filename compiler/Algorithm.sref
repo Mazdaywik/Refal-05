@@ -1,3 +1,16 @@
+//FROM LibraryEx
+$EXTERN Fetch, Inc, Map, Seq, Dec;
+
+//FROM Lexer
+$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseADT;
+
+//FROM Library
+$EXTERN StrFromInt;
+
+//FROM Escape
+$EXTERN EscapeChar;
+
+
 $ENTRY MakeAlgorithm {
   (e.Pattern) (e.Result) =
     <GeneralizeResult
@@ -13,14 +26,6 @@ $ENTRY MakeAlgorithm {
 //==============================================================================
 // Генерация образца
 //==============================================================================
-
-//FROM Lexer
-$EXTERN
-  TkOpenBracket, TkCloseBracket, TkOpenADT, TkCloseADT,
-  TkName, TkNumber, TkVariable, TkChar;
-
-//FROM LibraryEx
-$EXTERN Inc;
 
 // Направление распознавания
 $EENUM AlgLeft, AlgRight;
@@ -64,9 +69,6 @@ $EENUM
 
 $ENUM CmdOpenedE;
 
-//FROM LibraryEx
-$EXTERN Fetch;
-
 GenPattern {
   e.Pattern =
     <Fetch
@@ -82,9 +84,6 @@ GenPattern {
       }
     >;
 }
-
-//FROM LibraryEx
-$EXTERN MapReduce;
 
 $LABEL Brackets, ADT-Brackets, CallBrackets;
 
@@ -269,9 +268,6 @@ SaveBrackets {
   s.LastBracket e.Commands = <DoSaveBrackets s.LastBracket () e.Commands>;
 }
 
-//FROM LibraryEx
-$EXTERN Map;
-
 DoSaveBrackets {
   s.LastBracket (e.Scanned)
   e.Commands-B (CmdOpenedE AlgLeft s.Num 'e' e.Index) e.Commands-E =
@@ -349,9 +345,6 @@ Brackets-Set {
   e.Unique = e.Unique;
 }
 
-//FROM Library
-$EXTERN StrFromInt;
-
 TextFromPattern {
   (#Brackets e.Inner) e.Tail =
     ' (' <TextFromPattern e.Inner> ' )' <TextFromPattern e.Tail>;
@@ -377,16 +370,9 @@ TextFromPattern {
   = ;
 }
 
-//FROM Escape
-$EXTERN EscapeChar;
-
-Escape {
-  s.Char = <EscapeChar s.Char>;
-}
-
 TextFromPattern-Char {
   (TkChar s.Char) e.Tail =
-    <Escape s.Char> <TextFromPattern-Char e.Tail>;
+    <EscapeChar s.Char> <TextFromPattern-Char e.Tail>;
 
   = '';
 
@@ -576,9 +562,6 @@ DoGenResult {
 // копирование повторных.
 //==============================================================================
 
-//FROM LibraryEx
-$EXTERN Map, Seq;
-
 $EENUM CmdEmptyResult, CmdReturnResult;
 
 GeneralizeResult {
@@ -617,9 +600,6 @@ GeneralizeResult {
       >
     >;
 }
-
-//FROM LibraryEx
-$EXTERN Dec;
 
 ReplicateVar {
   (1 s.Mode e.Index) = (1 s.Mode e.Index);

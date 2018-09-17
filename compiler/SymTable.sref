@@ -1,3 +1,13 @@
+//FROM LibraryEx
+$EXTERN Map, Reduce;
+
+//FROM Error
+$EXTERN EL-AddErrorAt;
+
+//FROM Generator
+$EXTERN GN-Entry;
+
+
 $ENUM SymTable;
 
 $ENTRY ST-Create {
@@ -19,15 +29,6 @@ $ENTRY ST-Destroy {
 */
 
 $ENUM Declared, Defined, Identifier;
-
-//FROM Generator
-$EXTERN GN-Entry, GN-Local;
-
-//FROM Error
-$EXTERN EL-AddErrorAt;
-
-//FROM LibraryEx
-$EXTERN Map, Reduce;
 
 PatchReferences {
   (e.References) e.Name =

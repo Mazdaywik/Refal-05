@@ -1,3 +1,7 @@
+//FROM LibraryEx
+$EXTERN Fetch, Inc, Dec;
+
+
 /**
   В данном модуле описывается контекст -- обобщение понятия таблицы
   переменных. Контекст позволяет отслеживать как правильность использования
@@ -128,9 +132,6 @@ ShiftVariable-AddToFree {
     e.Variables (s.Mode e.Index s.VarDepth);
 }
 
-//FROM LibraryEx
-$EXTERN Fetch;
-
 $LABEL CAlreadyBounded;
 
 /**
@@ -242,9 +243,6 @@ Unique {
 
   e.Uniques = e.Uniques;
 }
-
-//FROM LibraryEx
-$EXTERN Inc, Dec;
 
 /**
   <Cntx-PushScope t.Context> == t.Context

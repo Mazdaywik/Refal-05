@@ -1,3 +1,7 @@
+//FROM Library
+$EXTERN FReadLine, FOpen, FClose, FWriteLine, Add, Sub, Success, IntFromStr,
+  Arg, SymbCompare, SymbType;
+
 
 // Расширения библиотеки и функции, реализуемые
 // средствами самого Простого Рефала
@@ -64,9 +68,6 @@ $ENTRY DelAccumulator {
   t.Acc e.Tail = e.Tail;
 }
 
-//FROM Library
-$EXTERN FOpen, FClose, FReadLine, FWriteLine;
-
 $ENTRY LoadFile {
   e.FileName =
     <DoLoadFile
@@ -101,9 +102,6 @@ WriteBracketLine {
   t.File (e.Line) = <FWriteLine t.File e.Line>;
 }
 
-//FROM Library
-$EXTERN Add, Sub;
-
 $ENTRY Inc {
   s.Num = <Add s.Num 1>;
 }
@@ -113,7 +111,7 @@ $ENTRY Dec {
 }
 
 //FROM Library
-$EXTERN IntFromStr, Success, Fails;
+//$EXTERN Fails;
 
 FastIntFromStr-Guard {
   Success s.Number = s.Number;
@@ -125,9 +123,6 @@ $ENTRY FastIntFromStr {
       <IntFromStr e.Digits>
     >;
 }
-
-//FROM Library
-$EXTERN Arg;
 
 $ENTRY ArgList {
   = <DoArgList 0>;
@@ -142,9 +137,6 @@ SwDoArgList {
 
   s.Next e.Arg = (e.Arg) <DoArgList s.Next>;
 }
-
-//FROM Library
-$EXTERN SymbCompare;
 
 $ENTRY Compare {
   (e.Left) (e.Right) = <Lexicon (e.Left) (e.Right)>;
@@ -220,9 +212,6 @@ Lexicon-T-Aux {
     '>' (e.ScannedLeft t.NextLeft e.Left)
     (e.ScannedRight t.NextRight e.Right);
 }
-
-//FROM Library
-$EXTERN SymbType;
 
 $EENUM TypeBracket;
 

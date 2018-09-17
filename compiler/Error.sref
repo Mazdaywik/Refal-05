@@ -1,3 +1,13 @@
+//FROM Library
+$EXTERN StrFromInt, WriteLine;
+
+//FROM Lexer
+$EXTERN TkError, TkUnexpected, StrFromToken;
+
+//FROM LibraryEx
+$EXTERN Map;
+
+
 $ENUM ErrorList;
 
 $ENTRY EL-Create {
@@ -13,9 +23,6 @@ $ENTRY EL-AddError {
     ];
 }
 
-//FROM Library
-$EXTERN StrFromInt;
-
 $ENTRY EL-AddErrorAt {
   [ErrorList (e.FileName) e.Errors] t.SrcPos e.Message =
     [ErrorList
@@ -28,9 +35,6 @@ $ENTRY EL-AddErrorAt {
 StrFromSrcPos {
   s.LnNum = <StrFromInt s.LnNum>;
 }
-
-//FROM Lexer
-$EXTERN StrFromToken, TkError, TkUnexpected ;
 
 $ENTRY EL-AddUnexpected {
   t.ErrorList (TkError t.SrcPos e.Message) e.Expected =
@@ -51,12 +55,6 @@ $ENTRY EL-AddUnexpected {
       ', expected ' e.Expected
     >;
 }
-
-//FROM LibraryEx
-$EXTERN Map;
-
-//FROM Library
-$EXTERN WriteLine;
 
 $EENUM EL-NoErrors, EL-HasErrors;
 

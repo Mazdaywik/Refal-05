@@ -1,24 +1,23 @@
+//FROM LibraryEx
+$EXTERN ArgList, LoadFile, Fetch, Map, Seq, SaveFile, DelAccumulator, MapReduce,
+  Inc;
+
+//FROM ParseCmdLine
+$EXTERN ParseCommandLine, CmdLineError, CompileToTarget, CompileList;
+
+//FROM Library
+$EXTERN WriteLine, Success, Fails, System, Exit, StrFromInt;
+
+//FROM FindFile
+$EXTERN FindFiles, NotFound, Output, Source;
+
 //FROM Parser
 $EXTERN CompileFile;
 
-//FROM LibraryEx
-$EXTERN Map, ArgList;
-
-//FROM Library
-$EXTERN Success, Fails, WriteLine, System, Exit;
-
-//------------------------------------------------------------------------------
 
 $ENTRY Go {
   = <Main <ArgList>>;
 }
-
-//FROM ParseCmdLine
-$EXTERN ParseCommandLine, NoCompile, CompileCommand, CmdLineError,
-  CompileList, CompileToTarget;
-
-//FROM LibraryEx
-$EXTERN LoadFile, SaveFile;
 
 Main {
   (e.ProgName) ('@' e.Config) =
@@ -29,15 +28,6 @@ Main {
       <ParseCommandLine e.Arguments>
     >;
 }
-
-//FROM LibraryEx
-$EXTERN Fetch, Seq;
-
-//FROM FindFile
-$EXTERN FindFiles;
-
-//FROM FindFile
-$EXTERN Source, Output, NotFound;
 
 $LABEL CCompileCommand, CNone, CErrorFile;
 
@@ -239,9 +229,6 @@ ScanCollisions {
   e.Files = <Map RestoreName e.Files>;
 }
 
-//FROM LibraryEx
-$EXTERN Inc, DelAccumulator, MapReduce;
-
 Renumerate {
   (e.FileName) e.Files =
     <DelAccumulator
@@ -258,9 +245,6 @@ Renumerate {
       >
     >;
 }
-
-//FROM Library
-$EXTERN StrFromInt;
 
 RestoreName {
   (e.FileName s.Num (Output e.OutputName)) =

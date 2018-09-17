@@ -1,9 +1,10 @@
 //FROM LibraryEx
-$EXTERN LoadFile, MapReduce, FastIntFromStr, DelAccumulator, Inc, Map,
-  Fetch, Reduce;
+$EXTERN Fetch, Map, LoadFile, FastIntFromStr, Reduce, Inc, DelAccumulator,
+  MapReduce;
 
 //FROM Library
-$EXTERN Chr, StrFromInt, Mul, Add;
+$EXTERN StrFromInt, Chr, Add, Mul;
+
 
 LinearizeLine {
   (e.Line) = e.Line '\n';

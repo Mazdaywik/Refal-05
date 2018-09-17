@@ -1,15 +1,15 @@
-//FROM Library
-$EXTERN Div, Mod, Ord, Compare;
-
 //FROM LibraryEx
 $EXTERN Fetch;
+
+//FROM Library
+$EXTERN Compare, Ord, Div, Mod;
+
 
 OctDigit {
   0 = '0'; 1 = '1'; 2 = '2'; 3 = '3';
   4 = '4'; 5 = '5'; 6 = '6'; 7 = '7';
 }
 
-//EscapeChar
 $ENTRY EscapeChar {
   '\n' = '\\n';
   '\t' = '\\t';

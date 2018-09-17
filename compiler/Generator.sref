@@ -1,3 +1,22 @@
+//FROM LibraryEx
+$EXTERN Fetch, MapReduce, Dec;
+
+//FROM Library
+$EXTERN StrFromInt;
+
+//FROM Algorithm
+$EXTERN CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
+  CmdIdent, CmdBrackets, CmdADT, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
+  AlgLeft, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
+  CmdCopyEVar, CmdCopyVar, CmdAllocateElem, CmdLinkBrackets, CmdPushStack,
+  CmdInsertElem, CmdInsertVar, CmdReturnResult, AlgRight, ElChar, ElName,
+  ElNumber, ElIdent, ElOpenADT, ElCloseADT, ElOpenBracket, ElCloseBracket,
+  ElOpenCall, ElCloseCall;
+
+//FROM Escape
+$EXTERN EscapeChar;
+
+
 $EENUM GN-Local, GN-Entry;
 
 FuncArguments {
@@ -78,30 +97,6 @@ $ENTRY GenCommonTailer {
   = () ('//End of file');
 }
 
-// Команды и их подтипы
-//FROM Algorithm
-$EXTERN CmdChar, CmdNumber, CmdName, CmdIdent,
-  CmdBrackets, CmdADT, CmdEmpty,
-  CmdRepeated, CmdVar, CmdClosedE,
-  CmdOpenedE-Start, CmdOpenedE-End,
-  CmdAllocateElem, CmdLinkBrackets, CmdPushStack,
-  CmdInsertElem, CmdInsertVar,
-  ElChar, ElName, ElNumber, ElIdent,
-  ElOpenADT, ElCloseADT,
-  ElOpenBracket, ElCloseBracket,
-  ElOpenCall, ElCloseCall,
-  CmdEmptyResult, CmdReturnResult,
-  CmdDeclareEVar, CmdDeclareVar,
-  CmdCopyEVar, CmdCopyVar,
-  AlgLeft, AlgRight,
-  CmdComment, CmdSave;
-
-//FROM LibraryEx
-$EXTERN Map, MapReduce, Fetch;
-
-//FROM Library
-$EXTERN StrFromInt, WriteLine;
-
 $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
@@ -140,9 +135,6 @@ BracketsVars {
   Величина отступа также определяет режим работы. Отступ в 4 пробела --
   вне цикла по открытой e-переменной, отступ больше -- внутри оного цикла.
 */
-
-//FROM LibraryEx
-$EXTERN Dec;
 
 $LABEL CCreateClosure;
 
@@ -329,9 +321,6 @@ PrintEVars {
     <PrintEVar-B s.Usings s.Mode e.Index> ', '
     <PrintEVar-E s.Usings s.Mode e.Index>;
 }
-
-//FROM Escape
-$EXTERN EscapeChar;
 
 Escape {
   s.Char = <EscapeChar s.Char>;
