@@ -69,36 +69,6 @@ typedef struct Node {
   };
 } Node;
 
-typedef enum iCmd {
-  icChar,
-  icInt,
-  icFunc,
-  icIdent,
-  icString,
-  icBracket,
-  icSpliceSTVar,
-  icSpliceEVar,
-  icCopySTVar,
-  icCopyEVar,
-  icEnd
-} iCmd;
-
-typedef enum BracketType {
-  ibOpenADT,
-  ibOpenBracket,
-  ibOpenCall,
-  ibCloseADT,
-  ibCloseBracket,
-  ibCloseCall
-} BracketType;
-
-typedef struct ResultAction {
-    iCmd cmd;
-    void *ptr_value1;
-    void *ptr_value2;
-    int value;
-} ResultAction;
-
 extern void use( Iter& );
 
 // Операции распознавания образца
@@ -273,15 +243,6 @@ inline void set_return_code( RefalNumber retcode ) {
   (пусть даже и стандартные).
 */
 void debug_print_expr(void *file, Iter first, Iter last);
-
-// Интерпретатор
-
-extern FnResult interpret_array(
-  const ResultAction raa[],
-  Iter allocs[],
-  Iter begin,
-  Iter end
-);
 
 } //namespace refalrts
 

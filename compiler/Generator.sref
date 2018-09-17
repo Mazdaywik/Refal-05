@@ -133,15 +133,10 @@ $EXTERN CmdChar, CmdNumber, CmdName, CmdIdent,
   ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall,
   CmdEmptyResult, CmdReturnResult,
-  CmdIfDef, CmdElse, CmdEndIf,
-  CmdInitRAA, CmdFinRAA,
   CmdDeclareEVar, CmdDeclareVar,
   CmdCopyEVar, CmdCopyVar,
   AlgLeft, AlgRight,
-  CmdComment, CmdSave,
-  CmdArrChar, CmdArrInt, CmdArrFunc, CmdArrIdent,
-  CmdArrOB, CmdArrCB, CmdArrOADT, CmdArrCADT,
-  CmdArrOC, CmdArrCC, CmdArrSplice, CmdArrCopy;
+  CmdComment, CmdSave;
 
 $FORWARD GenCommand, BracketsVar-B, BracketsVar-E, BracketsVars;
 
@@ -367,104 +362,6 @@ GenCommand {
     (e.Indent 'refalrts::use( res );')
     (e.Indent 'refalrts::splice_to_freelist( arg_begin, arg_end );')
     (e.Indent 'return refalrts::cSuccess;');
-
-  (e.Indent) (CmdIfDef) =
-    (e.Indent) ('#ifdef INTERPRET');
-
-  (e.Indent) (CmdElse) =
-    (e.Indent) ('#else');
-
-  (e.Indent) (CmdEndIf) =
-    (e.Indent) ('#endif');
-
-  (e.Indent) (CmdInitRAA) =
-    (e.Indent '  ')
-    (e.Indent 'const static refalrts::ResultAction raa[] = {');
-
-  (e.Indent '  ') (CmdFinRAA) =
-    (e.Indent)
-    (e.Indent '  {refalrts::icEnd}')
-    (e.Indent '};')
-    (e.Indent
-      'refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];'
-    )
-    (e.Indent
-      'refalrts::FnResult res = '
-      'refalrts::interpret_array( raa, allocs, arg_begin, arg_end );'
-    )
-    (e.Indent 'return res;');
-
-  (e.Indent) (CmdArrChar s.Value) =
-    (e.Indent)
-    (e.Indent '{refalrts::icChar, 0, 0, \'' <Escape s.Value> '\'},');
-
-  (e.Indent) (CmdArrFunc e.Name) =
-    (e.Indent)
-    (e.Indent
-      '{refalrts::icFunc, '
-      '(void*) & ' <PrintName e.Name> ', '
-      '(void*) "' <PrintName e.Name> '"},'
-    );
-
-  (e.Indent) (CmdArrInt s.Number) =
-    (e.Indent)
-    (e.Indent '{refalrts::icInt, 0, 0, ' s.Number '},');
-
-  (e.Indent) (CmdArrIdent e.Name) =
-    (e.Indent)
-    (e.Indent '{refalrts::icIdent, (void*) & ' e.Name '<int>::name},');
-
-  (e.Indent) (CmdArrOB) =
-    (e.Indent)
-    (e.Indent '{refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},');
-
-  (e.Indent) (CmdArrCB) =
-    (e.Indent)
-    (e.Indent '{refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},');
-
-  (e.Indent) (CmdArrOADT) =
-    (e.Indent)
-    (e.Indent '{refalrts::icBracket, 0, 0, refalrts::ibOpenADT},');
-
-  (e.Indent) (CmdArrCADT) =
-    (e.Indent)
-    (e.Indent '{refalrts::icBracket, 0, 0, refalrts::ibCloseADT},');
-
-  (e.Indent) (CmdArrOC) =
-    (e.Indent)
-    (e.Indent '{refalrts::icBracket, 0, 0, refalrts::ibOpenCall},');
-
-  (e.Indent) (CmdArrCC) =
-    (e.Indent)
-    (e.Indent '{refalrts::icBracket, 0, 0, refalrts::ibCloseCall},');
-
-  (e.Indent) (CmdArrCopy 'e' e.Index) =
-    (e.Indent)
-    (e.Indent
-      '{refalrts::icCopyEVar, '
-      '& ' <PrintEVar-B 1 'e' e.Index> ', '
-      '& ' <PrintEVar-E 1 'e' e.Index> '},'
-    );
-
-  (e.Indent) (CmdArrCopy s.Mode e.Index) =
-    (e.Indent)
-    (e.Indent
-      '{refalrts::icCopySTVar, & ' <PrintVar 1 s.Mode e.Index> '},'
-    );
-
-  (e.Indent) (CmdArrSplice s.Usings 'e' e.Index) =
-    (e.Indent)
-    (e.Indent
-      '{refalrts::icSpliceEVar, '
-      '& ' <PrintEVar-B s.Usings 'e' e.Index> ', '
-      '& ' <PrintEVar-E s.Usings 'e' e.Index> '},'
-    );
-
-  (e.Indent) (CmdArrSplice s.Usings s.Mode e.Index) =
-    (e.Indent)
-    (e.Indent
-      '{refalrts::icSpliceSTVar, & ' <PrintVar s.Usings s.Mode e.Index> '},'
-    );
 }
 
 PrintVar {

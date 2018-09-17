@@ -592,13 +592,12 @@ DoGenResult {
 
 $FORWARD ReplicateVars, VarSetUnion, VarSetDifference,
   ClosedEVariables, RepeatedEVariables, FilterUnusedCmdClosedE, MakeDeclaration,
-  GenerateResult-OpenELoops, MakeCopyVar, FoldAllocCommands, MakeInterpCommands;
+  GenerateResult-OpenELoops, MakeCopyVar;
 
 //FROM LibraryEx
 $EXTERN Map, Seq;
 
-$EENUM CmdEmptyResult, CmdReturnResult, CmdIfDef, CmdElse, CmdEndIf,
-  CmdInitRAA, CmdFinRAA;
+$EENUM CmdEmptyResult, CmdReturnResult;
 
 GeneralizeResult {
   (e.PatternVars) (e.PatternCommands)
@@ -626,23 +625,11 @@ GeneralizeResult {
             <GenerateResult-OpenELoops
               <Map MakeDeclaration e.CommonVars>
               e.PatternCommands
-              (CmdIfDef)
-              (CmdInitRAA)
-              <Map
-                (MakeInterpCommands e.CopiedVars)
-                <FoldAllocCommands
-                  (e.ResultAllocCommands)
-                  e.ResultCommands
-                >
-              >
-              (CmdFinRAA)
-              (CmdElse)
               (CmdEmptyResult)
               <Map MakeCopyVar e.CopiedVars>
               e.ResultAllocCommands
               e.ResultCommands
               (CmdReturnResult)
-              (CmdEndIf)
             >;
         }
       >
@@ -715,75 +702,6 @@ MakeCopyVar {
 
   ( s.Usings s.Mode e.Index ) =
     (CmdCopyVar s.Usings s.Mode e.Index);
-}
-
-$EENUM CmdArrChar, CmdArrFunc, CmdArrInt, CmdArrIdent, CmdArrOB, CmdArrCB,
-  CmdArrOADT, CmdArrCADT, CmdArrOC, CmdArrCC, CmdArrSplice, CmdArrCopy;
-
-FoldAllocCommands {
-  (e.Allocs-B (CmdAllocateElem s.ElemNo s.Type e.Value) e.Allocs-E)
-  (CmdInsertElem s.ElemNo) e.Commands =
-    <FoldAllocCommands (e.Allocs-B e.Allocs-E) e.Commands>
-    (CmdInsertElem s.Type s.ElemNo e.Value);
-
-  (e.Allocs)
-  (CmdInsertVar s.Usings s.Mode e.Index) e.Commands =
-    <FoldAllocCommands (e.Allocs) e.Commands>
-    (CmdInsertVar s.Usings s.Mode e.Index);
-
-  (e.Allocs)
-  (CmdInsertVar s.Usings s.Mode e.Index) e.Commands =
-    <FoldAllocCommands (e.Allocs) e.Commands>
-    (CmdInsertVar s.Usings s.Mode e.Index);
-
-  (e.Allocs)
-  (CmdLinkBrackets e.CmdInfo) e.Commands =
-    <FoldAllocCommands (e.Allocs) e.Commands>;
-
-  (e.Allocs)
-  (CmdPushStack e.CmdInfo) e.Commands =
-    <FoldAllocCommands (e.Allocs) e.Commands>;
-
-  (/* должно быть пусто */) /* пусто */ = /* пусто */;
-}
-
-MakeInterpCommands {
-  e.CopiedVars-B (s.Usings s.Mode e.Index) e.CopiedVars-E
-  (CmdInsertVar s.Usings s.Mode e.Index) =
-    (CmdArrCopy s.Mode e.Index);
-
-  e.CopiedVars (CmdInsertVar s.Usings s.Mode e.Index) =
-    (CmdArrSplice s.Usings s.Mode e.Index);
-
-  e.CopiedVars (CmdInsertElem ElChar s.Counter s.Value) =
-    (CmdArrChar s.Value);
-
-  e.CopiedVars (CmdInsertElem ElName s.Counter e.Name) =
-    (CmdArrFunc e.Name);
-
-  e.CopiedVars (CmdInsertElem ElNumber s.Counter s.Number) =
-    (CmdArrInt s.Number);
-
-  e.CopiedVars (CmdInsertElem ElIdent s.Counter e.Name) =
-    (CmdArrIdent e.Name);
-
-  e.CopiedVars (CmdInsertElem ElOpenBracket s.Counter) =
-    (CmdArrOB);
-
-  e.CopiedVars (CmdInsertElem ElOpenADT s.Counter) =
-    (CmdArrOADT);
-
-  e.CopiedVars (CmdInsertElem ElOpenCall s.Counter) =
-    (CmdArrOC);
-
-  e.CopiedVars (CmdInsertElem ElCloseBracket s.Counter) =
-    (CmdArrCB);
-
-  e.CopiedVars (CmdInsertElem ElCloseADT s.Counter) =
-    (CmdArrCADT);
-
-  e.CopiedVars (CmdInsertElem ElCloseCall s.Counter) =
-    (CmdArrCC);
 }
 
 GenerateResult-OpenELoops {
