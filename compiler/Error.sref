@@ -17,32 +17,36 @@ $ENTRY EL-AddError {
 $EXTERN StrFromInt;
 
 $ENTRY EL-AddErrorAt {
-  [ErrorList (e.FileName) e.Errors] s.LineNumber e.Message =
+  [ErrorList (e.FileName) e.Errors] t.SrcPos e.Message =
     [ErrorList
       (e.FileName)
       e.Errors
-      (e.FileName ':' <StrFromInt s.LineNumber> ':ERROR: ' e.Message)
+      (e.FileName ':' <StrFromSrcPos t.SrcPos> ':ERROR: ' e.Message)
     ];
+}
+
+StrFromSrcPos {
+  s.LnNum = <StrFromInt s.LnNum>;
 }
 
 //FROM Lexer
 $EXTERN StrFromToken, TkError, TkUnexpected ;
 
 $ENTRY EL-AddUnexpected {
-  t.ErrorList (TkError s.LineNumber e.Message) e.Expected =
+  t.ErrorList (TkError t.SrcPos e.Message) e.Expected =
     <EL-AddErrorAt
-      t.ErrorList s.LineNumber e.Message
+      t.ErrorList t.SrcPos e.Message
     >;
 
-  t.ErrorList (TkUnexpected s.LineNumber e.Unexpected) e.Expected =
+  t.ErrorList (TkUnexpected t.SrcPos e.Unexpected) e.Expected =
     <EL-AddErrorAt
-      t.ErrorList s.LineNumber
+      t.ErrorList t.SrcPos
       'Unknown characters "' e.Unexpected '"'
     >;
 
-  t.ErrorList (s.Unexpected s.LineNumber e.Info) e.Expected =
+  t.ErrorList (s.Unexpected t.SrcPos e.Info) e.Expected =
     <EL-AddErrorAt
-      t.ErrorList s.LineNumber
+      t.ErrorList t.SrcPos
       'Unexpected ' <StrFromToken s.Unexpected e.Info>
       ', expected ' e.Expected
     >;

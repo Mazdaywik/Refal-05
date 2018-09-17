@@ -15,7 +15,7 @@ $ENTRY ST-Destroy {
       (Declared e.Name)
     | (Defined s.ScopeClass e.Name)
     | (Identifier Identifier e.Name)
-  t.Reference ::= (s.LnNum e.Name)
+  t.Reference ::= (t.SrcPos e.Name)
 */
 
 $ENUM Declared, Defined, Identifier;
@@ -34,9 +34,9 @@ PatchReferences {
     (
       <Map
         {
-          (s.LnNum e.Name) = /* пусто */;
+          (t.SrcPos e.Name) = /* пусто */;
 
-          (s.LnNum e.Name^) = (s.LnNum e.Name);
+          (t.SrcPos e.Name^) = (t.SrcPos e.Name);
         }
         e.References
       >
@@ -45,7 +45,7 @@ PatchReferences {
 
 /**
   <ST-AddDe****
-    t.ErrorList t.SymTable s.ScopeClass s.LnNum e.Name
+    t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name
   >
     == t.ErrorList t.SymTable
 */
@@ -55,15 +55,15 @@ $ENTRY ST-AddDefined {
   [SymTable
     e.Names-B (Defined s.AnyScopeClass e.Name) e.Names-E (e.References)
   ]
-  s.ScopeClass s.LnNum e.Name =
-    <EL-AddErrorAt t.ErrorList s.LnNum 'Function ' e.Name ' already defined'>
+  s.ScopeClass t.SrcPos e.Name =
+    <EL-AddErrorAt t.ErrorList t.SrcPos 'Function ' e.Name ' already defined'>
     [SymTable
       e.Names-B (Defined s.AnyScopeClass e.Name) e.Names-E (e.References)
     ];
 
   t.ErrorList
   [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)]
-  s.ScopeClass s.LnNum e.Name =
+  s.ScopeClass t.SrcPos e.Name =
     t.ErrorList
     [SymTable
       e.Names-B (Defined s.ScopeClass e.Name) e.Names-E
@@ -71,7 +71,7 @@ $ENTRY ST-AddDefined {
     ];
 
   t.ErrorList
-  [SymTable e.Names (e.References)] s.ScopeClass s.LnNum e.Name =
+  [SymTable e.Names (e.References)] s.ScopeClass t.SrcPos e.Name =
     t.ErrorList
     [SymTable
       e.Names (Defined s.ScopeClass e.Name)
@@ -97,16 +97,16 @@ $ENTRY ST-AddDeclared {
 
 $ENTRY ST-AddFunctionCall {
   [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)]
-  s.LnNum e.Name =
+  t.SrcPos e.Name =
     [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)];
 
   [SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)]
-  s.LnNum e.Name =
+  t.SrcPos e.Name =
     [SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)];
 
   [SymTable e.Names (e.References)]
-  s.LnNum e.Name =
-    [SymTable e.Names (e.References (s.LnNum e.Name))];
+  t.SrcPos e.Name =
+    [SymTable e.Names (e.References (t.SrcPos e.Name))];
 }
 
 $ENTRY ST-AddIdent {
@@ -125,9 +125,9 @@ $ENTRY ST-CheckUnresolved {
   t.ErrorList [SymTable e.Names (e.References)] =
     <Reduce
       {
-        t.ErrorList^ (s.LnNum e.Name) =
+        t.ErrorList^ (t.SrcPos e.Name) =
           <EL-AddErrorAt
-            t.ErrorList s.LnNum 'Function ' e.Name ' is not defined'
+            t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
           >;
       }
       t.ErrorList e.References
