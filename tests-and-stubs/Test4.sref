@@ -33,10 +33,6 @@ TestOrder {
   = <WriteLine <SymbCompare # Ident2 A>>;
 }
 
-$SWAP MySwap;
-
-$ESWAP MyESwap;
-
 $ENTRY Go {
   =
     <TestIdent <CreateIdent>>

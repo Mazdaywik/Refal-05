@@ -43,15 +43,13 @@ $EENUM
   TkVariable,
   TkRedefinition;
 
-$EENUM EEnum, Entry, Enum, Extern, Swap, ESwap, Ident;
+$EENUM EEnum, Entry, Enum, Extern, Ident;
 
 StrDirective {
   EEnum = 'EENUM';
   Entry = 'ENTRY';
   Enum = 'ENUM';
   Extern = 'EXTERN';
-  Swap = 'SWAP';
-  ESwap = 'ESWAP';
   Ident = 'LABEL';
 }
 
@@ -197,8 +195,6 @@ ValidDirective {
   'EENUM' = (TkDirective EEnum);
   'ENTRY' = (TkDirective Entry);
   'EXTERN' = (TkDirective Extern);
-  'SWAP' = (TkDirective Swap);
-  'ESWAP' = (TkDirective ESwap);
   'LABEL' = (TkDirective Ident);
   e.Other = (TkError 'Unknown directive $' e.Other);
 }

@@ -18,7 +18,6 @@ typedef struct Node *Iter;
 
 typedef enum DataTag {
   cDataIllegal = 0,
-  cDataSwapHead,
   cDataChar,
   cDataNumber,
   cDataFunction,
@@ -49,11 +48,6 @@ typedef struct RefalFunction {
 
 typedef unsigned long RefalNumber;
 
-typedef struct RefalSwapHead {
-  Iter next_head;
-  RefalFuncName name;
-} RefalSwapHead;
-
 typedef struct Node {
   NodePtr prev;
   NodePtr next;
@@ -65,7 +59,6 @@ typedef struct Node {
     RefalIdentifier ident_info;
     NodePtr link_info;
     void *file_info;
-    RefalSwapHead swap_info;
   };
 } Node;
 
@@ -187,12 +180,6 @@ extern void splice_from_freelist( Iter pos );
 extern FnResult create_closure( Iter begin, Iter end );
 Iter unwrap_closure( Iter closure ); // Развернуть замыкание
 Iter wrap_closure( Iter closure ); // Свернуть замыкание
-
-// Работа со статическими ящиками
-
-extern Iter initialize_swap_head( Iter head );
-extern void swap_info_bounds( Iter& first, Iter& last, Iter head );
-extern void swap_save( Iter head, Iter first, Iter last );
 
 // Профилирование
 

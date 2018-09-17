@@ -1401,51 +1401,6 @@ refalrts::Iter refalrts::wrap_closure( refalrts::Iter closure ) {
 
 //------------------------------------------------------------------------------
 
-// Инициализация головного узла статического ящика
-
-namespace refalrts {
-
-namespace vm {
-
-extern NodePtr g_left_swap_ptr;
-
-} // namespace vm
-
-} // namespace refalrts
-
-refalrts::Iter refalrts::initialize_swap_head( refalrts::Iter head ) {
-  assert( cDataFunction == head->tag );
-
-  splice_elem( vm::g_left_swap_ptr, head );
-  refalrts::RefalFuncName name = head->function_info.name;
-  head->tag = cDataSwapHead;
-  head->swap_info.next_head = vm::g_left_swap_ptr;
-  head->swap_info.name = name;
-  vm::g_left_swap_ptr = head;
-  return vm::g_left_swap_ptr;
-}
-
-void refalrts::swap_info_bounds(
-  refalrts::Iter& first, refalrts::Iter& last, refalrts::Iter head
-) {
-  assert( cDataSwapHead == head->tag );
-
-  first = head;
-  last = head->swap_info.next_head;
-  move_left( first, last );
-  move_right( first, last );
-}
-
-void refalrts::swap_save(
-  refalrts::Iter head, refalrts::Iter first, refalrts::Iter last
-) {
-  assert( cDataSwapHead == head->tag );
-
-  list_splice( head->swap_info.next_head, first, last );
-}
-
-//------------------------------------------------------------------------------
-
 // Средства профилирования
 
 namespace refalrts {
@@ -1956,9 +1911,6 @@ refalrts::Node g_last_marker =
   { & g_first_marker, 0, refalrts::cDataIllegal, { '\0' } };
 
 refalrts::Iter g_begin_view_field = & g_last_marker;
-const refalrts::Iter g_end_view_field = & g_last_marker;
-
-refalrts::NodePtr g_left_swap_ptr = g_end_view_field;
 
 unsigned g_step_counter = 0;
 
@@ -2173,15 +2125,6 @@ void refalrts::vm::print_seq(
             } else {
               fprintf( output, "\n[NONE]" );
             }
-            refalrts::move_left( begin, end );
-            continue;
-
-          case refalrts::cDataSwapHead:
-#ifdef MODULE_REFAL
-            fprintf( output, "\n\n*Swap %s:\n", (begin->swap_info.name)() );
-#else
-            fprintf( output, "\n\n*Swap %s:\n", begin->swap_info.name );
-#endif
             refalrts::move_left( begin, end );
             continue;
 
