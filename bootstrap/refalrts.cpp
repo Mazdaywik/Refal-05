@@ -713,11 +713,14 @@ bool refalrts::repeated_evar_left(
 
       first = 0;
       last = 0;
-    } else {
+    } else if (current != first) {
       evar_b = first;
       evar_e = prev( current );
 
       first = current;
+    } else {
+      evar_b = 0;
+      evar_e = 0;
     }
 
     return true;
@@ -764,11 +767,14 @@ bool refalrts::repeated_evar_right(
 
       first = 0;
       last = 0;
-    } else {
+    } else if (current != last) {
       evar_b = next( current );
       evar_e = last;
 
       last = current;
+    } else {
+      evar_b = 0;
+      evar_e = 0;
     }
 
     return true;
@@ -2108,11 +2114,15 @@ refalrts::FnResult refalrts::vm::execute_active(
 
 namespace {
 
-void print_indent(FILE *output, unsigned level)
+void print_indent(FILE *output, int level)
 {
   enum { cPERIOD = 4 };
   putc( '\n', output );
-  for( unsigned i = 0; i < level; ++i )
+  if (level < 0) {
+    putc( '!', output );
+    return;
+  }
+  for( int i = 0; i < level; ++i )
   {
     // Каждые cPERIOD позиций вместо пробела ставим точку.
     bool put_marker = ((i % cPERIOD) == (cPERIOD - 1));
@@ -2135,7 +2145,7 @@ void refalrts::vm::print_seq(
     cStateFinish
   } state = cStateView;
 
-  unsigned indent = 0;
+  int indent = 0;
   bool after_bracket = false;
   bool reset_after_bracket = true;
 
@@ -2409,211 +2419,6 @@ void refalrts::vm::free_view_field() {
 #endif // DONT_PRINT_STATISTICS
 }
 
-//==============================================================================
-// Интерпретатор
-//==============================================================================
-
-refalrts::FnResult refalrts::interpret_array(
-  const refalrts::ResultAction raa[],
-  refalrts::Iter allocs[],
-  refalrts::Iter begin, refalrts::Iter end
-) {
-  int i = 0;
-  Iter stack_ptr = 0;
-  Iter res = begin;
-  Iter cobracket;
-
-  while(raa[i].cmd != icEnd)
-  {
-    //Выделение памяти
-    switch(raa[i].cmd)
-    {
-      case icChar:
-        if(!alloc_char(*allocs, static_cast<char>(raa[i].value)))
-          return cNoMemory;
-        ++allocs;
-        break;
-
-      case icInt:
-        if(!alloc_number(*allocs, raa[i].value))
-          return cNoMemory;
-        ++allocs;
-        break;
-
-      case icFunc:
-        if(
-            !alloc_name(
-              *allocs,
-              (RefalFunctionPtr)(raa[i].ptr_value1),
-              (RefalFuncName)(raa[i].ptr_value2)
-            )
-        )
-          return cNoMemory;
-        ++allocs;
-        break;
-
-      case icIdent:
-        if(
-            !alloc_ident(
-              *allocs,
-              (RefalIdentifier)(raa[i].ptr_value1)
-            )
-        )
-          return cNoMemory;
-        ++allocs;
-        break;
-
-      case icBracket:
-        switch(raa[i].value)
-        {
-          case ibOpenADT:
-            if(!alloc_open_adt(*allocs))
-              return cNoMemory;
-            (*allocs)->link_info = stack_ptr;
-            stack_ptr = *allocs;
-            ++allocs;
-            break;
-
-          case ibOpenBracket:
-            if(!alloc_open_bracket(*allocs))
-              return cNoMemory;
-            (*allocs)->link_info = stack_ptr;
-            stack_ptr = *allocs;
-            ++allocs;
-            break;
-
-          case ibOpenCall:
-            if(!alloc_open_call(*allocs))
-              return cNoMemory;
-            (*allocs)->link_info = stack_ptr;
-            stack_ptr = *allocs;
-            ++allocs;
-            break;
-
-          case ibCloseADT:
-            if(!alloc_close_adt(*allocs))
-              return cNoMemory;
-            cobracket = stack_ptr;
-            stack_ptr = stack_ptr->link_info;
-            link_brackets( *allocs, cobracket );
-            ++allocs;
-            break;
-
-          case ibCloseBracket:
-            if(!alloc_close_bracket(*allocs))
-              return cNoMemory;
-            cobracket = stack_ptr;
-            stack_ptr = stack_ptr->link_info;
-            link_brackets( *allocs, cobracket );
-            ++allocs;
-            break;
-
-          case ibCloseCall:
-            if(!alloc_close_call(*allocs))
-              return cNoMemory;
-            cobracket = stack_ptr;
-            stack_ptr = stack_ptr->link_info;
-            link_brackets( *allocs, cobracket );
-            ++allocs;
-            break;
-
-          default:
-            throw UnexpectedTypeException();
-        }
-
-      case icSpliceSTVar:
-        break;
-
-      case icSpliceEVar:
-        break;
-
-      case icCopySTVar:
-        if(!copy_stvar(*allocs, *static_cast<Iter*>(raa[i].ptr_value1)))
-          return cNoMemory;
-        ++allocs;
-        break;
-
-      case icCopyEVar: {
-        refalrts::Iter& ebegin = *allocs;
-        ++allocs;
-        refalrts::Iter& eend = *allocs;
-        ++allocs;
-        if(
-            !copy_evar(
-              ebegin,
-              eend,
-              *static_cast<Iter*>(raa[i].ptr_value1),
-              *static_cast<Iter*>(raa[i].ptr_value2)
-            )
-          )
-          return cNoMemory;
-        break;
-      }
-
-      default:
-        throw UnexpectedTypeException();
-    }
-    i++;
-  }
-
-  while(i >= 0)
-  {
-    //Компоновка стека
-    switch(raa[i].cmd)
-    {
-      case icChar:
-      case icInt:
-      case icFunc:
-      case icIdent:
-        --allocs;
-        res = splice_elem(res, *allocs);
-        break;
-
-      case icSpliceSTVar:
-        res = splice_stvar(res, *static_cast<Iter*>(raa[i].ptr_value1));
-        break;
-
-      case icSpliceEVar:
-        res = splice_evar(res, *static_cast<Iter*>(raa[i].ptr_value1), *static_cast<Iter*>(raa[i].ptr_value2));
-        break;
-
-      case icBracket:
-        --allocs;
-        if( raa[i].value == ibCloseCall )
-        {
-          Iter open_call = (*allocs)->link_info;
-          push_stack(*allocs);
-          push_stack(open_call);
-        }
-        res = splice_elem( res, *allocs);
-        break;
-
-      case icCopyEVar: {
-        --allocs;
-        refalrts::Iter eend = *allocs;
-        --allocs;
-        refalrts::Iter ebegin = *allocs;
-        res = splice_evar(res, ebegin, eend);
-        break;
-      }
-
-      case icCopySTVar:
-        --allocs;
-        res = splice_stvar(res, *allocs);
-        break;
-
-      case icEnd:
-        break;
-
-      default:
-        throw UnexpectedTypeException();
-    }
-    i--;
-  }
-  splice_to_freelist(begin, end);
-
-  return cSuccess;
-}
 
 //==============================================================================
 

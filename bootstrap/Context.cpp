@@ -93,18 +93,6 @@ refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     //
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-      {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-      {refalrts::icInt, 0, 0, 0 },
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -128,7 +116,6 @@ refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -156,21 +143,12 @@ refalrts::FnResult Cntx_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -232,35 +210,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
         continue;
       if( ! refalrts::empty_seq( bb_2, be_2 ) )
         continue;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & ShiftVariable, (void*) "ShiftVariable"},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_B_1_b_1, & eVariables_B_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_2},
-        {refalrts::icSpliceEVar, & eIndex_1_b_2, & eIndex_1_e_2},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_E_1_b_1, & eVariables_E_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icIdent, (void*) & CSuccess<int>::name},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -330,7 +279,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eVariables_B_1_b_1, eVariables_B_1_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
@@ -386,28 +334,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
         continue;
       if( ! refalrts::empty_seq( bb_2, be_2 ) )
         continue;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icSpliceEVar, & eVariables_B_1_b_1, & eVariables_B_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sOldMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_E_1_b_1, & eVariables_E_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icIdent, (void*) & CInvalidMode<int>::name},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icCopySTVar, & sOldMode_1_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -452,7 +378,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eVariables_B_1_b_1, eVariables_B_1_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
@@ -484,26 +409,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       break;
     eIndex_1_b_1 = bb_0;
     eIndex_1_e_1 = be_0;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-      {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-      {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icSpliceSTVar, & sMode_1_1},
-      {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-      {refalrts::icCopySTVar, & sStackDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icSpliceEVar, & eVariables_1_b_1, & eVariables_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-      {refalrts::icIdent, (void*) & CSuccess<int>::name},
-      {refalrts::icCopySTVar, & sStackDepth_1_1},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -546,7 +451,6 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -618,45 +522,6 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
       eFreeFunc_1_e_1 = be_3;
       eVariables_E_1_b_1 = bb_4;
       eVariables_E_1_e_1 = be_4;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icSpliceEVar, & eVariables_B_1_b_1, & eVariables_B_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsSent, (void*) "FreeVarsSent"},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & ShiftVariable_AddToFree, (void*) "ShiftVariable_AddToFree"},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icCopySTVar, & sMode_1_1},
-        {refalrts::icCopyEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eFree_1_b_1, & eFree_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsFunc, (void*) "FreeVarsFunc"},
-        {refalrts::icSpliceEVar, & eFreeFunc_1_b_1, & eFreeFunc_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & ShiftVariable, (void*) "ShiftVariable"},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icCopySTVar, & sMode_1_1},
-        {refalrts::icCopyEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_E_1_b_1, & eVariables_E_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -769,7 +634,6 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eVariables_B_1_b_1, eVariables_B_1_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -796,15 +660,6 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
     if( ! refalrts::svar_right( sVarDepth_1_1, bb_1, be_1 ) )
       break;
     // Unused closed variable e.Index#1
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icSpliceEVar, & eVariables_1_b_1, & eVariables_1_e_1},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -812,7 +667,6 @@ static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -872,21 +726,6 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
         continue;
       eVariables_E_1_b_1 = bb_3;
       eVariables_E_1_e_1 = be_3;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icSpliceEVar, & eVariables_B_1_b_1, & eVariables_B_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_E_1_b_1, & eVariables_E_1_e_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -907,7 +746,6 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eVariables_B_1_b_1, eVariables_B_1_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -937,20 +775,6 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
       break;
     eIndex_1_b_1 = bb_1;
     eIndex_1_e_1 = be_1;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icSpliceEVar, & eVariables_1_b_1, & eVariables_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icSpliceSTVar, & sMode_1_1},
-      {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-      {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -970,7 +794,6 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -1055,36 +878,6 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
         continue;
       if( ! refalrts::empty_seq( bb_5, be_5 ) )
         continue;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icSpliceEVar, & eLocalVars_B_2_b_1, & eLocalVars_B_2_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sDepth_2_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eLocalVars_E_2_b_1, & eLocalVars_E_2_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsSent, (void*) "FreeVarsSent"},
-        {refalrts::icSpliceEVar, & eFreeSent_1_b_1, & eFreeSent_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsFunc, (void*) "FreeVarsFunc"},
-        {refalrts::icSpliceEVar, & eFreeFunc_1_b_1, & eFreeFunc_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eStack_1_b_1, & eStack_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icIdent, (void*) & CAlreadyBounded<int>::name},
-        {refalrts::icCopySTVar, & sDepth_2_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -1155,7 +948,6 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eLocalVars_B_2_b_1, eLocalVars_B_2_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -1235,37 +1027,6 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
         continue;
       if( ! refalrts::empty_seq( bb_5, be_5 ) )
         continue;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icSpliceEVar, & eLocalVars_B_2_b_1, & eLocalVars_B_2_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sOldMode_2_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_2_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eLocalVars_E_2_b_1, & eLocalVars_E_2_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsSent, (void*) "FreeVarsSent"},
-        {refalrts::icSpliceEVar, & eFreeSent_1_b_1, & eFreeSent_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsFunc, (void*) "FreeVarsFunc"},
-        {refalrts::icSpliceEVar, & eFreeFunc_1_b_1, & eFreeFunc_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eStack_1_b_1, & eStack_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icIdent, (void*) & CInvalidMode<int>::name},
-        {refalrts::icCopySTVar, & sVarDepth_2_1},
-        {refalrts::icCopySTVar, & sOldMode_2_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -1339,7 +1100,6 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eLocalVars_B_2_b_1, eLocalVars_B_2_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -1395,35 +1155,6 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     eStack_1_e_1 = be_4;
     eLocalVars_2_b_1 = bb_0;
     eLocalVars_2_e_1 = be_0;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-      {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-      {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icSpliceSTVar, & sMode_1_1},
-      {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-      {refalrts::icCopySTVar, & sStackDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icSpliceEVar, & eLocalVars_2_b_1, & eLocalVars_2_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icFunc, (void*) & FreeVarsSent, (void*) "FreeVarsSent"},
-      {refalrts::icSpliceEVar, & eFreeSent_1_b_1, & eFreeSent_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icFunc, (void*) & FreeVarsFunc, (void*) "FreeVarsFunc"},
-      {refalrts::icSpliceEVar, & eFreeFunc_1_b_1, & eFreeFunc_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icSpliceEVar, & eStack_1_b_1, & eStack_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-      {refalrts::icIdent, (void*) & CSuccess<int>::name},
-      {refalrts::icCopySTVar, & sStackDepth_1_1},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -1495,7 +1226,6 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -1559,36 +1289,6 @@ refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter 
       eFreeFunc_1_e_1 = be_3;
       eStack_1_b_1 = bb_4;
       eStack_1_e_1 = be_4;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & Fetch, (void*) "Fetch"},
-        {refalrts::icSpliceEVar, & eLocalVars_1_b_1, & eLocalVars_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & refalrts::create_closure, (void*) "refalrts::create_closure"},
-        {refalrts::icFunc, (void*) & lambda_Cntx_AddNewVariable_0, (void*) "lambda_Cntx_AddNewVariable_0"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icSpliceSTVar, & sMode_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceEVar, & eFreeSent_1_b_1, & eFreeSent_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceEVar, & eFreeFunc_1_b_1, & eFreeFunc_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceEVar, & eStack_1_b_1, & eStack_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -1670,7 +1370,6 @@ refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter 
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eLocalVars_1_b_1, eLocalVars_1_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
@@ -1733,35 +1432,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
         continue;
       if( ! refalrts::empty_seq( bb_2, be_2 ) )
         continue;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & ShiftVariable, (void*) "ShiftVariable"},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_B_1_b_1, & eVariables_B_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sMode_1_2},
-        {refalrts::icSpliceEVar, & eIndex_1_b_2, & eIndex_1_e_2},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_E_1_b_1, & eVariables_E_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icIdent, (void*) & CExistVariable<int>::name},
-        {refalrts::icCopySTVar, & sVarDepth_1_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -1831,7 +1501,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eVariables_B_1_b_1, eVariables_B_1_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
@@ -1886,28 +1555,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
         continue;
       if( ! refalrts::empty_seq( bb_2, be_2 ) )
         continue;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icSpliceEVar, & eVariables_B_1_b_1, & eVariables_B_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icSpliceSTVar, & sOldMode_1_1},
-        {refalrts::icSpliceEVar, & eIndex_1_b_1, & eIndex_1_e_1},
-        {refalrts::icSpliceSTVar, & sVarDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eVariables_E_1_b_1, & eVariables_E_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icIdent, (void*) & CInvalidMode<int>::name},
-        {refalrts::icInt, 0, 0, 0 },
-        {refalrts::icCopySTVar, & sOldMode_1_1},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -1953,7 +1600,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eVariables_B_1_b_1, eVariables_B_1_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
@@ -1980,20 +1626,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::svar_left( sMode_1_1, bb_0, be_0 ) )
       break;
     // Unused closed variable e.Index#1
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-      {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-      {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-      {refalrts::icSpliceEVar, & eVariables_1_b_1, & eVariables_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-      {refalrts::icIdent, (void*) & CNotFound<int>::name},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -2019,7 +1651,6 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -2078,30 +1709,6 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
       eFreeFunc_1_e_1 = be_3;
       eOuters_1_b_1 = bb_4;
       eOuters_1_e_1 = be_4;
-#ifdef INTERPRET
-      const static refalrts::ResultAction raa[] = {
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-        {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-        {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsSent, (void*) "FreeVarsSent"},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-        {refalrts::icFunc, (void*) & FreeVarsFunc, (void*) "FreeVarsFunc"},
-        {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-        {refalrts::icFunc, (void*) & Unique, (void*) "Unique"},
-        {refalrts::icSpliceEVar, & eFreeSent_1_b_1, & eFreeSent_1_e_1},
-        {refalrts::icSpliceEVar, & eFreeFunc_1_b_1, & eFreeFunc_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-        {refalrts::icSpliceEVar, & eOuters_1_b_1, & eOuters_1_e_1},
-        {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-        {refalrts::icEnd}
-      };
-      refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-      refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-      return res;
-#else
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -2165,7 +1772,6 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
       refalrts::use( res );
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return refalrts::cSuccess;
-#endif
     } while ( refalrts::open_evar_advance( eLocals_1_b_1, eLocals_1_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
@@ -2210,21 +1816,6 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
           continue;
         eEnd_1_b_1 = bb_2;
         eEnd_1_e_1 = be_2;
-#ifdef INTERPRET
-        const static refalrts::ResultAction raa[] = {
-          {refalrts::icSpliceEVar, & eBegin_1_b_1, & eBegin_1_e_1},
-          {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-          {refalrts::icFunc, (void*) & Unique, (void*) "Unique"},
-          {refalrts::icSpliceSTVar, & tCopy_1_1},
-          {refalrts::icSpliceEVar, & eMiddle_1_b_1, & eMiddle_1_e_1},
-          {refalrts::icSpliceEVar, & eEnd_1_b_1, & eEnd_1_e_1},
-          {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-          {refalrts::icEnd}
-        };
-        refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-        refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-        return res;
-#else
 
         refalrts::reset_allocator();
         refalrts::Iter res = arg_begin;
@@ -2249,7 +1840,6 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
         refalrts::use( res );
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return refalrts::cSuccess;
-#endif
       } while ( refalrts::open_evar_advance( eMiddle_1_b_1, eMiddle_1_e_1, bb_1, be_1 ) );
     } while ( refalrts::open_evar_advance( eBegin_1_b_1, eBegin_1_e_1, bb_0, be_0 ) );
   } while ( 0 );
@@ -2266,15 +1856,6 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
     // e.Uniques#1
     eUniques_1_b_1 = bb_0;
     eUniques_1_e_1 = be_0;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icSpliceEVar, & eUniques_1_b_1, & eUniques_1_e_1},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -2282,7 +1863,6 @@ static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -2313,28 +1893,6 @@ refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_e
       break;
     eVariables_1_b_1 = bb_1;
     eVariables_1_e_1 = be_1;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-      {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-      {refalrts::icFunc, (void*) & Inc, (void*) "Inc"},
-      {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icFunc, (void*) & FreeVarsSent, (void*) "FreeVarsSent"},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenBracket},
-      {refalrts::icFunc, (void*) & FreeVarsFunc, (void*) "FreeVarsFunc"},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseBracket},
-      {refalrts::icSpliceEVar, & eVariables_1_b_1, & eVariables_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -2396,7 +1954,6 @@ refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
@@ -2445,23 +2002,6 @@ refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eClosureContext_1_e_1 = be_3;
     eOuters_1_b_1 = bb_1;
     eOuters_1_e_1 = be_1;
-#ifdef INTERPRET
-    const static refalrts::ResultAction raa[] = {
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenADT},
-      {refalrts::icFunc, (void*) & Context, (void*) "Context"},
-      {refalrts::icBracket, 0, 0, refalrts::ibOpenCall},
-      {refalrts::icFunc, (void*) & Dec, (void*) "Dec"},
-      {refalrts::icSpliceSTVar, & sStackDepth_1_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseCall},
-      {refalrts::icSpliceEVar, & eOuters_1_b_1, & eOuters_1_e_1},
-      {refalrts::icBracket, 0, 0, refalrts::ibCloseADT},
-      {refalrts::icSpliceEVar, & eClosureContext_1_b_1, & eClosureContext_1_e_1},
-      {refalrts::icEnd}
-    };
-    refalrts::Iter allocs[2*sizeof(raa)/sizeof(raa[0])];
-    refalrts::FnResult res = refalrts::interpret_array( raa, allocs, arg_begin, arg_end );
-    return res;
-#else
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -2498,7 +2038,6 @@ refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
-#endif
   } while ( 0 );
 
   return refalrts::FnResult(
