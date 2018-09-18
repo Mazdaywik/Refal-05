@@ -62,7 +62,7 @@ refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -71,7 +71,7 @@ refalrts::FnResult Cntx_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     if( ! refalrts::alloc_number( n2, 0UL ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_close_adt( n3 ) )
+    if( ! refalrts::alloc_close_bracket( n3 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n3 );
     res = refalrts::splice_elem( res, n3 );
@@ -97,10 +97,12 @@ refalrts::FnResult Cntx_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // [Context  0 ]
+    // ( & Context 0 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::number_left( 0UL, bb_1, be_1 ) )
       break;
@@ -151,10 +153,12 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     static refalrts::Iter sVarDepth_1_1;
     static refalrts::Iter sVarDepth_1_2;
     static refalrts::Iter sVarDepth_1_3;
-    // [Context  s.StackDepth#1 e.Variables_B#1 ( s.Mode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ] s.Mode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.Variables_B#1 ( s.Mode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ) s.Mode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -190,7 +194,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       if( ! refalrts::copy_stvar( sVarDepth_1_3, sVarDepth_1_2 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -217,7 +221,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       if( ! refalrts::alloc_close_bracket( n8 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n9 = 0;
-      if( ! refalrts::alloc_close_adt( n9 ) )
+      if( ! refalrts::alloc_close_bracket( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
       if( ! refalrts::alloc_name( n10, Success, "Success" ) )
@@ -275,10 +279,12 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     static refalrts::Iter eIndex_1_e_2;
     static refalrts::Iter sOldMode_1_2;
     static refalrts::Iter sVarDepth_1_2;
-    // [Context  s.StackDepth#1 e.Variables_B#1 ( s.OldMode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ] s.NewMode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.Variables_B#1 ( s.OldMode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ) s.NewMode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -314,7 +320,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       if( ! refalrts::copy_stvar( sVarDepth_1_2, sVarDepth_1_1 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -326,7 +332,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       if( ! refalrts::alloc_close_bracket( n3 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n4 = 0;
-      if( ! refalrts::alloc_close_adt( n4 ) )
+      if( ! refalrts::alloc_close_bracket( n4 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n5 = 0;
       if( ! refalrts::alloc_name( n5, InvalidMode, "InvalidMode" ) )
@@ -368,10 +374,12 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     static refalrts::Iter eIndex_1_e_1;
     static refalrts::Iter sStackDepth_1_2;
     static refalrts::Iter sStackDepth_1_3;
-    // [Context  s.StackDepth#1 e.Variables#1 ] s.Mode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.Variables#1 ) s.Mode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -389,7 +397,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     if( ! refalrts::copy_stvar( sStackDepth_1_3, sStackDepth_1_2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -401,7 +409,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     if( ! refalrts::alloc_close_bracket( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_adt( n4 ) )
+    if( ! refalrts::alloc_close_bracket( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
     if( ! refalrts::alloc_name( n5, Success, "Success" ) )
@@ -863,7 +871,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       if( ! refalrts::copy_stvar( sDepth_2_2, sDepth_2_1 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -893,7 +901,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       if( ! refalrts::alloc_close_bracket( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_close_adt( n10 ) )
+      if( ! refalrts::alloc_close_bracket( n10 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n11 = 0;
       if( ! refalrts::alloc_name( n11, AlreadyBounded, "AlreadyBounded" ) )
@@ -1014,7 +1022,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       if( ! refalrts::copy_stvar( sVarDepth_2_2, sVarDepth_2_1 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -1044,7 +1052,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       if( ! refalrts::alloc_close_bracket( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_close_adt( n10 ) )
+      if( ! refalrts::alloc_close_bracket( n10 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n11 = 0;
       if( ! refalrts::alloc_name( n11, InvalidMode, "InvalidMode" ) )
@@ -1142,7 +1150,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     if( ! refalrts::copy_stvar( sStackDepth_1_3, sStackDepth_1_2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -1172,7 +1180,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     if( ! refalrts::alloc_close_bracket( n9 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_close_adt( n10 ) )
+    if( ! refalrts::alloc_close_bracket( n10 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n11 = 0;
     if( ! refalrts::alloc_name( n11, Success, "Success" ) )
@@ -1233,10 +1241,12 @@ refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eFreeFunc_1_e_1;
     static refalrts::Iter eStack_1_b_1;
     static refalrts::Iter eStack_1_e_1;
-    // [Context  s.StackDepth#1 e.LocalVars#1 ( & FreeVarsSent e.FreeSent#1 ) ( & FreeVarsFunc e.FreeFunc#1 ) e.Stack#1 ] s.Mode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.LocalVars#1 ( & FreeVarsSent e.FreeSent#1 ) ( & FreeVarsFunc e.FreeFunc#1 ) e.Stack#1 ) s.Mode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -1394,10 +1404,12 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter sVarDepth_1_1;
     static refalrts::Iter sVarDepth_1_2;
     static refalrts::Iter sVarDepth_1_3;
-    // [Context  s.StackDepth#1 e.Variables_B#1 ( s.Mode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ] s.Mode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.Variables_B#1 ( s.Mode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ) s.Mode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -1433,7 +1445,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::copy_stvar( sVarDepth_1_3, sVarDepth_1_2 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -1460,7 +1472,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::alloc_close_bracket( n8 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n9 = 0;
-      if( ! refalrts::alloc_close_adt( n9 ) )
+      if( ! refalrts::alloc_close_bracket( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
       if( ! refalrts::alloc_name( n10, ExistVariable, "ExistVariable" ) )
@@ -1517,10 +1529,12 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter eIndex_1_b_2;
     static refalrts::Iter eIndex_1_e_2;
     static refalrts::Iter sOldMode_1_2;
-    // [Context  s.StackDepth#1 e.Variables_B#1 ( s.OldMode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ] s.NewMode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.Variables_B#1 ( s.OldMode#1 e.Index#1 s.VarDepth#1 ) e.Variables_E#1 ) s.NewMode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -1554,7 +1568,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::copy_stvar( sOldMode_1_2, sOldMode_1_1 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -1566,7 +1580,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::alloc_close_bracket( n3 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n4 = 0;
-      if( ! refalrts::alloc_close_adt( n4 ) )
+      if( ! refalrts::alloc_close_bracket( n4 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n5 = 0;
       if( ! refalrts::alloc_name( n5, InvalidMode, "InvalidMode" ) )
@@ -1607,10 +1621,12 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
     static refalrts::Iter sMode_1_1;
-    // [Context  s.StackDepth#1 e.Variables#1 ] s.Mode#1 e.Index#1
+    // ( & Context s.StackDepth#1 e.Variables#1 ) s.Mode#1 e.Index#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::svar_left( sStackDepth_1_1, bb_1, be_1 ) )
       break;
@@ -1623,13 +1639,13 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, Context, "Context" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_close_adt( n2 ) )
+    if( ! refalrts::alloc_close_bracket( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
     if( ! refalrts::alloc_name( n3, VariableNotFound, "VariableNotFound" ) )
@@ -1669,10 +1685,12 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
     static refalrts::Iter eOuters_1_e_1;
     static refalrts::Iter eLocals_1_b_1;
     static refalrts::Iter eLocals_1_e_1;
-    // [Context  s.StackDepth#1 e.Locals#1 ( & FreeVarsSent e.FreeSent#1 ) ( & FreeVarsFunc e.FreeFunc#1 ) e.Outers#1 ]
+    // ( & Context s.StackDepth#1 e.Locals#1 ( & FreeVarsSent e.FreeSent#1 ) ( & FreeVarsFunc e.FreeFunc#1 ) e.Outers#1 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -1706,7 +1724,7 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -1739,7 +1757,7 @@ refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::I
       if( ! refalrts::alloc_close_bracket( n10 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n11 = 0;
-      if( ! refalrts::alloc_close_adt( n11 ) )
+      if( ! refalrts::alloc_close_bracket( n11 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n0, n11 );
       res = refalrts::splice_elem( res, n11 );
@@ -1875,10 +1893,12 @@ refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_e
     static refalrts::Iter sStackDepth_1_1;
     static refalrts::Iter eVariables_1_b_1;
     static refalrts::Iter eVariables_1_e_1;
-    // [Context  s.StackDepth#1 e.Variables#1 ]
+    // ( & Context s.StackDepth#1 e.Variables#1 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -1890,7 +1910,7 @@ refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_e
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -1923,7 +1943,7 @@ refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_e
     if( ! refalrts::alloc_close_bracket( n10 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n11 = 0;
-    if( ! refalrts::alloc_close_adt( n11 ) )
+    if( ! refalrts::alloc_close_bracket( n11 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n11 );
     res = refalrts::splice_elem( res, n11 );
@@ -1968,10 +1988,12 @@ refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_en
     static refalrts::Iter eClosureContext_1_e_1;
     static refalrts::Iter eOuters_1_b_1;
     static refalrts::Iter eOuters_1_e_1;
-    // [Context  s.StackDepth#1 ( & FreeVarsSent ) ( & FreeVarsFunc e.ClosureContext#1 ) e.Outers#1 ]
+    // ( & Context s.StackDepth#1 ( & FreeVarsSent ) ( & FreeVarsFunc e.ClosureContext#1 ) e.Outers#1 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, Context, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Context, bb_1, be_1 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -1999,7 +2021,7 @@ refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, Context, "Context" ) )
@@ -2014,7 +2036,7 @@ refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter arg_en
     if( ! refalrts::alloc_close_call( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_adt( n5 ) )
+    if( ! refalrts::alloc_close_bracket( n5 ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_evar( res, eClosureContext_1_b_1, eClosureContext_1_e_1 );
     refalrts::link_brackets( n0, n5 );

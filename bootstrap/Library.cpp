@@ -326,24 +326,6 @@ refalrts::FnResult write_to_stream(
         }
       }
 
-      case refalrts::cDataOpenADT: {
-        printf_res = fprintf( out, "[" );
-        if( printf_res < 0 ) {
-          return refalrts::cRecognitionImpossible;
-        } else {
-          break;
-        }
-      }
-
-      case refalrts::cDataCloseADT: {
-        printf_res = fprintf( out, "]" );
-        if( printf_res < 0 ) {
-          return refalrts::cRecognitionImpossible;
-        } else {
-          break;
-        }
-      }
-
       case refalrts::cDataOpenBracket: {
         printf_res = fprintf( out, "(" );
         if( printf_res < 0 ) {

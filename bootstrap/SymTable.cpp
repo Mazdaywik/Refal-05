@@ -42,7 +42,7 @@ refalrts::FnResult ST_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -54,7 +54,7 @@ refalrts::FnResult ST_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     if( ! refalrts::alloc_close_bracket( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_adt( n4 ) )
+    if( ! refalrts::alloc_close_bracket( n4 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n4 );
     res = refalrts::splice_elem( res, n4 );
@@ -82,10 +82,12 @@ refalrts::FnResult ST_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // [SymTable  e.Names#1 ( e.References#1 ) ]
+    // ( & SymTable e.Names#1 ( e.References#1 ) )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -323,12 +325,14 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     static refalrts::Iter eNames_E_1_e_1;
     static refalrts::Iter sAnyScopeClass_1_1;
     static refalrts::Iter sScopeClass_1_1;
-    // t.ErrorList#1 [SymTable  e.Names_B#1 ( & Defined s.AnyScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ] s.ScopeClass#1 t.SrcPos#1 e.Name#1
+    // t.ErrorList#1 ( & SymTable e.Names_B#1 ( & Defined s.AnyScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ) s.ScopeClass#1 t.SrcPos#1 e.Name#1
     if( ! refalrts::tvar_left( tErrorList_1_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -450,7 +454,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       if( ! refalrts::alloc_close_call( n27 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n28 = 0;
-      if( ! refalrts::alloc_open_adt( n28 ) )
+      if( ! refalrts::alloc_open_bracket( n28 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n29 = 0;
       if( ! refalrts::alloc_name( n29, SymTable, "SymTable" ) )
@@ -471,7 +475,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       if( ! refalrts::alloc_close_bracket( n34 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n35 = 0;
-      if( ! refalrts::alloc_close_adt( n35 ) )
+      if( ! refalrts::alloc_close_bracket( n35 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n28, n35 );
       res = refalrts::splice_elem( res, n35 );
@@ -548,12 +552,14 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     static refalrts::Iter eNames_E_1_b_1;
     static refalrts::Iter eNames_E_1_e_1;
     static refalrts::Iter tSrcPos_1_1;
-    // t.ErrorList#1 [SymTable  e.Names_B#1 ( & Declared e.Name#1 ) e.Names_E#1 ( e.References#1 ) ] s.ScopeClass#1 t.SrcPos#1 e.Name#1
+    // t.ErrorList#1 ( & SymTable e.Names_B#1 ( & Declared e.Name#1 ) e.Names_E#1 ( e.References#1 ) ) s.ScopeClass#1 t.SrcPos#1 e.Name#1
     if( ! refalrts::tvar_left( tErrorList_1_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -589,7 +595,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -619,7 +625,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       if( ! refalrts::alloc_close_call( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_close_adt( n10 ) )
+      if( ! refalrts::alloc_close_bracket( n10 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n0, n10 );
       res = refalrts::splice_elem( res, n10 );
@@ -668,12 +674,14 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     static refalrts::Iter tSrcPos_1_1;
     static refalrts::Iter eName_1_b_2;
     static refalrts::Iter eName_1_e_2;
-    // t.ErrorList#1 [SymTable  e.Names#1 ( e.References#1 ) ] s.ScopeClass#1 t.SrcPos#1 e.Name#1
+    // t.ErrorList#1 ( & SymTable e.Names#1 ( e.References#1 ) ) s.ScopeClass#1 t.SrcPos#1 e.Name#1
     if( ! refalrts::tvar_left( tErrorList_1_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -695,7 +703,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     if( ! refalrts::copy_evar( eName_1_b_2, eName_1_e_2, eName_1_b_1, eName_1_e_1 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -725,7 +733,7 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     if( ! refalrts::alloc_close_call( n9 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_close_adt( n10 ) )
+    if( ! refalrts::alloc_close_bracket( n10 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n10 );
     res = refalrts::splice_elem( res, n10 );
@@ -778,10 +786,12 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     static refalrts::Iter eNames_E_1_e_1;
     static refalrts::Iter eName_1_b_2;
     static refalrts::Iter eName_1_e_2;
-    // [SymTable  e.Names_B#1 ( & Declared e.Name#1 ) e.Names_E#1 ( e.References#1 ) ] e.Name#1
+    // ( & SymTable e.Names_B#1 ( & Declared e.Name#1 ) e.Names_E#1 ( e.References#1 ) ) e.Name#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -813,7 +823,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -834,7 +844,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       if( ! refalrts::alloc_close_bracket( n6 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n7 = 0;
-      if( ! refalrts::alloc_close_adt( n7 ) )
+      if( ! refalrts::alloc_close_bracket( n7 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
@@ -875,10 +885,12 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     static refalrts::Iter sScopeClass_1_1;
     static refalrts::Iter eName_1_b_2;
     static refalrts::Iter eName_1_e_2;
-    // [SymTable  e.Names_B#1 ( & Defined s.ScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ] e.Name#1
+    // ( & SymTable e.Names_B#1 ( & Defined s.ScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ) e.Name#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -912,7 +924,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -933,7 +945,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       if( ! refalrts::alloc_close_bracket( n6 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n7 = 0;
-      if( ! refalrts::alloc_close_adt( n7 ) )
+      if( ! refalrts::alloc_close_bracket( n7 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
@@ -972,10 +984,12 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     static refalrts::Iter eName_1_e_1;
     static refalrts::Iter eName_1_b_2;
     static refalrts::Iter eName_1_e_2;
-    // [SymTable  e.Names#1 ( e.References#1 ) ] e.Name#1
+    // ( & SymTable e.Names#1 ( e.References#1 ) ) e.Name#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -993,7 +1007,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     if( ! refalrts::copy_evar( eName_1_b_2, eName_1_e_2, eName_1_b_1, eName_1_e_1 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -1023,7 +1037,7 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     if( ! refalrts::alloc_close_call( n9 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_close_adt( n10 ) )
+    if( ! refalrts::alloc_close_bracket( n10 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n10 );
     res = refalrts::splice_elem( res, n10 );
@@ -1075,10 +1089,12 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter tSrcPos_1_1;
     static refalrts::Iter eName_1_b_2;
     static refalrts::Iter eName_1_e_2;
-    // [SymTable  e.Names_B#1 ( & Declared e.Name#1 ) e.Names_E#1 ( e.References#1 ) ] t.SrcPos#1 e.Name#1
+    // ( & SymTable e.Names_B#1 ( & Declared e.Name#1 ) e.Names_E#1 ( e.References#1 ) ) t.SrcPos#1 e.Name#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -1112,7 +1128,7 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -1133,7 +1149,7 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::alloc_close_bracket( n6 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n7 = 0;
-      if( ! refalrts::alloc_close_adt( n7 ) )
+      if( ! refalrts::alloc_close_bracket( n7 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
@@ -1175,10 +1191,12 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter tSrcPos_1_1;
     static refalrts::Iter eName_1_b_2;
     static refalrts::Iter eName_1_e_2;
-    // [SymTable  e.Names_B#1 ( & Defined s.ScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ] t.SrcPos#1 e.Name#1
+    // ( & SymTable e.Names_B#1 ( & Defined s.ScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ) t.SrcPos#1 e.Name#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -1214,7 +1232,7 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
       refalrts::Iter n0 = 0;
-      if( ! refalrts::alloc_open_adt( n0 ) )
+      if( ! refalrts::alloc_open_bracket( n0 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n1 = 0;
       if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -1235,7 +1253,7 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::alloc_close_bracket( n6 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n7 = 0;
-      if( ! refalrts::alloc_close_adt( n7 ) )
+      if( ! refalrts::alloc_close_bracket( n7 ) )
         return refalrts::cNoMemory;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
@@ -1273,10 +1291,12 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter tSrcPos_1_1;
     static refalrts::Iter eName_1_b_1;
     static refalrts::Iter eName_1_e_1;
-    // [SymTable  e.Names#1 ( e.References#1 ) ] t.SrcPos#1 e.Name#1
+    // ( & SymTable e.Names#1 ( e.References#1 ) ) t.SrcPos#1 e.Name#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -1294,7 +1314,7 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
@@ -1312,7 +1332,7 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_close_bracket( n5 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_close_adt( n6 ) )
+    if( ! refalrts::alloc_close_bracket( n6 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n6 );
     res = refalrts::splice_elem( res, n6 );
@@ -1506,10 +1526,12 @@ refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter tErrorList_1_1;
     static refalrts::Iter eReferences_1_b_2;
     static refalrts::Iter eReferences_1_e_2;
-    // t.ErrorList#1 [SymTable  e.Names#1 ( e.References#1 ) ]
+    // t.ErrorList#1 ( & SymTable e.Names#1 ( e.References#1 ) )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_right( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -1541,7 +1563,7 @@ refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_close_call( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_open_adt( n4 ) )
+    if( ! refalrts::alloc_open_bracket( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
     if( ! refalrts::alloc_name( n5, SymTable, "SymTable" ) )
@@ -1553,7 +1575,7 @@ refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_close_bracket( n7 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_close_adt( n8 ) )
+    if( ! refalrts::alloc_close_bracket( n8 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n4, n8 );
     res = refalrts::splice_elem( res, n8 );
@@ -1684,10 +1706,12 @@ refalrts::FnResult ST_AllFunctions(refalrts::Iter arg_begin, refalrts::Iter arg_
     refalrts::start_sentence();
     static refalrts::Iter eNames_1_b_1;
     static refalrts::Iter eNames_1_e_1;
-    // [SymTable  e.Names#1 ( e.References#1 ) ]
+    // ( & SymTable e.Names#1 ( e.References#1 ) )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -1744,10 +1768,12 @@ refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_en
     static refalrts::Iter eNames_B_1_b_1;
     static refalrts::Iter eNames_B_1_e_1;
     static refalrts::Iter sScopeClass_1_1;
-    // [SymTable  e.Names_B#1 ( & Defined s.ScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) ]
+    // ( & SymTable e.Names_B#1 ( & Defined s.ScopeClass#1 e.Name#1 ) e.Names_E#1 ( e.References#1 ) )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, SymTable, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;

@@ -43,7 +43,7 @@ refalrts::FnResult EL_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, ErrorList, "ErrorList" ) )
@@ -55,7 +55,7 @@ refalrts::FnResult EL_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     if( ! refalrts::alloc_close_bracket( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_adt( n4 ) )
+    if( ! refalrts::alloc_close_bracket( n4 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n4 );
     res = refalrts::splice_elem( res, n4 );
@@ -90,10 +90,12 @@ refalrts::FnResult EL_AddError(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     static refalrts::Iter eErrors_1_e_1;
     static refalrts::Iter eMessage_1_b_1;
     static refalrts::Iter eMessage_1_e_1;
-    // [ErrorList  ( e.FileName#1 ) e.Errors#1 ] e.Message#1
+    // ( & ErrorList ( e.FileName#1 ) e.Errors#1 ) e.Message#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, ErrorList, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( ErrorList, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -109,7 +111,7 @@ refalrts::FnResult EL_AddError(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, ErrorList, "ErrorList" ) )
@@ -154,7 +156,7 @@ refalrts::FnResult EL_AddError(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     if( ! refalrts::alloc_close_bracket( n14 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n15 = 0;
-    if( ! refalrts::alloc_close_adt( n15 ) )
+    if( ! refalrts::alloc_close_bracket( n15 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n15 );
     res = refalrts::splice_elem( res, n15 );
@@ -206,10 +208,12 @@ refalrts::FnResult EL_AddErrorAt(refalrts::Iter arg_begin, refalrts::Iter arg_en
     static refalrts::Iter eMessage_1_e_1;
     static refalrts::Iter eFileName_1_b_2;
     static refalrts::Iter eFileName_1_e_2;
-    // [ErrorList  ( e.FileName#1 ) e.Errors#1 ] t.SrcPos#1 e.Message#1
+    // ( & ErrorList ( e.FileName#1 ) e.Errors#1 ) t.SrcPos#1 e.Message#1
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, ErrorList, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( ErrorList, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -229,7 +233,7 @@ refalrts::FnResult EL_AddErrorAt(refalrts::Iter arg_begin, refalrts::Iter arg_en
     if( ! refalrts::copy_evar( eFileName_1_b_2, eFileName_1_e_2, eFileName_1_b_1, eFileName_1_e_1 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_adt( n0 ) )
+    if( ! refalrts::alloc_open_bracket( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
     if( ! refalrts::alloc_name( n1, ErrorList, "ErrorList" ) )
@@ -283,7 +287,7 @@ refalrts::FnResult EL_AddErrorAt(refalrts::Iter arg_begin, refalrts::Iter arg_en
     if( ! refalrts::alloc_close_bracket( n17 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n18 = 0;
-    if( ! refalrts::alloc_close_adt( n18 ) )
+    if( ! refalrts::alloc_close_bracket( n18 ) )
       return refalrts::cNoMemory;
     refalrts::link_brackets( n0, n18 );
     res = refalrts::splice_elem( res, n18 );
@@ -815,10 +819,12 @@ refalrts::FnResult EL_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // [ErrorList  ( e.FileName#1 ) ]
+    // ( & ErrorList ( e.FileName#1 ) )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, ErrorList, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( ErrorList, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
@@ -850,10 +856,12 @@ refalrts::FnResult EL_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::start_sentence();
     static refalrts::Iter eErrors_1_b_1;
     static refalrts::Iter eErrors_1_e_1;
-    // [ErrorList  ( e.FileName#1 ) e.Errors#1 ]
+    // ( & ErrorList ( e.FileName#1 ) e.Errors#1 )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
-    if( ! refalrts::adt_left( bb_1, be_1, ErrorList, bb_0, be_0 ) )
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( ErrorList, bb_1, be_1 ) )
       break;
     refalrts::Iter bb_2 = 0;
     refalrts::Iter be_2 = 0;
