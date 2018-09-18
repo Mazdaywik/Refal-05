@@ -33,10 +33,6 @@ $ENTRY Fetch {
     <Apply t.Function e.Argument>;
 }
 
-$ENTRY Y {
-  s.Y-Func = { e.Arg = <<s.Y-Func <Y s.Y-Func>> e.Arg>; };
-}
-
 $ENTRY MapReduce {
   t.Fn t.Acc e.Tail =
     <DoMapReduce t.Fn t.Acc () e.Tail>;
