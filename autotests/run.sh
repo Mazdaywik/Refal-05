@@ -6,7 +6,7 @@ run_test_aux() {
   CPP=${SREF%%.sref}.cpp
   EXE=${SREF%%.sref}
 
-  ../compiler/srefc $SREF 2>__error.txt
+  ../compiler/refal05c $SREF 2>__error.txt
   if [ $? -gt 0 ]; then
     echo COMPILER ON $SREF FAILS, SEE __error.txt
     exit
@@ -41,7 +41,7 @@ run_test_aux.BAD-SYNTAX() {
   CPP=${SREF%%.sref}.cpp
   EXE=${SREF%%.sref}
 
-  ../compiler/srefc $SREF 2>__error.txt
+  ../compiler/refal05c $SREF 2>__error.txt
   if [ $? -gt 0 ]; then
     echo COMPILER ON $SREF FAILS, SEE __error.txt
     exit

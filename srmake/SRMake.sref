@@ -16,7 +16,8 @@ Main {
   (e.Program) =
     <WriteLine 'Usage:'>
     <WriteLine
-      '  srmake [-s path\\to\\srefc.exe] -c c++compiler {-d search-dir} MainFileName[.sref]'
+      '  srmake [-s path\\to\\refal05c.exe] -c c++compiler '
+      '{-d search-dir} MainFileName[.sref]'
     >;
 
   (e.Program) e.Arguments =
@@ -24,8 +25,8 @@ Main {
       <Fetch
         <Get-s-option e.Arguments>
         {
-          (e.SrefC) e.RestOfArguments =
-            (e.SrefC) <ParseCommandLine e.RestOfArguments>;
+          (e.Refal05c) e.RestOfArguments =
+            (e.Refal05c) <ParseCommandLine e.RestOfArguments>;
         }
       >
     >;
@@ -34,34 +35,34 @@ Main {
 /*
   Да, костыль, но усложнение потребует большего объёма кода.
   Костыль имеет недочёт: в командной строке может быть
-    srmake -c -s srefc g++ MainFile.sref
+    srmake -c -s refal05c g++ MainFile.sref
   и эта строка корректно обработается.
 */
 Get-s-option {
   e.Arguments-B ('--') e.Arguments-E =
     <Get-s-option e.Arguments-B> ('--') e.Arguments-E;
 
-  e.Arguments-B ('-s') (e.SrefC) e.Arguments-E =
-    (e.SrefC) e.Arguments-B e.Arguments-E;
+  e.Arguments-B ('-s') (e.Refal05c) e.Arguments-E =
+    (e.Refal05c) e.Arguments-B e.Arguments-E;
 
-  e.Arguments = ('srefc') e.Arguments;
+  e.Arguments = ('refal05c') e.Arguments;
 }
 
 MakeProject {
-  (e.SrefC) (CmdLineError e.Message) =
+  (e.Refal05c) (CmdLineError e.Message) =
     <WriteLine 'COMMAND LINE ERROR: ' e.Message>;
 
-  (e.SrefC) (NoCompile) (e.Folders) (e.File) =
+  (e.Refal05c) (NoCompile) (e.Folders) (e.File) =
     <WriteLine
       'COMMAND LINE ERROR: Compiler not selected'
     >;
 
-  (e.SrefC) (CompileCommand e.Command) (e.Folders) (e.File) =
+  (e.Refal05c) (CompileCommand e.Command) (e.Folders) (e.File) =
     <Make
-      (e.SrefC) (e.Command) (e.Folders) <CreateFileList (e.Folders) e.File>
+      (e.Refal05c) (e.Command) (e.Folders) <CreateFileList (e.Folders) e.File>
     >;
 
-  (e.SrefC) t.Compiler (e.Folders) e.ManyFiles =
+  (e.Refal05c) t.Compiler (e.Folders) e.ManyFiles =
     <WriteLine
       'COMMAND LINE ERROR: many files selected'
     >;
@@ -71,13 +72,13 @@ MakeProject {
 $EXTERN Source, Output, NotFound;
 
 Make {
-  (e.SrefC) (e.CompilerCommand) (e.Directories)
+  (e.Refal05c) (e.CompilerCommand) (e.Directories)
   e.Units-B (NotFound e.UnitName) e.Units-E =
     <Map PrintNotFound (NotFound e.UnitName) e.Units-E>;
 
-  (e.SrefC) (e.CompilerCommand) (e.Directories) e.Units =
+  (e.Refal05c) (e.CompilerCommand) (e.Directories) e.Units =
     <System
-      e.SrefC ' -c "' e.CompilerCommand '" '
+      e.Refal05c ' -c "' e.CompilerCommand '" '
       <Map PrintDirectory e.Directories>
       <Map PrintUnit e.Units>
     >;

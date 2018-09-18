@@ -1,3 +1,3 @@
 #!/bin/sh
-cp srefc-s srefc
+cp refal05c-s refal05c
 ./makeself.sh

@@ -1,3 +1,3 @@
 @echo off
-copy srefc-s.exe srefc.exe
+copy refal05c-s.exe refal05c.exe
 call makeself.bat
