@@ -64,18 +64,21 @@ $ENUM CmdOpenedE;
 
 GenPattern {
   e.Pattern =
-    <Fetch
+    <GenPattern-Aux
+      (e.Pattern)
       <DoGenPattern
         1 (0 e.Pattern) (/* vars */) (/* commands */)
       >
-      {
-        s.NumRanges (e.Vars) e.Commands =
-          (e.Vars)
-          ((CmdComment <TextFromPattern e.Pattern> )
-            <SaveBrackets s.NumRanges e.Commands >
-          );
-      }
     >;
+}
+
+GenPattern-Aux {
+  (e.Pattern) s.NumRanges (e.Vars) e.Commands =
+    (e.Vars)
+    (
+      (CmdComment <TextFromPattern e.Pattern>)
+      <SaveBrackets s.NumRanges e.Commands>
+    );
 }
 
 DoGenPattern {
@@ -225,20 +228,23 @@ SaveBrackets {
 DoSaveBrackets {
   s.LastBracket (e.Scanned)
   e.Commands-B (CmdOpenedE AlgLeft s.Num 'e' e.Index) e.Commands-E =
-    <Fetch
+    <DoSaveBrackets-BeforeMakeSavers
+      s.LastBracket
       e.Scanned e.Commands-B (CmdOpenedE AlgLeft s.Num 'e' e.Index)
-      {
-        e.CommandsBeforeEMatch =
-          <DoSaveBrackets-MakeSavers
-            s.LastBracket
-            ( <ExtractBrackets e.CommandsBeforeEMatch> )
-            ( e.CommandsBeforeEMatch )
-            e.Commands-E
-          >;
-      }
+      (e.Commands-E)
     >;
 
   s.LastBracket (e.Scanned) e.Commands = e.Scanned e.Commands;
+}
+
+DoSaveBrackets-BeforeMakeSavers {
+  s.LastBracket e.CommandsBeforeEMatch (e.Commands-E) =
+    <DoSaveBrackets-MakeSavers
+      s.LastBracket
+      ( <ExtractBrackets e.CommandsBeforeEMatch> )
+      ( e.CommandsBeforeEMatch )
+      e.Commands-E
+    >;
 }
 
 DoSaveBrackets-MakeSavers {
@@ -251,17 +257,7 @@ DoSaveBrackets-MakeSavers {
       (e.BoundedBrackets-B e.BoundedBrackets-E)
       (e.Scanned (CmdSave s.Num s.LastBracket))
       <Map
-        {
-          /*
-            Все команды распознавания содержат номер скобок третьим термом,
-            общий формат (s.Command s.Direction s.BracketNum e.Info)
-          */
-          (s.Command^ s.Direction^ s.Num e.Info^) =
-            (s.Command s.Direction s.LastBracket e.Info);
-
-          (s.Command^ s.Direction^ s.OtherNum e.Info^) =
-            (s.Command s.Direction s.OtherNum e.Info);
-        }
+        (DoSaveBrackets-MakeSavers-PatchNum s.Num s.LastBracket)
         e.Commands-B (s.Command s.Direction s.Num e.Args) e.Commands-E
       >
     >;
@@ -270,19 +266,27 @@ DoSaveBrackets-MakeSavers {
     <DoSaveBrackets s.LastBracket (e.Scanned) e.Commands>;
 }
 
-ExtractBrackets {
-  e.Commands =
-    <Brackets-Set
-      <Map
-        {
-          (CmdBrackets s.Direction s.BracketNum s.InnerNum) =
-            s.BracketNum s.InnerNum;
+DoSaveBrackets-MakeSavers-PatchNum {
+  /*
+    Все команды распознавания содержат номер скобок третьим термом,
+    общий формат (s.Command s.Direction s.BracketNum e.Info)
+  */
+  s.Num s.LastBracket (s.Command s.Direction s.Num e.Info) =
+    (s.Command s.Direction s.LastBracket e.Info);
 
-          (s.Command s.Direction s.BracketNum e.Info) = s.BracketNum;
-        }
-        e.Commands
-      >
-    >;
+  s.Num s.LastBracket (s.Command s.Direction s.OtherNum e.Info) =
+    (s.Command s.Direction s.OtherNum e.Info);
+}
+
+ExtractBrackets {
+  e.Commands = <Brackets-Set <Map ExtractBrackets-Command e.Commands>>;
+}
+
+ExtractBrackets-Command {
+  (CmdBrackets s.Direction s.BracketNum s.InnerNum) =
+    s.BracketNum s.InnerNum;
+
+  (s.Command s.Direction s.BracketNum e.Info) = s.BracketNum;
 }
 
 Brackets-Set {
@@ -479,30 +483,9 @@ GeneralizeResult {
       (<Map RepeatedEVariables e.PatternCommands>)
       <Map ClosedEVariables e.PatternCommands>
       <Seq
-        {
-          (e.PatternVars^) (e.ResultVars^) (e.RepeatedEs) e.ClosedEs =
-            (<VarSetUnion (e.PatternVars) (e.ResultVars)>)
-            (<VarSetDifference (e.ResultVars) (e.PatternVars)>)
-            <VarSetDifference (e.ClosedEs) (e.RepeatedEs e.ResultVars)>;
-        }
-        {
-          (e.CommonVars) (e.CopiedVars) e.UnusedClosedEs =
-            (<VarSetDifference (e.CommonVars) (e.UnusedClosedEs)>)
-            (e.CopiedVars)
-            <Map (FilterUnusedCmdClosedE e.UnusedClosedEs) e.PatternCommands>;
-        }
-        {
-          (e.CommonVars) (e.CopiedVars) e.PatternCommands^ =
-            <GenerateResult-OpenELoops
-              <Map MakeDeclaration e.CommonVars>
-              e.PatternCommands
-              (CmdEmptyResult)
-              <Map MakeCopyVar e.CopiedVars>
-              e.ResultAllocCommands
-              e.ResultCommands
-              (CmdReturnResult)
-            >;
-        }
+        MakeVarsSets
+        (FilterCommonVarsAndPatternCommands (e.PatternCommands))
+        (ComposeSentenceCommands (e.ResultAllocCommands e.ResultCommands))
       >
     >;
 }
@@ -570,6 +553,33 @@ MakeCopyVar {
 
   ( s.Usings s.Mode e.Index ) =
     (CmdCopyVar s.Usings s.Mode e.Index);
+}
+
+MakeVarsSets {
+  (e.PatternVars) (e.ResultVars) (e.RepeatedEs) e.ClosedEs =
+    (<VarSetUnion (e.PatternVars) (e.ResultVars)>)
+    (<VarSetDifference (e.ResultVars) (e.PatternVars)>)
+    <VarSetDifference (e.ClosedEs) (e.RepeatedEs e.ResultVars)>;
+}
+
+FilterCommonVarsAndPatternCommands {
+  (e.PatternCommands)
+  (e.CommonVars) (e.CopiedVars) e.UnusedClosedEs =
+    (<VarSetDifference (e.CommonVars) (e.UnusedClosedEs)>)
+    (e.CopiedVars)
+    <Map (FilterUnusedCmdClosedE e.UnusedClosedEs) e.PatternCommands>;
+}
+
+ComposeSentenceCommands {
+  (e.ResultCommands) (e.CommonVars) (e.CopiedVars) e.PatternCommands =
+    <GenerateResult-OpenELoops
+      <Map MakeDeclaration e.CommonVars>
+      e.PatternCommands
+      (CmdEmptyResult)
+      <Map MakeCopyVar e.CopiedVars>
+      e.ResultCommands
+      (CmdReturnResult)
+    >;
 }
 
 GenerateResult-OpenELoops {
