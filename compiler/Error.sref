@@ -66,3 +66,8 @@ $ENTRY EL-Destroy {
     >
     EL-HasErrors;
 }
+
+$ENTRY EL-WarningAt {
+  (ErrorList (e.FileName) e.Errors) t.SrcPos e.Message =
+    <WriteLine e.FileName ':' <StrFromSrcPos t.SrcPos> ':Warning:' e.Message>;
+}

@@ -10,7 +10,7 @@ $EXTERN LexFolding, TkOpenBracket, TkCloseBracket,
 
 //FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
-  EL-AddErrorAt;
+  EL-AddErrorAt, EL-WarningAt;
 
 //FROM SymTable
 $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
@@ -568,6 +568,7 @@ ParsePattern {
   (TkVariable t.SrcPosVar s.Mode e.Index)
   (TkRedefinition t.SrcPosRedef)
   e.Tail =
+    <EL-WarningAt t.ErrorList t.SrcPosRedef 'redefinition'>
     <Fetch
       <CheckAddVariable
         t.ErrorList t.Context
@@ -856,6 +857,7 @@ ParseResult {
   // Лямбда-функция
   (e.Functions) t.ErrorList t.SymTable t.Context
   (e.MultiBracket) (e.Scanned) (TkOpenBlock t.SrcPos) e.Tail =
+    <EL-WarningAt t.ErrorList t.SrcPos 'nested function'>
     <ParseResult-Block
       (e.MultiBracket) (e.Scanned)
       <ParseBlock
