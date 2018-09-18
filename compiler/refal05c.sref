@@ -1,6 +1,5 @@
 //FROM LibraryEx
-$EXTERN ArgList, LoadFile, Fetch, Map, Seq, SaveFile, DelAccumulator, MapReduce,
-  Inc;
+$EXTERN ArgList, LoadFile, Map, SaveFile, DelAccumulator, MapReduce, Inc;
 
 //FROM ParseCmdLine
 $EXTERN ParseCommandLine, CmdLineError, CompileToTarget, CompileList,
@@ -48,15 +47,22 @@ FindFiles-Compilers-SwFound {
     <Map PrintNotFound (NotFound e.FileName) e.Files-E>;
 
   s.CommandLineInfo e.FoundFiles =
-    <Fetch
-      e.FoundFiles
-      // В последовательность:
-      <Seq
-        <RenameFiles s.CommandLineInfo>
-        (Map ProcessEachSource)
-        (CheckCompilationResult s.CommandLineInfo)
+    <CheckCompilationResult
+      s.CommandLineInfo
+      <Map
+        ProcessEachSource
+        <RenameFiles s.CommandLineInfo e.FoundFiles>
       >
     >;
+}
+
+PrintNotFound {
+  (NotFound e.FileName) =
+    <WriteLine 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
+
+  (Output e.FileName) = ;
+
+  (Source (e.Source) e.Output) = ;
 }
 
 ProcessEachSource {
@@ -91,15 +97,6 @@ CreateErrorFile {
   e.ErrorFileName = <SaveFile (e.ErrorFileName)>;
 }
 
-PrintNotFound {
-  (NotFound e.FileName) =
-    <WriteLine 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
-
-  (Output e.FileName) = ;
-
-  (Source (e.Source) e.Output) = ;
-}
-
 Link {
   s.CommandLineInfo e.Files =
     <Link-SwCompileCommand
@@ -118,26 +115,16 @@ QuoteFile {
 }
 
 RenameFiles {
-  s.CommandLineInfo =
+  s.CommandLineInfo e.Files =
     <RenameFiles-SwCompileCommand
-      <s.CommandLineInfo CmdCompileCommand>
+      <s.CommandLineInfo CmdCompileCommand> (e.Files)
     >;
 }
 
 RenameFiles-SwCompileCommand {
-  CmdNone = (Map RenameFiles-DoNothing);
+  CmdNone (e.Files) = e.Files;
 
-  e.CommandLine = RenameFiles-Collisions;
-}
-
-RenameFiles-DoNothing {
-  (Source (e.Source) e.Output) = (Source (e.Source) e.Output);
-
-  (Output e.Output) = (Output e.Output);
-}
-
-RenameFiles-Collisions {
-  e.Files = <ScanCollisions <Map GetFileName e.Files>>;
+  e.CommandLine (e.Files) = <ScanCollisions <Map GetFileName e.Files>>;
 }
 
 GetFileName {
@@ -228,16 +215,12 @@ Renumerate-Each {
 }
 
 RestoreName {
-  (e.FileName s.Num (Output e.OutputName)) =
+  (e.FileName s.Number (Output e.OutputName)) =
     (Output e.OutputName);
 
-  (e.FileName s.Num (Source (e.Source) e.Output)) =
-    (Source (e.Source) <RestoreName-AddNumberToFile s.Num e.Output>);
-}
+  (e.FileName 0 (Source (e.Source) e.Output)) =
+    (Source (e.Source) e.Output);
 
-RestoreName-AddNumberToFile {
-  0 e.Output1 = e.Output1;
-
-  s.Number e.OutName '.cpp' =
-    e.OutName '@' <StrFromInt s.Number> '.cpp';
+  (e.FileName s.Number (Source (e.Source) e.OutName '.cpp')) =
+    (Source (e.Source) e.OutName '@' <StrFromInt s.Number> '.cpp');
 }
