@@ -1,10 +1,8 @@
-$EENUM CmdLineError, CompileToTarget, CompileList, CmdCompileCommand,
-  CmdNone;
+$EENUM CmdLineError, CompileList, CmdCompileCommand, CmdNone;
 
 /**
   <ParseCommandLine e.Arguments>
     == s.CommandLineInfo CompileList (e.Folders) t.FoundedFile*
-    == s.CommandLineInfo CompileToTarget (e.Folders) (e.Source) (e.Target)
     == (CmdLineError e.Message)
 
   t.FoundedFile ::= (e.FileName)

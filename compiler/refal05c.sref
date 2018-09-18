@@ -2,8 +2,7 @@
 $EXTERN ArgList, LoadFile, Map, DelAccumulator, MapReduce, Inc;
 
 //FROM ParseCmdLine
-$EXTERN ParseCommandLine, CmdLineError, CompileToTarget, CompileList,
-  CmdCompileCommand, CmdNone;
+$EXTERN ParseCommandLine, CmdLineError, CompileList, CmdCompileCommand, CmdNone;
 
 //FROM Library
 $EXTERN WriteLine, Success, Fails, System, Exit, StrFromInt;
@@ -32,9 +31,6 @@ Main {
 FindFiles-Compilers {
   (CmdLineError e.Message) =
     <WriteLine 'COMMAND LINE ERROR: ' e.Message>;
-
-  s.CommandLineInfo CompileToTarget (e.Folders) (e.Source) (e.Output) =
-    ;
 
   s.CommandLineInfo CompileList (e.Folders) e.Files =
     <FindFiles-Compilers-SwFound
