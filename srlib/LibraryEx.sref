@@ -106,9 +106,6 @@ $ENTRY Dec {
   s.Num = <Sub s.Num 1>;
 }
 
-//FROM Library
-//$EXTERN Fails;
-
 FastIntFromStr-Guard {
   Success s.Number = s.Number;
 }
