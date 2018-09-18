@@ -58,13 +58,12 @@ $ENTRY EL-Destroy {
   (ErrorList (e.FileName)) = EL-NoErrors;
 
   (ErrorList (e.FileName) e.Errors) =
-    <Map
-      {
-        (e.Line) = <WriteLine e.Line>;
-      }
-      e.Errors
-    >
+    <Map WriteBracketedLine e.Errors>
     EL-HasErrors;
+}
+
+WriteBracketedLine {
+  (e.Line) = <WriteLine e.Line>;
 }
 
 $ENTRY EL-WarningAt {

@@ -31,16 +31,13 @@ $ENUM Declared, Defined;
 
 PatchReferences {
   (e.References) e.Name =
-    (
-      <Map
-        {
-          (t.SrcPos e.Name) = /* пусто */;
+    (<Map (PatchReferences-FilterThis e.Name) e.References>);
+}
 
-          (t.SrcPos e.Name^) = (t.SrcPos e.Name);
-        }
-        e.References
-      >
-    );
+PatchReferences-FilterThis {
+  e.Name (t.SrcPos e.Name) = /* пусто */;
+
+  e.Name (t.SrcPos e.OtherName) = (t.SrcPos e.OtherName);
 }
 
 /**
@@ -118,16 +115,15 @@ $ENTRY ST-AddFunctionCall {
 */
 $ENTRY ST-CheckUnresolved {
   t.ErrorList (SymTable e.Names (e.References)) =
-    <Reduce
-      {
-        t.ErrorList^ (t.SrcPos e.Name) =
-          <EL-AddErrorAt
-            t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
-          >;
-      }
-      t.ErrorList e.References
-    >
+    <Reduce AddUnresolved t.ErrorList e.References>
     (SymTable e.Names (e.References));
+}
+
+AddUnresolved {
+  t.ErrorList (t.SrcPos e.Name) =
+    <EL-AddErrorAt
+      t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
+    >;
 }
 
 /**
@@ -135,14 +131,12 @@ $ENTRY ST-CheckUnresolved {
     == (s.ScopeClass e.Name)*
 */
 $ENTRY ST-AllFunctions {
-  (SymTable e.Names (e.References)) =
-    <Map
-      {
-        (Declared e.Name) = (GN-Entry e.Name);
-        (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
-      }
-      e.Names
-    >;
+  (SymTable e.Names (e.References)) = <Map FunctionFromKnown e.Names>;
+}
+
+FunctionFromKnown {
+  (Declared e.Name) = (GN-Entry e.Name);
+  (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
 }
 
 $ENTRY ST-GetAnyName {

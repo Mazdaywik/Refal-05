@@ -1,5 +1,5 @@
 //FROM LibraryEx
-$EXTERN Fetch, Inc, Dec;
+$EXTERN Inc, Dec;
 
 //FROM Library
 $EXTERN Success;
@@ -156,37 +156,42 @@ $ENTRY Cntx-AddNewVariable {
     e.LocalVars (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) e.Stack
   )
   s.Mode e.Index =
-    <Fetch
-      e.LocalVars
-      {
-        e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E =
-          (Context
-            s.StackDepth
-            e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E
-            (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
-            e.Stack
-          )
-          AlreadyBounded s.Depth;
-
-        e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E =
-          (Context
-            s.StackDepth
-            e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E
-            (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
-            e.Stack
-          )
-          InvalidMode s.VarDepth s.OldMode;
-
-        e.LocalVars^ =
-          (Context
-            s.StackDepth
-            (s.Mode e.Index s.StackDepth) e.LocalVars
-            (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
-            e.Stack
-          )
-          Success s.StackDepth;
-      }
+    <AddNewVariable-SwKnown
+      s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
+      s.Mode (e.Index) e.LocalVars
     >;
+}
+
+AddNewVariable-SwKnown {
+  s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
+  s.Mode (e.Index) e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E =
+    (Context
+      s.StackDepth
+      e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E
+      (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
+      e.Stack
+    )
+    AlreadyBounded s.Depth;
+
+  s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
+  s.Mode (e.Index) e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E =
+    (Context
+      s.StackDepth
+      e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E
+      (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
+      e.Stack
+    )
+    InvalidMode s.VarDepth s.OldMode;
+
+  s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
+  s.Mode (e.Index) e.LocalVars =
+    (Context
+      s.StackDepth
+      (s.Mode e.Index s.StackDepth) e.LocalVars
+      (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
+      e.Stack
+    )
+    Success s.StackDepth;
 }
 
 $EENUM ExistVariable, VariableNotFound;

@@ -1,5 +1,5 @@
 //FROM LibraryEx
-$EXTERN Fetch, MapReduce, Dec;
+$EXTERN MapReduce, Dec;
 
 //FROM Library
 $EXTERN StrFromInt;
@@ -94,16 +94,16 @@ $ENTRY GenSentence {
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_right( ' <BracketsVars 0> ' );')
     ('    refalrts::start_sentence();')
-    <Fetch
+    <SkipIndentAccum
       <MapReduce GenCommand ('    ' /* отступ */) e.Algorithm>
-      {
-        ('    ') /* отступ должен остаться тем же */
-        e.Generated =
-          e.Generated;
-      }
     >
     ('  } while ( 0 );')
     ();
+}
+
+SkipIndentAccum {
+  /* отступ должен остаться тем же */
+  ('    ') e.Generated = e.Generated;
 }
 
 BracketsVar-B {

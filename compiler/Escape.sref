@@ -1,6 +1,3 @@
-//FROM LibraryEx
-$EXTERN Fetch;
-
 //FROM Library
 $EXTERN Compare, Ord, Div, Mod;
 
@@ -19,16 +16,17 @@ $ENTRY EscapeChar {
   '\\' = '\\\\';
 
   s.Other =
-    <Fetch
-      <Compare s.Other ' '> <Ord s.Other>
-      {
-        '<' s.Code =
-          '\\'
-          <OctDigit <Div s.Code 64>>
-          <OctDigit <Mod <Div s.Code 8> 8>>
-          <OctDigit <Mod s.Code 8>>;
-
-        s.Compare s.Code = s.Other;
-      }
+    <EscapeChar-SwCompare
+      s.Other <Compare s.Other ' '> <Ord s.Other>
     >;
+}
+
+EscapeChar-SwCompare {
+  s.Other '<' s.Code =
+    '\\'
+    <OctDigit <Div s.Code 64>>
+    <OctDigit <Mod <Div s.Code 8> 8>>
+    <OctDigit <Mod s.Code 8>>;
+
+  s.Other s.Compare s.Code = s.Other;
 }

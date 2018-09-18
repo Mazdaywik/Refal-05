@@ -1,6 +1,5 @@
 //FROM LibraryEx
-$EXTERN Fetch, Map, LoadFile, FastIntFromStr, Reduce, Inc, DelAccumulator,
-  MapReduce;
+$EXTERN Map, LoadFile, FastIntFromStr, Reduce, Inc, DelAccumulator, MapReduce;
 
 //FROM Library
 $EXTERN StrFromInt, Chr, Add, Mul;
@@ -13,18 +12,15 @@ LinearizeLine {
 $ENTRY LexFolding {
   e.FileName =
     <NormalizeTokens
-      <Root ()
-        <Fetch
-          <Map LinearizeLine <LoadFile e.FileName>>
-          {
-            // Игнорируем метку порядка байт для UTF-8
-            '\xEF\xBB\xBF' e.Content = e.Content;
-
-            e.Content = e.Content;
-          }
-        >
-      >
+      <Root () <SkipBOM <Map LinearizeLine <LoadFile e.FileName>>>>
     >;
+}
+
+SkipBOM {
+  // Игнорируем метку порядка байт для UTF-8
+  '\xEF\xBB\xBF' e.Content = e.Content;
+
+  e.Content = e.Content;
 }
 
 $EENUM
@@ -151,14 +147,11 @@ NormalizeToken {
 
 CharFromNum {
   s.Base e.Chars =
-    <Chr
-      <Reduce
-        {
-          s.Accum s.Next = <Add <Mul s.Accum s.Base> s.Next>;
-        }
-        0 <Map DigitFromChar e.Chars>
-      >
-    >;
+    <Chr <Reduce (CharFromNum-AddDigit s.Base) 0 <Map DigitFromChar e.Chars>>>;
+}
+
+CharFromNum-AddDigit {
+  s.Base s.Accum s.Next = <Add <Mul s.Accum s.Base> s.Next>;
 }
 
 DoCharFromNum {
@@ -173,17 +166,11 @@ DoCharFromNum {
 }
 
 DigitFromChar {
-  s.Char =
-    <Fetch
-      (0 '0') (1 '1') (2 '2') (3 '3')
-      (4 '4') (5 '5') (6 '6') (7 '7')
-      (8 '8') (9 '9') (10 'Aa') (11 'Bb')
-      (12 'Cc') (13 'Dd') (14 'Ee') (15 'Ff')
-      {
-        e.Assoc-B (s.Digit e.Vars-B s.Char e.Vars-E) e.Assoc-E =
-          s.Digit;
-      }
-    >;
+  '0' = 0; '1' = 1; '2' = 2; '3' = 3; '4' = 4;
+  '5' = 5; '6' = 6; '7' = 7; '8' = 8; '9' = 9;
+
+  'A' = 10; 'B' = 11; 'C' = 12; 'D' = 13; 'E' = 14; 'F' = 15;
+  'a' = 10; 'b' = 11; 'c' = 12; 'd' = 13; 'e' = 14; 'f' = 15;
 }
 
 ValidDirective {
