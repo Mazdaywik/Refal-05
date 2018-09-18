@@ -3,7 +3,8 @@ $EXTERN ArgList, LoadFile, Fetch, Map, Seq, SaveFile, DelAccumulator, MapReduce,
   Inc;
 
 //FROM ParseCmdLine
-$EXTERN ParseCommandLine, CmdLineError, CompileToTarget, CompileList;
+$EXTERN ParseCommandLine, CmdLineError, CompileToTarget, CompileList,
+  CmdCompileCommand, CmdNone, CmdErrorFile;
 
 //FROM Library
 $EXTERN WriteLine, Success, Fails, System, Exit, StrFromInt;
@@ -28,8 +29,6 @@ Main {
       <ParseCommandLine e.Arguments>
     >;
 }
-
-$LABEL CCompileCommand, CNone, CErrorFile;
 
 FindFiles-Compilers {
   (CmdLineError e.Message) =
@@ -73,9 +72,9 @@ FindFiles-Compilers {
               {
                  e.Outputs-B Fails e.Outputs-E =
                    <Fetch
-                     <s.CommandLineInfo #CErrorFile>
+                     <s.CommandLineInfo CmdErrorFile>
                      {
-                       #CNone = ;
+                       CmdNone = ;
 
                        e.ErrorFileName = <SaveFile (e.ErrorFileName)>;
                      }
@@ -107,9 +106,9 @@ PrintNotFound {
 Link {
   s.CommandLineInfo e.Files =
     <Fetch
-      <s.CommandLineInfo #CCompileCommand>
+      <s.CommandLineInfo CmdCompileCommand>
       {
-        #CNone = ;
+        CmdNone = ;
 
         e.CommandLine =
           <System
@@ -128,9 +127,9 @@ Link {
 RenameFiles {
   s.CommandLineInfo =
     <Fetch
-      <s.CommandLineInfo #CCompileCommand>
+      <s.CommandLineInfo CmdCompileCommand>
       {
-        #CNone =
+        CmdNone =
           <ForEach
             {
               (Source (e.Source) e.Output) = (Source (e.Source) e.Output);

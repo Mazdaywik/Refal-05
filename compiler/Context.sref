@@ -1,6 +1,9 @@
 //FROM LibraryEx
 $EXTERN Fetch, Inc, Dec;
 
+//FROM Library
+$EXTERN Success;
+
 
 /**
   В данном модуле описывается контекст -- обобщение понятия таблицы
@@ -69,12 +72,12 @@ $ENTRY Cntx-Destroy {
   [Context 0] = ;
 }
 
-$LABEL CSuccess, CInvalidMode;
+$EENUM InvalidMode;
 
 /**
   <Cntx-AddVariable t.Context s.Mode e.Index>
-    == t.Context # CSuccess s.Depth
-    == t.Context # CInvalidMode s.Depth s.OldMode
+    == t.Context Success s.Depth
+    == t.Context InvalidMode s.Depth s.OldMode
 */
 $ENTRY Cntx-AddVariable {
   [Context
@@ -96,7 +99,7 @@ $ENTRY Cntx-AddVariable {
       (s.Mode e.Index s.VarDepth)
       e.Variables-E
     ]
-    # CSuccess s.VarDepth;
+    Success s.VarDepth;
 
   [Context
     s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
@@ -105,11 +108,11 @@ $ENTRY Cntx-AddVariable {
     [Context
       s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
     ]
-    # CInvalidMode s.VarDepth s.OldMode;
+    InvalidMode s.VarDepth s.OldMode;
 
   [Context s.StackDepth e.Variables] s.Mode e.Index =
     [Context s.StackDepth (s.Mode e.Index s.StackDepth) e.Variables]
-    # CSuccess s.StackDepth;
+    Success s.StackDepth;
 }
 
 ShiftVariable {
@@ -132,20 +135,20 @@ ShiftVariable-AddToFree {
     e.Variables (s.Mode e.Index s.VarDepth);
 }
 
-$LABEL CAlreadyBounded;
+$EENUM AlreadyBounded;
 
 /**
   <Cntx-AddNewVariable t.Context s.Mode e.Index>
-    == t.Context # CSuccess s.Depth
-    == t.Context # CInvalidMode s.Depth s.OldMode
-    == t.Context # CAlreadyBounded s.Depth
+    == t.Context Success s.Depth
+    == t.Context InvalidMode s.Depth s.OldMode
+    == t.Context AlreadyBounded s.Depth
 
   Эта функция в отличие от Cntx-AddVariable добавляет переменную как
   имеющую область видимости начиная с текущей функции: если в области
   видимости имеется переменная с тем же именем, что и в данной функции,
   то она сокрывается.
   Если переменная уже упоминалась ранее в текущем образце, функция возвращает
-  # CAlreadyBounded, что является ошибкой.
+  AlreadyBounded, что является ошибкой.
 */
 $ENTRY Cntx-AddNewVariable {
   [Context
@@ -163,7 +166,7 @@ $ENTRY Cntx-AddNewVariable {
             (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
             e.Stack
           ]
-          # CAlreadyBounded s.Depth;
+          AlreadyBounded s.Depth;
 
         e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E =
           [Context
@@ -172,7 +175,7 @@ $ENTRY Cntx-AddNewVariable {
             (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
             e.Stack
           ]
-          # CInvalidMode s.VarDepth s.OldMode;
+          InvalidMode s.VarDepth s.OldMode;
 
         e.LocalVars^ =
           [Context
@@ -181,18 +184,18 @@ $ENTRY Cntx-AddNewVariable {
             (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
             e.Stack
           ]
-          # CSuccess s.StackDepth;
+          Success s.StackDepth;
       }
     >;
 }
 
-$LABEL CExistVariable, CNotFound;
+$EENUM ExistVariable, VariableNotFound;
 
 /**
   <Cntx-CheckVariable t.Context s.Mode e.Index>
-    == t.Context # CExistVariable s.Depth
-    == t.Context # CInvalidMode s.Depth s.OldMode
-    == t.Context # CNotFound
+    == t.Context ExistVariable s.Depth
+    == t.Context InvalidMode s.Depth s.OldMode
+    == t.Context VariableNotFound
 */
 $ENTRY Cntx-CheckVariable {
   [Context
@@ -206,7 +209,7 @@ $ENTRY Cntx-CheckVariable {
       (s.Mode e.Index s.VarDepth)
       e.Variables-E
     ]
-    # CExistVariable s.VarDepth;
+    ExistVariable s.VarDepth;
 
   [Context
     s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
@@ -215,10 +218,10 @@ $ENTRY Cntx-CheckVariable {
     [Context
       s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
     ]
-    # CInvalidMode 00 s.OldMode;
+    InvalidMode 00 s.OldMode;
 
   [Context s.StackDepth e.Variables] s.Mode e.Index =
-    [Context s.StackDepth e.Variables] # CNotFound;
+    [Context s.StackDepth e.Variables] VariableNotFound;
 }
 
 /**

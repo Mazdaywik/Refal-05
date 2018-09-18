@@ -1,5 +1,5 @@
 //FROM inifile
-$EXTERN LoadIniFile;
+$EXTERN LoadIniFile, BadLine, EmptyParameterName, ReassignParameter, General;
 
 //FROM LibraryEx
 $EXTERN ArgList, WriteLine, Map, Fetch;
@@ -10,8 +10,6 @@ $ENTRY Go {
 
 //FROM Library
 $EXTERN StrFromInt;
-
-$LABEL BadLine, EmptyParameterName, ReassignParameter;
 
 Main {
   (e.ProgName) =
@@ -32,16 +30,16 @@ Main {
                 <WriteLine 'Errors:'>
                 <Map
                   {
-                    (s.LineNumber #BadLine) =
+                    (s.LineNumber BadLine) =
                       <WriteLine '* Bad line at ' <StrFromInt s.LineNumber>>;
 
-                    (s.LineNumber #EmptyParameterName) =
+                    (s.LineNumber EmptyParameterName) =
                       <WriteLine
                         '* Expected parameter name before ''='' at '
                         <StrFromInt s.LineNumber>
                       >;
 
-                    (s.LineNumber #ReassignParameter e.Name) =
+                    (s.LineNumber ReassignParameter e.Name) =
                       <WriteLine
                         '* Reassign parameter ' e.Name ' at '
                         <StrFromInt s.LineNumber>
@@ -58,8 +56,6 @@ Main {
     >;
 }
 
-$LABEL General;
-
 WriteLineAt {
   s.LineNumber e.Text =
     <WriteLine <StrFromInt s.LineNumber> ': ' e.Text>;
@@ -71,10 +67,10 @@ PrintIni {
     <WriteLine 'Content of ' e.FileName>
     <Map
       {
-        (s.SectionPos #General) =
+        (s.SectionPos General) =
           <WriteLine '(Default section) - empty'>;
 
-        (s.SectionPos #General e.Parameters) =
+        (s.SectionPos General e.Parameters) =
           <WriteLine '(Default section)'>
           <PrintParameters e.Parameters>;
 

@@ -2,7 +2,8 @@
 $EXTERN Fetch, Inc, Map, Seq, Dec;
 
 //FROM Lexer
-$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseADT;
+$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall,
+  TkCloseADT;
 
 //FROM Library
 $EXTERN StrFromInt;
@@ -35,7 +36,7 @@ $EENUM AlgLeft, AlgRight;
   и из Driver'а, и из Generator'а.
   Остаётся только импортировать отсюда.
 */
-$EENUM TkIdentifier;
+$EENUM TkIdentifier, Brackets, ADT-Brackets, CallBrackets;
 
 /*
 Команды распознавания
@@ -84,8 +85,6 @@ GenPattern {
       }
     >;
 }
-
-$LABEL Brackets, ADT-Brackets, CallBrackets;
 
 DoGenPattern {
   // Распознавание литералов (символьных, целочисленных, имён)
@@ -147,7 +146,7 @@ DoGenPattern {
 
   // Распознавание скобок
   s.NumRanges e.Ranges-B
-  (s.Num (#Brackets e.SubRange) e.Range)
+  (s.Num (Brackets e.SubRange) e.Range)
   e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -157,7 +156,7 @@ DoGenPattern {
     >;
 
   s.NumRanges e.Ranges-B
-  (s.Num e.Range (#Brackets e.SubRange))
+  (s.Num e.Range (Brackets e.SubRange))
   e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -168,7 +167,7 @@ DoGenPattern {
 
   // Распознавание АТД-скобок
   s.NumRanges e.Ranges-B
-  (s.Num (#ADT-Brackets (e.Name) e.SubRange) e.Range)
+  (s.Num (ADT-Brackets (e.Name) e.SubRange) e.Range)
   e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -179,7 +178,7 @@ DoGenPattern {
     >;
 
   s.NumRanges e.Ranges-B
-  (s.Num e.Range (#ADT-Brackets (e.Name) e.SubRange))
+  (s.Num e.Range (ADT-Brackets (e.Name) e.SubRange))
   e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -346,10 +345,10 @@ Brackets-Set {
 }
 
 TextFromPattern {
-  (#Brackets e.Inner) e.Tail =
+  (Brackets e.Inner) e.Tail =
     ' (' <TextFromPattern e.Inner> ' )' <TextFromPattern e.Tail>;
 
-  (#ADT-Brackets (e.Name) e.Inner) e.Tail =
+  (ADT-Brackets (e.Name) e.Inner) e.Tail =
     ' [' e.Name ' ' <TextFromPattern e.Inner> ' ]' <TextFromPattern e.Tail>;
 
   (TkChar s.Char) e.Tail =
@@ -420,8 +419,6 @@ $EENUM
   построение результата (в обратном порядке)
 */
 
-$LABEL CloseCall;
-
 DoGenResult {
   // Создаём литералы
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter (TkChar s.Value) e.Result =
@@ -462,7 +459,7 @@ DoGenResult {
     Обработка открывающих скобок всех трёх типов осуществляется похоже.
   */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (#Brackets e.InBrackets) e.Result =
+  s.Counter (Brackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElOpenBracket))
@@ -471,16 +468,16 @@ DoGenResult {
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (#CallBrackets e.InBrackets) e.Result =
+  s.Counter (CallBrackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElOpenCall))
       ((CmdInsertElem s.Counter) e.Commands)
-      <Inc s.Counter> e.InBrackets (#CloseCall s.Counter) e.Result
+      <Inc s.Counter> e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (#ADT-Brackets (e.Name) e.InBrackets) e.Result =
+  s.Counter (ADT-Brackets (e.Name) e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElOpenADT))
@@ -520,7 +517,7 @@ DoGenResult {
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (#CloseCall s.OpenCounter) e.Result =
+  s.Counter (TkCloseCall s.OpenCounter) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElCloseCall))

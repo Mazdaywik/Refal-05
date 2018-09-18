@@ -1,12 +1,4 @@
-$LABEL Ident2;
-
-$EXTERN CreateIdent, WriteLine;
-
-TestIdent {
-  # Ident2 = <WriteLine 'Test ident success'>;
-
-  s.Other = <WriteLine 'Test ident fails'>;
-}
+$EXTERN WriteLine;
 
 $ENUM Tag1, Tag2;
 
@@ -30,14 +22,13 @@ $EXTERN SymbCompare;
 $ENUM A;
 
 TestOrder {
-  = <WriteLine <SymbCompare # Ident2 A>>;
+  = <WriteLine <SymbCompare 'I' A>>;
 }
 
 $ENTRY Go {
   =
-    <TestIdent <CreateIdent>>
     <TestADT>
-    //<TestDump # Ident2 [Tag1 'x'] [Tag2 100]>
-    <WriteLine 'Test print ' # Ident2 [Tag1 [Tag2 # Ident2 ]]>
+    //<TestDump [Tag1 'x'] [Tag2 100]>
+    <WriteLine 'Test print ' [Tag1 [Tag2 ]]>
     <TestOrder>;
 }

@@ -5,7 +5,8 @@ $EXTERN Fetch, Seq, Map, SaveFile, Sort, Inc, Dec;
 $EXTERN LexFolding, TkOpenBracket, TkCloseBracket, TkOpenADT, TkCloseADT,
   TkOpenCall, TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon,
   EEnum, Enum, Extern, Ident, Entry, TkComma, TkOpenBlock, TkCloseBlock,
-  TkVariable, TkReplace, TkChar, TkNumber, TkIdentMarker, TkRedefinition;
+  TkVariable, TkReplace, TkChar, TkNumber, TkIdentMarker, TkRedefinition,
+  TkOpen, TkClose;
 
 //FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
@@ -22,15 +23,15 @@ $EXTERN Success, Fails, StrFromInt;
 //FROM Generator
 $EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward, GenIdent,
   GenCommonTailer, GenEEnum, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
-  GenFnEnd;
+  GenFnEnd, GN-CreateClosure;
 
 //FROM Context
 $EXTERN Cntx-Create, Cntx-Destroy, Cntx-PushScope, Cntx-PopScope,
-  Cntx-ResetAfterSentence, Cntx-AddNewVariable, Cntx-AddVariable,
-  Cntx-CheckVariable;
+  Cntx-ResetAfterSentence, Cntx-AddNewVariable, Cntx-AddVariable, InvalidMode,
+  AlreadyBounded, Cntx-CheckVariable, ExistVariable, VariableNotFound;
 
 //FROM Algorithm
-$EXTERN MakeAlgorithm, TkIdentifier;
+$EXTERN MakeAlgorithm, TkIdentifier, Brackets, ADT-Brackets, CallBrackets;
 
 
 /**
@@ -74,17 +75,15 @@ $ENTRY CompileFile {
     >;
 }
 
-$LABEL COpen, CClose;
-
 PrepareBracket {
-  (TkOpenBracket t.SrcPos) = (# COpen t.SrcPos TkOpenBracket);
-  (TkCloseBracket t.SrcPos) = (# CClose t.SrcPos TkCloseBracket);
+  (TkOpenBracket t.SrcPos) = (TkOpen t.SrcPos TkOpenBracket);
+  (TkCloseBracket t.SrcPos) = (TkClose t.SrcPos TkCloseBracket);
 
-  (TkOpenADT t.SrcPos) = (# COpen t.SrcPos TkOpenADT);
-  (TkCloseADT t.SrcPos) = (# CClose t.SrcPos TkCloseADT);
+  (TkOpenADT t.SrcPos) = (TkOpen t.SrcPos TkOpenADT);
+  (TkCloseADT t.SrcPos) = (TkClose t.SrcPos TkCloseADT);
 
-  (TkOpenCall t.SrcPos) = (# COpen t.SrcPos TkOpenCall);
-  (TkCloseCall t.SrcPos) = (# CClose t.SrcPos TkCloseCall);
+  (TkOpenCall t.SrcPos) = (TkOpen t.SrcPos TkOpenCall);
+  (TkCloseCall t.SrcPos) = (TkClose t.SrcPos TkCloseCall);
 
   t.OtherToken = t.OtherToken;
 }
@@ -302,9 +301,7 @@ CreateLambdaName {
     'lambda_' e.Name '_' <StrFromInt s.Number>;
 }
 
-$LABEL CLambdaScope;
-
-$LABEL CLambdaName;
+$ENUM LambdaName;
 
 ParseFunction {
   s.ScopeClass (e.Name) t.ErrorList t.SymTable
@@ -349,23 +346,21 @@ ParseFunction {
     t.SymTable t.Unexpected e.Tail;
 }
 
-$LABEL Brackets, ADT-Brackets, CallBrackets;
-
 ResolveLambdaName {
   (e.MainName) e.Result =
     <Map
       {
-        (TkName #CLambdaName s.Number) =
+        (TkName LambdaName s.Number) =
           (TkName <CreateLambdaName e.MainName s.Number>);
 
-        (#Brackets e.SubResult) =
-          (#Brackets <ResolveLambdaName (e.MainName) e.SubResult>);
+        (Brackets e.SubResult) =
+          (Brackets <ResolveLambdaName (e.MainName) e.SubResult>);
 
-        (#ADT-Brackets (e.Name) e.SubResult) =
-          (#ADT-Brackets (e.Name) <ResolveLambdaName (e.MainName) e.SubResult>);
+        (ADT-Brackets (e.Name) e.SubResult) =
+          (ADT-Brackets (e.Name) <ResolveLambdaName (e.MainName) e.SubResult>);
 
-        (#CallBrackets e.SubResult) =
-          (#CallBrackets <ResolveLambdaName (e.MainName) e.SubResult>);
+        (CallBrackets e.SubResult) =
+          (CallBrackets <ResolveLambdaName (e.MainName) e.SubResult>);
 
         t.OtherTerm = t.OtherTerm;
       }
@@ -491,7 +486,7 @@ CreateContext {
   e.Context =
     <Map
       {
-        ('e' e.Index) = (#Brackets (TkVariable 'e' e.Index));
+        ('e' e.Index) = (Brackets (TkVariable 'e' e.Index));
         (s.Mode e.Index) = (TkVariable s.Mode e.Index);
       }
       e.Context
@@ -561,8 +556,6 @@ ParseSentence {
       >
     >;
 }
-
-$LABEL CSuccess, CInvalidMode, CAlreadyBounded;
 
 ParsePattern {
   // Обработка литералов атомов
@@ -662,32 +655,32 @@ ParsePattern {
   */
 
   t.ErrorList t.SymTable t.Context (e.MultiBracket)
-  (e.Scanned) (# COpen t.SrcPos TkOpenBracket) e.Tail =
+  (e.Scanned) (TkOpen t.SrcPos TkOpenBracket) e.Tail =
     <ParsePattern
       t.ErrorList t.SymTable t.Context
       (
         e.MultiBracket
-        (#Brackets t.SrcPos TkCloseBracket e.Scanned)
+        (Brackets t.SrcPos TkCloseBracket e.Scanned)
       )
       () e.Tail
     >;
 
   t.ErrorList t.SymTable t.Context (e.MultiBracket)
   (e.Scanned)
-  (# COpen t.SrcPosBracket TkOpenADT) (TkName t.SrcPosName e.Name) e.Tail =
+  (TkOpen t.SrcPosBracket TkOpenADT) (TkName t.SrcPosName e.Name) e.Tail =
     <ParsePattern
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPosName e.Name>
       t.Context
       (
         e.MultiBracket
-        (#ADT-Brackets t.SrcPosBracket TkCloseADT e.Scanned)
+        (ADT-Brackets t.SrcPosBracket TkCloseADT e.Scanned)
       )
       ((e.Name)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.Context (e.MultiBracket)
   (e.Scanned)
-  (# COpen t.SrcPos TkOpenADT) e.Tail =
+  (TkOpen t.SrcPos TkOpenADT) e.Tail =
     <ParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Expected name after "["'
@@ -695,14 +688,14 @@ ParsePattern {
       t.SymTable t.Context
       (
         e.MultiBracket
-        (#ADT-Brackets t.SrcPos TkCloseADT e.Scanned)
+        (ADT-Brackets t.SrcPos TkCloseADT e.Scanned)
       )
       ((<ST-GetAnyName t.SymTable>)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.Context (e.MultiBracket)
   (e.Scanned)
-  (# COpen t.SrcPos TkOpenCall) e.Tail =
+  (TkOpen t.SrcPos TkOpenCall) e.Tail =
     <ParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Unexpected call bracket in pattern expression'
@@ -710,7 +703,7 @@ ParsePattern {
       t.SymTable t.Context
       (
         e.MultiBracket
-        (#Brackets t.SrcPos TkCloseCall e.Scanned)
+        (Brackets t.SrcPos TkCloseCall e.Scanned)
       )
       () e.Tail
     >;
@@ -720,7 +713,7 @@ ParsePattern {
     e.MultiBracket
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
   )
-  (e.InnerScanned) (# CClose t.CloseSrcPos s.CloseBracket) e.Tail =
+  (e.InnerScanned) (TkClose t.CloseSrcPos s.CloseBracket) e.Tail =
     <ParsePattern
       t.ErrorList t.SymTable t.Context (e.MultiBracket)
       (e.Scanned (s.BracketsSign e.InnerScanned))
@@ -732,7 +725,7 @@ ParsePattern {
     e.MultiBracket
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
   )
-  (e.InnerScanned) (# CClose t.SrcPos s.OtherCloseBracket) e.Tail =
+  (e.InnerScanned) (TkClose t.SrcPos s.OtherCloseBracket) e.Tail =
     <ParsePattern
       <EL-AddErrorAt
         t.ErrorList t.InnerSrcPos
@@ -740,11 +733,11 @@ ParsePattern {
       >
       t.SymTable t.Context (e.MultiBracket)
       (e.Scanned (s.BracketsSign e.InnerScanned))
-      (# CClose t.SrcPos s.OtherCloseBracket) e.Tail
+      (TkClose t.SrcPos s.OtherCloseBracket) e.Tail
     >;
 
   t.ErrorList t.SymTable t.Context ()
-  (e.Scanned) (# CClose t.SrcPos s.CloseBracket) e.Tail =
+  (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
     <ParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos
@@ -791,16 +784,16 @@ CheckAddVariable {
     <Fetch
       <s.FnContextModifier t.Context s.Mode e.Index>
       {
-        t.Context^ # CSuccess s.Depth =
+        t.Context^ Success s.Depth =
           t.ErrorList t.Context s.Mode s.Depth;
 
-        t.Context^ # CInvalidMode s.Depth s.OldMode =
+        t.Context^ InvalidMode s.Depth s.OldMode =
           <InvalidModeVariableError
             t.ErrorList t.SrcPos s.OldMode s.Mode e.Index
           >
           t.Context s.OldMode s.Depth;
 
-        t.Context^ # CAlreadyBounded s.Depth =
+        t.Context^ AlreadyBounded s.Depth =
           <EL-AddErrorAt
             t.ErrorList t.SrcPos
             'Variable hide operator^ must be applied to first occurence of '
@@ -815,9 +808,9 @@ StrFromBracket {
   TkOpenBracket = '('; TkCloseBracket = ')';
   TkOpenCall = '<'; TkCloseCall = '>';
   TkOpenADT = '['; TkCloseADT = ']';
-  #Brackets = '(';
-  #ADT-Brackets = '[';
-  #CallBrackets = '<';
+  Brackets = '(';
+  ADT-Brackets = '[';
+  CallBrackets = '<';
 }
 
 /*
@@ -912,20 +905,20 @@ ParseResult {
   (e.Functions) t.ErrorList t.SymTable t.Context
   (e.MultiBracket)
   (e.Scanned)
-  (# COpen t.SrcPosADT TkOpenADT) (TkName t.SrcPosName e.Name) e.Tail =
+  (TkOpen t.SrcPosADT TkOpenADT) (TkName t.SrcPosName e.Name) e.Tail =
     <ParseResult
       (e.Functions)
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPosName e.Name>
       t.Context
       (
         e.MultiBracket
-        (#ADT-Brackets t.SrcPosADT TkCloseADT e.Scanned)
+        (ADT-Brackets t.SrcPosADT TkCloseADT e.Scanned)
       )
       ((e.Name)) e.Tail
     >;
 
   (e.Functions) t.ErrorList t.SymTable t.Context
-  (e.MultiBracket) (e.Scanned) (# COpen t.SrcPos TkOpenADT) e.Tail =
+  (e.MultiBracket) (e.Scanned) (TkOpen t.SrcPos TkOpenADT) e.Tail =
     <ParseResult
       (e.Functions)
       <EL-AddErrorAt
@@ -934,14 +927,14 @@ ParseResult {
       t.SymTable t.Context
       (
         e.MultiBracket
-        (#ADT-Brackets t.SrcPos TkCloseADT e.Scanned)
+        (ADT-Brackets t.SrcPos TkCloseADT e.Scanned)
       )
       ((<ST-GetAnyName t.SymTable>)) e.Tail
     >;
 
   // Структурные и угловые скобки обрабатываются одинаково
   (e.Functions) t.ErrorList t.SymTable t.Context
-  (e.MultiBracket) (e.Scanned) (# COpen t.SrcPos s.OpenBracket) e.Tail =
+  (e.MultiBracket) (e.Scanned) (TkOpen t.SrcPos s.OpenBracket) e.Tail =
     <ParseResult
       (e.Functions) t.ErrorList t.SymTable t.Context
       (
@@ -950,8 +943,8 @@ ParseResult {
           <Fetch
             s.OpenBracket
             {
-              TkOpenBracket = #Brackets;
-              TkOpenCall = #CallBrackets;
+              TkOpenBracket = Brackets;
+              TkOpenCall = CallBrackets;
             }
           >
           t.SrcPos
@@ -974,7 +967,7 @@ ParseResult {
     e.MultiBracket
     (s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned)
   )
-  (e.InnerScanned) (# CClose t.SrcPos s.CloseBracket) e.Tail =
+  (e.InnerScanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
     <ParseResult
       (e.Functions) t.ErrorList t.SymTable t.Context
       (e.MultiBracket) (e.Scanned (s.BracketsSign e.InnerScanned))
@@ -1011,7 +1004,7 @@ ParseResult {
     >;
 
   (e.Functions) t.ErrorList t.SymTable t.Context
-  () (e.Scanned) (# CClose t.SrcPos s.CloseBracket) e.Tail =
+  () (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
     <ParseResult
       (e.Functions)
       <EL-AddErrorAt
@@ -1028,23 +1021,21 @@ ParseResult {
     (e.Result) e.Tail;
 }
 
-$LABEL CExistVariable, CNotFound;
-
 CheckUseVariable {
   t.ErrorList t.Context t.SrcPos s.Mode e.Index =
     <Fetch
       <Cntx-CheckVariable t.Context s.Mode e.Index>
       {
-        t.Context^ # CExistVariable s.Depth =
+        t.Context^ ExistVariable s.Depth =
           t.ErrorList t.Context s.Mode s.Depth;
 
-        t.Context^ # CInvalidMode s.Depth s.OldMode =
+        t.Context^ InvalidMode s.Depth s.OldMode =
           <InvalidModeVariableError
             t.ErrorList t.SrcPos s.OldMode s.Mode e.Index
           >
           t.Context s.OldMode s.Depth;
 
-        t.Context^ # CNotFound =
+        t.Context^ VariableNotFound =
           <EL-AddErrorAt
             t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
           >
@@ -1052,8 +1043,6 @@ CheckUseVariable {
       }
     >;
 }
-
-$LABEL CCreateClosure;
 
 ParseResult-Block {
   (e.MultiBracket) (e.Scanned)
@@ -1063,7 +1052,7 @@ ParseResult-Block {
     <ParseResult
       (s.NextNum e.Functions) t.ErrorList t.SymTable t.Context
       (e.MultiBracket)
-      (e.Scanned (TkName # CLambdaName <Dec s.NextNum>))
+      (e.Scanned (TkName LambdaName <Dec s.NextNum>))
       e.Tail
     >;
 
@@ -1080,9 +1069,9 @@ ParseResult-Block {
             (e.MultiBracket)
             (
               e.Scanned
-              (#CallBrackets
-                (TkName # CCreateClosure)
-                (TkName # CLambdaName s.FunctionNumber)
+              (CallBrackets
+                (TkName GN-CreateClosure)
+                (TkName LambdaName s.FunctionNumber)
                 e.RealContext
               )
             )

@@ -136,10 +136,10 @@ BracketsVars {
   вне цикла по открытой e-переменной, отступ больше -- внутри оного цикла.
 */
 
-$LABEL CCreateClosure;
+$EENUM GN-CreateClosure;
 
 PrintName {
-  # CCreateClosure = 'refalrts::create_closure';
+  GN-CreateClosure = 'refalrts::create_closure';
 
   e.Name = e.Name;
 }
