@@ -1,3 +1,7 @@
+//FROM LibraryEx
+$EXTERN Apply;
+
+
 $EENUM CmdLineError, CompileList, CmdNone;
 
 /**
@@ -20,99 +24,107 @@ $ENTRY ParseCommandLine {
     == e.Command
 */
 $ENTRY CmdCompileCommand {
-  s.CommandLineInfo = <s.CommandLineInfo CmdCompileCommand>;
+  t.CommandLineInfo = <Apply t.CommandLineInfo CmdCompileCommand>;
 }
 
 $ENUM CAddCompileCommand, CAddErrorFile, CGetInfo, CAddFile, CAddFolder,
   CSetOutput;
 
 DoParseCommandLine {
-  s.Collector ('-c') (e.CompileCommand) e.Arguments =
+  t.Collector ('-c') (e.CompileCommand) e.Arguments =
     <DoParseCommandLine
-      <s.Collector CAddCompileCommand e.CompileCommand> e.Arguments
+      <Apply t.Collector CAddCompileCommand e.CompileCommand> e.Arguments
     >;
 
-  s.Collector ('-c') =
+  t.Collector ('-c') =
     (CmdLineError 'After option ''-c'' expected C++ compiler command line');
 
-  s.Collector ('-d') (e.Directory) e.Arguments =
+  t.Collector ('-d') (e.Directory) e.Arguments =
     <DoParseCommandLine
-      <s.Collector CAddFolder e.Directory> e.Arguments
+      <Apply t.Collector CAddFolder e.Directory> e.Arguments
     >;
 
-  s.Collector ('-d') =
+  t.Collector ('-d') =
     (CmdLineError 'After option ''-d'' expected find directory');
 
-  s.Collector ('-o') (e.OutputFile) e.Arguments =
+  t.Collector ('-o') (e.OutputFile) e.Arguments =
     <DoParseCommandLine
-      <s.Collector CSetOutput e.OutputFile> e.Arguments
+      <Apply t.Collector CSetOutput e.OutputFile> e.Arguments
     >;
 
-  s.Collector ('--') e.Arguments =
+  t.Collector ('--') e.Arguments =
     <DoParseFileNamesOnly
-      s.Collector e.Arguments
+      t.Collector e.Arguments
     >;
 
-  s.Collector (e.NextFileName) e.Arguments =
+  t.Collector (e.NextFileName) e.Arguments =
     <DoParseCommandLine
-      <s.Collector CAddFile e.NextFileName> e.Arguments
+      <Apply t.Collector CAddFile e.NextFileName> e.Arguments
     >;
 
-  s.Collector = <s.Collector CGetInfo>;
+  t.Collector = <Apply t.Collector CGetInfo>;
 }
 
 DoParseFileNamesOnly {
-  s.Collector (e.NextFileName) e.Files =
+  t.Collector (e.NextFileName) e.Files =
     <DoParseFileNamesOnly
-      <s.Collector CAddFile e.NextFileName> e.Files
+      <Apply t.Collector CAddFile e.NextFileName> e.Files
     >;
 
-  s.Collector = <s.Collector CGetInfo>;
+  t.Collector = <Apply t.Collector CGetInfo>;
 }
 
 //------------------------------------------------------------------------------
 
 CollectorObject {
   (e.Folders) e.Files =
-    {
-      CAddCompileCommand e.Command =
-        <Collector-Compiler (e.Folders) (e.Files) e.Command>;
+    (CollectorObject-VTable (e.Folders) (e.Files));
+}
 
-      CAddFile e.FileName =
-        <CollectorObject (e.Folders) e.Files (e.FileName)>;
+CollectorObject-VTable {
+  (e.Folders) (e.Files) CAddCompileCommand e.Command =
+    <Collector-Compiler (e.Folders) (e.Files) e.Command>;
 
-      CAddFolder e.FolderName =
-        <CollectorObject (e.Folders (e.FolderName)) e.Files>;
+  (e.Folders) (e.Files) CAddFile e.FileName =
+    <CollectorObject (e.Folders) e.Files (e.FileName)>;
 
-      CGetInfo =
-        {
-          CmdCompileCommand = CmdNone;
-        }
-        CompileList (e.Folders) e.Files;
-    };
+  (e.Folders) (e.Files) CAddFolder e.FolderName =
+    <CollectorObject (e.Folders (e.FolderName)) e.Files>;
+
+  (e.Folders) (e.Files) CGetInfo =
+    CmdCompileCommand-None CompileList (e.Folders) e.Files;
+}
+
+CmdCompileCommand-None {
+  CmdCompileCommand = CmdNone;
 }
 
 Collector-Compiler {
   (e.Folders) (e.Files) e.Command =
-    {
-      CAddCompileCommand e.NewCommand = <Collector-Error-CC>;
+    (Collector-Compiler-VTable (e.Folders) (e.Files) (e.Command));
+}
 
-      CAddFile e.FileName =
-        <Collector-Compiler
-          (e.Folders) (e.Files (e.FileName)) e.Command
-        >;
+Collector-Compiler-VTable {
+  (e.Folders) (e.Files) (e.Command) CAddCompileCommand e.NewCommand =
+    <Collector-Error-CC>;
 
-      CAddFolder e.FolderName =
-        <Collector-Compiler
-          (e.Folders (e.FolderName)) (e.Files) e.Command
-        >;
+  (e.Folders) (e.Files) (e.Command) CAddFile e.FileName =
+    <Collector-Compiler
+      (e.Folders) (e.Files (e.FileName)) e.Command
+    >;
 
-      CGetInfo =
-        {
-          CmdCompileCommand = e.Command;
-        }
-        CompileList (e.Folders) e.Files;
-    };
+  (e.Folders) (e.Files) (e.Command) CAddFolder e.FolderName =
+    <Collector-Compiler
+      (e.Folders (e.FolderName)) (e.Files) e.Command
+    >;
+
+  (e.Folders) (e.Files) (e.Command) CGetInfo =
+    (CmdCompileCommand-Command e.Command)
+    CompileList (e.Folders) e.Files;
+}
+
+CmdCompileCommand-Command {
+  e.Command CmdCompileCommand = e.Command;
 }
 
 Collector-Error-CC {
@@ -121,13 +133,15 @@ Collector-Error-CC {
 
 Collector-Error {
   e.Message =
-    {
-      CAddCompileCommand e.Command = <Collector-Error e.Message>;
+    (Collector-Error-VTable (e.Message));
+}
 
-      CAddFile e.FileName = <Collector-Error e.Message>;
+Collector-Error-VTable {
+  (e.Message) CAddCompileCommand e.Command = <Collector-Error e.Message>;
 
-      CAddFolder e.FolderName = <Collector-Error e.Message>;
+  (e.Message) CAddFile e.FileName = <Collector-Error e.Message>;
 
-      CGetInfo (e.Folders) e.Files = (CmdLineError e.Message);
-    };
+  (e.Message) CAddFolder e.FolderName = <Collector-Error e.Message>;
+
+  (e.Message) CGetInfo (e.Folders) e.Files = (CmdLineError e.Message);
 }
