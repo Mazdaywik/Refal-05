@@ -245,40 +245,47 @@ Trim-R {
 */
 $ENTRY Seq {
   t.Func = t.Func;
-
-  t.Func e.Funcs =
-    {
-      e.Arg = <Fetch <Apply t.Func e.Arg> <Seq e.Funcs>>;
-    };
-
-  /* пусто */ = { e.Arg = e.Arg; };
+  t.Func e.Funcs = (Seq-Aux t.Func (e.Funcs));
+  /* пусто */ = Id;
 }
+
+Seq-Aux {
+  t.Func (e.Funcs) e.Arg = <Fetch <Apply t.Func e.Arg> <Seq e.Funcs>>;
+}
+
+Id { e.Arg = e.Arg; }
 
 $ENTRY Sort {
   /* пусто */ = /* пусто */;
 
   t.Pivot e.Items =
-    <Fetch
-      e.Items
-      <Seq
-        (Reduce
-          {
-            ((e.Less) (e.Equal) (e.Greater)) t.Next =
-              <Fetch
-                <Compare t.Next t.Pivot>
-                {
-                  '<' = ((e.Less t.Next) (e.Equal) (e.Greater));
-                  '=' = ((e.Less) (e.Equal t.Next) (e.Greater));
-                  '>' = ((e.Less) (e.Equal) (e.Greater t.Next));
-                }
-              >;
-          }
-          ( (/* less */) (t.Pivot /* equal */) (/* greater */) )
-        )
-        {
-          ((e.Less) (e.Equal) (e.Greater)) =
-            <Sort e.Less> e.Equal <Sort e.Greater>;
-        }
+    <Sort-Recursive
+      <Reduce
+        (Sort-SelectBucket t.Pivot)
+        ( (/* less */) (t.Pivot /* equal */) (/* greater */) )
+        e.Items
       >
     >;
+}
+
+Sort-SelectBucket {
+  t.Pivot ((e.Less) (e.Equal) (e.Greater)) t.Next =
+    <Sort-SelectBucket-SwCompare
+      (e.Less) (e.Equal) (e.Greater) t.Next <Compare t.Next t.Pivot>
+    >;
+}
+
+Sort-SelectBucket-SwCompare {
+  (e.Less) (e.Equal) (e.Greater) t.Next '<' =
+    ((e.Less t.Next) (e.Equal) (e.Greater));
+
+  (e.Less) (e.Equal) (e.Greater) t.Next '=' =
+    ((e.Less) (e.Equal t.Next) (e.Greater));
+
+  (e.Less) (e.Equal) (e.Greater) t.Next '>' =
+    ((e.Less) (e.Equal) (e.Greater t.Next));
+}
+
+Sort-Recursive {
+  ((e.Less) (e.Equal) (e.Greater)) = <Sort e.Less> e.Equal <Sort e.Greater>;
 }
