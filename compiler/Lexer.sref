@@ -29,14 +29,14 @@ $ENTRY LexFolding {
 
 $EENUM
   TkChar,
-  TkCloseADT, TkCloseCall, TkCloseBlock, TkCloseBracket,
+  TkCloseCall, TkCloseBlock, TkCloseBracket,
   TkComma,
   TkDirective,
   TkEOF,
   TkError,
   TkName,
   TkNumber,
-  TkOpenADT, TkOpenCall, TkOpenBlock, TkOpenBracket,
+  TkOpenCall, TkOpenBlock, TkOpenBracket,
   TkReplace,
   TkSemicolon,
   TkUnexpected,
@@ -56,7 +56,6 @@ $EENUM TkOpen, TkClose;
 
 $ENTRY StrFromToken {
   TkChar s.Char = '' s.Char ''; // игнорируем проблему escape-символов
-  TkCloseADT = '"]"';
   TkCloseCall = '">"';
   TkCloseBlock = '"}"';
   TkCloseBracket = '")"';
@@ -66,7 +65,6 @@ $ENTRY StrFromToken {
   TkError e.Message = 'LEXER ERROR: ' e.Message;
   TkName e.Name = 'Name ' e.Name;
   TkNumber s.Number = 'Number ' <StrFromInt s.Number>;
-  TkOpenADT = '"["';
   TkOpenCall = '"<"';
   TkOpenBlock = '"{"';
   TkOpenBracket = '"("';
@@ -201,7 +199,6 @@ SwPunctuation {
   '{' = TkOpenBlock; '}' = TkCloseBlock;
   '(' = TkOpenBracket; ')' = TkCloseBracket;
   '=' = TkReplace; ',' = TkComma; ';' = TkSemicolon;
-  '[' = TkOpenADT; ']' = TkCloseADT;
   '^' = TkRedefinition;
 }
 
@@ -230,7 +227,7 @@ NormalizeTokens {
   :Digit: = '0123456789'.
   :ODigit: = '01234567' .
   :XDigit: = '0123456789ABCDEFabcdef' .
-  :Punctuation: = '<>(){}[]=;,^'.
+  :Punctuation: = '<>(){}=;,^'.
 
   :StartIdentifier: = :UpLetter:.
   :TailIdentifier: = :UpLetter: :LoLetter: :Digit: '_-'.
@@ -382,8 +379,6 @@ Root {
   (e.Accum) ')' e.Text = (TkPunctuation e.Accum ')') <Root () e.Text>;
   (e.Accum) '{' e.Text = (TkPunctuation e.Accum '{') <Root () e.Text>;
   (e.Accum) '}' e.Text = (TkPunctuation e.Accum '}') <Root () e.Text>;
-  (e.Accum) '[' e.Text = (TkPunctuation e.Accum '[') <Root () e.Text>;
-  (e.Accum) ']' e.Text = (TkPunctuation e.Accum ']') <Root () e.Text>;
   (e.Accum) '=' e.Text = (TkPunctuation e.Accum '=') <Root () e.Text>;
   (e.Accum) ';' e.Text = (TkPunctuation e.Accum ';') <Root () e.Text>;
   (e.Accum) ',' e.Text = (TkPunctuation e.Accum ',') <Root () e.Text>;

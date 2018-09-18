@@ -2,8 +2,7 @@
 $EXTERN Fetch, Inc, Map, Seq, Dec;
 
 //FROM Lexer
-$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall,
-  TkCloseADT;
+$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall;
 
 //FROM Library
 $EXTERN StrFromInt;
@@ -31,14 +30,12 @@ $ENTRY MakeAlgorithm {
 // Направление распознавания
 $EENUM AlgLeft, AlgRight;
 
-$EENUM Brackets, ADT-Brackets, CallBrackets;
+$EENUM Brackets, CallBrackets;
 
 /*
 Команды распознавания
   Литералы, формат (Cmd*** s.Direction s.BracketNum e.Literal)
   Скобки, формат (CmdBrackets s.Direction s.BracketNum s.InnerNum)
-  АТД, формат
-    (CmdADT s.Direction s.BracketNum s.InnerNum e.Name)
   Пустые скобки, формат (CmdEmpty AlgLeft s.BracketNum),
     направление добавлено для единнобразия, генератором не используется
   Переменные:
@@ -58,7 +55,7 @@ $EENUM Brackets, ADT-Brackets, CallBrackets;
 */
 $EENUM
   CmdChar, CmdNumber, CmdName,
-  CmdBrackets, CmdADT, CmdEmpty,
+  CmdBrackets, CmdEmpty,
   CmdRepeated, CmdVar, CmdClosedE,
   CmdOpenedE-Start, CmdOpenedE-End,
   CmdComment, CmdSave;
@@ -144,29 +141,6 @@ DoGenPattern {
       <Inc s.NumRanges>
       e.Ranges-B (s.Num e.Range) (s.NumRanges e.SubRange) e.Ranges-E
       (e.Vars) (e.Commands (CmdBrackets AlgRight s.Num s.NumRanges))
-    >;
-
-  // Распознавание АТД-скобок
-  s.NumRanges e.Ranges-B
-  (s.Num (ADT-Brackets (e.Name) e.SubRange) e.Range)
-  e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      <Inc s.NumRanges>
-      e.Ranges-B (s.NumRanges e.SubRange) (s.Num e.Range) e.Ranges-E
-      (e.Vars)
-      (e.Commands (CmdADT AlgLeft s.Num s.NumRanges e.Name))
-    >;
-
-  s.NumRanges e.Ranges-B
-  (s.Num e.Range (ADT-Brackets (e.Name) e.SubRange))
-  e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      <Inc s.NumRanges>
-      e.Ranges-B (s.Num e.Range) (s.NumRanges e.SubRange) e.Ranges-E
-      (e.Vars)
-      (e.Commands (CmdADT AlgRight s.Num s.NumRanges e.Name))
     >;
 
   // Пустой диапазон
@@ -301,14 +275,7 @@ ExtractBrackets {
     <Brackets-Set
       <Map
         {
-          /*
-            Все команды распознавания содержат номер скобок третьим термом,
-            общий формат (s.Command s.Direction s.BracketNum e.Info)
-          */
           (CmdBrackets s.Direction s.BracketNum s.InnerNum) =
-            s.BracketNum s.InnerNum;
-
-          (CmdADT s.Direction s.BracketNum s.InnerNum e.Name) =
             s.BracketNum s.InnerNum;
 
           (s.Command s.Direction s.BracketNum e.Info) = s.BracketNum;
@@ -328,9 +295,6 @@ Brackets-Set {
 TextFromPattern {
   (Brackets e.Inner) e.Tail =
     ' (' <TextFromPattern e.Inner> ' )' <TextFromPattern e.Tail>;
-
-  (ADT-Brackets (e.Name) e.Inner) e.Tail =
-    ' [' e.Name ' ' <TextFromPattern e.Inner> ' ]' <TextFromPattern e.Tail>;
 
   (TkChar s.Char) e.Tail =
     ' ' '' <TextFromPattern-Char (TkChar s.Char) e.Tail>;
@@ -386,7 +350,6 @@ $EENUM
 // Спецификаторы команд (элементы)
 $EENUM
   ElChar, ElName, ElNumber,
-  ElOpenADT, ElCloseADT,
   ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
 
@@ -445,16 +408,6 @@ DoGenResult {
       <Inc s.Counter> e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (ADT-Brackets (e.Name) e.InBrackets) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElOpenADT))
-      ((CmdInsertElem s.Counter) e.Commands)
-      <Inc s.Counter>
-      (TkName e.Name) e.InBrackets (TkCloseADT s.Counter) e.Result
-    >;
-
   /*
     Закрывающие скобки надо обрабатывать особым образом.
     Круглые скобки и АТД -- слинковать, угловые -- добавить в стек.
@@ -464,19 +417,6 @@ DoGenResult {
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElCloseBracket))
-      (
-        (CmdLinkBrackets s.OpenCounter s.Counter)
-        (CmdInsertElem s.Counter)
-        e.Commands
-      )
-      <Inc s.Counter> e.Result
-    >;
-
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkCloseADT s.OpenCounter) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElCloseADT))
       (
         (CmdLinkBrackets s.OpenCounter s.Counter)
         (CmdInsertElem s.Counter)

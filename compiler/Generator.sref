@@ -6,11 +6,11 @@ $EXTERN StrFromInt;
 
 //FROM Algorithm
 $EXTERN CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
-  CmdBrackets, CmdADT, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
+  CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
   AlgLeft, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
   CmdCopyEVar, CmdCopyVar, CmdAllocateElem, CmdLinkBrackets, CmdPushStack,
   CmdInsertElem, CmdInsertVar, CmdReturnResult, AlgRight, ElChar, ElName,
-  ElNumber, ElOpenADT, ElCloseADT, ElOpenBracket, ElCloseBracket,
+  ElNumber, ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
 
 //FROM Escape
@@ -161,14 +161,6 @@ GenCommand {
     (e.Indent 'refalrts::Iter ' <BracketsVar-B s.InnerBrackets> ' = 0;')
     (e.Indent 'refalrts::Iter ' <BracketsVar-E s.InnerBrackets> ' = 0;')
     <PrintMatchBrackets (e.Indent) s.Direction s.BracketNumber s.InnerBrackets>;
-
-  (e.Indent) (CmdADT s.Direction s.BracketNumber s.InnerBrackets e.Name) =
-    (e.Indent)
-    (e.Indent 'refalrts::Iter ' <BracketsVar-B s.InnerBrackets> ' = 0;')
-    (e.Indent 'refalrts::Iter ' <BracketsVar-E s.InnerBrackets> ' = 0;')
-    <PrintMatchADT
-      (e.Indent) s.Direction s.BracketNumber s.InnerBrackets e.Name
-    >;
 
   (e.Indent) (CmdEmpty s.Direction s.BracketNumber) =
     (e.Indent)
@@ -343,16 +335,6 @@ PrintMatchBrackets {
     >;
 }
 
-PrintMatchADT {
-  (e.Indent) s.Direction s.BracketNumber s.InnerNum e.Name =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('adt')
-      <BracketsVars s.InnerNum> ', '
-      e.Name
-    >;
-}
-
 BreakerFromIndent {
   '    ' = 'break;';
 
@@ -433,9 +415,6 @@ SwAllocator {
   ElChar = 'alloc_char';
   ElName = 'alloc_name';
   ElNumber = 'alloc_number';
-
-  ElOpenADT = 'alloc_open_adt';
-  ElCloseADT = 'alloc_close_adt';
 
   ElOpenBracket = 'alloc_open_bracket';
   ElCloseBracket = 'alloc_close_bracket';
