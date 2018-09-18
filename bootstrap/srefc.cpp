@@ -3,8 +3,10 @@
 
 
 extern refalrts::FnResult ArgList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdCompileCommand(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdErrorFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult CmdLineError(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CompileCommand(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdNone(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult CompileFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult CompileList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult CompileToTarget(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -18,7 +20,6 @@ extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult LoadFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Map(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult MapReduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult NoCompile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult NotFound(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Output(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult ParseCommandLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -42,30 +43,6 @@ static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter a
 static refalrts::FnResult Renumerate(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult RestoreName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-//$LABEL CCompileCommand
-template <typename T>
-struct CCompileCommand {
-  static const char *name() {
-    return "CCompileCommand";
-  }
-};
-
-//$LABEL CErrorFile
-template <typename T>
-struct CErrorFile {
-  static const char *name() {
-    return "CErrorFile";
-  }
-};
-
-//$LABEL CNone
-template <typename T>
-struct CNone {
-  static const char *name() {
-    return "CNone";
-  }
-};
 
 refalrts::FnResult Go(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -574,8 +551,8 @@ static refalrts::FnResult lambda_FindFiles_Compilers_2(refalrts::Iter arg_begin,
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // # CNone
-    if( ! refalrts::ident_left(  & CNone<int>::name, bb_0, be_0 ) )
+    // & CmdNone
+    if( ! refalrts::function_left( CmdNone, bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -673,7 +650,7 @@ static refalrts::FnResult lambda_FindFiles_Compilers_3(refalrts::Iter arg_begin,
       if( ! refalrts::alloc_open_call( n2 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_ident( n3, & CErrorFile<int>::name ) )
+      if( ! refalrts::alloc_name( n3, CmdErrorFile, "CmdErrorFile" ) )
         return refalrts::cNoMemory;
       refalrts::Iter n4 = 0;
       if( ! refalrts::alloc_close_call( n4 ) )
@@ -1709,8 +1686,8 @@ static refalrts::FnResult lambda_Link_1(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // ( e.Files#1 ) # CNone
-    if( ! refalrts::ident_right(  & CNone<int>::name, bb_0, be_0 ) )
+    // ( e.Files#1 ) & CmdNone
+    if( ! refalrts::function_right( CmdNone, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -1824,7 +1801,7 @@ static refalrts::FnResult Link(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     if( ! refalrts::alloc_open_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_ident( n3, & CCompileCommand<int>::name ) )
+    if( ! refalrts::alloc_name( n3, CmdCompileCommand, "CmdCompileCommand" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
     if( ! refalrts::alloc_close_call( n4 ) )
@@ -2059,8 +2036,8 @@ static refalrts::FnResult lambda_RenameFiles_2(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // # CNone
-    if( ! refalrts::ident_left(  & CNone<int>::name, bb_0, be_0 ) )
+    // & CmdNone
+    if( ! refalrts::function_left( CmdNone, bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -2144,7 +2121,7 @@ static refalrts::FnResult RenameFiles(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_open_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_ident( n3, & CCompileCommand<int>::name ) )
+    if( ! refalrts::alloc_name( n3, CmdCompileCommand, "CmdCompileCommand" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
     if( ! refalrts::alloc_close_call( n4 ) )

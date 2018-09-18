@@ -2,6 +2,7 @@
 #include "refalrts.h"
 
 
+extern refalrts::FnResult AlreadyBounded(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -11,54 +12,18 @@ extern refalrts::FnResult Cntx_PopScope(refalrts::Iter arg_begin, refalrts::Iter
 extern refalrts::FnResult Cntx_PushScope(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Cntx_ResetAfterSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Dec(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ExistVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Fetch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult InvalidMode(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult VariableNotFound(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Context(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult FreeVarsFunc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult FreeVarsSent(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ShiftVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Unique(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-
-//$LABEL CAlreadyBounded
-template <typename T>
-struct CAlreadyBounded {
-  static const char *name() {
-    return "CAlreadyBounded";
-  }
-};
-
-//$LABEL CExistVariable
-template <typename T>
-struct CExistVariable {
-  static const char *name() {
-    return "CExistVariable";
-  }
-};
-
-//$LABEL CInvalidMode
-template <typename T>
-struct CInvalidMode {
-  static const char *name() {
-    return "CInvalidMode";
-  }
-};
-
-//$LABEL CNotFound
-template <typename T>
-struct CNotFound {
-  static const char *name() {
-    return "CNotFound";
-  }
-};
-
-//$LABEL CSuccess
-template <typename T>
-struct CSuccess {
-  static const char *name() {
-    return "CSuccess";
-  }
-};
 
 static refalrts::FnResult Context(refalrts::Iter, refalrts::Iter) {
   refalrts::this_is_generated_function();
@@ -156,6 +121,13 @@ refalrts::FnResult Cntx_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end
   );
 }
 
+refalrts::FnResult InvalidMode(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -248,7 +220,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       if( ! refalrts::alloc_close_adt( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_ident( n10, & CSuccess<int>::name ) )
+      if( ! refalrts::alloc_name( n10, Success, "Success" ) )
         return refalrts::cNoMemory;
       res = refalrts::splice_stvar( res, sVarDepth_1_3 );
       res = refalrts::splice_elem( res, n10 );
@@ -357,7 +329,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
       if( ! refalrts::alloc_close_adt( n4 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n5 = 0;
-      if( ! refalrts::alloc_ident( n5, & CInvalidMode<int>::name ) )
+      if( ! refalrts::alloc_name( n5, InvalidMode, "InvalidMode" ) )
         return refalrts::cNoMemory;
       res = refalrts::splice_stvar( res, sOldMode_1_2 );
       res = refalrts::splice_stvar( res, sVarDepth_1_2 );
@@ -432,7 +404,7 @@ refalrts::FnResult Cntx_AddVariable(refalrts::Iter arg_begin, refalrts::Iter arg
     if( ! refalrts::alloc_close_adt( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_ident( n5, & CSuccess<int>::name ) )
+    if( ! refalrts::alloc_name( n5, Success, "Success" ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_stvar( res, sStackDepth_1_3 );
     res = refalrts::splice_elem( res, n5 );
@@ -801,6 +773,13 @@ static refalrts::FnResult ShiftVariable_AddToFree(refalrts::Iter arg_begin, refa
   );
 }
 
+refalrts::FnResult AlreadyBounded(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -917,7 +896,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       if( ! refalrts::alloc_close_adt( n10 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n11 = 0;
-      if( ! refalrts::alloc_ident( n11, & CAlreadyBounded<int>::name ) )
+      if( ! refalrts::alloc_name( n11, AlreadyBounded, "AlreadyBounded" ) )
         return refalrts::cNoMemory;
       res = refalrts::splice_stvar( res, sDepth_2_2 );
       res = refalrts::splice_elem( res, n11 );
@@ -1068,7 +1047,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
       if( ! refalrts::alloc_close_adt( n10 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n11 = 0;
-      if( ! refalrts::alloc_ident( n11, & CInvalidMode<int>::name ) )
+      if( ! refalrts::alloc_name( n11, InvalidMode, "InvalidMode" ) )
         return refalrts::cNoMemory;
       res = refalrts::splice_stvar( res, sOldMode_2_2 );
       res = refalrts::splice_stvar( res, sVarDepth_2_2 );
@@ -1196,7 +1175,7 @@ static refalrts::FnResult lambda_Cntx_AddNewVariable_0(refalrts::Iter arg_begin,
     if( ! refalrts::alloc_close_adt( n10 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n11 = 0;
-    if( ! refalrts::alloc_ident( n11, & CSuccess<int>::name ) )
+    if( ! refalrts::alloc_name( n11, Success, "Success" ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_stvar( res, sStackDepth_1_3 );
     res = refalrts::splice_elem( res, n11 );
@@ -1378,6 +1357,20 @@ refalrts::FnResult Cntx_AddNewVariable(refalrts::Iter arg_begin, refalrts::Iter 
   );
 }
 
+refalrts::FnResult ExistVariable(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+refalrts::FnResult VariableNotFound(refalrts::Iter, refalrts::Iter) {
+  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -1470,7 +1463,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::alloc_close_adt( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_ident( n10, & CExistVariable<int>::name ) )
+      if( ! refalrts::alloc_name( n10, ExistVariable, "ExistVariable" ) )
         return refalrts::cNoMemory;
       res = refalrts::splice_stvar( res, sVarDepth_1_3 );
       res = refalrts::splice_elem( res, n10 );
@@ -1576,7 +1569,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
       if( ! refalrts::alloc_close_adt( n4 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n5 = 0;
-      if( ! refalrts::alloc_ident( n5, & CInvalidMode<int>::name ) )
+      if( ! refalrts::alloc_name( n5, InvalidMode, "InvalidMode" ) )
         return refalrts::cNoMemory;
       refalrts::Iter n6 = 0;
       if( ! refalrts::alloc_number( n6, 0UL ) )
@@ -1639,7 +1632,7 @@ refalrts::FnResult Cntx_CheckVariable(refalrts::Iter arg_begin, refalrts::Iter a
     if( ! refalrts::alloc_close_adt( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_ident( n3, & CNotFound<int>::name ) )
+    if( ! refalrts::alloc_name( n3, VariableNotFound, "VariableNotFound" ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_elem( res, n3 );
     refalrts::link_brackets( n0, n2 );

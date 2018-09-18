@@ -213,40 +213,6 @@ bool refalrts::number_right(
   }
 }
 
-bool refalrts::ident_left(
-  refalrts::RefalIdentifier ident, refalrts::Iter& first, refalrts::Iter& last
-) {
-  assert( (first == 0) == (last == 0) );
-
-  if( empty_seq( first, last ) ) {
-    return false;
-  } else if ( cDataIdentifier != first->tag ) {
-    return false;
-  } else if ( first->ident_info != ident ) {
-    return false;
-  } else {
-    move_left( first, last );
-    return true;
-  }
-}
-
-bool refalrts::ident_right(
-  refalrts::RefalIdentifier ident, refalrts::Iter& first, refalrts::Iter& last
-) {
-  assert( (first == 0) == (last == 0) );
-
-  if( empty_seq( first, last ) ) {
-    return false;
-  } else if ( cDataIdentifier != last->tag ) {
-    return false;
-  } else if ( last->ident_info != ident ) {
-    return false;
-  } else {
-    move_right( first, last );
-    return true;
-  }
-}
-
 bool refalrts::brackets_left(
   refalrts::Iter& res_first, refalrts::Iter& res_last,
   refalrts::Iter& first, refalrts::Iter& last
@@ -500,10 +466,6 @@ bool equal_nodes(
 
       case refalrts::cDataFunction:
         return (node1->function_info.ptr == node2->function_info.ptr);
-        // break;
-
-      case refalrts::cDataIdentifier:
-        return (node1->ident_info == node2->ident_info);
         // break;
 
       /*
@@ -882,10 +844,6 @@ bool copy_node( refalrts::Iter& res, refalrts::Iter sample ) {
       );
       // break;
 
-    case refalrts::cDataIdentifier:
-      return refalrts::alloc_ident( res, sample->ident_info );
-      //break;
-
     case refalrts::cDataOpenBracket:
       return refalrts::alloc_open_bracket( res );
       // break;
@@ -1091,18 +1049,6 @@ bool refalrts::alloc_name(
     } else {
       res->function_info.name = unknown;
     }
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool refalrts::alloc_ident(
-  refalrts::Iter& res, refalrts::RefalIdentifier ident
-) {
-  if( allocator::alloc_node( res ) ) {
-    res->tag = cDataIdentifier;
-    res->ident_info = ident;
     return true;
   } else {
     return false;
@@ -2121,11 +2067,6 @@ void refalrts::vm::print_seq(
             } else {
               fprintf( output, "&%p ", begin->function_info.ptr );
             }
-            refalrts::move_left( begin, end );
-            continue;
-
-          case refalrts::cDataIdentifier:
-            fprintf( output, "#%s ", (begin->ident_info)() );
             refalrts::move_left( begin, end );
             continue;
 
