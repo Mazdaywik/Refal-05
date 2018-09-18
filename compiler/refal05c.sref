@@ -38,60 +38,57 @@ FindFiles-Compilers {
     ;
 
   s.CommandLineInfo CompileList (e.Folders) e.Files =
-    <Fetch
-      <FindFiles (e.Folders) e.Files>
-      {
-        e.Files-B (NotFound e.FileName) e.Files-E =
-          <Map PrintNotFound (NotFound e.FileName) e.Files-E>;
-
-        e.FoundFiles =
-          <Fetch
-            e.FoundFiles
-            // В последовательность:
-            <Seq
-              <RenameFiles s.CommandLineInfo>
-              //----------------------------------------------------------------
-              <ForEach
-                {
-                  (Output e.OutputName) =
-                    <WriteLine '+Linking ' e.OutputName> (e.OutputName);
-
-                  (Source (e.Source) e.OutputName) =
-                    <WriteLine '*Compiling ' e.Source ':'>
-                    <Fetch
-                      <CompileFile (e.Source) e.OutputName>
-                      {
-                        Success e.OutputName1 = (e.OutputName1);
-
-                        Fails = Fails;
-                      }
-                    >;
-                }
-              >
-              //----------------------------------------------------------------
-              {
-                 e.Outputs-B Fails e.Outputs-E =
-                   <Fetch
-                     <s.CommandLineInfo CmdErrorFile>
-                     {
-                       CmdNone = ;
-
-                       e.ErrorFileName = <SaveFile (e.ErrorFileName)>;
-                     }
-                   >;
-
-                 e.Outputs =
-                   <Link s.CommandLineInfo e.Outputs>
-                   <WriteLine '** Compilation successed **'>;
-              }
-            >
-          >;
-      }
+    <FindFiles-Compilers-SwFound
+      s.CommandLineInfo <FindFiles (e.Folders) e.Files>
     >;
 }
 
-ForEach {
-  s.Converter = { e.Elems = <Map s.Converter e.Elems>; };
+FindFiles-Compilers-SwFound {
+  s.CommandLineInfo e.Files-B (NotFound e.FileName) e.Files-E =
+    <Map PrintNotFound (NotFound e.FileName) e.Files-E>;
+
+  s.CommandLineInfo e.FoundFiles =
+    <Fetch
+      e.FoundFiles
+      // В последовательность:
+      <Seq
+        <RenameFiles s.CommandLineInfo>
+        (Map ProcessEachSource)
+        (CheckCompilationResult s.CommandLineInfo)
+      >
+    >;
+}
+
+ProcessEachSource {
+  (Output e.OutputName) =
+    <WriteLine '+Linking ' e.OutputName> (e.OutputName);
+
+  (Source (e.Source) e.OutputName) =
+    <WriteLine '*Compiling ' e.Source ':'>
+    <ProcessEachSource-SwSuccess
+      <CompileFile (e.Source) e.OutputName>
+    >;
+}
+
+ProcessEachSource-SwSuccess {
+  Success e.OutputName = (e.OutputName);
+
+  Fails = Fails;
+}
+
+CheckCompilationResult {
+  s.CommandLineInfo e.Outputs-B Fails e.Outputs-E =
+    <CreateErrorFile <s.CommandLineInfo CmdErrorFile>>;
+
+  s.CommandLineInfo e.Outputs =
+    <Link s.CommandLineInfo e.Outputs>
+    <WriteLine '** Compilation successed **'>;
+}
+
+CreateErrorFile {
+  CmdNone = ;
+
+  e.ErrorFileName = <SaveFile (e.ErrorFileName)>;
 }
 
 PrintNotFound {
@@ -105,45 +102,42 @@ PrintNotFound {
 
 Link {
   s.CommandLineInfo e.Files =
-    <Fetch
-      <s.CommandLineInfo CmdCompileCommand>
-      {
-        CmdNone = ;
-
-        e.CommandLine =
-          <System
-            e.CommandLine
-            <Map
-              {
-                (e.FileName) = ' "' e.FileName '"';
-              }
-              e.Files
-            >
-          >;
-      }
+    <Link-SwCompileCommand
+      <s.CommandLineInfo CmdCompileCommand> (e.Files)
     >;
+}
+
+Link-SwCompileCommand {
+  CmdNone (e.Files) = ;
+
+  e.CommandLine (e.Files) = <System e.CommandLine <Map QuoteFile e.Files>>;
+}
+
+QuoteFile {
+  (e.FileName) = ' "' e.FileName '"';
 }
 
 RenameFiles {
   s.CommandLineInfo =
-    <Fetch
+    <RenameFiles-SwCompileCommand
       <s.CommandLineInfo CmdCompileCommand>
-      {
-        CmdNone =
-          <ForEach
-            {
-              (Source (e.Source) e.Output) = (Source (e.Source) e.Output);
-
-              (Output e.Output) = (Output e.Output);
-            }
-          >;
-
-        e.CommandLine =
-          {
-            e.Files = <ScanCollisions <Map GetFileName e.Files>>;
-          };
-      }
     >;
+}
+
+RenameFiles-SwCompileCommand {
+  CmdNone = (Map RenameFiles-DoNothing);
+
+  e.CommandLine = RenameFiles-Collisions;
+}
+
+RenameFiles-DoNothing {
+  (Source (e.Source) e.Output) = (Source (e.Source) e.Output);
+
+  (Output e.Output) = (Output e.Output);
+}
+
+RenameFiles-Collisions {
+  e.Files = <ScanCollisions <Map GetFileName e.Files>>;
 }
 
 GetFileName {
@@ -173,23 +167,12 @@ DoGetFileName {
 }
 
 Lower {
-  s.Char =
-    // Сначала мы проверяем, что символ является большой буквой
-    <Fetch
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-      {
-        e.Uppers-B s.Char e.Uppers-E =
-          // Символ является большой буквой, находим соответствующую маленькую
-          <Fetch
-            'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
-            {
-              e.UpLo-B s.Char s.Lower e.UpLo-E = s.Lower;
-            }
-          >;
+  'A' = 'a'; 'B' = 'b'; 'C' = 'c'; 'D' = 'd'; 'E' = 'e'; 'F' = 'f'; 'G' = 'g';
+  'H' = 'h'; 'I' = 'i'; 'J' = 'j'; 'K' = 'k'; 'L' = 'l'; 'M' = 'm'; 'N' = 'n';
+  'O' = 'o'; 'P' = 'p'; 'Q' = 'q'; 'R' = 'r'; 'S' = 's'; 'T' = 't'; 'U' = 'u';
+  'V' = 'v'; 'W' = 'w'; 'X' = 'x'; 'Y' = 'y'; 'Z' = 'z';
 
-        e.Uppers = s.Char;
-      }
-    >;
+  s.Other = s.Other;
 }
 
 ScanCollisions {
@@ -231,18 +214,17 @@ ScanCollisions {
 Renumerate {
   (e.FileName) e.Files =
     <DelAccumulator
-      <MapReduce
-        {
-          s.NextNumber (e.FileName 0 (Source (e.Source) e.Output)) =
-            <Inc s.NextNumber>
-            (e.FileName s.NextNumber (Source (e.Source) e.Output));
-
-          s.NextNumber t.NextFile =
-            s.NextNumber t.NextFile;
-        }
-        2 e.Files
-      >
+      <MapReduce (Renumerate-Each e.FileName) 2 e.Files>
     >;
+}
+
+Renumerate-Each {
+  e.FileName s.NextNumber (e.FileName 0 (Source (e.Source) e.Output)) =
+    <Inc s.NextNumber>
+    (e.FileName s.NextNumber (Source (e.Source) e.Output));
+
+  e.FileName s.NextNumber t.NextFile =
+    s.NextNumber t.NextFile;
 }
 
 RestoreName {
@@ -250,16 +232,12 @@ RestoreName {
     (Output e.OutputName);
 
   (e.FileName s.Num (Source (e.Source) e.Output)) =
-    (Source
-      (e.Source)
-      <Fetch
-        s.Num e.Output
-        {
-          0 e.Output1 = e.Output1;
+    (Source (e.Source) <RestoreName-AddNumberToFile s.Num e.Output>);
+}
 
-          s.Number e.OutName '.cpp' =
-            e.OutName '@' <StrFromInt s.Number> '.cpp';
-        }
-      >
-    );
+RestoreName-AddNumberToFile {
+  0 e.Output1 = e.Output1;
+
+  s.Number e.OutName '.cpp' =
+    e.OutName '@' <StrFromInt s.Number> '.cpp';
 }
