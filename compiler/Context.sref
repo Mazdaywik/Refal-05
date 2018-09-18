@@ -24,13 +24,13 @@ $EXTERN Success;
 $ENUM Context, FreeVarsSent, FreeVarsFunc;
 /*
   Внутренняя структура контекста:
-  [Context
+  (Context
     s.StackDepth
     e.Variables1 (FreeVarsSent e.FreeSent1) (FreeVarsFunc e.FreeFunc1)
     e.Variables2 (FreeVarsSent e.FreeSent2) (FreeVarsFunc e.FreeFunc2)
     ...
     e.VariablesN (FreeVarsSent) (FreeVarsFunc)
-  ]
+  )
   e.VariablesK, e.FreeSentK, e.FreeFuncK ::= (s.Mode e.Index s.VarDepth)*
 
   s.StackDepth — глубина вложенности вложенных функций.
@@ -62,14 +62,14 @@ $ENUM Context, FreeVarsSent, FreeVarsFunc;
   <Cntx-Create> == t.Context
 */
 $ENTRY Cntx-Create {
-  = [Context 0];
+  = (Context 0);
 }
 
 /**
   <Cntx-Destroy t.Context> == пусто
 */
 $ENTRY Cntx-Destroy {
-  [Context 0] = ;
+  (Context 0) = ;
 }
 
 $EENUM InvalidMode;
@@ -80,9 +80,9 @@ $EENUM InvalidMode;
     == t.Context InvalidMode s.Depth s.OldMode
 */
 $ENTRY Cntx-AddVariable {
-  [Context
+  (Context
     s.StackDepth e.Variables-B (s.Mode e.Index s.VarDepth) e.Variables-E
-  ]
+  )
   s.Mode e.Index =
     /*
       Идея тут в том, что если в e.Variables-B имеется хотя бы один
@@ -93,25 +93,25 @@ $ENTRY Cntx-AddVariable {
 
       На этот комментарий ссылаются из функции Cntx-CheckVariable.
     */
-    [Context
+    (Context
       s.StackDepth
       <ShiftVariable (s.Mode e.Index s.VarDepth) e.Variables-B>
       (s.Mode e.Index s.VarDepth)
       e.Variables-E
-    ]
+    )
     Success s.VarDepth;
 
-  [Context
+  (Context
     s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
-  ]
+  )
   s.NewMode e.Index =
-    [Context
+    (Context
       s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
-    ]
+    )
     InvalidMode s.VarDepth s.OldMode;
 
-  [Context s.StackDepth e.Variables] s.Mode e.Index =
-    [Context s.StackDepth (s.Mode e.Index s.StackDepth) e.Variables]
+  (Context s.StackDepth e.Variables) s.Mode e.Index =
+    (Context s.StackDepth (s.Mode e.Index s.StackDepth) e.Variables)
     Success s.StackDepth;
 }
 
@@ -151,39 +151,39 @@ $EENUM AlreadyBounded;
   AlreadyBounded, что является ошибкой.
 */
 $ENTRY Cntx-AddNewVariable {
-  [Context
+  (Context
     s.StackDepth
     e.LocalVars (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) e.Stack
-  ]
+  )
   s.Mode e.Index =
     <Fetch
       e.LocalVars
       {
         e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E =
-          [Context
+          (Context
             s.StackDepth
             e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E
             (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
             e.Stack
-          ]
+          )
           AlreadyBounded s.Depth;
 
         e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E =
-          [Context
+          (Context
             s.StackDepth
             e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E
             (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
             e.Stack
-          ]
+          )
           InvalidMode s.VarDepth s.OldMode;
 
         e.LocalVars^ =
-          [Context
+          (Context
             s.StackDepth
             (s.Mode e.Index s.StackDepth) e.LocalVars
             (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
             e.Stack
-          ]
+          )
           Success s.StackDepth;
       }
     >;
@@ -198,46 +198,46 @@ $EENUM ExistVariable, VariableNotFound;
     == t.Context VariableNotFound
 */
 $ENTRY Cntx-CheckVariable {
-  [Context
+  (Context
     s.StackDepth e.Variables-B (s.Mode e.Index s.VarDepth) e.Variables-E
-  ]
+  )
   s.Mode e.Index =
-    [Context
+    (Context
       s.StackDepth
       // См. комментарий в Cntx-AddVariable
       <ShiftVariable (s.Mode e.Index s.VarDepth) e.Variables-B>
       (s.Mode e.Index s.VarDepth)
       e.Variables-E
-    ]
+    )
     ExistVariable s.VarDepth;
 
-  [Context
+  (Context
     s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
-  ]
+  )
   s.NewMode e.Index =
-    [Context
+    (Context
       s.StackDepth e.Variables-B (s.OldMode e.Index s.VarDepth) e.Variables-E
-    ]
+    )
     InvalidMode 00 s.OldMode;
 
-  [Context s.StackDepth e.Variables] s.Mode e.Index =
-    [Context s.StackDepth e.Variables] VariableNotFound;
+  (Context s.StackDepth e.Variables) s.Mode e.Index =
+    (Context s.StackDepth e.Variables) VariableNotFound;
 }
 
 /**
   <Cntx-ResetAfterSentence t.Context> == t.Context
 */
 $ENTRY Cntx-ResetAfterSentence {
-  [Context
+  (Context
     s.StackDepth
     e.Locals (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
     e.Outers
-  ] =
-    [Context
+  ) =
+    (Context
       s.StackDepth
       (FreeVarsSent) (FreeVarsFunc <Unique e.FreeSent e.FreeFunc>)
       e.Outers
-    ];
+    );
 }
 
 Unique {
@@ -251,11 +251,11 @@ Unique {
   <Cntx-PushScope t.Context> == t.Context
 */
 $ENTRY Cntx-PushScope {
-  [Context s.StackDepth e.Variables] =
-    [Context
+  (Context s.StackDepth e.Variables) =
+    (Context
       <Inc s.StackDepth>
       (FreeVarsSent) (FreeVarsFunc) e.Variables
-    ];
+    );
 }
 
 /**
@@ -264,10 +264,10 @@ $ENTRY Cntx-PushScope {
   e.ClosureContext ::= (s.Mode e.Index)*
 */
 $ENTRY Cntx-PopScope {
-  [Context
+  (Context
     s.StackDepth
     (FreeVarsSent) (FreeVarsFunc e.ClosureContext)
     e.Outers
-  ] =
-    [Context <Dec s.StackDepth> e.Outers] e.ClosureContext;
+  ) =
+    (Context <Dec s.StackDepth> e.Outers) e.ClosureContext;
 }

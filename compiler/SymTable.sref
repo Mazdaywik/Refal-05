@@ -11,16 +11,16 @@ $EXTERN GN-Entry;
 $ENUM SymTable;
 
 $ENTRY ST-Create {
-  = [SymTable ()];
+  = (SymTable ());
 }
 
 $ENTRY ST-Destroy {
-  [SymTable e.Names (e.References)] = ;
+  (SymTable e.Names (e.References)) = ;
 }
 
 /*
   Внутренний формат
-  t.SymTable ::= [SymTable t.Name* (t.Reference*)]
+  t.SymTable ::= (SymTable t.Name* (t.Reference*))
   t.Name ::=
       (Declared e.Name)
     | (Defined s.ScopeClass e.Name)
@@ -49,31 +49,31 @@ PatchReferences {
 */
 $ENTRY ST-AddDefined {
   t.ErrorList
-  [SymTable
+  (SymTable
     e.Names-B (Defined s.AnyScopeClass e.Name) e.Names-E (e.References)
-  ]
+  )
   s.ScopeClass t.SrcPos e.Name =
     <EL-AddErrorAt t.ErrorList t.SrcPos 'Function ' e.Name ' already defined'>
-    [SymTable
+    (SymTable
       e.Names-B (Defined s.AnyScopeClass e.Name) e.Names-E (e.References)
-    ];
+    );
 
   t.ErrorList
-  [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)]
+  (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References))
   s.ScopeClass t.SrcPos e.Name =
     t.ErrorList
-    [SymTable
+    (SymTable
       e.Names-B (Defined s.ScopeClass e.Name) e.Names-E
       <PatchReferences (e.References) e.Name>
-    ];
+    );
 
   t.ErrorList
-  [SymTable e.Names (e.References)] s.ScopeClass t.SrcPos e.Name =
+  (SymTable e.Names (e.References)) s.ScopeClass t.SrcPos e.Name =
     t.ErrorList
-    [SymTable
+    (SymTable
       e.Names (Defined s.ScopeClass e.Name)
       <PatchReferences (e.References) e.Name>
-    ];
+    );
 }
 
 /**
@@ -84,32 +84,32 @@ $ENTRY ST-AddDeclared {
     Можно повторно объявить имя не зависимо от того, было ли оно до этого
     объявлено или определено.
   */
-  [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)] e.Name =
-    [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)];
+  (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)) e.Name =
+    (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References));
 
-  [SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)]
+  (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References))
   e.Name =
-    [SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)];
+    (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References));
 
-  [SymTable e.Names (e.References)] e.Name =
-    [SymTable e.Names (Declared e.Name) <PatchReferences (e.References) e.Name>];
+  (SymTable e.Names (e.References)) e.Name =
+    (SymTable e.Names (Declared e.Name) <PatchReferences (e.References) e.Name>);
 }
 
 /**
   <ST-AddFunctionCall t.SymTable t.SrcPos e.Name> == t.SymTable
 */
 $ENTRY ST-AddFunctionCall {
-  [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)]
+  (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References))
   t.SrcPos e.Name =
-    [SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)];
+    (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References));
 
-  [SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)]
+  (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References))
   t.SrcPos e.Name =
-    [SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)];
+    (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References));
 
-  [SymTable e.Names (e.References)]
+  (SymTable e.Names (e.References))
   t.SrcPos e.Name =
-    [SymTable e.Names (e.References (t.SrcPos e.Name))];
+    (SymTable e.Names (e.References (t.SrcPos e.Name)));
 }
 
 /**
@@ -117,7 +117,7 @@ $ENTRY ST-AddFunctionCall {
     == t.ErrorList t.SymTable
 */
 $ENTRY ST-CheckUnresolved {
-  t.ErrorList [SymTable e.Names (e.References)] =
+  t.ErrorList (SymTable e.Names (e.References)) =
     <Reduce
       {
         t.ErrorList^ (t.SrcPos e.Name) =
@@ -127,7 +127,7 @@ $ENTRY ST-CheckUnresolved {
       }
       t.ErrorList e.References
     >
-    [SymTable e.Names (e.References)];
+    (SymTable e.Names (e.References));
 }
 
 /**
@@ -135,7 +135,7 @@ $ENTRY ST-CheckUnresolved {
     == (s.ScopeClass e.Name)*
 */
 $ENTRY ST-AllFunctions {
-  [SymTable e.Names (e.References)] =
+  (SymTable e.Names (e.References)) =
     <Map
       {
         (Declared e.Name) = (GN-Entry e.Name);
@@ -146,8 +146,6 @@ $ENTRY ST-AllFunctions {
 }
 
 $ENTRY ST-GetAnyName {
-  [SymTable
-    e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)
-  ] =
+  (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)) =
     e.Name;
 }
