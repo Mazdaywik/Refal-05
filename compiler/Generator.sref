@@ -6,11 +6,11 @@ $EXTERN StrFromInt;
 
 //FROM Algorithm
 $EXTERN CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
-  CmdIdent, CmdBrackets, CmdADT, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
+  CmdBrackets, CmdADT, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
   AlgLeft, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
   CmdCopyEVar, CmdCopyVar, CmdAllocateElem, CmdLinkBrackets, CmdPushStack,
   CmdInsertElem, CmdInsertVar, CmdReturnResult, AlgRight, ElChar, ElName,
-  ElNumber, ElIdent, ElOpenADT, ElCloseADT, ElOpenBracket, ElCloseBracket,
+  ElNumber, ElOpenADT, ElCloseADT, ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
 
 //FROM Escape
@@ -73,18 +73,6 @@ $ENTRY GenExtern {
 $ENTRY GenForward {
   e.Name =
     ('static refalrts::FnResult ' e.Name '(' <FuncArguments> ');');
-}
-
-$ENTRY GenIdent {
-  e.Name =
-    ('//$LABEL ' e.Name)
-    ('template <typename T>')
-    ('struct ' e.Name ' {')
-    ('  static const char *name() {')
-    ('    return "' e.Name '";')
-    ('  }')
-    ('};')
-    ();
 }
 
 $ENTRY GenCommonHeaders {
@@ -167,10 +155,6 @@ GenCommand {
   (e.Indent) (CmdName s.Direction s.BracketNumber e.Name) =
     (e.Indent)
     <PrintMatchName (e.Indent) s.Direction s.BracketNumber e.Name>;
-
-  (e.Indent) (CmdIdent s.Direction s.BracketNumber e.Name) =
-    (e.Indent)
-    <PrintMatchIdent (e.Indent) s.Direction s.BracketNumber e.Name>;
 
   (e.Indent) (CmdBrackets s.Direction s.BracketNumber s.InnerBrackets) =
     (e.Indent)
@@ -350,14 +334,6 @@ PrintMatchName {
     >;
 }
 
-PrintMatchIdent {
-  (e.Indent) s.Direction s.BracketNumber e.Name =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('ident') ' & ' e.Name '<int>::name'
-    >;
-}
-
 PrintMatchBrackets {
   (e.Indent) s.Direction s.BracketNumber s.InnerNum =
     <PrintMatch
@@ -457,7 +433,6 @@ SwAllocator {
   ElChar = 'alloc_char';
   ElName = 'alloc_name';
   ElNumber = 'alloc_number';
-  ElIdent = 'alloc_ident';
 
   ElOpenADT = 'alloc_open_adt';
   ElCloseADT = 'alloc_close_adt';
@@ -475,8 +450,6 @@ SwInfo {
   ElName e.Name = ', ' <PrintName e.Name> ', "' <PrintName e.Name> '"';
 
   ElNumber s.Number = ', ' <StrFromInt s.Number> 'UL';
-
-  ElIdent e.Name = ', & ' e.Name '<int>::name';
 
   // Остальное -- скобки
   s.Other = ;

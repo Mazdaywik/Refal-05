@@ -4,8 +4,8 @@ $EXTERN Fetch, Seq, Map, SaveFile, Sort, Inc, Dec;
 //FROM Lexer
 $EXTERN LexFolding, TkOpenBracket, TkCloseBracket, TkOpenADT, TkCloseADT,
   TkOpenCall, TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon,
-  EEnum, Enum, Extern, Ident, Entry, TkComma, TkOpenBlock, TkCloseBlock,
-  TkVariable, TkReplace, TkChar, TkNumber, TkIdentMarker, TkRedefinition,
+  EEnum, Enum, Extern, Entry, TkComma, TkOpenBlock, TkCloseBlock,
+  TkVariable, TkReplace, TkChar, TkNumber, TkRedefinition,
   TkOpen, TkClose;
 
 //FROM Error
@@ -14,14 +14,13 @@ $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
 
 //FROM SymTable
 $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
-  ST-AllIdents, ST-AddDefined, ST-AddIdent, ST-AddDeclared, ST-AddFunctionCall,
-  ST-GetAnyName;
+  ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall, ST-GetAnyName;
 
 //FROM Library
 $EXTERN Success, Fails, StrFromInt;
 
 //FROM Generator
-$EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward, GenIdent,
+$EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward,
   GenCommonTailer, GenEEnum, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
   GenFnEnd, GN-CreateClosure;
 
@@ -31,7 +30,7 @@ $EXTERN Cntx-Create, Cntx-Destroy, Cntx-PushScope, Cntx-PopScope,
   AlreadyBounded, Cntx-CheckVariable, ExistVariable, VariableNotFound;
 
 //FROM Algorithm
-$EXTERN MakeAlgorithm, TkIdentifier, Brackets, ADT-Brackets, CallBrackets;
+$EXTERN MakeAlgorithm, Brackets, ADT-Brackets, CallBrackets;
 
 
 /**
@@ -97,7 +96,6 @@ PrepareBracket {
     '$ENUM' NameList |
     '$EENUM' NameList |
     '$EXTERN' NameList |
-    '$LABEL' NameList |
     '$ENTRY' Function |
     Function .
 
@@ -116,7 +114,7 @@ PrepareBracket {
 
   RedefinitionVariable = Variable '^' .
 
-  CommonTerm = Char | Number | Name | Variable | '#' Ident .
+  CommonTerm = Char | Number | Name | Variable .
 
   Result = ResultTerm* .
 
@@ -139,7 +137,6 @@ PrepareBracket {
     '$ENUM' NameList |
     '$EENUM' NameList |
     '$EXTERN' NameList |
-    '$LABEL' NameList |
     '$ENTRY' Function |
     Function .
 */
@@ -156,10 +153,6 @@ ParseElements {
       <Sort <ST-AllFunctions t.SymTable>>
     >
     ()
-    <Map
-      { (e.Name) = <GenIdent e.Name>; }
-      <Sort <ST-AllIdents t.SymTable>>
-    >
     e.Generated
     <GenCommonTailer>;
 
@@ -210,14 +203,6 @@ GenFunctionsFromDirective {
   EEnum   = GenEEnum   ST-AddDefined  GN-Entry;
   Enum    = GenEnum    ST-AddDefined  GN-Local;
   Extern  = DontGen    AddExtern      GN-Entry;
-  // Для меток не важно: entry или local.
-  Ident   =
-    DontGen
-    {
-      t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name =
-        t.ErrorList <ST-AddIdent t.SymTable e.Name>;
-    }
-    GN-Entry;
 }
 
 AddExtern {
@@ -582,23 +567,6 @@ ParsePattern {
       (e.Scanned (TkName e.Name)) e.Tail
     >;
 
-  t.ErrorList t.SymTable t.Context (e.MultiBrackets)
-  (e.Scanned)
-  (TkIdentMarker t.SrcPosMarker) (TkName t.SrcPosName e.Name) e.Tail =
-    <ParsePattern
-      t.ErrorList <ST-AddIdent t.SymTable e.Name>
-      t.Context (e.MultiBrackets)
-      (e.Scanned (TkIdentifier e.Name)) e.Tail
-    >;
-
-  t.ErrorList t.SymTable t.Context (e.MultiBrackets)
-  (e.Scanned) (TkIdentMarker t.SrcPos) e.Tail =
-    <ParsePattern
-      <EL-AddErrorAt t.ErrorList t.SrcPos 'Missed name after ''#'''>
-      t.SymTable t.Context (e.MultiBrackets)
-      (e.Scanned) e.Tail
-    >;
-
   // Переменные
 
   t.ErrorList t.SymTable t.Context (e.MultiBracket)
@@ -843,26 +811,6 @@ ParseResult {
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
       t.Context
       (e.MultiBracket) (e.Scanned (TkName e.Name)) e.Tail
-    >;
-
-  (e.Functions) t.ErrorList t.SymTable t.Context
-  (e.MultiBracket)
-  (e.Scanned)
-  (TkIdentMarker t.MarkerSrcPos) (TkName t.NameSrcPos e.Name) e.Tail =
-    <ParseResult
-      (e.Functions)
-      t.ErrorList <ST-AddIdent t.SymTable e.Name>
-      t.Context
-      (e.MultiBracket) (e.Scanned (TkIdentifier e.Name)) e.Tail
-    >;
-
-  (e.Functions) t.ErrorList t.SymTable t.Context
-  (e.MultiBracket) (e.Scanned) (TkIdentMarker t.SrcPos) e.Tail =
-    <ParseResult
-      (e.Functions)
-      <EL-AddErrorAt t.ErrorList t.SrcPos 'Missed name after "#"'>
-      t.SymTable t.Context
-      (e.MultiBracket) (e.Scanned) e.Tail
     >;
 
   // Переменные

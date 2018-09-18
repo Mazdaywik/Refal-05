@@ -34,7 +34,6 @@ $EENUM
   TkDirective,
   TkEOF,
   TkError,
-  TkIdentMarker,
   TkName,
   TkNumber,
   TkOpenADT, TkOpenCall, TkOpenBlock, TkOpenBracket,
@@ -44,14 +43,13 @@ $EENUM
   TkVariable,
   TkRedefinition;
 
-$EENUM EEnum, Entry, Enum, Extern, Ident;
+$EENUM EEnum, Entry, Enum, Extern;
 
 StrDirective {
   EEnum = 'EENUM';
   Entry = 'ENTRY';
   Enum = 'ENUM';
   Extern = 'EXTERN';
-  Ident = 'LABEL';
 }
 
 $EENUM TkOpen, TkClose;
@@ -66,7 +64,6 @@ $ENTRY StrFromToken {
   TkDirective s.Directive = '"$' <StrDirective s.Directive> '"';
   TkEOF = 'end of file';
   TkError e.Message = 'LEXER ERROR: ' e.Message;
-  TkIdentMarker = '"#"';
   TkName e.Name = 'Name ' e.Name;
   TkNumber s.Number = 'Number ' <StrFromInt s.Number>;
   TkOpenADT = '"["';
@@ -196,7 +193,6 @@ ValidDirective {
   'EENUM' = (TkDirective EEnum);
   'ENTRY' = (TkDirective Entry);
   'EXTERN' = (TkDirective Extern);
-  'LABEL' = (TkDirective Ident);
   e.Other = (TkError 'Unknown directive $' e.Other);
 }
 
@@ -206,7 +202,7 @@ SwPunctuation {
   '(' = TkOpenBracket; ')' = TkCloseBracket;
   '=' = TkReplace; ',' = TkComma; ';' = TkSemicolon;
   '[' = TkOpenADT; ']' = TkCloseADT;
-  '#' = TkIdentMarker; '^' = TkRedefinition;
+  '^' = TkRedefinition;
 }
 
 AddLineNumber {
@@ -234,7 +230,7 @@ NormalizeTokens {
   :Digit: = '0123456789'.
   :ODigit: = '01234567' .
   :XDigit: = '0123456789ABCDEFabcdef' .
-  :Punctuation: = '<>(){}[]=;,#^'.
+  :Punctuation: = '<>(){}[]=;,^'.
 
   :StartIdentifier: = :UpLetter:.
   :TailIdentifier: = :UpLetter: :LoLetter: :Digit: '_-'.
@@ -391,7 +387,6 @@ Root {
   (e.Accum) '=' e.Text = (TkPunctuation e.Accum '=') <Root () e.Text>;
   (e.Accum) ';' e.Text = (TkPunctuation e.Accum ';') <Root () e.Text>;
   (e.Accum) ',' e.Text = (TkPunctuation e.Accum ',') <Root () e.Text>;
-  (e.Accum) '#' e.Text = (TkPunctuation e.Accum '#') <Root () e.Text>;
   (e.Accum) '^' e.Text = (TkPunctuation e.Accum '^') <Root () e.Text>;
   (e.Accum) 'A' e.Text = <Name (e.Accum 'A') e.Text>;
   (e.Accum) 'B' e.Text = <Name (e.Accum 'B') e.Text>;

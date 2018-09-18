@@ -31,12 +31,7 @@ $ENTRY MakeAlgorithm {
 // Направление распознавания
 $EENUM AlgLeft, AlgRight;
 
-/*
-  Тип идентификатора следует сделать доступным
-  и из Driver'а, и из Generator'а.
-  Остаётся только импортировать отсюда.
-*/
-$EENUM TkIdentifier, Brackets, ADT-Brackets, CallBrackets;
+$EENUM Brackets, ADT-Brackets, CallBrackets;
 
 /*
 Команды распознавания
@@ -62,7 +57,7 @@ $EENUM TkIdentifier, Brackets, ADT-Brackets, CallBrackets;
   Комментарий, вносимый в исходный код (CmdComment e.Text)
 */
 $EENUM
-  CmdChar, CmdNumber, CmdName, CmdIdent,
+  CmdChar, CmdNumber, CmdName,
   CmdBrackets, CmdADT, CmdEmpty,
   CmdRepeated, CmdVar, CmdClosedE,
   CmdOpenedE-Start, CmdOpenedE-End,
@@ -109,13 +104,6 @@ DoGenPattern {
       (e.Vars) (e.Commands (CmdName AlgLeft s.Num e.Name))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (TkIdentifier e.Name) e.Range) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdIdent AlgLeft s.Num e.Name))
-    >;
-
   s.NumRanges e.Ranges-B (s.Num e.Range (TkChar s.Char)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -135,13 +123,6 @@ DoGenPattern {
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
       (e.Vars) (e.Commands (CmdName AlgRight s.Num e.Name))
-    >;
-
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkIdentifier e.Name)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdIdent AlgRight s.Num e.Name))
     >;
 
   // Распознавание скобок
@@ -363,9 +344,6 @@ TextFromPattern {
   (TkVariable s.Mode e.Index s.Depth) e.Tail =
     ' ' s.Mode '.' e.Index '#' <StrFromInt s.Depth> <TextFromPattern e.Tail>;
 
-  (TkIdentifier e.Name) e.Tail =
-    ' # ' e.Name <TextFromPattern e.Tail>;
-
   = ;
 }
 
@@ -407,7 +385,7 @@ $EENUM
 
 // Спецификаторы команд (элементы)
 $EENUM
-  ElChar, ElName, ElNumber, ElIdent,
+  ElChar, ElName, ElNumber,
   ElOpenADT, ElCloseADT,
   ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
@@ -442,15 +420,6 @@ DoGenResult {
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElNumber s.Number))
-      ((CmdInsertElem s.Counter) e.Commands)
-      <Inc s.Counter> e.Result
-    >;
-
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkIdentifier e.Name) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElIdent e.Name))
       ((CmdInsertElem s.Counter) e.Commands)
       <Inc s.Counter> e.Result
     >;

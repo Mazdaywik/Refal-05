@@ -24,11 +24,10 @@ $ENTRY ST-Destroy {
   t.Name ::=
       (Declared e.Name)
     | (Defined s.ScopeClass e.Name)
-    | (Identifier Identifier e.Name)
   t.Reference ::= (t.SrcPos e.Name)
 */
 
-$ENUM Declared, Defined, Identifier;
+$ENUM Declared, Defined;
 
 PatchReferences {
   (e.References) e.Name =
@@ -114,21 +113,6 @@ $ENTRY ST-AddFunctionCall {
 }
 
 /**
-  <ST-AddIdent t.SymTable e.Name> == t.SymTable
-*/
-$ENTRY ST-AddIdent {
-  [SymTable e.Names-B (Identifier Identifier e.Name) e.Names-E (e.References)]
-  e.Name =
-    [SymTable
-      e.Names-B (Identifier Identifier e.Name) e.Names-E (e.References)
-    ];
-
-
-  [SymTable e.Names (e.References)] e.Name =
-    [SymTable e.Names (Identifier Identifier e.Name) (e.References)];
-}
-
-/**
   <ST-CheckUnresolved t.ErrorList t.SymTable>
     == t.ErrorList t.SymTable
 */
@@ -156,22 +140,6 @@ $ENTRY ST-AllFunctions {
       {
         (Declared e.Name) = (GN-Entry e.Name);
         (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
-        (Identifier s.ScopeClass e.Name) = /* пусто */;
-      }
-      e.Names
-    >;
-}
-
-/**
-  <ST-AllIdents t.SymTable> == (e.Name)*
-*/
-$ENTRY ST-AllIdents {
-  [SymTable e.Names (e.References)] =
-    <Map
-      {
-        (Declared e.Name) = /* пусто */;
-        (Defined s.ScopeClass e.Name) = /* пусто */;
-        (Identifier s.ScopeClass e.Name) = (e.Name);
       }
       e.Names
     >;

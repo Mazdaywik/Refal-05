@@ -21,7 +21,6 @@ typedef enum DataTag {
   cDataChar,
   cDataNumber,
   cDataFunction,
-  cDataIdentifier,
   cDataOpenADT, cDataCloseADT,
   cDataOpenBracket, cDataCloseBracket,
   cDataOpenCall, cDataCloseCall,
@@ -32,8 +31,6 @@ typedef enum DataTag {
 } DataTag;
 
 typedef FnResult (*RefalFunctionPtr) ( Iter begin, Iter end );
-
-typedef const char *(*RefalIdentifier) ();
 
 typedef const char * RefalFuncName;
 
@@ -52,7 +49,6 @@ typedef struct Node {
     char char_info;
     RefalNumber number_info;
     RefalFunction function_info;
-    RefalIdentifier ident_info;
     NodePtr link_info;
     void *file_info;
   };
@@ -74,9 +70,6 @@ extern bool char_right( char ch, Iter& first, Iter& last );
 
 extern bool number_left( RefalNumber num, Iter& first, Iter& last );
 extern bool number_right( RefalNumber num, Iter& first, Iter& last );
-
-extern bool ident_left( RefalIdentifier ident, Iter& first, Iter& last );
-extern bool ident_right( RefalIdentifier ident, Iter& first, Iter& last );
 
 extern bool adt_left(
   Iter& res_first, Iter& res_last,
@@ -138,7 +131,6 @@ extern bool alloc_number( Iter& res, RefalNumber num );
 extern bool alloc_name(
   Iter& res, RefalFunctionPtr func, RefalFuncName name = 0
 );
-extern bool alloc_ident( Iter& res, RefalIdentifier ident );
 extern bool alloc_open_adt( Iter& res );
 extern bool alloc_close_adt( Iter& res );
 extern bool alloc_open_bracket( Iter& res );
