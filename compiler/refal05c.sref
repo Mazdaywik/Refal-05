@@ -32,22 +32,22 @@ FindFiles-Compilers {
   (CmdLineError e.Message) =
     <WriteLine 'COMMAND LINE ERROR: ' e.Message>;
 
-  s.CommandLineInfo CompileList (e.Folders) e.Files =
+  t.CommandLineInfo CompileList (e.Folders) e.Files =
     <FindFiles-Compilers-SwFound
-      s.CommandLineInfo <FindFiles (e.Folders) e.Files>
+      t.CommandLineInfo <FindFiles (e.Folders) e.Files>
     >;
 }
 
 FindFiles-Compilers-SwFound {
-  s.CommandLineInfo e.Files-B (NotFound e.FileName) e.Files-E =
+  t.CommandLineInfo e.Files-B (NotFound e.FileName) e.Files-E =
     <Map PrintNotFound (NotFound e.FileName) e.Files-E>;
 
-  s.CommandLineInfo e.FoundFiles =
+  t.CommandLineInfo e.FoundFiles =
     <CheckCompilationResult
-      s.CommandLineInfo
+      t.CommandLineInfo
       <Map
         ProcessEachSource
-        <RenameFiles s.CommandLineInfo e.FoundFiles>
+        <RenameFiles t.CommandLineInfo e.FoundFiles>
       >
     >;
 }
@@ -79,18 +79,18 @@ ProcessEachSource-SwSuccess {
 }
 
 CheckCompilationResult {
-  s.CommandLineInfo e.Outputs-B Fails e.Outputs-E =
+  t.CommandLineInfo e.Outputs-B Fails e.Outputs-E =
     <WriteLine '*** COMPILATION FAILED ***'>;
 
-  s.CommandLineInfo e.Outputs =
-    <Link s.CommandLineInfo e.Outputs>
+  t.CommandLineInfo e.Outputs =
+    <Link t.CommandLineInfo e.Outputs>
     <WriteLine '*** Compilation successed ***'>;
 }
 
 Link {
-  s.CommandLineInfo e.Files =
+  t.CommandLineInfo e.Files =
     <Link-SwCompileCommand
-      <s.CommandLineInfo CmdCompileCommand> (e.Files)
+      <CmdCompileCommand t.CommandLineInfo> (e.Files)
     >;
 }
 
@@ -105,9 +105,9 @@ QuoteFile {
 }
 
 RenameFiles {
-  s.CommandLineInfo e.Files =
+  t.CommandLineInfo e.Files =
     <RenameFiles-SwCompileCommand
-      <s.CommandLineInfo CmdCompileCommand> (e.Files)
+      <CmdCompileCommand t.CommandLineInfo> (e.Files)
     >;
 }
 

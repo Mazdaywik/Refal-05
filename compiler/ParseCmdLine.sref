@@ -1,21 +1,26 @@
-$EENUM CmdLineError, CompileList, CmdCompileCommand, CmdNone;
+$EENUM CmdLineError, CompileList, CmdNone;
 
 /**
   <ParseCommandLine e.Arguments>
-    == s.CommandLineInfo CompileList (e.Folders) t.FoundedFile*
+    == t.CommandLineInfo CompileList (e.Folders) t.FoundedFile*
     == (CmdLineError e.Message)
 
   t.FoundedFile ::= (e.FileName)
-
-  <s.CommandLineInfo CmdCompileCommand>
-    == CmdNone
-    == e.Command
 */
 $ENTRY ParseCommandLine {
   e.Arguments =
     <DoParseCommandLine
       <CollectorObject (/* folders */) /* files */> e.Arguments
     >;
+}
+
+/**
+  <CmdCompileCommand t.CommandLineInfo>
+    == CmdNone
+    == e.Command
+*/
+$ENTRY CmdCompileCommand {
+  s.CommandLineInfo = <s.CommandLineInfo CmdCompileCommand>;
 }
 
 $ENUM CAddCompileCommand, CAddErrorFile, CGetInfo, CAddFile, CAddFolder,
