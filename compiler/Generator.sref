@@ -57,12 +57,9 @@ $ENTRY GenFnEnd-Success {
   = ('  //return refalrts::cRecognitionImpossible;') ('}') ();
 }
 
-$ENTRY GenEEnum {
-  e.Name = <SwGenFnStart GN-Entry NakedArguments e.Name> <GenFnEnd>;
-}
-
 $ENTRY GenEnum {
-  e.Name = <SwGenFnStart GN-Local NakedArguments e.Name> <GenFnEnd>;
+  s.ScopeClass e.Name =
+    <SwGenFnStart s.ScopeClass NakedArguments e.Name> <GenFnEnd>;
 }
 
 $ENTRY GenExtern {

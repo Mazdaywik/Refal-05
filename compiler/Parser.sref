@@ -20,7 +20,7 @@ $EXTERN Success, Fails, StrFromInt;
 
 //FROM Generator
 $EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward,
-  GenCommonTailer, GenEEnum, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
+  GenCommonTailer, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
   GenFnEnd;
 
 //FROM Algorithm
@@ -91,13 +91,14 @@ Pass-Final-SwNoErrors {
   TranslationUnit = Element* .
 
   Element =
-    '$ENUM' NameList |
-    '$EENUM' NameList |
-    '$EXTERN' NameList |
+    '$ENUM' NameList-Enum |
+    '$EENUM' NameList-Enum |
+    '$EXTERN' NameList-Extern |
     '$ENTRY' Function |
     Function .
 
-  NameList = Name ',' NameList | Name ';' .
+  NameList-Enum = Name ',' NameList-Enum | Name ';' .
+  NameList-Extern = Name ',' NameList-Extern | Name ';' .
 
   Function = Name Block .
 
@@ -132,9 +133,9 @@ Pass-Final-SwNoErrors {
 
 /*
   Element =
-    '$ENUM' NameList |
-    '$EENUM' NameList |
-    '$EXTERN' NameList |
+    '$ENUM' NameList-Enum |
+    '$EENUM' NameList-Enum |
+    '$EXTERN' NameList-Extern |
     '$ENTRY' Function |
     Function .
 */
@@ -196,19 +197,9 @@ ParseElements-FunctionParsed {
     >;
 }
 
-DontGen {
-  e.Name = /* пусто */;
-}
-
-GenFunctionsFromDirective {
-  EEnum   = GenEEnum   ST-AddDefined  GN-Entry;
-  Enum    = GenEnum    ST-AddDefined  GN-Local;
-  Extern  = DontGen    AddExtern      GN-Entry;
-}
-
-AddExtern {
-  t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name =
-    t.ErrorList <ST-AddDeclared t.SymTable e.Name>;
+ScopeClassFromEnumDirective {
+  EEnum = GN-Entry;
+  Enum  = GN-Local;
 }
 
 ParseElement-SwDirective {
@@ -224,56 +215,87 @@ ParseElement-SwDirective {
     <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
     t.SymTable t.Unexpected e.Tail;
 
+  t.ErrorList t.SymTable Extern e.Tail =
+    (/* ничего не генерируем */)
+    <ParseNameList-Extern t.ErrorList t.SymTable e.Tail>;
+
   t.ErrorList t.SymTable s.Directive e.Tail =
-    <ParseNameList
+    <ParseNameList-Enum
       (/* generated */)
       t.ErrorList t.SymTable
-      <GenFunctionsFromDirective s.Directive>
+      <ScopeClassFromEnumDirective s.Directive>
       e.Tail
     >;
 }
 
 /*
-  NameList = Name ',' NameList | Name ';' .
+  NameList-Enum = Name ',' NameList-Enum | Name ';' .
 */
 
-ParseNameList {
+ParseNameList-Enum {
   (e.Generated)
-  t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass
+  t.ErrorList t.SymTable s.ScopeClass
   (TkName t.SrcPos e.Name) e.Tail =
-    <ParseNameList-Tail
-      (e.Generated <s.GenFunc e.Name>)
-      <s.TableChangeFunc t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
-      s.GenFunc s.TableChangeFunc s.ScopeClass
+    <ParseNameList-Tail-Enum
+      (e.Generated <GenEnum s.ScopeClass e.Name>)
+      <ST-AddDefined t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
+      s.ScopeClass
       e.Tail
     >;
 
   (e.Generated)
-  t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass
+  t.ErrorList t.SymTable s.ScopeClass
   t.Unexpected e.Tail =
     (e.Generated)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
     t.SymTable t.Unexpected e.Tail;
 }
 
-ParseNameList-Tail {
+ParseNameList-Tail-Enum {
   (e.Generated)
-  t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass
+  t.ErrorList t.SymTable s.ScopeClass
   (TkComma t.SrcPos) e.Tail =
-    <ParseNameList
+    <ParseNameList-Enum
       (e.Generated)
-      t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass e.Tail
+      t.ErrorList t.SymTable s.ScopeClass e.Tail
     >;
 
   (e.Generated)
-  t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass
+  t.ErrorList t.SymTable s.ScopeClass
   (TkSemicolon t.SrcPos) e.Tail =
     (e.Generated) t.ErrorList t.SymTable e.Tail;
 
   (e.Generated)
-  t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass
+  t.ErrorList t.SymTable s.ScopeClass
   t.Unexpected e.Tail =
     (e.Generated)
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
+    t.SymTable t.Unexpected e.Tail;
+}
+
+/*
+  NameList-Extern = Name ',' NameList-Extern | Name ';' .
+*/
+
+ParseNameList-Extern {
+  t.ErrorList t.SymTable (TkName t.SrcPos e.Name) e.Tail =
+    <ParseNameList-Tail-Extern
+      t.ErrorList <ST-AddDeclared t.SymTable e.Name> e.Tail
+    >;
+
+  t.ErrorList t.SymTable t.Unexpected e.Tail =
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
+    t.SymTable t.Unexpected e.Tail;
+}
+
+ParseNameList-Tail-Extern {
+  t.ErrorList t.SymTable (TkComma t.SrcPos) e.Tail =
+    <ParseNameList-Extern t.ErrorList t.SymTable e.Tail>;
+
+  t.ErrorList t.SymTable (TkSemicolon t.SrcPos) e.Tail =
+    t.ErrorList t.SymTable e.Tail;
+
+  t.ErrorList t.SymTable t.Unexpected e.Tail =
     <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
     t.SymTable t.Unexpected e.Tail;
 }
