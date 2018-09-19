@@ -2,17 +2,20 @@
 $EXTERN Map, LoadFile, FastIntFromStr, Reduce, Inc, DelAccumulator, MapReduce;
 
 //FROM Library
-$EXTERN StrFromInt, Chr, Add, Mul;
+$EXTERN StrFromInt, Chr, Add, Mul, WriteLine;
 
 
-LinearizeLine {
+FlatLine {
   (e.Line) = e.Line '\n';
 }
 
 $ENTRY LexFolding {
   e.FileName =
-    <NormalizeTokens
-      <Root () <SkipBOM <Map LinearizeLine <LoadFile e.FileName>>>>
+    <ShowWarning
+      (e.FileName)
+      <Scan
+        1 1 <SkipBOM <Map FlatLine <LoadFile e.FileName>>>
+      >
     >;
 }
 
@@ -22,6 +25,27 @@ SkipBOM {
 
   e.Content = e.Content;
 }
+
+$ENUM Warning;
+
+ShowWarning {
+  (e.FileName)
+  e.Tokens-B (Warning s.Row s.Col e.Message) e.Tokens-E =
+    <WriteLine
+      e.FileName ':' <StrFromInt s.Row> ':' <StrFromInt s.Col> ':'
+      'Warning:' e.Message
+    >
+    e.Tokens-B e.Tokens-E;
+
+  (e.FileName) e.Tokens = e.Tokens;
+}
+
+Scan {
+  s.Row s.Col e.Text =
+    (Warning s.Row s.Col 'new lexer stops here')
+    <NormalizeTokens s.Row <Root () e.Text>>;
+}
+
 
 $EENUM
   TkChar,
@@ -195,10 +219,10 @@ AddLineNumber {
 }
 
 NormalizeTokens {
-  e.Tokens =
+  s.Row e.Tokens =
     <DelAccumulator
       <MapReduce
-        AddLineNumber 1
+        AddLineNumber s.Row
         <Map NormalizeToken e.Tokens>
       >
     >;
