@@ -145,14 +145,15 @@ ScanVariable {
 }
 
 Punctuation {
+  /* упорядочены по ASCII-кодам */
+  '(' = Success TkOpenBracket;
+  ')' = Success TkCloseBracket;
   ',' = Success TkComma;
   ';' = Success TkSemicolon;
-  '{' = Success TkOpenBlock;
-  '=' = Success TkReplace;
-  '(' = Success TkOpenBracket;
   '<' = Success TkOpenCall;
-  ')' = Success TkCloseBracket;
+  '=' = Success TkReplace;
   '>' = Success TkCloseCall;
+  '{' = Success TkOpenBlock;
   '}' = Success TkCloseBlock;
 
   s.Other = Fails s.Other;
