@@ -309,8 +309,8 @@ TextFromPattern {
   (TkName e.Name) e.Tail =
     ' & ' e.Name <TextFromPattern e.Tail>;
 
-  (TkVariable s.Mode e.Index s.Depth) e.Tail =
-    ' ' s.Mode '.' e.Index '#' <StrFromInt s.Depth> <TextFromPattern e.Tail>;
+  (TkVariable s.Mode e.Index) e.Tail =
+    ' ' s.Mode '.' e.Index <TextFromPattern e.Tail>;
 
   = ;
 }
@@ -530,9 +530,9 @@ RepeatedEVariables {
 }
 
 FilterUnusedCmdClosedE {
-  e.Unuseds-B (1 'e' e.Index s.Depth) e.Unuseds-E
-  (CmdClosedE AlgLeft s.Num 'e' e.Index s.Depth) =
-    (CmdComment ' Unused closed variable e.' e.Index '#' <StrFromInt s.Depth>);
+  e.Unuseds-B (1 'e' e.Index) e.Unuseds-E
+  (CmdClosedE AlgLeft s.Num 'e' e.Index) =
+    (CmdComment ' Unused closed variable e.' e.Index);
 
   e.Unuseds t.OtherCommand = t.OtherCommand;
 }

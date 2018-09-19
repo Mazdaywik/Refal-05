@@ -472,7 +472,7 @@ ParsePattern {
       t.ErrorList t.SymTable
       (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket)
-      (e.Scanned (TkVariable s.Mode e.Index 1)) e.Tail
+      (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable
@@ -486,14 +486,14 @@ ParsePattern {
       t.SymTable
       (e.Variables-B (s.OldMode e.Index) e.Variables-E)
       (e.MultiBracket)
-      (e.Scanned (TkVariable s.OldMode e.Index 1)) e.Tail
+      (e.Scanned (TkVariable s.OldMode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <ParsePattern
       t.ErrorList t.SymTable ((s.Mode e.Index) e.Variables) (e.MultiBracket)
-      (e.Scanned (TkVariable s.Mode e.Index 1)) e.Tail
+      (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
     >;
 
   /*
@@ -646,7 +646,7 @@ ParseResult {
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <ParseResult
       t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
-      (e.MultiBracket) (e.Scanned (TkVariable s.Mode e.Index 1)) e.Tail
+      (e.MultiBracket) (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables-B (s.OldMode e.Index) e.Variables-E)
@@ -658,7 +658,7 @@ ParseResult {
       t.SymTable
       (e.Variables-B (s.OldMode e.Index) e.Variables-E)
       (e.MultiBracket)
-      (e.Scanned (TkVariable s.OldMode e.Index 00)) e.Tail
+      (e.Scanned (TkVariable s.OldMode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables)
