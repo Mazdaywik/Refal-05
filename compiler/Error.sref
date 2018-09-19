@@ -65,8 +65,3 @@ $ENTRY EL-Destroy {
 WriteBracketedLine {
   (e.Line) = <WriteLine e.Line>;
 }
-
-$ENTRY EL-WarningAt {
-  (ErrorList (e.FileName) e.Errors) t.SrcPos e.Message =
-    <WriteLine e.FileName ':' <StrFromSrcPos t.SrcPos> ':Warning:' e.Message>;
-}

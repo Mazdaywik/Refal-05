@@ -9,7 +9,7 @@ $EXTERN LexFolding, TkOpenBracket, TkCloseBracket,
 
 //FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
-  EL-AddErrorAt, EL-WarningAt;
+  EL-AddErrorAt;
 
 //FROM SymTable
 $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
