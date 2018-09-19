@@ -64,21 +64,13 @@ $ENUM CmdOpenedE;
 
 GenPattern {
   e.Pattern =
-    <GenPattern-Aux
-      (e.Pattern)
-      <DoGenPattern
-        1 (0 e.Pattern) (/* vars */) (/* commands */)
-      >
+    <DoGenPattern
+      1 (0 e.Pattern) (/* vars */)
+      (
+        (CmdComment <TextFromPattern e.Pattern>)
+        /* commands */
+      )
     >;
-}
-
-GenPattern-Aux {
-  (e.Pattern) s.NumRanges (e.Vars) e.Commands =
-    (e.Vars)
-    (
-      (CmdComment <TextFromPattern e.Pattern>)
-      <SaveBrackets s.NumRanges e.Commands>
-    );
 }
 
 DoGenPattern {
@@ -211,89 +203,28 @@ DoGenPattern {
   s.NumRanges e.Ranges-B (s.Num (TkVariable 'e' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars (1 'e' e.Index))
-      (e.Commands (CmdOpenedE AlgLeft s.Num 'e' e.Index))
+      <SaveRanges
+        s.NumRanges (/* scanned */) e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars (1 'e' e.Index))
+        (e.Commands (CmdOpenedE AlgLeft s.Num 'e' e.Index))
+      >
     >;
 
   // Завершение разбора.
   s.NumRanges /* пусто */ (e.Vars) (e.Commands) =
-    s.NumRanges (e.Vars) e.Commands;
+    (e.Vars) (e.Commands);
 }
 
-SaveBrackets {
-  s.LastBracket e.Commands = <DoSaveBrackets s.LastBracket () e.Commands>;
-}
-
-DoSaveBrackets {
-  s.LastBracket (e.Scanned)
-  e.Commands-B (CmdOpenedE AlgLeft s.Num 'e' e.Index) e.Commands-E =
-    <DoSaveBrackets-BeforeMakeSavers
-      s.LastBracket
-      e.Scanned e.Commands-B (CmdOpenedE AlgLeft s.Num 'e' e.Index)
-      (e.Commands-E)
+SaveRanges {
+  s.NumRanges (e.ScannedRanges) (s.Num e.Range) e.Ranges
+  (e.Vars) (e.Commands) =
+    <SaveRanges
+      <Inc s.NumRanges> (e.ScannedRanges (s.NumRanges e.Range)) e.Ranges
+      (e.Vars) (e.Commands (CmdSave s.Num s.NumRanges))
     >;
 
-  s.LastBracket (e.Scanned) e.Commands = e.Scanned e.Commands;
-}
-
-DoSaveBrackets-BeforeMakeSavers {
-  s.LastBracket e.CommandsBeforeEMatch (e.Commands-E) =
-    <DoSaveBrackets-MakeSavers
-      s.LastBracket
-      ( <ExtractBrackets e.CommandsBeforeEMatch> )
-      ( e.CommandsBeforeEMatch )
-      e.Commands-E
-    >;
-}
-
-DoSaveBrackets-MakeSavers {
-  s.LastBracket
-  (e.BoundedBrackets-B s.Num e.BoundedBrackets-E)
-  (e.Scanned)
-  e.Commands-B (s.Command s.Direction s.Num e.Args) e.Commands-E =
-    <DoSaveBrackets-MakeSavers
-      <Inc s.LastBracket>
-      (e.BoundedBrackets-B e.BoundedBrackets-E)
-      (e.Scanned (CmdSave s.Num s.LastBracket))
-      <Map
-        (DoSaveBrackets-MakeSavers-PatchNum s.Num s.LastBracket)
-        e.Commands-B (s.Command s.Direction s.Num e.Args) e.Commands-E
-      >
-    >;
-
-  s.LastBracket (e.UnusedBoundedBrackets) (e.Scanned) e.Commands =
-    <DoSaveBrackets s.LastBracket (e.Scanned) e.Commands>;
-}
-
-DoSaveBrackets-MakeSavers-PatchNum {
-  /*
-    Все команды распознавания содержат номер скобок третьим термом,
-    общий формат (s.Command s.Direction s.BracketNum e.Info)
-  */
-  s.Num s.LastBracket (s.Command s.Direction s.Num e.Info) =
-    (s.Command s.Direction s.LastBracket e.Info);
-
-  s.Num s.LastBracket (s.Command s.Direction s.OtherNum e.Info) =
-    (s.Command s.Direction s.OtherNum e.Info);
-}
-
-ExtractBrackets {
-  e.Commands = <Brackets-Set <Map ExtractBrackets-Command e.Commands>>;
-}
-
-ExtractBrackets-Command {
-  (CmdBrackets s.Direction s.BracketNum s.InnerNum) =
-    s.BracketNum s.InnerNum;
-
-  (s.Command s.Direction s.BracketNum e.Info) = s.BracketNum;
-}
-
-Brackets-Set {
-  e.Unique s.Repeated e.Middle s.Repeated e.Rest =
-    e.Unique <Brackets-Set s.Repeated e.Middle e.Rest>;
-
-  e.Unique = e.Unique;
+  s.NumRanges (e.ScannedRanges) /* пусто */ (e.Vars) (e.Commands) =
+    s.NumRanges e.ScannedRanges (e.Vars) (e.Commands);
 }
 
 TextFromPattern {
