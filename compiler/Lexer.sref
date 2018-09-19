@@ -31,7 +31,7 @@ $ENUM Warning;
 
 ShowWarning {
   (e.FileName)
-  e.Tokens-B (Warning s.Row s.Col e.Message) e.Tokens-E =
+  e.Tokens-B (Warning (s.Row s.Col) e.Message) e.Tokens-E =
     e.Tokens-B
     <WriteLine
       e.FileName ':' <StrFromInt s.Row> ':' <StrFromInt s.Col> ':'
@@ -75,6 +75,13 @@ Scan {
   s.Row s.Col '$' e.Tail =
     <ScanDirective s.Row <Inc s.Col> () <Type e.Tail>>;
 
+  s.Row s.Col '\'\'' e.Tail =
+    (TkChar (s.Row s.Col) '\'')
+    (Warning (s.Row s.Col) 'pair of quotes \'\' is deprecated')
+    <Scan s.Row <Inc2 s.Col> e.Tail>;
+
+  s.Row s.Col '\'' e.Tail = <ScanChars s.Row <Inc s.Col> e.Tail>;
+
   s.Row s.Col 'e.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 'e' () <Type e.Tail>>;
   s.Row s.Col 's.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 's' () <Type e.Tail>>;
   s.Row s.Col 't.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 't' () <Type e.Tail>>;
@@ -88,6 +95,15 @@ Scan {
 ScanCComment {
   s.Row s.Col e.Comment '*/' e.Tail =
     <ScanCCommentContent s.Row s.Col (e.Comment '*/') e.Tail>;
+
+  /* Обработка незакрытого комментария */
+  /* TODO: подумать потом о предупреждениях вложенных комментариев */
+  s.Row s.Col e.Line '\n' e.Comment = <ScanCComment <Inc s.Row> 1 e.Comment>;
+
+  /* Гарантируется, что в конце потока символов есть \n */
+  s.Row s.Col /* пусто */ =
+    (TkError (s.Row s.Col) 'EOF in comment')
+    (TkEOF (s.Row s.Col));
 }
 
 ScanCCommentContent {
@@ -119,6 +135,82 @@ MakeDirective {
   s.Row s.Col 'ENTRY' = (TkDirective (s.Row s.Col) Entry);
   s.Row s.Col 'EXTERN' = (TkDirective (s.Row s.Col) Extern);
   s.Row s.Col e.Other = (TkError (s.Row s.Col) 'Unknown directive $' e.Other);
+}
+
+ScanChars {
+  s.Row s.Col '\'\'' e.Tail =
+    (TkChar (s.Row s.Col) '\'')
+    (Warning (s.Row s.Col) 'pair of quotes \'\' is deprecated')
+    <ScanChars s.Row <Inc2 s.Col> e.Tail>;
+
+  s.Row s.Col '\'' e.Tail = <Scan s.Row <Inc s.Col> e.Tail>;
+
+  s.Row s.Col '\n' e.Tail =
+    (TkError (s.Row s.Col) 'unclosed quote')
+    <Scan s.Row s.Col '\n' e.Tail>;
+
+  s.Row s.Col '\\' e.Tail =
+    <ScanChars-Escape s.Row <Inc s.Col> e.Tail>;
+
+  s.Row s.Col s.Other e.Tail =
+    (TkChar (s.Row s.Col) s.Other)
+    <ScanChars s.Row <Inc s.Col> e.Tail>;
+}
+
+ScanChars-Escape {
+  s.Row s.Col 'x' e.Tail =
+    <ScanChars-Escape-Hex s.Row <Inc s.Col> () e.Tail>;
+
+  s.Row s.Col s.Next e.Tail =
+    <ScanChars-Escape-SwValid s.Row s.Col <Escape s.Next> e.Tail>;
+
+  /* Пустой суффикс быть не может, поскольку в конец добавляется \n */
+}
+
+ScanChars-Escape-Hex {
+  s.Row s.Col (s.H1 s.H2) e.Tail =
+    (TkChar (s.Row s.Col) <Chr <Add <Mul s.H1 16> s.H2>>)
+    <ScanChars s.Row s.Col e.Tail>;
+
+  s.Row s.Col (e.Digits) s.Next e.Tail =
+    <ScanChars-Escape-Hex-SwHex
+      s.Row s.Col (e.Digits) <DigitFromChar s.Next> e.Tail
+    >;
+
+  /* Пустой суффикс быть не может, поскольку в конец добавляется \n */
+}
+
+ScanChars-Escape-Hex-SwHex {
+  s.Row s.Col (e.Digits) Fails s.NoDigit e.Tail =
+    (TkError (s.Row s.Col) 'bad hex escape sequence "\\x..."')
+    <ScanChars s.Row s.Col s.NoDigit e.Tail>;
+
+  s.Row s.Col (e.Digits) s.Digit e.Tail =
+    <ScanChars-Escape-Hex s.Row <Inc s.Col> (e.Digits s.Digit) e.Tail>;
+}
+
+Escape {
+  'n' = Success '\n';
+  't' = Success '\t';
+  'r' = Success '\r';
+  '\\' = Success '\\';
+  '\'' = Success '\'';
+  '"' = Success '"';
+  '<' = Success '<';
+  '>' = Success '>';
+  '(' = Success '(';
+  ')' = Success ')';
+
+  s.Other = Fails s.Other;
+}
+
+ScanChars-Escape-SwValid {
+  s.Row s.Col Success s.Value e.Tail =
+    (TkChar (s.Row s.Col) s.Value) <ScanChars s.Row <Inc s.Col> e.Tail>;
+
+  s.Row s.Col Fails s.Other e.Tail =
+    (TkError (s.Row s.Col) 'bad escape sequence "\\' s.Other '"')
+    <ScanChars s.Row s.Col s.Other e.Tail>;
 }
 
 ScanVariable {
@@ -174,7 +266,7 @@ Scan-ByType {
     <ScanNumber s.Row <Inc s.Col> (s.Digit) <Type e.Tail>>;
 
   s.Row s.Col s.Type s.SubType e.Text =
-    (Warning s.Row s.Col 'new lexer stops here')
+    (Warning (s.Row s.Col) 'new lexer stops here')
     <NormalizeTokens s.Row <Root () e.Text>>;
 }
 
@@ -335,6 +427,8 @@ DigitFromChar {
 
   'A' = 10; 'B' = 11; 'C' = 12; 'D' = 13; 'E' = 14; 'F' = 15;
   'a' = 10; 'b' = 11; 'c' = 12; 'd' = 13; 'e' = 14; 'f' = 15;
+
+  s.Other = Fails s.Other;
 }
 
 ValidDirective {
