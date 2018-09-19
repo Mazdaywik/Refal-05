@@ -327,21 +327,21 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_3, be_3 ) )
+      if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      eNames_E_b_1 = bb_4;
-      eNames_E_e_1 = be_4;
-      if( ! refalrts::svar_left( sAnyScopeClass_1, bb_3, be_3 ) )
+      eNames_E_b_1 = bb_3;
+      eNames_E_e_1 = be_3;
+      if( ! refalrts::svar_left( sAnyScopeClass_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_3, be_3 ) )
+      if( ! refalrts::empty_seq( bb_4, be_4 ) )
         continue;
 
       refalrts::reset_allocator();
@@ -554,20 +554,20 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Declared, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Declared, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_3, be_3 ) )
+      if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_3, be_3 ) )
+      if( ! refalrts::empty_seq( bb_4, be_4 ) )
         continue;
-      eNames_E_b_1 = bb_4;
-      eNames_E_e_1 = be_4;
+      eNames_E_b_1 = bb_3;
+      eNames_E_e_1 = be_3;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -782,20 +782,20 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Declared, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Declared, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_3, be_3 ) )
+      if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_3, be_3 ) )
+      if( ! refalrts::empty_seq( bb_4, be_4 ) )
         continue;
-      eNames_E_b_1 = bb_4;
-      eNames_E_e_1 = be_4;
+      eNames_E_b_1 = bb_3;
+      eNames_E_e_1 = be_3;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -881,21 +881,21 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_3, be_3 ) )
+      if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      eNames_E_b_1 = bb_4;
-      eNames_E_e_1 = be_4;
-      if( ! refalrts::svar_left( sScopeClass_1, bb_3, be_3 ) )
+      eNames_E_b_1 = bb_3;
+      eNames_E_e_1 = be_3;
+      if( ! refalrts::svar_left( sScopeClass_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_3, be_3 ) )
+      if( ! refalrts::empty_seq( bb_4, be_4 ) )
         continue;
 
       refalrts::reset_allocator();
@@ -1087,20 +1087,20 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Declared, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Declared, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_3, be_3 ) )
+      if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_3, be_3 ) )
+      if( ! refalrts::empty_seq( bb_4, be_4 ) )
         continue;
-      eNames_E_b_1 = bb_4;
-      eNames_E_e_1 = be_4;
+      eNames_E_b_1 = bb_3;
+      eNames_E_e_1 = be_3;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -1189,21 +1189,21 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_3, be_3 ) )
+      if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      eNames_E_b_1 = bb_4;
-      eNames_E_e_1 = be_4;
-      if( ! refalrts::svar_left( sScopeClass_1, bb_3, be_3 ) )
+      eNames_E_b_1 = bb_3;
+      eNames_E_e_1 = be_3;
+      if( ! refalrts::svar_left( sScopeClass_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_3, be_3 ) )
+      if( ! refalrts::empty_seq( bb_4, be_4 ) )
         continue;
 
       refalrts::reset_allocator();
@@ -1763,19 +1763,19 @@ refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_1;
-      refalrts::Iter be_4 = be_1;
-      refalrts::Iter bb_3 = 0;
-      refalrts::Iter be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_4, be_4 ) )
+      refalrts::Iter bb_3 = bb_1;
+      refalrts::Iter be_3 = be_1;
+      refalrts::Iter bb_4 = 0;
+      refalrts::Iter be_4 = 0;
+      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_3, be_3 ) )
+      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
         continue;
       // Unused closed variable e.Names_E
-      if( ! refalrts::svar_left( sScopeClass_1, bb_3, be_3 ) )
+      if( ! refalrts::svar_left( sScopeClass_1, bb_4, be_4 ) )
         continue;
-      eName_b_1 = bb_3;
-      eName_e_1 = be_3;
+      eName_b_1 = bb_4;
+      eName_e_1 = be_4;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;

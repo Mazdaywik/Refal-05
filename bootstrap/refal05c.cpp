@@ -461,18 +461,18 @@ static refalrts::FnResult FindFiles_Compilers_SwFound(refalrts::Iter arg_begin, 
     eFiles_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_2 = bb_0;
-      refalrts::Iter be_2 = be_0;
-      refalrts::Iter bb_1 = 0;
-      refalrts::Iter be_1 = 0;
-      if( ! refalrts::brackets_left( bb_1, be_1, bb_2, be_2 ) )
+      refalrts::Iter bb_1 = bb_0;
+      refalrts::Iter be_1 = be_0;
+      refalrts::Iter bb_2 = 0;
+      refalrts::Iter be_2 = 0;
+      if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
         continue;
-      if( ! refalrts::function_left( NotFound, bb_1, be_1 ) )
+      if( ! refalrts::function_left( NotFound, bb_2, be_2 ) )
         continue;
-      eFileName_b_1 = bb_1;
-      eFileName_e_1 = be_1;
-      eFiles_E_b_1 = bb_2;
-      eFiles_E_e_1 = be_2;
+      eFileName_b_1 = bb_2;
+      eFileName_e_1 = be_2;
+      eFiles_E_b_1 = bb_1;
+      eFiles_E_e_1 = be_1;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -2860,48 +2860,48 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     eFiles_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_5 = bb_0;
-      refalrts::Iter be_5 = be_0;
-      refalrts::Iter bb_1 = 0;
-      refalrts::Iter be_1 = 0;
-      if( ! refalrts::brackets_left( bb_1, be_1, bb_5, be_5 ) )
-        continue;
+      refalrts::Iter bb_1 = bb_0;
+      refalrts::Iter be_1 = be_0;
       refalrts::Iter bb_2 = 0;
       refalrts::Iter be_2 = 0;
-      if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
+      if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
         continue;
-      if( ! refalrts::function_left( Output, bb_2, be_2 ) )
+      refalrts::Iter bb_3 = 0;
+      refalrts::Iter be_3 = 0;
+      if( ! refalrts::brackets_right( bb_3, be_3, bb_2, be_2 ) )
         continue;
-      if( ! refalrts::number_right( 0UL, bb_1, be_1 ) )
+      if( ! refalrts::function_left( Output, bb_3, be_3 ) )
         continue;
-      eFileName_b_1 = bb_1;
-      eFileName_e_1 = be_1;
-      eOutput1_b_1 = bb_2;
-      eOutput1_e_1 = be_2;
+      if( ! refalrts::number_right( 0UL, bb_2, be_2 ) )
+        continue;
+      eFileName_b_1 = bb_2;
+      eFileName_e_1 = be_2;
+      eOutput1_b_1 = bb_3;
+      eOutput1_e_1 = be_3;
       eFiles_M_b_1 = 0;
       eFiles_M_e_1 = 0;
       refalrts::start_e_loop();
       do {
-        refalrts::Iter bb_6 = bb_5;
-        refalrts::Iter be_6 = be_5;
-        refalrts::Iter bb_3 = 0;
-        refalrts::Iter be_3 = 0;
-        if( ! refalrts::brackets_left( bb_3, be_3, bb_6, be_6 ) )
+        refalrts::Iter bb_4 = bb_1;
+        refalrts::Iter be_4 = be_1;
+        refalrts::Iter bb_5 = 0;
+        refalrts::Iter be_5 = 0;
+        if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
           continue;
-        refalrts::Iter bb_4 = 0;
-        refalrts::Iter be_4 = 0;
-        if( ! refalrts::brackets_right( bb_4, be_4, bb_3, be_3 ) )
+        refalrts::Iter bb_6 = 0;
+        refalrts::Iter be_6 = 0;
+        if( ! refalrts::brackets_right( bb_6, be_6, bb_5, be_5 ) )
           continue;
-        if( ! refalrts::function_left( Output, bb_4, be_4 ) )
+        if( ! refalrts::function_left( Output, bb_6, be_6 ) )
           continue;
-        if( ! refalrts::number_right( 0UL, bb_3, be_3 ) )
+        if( ! refalrts::number_right( 0UL, bb_5, be_5 ) )
           continue;
-        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_3, be_3 ) )
+        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_5, be_5 ) )
           continue;
-        if( ! refalrts::empty_seq( bb_3, be_3 ) )
+        if( ! refalrts::empty_seq( bb_5, be_5 ) )
           continue;
-        eOutput2_b_1 = bb_4;
-        eOutput2_e_1 = be_4;
+        eOutput2_b_1 = bb_6;
+        eOutput2_e_1 = be_6;
         // Unused closed variable e.Files_E
 
         refalrts::reset_allocator();
@@ -3172,7 +3172,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
         refalrts::use( res );
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return refalrts::cSuccess;
-      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_5, be_5 ) );
+      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_1, be_1 ) );
     } while ( refalrts::open_evar_advance( eFiles_B_b_1, eFiles_B_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -3203,44 +3203,44 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     eFiles_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_0;
-      refalrts::Iter be_4 = be_0;
-      refalrts::Iter bb_1 = 0;
-      refalrts::Iter be_1 = 0;
-      if( ! refalrts::brackets_left( bb_1, be_1, bb_4, be_4 ) )
+      refalrts::Iter bb_1 = bb_0;
+      refalrts::Iter be_1 = be_0;
+      refalrts::Iter bb_2 = 0;
+      refalrts::Iter be_2 = 0;
+      if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
         continue;
-      if( ! refalrts::tvar_right( tLocation_1, bb_1, be_1 ) )
+      if( ! refalrts::tvar_right( tLocation_1, bb_2, be_2 ) )
         continue;
-      if( ! refalrts::number_right( 0UL, bb_1, be_1 ) )
+      if( ! refalrts::number_right( 0UL, bb_2, be_2 ) )
         continue;
-      eFileName_b_1 = bb_1;
-      eFileName_e_1 = be_1;
+      eFileName_b_1 = bb_2;
+      eFileName_e_1 = be_2;
       eFiles_M_b_1 = 0;
       eFiles_M_e_1 = 0;
       refalrts::start_e_loop();
       do {
-        refalrts::Iter bb_5 = bb_4;
-        refalrts::Iter be_5 = be_4;
-        refalrts::Iter bb_2 = 0;
-        refalrts::Iter be_2 = 0;
-        if( ! refalrts::brackets_left( bb_2, be_2, bb_5, be_5 ) )
+        refalrts::Iter bb_3 = bb_1;
+        refalrts::Iter be_3 = be_1;
+        refalrts::Iter bb_4 = 0;
+        refalrts::Iter be_4 = 0;
+        if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
           continue;
-        refalrts::Iter bb_3 = 0;
-        refalrts::Iter be_3 = 0;
-        if( ! refalrts::brackets_right( bb_3, be_3, bb_2, be_2 ) )
+        refalrts::Iter bb_5 = 0;
+        refalrts::Iter be_5 = 0;
+        if( ! refalrts::brackets_right( bb_5, be_5, bb_4, be_4 ) )
           continue;
-        if( ! refalrts::function_left( Output, bb_3, be_3 ) )
+        if( ! refalrts::function_left( Output, bb_5, be_5 ) )
           continue;
-        if( ! refalrts::number_right( 0UL, bb_2, be_2 ) )
+        if( ! refalrts::number_right( 0UL, bb_4, be_4 ) )
           continue;
-        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_2, be_2 ) )
+        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_4, be_4 ) )
           continue;
-        if( ! refalrts::empty_seq( bb_2, be_2 ) )
+        if( ! refalrts::empty_seq( bb_4, be_4 ) )
           continue;
-        eOutput_b_1 = bb_3;
-        eOutput_e_1 = be_3;
-        eFiles_E_b_1 = bb_5;
-        eFiles_E_e_1 = be_5;
+        eOutput_b_1 = bb_5;
+        eOutput_e_1 = be_5;
+        eFiles_E_b_1 = bb_3;
+        eFiles_E_e_1 = be_3;
 
         refalrts::reset_allocator();
         refalrts::Iter res = arg_begin;
@@ -3333,7 +3333,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
         refalrts::use( res );
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return refalrts::cSuccess;
-      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_4, be_4 ) );
+      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_1, be_1 ) );
     } while ( refalrts::open_evar_advance( eFiles_B_b_1, eFiles_B_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -3364,43 +3364,43 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     eFiles_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_4 = bb_0;
-      refalrts::Iter be_4 = be_0;
-      refalrts::Iter bb_1 = 0;
-      refalrts::Iter be_1 = 0;
-      if( ! refalrts::brackets_left( bb_1, be_1, bb_4, be_4 ) )
-        continue;
+      refalrts::Iter bb_1 = bb_0;
+      refalrts::Iter be_1 = be_0;
       refalrts::Iter bb_2 = 0;
       refalrts::Iter be_2 = 0;
-      if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
+      if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
         continue;
-      if( ! refalrts::function_left( Output, bb_2, be_2 ) )
+      refalrts::Iter bb_3 = 0;
+      refalrts::Iter be_3 = 0;
+      if( ! refalrts::brackets_right( bb_3, be_3, bb_2, be_2 ) )
         continue;
-      if( ! refalrts::number_right( 0UL, bb_1, be_1 ) )
+      if( ! refalrts::function_left( Output, bb_3, be_3 ) )
         continue;
-      eFileName_b_1 = bb_1;
-      eFileName_e_1 = be_1;
-      eOutput_b_1 = bb_2;
-      eOutput_e_1 = be_2;
+      if( ! refalrts::number_right( 0UL, bb_2, be_2 ) )
+        continue;
+      eFileName_b_1 = bb_2;
+      eFileName_e_1 = be_2;
+      eOutput_b_1 = bb_3;
+      eOutput_e_1 = be_3;
       eFiles_M_b_1 = 0;
       eFiles_M_e_1 = 0;
       refalrts::start_e_loop();
       do {
-        refalrts::Iter bb_5 = bb_4;
-        refalrts::Iter be_5 = be_4;
-        refalrts::Iter bb_3 = 0;
-        refalrts::Iter be_3 = 0;
-        if( ! refalrts::brackets_left( bb_3, be_3, bb_5, be_5 ) )
+        refalrts::Iter bb_4 = bb_1;
+        refalrts::Iter be_4 = be_1;
+        refalrts::Iter bb_5 = 0;
+        refalrts::Iter be_5 = 0;
+        if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
           continue;
-        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_3, be_3 ) )
+        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_5, be_5 ) )
           continue;
-        if( ! refalrts::number_left( 0UL, bb_3, be_3 ) )
+        if( ! refalrts::number_left( 0UL, bb_5, be_5 ) )
           continue;
-        eFiles_E_b_1 = bb_5;
-        eFiles_E_e_1 = be_5;
-        if( ! refalrts::tvar_left( tLocation_1, bb_3, be_3 ) )
+        eFiles_E_b_1 = bb_4;
+        eFiles_E_e_1 = be_4;
+        if( ! refalrts::tvar_left( tLocation_1, bb_5, be_5 ) )
           continue;
-        if( ! refalrts::empty_seq( bb_3, be_3 ) )
+        if( ! refalrts::empty_seq( bb_5, be_5 ) )
           continue;
 
         refalrts::reset_allocator();
@@ -3494,7 +3494,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
         refalrts::use( res );
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return refalrts::cSuccess;
-      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_4, be_4 ) );
+      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_1, be_1 ) );
     } while ( refalrts::open_evar_advance( eFiles_B_b_1, eFiles_B_e_1, bb_0, be_0 ) );
   } while ( 0 );
 
@@ -3524,37 +3524,37 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
     eFiles_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_0;
-      refalrts::Iter be_3 = be_0;
-      refalrts::Iter bb_1 = 0;
-      refalrts::Iter be_1 = 0;
-      if( ! refalrts::brackets_left( bb_1, be_1, bb_3, be_3 ) )
+      refalrts::Iter bb_1 = bb_0;
+      refalrts::Iter be_1 = be_0;
+      refalrts::Iter bb_2 = 0;
+      refalrts::Iter be_2 = 0;
+      if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
         continue;
-      if( ! refalrts::tvar_right( tLocation1_1, bb_1, be_1 ) )
+      if( ! refalrts::tvar_right( tLocation1_1, bb_2, be_2 ) )
         continue;
-      if( ! refalrts::number_right( 0UL, bb_1, be_1 ) )
+      if( ! refalrts::number_right( 0UL, bb_2, be_2 ) )
         continue;
-      eFileName_b_1 = bb_1;
-      eFileName_e_1 = be_1;
+      eFileName_b_1 = bb_2;
+      eFileName_e_1 = be_2;
       eFiles_M_b_1 = 0;
       eFiles_M_e_1 = 0;
       refalrts::start_e_loop();
       do {
-        refalrts::Iter bb_4 = bb_3;
-        refalrts::Iter be_4 = be_3;
-        refalrts::Iter bb_2 = 0;
-        refalrts::Iter be_2 = 0;
-        if( ! refalrts::brackets_left( bb_2, be_2, bb_4, be_4 ) )
+        refalrts::Iter bb_3 = bb_1;
+        refalrts::Iter be_3 = be_1;
+        refalrts::Iter bb_4 = 0;
+        refalrts::Iter be_4 = 0;
+        if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
           continue;
-        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_2, be_2 ) )
+        if( ! refalrts::repeated_evar_left( eFileName_b_2, eFileName_e_2, eFileName_b_1, eFileName_e_1, bb_4, be_4 ) )
           continue;
-        if( ! refalrts::number_left( 0UL, bb_2, be_2 ) )
+        if( ! refalrts::number_left( 0UL, bb_4, be_4 ) )
           continue;
-        eFiles_E_b_1 = bb_4;
-        eFiles_E_e_1 = be_4;
-        if( ! refalrts::tvar_left( tLocation2_1, bb_2, be_2 ) )
+        eFiles_E_b_1 = bb_3;
+        eFiles_E_e_1 = be_3;
+        if( ! refalrts::tvar_left( tLocation2_1, bb_4, be_4 ) )
           continue;
-        if( ! refalrts::empty_seq( bb_2, be_2 ) )
+        if( ! refalrts::empty_seq( bb_4, be_4 ) )
           continue;
 
         refalrts::reset_allocator();
@@ -3635,7 +3635,7 @@ static refalrts::FnResult ScanCollisions(refalrts::Iter arg_begin, refalrts::Ite
         refalrts::use( res );
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return refalrts::cSuccess;
-      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_3, be_3 ) );
+      } while ( refalrts::open_evar_advance( eFiles_M_b_1, eFiles_M_e_1, bb_1, be_1 ) );
     } while ( refalrts::open_evar_advance( eFiles_B_b_1, eFiles_B_e_1, bb_0, be_0 ) );
   } while ( 0 );
 

@@ -40,7 +40,6 @@ extern refalrts::FnResult GN_Entry(refalrts::Iter arg_begin, refalrts::Iter arg_
 extern refalrts::FnResult GN_Local(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenCommonHeaders(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenCommonTailer(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenEEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenFnEnd(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -1566,70 +1565,6 @@ refalrts::FnResult GenFnEnd_Success(refalrts::Iter arg_begin, refalrts::Iter arg
   );
 }
 
-refalrts::FnResult GenEEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    // e.Name
-    eName_b_1 = bb_0;
-    eName_e_1 = be_0;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SwGenFnStart, "SwGenFnStart" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Entry, "GN_Entry" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, NakedArguments, "NakedArguments" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_open_call( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_name( n6, GenFnEnd, "GenFnEnd" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n5 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
 refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -1639,9 +1574,12 @@ refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
+    static refalrts::Iter sScopeClass_1;
     static refalrts::Iter eName_b_1;
     static refalrts::Iter eName_e_1;
-    // e.Name
+    // s.ScopeClass e.Name
+    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+      break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
 
@@ -1654,34 +1592,31 @@ refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     if( ! refalrts::alloc_name( n1, SwGenFnStart, "SwGenFnStart" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Local, "GN_Local" ) )
+    if( ! refalrts::alloc_name( n2, NakedArguments, "NakedArguments" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, NakedArguments, "NakedArguments" ) )
+    if( ! refalrts::alloc_close_call( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
+    if( ! refalrts::alloc_open_call( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_open_call( n5 ) )
+    if( ! refalrts::alloc_name( n5, GenFnEnd, "GenFnEnd" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_name( n6, GenFnEnd, "GenFnEnd" ) )
+    if( ! refalrts::alloc_close_call( n6 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n5 );
-    res = refalrts::splice_elem( res, n7 );
+    refalrts::push_stack( n6 );
+    refalrts::push_stack( n4 );
     res = refalrts::splice_elem( res, n6 );
     res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
     res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
+    refalrts::push_stack( n3 );
+    refalrts::push_stack( n0 );
     res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
     res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sScopeClass_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );

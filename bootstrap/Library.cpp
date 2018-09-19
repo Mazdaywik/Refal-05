@@ -64,22 +64,6 @@ refalrts::FnResult False( refalrts::Iter, refalrts::Iter ) {
   return refalrts::cRecognitionImpossible;
 }
 
-refalrts::FnResult TypeNumber(refalrts::Iter, refalrts::Iter) {
-  return refalrts::cRecognitionImpossible;
-}
-
-refalrts::FnResult TypeCharacter(refalrts::Iter, refalrts::Iter) {
-  return refalrts::cRecognitionImpossible;
-}
-
-refalrts::FnResult TypeFunction(refalrts::Iter, refalrts::Iter) {
-  return refalrts::cRecognitionImpossible;
-}
-
-refalrts::FnResult TypeFile(refalrts::Iter, refalrts::Iter) {
-  return refalrts::cRecognitionImpossible;
-}
-
 // Математические операции
 
 refalrts::FnResult Add(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
@@ -1277,66 +1261,6 @@ refalrts::FnResult SymbCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
   } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
-}
-
-refalrts::FnResult SymbType(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::Iter sSymb_1;
-    // s.Num
-    if( ! refalrts::svar_left( sSymb_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    const char *fnname = 0;
-    refalrts::RefalFunctionPtr fnptr = 0;
-
-    switch( sSymb_1->tag ) {
-    case refalrts::cDataNumber:
-      fnname = "TypeNumber";
-      fnptr = TypeNumber;
-      break;
-
-    case refalrts::cDataChar:
-      fnname = "TypeCharacter";
-      fnptr = TypeCharacter;
-      break;
-
-    case refalrts::cDataFunction:
-      fnname = "TypeFunction";
-      fnptr = TypeFunction;
-      break;
-
-    case refalrts::cDataFile:
-      fnname = "TypeFile";
-      fnptr = TypeFile;
-      break;
-
-    default:
-      break;
-    }
-
-    if( 0 == fnname )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, fnptr, fnname ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
 
   return refalrts::cRecognitionImpossible;
 }

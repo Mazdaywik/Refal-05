@@ -22,7 +22,6 @@ extern refalrts::FnResult GN_Entry(refalrts::Iter arg_begin, refalrts::Iter arg_
 extern refalrts::FnResult GN_Local(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenCommonHeaders(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenCommonTailer(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenEEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult GenFnEnd(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -64,15 +63,12 @@ extern refalrts::FnResult TkOpenCall(refalrts::Iter arg_begin, refalrts::Iter ar
 extern refalrts::FnResult TkReplace(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkSemicolon(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult AddExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult BracketPairName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult CloseBracketName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult CreateLambdaName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult DoParseBlock(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult DontGen(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult GenDeclaration(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult GenFunctionBody(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult GenFunctionsFromDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult InvalidModeVariableError(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult MakeAlgorithm_and_GenSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ParseBlock(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -82,8 +78,10 @@ static refalrts::FnResult ParseElements_DirectiveParsed(refalrts::Iter arg_begin
 static refalrts::FnResult ParseElements_FunctionParsed(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ParseFunction(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ParseFunction_BlockParsed(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ParseNameList_Enum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ParseNameList_Extern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ParseNameList_Tail_Enum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ParseNameList_Tail_Extern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ParseSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -95,6 +93,7 @@ static refalrts::FnResult Pass_Final(refalrts::Iter arg_begin, refalrts::Iter ar
 static refalrts::FnResult Pass_Final_SwNoErrors(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Pass_Lexer(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult PrepareBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ScopeClassFromEnumDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult StrFromBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 refalrts::FnResult CompileFile(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
@@ -1618,31 +1617,7 @@ static refalrts::FnResult ParseElements_FunctionParsed(refalrts::Iter arg_begin,
   );
 }
 
-static refalrts::FnResult DontGen(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    // e.Name
-    // Unused closed variable e.Name
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
-static refalrts::FnResult GenFunctionsFromDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static refalrts::FnResult ScopeClassFromEnumDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
     refalrts::Iter bb_0 = arg_begin;
@@ -1660,16 +1635,8 @@ static refalrts::FnResult GenFunctionsFromDirective(refalrts::Iter arg_begin, re
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, GenEEnum, "GenEEnum" ) )
+    if( ! refalrts::alloc_name( n0, GN_Entry, "GN_Entry" ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDefined, "ST_AddDefined" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Entry, "GN_Entry" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
@@ -1692,105 +1659,9 @@ static refalrts::FnResult GenFunctionsFromDirective(refalrts::Iter arg_begin, re
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, GenEnum, "GenEnum" ) )
+    if( ! refalrts::alloc_name( n0, GN_Local, "GN_Local" ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDefined, "ST_AddDefined" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Local, "GN_Local" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    // & Extern
-    if( ! refalrts::function_left( Extern, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, DontGen, "DontGen" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, AddExtern, "AddExtern" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, GN_Entry, "GN_Entry" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
-static refalrts::FnResult AddExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter tErrorList_1;
-    static refalrts::Iter tSymTable_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter sScopeClass_1;
-    static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_0, be_0 ) )
-      break;
-    eName_b_1 = bb_0;
-    eName_e_1 = be_0;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ST_AddDeclared, "ST_AddDeclared" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
@@ -2022,6 +1893,60 @@ static refalrts::FnResult ParseElement_SwDirective(refalrts::Iter arg_begin, ref
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    // t.ErrorList t.SymTable & Extern e.Tail
+    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Extern, bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_close_bracket( n1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, ParseNameList_Extern, "ParseNameList_Extern" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_stvar( res, tSymTable_1 );
+    res = refalrts::splice_stvar( res, tErrorList_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    refalrts::link_brackets( n0, n1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1;
+    static refalrts::Iter tSymTable_1;
     static refalrts::Iter sDirective_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
@@ -2041,7 +1966,7 @@ static refalrts::FnResult ParseElement_SwDirective(refalrts::Iter arg_begin, ref
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ParseNameList, "ParseNameList" ) )
+    if( ! refalrts::alloc_name( n1, ParseNameList_Enum, "ParseNameList_Enum" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -2053,7 +1978,7 @@ static refalrts::FnResult ParseElement_SwDirective(refalrts::Iter arg_begin, ref
     if( ! refalrts::alloc_open_call( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_name( n5, GenFunctionsFromDirective, "GenFunctionsFromDirective" ) )
+    if( ! refalrts::alloc_name( n5, ScopeClassFromEnumDirective, "ScopeClassFromEnumDirective" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n6 = 0;
     if( ! refalrts::alloc_close_call( n6 ) )
@@ -2088,7 +2013,7 @@ static refalrts::FnResult ParseElement_SwDirective(refalrts::Iter arg_begin, ref
   );
 }
 
-static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static refalrts::FnResult ParseNameList_Enum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
     refalrts::Iter bb_0 = arg_begin;
@@ -2101,20 +2026,17 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
     static refalrts::Iter eGenerated_e_1;
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter sGenFunc_1;
-    static refalrts::Iter sTableChangeFunc_1;
     static refalrts::Iter sScopeClass_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter tSrcPos_1;
     static refalrts::Iter eName_b_1;
     static refalrts::Iter eName_e_1;
-    static refalrts::Iter sGenFunc_2;
+    static refalrts::Iter sScopeClass_2;
+    static refalrts::Iter sScopeClass_3;
     static refalrts::Iter eName_b_2;
     static refalrts::Iter eName_e_2;
-    static refalrts::Iter sTableChangeFunc_2;
-    static refalrts::Iter sScopeClass_2;
-    // ( e.Generated ) t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass ( & TkName t.SrcPos e.Name ) e.Tail
+    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkName t.SrcPos e.Name ) e.Tail
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -2124,10 +2046,6 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sGenFunc_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sTableChangeFunc_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
       break;
@@ -2146,19 +2064,17 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
-    if( ! refalrts::copy_stvar( sGenFunc_2, sGenFunc_1 ) )
+    if( ! refalrts::copy_stvar( sScopeClass_2, sScopeClass_1 ) )
+      return refalrts::cNoMemory;
+    if( ! refalrts::copy_stvar( sScopeClass_3, sScopeClass_2 ) )
       return refalrts::cNoMemory;
     if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return refalrts::cNoMemory;
-    if( ! refalrts::copy_stvar( sTableChangeFunc_2, sTableChangeFunc_1 ) )
-      return refalrts::cNoMemory;
-    if( ! refalrts::copy_stvar( sScopeClass_2, sScopeClass_1 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ParseNameList_Tail, "ParseNameList_Tail" ) )
+    if( ! refalrts::alloc_name( n1, ParseNameList_Tail_Enum, "ParseNameList_Tail_Enum" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -2167,44 +2083,49 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
     if( ! refalrts::alloc_open_call( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
+    if( ! refalrts::alloc_name( n4, GenEnum, "GenEnum" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
+    if( ! refalrts::alloc_close_call( n5 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
+    if( ! refalrts::alloc_close_bracket( n6 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
+    if( ! refalrts::alloc_open_call( n7 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
+    if( ! refalrts::alloc_name( n8, ST_AddDefined, "ST_AddDefined" ) )
       return refalrts::cNoMemory;
-    refalrts::push_stack( n8 );
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_close_call( n9 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_call( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n10 );
     refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n10 );
     res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_2 );
-    res = refalrts::splice_stvar( res, sTableChangeFunc_2 );
-    res = refalrts::splice_stvar( res, sGenFunc_2 );
+    res = refalrts::splice_stvar( res, sScopeClass_3 );
+    refalrts::push_stack( n9 );
     refalrts::push_stack( n7 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n9 );
     res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
     res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
+    res = refalrts::splice_stvar( res, sScopeClass_2 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_stvar( res, sTableChangeFunc_1 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    refalrts::link_brackets( n2, n6 );
     res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n2, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
+    refalrts::push_stack( n5 );
     refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, sGenFunc_1 );
+    res = refalrts::splice_stvar( res, sScopeClass_1 );
+    res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
     res = refalrts::splice_elem( res, n2 );
@@ -2229,11 +2150,9 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
     static refalrts::Iter tUnexpected_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
-    static refalrts::Iter sGenFunc_1;
-    static refalrts::Iter sTableChangeFunc_1;
     static refalrts::Iter sScopeClass_1;
     static refalrts::Iter tUnexpected_2;
-    // ( e.Generated ) t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass t.Unexpected e.Tail
+    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -2243,10 +2162,6 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sGenFunc_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sTableChangeFunc_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
       break;
@@ -2350,7 +2265,7 @@ static refalrts::FnResult ParseNameList(refalrts::Iter arg_begin, refalrts::Iter
   );
 }
 
-static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static refalrts::FnResult ParseNameList_Tail_Enum(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
     refalrts::Iter bb_0 = arg_begin;
@@ -2363,13 +2278,11 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     static refalrts::Iter eGenerated_e_1;
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter sGenFunc_1;
-    static refalrts::Iter sTableChangeFunc_1;
     static refalrts::Iter sScopeClass_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter tSrcPos_1;
-    // ( e.Generated ) t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass ( & TkComma t.SrcPos ) e.Tail
+    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkComma t.SrcPos ) e.Tail
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -2379,10 +2292,6 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sGenFunc_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sTableChangeFunc_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
       break;
@@ -2405,7 +2314,7 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, ParseNameList, "ParseNameList" ) )
+    if( ! refalrts::alloc_name( n1, ParseNameList_Enum, "ParseNameList_Enum" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
@@ -2421,8 +2330,6 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
     res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_stvar( res, sTableChangeFunc_1 );
-    res = refalrts::splice_stvar( res, sGenFunc_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     refalrts::link_brackets( n2, n3 );
@@ -2449,11 +2356,9 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     static refalrts::Iter tSymTable_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
-    static refalrts::Iter sGenFunc_1;
-    static refalrts::Iter sTableChangeFunc_1;
     static refalrts::Iter sScopeClass_1;
     static refalrts::Iter tSrcPos_1;
-    // ( e.Generated ) t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass ( & TkSemicolon t.SrcPos ) e.Tail
+    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkSemicolon t.SrcPos ) e.Tail
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -2463,10 +2368,6 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sGenFunc_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sTableChangeFunc_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
       break;
@@ -2517,11 +2418,9 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     static refalrts::Iter tUnexpected_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
-    static refalrts::Iter sGenFunc_1;
-    static refalrts::Iter sTableChangeFunc_1;
     static refalrts::Iter sScopeClass_1;
     static refalrts::Iter tUnexpected_2;
-    // ( e.Generated ) t.ErrorList t.SymTable s.GenFunc s.TableChangeFunc s.ScopeClass t.Unexpected e.Tail
+    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -2531,10 +2430,6 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sGenFunc_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sTableChangeFunc_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
       break;
@@ -2647,6 +2542,411 @@ static refalrts::FnResult ParseNameList_Tail(refalrts::Iter arg_begin, refalrts:
     refalrts::link_brackets( n0, n1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult ParseNameList_Extern(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1;
+    static refalrts::Iter tSymTable_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter eName_b_1;
+    static refalrts::Iter eName_e_1;
+    static refalrts::Iter tSrcPos_1;
+    // t.ErrorList t.SymTable ( & TkName t.SrcPos e.Name ) e.Tail
+    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkName, bb_1, be_1 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+      break;
+    eName_b_1 = bb_1;
+    eName_e_1 = be_1;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ParseNameList_Tail_Extern, "ParseNameList_Tail_Extern" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, ST_AddDeclared, "ST_AddDeclared" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
+    res = refalrts::splice_stvar( res, tSymTable_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, tErrorList_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1;
+    static refalrts::Iter tSymTable_1;
+    static refalrts::Iter tUnexpected_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter tUnexpected_2;
+    // t.ErrorList t.SymTable t.Unexpected e.Tail
+    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, EL_AddUnexpected, "EL_AddUnexpected" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'f' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_char( n4, 'n' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_char( n5, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_char( n6, 't' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_char( n7, 'i' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_char( n8, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_char( n9, 'n' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_char( n10, ' ' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_char( n11, 'n' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_char( n12, 'a' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n13 = 0;
+    if( ! refalrts::alloc_char( n13, 'm' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n14 = 0;
+    if( ! refalrts::alloc_char( n14, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n15 = 0;
+    if( ! refalrts::alloc_close_call( n15 ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_stvar( res, tUnexpected_2 );
+    res = refalrts::splice_stvar( res, tSymTable_1 );
+    refalrts::push_stack( n15 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n15 );
+    res = refalrts::splice_elem( res, n14 );
+    res = refalrts::splice_elem( res, n13 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_elem( res, n11 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, tUnexpected_1 );
+    res = refalrts::splice_stvar( res, tErrorList_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult ParseNameList_Tail_Extern(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1;
+    static refalrts::Iter tSymTable_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter tSrcPos_1;
+    // t.ErrorList t.SymTable ( & TkComma t.SrcPos ) e.Tail
+    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkComma, bb_1, be_1 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ParseNameList_Extern, "ParseNameList_Extern" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n2 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_stvar( res, tSymTable_1 );
+    res = refalrts::splice_stvar( res, tErrorList_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1;
+    static refalrts::Iter tSymTable_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter tSrcPos_1;
+    // t.ErrorList t.SymTable ( & TkSemicolon t.SrcPos ) e.Tail
+    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkSemicolon, bb_1, be_1 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_stvar( res, tSymTable_1 );
+    res = refalrts::splice_stvar( res, tErrorList_1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter tErrorList_1;
+    static refalrts::Iter tSymTable_1;
+    static refalrts::Iter tUnexpected_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter tUnexpected_2;
+    // t.ErrorList t.SymTable t.Unexpected e.Tail
+    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, EL_AddUnexpected, "EL_AddUnexpected" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_char( n4, 'm' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_char( n5, 'm' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_char( n6, 'a' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_char( n7, ' ' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_char( n8, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_char( n9, 'r' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_char( n10, ' ' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_char( n11, 's' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_char( n12, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n13 = 0;
+    if( ! refalrts::alloc_char( n13, 'm' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n14 = 0;
+    if( ! refalrts::alloc_char( n14, 'i' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n15 = 0;
+    if( ! refalrts::alloc_char( n15, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n16 = 0;
+    if( ! refalrts::alloc_char( n16, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n17 = 0;
+    if( ! refalrts::alloc_char( n17, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n18 = 0;
+    if( ! refalrts::alloc_char( n18, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n19 = 0;
+    if( ! refalrts::alloc_char( n19, 'n' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n20 = 0;
+    if( ! refalrts::alloc_close_call( n20 ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_stvar( res, tUnexpected_2 );
+    res = refalrts::splice_stvar( res, tSymTable_1 );
+    refalrts::push_stack( n20 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n20 );
+    res = refalrts::splice_elem( res, n19 );
+    res = refalrts::splice_elem( res, n18 );
+    res = refalrts::splice_elem( res, n17 );
+    res = refalrts::splice_elem( res, n16 );
+    res = refalrts::splice_elem( res, n15 );
+    res = refalrts::splice_elem( res, n14 );
+    res = refalrts::splice_elem( res, n13 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_elem( res, n11 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, tUnexpected_1 );
+    res = refalrts::splice_stvar( res, tErrorList_1 );
+    res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
@@ -3769,18 +4069,18 @@ static refalrts::FnResult ParseSentence_AfterParsePattern(refalrts::Iter arg_beg
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter ePattern_b_1;
     static refalrts::Iter ePattern_e_1;
     static refalrts::Iter eTokens_b_1;
     static refalrts::Iter eTokens_e_1;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.Pattern ) ( & TkReplace t.SrcPos ) e.Tokens
+    // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) ( & TkReplace t.SrcPos ) e.Tokens
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -3814,7 +4114,7 @@ static refalrts::FnResult ParseSentence_AfterParsePattern(refalrts::Iter arg_beg
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
     res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     refalrts::use( res );
@@ -3831,19 +4131,19 @@ static refalrts::FnResult ParseSentence_AfterParsePattern(refalrts::Iter arg_beg
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter ePattern_b_1;
     static refalrts::Iter ePattern_e_1;
     static refalrts::Iter eTokens_b_1;
     static refalrts::Iter eTokens_e_1;
     static refalrts::Iter tSrcPos_1;
     static refalrts::Iter sNextResultTerm_1;
-    // t.ErrorList t.SymTable t.Context ( e.Pattern ) ( s.NextResultTerm t.SrcPos e.Info ) e.Tokens
+    // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) ( s.NextResultTerm t.SrcPos e.Info ) e.Tokens
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -3972,7 +4272,7 @@ static refalrts::FnResult ParseSentence_AfterParsePattern(refalrts::Iter arg_beg
     res = refalrts::splice_elem( res, n33 );
     res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
     res = refalrts::splice_elem( res, n32 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n31 );
     refalrts::push_stack( n0 );
@@ -4031,17 +4331,17 @@ static refalrts::FnResult ParseSentence_ParseResult(refalrts::Iter arg_begin, re
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter ePattern_b_1;
     static refalrts::Iter ePattern_e_1;
     static refalrts::Iter eTokens_b_1;
     static refalrts::Iter eTokens_e_1;
-    // t.ErrorList t.SymTable t.Context ( e.Pattern ) e.Tokens
+    // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) e.Tokens
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -4091,7 +4391,7 @@ static refalrts::FnResult ParseSentence_ParseResult(refalrts::Iter arg_begin, re
     refalrts::link_brackets( n4, n5 );
     res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n3 );
@@ -4129,9 +4429,9 @@ static refalrts::FnResult ParseSentence_AfterParseResult(refalrts::Iter arg_begi
     static refalrts::Iter eResult_e_1;
     static refalrts::Iter eTokens_b_1;
     static refalrts::Iter eTokens_e_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter tSrcPos_1;
-    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.Context ( e.Result ) ( & TkSemicolon t.SrcPos ) e.Tokens
+    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) ( & TkSemicolon t.SrcPos ) e.Tokens
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -4148,7 +4448,7 @@ static refalrts::FnResult ParseSentence_AfterParseResult(refalrts::Iter arg_begi
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_3 = 0;
     refalrts::Iter be_3 = 0;
@@ -4236,9 +4536,9 @@ static refalrts::FnResult ParseSentence_AfterParseResult(refalrts::Iter arg_begi
     static refalrts::Iter eTokens_b_1;
     static refalrts::Iter eTokens_e_1;
     static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter tSrcPos_2;
-    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.Context ( e.Result ) ( & TkCloseBlock t.SrcPos ) e.Tokens
+    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) ( & TkCloseBlock t.SrcPos ) e.Tokens
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -4255,7 +4555,7 @@ static refalrts::FnResult ParseSentence_AfterParseResult(refalrts::Iter arg_begi
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_3 = 0;
     refalrts::Iter be_3 = 0;
@@ -4438,9 +4738,9 @@ static refalrts::FnResult ParseSentence_AfterParseResult(refalrts::Iter arg_begi
     static refalrts::Iter tUnexpected_1;
     static refalrts::Iter eTokens_b_1;
     static refalrts::Iter eTokens_e_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter tUnexpected_2;
-    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.Context ( e.Result ) t.Unexpected e.Tokens
+    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) t.Unexpected e.Tokens
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -4457,7 +4757,7 @@ static refalrts::FnResult ParseSentence_AfterParseResult(refalrts::Iter arg_begi
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_3 = 0;
     refalrts::Iter be_3 = 0;
@@ -4589,7 +4889,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBrackets_b_1;
     static refalrts::Iter eMultiBrackets_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -4598,12 +4898,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter sChar_1;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBrackets ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -4681,7 +4981,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBrackets_b_1, eMultiBrackets_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -4700,7 +5000,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBrackets_b_1;
     static refalrts::Iter eMultiBrackets_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -4709,12 +5009,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter sNumber_1;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBrackets ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -4792,7 +5092,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBrackets_b_1, eMultiBrackets_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -4811,7 +5111,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBrackets_b_1;
     static refalrts::Iter eMultiBrackets_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -4823,12 +5123,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eName_e_1;
     static refalrts::Iter eName_b_2;
     static refalrts::Iter eName_e_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBrackets ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -4915,7 +5215,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n6 );
     res = refalrts::splice_evar( res, eMultiBrackets_b_1, eMultiBrackets_e_1 );
     res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     refalrts::push_stack( n4 );
     refalrts::push_stack( n2 );
     res = refalrts::splice_elem( res, n4 );
@@ -4997,20 +5297,20 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     eVariables_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_6 = bb_1;
-      refalrts::Iter be_6 = be_1;
-      refalrts::Iter bb_5 = 0;
-      refalrts::Iter be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_6, be_6 ) )
+      refalrts::Iter bb_5 = bb_1;
+      refalrts::Iter be_5 = be_1;
+      refalrts::Iter bb_6 = 0;
+      refalrts::Iter be_6 = 0;
+      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
         continue;
-      if( ! refalrts::repeated_stvar_left( sMode_2, sMode_1, bb_5, be_5 ) )
+      if( ! refalrts::repeated_stvar_left( sMode_2, sMode_1, bb_6, be_6 ) )
         continue;
-      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_5, be_5 ) )
+      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_5, be_5 ) )
+      if( ! refalrts::empty_seq( bb_6, be_6 ) )
         continue;
-      eVariables_E_b_1 = bb_6;
-      eVariables_E_e_1 = be_6;
+      eVariables_E_b_1 = bb_5;
+      eVariables_E_e_1 = be_5;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -5163,19 +5463,19 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     eVariables_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_6 = bb_1;
-      refalrts::Iter be_6 = be_1;
-      refalrts::Iter bb_5 = 0;
-      refalrts::Iter be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_6, be_6 ) )
+      refalrts::Iter bb_5 = bb_1;
+      refalrts::Iter be_5 = be_1;
+      refalrts::Iter bb_6 = 0;
+      refalrts::Iter be_6 = 0;
+      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
         continue;
-      if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_5, be_5 ) )
+      if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
         continue;
-      eVariables_E_b_1 = bb_6;
-      eVariables_E_e_1 = be_6;
-      if( ! refalrts::svar_left( sOldMode_1, bb_5, be_5 ) )
+      eVariables_E_b_1 = bb_5;
+      eVariables_E_e_1 = be_5;
+      if( ! refalrts::svar_left( sOldMode_1, bb_6, be_6 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_5, be_5 ) )
+      if( ! refalrts::empty_seq( bb_6, be_6 ) )
         continue;
 
       refalrts::reset_allocator();
@@ -5439,7 +5739,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -5447,12 +5747,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -5534,7 +5834,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -5553,7 +5853,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -5562,12 +5862,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter tSrcPos_1;
     static refalrts::Iter tSrcPos_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenCall ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenCall ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -5795,7 +6095,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n51 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n50 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n49 );
     refalrts::push_stack( n2 );
@@ -5865,7 +6165,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eInnerScanned_b_1;
@@ -5879,12 +6179,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter sCloseBracket_1;
     static refalrts::Iter sCloseBracket_2;
     static refalrts::Iter tCloseSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.CloseSrcPos s.CloseBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.CloseSrcPos s.CloseBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -5971,7 +6271,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -5990,7 +6290,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eInnerScanned_b_1;
@@ -6005,12 +6305,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter sOtherCloseBracket_1;
     static refalrts::Iter sCloseBracket_1;
     static refalrts::Iter sBracketsSign_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.OtherCloseBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.OtherCloseBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -6195,7 +6495,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n30 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n29 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n28 );
     refalrts::push_stack( n2 );
@@ -6247,19 +6547,19 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eScanned_b_1;
     static refalrts::Iter eScanned_e_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter tSrcPos_1;
     static refalrts::Iter sCloseBracket_1;
-    // t.ErrorList t.SymTable t.Context ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -6403,7 +6703,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::link_brackets( n29, n30 );
     res = refalrts::splice_elem( res, n30 );
     res = refalrts::splice_elem( res, n29 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n28 );
     refalrts::push_stack( n2 );
@@ -6455,7 +6755,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eInnerScanned_b_1;
@@ -6468,12 +6768,12 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     static refalrts::Iter eScanned_e_1;
     static refalrts::Iter sCloseBracket_1;
     static refalrts::Iter sBracketsSign_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -6631,7 +6931,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n30 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n29 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n28 );
     refalrts::push_stack( n2 );
@@ -6683,17 +6983,17 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter ePattern_b_1;
     static refalrts::Iter ePattern_e_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
-    // t.ErrorList t.SymTable t.Context ( ) ( e.Pattern ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Pattern ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -6723,7 +7023,7 @@ static refalrts::FnResult ParsePattern(refalrts::Iter arg_begin, refalrts::Iter 
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
     res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     refalrts::use( res );
@@ -7109,7 +7409,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -7118,12 +7418,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter sChar_1;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -7201,7 +7501,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -7220,7 +7520,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -7229,12 +7529,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter sNumber_1;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -7312,7 +7612,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -7331,7 +7631,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -7343,12 +7643,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter eName_e_1;
     static refalrts::Iter eName_b_2;
     static refalrts::Iter eName_e_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -7435,7 +7735,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n6 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     refalrts::push_stack( n4 );
     refalrts::push_stack( n2 );
     res = refalrts::splice_elem( res, n4 );
@@ -7517,20 +7817,20 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     eVariables_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_6 = bb_1;
-      refalrts::Iter be_6 = be_1;
-      refalrts::Iter bb_5 = 0;
-      refalrts::Iter be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_6, be_6 ) )
+      refalrts::Iter bb_5 = bb_1;
+      refalrts::Iter be_5 = be_1;
+      refalrts::Iter bb_6 = 0;
+      refalrts::Iter be_6 = 0;
+      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
         continue;
-      if( ! refalrts::repeated_stvar_left( sMode_2, sMode_1, bb_5, be_5 ) )
+      if( ! refalrts::repeated_stvar_left( sMode_2, sMode_1, bb_6, be_6 ) )
         continue;
-      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_5, be_5 ) )
+      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_5, be_5 ) )
+      if( ! refalrts::empty_seq( bb_6, be_6 ) )
         continue;
-      eVariables_E_b_1 = bb_6;
-      eVariables_E_e_1 = be_6;
+      eVariables_E_b_1 = bb_5;
+      eVariables_E_e_1 = be_5;
 
       refalrts::reset_allocator();
       refalrts::Iter res = arg_begin;
@@ -7683,19 +7983,19 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     eVariables_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_6 = bb_1;
-      refalrts::Iter be_6 = be_1;
-      refalrts::Iter bb_5 = 0;
-      refalrts::Iter be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_6, be_6 ) )
+      refalrts::Iter bb_5 = bb_1;
+      refalrts::Iter be_5 = be_1;
+      refalrts::Iter bb_6 = 0;
+      refalrts::Iter be_6 = 0;
+      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
         continue;
-      if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_5, be_5 ) )
+      if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
         continue;
-      eVariables_E_b_1 = bb_6;
-      eVariables_E_e_1 = be_6;
-      if( ! refalrts::svar_left( sOldMode_1, bb_5, be_5 ) )
+      eVariables_E_b_1 = bb_5;
+      eVariables_E_e_1 = be_5;
+      if( ! refalrts::svar_left( sOldMode_1, bb_6, be_6 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_5, be_5 ) )
+      if( ! refalrts::empty_seq( bb_6, be_6 ) )
         continue;
 
       refalrts::reset_allocator();
@@ -8023,7 +8323,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eScanned_b_1;
@@ -8033,12 +8333,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter tSrcPos_1;
     static refalrts::Iter sOpenBracket_1;
     static refalrts::Iter sOpenBracket_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos s.OpenBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos s.OpenBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -8144,7 +8444,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -8163,7 +8463,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eInnerScanned_b_1;
@@ -8177,12 +8477,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter sCloseBracket_1;
     static refalrts::Iter sCloseBracket_2;
     static refalrts::Iter tSrcPos_1;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -8269,7 +8569,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
@@ -8288,7 +8588,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eMultiBracket_b_1;
     static refalrts::Iter eMultiBracket_e_1;
     static refalrts::Iter eInnerScanned_b_1;
@@ -8301,12 +8601,12 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     static refalrts::Iter eScanned_e_1;
     static refalrts::Iter sCloseBracket_1;
     static refalrts::Iter sBracketsSign_2;
-    // t.ErrorList t.SymTable t.Context ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -8464,7 +8764,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n30 );
     res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
     res = refalrts::splice_elem( res, n29 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n28 );
     refalrts::push_stack( n2 );
@@ -8516,19 +8816,19 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eScanned_b_1;
     static refalrts::Iter eScanned_e_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter tSrcPos_1;
     static refalrts::Iter sCloseBracket_1;
-    // t.ErrorList t.SymTable t.Context ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -8672,7 +8972,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::link_brackets( n29, n30 );
     res = refalrts::splice_elem( res, n30 );
     res = refalrts::splice_elem( res, n29 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     refalrts::push_stack( n28 );
     refalrts::push_stack( n2 );
@@ -8724,17 +9024,17 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::start_sentence();
     static refalrts::Iter tErrorList_1;
     static refalrts::Iter tSymTable_1;
-    static refalrts::Iter tContext_1;
+    static refalrts::Iter tVarTable_1;
     static refalrts::Iter eResult_b_1;
     static refalrts::Iter eResult_e_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
-    // t.ErrorList t.SymTable t.Context ( ) ( e.Result ) e.Tail
+    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Result ) e.Tail
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::tvar_left( tContext_1, bb_0, be_0 ) )
+    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
       break;
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -8764,7 +9064,7 @@ static refalrts::FnResult ParseResult(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
     res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tContext_1 );
+    res = refalrts::splice_stvar( res, tVarTable_1 );
     res = refalrts::splice_stvar( res, tSymTable_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     refalrts::use( res );

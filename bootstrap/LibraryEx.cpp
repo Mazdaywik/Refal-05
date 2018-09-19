@@ -28,11 +28,8 @@ extern refalrts::FnResult Sort(refalrts::Iter arg_begin, refalrts::Iter arg_end)
 extern refalrts::FnResult Sub(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult SymbCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult SymbType(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Trim(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Type(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult TypeBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult Type_T(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult UnBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult DoArgList(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult DoLoadFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -2819,13 +2816,6 @@ static refalrts::FnResult Lexicon_T_Aux(refalrts::Iter arg_begin, refalrts::Iter
   );
 }
 
-refalrts::FnResult TypeBracket(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
 refalrts::FnResult Type(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2835,105 +2825,27 @@ refalrts::FnResult Type(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // ( e.InBracket )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'A e.X
+    if( ! refalrts::char_left( 'A', bb_0, be_0 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-    // Unused closed variable e.InBracket
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, TypeBracket, "TypeBracket" ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter sSymbol_1;
-    // s.Symbol
-    if( ! refalrts::svar_left( sSymbol_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
+    if( ! refalrts::alloc_char( n0, 'L' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SymbType, "SymbType" ) )
+    if( ! refalrts::alloc_char( n1, 'u' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
+    if( ! refalrts::alloc_char( n2, 'A' ) )
       return refalrts::cNoMemory;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sSymbol_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
-refalrts::FnResult Type_T(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter eInBrackets_b_1;
-    static refalrts::Iter eInBrackets_e_1;
-    static refalrts::Iter eTail_b_1;
-    static refalrts::Iter eTail_e_1;
-    // ( e.InBrackets ) e.Tail
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
-      break;
-    eInBrackets_b_1 = bb_1;
-    eInBrackets_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_name( n0, TypeBracket, "TypeBracket" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_open_bracket( n1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n1, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eInBrackets_b_1, eInBrackets_e_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
@@ -2948,35 +2860,2127 @@ refalrts::FnResult Type_T(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter sSymbol_1;
-    static refalrts::Iter eTail_b_1;
-    static refalrts::Iter eTail_e_1;
-    static refalrts::Iter sSymbol_2;
-    // s.Symbol e.Tail
-    if( ! refalrts::svar_left( sSymbol_1, bb_0, be_0 ) )
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'B e.X
+    if( ! refalrts::char_left( 'B', bb_0, be_0 ) )
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
-    if( ! refalrts::copy_stvar( sSymbol_2, sSymbol_1 ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
+    if( ! refalrts::alloc_char( n0, 'L' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SymbType, "SymbType" ) )
+    if( ! refalrts::alloc_char( n1, 'u' ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
+    if( ! refalrts::alloc_char( n2, 'B' ) )
       return refalrts::cNoMemory;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, sSymbol_2 );
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
     res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sSymbol_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'C e.X
+    if( ! refalrts::char_left( 'C', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'C' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'D e.X
+    if( ! refalrts::char_left( 'D', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'D' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'E e.X
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'E' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'F e.X
+    if( ! refalrts::char_left( 'F', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'F' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'G e.X
+    if( ! refalrts::char_left( 'G', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'G' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'H e.X
+    if( ! refalrts::char_left( 'H', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'H' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'I e.X
+    if( ! refalrts::char_left( 'I', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'I' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'J e.X
+    if( ! refalrts::char_left( 'J', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'J' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'K e.X
+    if( ! refalrts::char_left( 'K', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'K' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'L e.X
+    if( ! refalrts::char_left( 'L', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'L' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'M e.X
+    if( ! refalrts::char_left( 'M', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'M' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'N e.X
+    if( ! refalrts::char_left( 'N', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'N' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'O e.X
+    if( ! refalrts::char_left( 'O', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'O' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'P e.X
+    if( ! refalrts::char_left( 'P', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'P' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'Q e.X
+    if( ! refalrts::char_left( 'Q', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'Q' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'R e.X
+    if( ! refalrts::char_left( 'R', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'R' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'S e.X
+    if( ! refalrts::char_left( 'S', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'S' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'T e.X
+    if( ! refalrts::char_left( 'T', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'T' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'U e.X
+    if( ! refalrts::char_left( 'U', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'U' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'V e.X
+    if( ! refalrts::char_left( 'V', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'V' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'W e.X
+    if( ! refalrts::char_left( 'W', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'W' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'X e.X
+    if( ! refalrts::char_left( 'X', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'X' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'Y e.X
+    if( ! refalrts::char_left( 'Y', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'Y' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'Z e.X
+    if( ! refalrts::char_left( 'Z', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'Z' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'a e.X
+    if( ! refalrts::char_left( 'a', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'a' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'b e.X
+    if( ! refalrts::char_left( 'b', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'b' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'c e.X
+    if( ! refalrts::char_left( 'c', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'c' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'd e.X
+    if( ! refalrts::char_left( 'd', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'd' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'e e.X
+    if( ! refalrts::char_left( 'e', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'e' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'f e.X
+    if( ! refalrts::char_left( 'f', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'f' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'g e.X
+    if( ! refalrts::char_left( 'g', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'g' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'h e.X
+    if( ! refalrts::char_left( 'h', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'h' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'i e.X
+    if( ! refalrts::char_left( 'i', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'i' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'j e.X
+    if( ! refalrts::char_left( 'j', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'j' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'k e.X
+    if( ! refalrts::char_left( 'k', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'k' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'l e.X
+    if( ! refalrts::char_left( 'l', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'l' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'm e.X
+    if( ! refalrts::char_left( 'm', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'm' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'n e.X
+    if( ! refalrts::char_left( 'n', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'n' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'o e.X
+    if( ! refalrts::char_left( 'o', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'o' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'p e.X
+    if( ! refalrts::char_left( 'p', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'p' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'q e.X
+    if( ! refalrts::char_left( 'q', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'q' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'r e.X
+    if( ! refalrts::char_left( 'r', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'r' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 's e.X
+    if( ! refalrts::char_left( 's', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 's' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 't e.X
+    if( ! refalrts::char_left( 't', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 't' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'u e.X
+    if( ! refalrts::char_left( 'u', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'u' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'v e.X
+    if( ! refalrts::char_left( 'v', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'v' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'w e.X
+    if( ! refalrts::char_left( 'w', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'w' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'x e.X
+    if( ! refalrts::char_left( 'x', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'x' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'y e.X
+    if( ! refalrts::char_left( 'y', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'y' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // 'z e.X
+    if( ! refalrts::char_left( 'z', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'L' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, 'z' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '0 e.X
+    if( ! refalrts::char_left( '0', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '0' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '1 e.X
+    if( ! refalrts::char_left( '1', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '1' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '2 e.X
+    if( ! refalrts::char_left( '2', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '2' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '3 e.X
+    if( ! refalrts::char_left( '3', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '3' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '4 e.X
+    if( ! refalrts::char_left( '4', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '4' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '5 e.X
+    if( ! refalrts::char_left( '5', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '5' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '6 e.X
+    if( ! refalrts::char_left( '6', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '6' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '7 e.X
+    if( ! refalrts::char_left( '7', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '7' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '8 e.X
+    if( ! refalrts::char_left( '8', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '8' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eX_b_1;
+    static refalrts::Iter eX_e_1;
+    // '9 e.X
+    if( ! refalrts::char_left( '9', bb_0, be_0 ) )
+      break;
+    eX_b_1 = bb_0;
+    eX_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, 'D' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '9' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eX_b_1, eX_e_1 );
+    res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
@@ -3000,6 +5004,39 @@ refalrts::FnResult Type_T(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     refalrts::Iter n0 = 0;
     if( ! refalrts::alloc_char( n0, '*' ) )
       return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '0' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eOther_b_1;
+    static refalrts::Iter eOther_e_1;
+    // e.Other
+    eOther_b_1 = bb_0;
+    eOther_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, '?' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '?' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eOther_b_1, eOther_e_1 );
+    res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
