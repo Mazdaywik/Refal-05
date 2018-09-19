@@ -464,14 +464,36 @@ ParsePattern {
 
   // Переменные
 
-  t.ErrorList t.SymTable t.Context (e.MultiBracket)
+  t.ErrorList t.SymTable
+  (e.Variables-B (s.Mode e.Index) e.Variables-E)
+  (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <ParsePattern-CheckAddVariable
-      t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
-      <CheckAddVariable
-        t.ErrorList t.Context t.SrcPos s.Mode e.Index
+    <ParsePattern
+      t.ErrorList t.SymTable
+      (e.Variables-B (s.Mode e.Index) e.Variables-E)
+      (e.MultiBracket)
+      (e.Scanned (TkVariable s.Mode e.Index 1)) e.Tail
+    >;
+
+  t.ErrorList t.SymTable
+  (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+  (e.MultiBracket)
+  (e.Scanned) (TkVariable t.SrcPos s.NewMode e.Index) e.Tail =
+    <ParsePattern
+      <InvalidModeVariableError
+        t.ErrorList t.SrcPos s.OldMode s.NewMode e.Index
       >
-      e.Tail
+      t.SymTable
+      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+      (e.MultiBracket)
+      (e.Scanned (TkVariable s.OldMode e.Index 1)) e.Tail
+    >;
+
+  t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
+  (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
+    <ParsePattern
+      t.ErrorList t.SymTable ((s.Mode e.Index) e.Variables) (e.MultiBracket)
+      (e.Scanned (TkVariable s.Mode e.Index 1)) e.Tail
     >;
 
   /*
@@ -571,15 +593,6 @@ ParsePattern {
     (e.Pattern)  e.Tail;
 }
 
-ParsePattern-CheckAddVariable {
-  t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
-  t.ErrorList t.Context s.Mode s.Depth e.Tail =
-    <ParsePattern
-      t.ErrorList t.SymTable t.Context (e.MultiBracket)
-      (e.Scanned (TkVariable s.Mode e.Index s.Depth)) e.Tail
-    >;
-}
-
 InvalidModeVariableError {
   t.ErrorList t.SrcPos s.OldMode s.NewMode e.Index =
     <EL-AddErrorAt
@@ -587,48 +600,6 @@ InvalidModeVariableError {
       'Variables ' s.OldMode '.' e.Index ' and '
       s.NewMode '.' e.Index ' has different modes'
     >;
-}
-
-$ENUM InvalidMode;
-
-CheckAddVariable {
-  t.ErrorList
-  (e.Variables-B (s.Mode e.Index) e.Variables-E)
-  t.SrcPos s.Mode e.Index =
-    <CheckAddVariable-SwResult
-      t.ErrorList t.SrcPos s.Mode e.Index
-      (e.Variables-B (s.Mode e.Index) e.Variables-E)
-      Success 1
-    >;
-
-  t.ErrorList
-  (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-  t.SrcPos s.NewMode e.Index =
-    <CheckAddVariable-SwResult
-      t.ErrorList t.SrcPos s.NewMode e.Index
-      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-      InvalidMode 1 s.OldMode
-    >;
-
-  t.ErrorList (e.Variables) t.SrcPos s.Mode e.Index =
-    <CheckAddVariable-SwResult
-      t.ErrorList t.SrcPos s.Mode e.Index
-      ((s.Mode e.Index) e.Variables)
-      Success 1
-    >;
-}
-
-CheckAddVariable-SwResult {
-  t.ErrorList t.SrcPos s.Mode e.Index
-  t.Context Success s.Depth =
-    t.ErrorList t.Context s.Mode s.Depth;
-
-  t.ErrorList t.SrcPos s.Mode e.Index
-  t.Context InvalidMode s.Depth s.OldMode =
-    <InvalidModeVariableError
-      t.ErrorList t.SrcPos s.OldMode s.Mode e.Index
-    >
-    t.Context s.OldMode s.Depth;
 }
 
 StrFromBracket {
@@ -671,12 +642,32 @@ ParseResult {
 
   // Переменные
 
-  t.ErrorList t.SymTable t.Context
+  t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <ParseResult-CheckUseVariable
-      t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
-      <CheckUseVariable t.ErrorList t.Context t.SrcPos s.Mode e.Index>
-      e.Tail
+    <ParseResult
+      t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
+      (e.MultiBracket) (e.Scanned (TkVariable s.Mode e.Index 1)) e.Tail
+    >;
+
+  t.ErrorList t.SymTable (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+  (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.NewMode e.Index) e.Tail =
+    <ParseResult
+      <InvalidModeVariableError
+        t.ErrorList t.SrcPos s.OldMode s.NewMode e.Index
+      >
+      t.SymTable
+      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+      (e.MultiBracket)
+      (e.Scanned (TkVariable s.OldMode e.Index 00)) e.Tail
+    >;
+
+  t.ErrorList t.SymTable (e.Variables)
+  (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
+    <ParseResult
+      <EL-AddErrorAt
+        t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
+      >
+      t.SymTable (e.Variables) (e.MultiBracket) (e.Scanned) e.Tail
     >;
 
   /*
@@ -753,25 +744,6 @@ ParseResult {
     (e.Result) e.Tail;
 }
 
-$EENUM VariableNotFound;
-
-ParseResult-CheckUseVariable {
-  t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
-  t.ErrorList t.Context s.Mode s.Depth e.Tail =
-    <ParseResult
-      t.ErrorList t.SymTable t.Context
-      (e.MultiBracket)
-      (e.Scanned (TkVariable s.Mode e.Index s.Depth)) e.Tail
-    >;
-
-  t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
-  t.ErrorList t.Context VariableNotFound e.Tail =
-    <ParseResult
-      t.ErrorList t.SymTable t.Context
-      (e.MultiBracket) (e.Scanned) e.Tail
-    >;
-}
-
 BracketPairName {
   TkOpenBracket = Brackets;
   TkOpenCall = CallBrackets;
@@ -780,52 +752,4 @@ BracketPairName {
 CloseBracketName {
   TkOpenBracket = TkCloseBracket;
   TkOpenCall = TkCloseCall;
-}
-
-$EENUM ExistVariable;
-
-CheckUseVariable {
-  t.ErrorList
-  (e.Variables-B (s.Mode e.Index) e.Variables-E)
-  t.SrcPos s.Mode e.Index =
-    <CheckUseVariable-SwResult
-      t.ErrorList t.SrcPos s.Mode e.Index
-      (e.Variables-B (s.Mode e.Index) e.Variables-E)
-      ExistVariable 1
-    >;
-
-  t.ErrorList
-  (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-  t.SrcPos s.NewMode e.Index =
-    <CheckUseVariable-SwResult
-      t.ErrorList t.SrcPos s.NewMode e.Index
-      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-      InvalidMode 00 s.OldMode
-    >;
-
-  t.ErrorList (e.Variables) t.SrcPos s.Mode e.Index =
-    <CheckUseVariable-SwResult
-      t.ErrorList t.SrcPos s.Mode e.Index
-      (e.Variables) VariableNotFound
-    >;
-}
-
-CheckUseVariable-SwResult {
-  t.ErrorList t.SrcPos s.Mode e.Index
-  t.Context ExistVariable s.Depth =
-    t.ErrorList t.Context s.Mode s.Depth;
-
-  t.ErrorList t.SrcPos s.Mode e.Index
-  t.Context InvalidMode s.Depth s.OldMode =
-    <InvalidModeVariableError
-      t.ErrorList t.SrcPos s.OldMode s.Mode e.Index
-    >
-    t.Context s.OldMode s.Depth;
-
-  t.ErrorList t.SrcPos s.Mode e.Index
-  t.Context VariableNotFound =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
-    >
-    t.Context VariableNotFound;
 }
