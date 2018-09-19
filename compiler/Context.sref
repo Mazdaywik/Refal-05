@@ -6,20 +6,6 @@ $EXTERN Success;
   Внутренняя структура контекста: ((s.Mode e.Index)*)
 */
 
-/**
-  <Cntx-Create> == t.Context
-*/
-$ENTRY Cntx-Create {
-  = (/* пусто */);
-}
-
-/**
-  <Cntx-Destroy t.Context> == пусто
-*/
-$ENTRY Cntx-Destroy {
-  (/* пусто */) = ;
-}
-
 $EENUM InvalidMode;
 
 /**
@@ -63,25 +49,4 @@ $ENTRY Cntx-CheckVariable {
     InvalidMode 00 s.OldMode;
 
   (e.Variables) s.Mode e.Index = (e.Variables) VariableNotFound;
-}
-
-/**
-  <Cntx-ResetAfterSentence t.Context> == t.Context
-*/
-$ENTRY Cntx-ResetAfterSentence {
-  (e.Variables) = (/* пусто */);
-}
-
-/**
-  <Cntx-PushScope t.Context> == t.Context
-*/
-$ENTRY Cntx-PushScope {
-  (e.Variables) = (e.Variables);
-}
-
-/**
-  <Cntx-PopScope t.Context> == t.Context
-*/
-$ENTRY Cntx-PopScope {
-  (e.Variables) = (e.Variables);
 }

@@ -24,8 +24,7 @@ $EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward,
   GenFnEnd;
 
 //FROM Context
-$EXTERN Cntx-Create, Cntx-Destroy, Cntx-PushScope, Cntx-PopScope,
-  Cntx-ResetAfterSentence, Cntx-AddVariable, InvalidMode,
+$EXTERN Cntx-AddVariable, InvalidMode,
   Cntx-CheckVariable, ExistVariable, VariableNotFound;
 
 //FROM Algorithm
@@ -297,7 +296,7 @@ ParseFunction {
   (TkOpenBlock t.SrcPos) e.Tail =
     <ParseFunction-BlockParsed s.ScopeClass (e.Name)
       <ParseBlock
-        t.ErrorList t.SymTable <Cntx-Create> e.Tail
+        t.ErrorList t.SymTable (/* пусто */) e.Tail
       >
     >;
 
@@ -310,8 +309,7 @@ ParseFunction {
 
 ParseFunction-BlockParsed {
   s.ScopeClass (e.Name) (e.Sentences)
-  t.ErrorList t.SymTable (t.Context) e.Tail =
-    <Cntx-Destroy t.Context>
+  t.ErrorList t.SymTable ((/* пусто */)) e.Tail =
     (<GenFunctionBody s.ScopeClass (e.Name) (e.Name) e.Sentences>)
     t.ErrorList t.SymTable e.Tail;
 }
@@ -359,7 +357,7 @@ ParseBlock {
   t.ErrorList t.SymTable t.Context e.Tokens =
     <DoParseBlock
       t.ErrorList t.SymTable
-      <Cntx-PushScope t.Context>
+      t.Context
       (/* sentences */) e.Tokens
     >;
 }
@@ -369,8 +367,7 @@ DoParseBlock {
   (e.Sentences)
   (TkCloseBlock t.SrcPos) e.Tail =
     <ParseBlock-AddContextToSentences
-      t.ErrorList t.SymTable (e.Sentences)
-      <Cntx-PopScope t.Context>
+      t.ErrorList t.SymTable (e.Sentences) t.Context
     >
     e.Tail;
 
@@ -381,7 +378,7 @@ DoParseBlock {
       t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
     >
     t.SymTable
-    ( <Cntx-PopScope t.Context> )
+    (t.Context)
     (TkEOF t.SrcPos) e.Tail;
 
   t.ErrorList t.SymTable t.Context
@@ -450,7 +447,7 @@ ParseSentence-AfterParseResult {
   t.ErrorList t.SymTable t.Context
   (e.Result) (TkSemicolon t.SrcPos) e.Tokens =
     t.ErrorList t.SymTable
-    <Cntx-ResetAfterSentence t.Context>
+    (/* пусто */)
     (e.Sentences ((e.Pattern) (e.Result))) e.Tokens;
 
   (e.Sentences) (e.Pattern)
@@ -458,7 +455,7 @@ ParseSentence-AfterParseResult {
   (e.Result) (TkCloseBlock t.SrcPos) e.Tokens =
     <EL-AddErrorAt t.ErrorList t.SrcPos 'Missed semicolon'>
     t.SymTable
-    <Cntx-ResetAfterSentence t.Context>
+    (/* пусто */)
     (e.Sentences ((e.Pattern) (e.Result)))
     (TkCloseBlock t.SrcPos) e.Tokens;
 
@@ -467,7 +464,7 @@ ParseSentence-AfterParseResult {
   (e.Result) t.Unexpected e.Tokens =
     <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
     t.SymTable
-    <Cntx-ResetAfterSentence t.Context>
+    (/* пусто */)
     (e.Sentences ((e.Pattern) (e.Result)))
     t.Unexpected e.Tokens;
 }
