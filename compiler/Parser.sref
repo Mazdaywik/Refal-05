@@ -23,10 +23,6 @@ $EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward,
   GenCommonTailer, GenEEnum, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
   GenFnEnd;
 
-//FROM Context
-$EXTERN Cntx-AddVariable, InvalidMode,
-  Cntx-CheckVariable, ExistVariable, VariableNotFound;
-
 //FROM Algorithm
 $EXTERN MakeAlgorithm, Brackets, CallBrackets;
 
@@ -593,11 +589,32 @@ InvalidModeVariableError {
     >;
 }
 
+$ENUM InvalidMode;
+
 CheckAddVariable {
-  t.ErrorList t.Context t.SrcPos s.Mode e.Index =
+  t.ErrorList
+  (e.Variables-B (s.Mode e.Index) e.Variables-E)
+  t.SrcPos s.Mode e.Index =
     <CheckAddVariable-SwResult
       t.ErrorList t.SrcPos s.Mode e.Index
-      <Cntx-AddVariable t.Context s.Mode e.Index>
+      (e.Variables-B (s.Mode e.Index) e.Variables-E)
+      Success 1
+    >;
+
+  t.ErrorList
+  (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+  t.SrcPos s.NewMode e.Index =
+    <CheckAddVariable-SwResult
+      t.ErrorList t.SrcPos s.NewMode e.Index
+      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+      InvalidMode 1 s.OldMode
+    >;
+
+  t.ErrorList (e.Variables) t.SrcPos s.Mode e.Index =
+    <CheckAddVariable-SwResult
+      t.ErrorList t.SrcPos s.Mode e.Index
+      ((s.Mode e.Index) e.Variables)
+      Success 1
     >;
 }
 
@@ -736,6 +753,8 @@ ParseResult {
     (e.Result) e.Tail;
 }
 
+$EENUM VariableNotFound;
+
 ParseResult-CheckUseVariable {
   t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
   t.ErrorList t.Context s.Mode s.Depth e.Tail =
@@ -763,11 +782,31 @@ CloseBracketName {
   TkOpenCall = TkCloseCall;
 }
 
+$EENUM ExistVariable;
+
 CheckUseVariable {
-  t.ErrorList t.Context t.SrcPos s.Mode e.Index =
+  t.ErrorList
+  (e.Variables-B (s.Mode e.Index) e.Variables-E)
+  t.SrcPos s.Mode e.Index =
     <CheckUseVariable-SwResult
       t.ErrorList t.SrcPos s.Mode e.Index
-      <Cntx-CheckVariable t.Context s.Mode e.Index>
+      (e.Variables-B (s.Mode e.Index) e.Variables-E)
+      ExistVariable 1
+    >;
+
+  t.ErrorList
+  (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+  t.SrcPos s.NewMode e.Index =
+    <CheckUseVariable-SwResult
+      t.ErrorList t.SrcPos s.NewMode e.Index
+      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
+      InvalidMode 00 s.OldMode
+    >;
+
+  t.ErrorList (e.Variables) t.SrcPos s.Mode e.Index =
+    <CheckUseVariable-SwResult
+      t.ErrorList t.SrcPos s.Mode e.Index
+      (e.Variables) VariableNotFound
     >;
 }
 
