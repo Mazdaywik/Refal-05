@@ -135,65 +135,6 @@ ShiftVariable-AddToFree {
     e.Variables (s.Mode e.Index s.VarDepth);
 }
 
-$EENUM AlreadyBounded;
-
-/**
-  <Cntx-AddNewVariable t.Context s.Mode e.Index>
-    == t.Context Success s.Depth
-    == t.Context InvalidMode s.Depth s.OldMode
-    == t.Context AlreadyBounded s.Depth
-
-  Эта функция в отличие от Cntx-AddVariable добавляет переменную как
-  имеющую область видимости начиная с текущей функции: если в области
-  видимости имеется переменная с тем же именем, что и в данной функции,
-  то она сокрывается.
-  Если переменная уже упоминалась ранее в текущем образце, функция возвращает
-  AlreadyBounded, что является ошибкой.
-*/
-$ENTRY Cntx-AddNewVariable {
-  (Context
-    s.StackDepth
-    e.LocalVars (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) e.Stack
-  )
-  s.Mode e.Index =
-    <AddNewVariable-SwKnown
-      s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
-      s.Mode (e.Index) e.LocalVars
-    >;
-}
-
-AddNewVariable-SwKnown {
-  s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
-  s.Mode (e.Index) e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E =
-    (Context
-      s.StackDepth
-      e.LocalVars-B (s.Mode e.Index s.Depth) e.LocalVars-E
-      (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
-      e.Stack
-    )
-    AlreadyBounded s.Depth;
-
-  s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
-  s.Mode (e.Index) e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E =
-    (Context
-      s.StackDepth
-      e.LocalVars-B (s.OldMode e.Index s.VarDepth) e.LocalVars-E
-      (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
-      e.Stack
-    )
-    InvalidMode s.VarDepth s.OldMode;
-
-  s.StackDepth (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc) (e.Stack)
-  s.Mode (e.Index) e.LocalVars =
-    (Context
-      s.StackDepth
-      (s.Mode e.Index s.StackDepth) e.LocalVars
-      (FreeVarsSent e.FreeSent) (FreeVarsFunc e.FreeFunc)
-      e.Stack
-    )
-    Success s.StackDepth;
-}
-
 $EENUM ExistVariable, VariableNotFound;
 
 /**
