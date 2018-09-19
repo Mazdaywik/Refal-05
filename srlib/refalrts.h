@@ -24,9 +24,6 @@ typedef enum DataTag {
   cDataOpenBracket, cDataCloseBracket,
   cDataOpenCall, cDataCloseCall,
   cDataFile,
-  cDataClosure,
-  cDataUnwrappedClosure,
-  cDataClosureHead
 } DataTag;
 
 typedef FnResult (*RefalFunctionPtr) ( Iter begin, Iter end );
@@ -150,10 +147,6 @@ extern Iter splice_stvar( Iter res, Iter var );
 extern Iter splice_evar( Iter res, Iter first, Iter last );
 extern void splice_to_freelist( Iter first, Iter last );
 extern void splice_from_freelist( Iter pos );
-
-extern FnResult create_closure( Iter begin, Iter end );
-Iter unwrap_closure( Iter closure ); // Развернуть замыкание
-Iter wrap_closure( Iter closure ); // Свернуть замыкание
 
 // Профилирование
 
