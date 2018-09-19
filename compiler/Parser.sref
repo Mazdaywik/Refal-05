@@ -21,7 +21,7 @@ $EXTERN Success, Fails, StrFromInt;
 //FROM Generator
 $EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward,
   GenCommonTailer, GenEEnum, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
-  GenFnEnd, GN-CreateClosure;
+  GenFnEnd;
 
 //FROM Context
 $EXTERN Cntx-Create, Cntx-Destroy, Cntx-PushScope, Cntx-PopScope,
@@ -812,18 +812,6 @@ ParseResult {
       e.Tail
     >;
 
-  // Лямбда-функция
-  (e.Functions) t.ErrorList t.SymTable t.Context
-  (e.MultiBracket) (e.Scanned) (TkOpenBlock t.SrcPos) e.Tail =
-    <EL-WarningAt t.ErrorList t.SrcPos 'nested function'>
-    <ParseResult-Block
-      (e.MultiBracket) (e.Scanned)
-      <ParseBlock
-        (e.Functions) t.ErrorList t.SymTable t.Context
-        e.Tail
-      >
-    >;
-
   // Неправильная закрывающая скобка или закрывающая скобка отсутствует
   (e.Functions) t.ErrorList t.SymTable t.Context
   (
@@ -915,35 +903,4 @@ CheckUseVariable-SwResult {
       t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
     >
     t.Context VariableNotFound;
-}
-
-ParseResult-Block {
-  (e.MultiBracket) (e.Scanned)
-  (s.NextNum e.Functions) t.ErrorList t.SymTable
-  ( t.Context /* свободные переменные в функции отсутствуют */ )
-  e.Tail =
-    <ParseResult
-      (s.NextNum e.Functions) t.ErrorList t.SymTable t.Context
-      (e.MultiBracket)
-      (e.Scanned (TkName LambdaName <Dec s.NextNum>))
-      e.Tail
-    >;
-
-  (e.MultiBracket) (e.Scanned)
-  (s.NextNum e.Functions) t.ErrorList t.SymTable
-  ( t.Context e.FreeContext )
-  e.Tail =
-    <ParseResult
-      (s.NextNum e.Functions) t.ErrorList t.SymTable t.Context
-      (e.MultiBracket)
-      (
-        e.Scanned
-        (CallBrackets
-          (TkName GN-CreateClosure)
-          (TkName LambdaName <Dec s.NextNum>)
-          <CreateContext e.FreeContext>
-        )
-      )
-      e.Tail
-    >;
 }

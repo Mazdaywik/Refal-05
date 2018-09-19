@@ -124,14 +124,6 @@ BracketsVars {
   вне цикла по открытой e-переменной, отступ больше -- внутри оного цикла.
 */
 
-$EENUM GN-CreateClosure;
-
-PrintName {
-  GN-CreateClosure = 'refalrts::create_closure';
-
-  e.Name = e.Name;
-}
-
 GenCommand {
   (e.Indent) (CmdComment e.Text) = (e.Indent) (e.Indent '//' e.Text);
 
@@ -426,7 +418,7 @@ SwAllocator {
 SwInfo {
   ElChar s.Char = ', ' '' <Escape s.Char> '';
 
-  ElName e.Name = ', ' <PrintName e.Name> ', "' <PrintName e.Name> '"';
+  ElName e.Name = ', ' e.Name ', "' e.Name '"';
 
   ElNumber s.Number = ', ' <StrFromInt s.Number> 'UL';
 
