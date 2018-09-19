@@ -1,8 +1,9 @@
 //FROM LibraryEx
-$EXTERN Map, LoadFile, FastIntFromStr, Reduce, Inc, DelAccumulator, MapReduce;
+$EXTERN Map, LoadFile, FastIntFromStr, Reduce, Inc, DelAccumulator, MapReduce,
+  Type;
 
 //FROM Library
-$EXTERN StrFromInt, Chr, Add, Mul, WriteLine;
+$EXTERN StrFromInt, Chr, Add, Mul, WriteLine, Success, Fails;
 
 
 FlatLine {
@@ -31,25 +32,15 @@ $ENUM Warning;
 ShowWarning {
   (e.FileName)
   e.Tokens-B (Warning s.Row s.Col e.Message) e.Tokens-E =
+    e.Tokens-B
     <WriteLine
       e.FileName ':' <StrFromInt s.Row> ':' <StrFromInt s.Col> ':'
       'Warning:' e.Message
     >
-    e.Tokens-B e.Tokens-E;
+    <ShowWarning (e.FileName) e.Tokens-E>;
 
   (e.FileName) e.Tokens = e.Tokens;
 }
-
-Scan {
-  /* гарантируется, что в конце файла есть \n, см. FlatLine */
-  s.Row s.Col '//' e.Comment '\n' e.Tail =
-    <Scan <Inc s.Row> 1 e.Tail>;
-
-  s.Row s.Col e.Text =
-    (Warning s.Row s.Col 'new lexer stops here')
-    <NormalizeTokens s.Row <Root () e.Text>>;
-}
-
 
 $EENUM
   TkChar,
@@ -67,6 +58,152 @@ $EENUM
   TkVariable;
 
 $EENUM EEnum, Entry, Enum, Extern;
+
+Inc2 { s.Num = <Add 2 s.Num>; }
+
+Scan {
+  s.Row s.Col ' ' e.Tail = <Scan s.Row <Inc s.Col> e.Tail>;
+  s.Row s.Col '\t' e.Tail = <Scan s.Row <Inc s.Col> e.Tail>;
+  s.Row s.Col '\n' e.Tail = <Scan <Inc s.Row> 1 e.Tail>;
+
+  /* гарантируется, что в конце файла есть \n, см. FlatLine */
+  s.Row s.Col '//' e.Comment '\n' e.Tail =
+    <Scan <Inc s.Row> 1 e.Tail>;
+
+  s.Row s.Col '/*' e.Tail = <ScanCComment s.Row <Inc2 s.Col> e.Tail>;
+
+  s.Row s.Col '$' e.Tail =
+    <ScanDirective s.Row <Inc s.Col> () <Type e.Tail>>;
+
+  s.Row s.Col 'e.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 'e' () <Type e.Tail>>;
+  s.Row s.Col 's.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 's' () <Type e.Tail>>;
+  s.Row s.Col 't.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 't' () <Type e.Tail>>;
+
+  s.Row s.Col s.Next e.Tail =
+    <Scan-ByPunctuation s.Row s.Col <Punctuation s.Next> e.Tail>;
+
+  s.Row s.Col /* пусто */ = (TkEOF (s.Row s.Col));
+}
+
+ScanCComment {
+  s.Row s.Col e.Comment '*/' e.Tail =
+    <ScanCCommentContent s.Row s.Col (e.Comment '*/') e.Tail>;
+}
+
+ScanCCommentContent {
+  s.Row s.Col (e.Line '\n' e.Comment) e.Tail =
+    /* TODO: подумать потом о предупреждениях вложенных комментариев */
+    <ScanCCommentContent <Inc s.Row> 1 (e.Comment) e.Tail>;
+
+  s.Row s.Col (s.Char e.Comment) e.Tail =
+    <ScanCCommentContent s.Row <Inc s.Col> (e.Comment) e.Tail>;
+
+  s.Row s.Col (/* пусто */) e.Tail = <Scan s.Row s.Col e.Tail>;
+}
+
+ScanDirective {
+  s.Row s.Col (e.Scanned) 'L' s.SubType s.Letter e.Tail =
+    <ScanDirective s.Row <Inc s.Col> (e.Scanned s.Letter) <Type e.Tail>>;
+
+  s.Row s.Col (e.Scanned) 'D' s.SubType s.Digit e.Tail =
+    <ScanDirective s.Row <Inc s.Col> (e.Scanned s.Digit) <Type e.Tail>>;
+
+  s.Row s.Col (e.Scanned) s.Type s.SubType e.Tail =
+    <MakeDirective s.Row s.Col e.Scanned>
+    <Scan s.Row s.Col e.Tail>;
+}
+
+MakeDirective {
+  s.Row s.Col 'ENUM' = (TkDirective (s.Row s.Col) Enum);
+  s.Row s.Col 'EENUM' = (TkDirective (s.Row s.Col) EEnum);
+  s.Row s.Col 'ENTRY' = (TkDirective (s.Row s.Col) Entry);
+  s.Row s.Col 'EXTERN' = (TkDirective (s.Row s.Col) Extern);
+  s.Row s.Col e.Other = (TkError (s.Row s.Col) 'Unknown directive $' e.Other);
+}
+
+ScanVariable {
+  s.Row s.Col s.Mode (e.Index) 'L' s.SubType s.Letter e.Tail =
+    <ScanVariable s.Row <Inc s.Col> s.Mode (e.Index s.Letter) <Type e.Tail>>;
+
+  s.Row s.Col s.Mode (e.Index) 'D' s.SubType s.Digit e.Tail =
+    <ScanVariable s.Row <Inc s.Col> s.Mode (e.Index s.Digit) <Type e.Tail>>;
+
+  s.Row s.Col s.Mode (e.Index) s.Type s.SubType '-' e.Tail =
+    /* нормализация */
+    <ScanVariable s.Row <Inc s.Col> s.Mode (e.Index '_') <Type e.Tail>>;
+
+  s.Row s.Col s.Mode (e.Index) s.Type s.SubType '_' e.Tail =
+    <ScanVariable s.Row <Inc s.Col> s.Mode (e.Index '_') <Type e.Tail>>;
+
+  s.Row s.Col s.Mode (/* пусто */) s.Type s.SubType e.Tail =
+    (TkError (s.Row s.Col) 'empty index in variable "' s.Mode '."')
+    <Scan s.Row s.Col e.Tail>;
+
+  s.Row s.Col s.Mode (e.Index) s.Type s.SubType e.Tail =
+    (TkVariable (s.Row s.Col) s.Mode e.Index)
+    <Scan s.Row s.Col e.Tail>;
+}
+
+Punctuation {
+  ',' = Success TkComma;
+  ';' = Success TkSemicolon;
+  '{' = Success TkOpenBlock;
+  '=' = Success TkReplace;
+  '(' = Success TkOpenBracket;
+  '<' = Success TkOpenCall;
+  ')' = Success TkCloseBracket;
+  '>' = Success TkCloseCall;
+  '}' = Success TkCloseBlock;
+
+  s.Other = Fails s.Other;
+}
+
+Scan-ByPunctuation {
+  s.Row s.Col Success s.Token e.Tail =
+    (s.Token (s.Row s.Col)) <Scan s.Row <Inc s.Col> e.Tail>;
+
+  s.Row s.Col Fails e.Tail = <Scan-ByType s.Row s.Col <Type e.Tail>>;
+}
+
+Scan-ByType {
+  s.Row s.Col 'L' s.SubType s.Letter e.Tail =
+    <ScanName s.Row <Inc s.Col> (s.Letter) <Type e.Tail>>;
+
+  s.Row s.Col 'D' s.SubType s.Digit e.Tail =
+    <ScanNumber s.Row <Inc s.Col> (s.Digit) <Type e.Tail>>;
+
+  s.Row s.Col s.Type s.SubType e.Text =
+    (Warning s.Row s.Col 'new lexer stops here')
+    <NormalizeTokens s.Row <Root () e.Text>>;
+}
+
+ScanName {
+  s.Row s.Col (e.Name) 'L' s.SubType s.Letter e.Tail =
+    <ScanName s.Row <Inc s.Col> (e.Name s.Letter) <Type e.Tail>>;
+
+  s.Row s.Col (e.Name) 'D' s.SubType s.Digit e.Tail =
+    <ScanName s.Row <Inc s.Col> (e.Name s.Digit) <Type e.Tail>>;
+
+  s.Row s.Col (e.Name) s.Type s.SubType '-' e.Tail =
+    /* нормализация */
+    <ScanName s.Row <Inc s.Col> (e.Name '_') <Type e.Tail>>;
+
+  s.Row s.Col (e.Name) s.Type s.SubType '_' e.Tail =
+    <ScanName s.Row <Inc s.Col> (e.Name '_') <Type e.Tail>>;
+
+  s.Row s.Col (e.Name) s.Type s.SubType e.Tail =
+    (TkName (s.Row s.Col) e.Name) <Scan s.Row s.Col e.Tail>;
+}
+
+ScanNumber {
+  s.Row s.Col (e.Number) 'D' s.SubType s.Digit e.Tail =
+    <ScanNumber s.Row <Inc s.Col> (e.Number s.Digit) <Type e.Tail>>;
+
+  s.Row s.Col (e.Number) s.Type s.SubType e.Tail =
+    (TkNumber (s.Row s.Col) <FastIntFromStr e.Number>)
+    <Scan s.Row s.Col e.Tail>;
+}
+
 
 StrDirective {
   EEnum = 'EENUM';
