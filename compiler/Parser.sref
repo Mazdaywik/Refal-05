@@ -294,10 +294,9 @@ CreateLambdaName {
 ParseFunction {
   s.ScopeClass (e.Name) t.ErrorList t.SymTable
   (TkOpenBlock t.SrcPos) e.Tail =
-    <ParseFunction-BlockParsed s.ScopeClass (e.Name)
-      <ParseBlock
-        t.ErrorList t.SymTable (/* пусто */) e.Tail
-      >
+    <ParseFunction-BlockParsed
+      s.ScopeClass (e.Name)
+      <ParseBlock t.ErrorList t.SymTable e.Tail>
     >;
 
   s.ScopeClass (e.Name) t.ErrorList t.SymTable
@@ -308,9 +307,9 @@ ParseFunction {
 }
 
 ParseFunction-BlockParsed {
-  s.ScopeClass (e.Name) (e.Sentences)
-  t.ErrorList t.SymTable ((/* пусто */)) e.Tail =
-    (<GenFunctionBody s.ScopeClass (e.Name) (e.Name) e.Sentences>)
+  s.ScopeClass (e.Name)
+  (e.Sentences) t.ErrorList t.SymTable e.Tail =
+    (<GenFunctionBody s.ScopeClass (e.Name) e.Sentences>)
     t.ErrorList t.SymTable e.Tail;
 }
 
@@ -330,7 +329,7 @@ GenFunctionBody {
   //  >
   //  <GenFnEnd-Success>;
 
-  s.ScopeClass (e.MainName) (e.Name) e.Sentences =
+  s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
     <Map MakeAlgorithm-and-GenSentence e.Sentences>
     <GenFnEnd>;
@@ -344,69 +343,45 @@ MakeAlgorithm-and-GenSentence {
 }
 
 /*
-  <ParseBlock
-    t.ErrorList t.SymTable t.Context e.Tokens
-  >
-    == t.ErrorList t.SymTable (t.Context e.FreeVars) e.Tokens
+  <ParseBlock t.ErrorList t.SymTable e.Tokens>
+    == t.ErrorList t.SymTable e.Tokens
 
   t.FunctionBody ::= (((e.Pattern) (e.Result))*)
 
   Открывающая скобка должна отсутствовать во входном потоке.
 */
 ParseBlock {
-  t.ErrorList t.SymTable t.Context e.Tokens =
+  t.ErrorList t.SymTable e.Tokens =
     <DoParseBlock
-      t.ErrorList t.SymTable
-      t.Context
-      (/* sentences */) e.Tokens
+      t.ErrorList t.SymTable (/* sentences */) e.Tokens
     >;
 }
 
 DoParseBlock {
-  t.ErrorList t.SymTable t.Context
-  (e.Sentences)
-  (TkCloseBlock t.SrcPos) e.Tail =
-    <ParseBlock-AddContextToSentences
-      t.ErrorList t.SymTable (e.Sentences) t.Context
-    >
-    e.Tail;
+  t.ErrorList t.SymTable (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
+    (e.Sentences) t.ErrorList t.SymTable e.Tail;
 
-  t.ErrorList t.SymTable t.Context
-  (e.Sentences) (TkEOF t.SrcPos) e.Tail =
+  t.ErrorList t.SymTable (e.Sentences) (TkEOF t.SrcPos) e.Tail =
     (e.Sentences)
     <EL-AddErrorAt
       t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
     >
     t.SymTable
-    (t.Context)
     (TkEOF t.SrcPos) e.Tail;
 
-  t.ErrorList t.SymTable t.Context
-  (e.Sentences) e.Tokens =
+  t.ErrorList t.SymTable (e.Sentences) e.Tokens =
     <DoParseBlock
       <ParseSentence
-        t.ErrorList t.SymTable t.Context
-        (e.Sentences) e.Tokens
+        t.ErrorList t.SymTable (e.Sentences) e.Tokens
       >
     >;
 }
 
-ParseBlock-AddContextToSentences {
-  t.ErrorList t.SymTable (e.Sentences) t.Context =
-    (e.Sentences) t.ErrorList t.SymTable (t.Context);
-}
-
-CreateContextVariable {
-  ('e' e.Index) = (Brackets (TkVariable 'e' e.Index));
-  (s.Mode e.Index) = (TkVariable s.Mode e.Index);
-}
-
 ParseSentence {
-  t.ErrorList t.SymTable t.Context
-  (e.Sentences) e.Tokens =
+  t.ErrorList t.SymTable (e.Sentences) e.Tokens =
     <Fetch
       <ParsePattern
-        t.ErrorList t.SymTable t.Context ( /* мультискобки */ )
+        t.ErrorList t.SymTable (/* пусто */) ( /* мультискобки */ )
         ( /* просканировано */ ) e.Tokens
       >
       <Seq
@@ -447,7 +422,6 @@ ParseSentence-AfterParseResult {
   t.ErrorList t.SymTable t.Context
   (e.Result) (TkSemicolon t.SrcPos) e.Tokens =
     t.ErrorList t.SymTable
-    (/* пусто */)
     (e.Sentences ((e.Pattern) (e.Result))) e.Tokens;
 
   (e.Sentences) (e.Pattern)
@@ -455,7 +429,6 @@ ParseSentence-AfterParseResult {
   (e.Result) (TkCloseBlock t.SrcPos) e.Tokens =
     <EL-AddErrorAt t.ErrorList t.SrcPos 'Missed semicolon'>
     t.SymTable
-    (/* пусто */)
     (e.Sentences ((e.Pattern) (e.Result)))
     (TkCloseBlock t.SrcPos) e.Tokens;
 
@@ -464,7 +437,6 @@ ParseSentence-AfterParseResult {
   (e.Result) t.Unexpected e.Tokens =
     <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
     t.SymTable
-    (/* пусто */)
     (e.Sentences ((e.Pattern) (e.Result)))
     t.Unexpected e.Tokens;
 }
@@ -501,8 +473,7 @@ ParsePattern {
     <ParsePattern-CheckAddVariable
       t.SymTable (e.MultiBracket) (e.Scanned) (e.Index)
       <CheckAddVariable
-        t.ErrorList t.Context
-        Cntx-AddVariable t.SrcPos s.Mode e.Index
+        t.ErrorList t.Context t.SrcPos s.Mode e.Index
       >
       e.Tail
     >;
@@ -623,11 +594,10 @@ InvalidModeVariableError {
 }
 
 CheckAddVariable {
-  t.ErrorList t.Context
-  s.FnContextModifier t.SrcPos s.Mode e.Index =
+  t.ErrorList t.Context t.SrcPos s.Mode e.Index =
     <CheckAddVariable-SwResult
       t.ErrorList t.SrcPos s.Mode e.Index
-      <s.FnContextModifier t.Context s.Mode e.Index>
+      <Cntx-AddVariable t.Context s.Mode e.Index>
     >;
 }
 
