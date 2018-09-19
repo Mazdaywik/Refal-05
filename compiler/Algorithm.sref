@@ -232,7 +232,7 @@ TextFromPattern {
     ' (' <TextFromPattern e.Inner> ' )' <TextFromPattern e.Tail>;
 
   (TkChar s.Char) e.Tail =
-    ' ' '' <TextFromPattern-Char (TkChar s.Char) e.Tail>;
+    ' \'' <TextFromPattern-Char (TkChar s.Char) e.Tail>;
 
   (TkNumber s.Number) e.Tail =
     ' ' <StrFromInt s.Number> <TextFromPattern e.Tail>;
@@ -250,7 +250,7 @@ TextFromPattern-Char {
   (TkChar s.Char) e.Tail =
     <EscapeChar s.Char> <TextFromPattern-Char e.Tail>;
 
-  = '';
+  = '\'';
 
   e.Other = <TextFromPattern e.Other>;
 }

@@ -295,7 +295,7 @@ PrintMatchChar {
   (e.Indent) s.Direction s.BracketNumber s.Char =
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
-      ('char') '' <Escape s.Char> ''
+      ('char') '\'' <Escape s.Char> '\''
     >;
 }
 
@@ -413,7 +413,7 @@ SwAllocator {
 }
 
 SwInfo {
-  ElChar s.Char = ', ' '' <Escape s.Char> '';
+  ElChar s.Char = ', ' '\'' <Escape s.Char> '\'';
 
   ElName e.Name = ', ' e.Name ', "' e.Name '"';
 

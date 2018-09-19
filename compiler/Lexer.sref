@@ -317,7 +317,7 @@ StrDirective {
 $EENUM TkOpen, TkClose;
 
 $ENTRY StrFromToken {
-  TkChar s.Char = '' s.Char ''; // игнорируем проблему escape-символов
+  TkChar s.Char = '\'' s.Char '\''; // игнорируем проблему escape-символов
   TkCloseCall = '">"';
   TkCloseBlock = '"}"';
   TkCloseBracket = '")"';

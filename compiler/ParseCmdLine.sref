@@ -37,7 +37,7 @@ DoParseCommandLine {
     >;
 
   t.Collector ('-c') =
-    (CmdLineError 'After option ''-c'' expected C++ compiler command line');
+    (CmdLineError 'After option \'-c\' expected C++ compiler command line');
 
   t.Collector ('-d') (e.Directory) e.Arguments =
     <DoParseCommandLine
@@ -45,7 +45,7 @@ DoParseCommandLine {
     >;
 
   t.Collector ('-d') =
-    (CmdLineError 'After option ''-d'' expected find directory');
+    (CmdLineError 'After option \'-d\' expected find directory');
 
   t.Collector ('-o') (e.OutputFile) e.Arguments =
     <DoParseCommandLine
