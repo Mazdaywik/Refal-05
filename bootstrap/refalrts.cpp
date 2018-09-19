@@ -393,10 +393,6 @@ bool equal_nodes(
         return (node1->file_info == node2->file_info);
         // break;
 
-      case refalrts::cDataClosure:
-        return (node1->link_info == node2->link_info);
-        // break;
-
       /*
         Данная функция предназначена только для использования функциями рас-
         познавания образца. Поэтому других узлов мы тут не ожидаем.
@@ -762,20 +758,6 @@ bool copy_node( refalrts::Iter& res, refalrts::Iter sample ) {
       return refalrts::alloc_close_bracket( res );
       // break;
 
-    case refalrts::cDataClosure: {
-      bool allocated = refalrts::allocator::alloc_node( res );
-      if( allocated ) {
-        res->tag = refalrts::cDataClosure;
-        refalrts::Iter head = sample->link_info;
-        res->link_info = head;
-        ++ (head->number_info);
-        return true;
-      } else {
-        return false;
-      }
-    }
-    // break;
-
     case refalrts::cDataFile: {
       bool allocated = refalrts::allocator::alloc_node( res );
       if( allocated ) {
@@ -978,33 +960,6 @@ void link_adjacent( refalrts::Iter left, refalrts::Iter right ) {
   }
 }
 
-bool alloc_closure( refalrts::Iter& res ) {
-  bool allocated = refalrts::allocator::alloc_node( res );
-  if( allocated ) {
-    refalrts::Iter head = 0;
-    allocated = refalrts::allocator::alloc_node( head );
-    if( allocated ) {
-      refalrts::Iter prev_head = prev( head );
-      refalrts::Iter next_head = next( head );
-
-      link_adjacent( prev_head, next_head );
-      link_adjacent( head, head );
-
-      res->tag = refalrts::cDataClosure;
-      res->link_info = head;
-
-      head->tag = refalrts::cDataClosureHead;
-      head->number_info = 1;
-
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
 } // unnamed namespace
 
 bool refalrts::alloc_open_bracket( refalrts::Iter& res ) {
@@ -1163,78 +1118,6 @@ void refalrts::splice_from_freelist( refalrts::Iter pos ) {
   allocator::splice_from_freelist( pos );
 }
 
-refalrts::FnResult refalrts::create_closure(
-  refalrts::Iter begin, refalrts::Iter end
-) {
-  refalrts::Iter closure_b = begin;
-  refalrts::Iter closure_e = end;
-
-  refalrts::move_left( closure_b, closure_e ); // пропуск <
-  refalrts::move_left( closure_b, closure_e ); // пропуск имени функции
-  refalrts::move_right( closure_b, closure_e ); // пропуск >
-
-  if( empty_seq( closure_b, closure_e ) )
-    return refalrts::cRecognitionImpossible;
-
-  refalrts::Iter closure = 0;
-
-  if( ! alloc_closure( closure ) )
-    return refalrts::cNoMemory;
-
-  refalrts::Iter head = closure->link_info;
-
-  list_splice( head, closure_b, closure_e );
-  list_splice( begin, closure, closure );
-  refalrts::splice_to_freelist( begin, end );
-
-  return refalrts::cSuccess;
-}
-
-/*
-  Собственно замыкание (функция + контекст) определяется как
-  [next(head), prev(head)]. Т.к. замыкание создаётся только функцией
-  create_closure, которая гарантирует непустоту замыкания, то
-  next(head) != head, prev(head) != head.
-*/
-
-// Развернуть замыкание
-refalrts::Iter refalrts::unwrap_closure( refalrts::Iter closure ) {
-  assert( closure->tag == refalrts::cDataClosure );
-
-  refalrts::Iter before_closure = prev( closure );
-  refalrts::Iter head = closure->link_info;
-  refalrts::Iter end_of_closure = prev( head );
-
-  assert( head != prev( head ) );
-  assert( head != next( head ) );
-
-  link_adjacent( before_closure, head );
-  link_adjacent( end_of_closure, closure );
-
-  closure->tag = refalrts::cDataUnwrappedClosure;
-
-  return prev(head);
-}
-
-// Свернуть замыкание
-refalrts::Iter refalrts::wrap_closure( refalrts::Iter closure ) {
-  assert( closure->tag == refalrts::cDataUnwrappedClosure );
-
-  refalrts::Iter head = closure->link_info;
-  refalrts::Iter before_closure = prev( head );
-  refalrts::Iter end_of_closure = prev( closure );
-
-  assert( head != prev( head ) );
-  assert( head != next( head ) );
-
-  link_adjacent( before_closure, closure );
-  link_adjacent( end_of_closure, head );
-
-  closure->tag = refalrts::cDataClosure;
-
-  return next(closure);
-}
-
 //------------------------------------------------------------------------------
 
 // Средства профилирования
@@ -1352,20 +1235,6 @@ bool refalrts::allocator::alloc_node( refalrts::Iter& node ) {
   if( (g_free_ptr == & g_last_marker) && ! create_nodes() ) {
     return false;
   } else {
-    if( refalrts::cDataClosure == g_free_ptr->tag ) {
-      refalrts::Iter head = g_free_ptr->link_info;
-      -- head->number_info;
-
-      if( 0 == head->number_info ) {
-        unwrap_closure( g_free_ptr );
-        // теперь перед g_free_ptr находится "развёрнутое" замыкание
-        g_free_ptr->tag = refalrts::cDataClosureHead;
-        g_free_ptr->number_info = 407193; // :-)
-
-        g_free_ptr = head;
-      }
-    }
-
     node = g_free_ptr;
     g_free_ptr = next( g_free_ptr );
     node->tag = refalrts::cDataIllegal;
@@ -1845,37 +1714,6 @@ refalrts::FnResult refalrts::vm::execute_active(
     return refalrts::FnResult(
       (function->function_info.ptr)( begin, end ) & 0xFFU
     );
-  } else if( cDataClosure == function->tag ) {
-    refalrts::Iter head = function->link_info;
-
-    if( 1 == head->number_info ) {
-      /*
-        Пользуемся тем, что при развёртке содержимое замыкания оказывается
-        в поле зрения между головой и (развёрнутым!) узлом замыкания.
-        Во избежание проблем, связанным с помещением развёрнутого замыкания
-        в список свободных блоков, проинициализируем его как голову замыкания.
-      */
-      unwrap_closure( function );
-      function->tag = cDataClosureHead;
-      function->number_info = 73501505; // :-)
-      splice_to_freelist( function, function );
-      splice_to_freelist( head, head );
-    } else {
-      refalrts::Iter begin_argument = next( function );
-      refalrts::Iter closure_b = 0;
-      refalrts::Iter closure_e = 0;
-
-      if( ! copy_evar( closure_b, closure_e, next(head), prev(head) ) )
-        return cNoMemory;
-
-      list_splice( begin_argument, closure_b, closure_e );
-      splice_to_freelist( function, function );
-    }
-
-    refalrts::vm::push_stack( end );
-    refalrts::vm::push_stack( begin );
-
-    return cSuccess;
   } else {
     return cRecognitionImpossible;
   }
@@ -2003,22 +1841,6 @@ void refalrts::vm::print_seq(
           case refalrts::cDataFile:
             fprintf( output, "*%p ", begin->file_info );
             refalrts::move_left( begin, end );
-            continue;
-
-          case refalrts::cDataClosure:
-            fprintf( output, "{ " );
-            begin = unwrap_closure( begin );
-            refalrts::move_left( begin, end );
-            continue;
-
-          case refalrts::cDataClosureHead:
-            fprintf( output, "[%ld] ", begin->number_info );
-            refalrts::move_left( begin, end );
-            continue;
-
-          case refalrts::cDataUnwrappedClosure:
-            fprintf( output, "} " );
-            begin = wrap_closure( begin );
             continue;
 
           default:
