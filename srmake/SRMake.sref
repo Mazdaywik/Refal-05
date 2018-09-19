@@ -2,7 +2,7 @@
 $EXTERN WriteLine, System;
 
 //FROM LibraryEx
-$EXTERN ArgList, Map, Fetch;
+$EXTERN ArgList, Map;
 
 //FROM FileScanner
 $EXTERN CreateFileList;
@@ -21,15 +21,12 @@ Main {
     >;
 
   (e.Program) e.Arguments =
-    <MakeProject
-      <Fetch
-        <Get-s-option e.Arguments>
-        {
-          (e.Refal05c) e.RestOfArguments =
-            (e.Refal05c) <ParseCommandLine e.RestOfArguments>;
-        }
-      >
-    >;
+    <MakeProject <Main-Aux <Get-s-option e.Arguments>>>;
+}
+
+Main-Aux {
+  (e.Refal05c) e.RestOfArguments =
+    (e.Refal05c) <ParseCommandLine e.RestOfArguments>;
 }
 
 /*
