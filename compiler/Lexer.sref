@@ -4,6 +4,9 @@ $EXTERN Map, LoadFile, Inc, Type, FastIntFromStr;
 //FROM Library
 $EXTERN StrFromInt, WriteLine, Add, Chr, Mul, Fails, Success;
 
+//FROM Escape
+$EXTERN EscapeChar;
+
 
 FlatLine {
   (e.Line) = e.Line '\n';
@@ -317,7 +320,7 @@ StrDirective {
 $EENUM TkOpen, TkClose;
 
 $ENTRY StrFromToken {
-  TkChar s.Char = '\'' s.Char '\''; // игнорируем проблему escape-символов
+  TkChar s.Char = '\'' <EscapeChar s.Char> '\'';
   TkCloseCall = '">"';
   TkCloseBlock = '"}"';
   TkCloseBracket = '")"';
