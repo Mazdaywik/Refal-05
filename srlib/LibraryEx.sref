@@ -1,6 +1,6 @@
 //FROM Library
 $EXTERN FReadLine, FOpen, FClose, FWriteLine, Add, Sub, Success, IntFromStr,
-  Arg, SymbCompare, SymbType;
+  Arg, SymbCompare;
 
 
 // Расширения библиотеки и функции, реализуемые
@@ -204,19 +204,6 @@ Lexicon-T-Aux {
   '>' t.NextLeft t.NextRight (e.Left) (e.Right) =
     '>' (e.ScannedLeft t.NextLeft e.Left)
     (e.ScannedRight t.NextRight e.Right);
-}
-
-$EENUM TypeBracket;
-
-$ENTRY Type {
-  (e.InBracket) = TypeBracket;
-  s.Symbol = <SymbType s.Symbol>;
-}
-
-$ENTRY Type-T {
-  (e.InBrackets) e.Tail = TypeBracket (e.InBrackets) e.Tail;
-  s.Symbol e.Tail = <SymbType s.Symbol> s.Symbol e.Tail;
-  = '*';
 }
 
 $ENTRY Trim {
