@@ -206,6 +206,36 @@ Lexicon-T-Aux {
     (e.ScannedRight t.NextRight e.Right);
 }
 
+$ENTRY Type {
+  'A' e.X = 'LuA' e.X; 'B' e.X = 'LuB' e.X; 'C' e.X = 'LuC' e.X;
+  'D' e.X = 'LuD' e.X; 'E' e.X = 'LuE' e.X; 'F' e.X = 'LuF' e.X;
+  'G' e.X = 'LuG' e.X; 'H' e.X = 'LuH' e.X; 'I' e.X = 'LuI' e.X;
+  'J' e.X = 'LuJ' e.X; 'K' e.X = 'LuK' e.X; 'L' e.X = 'LuL' e.X;
+  'M' e.X = 'LuM' e.X; 'N' e.X = 'LuN' e.X; 'O' e.X = 'LuO' e.X;
+  'P' e.X = 'LuP' e.X; 'Q' e.X = 'LuQ' e.X; 'R' e.X = 'LuR' e.X;
+  'S' e.X = 'LuS' e.X; 'T' e.X = 'LuT' e.X; 'U' e.X = 'LuU' e.X;
+  'V' e.X = 'LuV' e.X; 'W' e.X = 'LuW' e.X; 'X' e.X = 'LuX' e.X;
+  'Y' e.X = 'LuY' e.X; 'Z' e.X = 'LuZ' e.X;
+
+  'a' e.X = 'Lla' e.X; 'b' e.X = 'Llb' e.X; 'c' e.X = 'Llc' e.X;
+  'd' e.X = 'Lld' e.X; 'e' e.X = 'Lle' e.X; 'f' e.X = 'Llf' e.X;
+  'g' e.X = 'Llg' e.X; 'h' e.X = 'Llh' e.X; 'i' e.X = 'Lli' e.X;
+  'j' e.X = 'Llj' e.X; 'k' e.X = 'Llk' e.X; 'l' e.X = 'Lll' e.X;
+  'm' e.X = 'Llm' e.X; 'n' e.X = 'Lln' e.X; 'o' e.X = 'Llo' e.X;
+  'p' e.X = 'Llp' e.X; 'q' e.X = 'Llq' e.X; 'r' e.X = 'Llr' e.X;
+  's' e.X = 'Lls' e.X; 't' e.X = 'Llt' e.X; 'u' e.X = 'Llu' e.X;
+  'v' e.X = 'Llv' e.X; 'w' e.X = 'Llw' e.X; 'x' e.X = 'Llx' e.X;
+  'y' e.X = 'Lly' e.X; 'z' e.X = 'Llz' e.X;
+
+  '0' e.X = 'D00' e.X; '1' e.X = 'D01' e.X; '2' e.X = 'D02' e.X;
+  '3' e.X = 'D03' e.X; '4' e.X = 'D04' e.X; '5' e.X = 'D05' e.X;
+  '6' e.X = 'D06' e.X; '7' e.X = 'D07' e.X; '8' e.X = 'D08' e.X;
+  '9' e.X = 'D09' e.X;
+
+  /* пусто */ = '*0' /* пусто */;
+  e.Other = '??' e.Other;
+}
+
 $ENTRY Trim {
   ' ' e.Line = <Trim e.Line>;
   '\t' e.Line = <Trim e.Line>;
