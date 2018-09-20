@@ -311,11 +311,6 @@ ParseNameList-Tail-Extern {
   Function = Name '{' Sentence* '}'
 */
 
-CreateLambdaName {
-  e.Name s.Number =
-    'lambda_' e.Name '_' <StrFromInt s.Number>;
-}
-
 ParseFunction {
   s.ScopeClass (e.Name) t.ErrorList t.SymTable
   (TkOpenBlock t.SrcPos) e.Tail =
