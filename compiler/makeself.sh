@@ -5,7 +5,12 @@
 # поскольку на платформе Windows невозможно перезаписать исполнимый
 # файл, если соответствующая ему программма выполняется.
 cp refal05c refal05c_
-../bin/srmake -s ./refal05c_ -c "g++ -I../srlib -orefal05c" -d ../srlib refal05c
+(
+  MODULES="refal05c Algorithm Error Escape FindFile Generator Lexer
+    ParseCmdLine Parser SymTable
+    Library LibraryEx refalrts"
+  ./refal05c_ -c "g++ -I../srlib -orefal05c" -d ../srlib $MODULES
+)
 mv *.cpp ../bootstrap
 mv ../srlib/LibraryEx.cpp ../bootstrap
 cp ../srlib/*.cpp ../bootstrap
