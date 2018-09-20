@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN Fetch, Seq, Map, SaveFile, Sort, Inc, Dec;
+$EXTERN Fetch, Seq, Map, SaveFile, Inc, Dec;
 
 *$FROM Lexer
 $EXTERN LexFolding, TkOpenBracket, TkCloseBracket,
@@ -147,7 +147,7 @@ Pass-Final-SwNoErrors {
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
     t.ErrorList t.SymTable
-    <Map GenDeclaration <Sort <ST-AllFunctions t.SymTable>>>
+    <Map GenDeclaration <ST-AllFunctions t.SymTable>>
     ()
     e.Generated;
 
