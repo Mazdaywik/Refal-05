@@ -350,152 +350,62 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       if( ! refalrts::alloc_name( n1, EL_AddErrorAt, "EL_AddErrorAt" ) )
         return refalrts::cNoMemory;
       refalrts::Iter n2 = 0;
-      if( ! refalrts::alloc_char( n2, 'F' ) )
-        return refalrts::cNoMemory;
       refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_char( n3, 'u' ) )
+      if( ! refalrts::alloc_chars( n2, n3, "Function ", 9) )
         return refalrts::cNoMemory;
       refalrts::Iter n4 = 0;
-      if( ! refalrts::alloc_char( n4, 'n' ) )
-        return refalrts::cNoMemory;
       refalrts::Iter n5 = 0;
-      if( ! refalrts::alloc_char( n5, 'c' ) )
+      if( ! refalrts::alloc_chars( n4, n5, " already defined", 16) )
         return refalrts::cNoMemory;
       refalrts::Iter n6 = 0;
-      if( ! refalrts::alloc_char( n6, 't' ) )
+      if( ! refalrts::alloc_close_call( n6 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n7 = 0;
-      if( ! refalrts::alloc_char( n7, 'i' ) )
+      if( ! refalrts::alloc_open_bracket( n7 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n8 = 0;
-      if( ! refalrts::alloc_char( n8, 'o' ) )
+      if( ! refalrts::alloc_name( n8, SymTable, "SymTable" ) )
         return refalrts::cNoMemory;
       refalrts::Iter n9 = 0;
-      if( ! refalrts::alloc_char( n9, 'n' ) )
+      if( ! refalrts::alloc_open_bracket( n9 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_char( n10, ' ' ) )
+      if( ! refalrts::alloc_name( n10, Defined, "Defined" ) )
         return refalrts::cNoMemory;
       refalrts::Iter n11 = 0;
-      if( ! refalrts::alloc_char( n11, ' ' ) )
+      if( ! refalrts::alloc_close_bracket( n11 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n12 = 0;
-      if( ! refalrts::alloc_char( n12, 'a' ) )
+      if( ! refalrts::alloc_open_bracket( n12 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n13 = 0;
-      if( ! refalrts::alloc_char( n13, 'l' ) )
+      if( ! refalrts::alloc_close_bracket( n13 ) )
         return refalrts::cNoMemory;
       refalrts::Iter n14 = 0;
-      if( ! refalrts::alloc_char( n14, 'r' ) )
+      if( ! refalrts::alloc_close_bracket( n14 ) )
         return refalrts::cNoMemory;
-      refalrts::Iter n15 = 0;
-      if( ! refalrts::alloc_char( n15, 'e' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n16 = 0;
-      if( ! refalrts::alloc_char( n16, 'a' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n17 = 0;
-      if( ! refalrts::alloc_char( n17, 'd' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n18 = 0;
-      if( ! refalrts::alloc_char( n18, 'y' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n19 = 0;
-      if( ! refalrts::alloc_char( n19, ' ' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n20 = 0;
-      if( ! refalrts::alloc_char( n20, 'd' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n21 = 0;
-      if( ! refalrts::alloc_char( n21, 'e' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n22 = 0;
-      if( ! refalrts::alloc_char( n22, 'f' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n23 = 0;
-      if( ! refalrts::alloc_char( n23, 'i' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n24 = 0;
-      if( ! refalrts::alloc_char( n24, 'n' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n25 = 0;
-      if( ! refalrts::alloc_char( n25, 'e' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n26 = 0;
-      if( ! refalrts::alloc_char( n26, 'd' ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n27 = 0;
-      if( ! refalrts::alloc_close_call( n27 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n28 = 0;
-      if( ! refalrts::alloc_open_bracket( n28 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n29 = 0;
-      if( ! refalrts::alloc_name( n29, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n30 = 0;
-      if( ! refalrts::alloc_open_bracket( n30 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n31 = 0;
-      if( ! refalrts::alloc_name( n31, Defined, "Defined" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n32 = 0;
-      if( ! refalrts::alloc_close_bracket( n32 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n33 = 0;
-      if( ! refalrts::alloc_open_bracket( n33 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n34 = 0;
-      if( ! refalrts::alloc_close_bracket( n34 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n35 = 0;
-      if( ! refalrts::alloc_close_bracket( n35 ) )
-        return refalrts::cNoMemory;
-      refalrts::link_brackets( n28, n35 );
-      res = refalrts::splice_elem( res, n35 );
-      refalrts::link_brackets( n33, n34 );
-      res = refalrts::splice_elem( res, n34 );
+      refalrts::link_brackets( n7, n14 );
+      res = refalrts::splice_elem( res, n14 );
+      refalrts::link_brackets( n12, n13 );
+      res = refalrts::splice_elem( res, n13 );
       res = refalrts::splice_evar( res, eReferences_b_1, eReferences_e_1 );
-      res = refalrts::splice_elem( res, n33 );
+      res = refalrts::splice_elem( res, n12 );
       res = refalrts::splice_evar( res, eNames_E_b_1, eNames_E_e_1 );
-      refalrts::link_brackets( n30, n32 );
-      res = refalrts::splice_elem( res, n32 );
+      refalrts::link_brackets( n9, n11 );
+      res = refalrts::splice_elem( res, n11 );
       res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
       res = refalrts::splice_stvar( res, sAnyScopeClass_1 );
-      res = refalrts::splice_elem( res, n31 );
-      res = refalrts::splice_elem( res, n30 );
-      res = refalrts::splice_evar( res, eNames_B_b_1, eNames_B_e_1 );
-      res = refalrts::splice_elem( res, n29 );
-      res = refalrts::splice_elem( res, n28 );
-      refalrts::push_stack( n27 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n27 );
-      res = refalrts::splice_elem( res, n26 );
-      res = refalrts::splice_elem( res, n25 );
-      res = refalrts::splice_elem( res, n24 );
-      res = refalrts::splice_elem( res, n23 );
-      res = refalrts::splice_elem( res, n22 );
-      res = refalrts::splice_elem( res, n21 );
-      res = refalrts::splice_elem( res, n20 );
-      res = refalrts::splice_elem( res, n19 );
-      res = refalrts::splice_elem( res, n18 );
-      res = refalrts::splice_elem( res, n17 );
-      res = refalrts::splice_elem( res, n16 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
       res = refalrts::splice_elem( res, n10 );
       res = refalrts::splice_elem( res, n9 );
+      res = refalrts::splice_evar( res, eNames_B_b_1, eNames_B_e_1 );
       res = refalrts::splice_elem( res, n8 );
       res = refalrts::splice_elem( res, n7 );
+      refalrts::push_stack( n6 );
+      refalrts::push_stack( n0 );
       res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_elem( res, n2 );
+      res = refalrts::splice_evar( res, n4, n5 );
+      res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
+      res = refalrts::splice_evar( res, n2, n3 );
       res = refalrts::splice_stvar( res, tSrcPos_1 );
       res = refalrts::splice_stvar( res, tErrorList_1 );
       res = refalrts::splice_elem( res, n1 );
@@ -1462,108 +1372,22 @@ static refalrts::FnResult AddUnresolved(refalrts::Iter arg_begin, refalrts::Iter
     if( ! refalrts::alloc_name( n1, EL_AddErrorAt, "EL_AddErrorAt" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_char( n2, 'F' ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_char( n3, 'u' ) )
+    if( ! refalrts::alloc_chars( n2, n3, "Function ", 9) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_char( n4, 'n' ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_char( n5, 'c' ) )
+    if( ! refalrts::alloc_chars( n4, n5, " is not defined", 15) )
       return refalrts::cNoMemory;
     refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_char( n6, 't' ) )
+    if( ! refalrts::alloc_close_call( n6 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_char( n7, 'i' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_char( n8, 'o' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n9 = 0;
-    if( ! refalrts::alloc_char( n9, 'n' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_char( n10, ' ' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n11 = 0;
-    if( ! refalrts::alloc_char( n11, ' ' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n12 = 0;
-    if( ! refalrts::alloc_char( n12, 'i' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n13 = 0;
-    if( ! refalrts::alloc_char( n13, 's' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n14 = 0;
-    if( ! refalrts::alloc_char( n14, ' ' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n15 = 0;
-    if( ! refalrts::alloc_char( n15, 'n' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n16 = 0;
-    if( ! refalrts::alloc_char( n16, 'o' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n17 = 0;
-    if( ! refalrts::alloc_char( n17, 't' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n18 = 0;
-    if( ! refalrts::alloc_char( n18, ' ' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n19 = 0;
-    if( ! refalrts::alloc_char( n19, 'd' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n20 = 0;
-    if( ! refalrts::alloc_char( n20, 'e' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n21 = 0;
-    if( ! refalrts::alloc_char( n21, 'f' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n22 = 0;
-    if( ! refalrts::alloc_char( n22, 'i' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n23 = 0;
-    if( ! refalrts::alloc_char( n23, 'n' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n24 = 0;
-    if( ! refalrts::alloc_char( n24, 'e' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n25 = 0;
-    if( ! refalrts::alloc_char( n25, 'd' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n26 = 0;
-    if( ! refalrts::alloc_close_call( n26 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n26 );
+    refalrts::push_stack( n6 );
     refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n26 );
-    res = refalrts::splice_elem( res, n25 );
-    res = refalrts::splice_elem( res, n24 );
-    res = refalrts::splice_elem( res, n23 );
-    res = refalrts::splice_elem( res, n22 );
-    res = refalrts::splice_elem( res, n21 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
     res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_evar( res, n4, n5 );
+    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
+    res = refalrts::splice_evar( res, n2, n3 );
     res = refalrts::splice_stvar( res, tSrcPos_1 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
