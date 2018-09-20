@@ -76,11 +76,6 @@ Scan {
 
   s.Row 1 '*' e.Comment '\n' e.Tail = <Scan <Inc s.Row> 1 e.Tail>;
 
-  /* гарантируется, что в конце файла есть \n, см. FlatLine */
-  s.Row s.Col '//' e.Comment '\n' e.Tail =
-    (Warning (s.Row s.Col) 'C++ comment')
-    <Scan <Inc s.Row> 1 e.Tail>;
-
   s.Row s.Col '/*' e.Tail = <ScanCComment s.Row <Inc2 s.Col> e.Tail>;
 
   s.Row 1 '%%\n' e.Tail = <ScanNative s.Row <Inc s.Row> () e.Tail>;
