@@ -1,5 +1,5 @@
 //FROM LibraryEx
-$EXTERN MapReduce, Dec;
+$EXTERN MapReduce, Dec, DelAccumulator, Inc;
 
 //FROM Library
 $EXTERN StrFromInt;
@@ -36,13 +36,16 @@ SwGenFnStart {
     (
       <TextFromMemoryClass s.MemoryClass>
       'refalrts::FnResult ' e.Name '(' <s.FnArguments> ') {'
-    )
-    ('  refalrts::this_is_generated_function();');
+    );
 }
 
 $ENTRY GenFnStart {
   s.MemoryClass e.Name =
     <SwGenFnStart s.MemoryClass FuncArguments e.Name>;
+}
+
+$ENTRY GenThisIsGeneratedFunction {
+  = ('  refalrts::this_is_generated_function();');
 }
 
 $ENTRY GenFnEnd {
@@ -72,13 +75,13 @@ $ENTRY GenForward {
     ('static refalrts::FnResult ' e.Name '(' <FuncArguments> ');');
 }
 
-$ENTRY GenCommonHeaders {
+GenCommonHeaders {
   = ('// Automatically generated file. Don\'t edit!')
   ('#include "refalrts.h"')
   () ();
 }
 
-$ENTRY GenCommonTailer {
+GenCommonTailer {
   = () ('//End of file');
 }
 
@@ -421,4 +424,40 @@ SwInfo {
 
   // Остальное -- скобки
   s.Other = ;
+}
+
+$ENUM BeginNative, EndNative;
+
+$ENTRY GenNative {
+  s.NativeLineNo e.Code = (BeginNative s.NativeLineNo) e.Code (EndNative);
+}
+
+$ENTRY GenPostprocess {
+  (e.SrcName) (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
+    <DelAccumulator
+      <MapReduce
+        (EnumerateLines (e.SrcName) (e.OutputName))
+        1
+        <GenCommonHeaders>
+        e.Lines-B (EndNative) e.Lines-E
+        <GenCommonTailer>
+      >
+    >;
+
+  (e.SrcName) (e.OutputName) e.Lines =
+    <GenCommonHeaders>
+    e.Lines
+    <GenCommonTailer>;
+}
+
+EnumerateLines {
+  (e.SrcName) (e.OutputName) s.LineNo (BeginNative s.NativeLineNo) =
+    <Inc s.LineNo>
+    ('#line ' <StrFromInt <Inc s.NativeLineNo>> ' "' e.SrcName '"');
+
+  (e.SrcName) (e.OutputName) s.LineNo (EndNative) =
+    <Inc s.LineNo>
+    ('#line ' <StrFromInt <Inc s.LineNo>> ' "' e.OutputName '"');
+
+  (e.SrcName) (e.OutputName) s.LineNo (e.Line) = <Inc s.LineNo> (e.Line);
 }

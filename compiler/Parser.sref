@@ -5,7 +5,7 @@ $EXTERN Fetch, Seq, Map, SaveFile, Sort, Inc, Dec;
 $EXTERN LexFolding, TkOpenBracket, TkCloseBracket,
   TkOpenCall, TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon,
   EEnum, Enum, Extern, Entry, TkComma, TkOpenBlock, TkCloseBlock,
-  TkVariable, TkReplace, TkChar, TkNumber, TkOpen, TkClose;
+  TkVariable, TkReplace, TkChar, TkNumber, TkOpen, TkClose, TkNative;
 
 //FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
@@ -19,9 +19,9 @@ $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
 $EXTERN Success, Fails, StrFromInt;
 
 //FROM Generator
-$EXTERN GenCommonHeaders, GN-Entry, GenExtern, GN-Local, GenForward,
-  GenCommonTailer, GenEnum, GenFnStart, GenSentence, GenFnEnd-Success,
-  GenFnEnd;
+$EXTERN GN-Entry, GenExtern, GN-Local, GenForward, GenEnum, GenFnStart,
+  GenSentence, GenFnEnd-Success, GenFnEnd, GenNative, GenPostprocess,
+  GenThisIsGeneratedFunction;
 
 //FROM Algorithm
 $EXTERN MakeAlgorithm, Brackets, CallBrackets;
@@ -40,7 +40,7 @@ $ENTRY CompileFile {
         (Map PrepareBracket)
         (Pass-Lexer (e.SrcName))
         Pass-CheckUnresolved
-        (Pass-Final (e.OutputName))
+        (Pass-Final (e.SrcName) (e.OutputName))
       >
     >;
 }
@@ -69,19 +69,23 @@ Pass-CheckUnresolved {
 }
 
 Pass-Final {
-  (e.OutputName) t.ErrorList t.SymTable e.Lines =
+  (e.SrcName) (e.OutputName) t.ErrorList t.SymTable e.Lines =
     <ST-Destroy t.SymTable>
-    <Pass-Final-SwNoErrors (e.OutputName) e.Lines
+    <Pass-Final-SwNoErrors
+      (e.SrcName) (e.OutputName) e.Lines
       <EL-Destroy t.ErrorList>
     >;
 }
 
 Pass-Final-SwNoErrors {
-  (e.OutputName) e.Lines EL-NoErrors =
-    <SaveFile (e.OutputName) e.Lines>
+  (e.SrcName) (e.OutputName) e.Lines EL-NoErrors =
+    <SaveFile
+      (e.OutputName)
+      <GenPostprocess (e.SrcName) (e.OutputName) e.Lines>
+    >
     Success e.OutputName;
 
-  (e.OutputName) e.Lines EL-HasErrors =
+  (e.SrcName) (e.OutputName) e.Lines EL-HasErrors =
     Fails;
 }
 
@@ -143,11 +147,9 @@ Pass-Final-SwNoErrors {
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
     t.ErrorList t.SymTable
-    <GenCommonHeaders>
     <Map GenDeclaration <Sort <ST-AllFunctions t.SymTable>>>
     ()
-    e.Generated
-    <GenCommonTailer>;
+    e.Generated;
 
   t.ErrorList t.SymTable (e.Generated)
   (TkDirective t.SrcPos s.Directive) e.Tail =
@@ -170,6 +172,11 @@ ParseElements {
 
   t.ErrorList t.SymTable (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
     <ParseElements t.ErrorList t.SymTable (e.Generated) e.Tail>;
+
+  t.ErrorList t.SymTable (e.Generated) (TkNative (s.Row s.Col) e.Code) e.Tail =
+    <ParseElements
+      t.ErrorList t.SymTable (e.Generated <GenNative s.Row e.Code>) e.Tail
+    >;
 
   t.ErrorList t.SymTable (e.Generated) t.Unexpected e.Tail =
     <ParseElements
@@ -324,10 +331,21 @@ ParseFunction {
     t.SymTable t.Unexpected e.Tail;
 }
 
+$ENUM Sentences, Native;
+
 ParseFunction-BlockParsed {
   s.ScopeClass (e.Name)
-  (e.Sentences) t.ErrorList t.SymTable e.Tail =
+  (Sentences e.Sentences) t.ErrorList t.SymTable e.Tail =
     (<GenFunctionBody s.ScopeClass (e.Name) e.Sentences>)
+    t.ErrorList t.SymTable e.Tail;
+
+  s.ScopeClass (e.Name)
+  (Native s.LineNo e.Code) t.ErrorList t.SymTable e.Tail =
+    (
+      <GenFnStart s.ScopeClass e.Name>
+      <GenNative s.LineNo e.Code>
+      <GenFnEnd-Success>
+    )
     t.ErrorList t.SymTable e.Tail;
 }
 
@@ -349,6 +367,7 @@ GenFunctionBody {
 
   s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
+    <GenThisIsGeneratedFunction>
     <Map MakeAlgorithm-and-GenSentence e.Sentences>
     <GenFnEnd>;
 }
@@ -369,18 +388,31 @@ MakeAlgorithm-and-GenSentence {
   Открывающая скобка должна отсутствовать во входном потоке.
 */
 ParseBlock {
+  t.ErrorList t.SymTable (TkNative (s.Row s.Col) e.Code) e.Tail =
+    (Native s.Row e.Code)
+    <ParseBlock-CloseBlock t.ErrorList t.SymTable e.Tail>;
+
   t.ErrorList t.SymTable e.Tokens =
     <DoParseBlock
       t.ErrorList t.SymTable (/* sentences */) e.Tokens
     >;
 }
 
+ParseBlock-CloseBlock {
+  t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tail =
+    t.ErrorList t.SymTable e.Tail;
+
+  t.ErrorList t.SymTable t.Unexpected e.Tail =
+    <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>
+    t.SymTable t.Unexpected e.Tail;
+}
+
 DoParseBlock {
   t.ErrorList t.SymTable (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
-    (e.Sentences) t.ErrorList t.SymTable e.Tail;
+    (Sentences e.Sentences) t.ErrorList t.SymTable e.Tail;
 
   t.ErrorList t.SymTable (e.Sentences) (TkEOF t.SrcPos) e.Tail =
-    (e.Sentences)
+    (Sentences e.Sentences)
     <EL-AddErrorAt
       t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
     >

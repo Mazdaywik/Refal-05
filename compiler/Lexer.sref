@@ -52,6 +52,7 @@ $EENUM
   TkEOF,
   TkError,
   TkName,
+  TkNative,
   TkNumber,
   TkOpenCall, TkOpenBlock, TkOpenBracket,
   TkReplace,
@@ -76,6 +77,8 @@ Scan {
     <Scan <Inc s.Row> 1 e.Tail>;
 
   s.Row s.Col '/*' e.Tail = <ScanCComment s.Row <Inc2 s.Col> e.Tail>;
+
+  s.Row 1 '%%\n' e.Tail = <ScanNative s.Row <Inc s.Row> () e.Tail>;
 
   s.Row s.Col '$' e.Tail =
     <ScanDirective s.Row <Inc s.Col> () <Type e.Tail>>;
@@ -120,6 +123,20 @@ ScanCCommentContent {
     <ScanCCommentContent s.Row <Inc s.Col> (e.Comment) e.Tail>;
 
   s.Row s.Col (/* пусто */) e.Tail = <Scan s.Row s.Col e.Tail>;
+}
+
+ScanNative {
+  s.StartRow s.Row (e.Native) '%%\n' e.Tail =
+    (TkNative (s.StartRow 1) e.Native)
+    <Scan <Inc s.Row> 1 e.Tail>;
+
+  s.StartRow s.Row (e.Native) e.Line '\n' e.Tail =
+    <ScanNative s.StartRow <Inc s.Row> (e.Native (e.Line)) e.Tail>;
+
+  s.StartRow s.Row (e.Native) /* пусто */ =
+    (TkNative (s.StartRow 1) e.Native)
+    (TkError (s.Row 1) 'unclosed native code')
+    (TkEOF (s.Row 1));
 }
 
 ScanDirective {
@@ -332,6 +349,7 @@ $ENTRY StrFromToken {
   TkEOF = 'end of file';
   TkError e.Message = 'LEXER ERROR: ' e.Message;
   TkName e.Name = 'Name ' e.Name;
+  TkNative e.Code = '"%%...%%"';
   TkNumber s.Number = 'Number ' <StrFromInt s.Number>;
   TkOpenCall = '"<"';
   TkOpenBlock = '"{"';
