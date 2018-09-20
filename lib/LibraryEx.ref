@@ -132,31 +132,11 @@ SwDoArgList {
 }
 
 $ENTRY Compare {
-  (e.Left) (e.Right) = <Lexicon (e.Left) (e.Right)>;
-
-  (e.Left) s.Right = '>';
-  s.Left (e.Right) = '<';
-
-  s.Left s.Right = <SymbCompare s.Left s.Right>;
+  s.Left s.Right = <Compare-Sign <SymbCompare s.Left s.Right>>;
 }
 
-Lexicon {
-  (t.FirstLeft e.Left) (t.FirstRight e.Right) =
-    <Lexicon-Aux
-      <Compare t.FirstLeft t.FirstRight>
-      (e.Left) (e.Right)
-    >;
-
-  () () = '=';
-
-  () (e.Right) = '<';
-  (e.Left) () = '>';
-}
-
-Lexicon-Aux {
-  '<' (e.Left) (e.Right) = '<';
-  '=' (e.Left) (e.Right) = <Lexicon (e.Left) (e.Right)>;
-  '>' (e.Left) (e.Right) = '>';
+Compare-Sign {
+  '<' = '-'; '=' = '0'; '>' = '+';
 }
 
 $ENTRY Type {

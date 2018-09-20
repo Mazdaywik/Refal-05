@@ -17,12 +17,12 @@ $ENTRY EscapeChar {
 
   s.Other =
     <EscapeChar-SwCompare
-      s.Other <Compare s.Other ' '> <Ord s.Other>
+      s.Other <Compare <Ord s.Other> 32> <Ord s.Other>
     >;
 }
 
 EscapeChar-SwCompare {
-  s.Other '<' s.Code =
+  s.Other '-' s.Code =
     '\\'
     <OctDigit <Div s.Code 64>>
     <OctDigit <Mod <Div s.Code 8> 8>>
