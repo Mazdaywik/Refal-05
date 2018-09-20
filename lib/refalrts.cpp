@@ -1127,7 +1127,6 @@ namespace refalrts {
 namespace profiler {
 
 extern void start_generated_function();
-extern void read_counters(unsigned long counters[]);
 extern void start_e_loop();
 extern void stop_e_loop();
 
@@ -1137,14 +1136,6 @@ extern void stop_e_loop();
 
 void refalrts::this_is_generated_function() {
   refalrts::profiler::start_generated_function();
-}
-
-unsigned long refalrts::ticks_per_second() {
-  return CLOCKS_PER_SEC;
-}
-
-void refalrts::read_performance_counters(unsigned long counters[]) {
-  refalrts::profiler::read_counters(counters);
 }
 
 void refalrts::start_sentence() {
@@ -1360,7 +1351,6 @@ void start_profiler();
 void end_profiler();
 void start_generated_function();
 void after_step();
-void read_counters(unsigned long counters[]);
 void add_copy_tevar_time(clock_t duration);
 void add_match_repeated_tvar_time(clock_t duration);
 void add_match_repeated_evar_time(clock_t duration);
@@ -1408,45 +1398,44 @@ void refalrts::profiler::end_profiler() {
   refalrts::profiler::after_step();
 #ifndef DONT_PRINT_STATISTICS
 
-  unsigned long counters[cPerformanceCounter_COUNTERS_NUMBER];
-  read_counters(counters);
+  clock_t full_time = clock() - g_start_program_time;
+  clock_t refal_time =
+    g_total_pattern_match_time + g_total_building_result_time;
+  clock_t eloop_time = g_total_e_loop
+    - (g_total_match_repeated_tvar_time + g_total_match_repeated_evar_time);
 
   TimeItem items[] = {
-    { "\nTotal program time", cPerformanceCounter_TotalTime },
-    { "Builtin time", cPerformanceCounter_BuiltInTime },
-    { "(Total refal time)", cPerformanceCounter_RefalTime },
-    { "Linear pattern time", cPerformanceCounter_LinearPatternTime },
-    { "Linear result time", cPerformanceCounter_LinearResultTime },
-    { "Open e-loop time (clear)", cPerformanceCounter_OpenELoopTimeClear },
+    { "\nTotal program time", full_time },
+    { "Builtin time", full_time - refal_time },
+    { "(Total refal time)", refal_time },
+    { "Linear pattern time", g_total_pattern_match_time },
+    { "Linear result time", g_total_building_result_time },
+    { "Open e-loop time (clear)", eloop_time },
     {
       "Repeated e-var match time (inside e-loops)",
-      cPerformanceCounter_RepeatEvarMatchTime
+      g_total_match_repeated_evar_time
     },
     {
       "Repeated e-var match time (outside e-loops)",
-      cPerformanceCounter_RepeatEvarMatchTimeOutsideECycle
+      g_total_match_repeated_tvar_time_outside_e
     },
     {
       "Repeated t-var match time (inside e-loops)",
-      cPerformanceCounter_RepeatTvarMatchTime
+      g_total_match_repeated_tvar_time
     },
     {
       "Repeated t-var match time (outside e-loops)",
-      cPerformanceCounter_RepeatTvarMatchTimeOutsideECycle
+      g_total_match_repeated_tvar_time_outside_e
     },
-    { "t- and e-var copy time", cPerformanceCounter_TEvarCopyTime }
+    { "t- and e-var copy time", g_total_copy_tevar_time }
   };
 
   enum { nItems = sizeof(items) / sizeof(items[0]) };
 
-  for (size_t i = 0; i < nItems; ++i) {
-    items[i].counter = counters[items[i].counter];
-  }
-
   qsort(items, nItems, sizeof(items[0]), reverse_compare);
 
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
-  unsigned long total = counters[refalrts::cPerformanceCounter_TotalTime];
+  unsigned long total = full_time;
 
   for (size_t i = 0; i < nItems; ++i) {
     unsigned long value = items[i].counter;
@@ -1500,47 +1489,6 @@ extern unsigned g_step_counter;
 } // namespace vm
 
 } // namespace refalrts
-
-void refalrts::profiler::read_counters(unsigned long counters[]) {
-  clock_t full_time = clock() - g_start_program_time;
-  clock_t refal_time =
-    g_total_pattern_match_time + g_total_building_result_time;
-  clock_t pattern_time = g_total_pattern_match_time;
-  clock_t result_time = g_total_building_result_time;
-  counters[cPerformanceCounter_TotalTime] = full_time;
-  counters[cPerformanceCounter_BuiltInTime] = full_time - refal_time;
-  counters[cPerformanceCounter_RefalTime] = refal_time;
-  counters[cPerformanceCounter_PatternMatchTime] = pattern_time;
-  counters[cPerformanceCounter_BuildResultTime] = result_time;
-  counters[cPerformanceCounter_TotalSteps] = ::refalrts::vm::g_step_counter;
-  counters[cPerformanceCounter_HeapSize] =
-    static_cast<unsigned long>(
-      ::refalrts::allocator::g_memory_use * sizeof(Node)
-    );
-  counters[cPerformanceCounter_TEvarCopyTime] = g_total_copy_tevar_time;
-  refal_time -= g_total_copy_tevar_time;
-  result_time -= g_total_copy_tevar_time;
-  counters[cPerformanceCounter_RepeatTvarMatchTime] =
-    g_total_match_repeated_tvar_time;
-  counters[cPerformanceCounter_RepeatTvarMatchTimeOutsideECycle] =
-    g_total_match_repeated_tvar_time_outside_e;
-  refal_time -= g_total_match_repeated_tvar_time_outside_e;
-  pattern_time -= g_total_match_repeated_tvar_time_outside_e;
-  counters[cPerformanceCounter_RepeatEvarMatchTime] =
-    g_total_match_repeated_evar_time;
-  counters[cPerformanceCounter_RepeatEvarMatchTimeOutsideECycle] =
-    g_total_match_repeated_evar_time_outside_e;
-  refal_time -= g_total_match_repeated_evar_time_outside_e;
-  pattern_time -= g_total_match_repeated_evar_time_outside_e;
-  counters[cPerformanceCounter_OpenELoopTime] = g_total_e_loop;
-  refal_time -= g_total_e_loop;
-  pattern_time -= g_total_e_loop;
-  counters[cPerformanceCounter_OpenELoopTimeClear] = g_total_e_loop
-    - (g_total_match_repeated_tvar_time + g_total_match_repeated_evar_time);
-  counters[cPerformanceCounter_LinearRefalTime] = refal_time;
-  counters[cPerformanceCounter_LinearPatternTime] = pattern_time;
-  counters[cPerformanceCounter_LinearResultTime] = result_time;
-}
 
 void refalrts::profiler::add_copy_tevar_time(clock_t duration) {
   g_total_copy_tevar_time += duration;
