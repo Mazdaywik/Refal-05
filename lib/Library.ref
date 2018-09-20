@@ -56,7 +56,7 @@ $EENUM Success, Fails, True, False;
 
 %%
 
-#define ARITHM_OP(op) \
+#define ARITHM_OP(op, check) \
   refalrts::Iter func_name = arg_begin->next; \
   \
   refalrts::Iter sX = func_name->next; \
@@ -73,6 +73,8 @@ $EENUM Success, Fails, True, False;
     return refalrts::cRecognitionImpossible; \
   } \
   \
+  check \
+  \
   sX->number_info = sX->number_info op sY->number_info; \
   \
   refalrts::splice_to_freelist(arg_begin, func_name); \
@@ -80,36 +82,42 @@ $EENUM Success, Fails, True, False;
   \
   return refalrts::cSuccess;
 
+#define NO_CHECK
+#define CHECK_ZERODIV \
+  if (sY->number_info == 0) { \
+    return refalrts::cRecognitionImpossible; \
+  }
+
 %%
 
 
 $ENTRY Add {
 %%
-  ARITHM_OP(+);
+  ARITHM_OP(+, NO_CHECK)
 %%
 }
 
 $ENTRY Sub {
 %%
-  ARITHM_OP(-);
+  ARITHM_OP(-, NO_CHECK)
 %%
 }
 
 $ENTRY Mul {
 %%
-  ARITHM_OP(*);
+  ARITHM_OP(*, NO_CHECK)
 %%
 }
 
 $ENTRY Div {
 %%
-  ARITHM_OP(/);
+  ARITHM_OP(/, CHECK_ZERODIV);
 %%
 }
 
 $ENTRY Mod {
 %%
-  ARITHM_OP(%);
+  ARITHM_OP(%, CHECK_ZERODIV);
 %%
 }
 
