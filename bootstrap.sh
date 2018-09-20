@@ -1,4 +1,4 @@
 #!/bin/bash
 ( cd bootstrap && ./make.sh )
-( cd compiler && ./makeself.sh )
+( cd src && ./makeself.sh )
 ( cd autotests && ./run.sh )

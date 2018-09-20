@@ -6,7 +6,7 @@ exit
 setlocal
   call ..\c-plus-plus.conf.bat
   if {%1}=={} (
-    for %%s in (*.sref) do call :RUN_TEST %%s
+    for %%s in (*.ref) do call :RUN_TEST %%s
   ) else (
     for %%s in (%*) do call :RUN_TEST %%s
   )
@@ -22,11 +22,11 @@ goto :EOF
 :RUN_TEST_AUX
 setlocal
   echo Passing %1...
-  set SREF=%1
+  set REF=%1
   set CPP=%~n1.cpp
   set EXE=%~n1.exe
 
-  ..\compiler\refal05c %1 2> __error.txt
+  ..\src\refal05c %1 2> __error.txt
   if errorlevel 1 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit
@@ -37,7 +37,8 @@ setlocal
     exit
   )
 
-  %CPPLINE% -I../srlib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS %CPP% ../srlib/refalrts.cpp
+  %CPPLINE% -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS ^
+    %CPP% ../lib/refalrts.cpp
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit
@@ -61,10 +62,10 @@ goto :EOF
 :RUN_TEST_AUX.BAD-SYNTAX
 setlocal
   echo Passing %1 (syntax error recovering)...
-  set SREF=%1
+  set REF=%1
   set CPP=%~n1.cpp
 
-  ..\compiler\refal05c %1 2> __error.txt
+  ..\src\refal05c %1 2> __error.txt
   if errorlevel 1 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit

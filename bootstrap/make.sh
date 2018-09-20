@@ -1,3 +1,3 @@
 #!/bin/sh
 mkdir -p ../bin
-g++ -I../srlib -o../bin/refal05c *.cpp
+g++ -I../lib -o../bin/refal05c *.cpp

@@ -4,7 +4,7 @@ setlocal
   call ..\c-plus-plus.conf.bat
   set FILELIST=refal05c.cpp
   for %%c in (*.cpp) do call :ADD_FILE_TO_LIST %%c
-  %CPPLINE% -I..\srlib %FILELIST%
+  %CPPLINE% -I..\lib %FILELIST%
   if exist refal05c.exe move refal05c.exe ..\bin
   if exist a.exe move a.exe ..\bin\refal05c.exe
   if exist *.obj erase *.obj

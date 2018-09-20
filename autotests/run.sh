@@ -2,13 +2,13 @@
 
 run_test_aux() {
   echo Passing $1...
-  SREF=$1
-  CPP=${SREF%%.sref}.cpp
-  EXE=${SREF%%.sref}
+  REF=$1
+  CPP=${REF%%.ref}.cpp
+  EXE=${REF%%.ref}
 
-  ../compiler/refal05c $SREF 2>__error.txt
+  ../src/refal05c $REF 2>__error.txt
   if [ $? -gt 0 ]; then
-    echo COMPILER ON $SREF FAILS, SEE __error.txt
+    echo COMPILER ON $REF FAILS, SEE __error.txt
     exit
   fi
   rm __error.txt
@@ -17,7 +17,8 @@ run_test_aux() {
     exit
   fi
 
-  g++ -I../srlib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS -o$EXE $CPP ../srlib/refalrts.cpp
+  g++ -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
+    -o$EXE $CPP ../lib/refalrts.cpp
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit
@@ -37,13 +38,13 @@ run_test_aux() {
 
 run_test_aux.BAD-SYNTAX() {
   echo Passing $1...
-  SREF=$1
-  CPP=${SREF%%.sref}.cpp
-  EXE=${SREF%%.sref}
+  REF=$1
+  CPP=${REF%%.ref}.cpp
+  EXE=${REF%%.ref}
 
-  ../compiler/refal05c $SREF 2>__error.txt
+  ../src/refal05c $REF 2>__error.txt
   if [ $? -gt 0 ]; then
-    echo COMPILER ON $SREF FAILS, SEE __error.txt
+    echo COMPILER ON $REF FAILS, SEE __error.txt
     exit
   fi
   rm __error.txt
@@ -58,13 +59,13 @@ run_test_aux.BAD-SYNTAX() {
 }
 
 run_test() {
-  SREF=$1
-  SUFFIX=`echo ${SREF%%.sref} | sed 's/[^.]*\(\.[^.]*\)*/\1/'`
+  REF=$1
+  SUFFIX=`echo ${REF%%.ref} | sed 's/[^.]*\(\.[^.]*\)*/\1/'`
   run_test_aux$SUFFIX $1
 }
 
 if [ -z "$1" ]; then
-  for s in *.sref; do
+  for s in *.ref; do
     run_test $s
   done
 else

@@ -1,6 +1,6 @@
 cd bootstrap
 call make.bat
-cd ..\compiler
+cd ..\src
 call makeself.bat
 cd ..\autotests
 call run.bat

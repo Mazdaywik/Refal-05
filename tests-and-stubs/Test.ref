@@ -83,7 +83,7 @@ $EXTERN LoadFile, SaveFile;
 $ENUM FailDown;
 
 Test5 {
-  = <SaveFile ('copy') <LoadFile 'Test.sref'>>;
+  = <SaveFile ('copy') <LoadFile 'Test.ref'>>;
 }
 
 $EXTERN ArgList;
@@ -99,7 +99,7 @@ TestFile {
 }
 
 Test7 {
-  = <TestFile 'Test.sref'> <TestFile 'FooBar.txt'>;
+  = <TestFile 'Test.ref'> <TestFile 'FooBar.txt'>;
 }
 
 $EXTERN Exit, System;
