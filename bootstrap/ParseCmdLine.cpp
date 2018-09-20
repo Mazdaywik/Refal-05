@@ -27,21 +27,18 @@ static refalrts::FnResult DoParseCommandLine(refalrts::Iter arg_begin, refalrts:
 static refalrts::FnResult DoParseFileNamesOnly(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 refalrts::FnResult CmdLineError(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult CompileList(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult CmdNone(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
@@ -160,42 +157,36 @@ refalrts::FnResult CmdCompileCommand(refalrts::Iter arg_begin, refalrts::Iter ar
 }
 
 static refalrts::FnResult CAddCompileCommand(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 static refalrts::FnResult CAddErrorFile(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 static refalrts::FnResult CGetInfo(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 static refalrts::FnResult CAddFile(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 static refalrts::FnResult CAddFolder(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 static refalrts::FnResult CSetOutput(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );

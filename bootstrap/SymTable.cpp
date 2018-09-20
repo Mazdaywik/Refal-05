@@ -23,7 +23,6 @@ static refalrts::FnResult PatchReferences_FilterThis(refalrts::Iter arg_begin, r
 static refalrts::FnResult SymTable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult SymTable(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
@@ -114,14 +113,12 @@ refalrts::FnResult ST_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
 }
 
 static refalrts::FnResult Declared(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 static refalrts::FnResult Defined(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );

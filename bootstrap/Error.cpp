@@ -20,7 +20,6 @@ static refalrts::FnResult StrFromSrcPos(refalrts::Iter arg_begin, refalrts::Iter
 static refalrts::FnResult WriteBracketedLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult ErrorList(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
@@ -750,14 +749,12 @@ refalrts::FnResult EL_AddUnexpected(refalrts::Iter arg_begin, refalrts::Iter arg
 }
 
 refalrts::FnResult EL_NoErrors(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult EL_HasErrors(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );

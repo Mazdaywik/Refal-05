@@ -29,6 +29,7 @@ extern refalrts::FnResult TkDirective(refalrts::Iter arg_begin, refalrts::Iter a
 extern refalrts::FnResult TkEOF(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkError(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult TkNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkNumber(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkOpen(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult TkOpenBlock(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -41,11 +42,13 @@ extern refalrts::FnResult TkVariable(refalrts::Iter arg_begin, refalrts::Iter ar
 extern refalrts::FnResult Type(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult WriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult DigitFromChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult Directive(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Escape(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult FlatLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult GlueUnexpecteds(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Inc2(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult MakeDirective_SwValid(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Punctuation(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Scan(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ScanCComment(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -57,7 +60,11 @@ static refalrts::FnResult ScanChars_Escape_Hex_SwHex(refalrts::Iter arg_begin, r
 static refalrts::FnResult ScanChars_Escape_SwValid(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ScanDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ScanName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ScanNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ScanNumber(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ScanPseudo(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ScanPseudo_AddSemicolon(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult ScanPseudo_SwDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult ScanVariable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Scan_ByPunctuation(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult Scan_ByType(refalrts::Iter arg_begin, refalrts::Iter arg_end);
@@ -284,7 +291,6 @@ static refalrts::FnResult SkipBOM(refalrts::Iter arg_begin, refalrts::Iter arg_e
 }
 
 static refalrts::FnResult Warning(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
@@ -503,147 +509,132 @@ static refalrts::FnResult ShowWarning(refalrts::Iter arg_begin, refalrts::Iter a
 }
 
 refalrts::FnResult TkChar(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkCloseCall(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkCloseBlock(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkCloseBracket(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkComma(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkDirective(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkEOF(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkError(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkName(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+refalrts::FnResult TkNative(refalrts::Iter, refalrts::Iter) {
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkNumber(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkOpenCall(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkOpenBlock(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkOpenBracket(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkReplace(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkSemicolon(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkUnexpected(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkVariable(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult EEnum(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult Entry(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult Enum(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult Extern(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
@@ -886,6 +877,130 @@ static refalrts::FnResult Scan(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
     static refalrts::Iter sRow_1;
+    static refalrts::Iter ePseudo_b_1;
+    static refalrts::Iter ePseudo_e_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter sRow_2;
+    // s.Row 1 '*$ e.Pseudo '\n e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::number_left( 1UL, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '*', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '$', bb_0, be_0 ) )
+      break;
+    ePseudo_b_1 = 0;
+    ePseudo_e_1 = 0;
+    refalrts::start_e_loop();
+    do {
+      refalrts::Iter bb_1 = bb_0;
+      refalrts::Iter be_1 = be_0;
+      if( ! refalrts::char_left( '\n', bb_1, be_1 ) )
+        continue;
+      eTail_b_1 = bb_1;
+      eTail_e_1 = be_1;
+
+      refalrts::reset_allocator();
+      refalrts::Iter res = arg_begin;
+      if( ! refalrts::copy_stvar( sRow_2, sRow_1 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n0 = 0;
+      if( ! refalrts::alloc_open_call( n0 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n1 = 0;
+      if( ! refalrts::alloc_name( n1, ScanPseudo, "ScanPseudo" ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n2 = 0;
+      if( ! refalrts::alloc_number( n2, 3UL ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n3 = 0;
+      if( ! refalrts::alloc_open_bracket( n3 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n4 = 0;
+      if( ! refalrts::alloc_close_bracket( n4 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n5 = 0;
+      if( ! refalrts::alloc_open_call( n5 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n6 = 0;
+      if( ! refalrts::alloc_name( n6, Type, "Type" ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n7 = 0;
+      if( ! refalrts::alloc_char( n7, '\n' ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n8 = 0;
+      if( ! refalrts::alloc_close_call( n8 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n9 = 0;
+      if( ! refalrts::alloc_close_call( n9 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n10 = 0;
+      if( ! refalrts::alloc_open_call( n10 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n11 = 0;
+      if( ! refalrts::alloc_name( n11, Scan, "Scan" ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n12 = 0;
+      if( ! refalrts::alloc_open_call( n12 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n13 = 0;
+      if( ! refalrts::alloc_name( n13, Inc, "Inc" ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n14 = 0;
+      if( ! refalrts::alloc_close_call( n14 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n15 = 0;
+      if( ! refalrts::alloc_number( n15, 1UL ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n16 = 0;
+      if( ! refalrts::alloc_close_call( n16 ) )
+        return refalrts::cNoMemory;
+      refalrts::push_stack( n16 );
+      refalrts::push_stack( n10 );
+      res = refalrts::splice_elem( res, n16 );
+      res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+      res = refalrts::splice_elem( res, n15 );
+      refalrts::push_stack( n14 );
+      refalrts::push_stack( n12 );
+      res = refalrts::splice_elem( res, n14 );
+      res = refalrts::splice_stvar( res, sRow_2 );
+      res = refalrts::splice_elem( res, n13 );
+      res = refalrts::splice_elem( res, n12 );
+      res = refalrts::splice_elem( res, n11 );
+      res = refalrts::splice_elem( res, n10 );
+      refalrts::push_stack( n9 );
+      refalrts::push_stack( n0 );
+      res = refalrts::splice_elem( res, n9 );
+      refalrts::push_stack( n8 );
+      refalrts::push_stack( n5 );
+      res = refalrts::splice_elem( res, n8 );
+      res = refalrts::splice_elem( res, n7 );
+      res = refalrts::splice_evar( res, ePseudo_b_1, ePseudo_e_1 );
+      res = refalrts::splice_elem( res, n6 );
+      res = refalrts::splice_elem( res, n5 );
+      refalrts::link_brackets( n3, n4 );
+      res = refalrts::splice_elem( res, n4 );
+      res = refalrts::splice_elem( res, n3 );
+      res = refalrts::splice_elem( res, n2 );
+      res = refalrts::splice_stvar( res, sRow_1 );
+      res = refalrts::splice_elem( res, n1 );
+      res = refalrts::splice_elem( res, n0 );
+      refalrts::use( res );
+      refalrts::splice_to_freelist( arg_begin, arg_end );
+      return refalrts::cSuccess;
+    } while ( refalrts::open_evar_advance( ePseudo_b_1, ePseudo_e_1, bb_0, be_0 ) );
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
     static refalrts::Iter eTail_b_1;
     static refalrts::Iter eTail_e_1;
     static refalrts::Iter eComment_b_1;
@@ -1076,6 +1191,80 @@ static refalrts::FnResult Scan(refalrts::Iter arg_begin, refalrts::Iter arg_end)
     refalrts::push_stack( n2 );
     res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_stvar( res, sCol_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter sRow_2;
+    // s.Row 1 '%%\n e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::number_left( 1UL, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '%', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '%', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '\n', bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( sRow_2, sRow_1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ScanNative, "ScanNative" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Inc, "Inc" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sRow_2 );
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_stvar( res, sRow_1 );
@@ -1854,6 +2043,479 @@ static refalrts::FnResult Scan(refalrts::Iter arg_begin, refalrts::Iter arg_end)
   );
 }
 
+static refalrts::FnResult ScanPseudo(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter sCol_1;
+    static refalrts::Iter eScanned_b_1;
+    static refalrts::Iter eScanned_e_1;
+    static refalrts::Iter sLetter_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter sSubType_1;
+    // s.Row s.Col ( e.Scanned ) 'L s.SubType s.Letter e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'L', bb_0, be_0 ) )
+      break;
+    eScanned_b_1 = bb_1;
+    eScanned_e_1 = be_1;
+    if( ! refalrts::svar_left( sSubType_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sLetter_1, bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ScanPseudo, "ScanPseudo" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Inc, "Inc" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_open_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_name( n8, Type, "Type" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_close_call( n9 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_call( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n10 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n10 );
+    refalrts::push_stack( n9 );
+    refalrts::push_stack( n7 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_stvar( res, sLetter_1 );
+    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
+    res = refalrts::splice_elem( res, n5 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sCol_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter sCol_1;
+    static refalrts::Iter eScanned_b_1;
+    static refalrts::Iter eScanned_e_1;
+    static refalrts::Iter sDigit_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter sSubType_1;
+    // s.Row s.Col ( e.Scanned ) 'D s.SubType s.Digit e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'D', bb_0, be_0 ) )
+      break;
+    eScanned_b_1 = bb_1;
+    eScanned_e_1 = be_1;
+    if( ! refalrts::svar_left( sSubType_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sDigit_1, bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ScanPseudo, "ScanPseudo" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Inc, "Inc" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_open_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_name( n8, Type, "Type" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_close_call( n9 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_call( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n10 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n10 );
+    refalrts::push_stack( n9 );
+    refalrts::push_stack( n7 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    refalrts::link_brackets( n5, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_stvar( res, sDigit_1 );
+    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
+    res = refalrts::splice_elem( res, n5 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sCol_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter sCol_1;
+    static refalrts::Iter eScanned_b_1;
+    static refalrts::Iter eScanned_e_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter sType_1;
+    static refalrts::Iter sSubType_1;
+    // s.Row s.Col ( e.Scanned ) s.Type s.SubType e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eScanned_b_1 = bb_1;
+    eScanned_e_1 = be_1;
+    if( ! refalrts::svar_left( sType_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sSubType_1, bb_0, be_0 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, ScanPseudo_SwDirective, "ScanPseudo_SwDirective" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, Directive, "Directive" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_close_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    refalrts::link_brackets( n2, n6 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sCol_1 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult ScanPseudo_SwDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter sCol_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    static refalrts::Iter sDirective_1;
+    static refalrts::Iter sRow_2;
+    // s.Row s.Col ( & Success s.Directive ) e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Success, bb_1, be_1 ) )
+      break;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+    if( ! refalrts::svar_left( sDirective_1, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( sRow_2, sRow_1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkDirective, "TkDirective" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_number( n3, 2UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_call( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_name( n7, ScanPseudo_AddSemicolon, "ScanPseudo_AddSemicolon" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_open_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_name( n9, Scan, "Scan" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_call( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_close_call( n11 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n11 );
+    refalrts::push_stack( n6 );
+    res = refalrts::splice_elem( res, n11 );
+    refalrts::push_stack( n10 );
+    refalrts::push_stack( n8 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_stvar( res, sCol_1 );
+    res = refalrts::splice_stvar( res, sRow_2 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::link_brackets( n0, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_stvar( res, sDirective_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter sCol_1;
+    // s.Row s.Col ( & Fails e.Directive ) e.Tail
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Fails, bb_1, be_1 ) )
+      break;
+    // Unused closed variable e.Directive
+    // Unused closed variable e.Tail
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult ScanPseudo_AddSemicolon(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eTokens_b_1;
+    static refalrts::Iter eTokens_e_1;
+    static refalrts::Iter tSrcPos_1;
+    // e.Tokens ( & TkEOF t.SrcPos )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( TkEOF, bb_1, be_1 ) )
+      break;
+    eTokens_b_1 = bb_0;
+    eTokens_e_1 = be_0;
+    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkSemicolon, "TkSemicolon" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_close_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n2 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, tSrcPos_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 static refalrts::FnResult ScanCComment(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2363,6 +3025,408 @@ static refalrts::FnResult ScanCCommentContent(refalrts::Iter arg_begin, refalrts
   );
 }
 
+static refalrts::FnResult ScanNative(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sStartRow_1;
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter eNative_b_1;
+    static refalrts::Iter eNative_e_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    // s.StartRow s.Row ( e.Native ) '%%\n e.Tail
+    if( ! refalrts::svar_left( sStartRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '%', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '%', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '\n', bb_0, be_0 ) )
+      break;
+    eNative_b_1 = bb_1;
+    eNative_e_1 = be_1;
+    eTail_b_1 = bb_0;
+    eTail_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkNative, "TkNative" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_number( n3, 1UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_call( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_name( n7, Scan, "Scan" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_open_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_name( n9, Inc, "Inc" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_call( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_number( n11, 1UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_close_call( n12 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n12 );
+    refalrts::push_stack( n6 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+    res = refalrts::splice_elem( res, n11 );
+    refalrts::push_stack( n10 );
+    refalrts::push_stack( n8 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::link_brackets( n0, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eNative_b_1, eNative_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_stvar( res, sStartRow_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sStartRow_1;
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter eNative_b_1;
+    static refalrts::Iter eNative_e_1;
+    static refalrts::Iter eLine_b_1;
+    static refalrts::Iter eLine_e_1;
+    static refalrts::Iter eTail_b_1;
+    static refalrts::Iter eTail_e_1;
+    // s.StartRow s.Row ( e.Native ) e.Line '\n e.Tail
+    if( ! refalrts::svar_left( sStartRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eNative_b_1 = bb_1;
+    eNative_e_1 = be_1;
+    eLine_b_1 = 0;
+    eLine_e_1 = 0;
+    refalrts::start_e_loop();
+    do {
+      refalrts::Iter bb_2 = bb_0;
+      refalrts::Iter be_2 = be_0;
+      if( ! refalrts::char_left( '\n', bb_2, be_2 ) )
+        continue;
+      eTail_b_1 = bb_2;
+      eTail_e_1 = be_2;
+
+      refalrts::reset_allocator();
+      refalrts::Iter res = arg_begin;
+      refalrts::Iter n0 = 0;
+      if( ! refalrts::alloc_open_call( n0 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n1 = 0;
+      if( ! refalrts::alloc_name( n1, ScanNative, "ScanNative" ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n2 = 0;
+      if( ! refalrts::alloc_open_call( n2 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n3 = 0;
+      if( ! refalrts::alloc_name( n3, Inc, "Inc" ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n4 = 0;
+      if( ! refalrts::alloc_close_call( n4 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n5 = 0;
+      if( ! refalrts::alloc_open_bracket( n5 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n6 = 0;
+      if( ! refalrts::alloc_open_bracket( n6 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n7 = 0;
+      if( ! refalrts::alloc_close_bracket( n7 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n8 = 0;
+      if( ! refalrts::alloc_close_bracket( n8 ) )
+        return refalrts::cNoMemory;
+      refalrts::Iter n9 = 0;
+      if( ! refalrts::alloc_close_call( n9 ) )
+        return refalrts::cNoMemory;
+      refalrts::push_stack( n9 );
+      refalrts::push_stack( n0 );
+      res = refalrts::splice_elem( res, n9 );
+      res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
+      refalrts::link_brackets( n5, n8 );
+      res = refalrts::splice_elem( res, n8 );
+      refalrts::link_brackets( n6, n7 );
+      res = refalrts::splice_elem( res, n7 );
+      res = refalrts::splice_evar( res, eLine_b_1, eLine_e_1 );
+      res = refalrts::splice_elem( res, n6 );
+      res = refalrts::splice_evar( res, eNative_b_1, eNative_e_1 );
+      res = refalrts::splice_elem( res, n5 );
+      refalrts::push_stack( n4 );
+      refalrts::push_stack( n2 );
+      res = refalrts::splice_elem( res, n4 );
+      res = refalrts::splice_stvar( res, sRow_1 );
+      res = refalrts::splice_elem( res, n3 );
+      res = refalrts::splice_elem( res, n2 );
+      res = refalrts::splice_stvar( res, sStartRow_1 );
+      res = refalrts::splice_elem( res, n1 );
+      res = refalrts::splice_elem( res, n0 );
+      refalrts::use( res );
+      refalrts::splice_to_freelist( arg_begin, arg_end );
+      return refalrts::cSuccess;
+    } while ( refalrts::open_evar_advance( eLine_b_1, eLine_e_1, bb_0, be_0 ) );
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eNative_b_1;
+    static refalrts::Iter eNative_e_1;
+    static refalrts::Iter sStartRow_1;
+    static refalrts::Iter sRow_1;
+    static refalrts::Iter sRow_2;
+    // s.StartRow s.Row ( e.Native )
+    refalrts::Iter bb_1 = 0;
+    refalrts::Iter be_1 = 0;
+    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+      break;
+    eNative_b_1 = bb_1;
+    eNative_e_1 = be_1;
+    if( ! refalrts::svar_left( sStartRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( sRow_2, sRow_1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, TkNative, "TkNative" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_bracket( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_number( n3, 1UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_bracket( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_bracket( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_open_bracket( n6 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_name( n7, TkError, "TkError" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_open_bracket( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    if( ! refalrts::alloc_number( n9, 1UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_bracket( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_char( n11, 'u' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_char( n12, 'n' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n13 = 0;
+    if( ! refalrts::alloc_char( n13, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n14 = 0;
+    if( ! refalrts::alloc_char( n14, 'l' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n15 = 0;
+    if( ! refalrts::alloc_char( n15, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n16 = 0;
+    if( ! refalrts::alloc_char( n16, 's' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n17 = 0;
+    if( ! refalrts::alloc_char( n17, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n18 = 0;
+    if( ! refalrts::alloc_char( n18, 'd' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n19 = 0;
+    if( ! refalrts::alloc_char( n19, ' ' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n20 = 0;
+    if( ! refalrts::alloc_char( n20, 'n' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n21 = 0;
+    if( ! refalrts::alloc_char( n21, 'a' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n22 = 0;
+    if( ! refalrts::alloc_char( n22, 't' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n23 = 0;
+    if( ! refalrts::alloc_char( n23, 'i' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n24 = 0;
+    if( ! refalrts::alloc_char( n24, 'v' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n25 = 0;
+    if( ! refalrts::alloc_char( n25, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n26 = 0;
+    if( ! refalrts::alloc_char( n26, ' ' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n27 = 0;
+    if( ! refalrts::alloc_char( n27, 'c' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n28 = 0;
+    if( ! refalrts::alloc_char( n28, 'o' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n29 = 0;
+    if( ! refalrts::alloc_char( n29, 'd' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n30 = 0;
+    if( ! refalrts::alloc_char( n30, 'e' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n31 = 0;
+    if( ! refalrts::alloc_close_bracket( n31 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n32 = 0;
+    if( ! refalrts::alloc_open_bracket( n32 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n33 = 0;
+    if( ! refalrts::alloc_name( n33, TkEOF, "TkEOF" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n34 = 0;
+    if( ! refalrts::alloc_open_bracket( n34 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n35 = 0;
+    if( ! refalrts::alloc_number( n35, 1UL ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n36 = 0;
+    if( ! refalrts::alloc_close_bracket( n36 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n37 = 0;
+    if( ! refalrts::alloc_close_bracket( n37 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n32, n37 );
+    res = refalrts::splice_elem( res, n37 );
+    refalrts::link_brackets( n34, n36 );
+    res = refalrts::splice_elem( res, n36 );
+    res = refalrts::splice_elem( res, n35 );
+    res = refalrts::splice_stvar( res, sRow_2 );
+    res = refalrts::splice_elem( res, n34 );
+    res = refalrts::splice_elem( res, n33 );
+    res = refalrts::splice_elem( res, n32 );
+    refalrts::link_brackets( n6, n31 );
+    res = refalrts::splice_elem( res, n31 );
+    res = refalrts::splice_elem( res, n30 );
+    res = refalrts::splice_elem( res, n29 );
+    res = refalrts::splice_elem( res, n28 );
+    res = refalrts::splice_elem( res, n27 );
+    res = refalrts::splice_elem( res, n26 );
+    res = refalrts::splice_elem( res, n25 );
+    res = refalrts::splice_elem( res, n24 );
+    res = refalrts::splice_elem( res, n23 );
+    res = refalrts::splice_elem( res, n22 );
+    res = refalrts::splice_elem( res, n21 );
+    res = refalrts::splice_elem( res, n20 );
+    res = refalrts::splice_elem( res, n19 );
+    res = refalrts::splice_elem( res, n18 );
+    res = refalrts::splice_elem( res, n17 );
+    res = refalrts::splice_elem( res, n16 );
+    res = refalrts::splice_elem( res, n15 );
+    res = refalrts::splice_elem( res, n14 );
+    res = refalrts::splice_elem( res, n13 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_elem( res, n11 );
+    refalrts::link_brackets( n8, n10 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_elem( res, n9 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    refalrts::link_brackets( n0, n5 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_evar( res, eNative_b_1, eNative_e_1 );
+    refalrts::link_brackets( n2, n4 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_stvar( res, sStartRow_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 static refalrts::FnResult ScanDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -2657,18 +3721,76 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::start_sentence();
     static refalrts::Iter sRow_1;
     static refalrts::Iter sCol_1;
-    // s.Row s.Col 'ENUM'
-    if( ! refalrts::char_right( 'M', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'U', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'N', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'E', bb_0, be_0 ) )
-      break;
+    static refalrts::Iter eDirective_b_1;
+    static refalrts::Iter eDirective_e_1;
+    // s.Row s.Col e.Directive
     if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    eDirective_b_1 = bb_0;
+    eDirective_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, MakeDirective_SwValid, "MakeDirective_SwValid" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Directive, "Directive" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_evar( res, eDirective_b_1, eDirective_e_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sCol_1 );
+    res = refalrts::splice_stvar( res, sRow_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult Directive(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    // 'ENUM'
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'N', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'U', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'M', bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -2676,31 +3798,11 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
+    if( ! refalrts::alloc_name( n0, Success, "Success" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, TkDirective, "TkDirective" ) )
+    if( ! refalrts::alloc_name( n1, Enum, "Enum" ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_name( n4, Enum, "Enum" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n0, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_stvar( res, sCol_1 );
-    res = refalrts::splice_stvar( res, sRow_1 );
-    res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
@@ -2715,22 +3817,16 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter sRow_1;
-    static refalrts::Iter sCol_1;
-    // s.Row s.Col 'EENUM'
-    if( ! refalrts::char_right( 'M', bb_0, be_0 ) )
+    // 'EENUM'
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'U', bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'N', bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'N', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'E', bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'U', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'E', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'M', bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -2738,31 +3834,11 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
+    if( ! refalrts::alloc_name( n0, Success, "Success" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, TkDirective, "TkDirective" ) )
+    if( ! refalrts::alloc_name( n1, EEnum, "EEnum" ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_name( n4, EEnum, "EEnum" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n0, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_stvar( res, sCol_1 );
-    res = refalrts::splice_stvar( res, sRow_1 );
-    res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
@@ -2777,22 +3853,16 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter sRow_1;
-    static refalrts::Iter sCol_1;
-    // s.Row s.Col 'ENTRY'
-    if( ! refalrts::char_right( 'Y', bb_0, be_0 ) )
+    // 'ENTRY'
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'R', bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'N', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'T', bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'T', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'N', bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'R', bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_right( 'E', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+    if( ! refalrts::char_left( 'Y', bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -2800,31 +3870,11 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
     refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
+    if( ! refalrts::alloc_name( n0, Success, "Success" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, TkDirective, "TkDirective" ) )
+    if( ! refalrts::alloc_name( n1, Entry, "Entry" ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_name( n4, Entry, "Entry" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n0, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_stvar( res, sCol_1 );
-    res = refalrts::splice_stvar( res, sRow_1 );
-    res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
@@ -2839,24 +3889,87 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
+    // 'EXTERN'
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'X', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'T', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'E', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'R', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( 'N', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_name( n0, Success, "Success" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, Extern, "Extern" ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eOther_b_1;
+    static refalrts::Iter eOther_e_1;
+    // e.Other
+    eOther_b_1 = bb_0;
+    eOther_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_name( n0, Fails, "Fails" ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, eOther_b_1, eOther_e_1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult MakeDirective_SwValid(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sRow_1;
     static refalrts::Iter sCol_1;
-    // s.Row s.Col 'EXTERN'
-    if( ! refalrts::char_right( 'N', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'R', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'E', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'T', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'X', bb_0, be_0 ) )
-      break;
-    if( ! refalrts::char_right( 'E', bb_0, be_0 ) )
-      break;
+    static refalrts::Iter sDirective_1;
+    // s.Row s.Col & Success s.Directive
     if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Success, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sDirective_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -2876,14 +3989,11 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     if( ! refalrts::alloc_close_bracket( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_name( n4, Extern, "Extern" ) )
+    if( ! refalrts::alloc_close_bracket( n4 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n0, n5 );
-    res = refalrts::splice_elem( res, n5 );
+    refalrts::link_brackets( n0, n4 );
     res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sDirective_1 );
     refalrts::link_brackets( n2, n3 );
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_stvar( res, sCol_1 );
@@ -2907,10 +4017,12 @@ static refalrts::FnResult MakeDirective(refalrts::Iter arg_begin, refalrts::Iter
     static refalrts::Iter sCol_1;
     static refalrts::Iter eOther_b_1;
     static refalrts::Iter eOther_e_1;
-    // s.Row s.Col e.Other
+    // s.Row s.Col & Fails e.Other
     if( ! refalrts::svar_left( sRow_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sCol_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Fails, bb_0, be_0 ) )
       break;
     eOther_b_1 = bb_0;
     eOther_e_1 = be_0;
@@ -7275,14 +8387,12 @@ static refalrts::FnResult StrDirective(refalrts::Iter arg_begin, refalrts::Iter 
 }
 
 refalrts::FnResult TkOpen(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
 }
 
 refalrts::FnResult TkClose(refalrts::Iter, refalrts::Iter) {
-  refalrts::this_is_generated_function();
   return refalrts::FnResult(
     refalrts::cRecognitionImpossible | (__LINE__ << 8)
   );
@@ -7686,6 +8796,61 @@ refalrts::FnResult StrFromToken(refalrts::Iter arg_begin, refalrts::Iter arg_end
     if( ! refalrts::alloc_char( n4, ' ' ) )
       return refalrts::cNoMemory;
     res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    // & TkNative e.Code
+    if( ! refalrts::function_left( TkNative, bb_0, be_0 ) )
+      break;
+    // Unused closed variable e.Code
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, '\"' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_char( n1, '%' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_char( n2, '%' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_char( n3, '.' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_char( n4, '.' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_char( n5, '.' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_char( n6, '%' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_char( n7, '%' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_char( n8, '\"' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_elem( res, n2 );
