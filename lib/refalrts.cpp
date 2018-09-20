@@ -17,8 +17,6 @@
 #define SHOW_DEBUG 0
 #endif // ifdef SHOW_DEBUG
 
-enum { SWITCH_DEFAULT_VIOLATION = 0 };
-
 void valid_linked_aux(const char *text, refalrts::Iter i) {
   printf("checking %s\n", text);
   if (0 == i) {
@@ -352,18 +350,11 @@ bool refalrts::tvar_right(
   }
 }
 
-namespace refalrts {
-
-class UnexpectedTypeException { };
-
-} // namespace refalrts
-
 namespace {
 
 bool equal_nodes(
   refalrts::Iter node1, refalrts::Iter node2
-) // throws refalrts::UnexpectedTypeException
-{
+) {
   if (node1->tag != node2->tag) {
     return false;
   } else {
@@ -398,11 +389,9 @@ bool equal_nodes(
         познавания образца. Поэтому других узлов мы тут не ожидаем.
       */
       default:
-        assert(SWITCH_DEFAULT_VIOLATION);
-        throw refalrts::UnexpectedTypeException();
-        // break;
+        r05_switch_default_violation(node1->tag);
+        return false;   /* suppress warning */
     }
-    // Все ветви в case завершаются либо return, либо throw.
   }
 }
 
@@ -424,8 +413,7 @@ namespace {
 bool equal_expressions(
   refalrts::Iter first1, refalrts::Iter last1,
   refalrts::Iter first2, refalrts::Iter last2
-) // throws refalrts::UnexpectedTypeException
-{
+) {
   assert((first1 == 0) == (last1 == 0));
   assert((first2 == 0) == (last2 == 0));
 
@@ -775,9 +763,8 @@ bool copy_node(refalrts::Iter& res, refalrts::Iter sample) {
       быть не должно.
     */
     default:
-      assert(SWITCH_DEFAULT_VIOLATION);
-      throw refalrts::UnexpectedTypeException();
-      // break;
+      r05_switch_default_violation(sample->tag);
+      return false;     /* suppress warning */
   }
 }
 
@@ -1628,7 +1615,7 @@ refalrts::FnResult refalrts::vm::main_loop() {
           return res;
 
         default:
-          fprintf(stderr, "\nUNKNOWN ERROR\n\n");
+          fprintf(stderr, "\nUNKNOWN ERROR (res = %d)\n\n", (int) res);
           break;
       }
       make_dump(active_begin, active_end);
@@ -1784,9 +1771,7 @@ void refalrts::vm::print_seq(
             continue;
 
           default:
-            assert(SWITCH_DEFAULT_VIOLATION);
-            throw refalrts::UnexpectedTypeException();
-            // break;
+            r05_switch_default_violation(begin->tag);
         }
 
       case cStateString:
@@ -1837,8 +1822,7 @@ void refalrts::vm::print_seq(
         continue;
 
       default:
-        assert(SWITCH_DEFAULT_VIOLATION);
-        throw refalrts::UnexpectedTypeException();
+        r05_switch_default_violation(state);
     }
   }
 
@@ -1913,6 +1897,14 @@ void refalrts::vm::free_view_field() {
 #endif // DONT_PRINT_STATISTICS
 }
 
+void r05_switch_default_violation_impl(
+  const char *expr, long value, const char *file, int line
+) {
+  fprintf(stderr, "%s:%d:SWITCH DEFAULT VIOLATION\n", file, line);
+  fprintf(stderr, "    expression %s -> %ld is not handled\n", expr, value);
+  abort();
+}
+
 
 //==============================================================================
 
@@ -1932,9 +1924,6 @@ int main(int argc, char **argv) {
     res = refalrts::vm::main_loop();
     fflush(stderr);
     fflush(stdout);
-  } catch (refalrts::UnexpectedTypeException) {
-    fprintf(stderr, "INTERNAL ERROR: check all switches\n");
-    return 3;
   } catch (std::exception& e) {
     fprintf(stderr, "INTERNAL ERROR: std::exception %s\n", e.what());
     return 4;
@@ -1963,7 +1952,6 @@ int main(int argc, char **argv) {
       return refalrts::vm::g_ret_code;
 
     default:
-      fprintf(stderr, "INTERNAL ERROR: check switch in main");
-      return 5;
+      r05_switch_default_violation(res);
   }
 }

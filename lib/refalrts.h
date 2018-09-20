@@ -1,6 +1,21 @@
 #ifndef RefalRTS_H_
 #define RefalRTS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif  /* __cplusplus */
+
+#define r05_switch_default_violation(value) \
+  r05_switch_default_violation_impl(#value, value, __FILE__, __LINE__)
+
+void r05_switch_default_violation_impl(
+  const char *expr, long value, const char *file, int line
+);
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif /* __cplusplus */
+
 namespace refalrts {
 
 typedef enum FnResult {
