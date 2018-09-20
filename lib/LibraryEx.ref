@@ -159,53 +159,6 @@ Lexicon-Aux {
   '>' (e.Left) (e.Right) = '>';
 }
 
-$ENTRY Compare-T {
-  (e.Left) (e.Right) = <Lexicon-T () (e.Left) () (e.Right)>;
-
-  (e.Left) s.Right = '>' (e.Left) s.Right;
-  s.Left (e.Right) = '<' s.Left (e.Right);
-
-  s.Left s.Right = <SymbCompare s.Left s.Right> s.Left s.Right;
-}
-
-Lexicon-T {
-  (e.ScannedLeft) (t.FirstLeft e.Left)
-  (e.ScannedRight) (t.FirstRight e.Right) =
-    <Lexicon-T-Aux
-      (e.ScannedLeft) (e.ScannedRight)
-      <Compare-T t.FirstLeft t.FirstRight>
-      (e.Left) (e.Right)
-    >;
-
-  (e.ScannedLeft) () (e.ScannedRight) () =
-    '=' (e.ScannedLeft) (e.ScannedRight);
-
-  (e.ScannedLeft) () (e.ScannedRight) (e.Right) =
-    '<' (e.ScannedLeft) (e.ScannedRight e.Right);
-
-  (e.ScannedLeft) (e.Left) (e.ScannedRight) () =
-    '>' (e.ScannedLeft e.Left) (e.ScannedRight);
-}
-
-Lexicon-T-Aux {
-  (e.ScannedLeft) (e.ScannedRight)
-  '<' t.NextLeft t.NextRight (e.Left) (e.Right) =
-    '<' (e.ScannedLeft t.NextLeft e.Left)
-    (e.ScannedRight t.NextRight e.Right);
-
-  (e.ScannedLeft) (e.ScannedRight)
-  '=' t.NextLeft t.NextRight (e.Left) (e.Right) =
-    <Lexicon-T
-      (e.ScannedLeft t.NextLeft) (e.Left)
-      (e.ScannedRight t.NextRight) (e.Right)
-    >;
-
-  (e.ScannedLeft) (e.ScannedRight)
-  '>' t.NextLeft t.NextRight (e.Left) (e.Right) =
-    '>' (e.ScannedLeft t.NextLeft e.Left)
-    (e.ScannedRight t.NextRight e.Right);
-}
-
 $ENTRY Type {
   'A' e.X = 'LuA' e.X; 'B' e.X = 'LuB' e.X; 'C' e.X = 'LuC' e.X;
   'D' e.X = 'LuD' e.X; 'E' e.X = 'LuE' e.X; 'F' e.X = 'LuF' e.X;
@@ -268,38 +221,3 @@ Seq-Aux {
 }
 
 Id { e.Arg = e.Arg; }
-
-$ENTRY Sort {
-  /* пусто */ = /* пусто */;
-
-  t.Pivot e.Items =
-    <Sort-Recursive
-      <Reduce
-        (Sort-SelectBucket t.Pivot)
-        ( (/* less */) (t.Pivot /* equal */) (/* greater */) )
-        e.Items
-      >
-    >;
-}
-
-Sort-SelectBucket {
-  t.Pivot ((e.Less) (e.Equal) (e.Greater)) t.Next =
-    <Sort-SelectBucket-SwCompare
-      (e.Less) (e.Equal) (e.Greater) t.Next <Compare t.Next t.Pivot>
-    >;
-}
-
-Sort-SelectBucket-SwCompare {
-  (e.Less) (e.Equal) (e.Greater) t.Next '<' =
-    ((e.Less t.Next) (e.Equal) (e.Greater));
-
-  (e.Less) (e.Equal) (e.Greater) t.Next '=' =
-    ((e.Less) (e.Equal t.Next) (e.Greater));
-
-  (e.Less) (e.Equal) (e.Greater) t.Next '>' =
-    ((e.Less) (e.Equal) (e.Greater t.Next));
-}
-
-Sort-Recursive {
-  ((e.Less) (e.Equal) (e.Greater)) = <Sort e.Less> e.Equal <Sort e.Greater>;
-}
