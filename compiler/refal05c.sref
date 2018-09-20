@@ -2,7 +2,7 @@
 $EXTERN ArgList, LoadFile, Map, DelAccumulator, MapReduce, Inc;
 
 //FROM ParseCmdLine
-$EXTERN ParseCommandLine, CmdLineError, CompileList, CmdCompileCommand, CmdNone;
+$EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
 
 //FROM Library
 $EXTERN WriteLine, Success, Fails, System, Exit, StrFromInt;
@@ -32,22 +32,22 @@ FindFiles-Compilers {
   (CmdLineError e.Message) =
     <WriteLine 'COMMAND LINE ERROR: ' e.Message>;
 
-  t.CommandLineInfo CompileList (e.Folders) e.Files =
+  t.Compiler (e.Folders) e.Files =
     <FindFiles-Compilers-SwFound
-      t.CommandLineInfo <FindFiles (e.Folders) e.Files>
+      t.Compiler <FindFiles (e.Folders) e.Files>
     >;
 }
 
 FindFiles-Compilers-SwFound {
-  t.CommandLineInfo e.Files-B (NotFound e.FileName) e.Files-E =
+  t.Compiler e.Files-B (NotFound e.FileName) e.Files-E =
     <Map PrintNotFound (NotFound e.FileName) e.Files-E>;
 
-  t.CommandLineInfo e.FoundFiles =
+  t.Compiler e.FoundFiles =
     <CheckCompilationResult
-      t.CommandLineInfo
+      t.Compiler
       <Map
         ProcessEachSource
-        <RenameFiles t.CommandLineInfo e.FoundFiles>
+        <RenameFiles t.Compiler e.FoundFiles>
       >
     >;
 }
@@ -79,25 +79,19 @@ ProcessEachSource-SwSuccess {
 }
 
 CheckCompilationResult {
-  t.CommandLineInfo e.Outputs-B Fails e.Outputs-E =
+  t.Compiler e.Outputs-B Fails e.Outputs-E =
     <WriteLine '*** COMPILATION FAILED ***'>;
 
-  t.CommandLineInfo e.Outputs =
-    <Link t.CommandLineInfo e.Outputs>
+  t.Compiler e.Outputs =
+    <Link t.Compiler e.Outputs>
     <WriteLine '*** Compilation successed ***'>;
 }
 
 Link {
-  t.CommandLineInfo e.Files =
-    <Link-SwCompileCommand
-      <CmdCompileCommand t.CommandLineInfo> (e.Files)
-    >;
-}
+  (CompileCommand e.CommandLine) e.Files =
+    <System e.CommandLine <Map QuoteFile e.Files>>;
 
-Link-SwCompileCommand {
-  CmdNone (e.Files) = ;
-
-  e.CommandLine (e.Files) = <System e.CommandLine <Map QuoteFile e.Files>>;
+  (NoCompile) e.Files = /* ничего не делаем */;
 }
 
 QuoteFile {
@@ -105,16 +99,10 @@ QuoteFile {
 }
 
 RenameFiles {
-  t.CommandLineInfo e.Files =
-    <RenameFiles-SwCompileCommand
-      <CmdCompileCommand t.CommandLineInfo> (e.Files)
-    >;
-}
+  (NoCompile) e.Files = e.Files;
 
-RenameFiles-SwCompileCommand {
-  CmdNone (e.Files) = e.Files;
-
-  e.CommandLine (e.Files) = <ScanCollisions <Map GetFileName e.Files>>;
+  (CompileCommand e.CommandLine) e.Files
+    = <ScanCollisions <Map GetFileName e.Files>>;
 }
 
 GetFileName {
