@@ -2,7 +2,7 @@
 $EXTERN Fetch, Inc, Map, Seq, Dec;
 
 *$FROM Lexer
-$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall, Add;
+$EXTERN TkVariable, TkCloseBracket, TkCloseCall, Add;
 
 *$FROM Library
 $EXTERN StrFromInt;
@@ -30,7 +30,7 @@ $ENTRY MakeAlgorithm {
 * Направление распознавания
 $EENUM AlgLeft, AlgRight;
 
-$EENUM Brackets, CallBrackets;
+$EENUM Brackets, CallBrackets, Symbol, Char, Number, Name;
 
 /*
 Команды распознавания
@@ -54,8 +54,7 @@ $EENUM Brackets, CallBrackets;
   Комментарий, вносимый в исходный код (CmdComment e.Text)
 */
 $EENUM
-  CmdChar, CmdNumber, CmdName,
-  CmdBrackets, CmdEmpty,
+  CmdSymbol, CmdBrackets, CmdEmpty,
   CmdRepeated, CmdVar, CmdClosedE,
   CmdOpenedE-Start, CmdOpenedE-End,
   CmdComment, CmdSave;
@@ -75,46 +74,18 @@ GenPattern {
 
 DoGenPattern {
   /* Распознавание литералов (символьных, целочисленных, имён) */
-  s.NumRanges e.Ranges-B (s.Num (TkChar s.Char) e.Range) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Symbol s.Type e.Value) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdChar AlgLeft s.Num s.Char))
+      (e.Vars) (e.Commands (CmdSymbol AlgLeft s.Num s.Type e.Value))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (TkNumber s.Number) e.Range) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num e.Range (Symbol s.Type e.Value)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdNumber AlgLeft s.Num s.Number))
-    >;
-
-  s.NumRanges e.Ranges-B (s.Num (TkName e.Name) e.Range) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdName AlgLeft s.Num e.Name))
-    >;
-
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkChar s.Char)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdChar AlgRight s.Num s.Char))
-    >;
-
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkNumber s.Number)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdNumber AlgRight s.Num s.Number))
-    >;
-
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkName e.Name)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdName AlgRight s.Num e.Name))
+      (e.Vars) (e.Commands (CmdSymbol AlgRight s.Num s.Type e.Value))
     >;
 
   /* Распознавание скобок */
@@ -231,13 +202,13 @@ TextFromPattern {
   (Brackets e.Inner) e.Tail =
     ' (' <TextFromPattern e.Inner> ' )' <TextFromPattern e.Tail>;
 
-  (TkChar s.Char) e.Tail =
-    ' \'' <TextFromPattern-Char (TkChar s.Char) e.Tail>;
+  (Symbol Char s.Char) e.Tail =
+    ' \'' <TextFromPattern-Char (Symbol Char s.Char) e.Tail>;
 
-  (TkNumber s.Number) e.Tail =
+  (Symbol Number s.Number) e.Tail =
     ' ' <StrFromInt s.Number> <TextFromPattern e.Tail>;
 
-  (TkName e.Name) e.Tail =
+  (Symbol Name e.Name) e.Tail =
     ' & ' e.Name <TextFromPattern e.Tail>;
 
   (TkVariable s.Mode e.Index) e.Tail =
@@ -247,7 +218,7 @@ TextFromPattern {
 }
 
 TextFromPattern-Char {
-  (TkChar s.Char) e.Tail =
+  (Symbol Char s.Char) e.Tail =
     <EscapeChar s.Char> <TextFromPattern-Char e.Tail>;
 
   = '\'';
@@ -285,7 +256,7 @@ $EENUM
 
 * Спецификаторы команд (элементы)
 $EENUM
-  ElChar, ElName, ElNumber, ElString,
+  ElSymbol, ElString,
   ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
 
@@ -301,22 +272,23 @@ $ENUM TkString;
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
-  (TkChar s.Char1) (TkChar s.Char2) e.Result =
+  (Symbol Char s.Char1) (Symbol Char s.Char2) e.Result =
     <DoGenResult
       (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
       (TkString 2 s.Char1 s.Char2) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter (TkChar s.Value) e.Result =
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter (Symbol Char s.Value) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElChar s.Value))
+      (e.AllocCommands (CmdAllocateElem s.Counter ElSymbol Char s.Value))
       ((CmdInsertElem s.Counter) e.Commands)
       <Inc s.Counter> e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
-  (TkString s.Len e.String) (TkChar s.Char) e.Result =
+  (TkString s.Len e.String) (Symbol Char s.Char) e.Result =
     <DoGenResult
       (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
       (TkString <Inc s.Len> e.String s.Char) e.Result
@@ -332,19 +304,11 @@ DoGenResult {
     >;
 
   /* Создаём литералы */
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter (TkName e.Name) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElName e.Name))
-      ((CmdInsertElem s.Counter) e.Commands)
-      <Inc s.Counter> e.Result
-    >;
-
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkNumber s.Number) e.Result =
+  s.Counter (Symbol s.Type e.Value) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElNumber s.Number))
+      (e.AllocCommands (CmdAllocateElem s.Counter ElSymbol s.Type e.Value))
       ((CmdInsertElem s.Counter) e.Commands)
       <Inc s.Counter> e.Result
     >;

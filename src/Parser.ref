@@ -24,7 +24,7 @@ $EXTERN GN-Entry, GenExtern, GN-Local, GenForward, GenEnum, GenFnStart,
   GenThisIsGeneratedFunction;
 
 *$FROM Algorithm
-$EXTERN MakeAlgorithm, Brackets, CallBrackets;
+$EXTERN MakeAlgorithm, Brackets, CallBrackets, Symbol, Char, Number, Name;
 
 
 /**
@@ -498,14 +498,14 @@ ParsePattern {
   (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
     <ParsePattern
       t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
-      (e.Scanned (TkChar s.Char)) e.Tail
+      (e.Scanned (Symbol Char s.Char)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
   (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
     <ParsePattern
       t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
-      (e.Scanned (TkNumber s.Number)) e.Tail
+      (e.Scanned (Symbol Number s.Number)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
@@ -513,7 +513,7 @@ ParsePattern {
     <ParsePattern
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
       t.VarTable (e.MultiBrackets)
-      (e.Scanned (TkName e.Name)) e.Tail
+      (e.Scanned (Symbol Name e.Name)) e.Tail
     >;
 
   /* Переменные */
@@ -653,14 +653,14 @@ ParseResult {
   (e.MultiBracket) (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
     <ParseResult
       t.ErrorList t.SymTable t.VarTable
-      (e.MultiBracket) (e.Scanned (TkChar s.Char)) e.Tail
+      (e.MultiBracket) (e.Scanned (Symbol Char s.Char)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
     <ParseResult
       t.ErrorList t.SymTable t.VarTable
-      (e.MultiBracket) (e.Scanned (TkNumber s.Number)) e.Tail
+      (e.MultiBracket) (e.Scanned (Symbol Number s.Number)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable
@@ -668,7 +668,7 @@ ParseResult {
     <ParseResult
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
       t.VarTable
-      (e.MultiBracket) (e.Scanned (TkName e.Name)) e.Tail
+      (e.MultiBracket) (e.Scanned (Symbol Name e.Name)) e.Tail
     >;
 
   /* Переменные */

@@ -6,13 +6,12 @@ $EXTERN StrFromInt;
 
 *$FROM Algorithm
 $EXTERN
-  CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
+  CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdSymbol, Char, Number, Name,
   CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft,
   CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult, CmdCopyEVar,
   CmdCopyVar, CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
   CmdInsertElem, CmdInsertVar, CmdInsertString, CmdReturnResult, AlgRight,
-  ElChar, ElName, ElNumber, ElOpenBracket, ElCloseBracket, ElOpenCall,
-  ElCloseCall;
+  ElSymbol, ElOpenBracket, ElCloseBracket, ElOpenCall, ElCloseCall;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -137,17 +136,9 @@ GenCommand {
     (e.Indent)
     (e.Indent 'static refalrts::Iter ' <PrintVar e.VarInfo> ';');
 
-  (e.Indent) (CmdChar s.Direction s.BracketNumber s.Char) =
+  (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
     (e.Indent)
-    <PrintMatchChar (e.Indent) s.Direction s.BracketNumber s.Char>;
-
-  (e.Indent) (CmdNumber s.Direction s.BracketNumber s.Number) =
-    (e.Indent)
-    <PrintMatchNumber (e.Indent) s.Direction s.BracketNumber s.Number>;
-
-  (e.Indent) (CmdName s.Direction s.BracketNumber e.Name) =
-    (e.Indent)
-    <PrintMatchName (e.Indent) s.Direction s.BracketNumber e.Name>;
+    <PrintMatchSymbol (e.Indent) s.Direction s.BracketNumber s.Type e.Value>;
 
   (e.Indent) (CmdBrackets s.Direction s.BracketNumber s.InnerBrackets) =
     (e.Indent)
@@ -311,28 +302,24 @@ PrintEVars {
     <PrintEVar-E s.Usings s.Mode e.Index>;
 }
 
-PrintMatchChar {
-  (e.Indent) s.Direction s.BracketNumber s.Char =
+PrintMatchSymbol {
+  (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
-      ('char') '\'' <EscapeChar s.Char> '\''
+      (<SymbolFunc s.Type>) <SymbolTextRep s.Type e.Value>
     >;
 }
 
-PrintMatchNumber {
-  (e.Indent) s.Direction s.BracketNumber s.Number =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('number') <StrFromInt s.Number> 'UL'
-    >;
+SymbolFunc {
+  Char = 'char';
+  Number = 'number';
+  Name = 'function';
 }
 
-PrintMatchName {
-  (e.Indent) s.Direction s.BracketNumber e.Name =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('function') e.Name
-    >;
+SymbolTextRep {
+  Char s.Char = '\'' <EscapeChar s.Char> '\'';
+  Number s.Number = <StrFromInt s.Number> 'UL';
+  Name e.Name = e.Name;
 }
 
 PrintMatchBrackets {
@@ -410,7 +397,7 @@ PrintAllocateElem {
   (e.Indent) s.ElemNumber s.ElementType e.Info =
     <PrintAllocate-Aux
       (e.Indent) s.ElemNumber
-      ( <SwAllocator s.ElementType> )
+      ( <SwAllocator s.ElementType e.Info> )
       ( <SwInfo s.ElementType e.Info> )
     >
     (e.Indent '  return refalrts::cNoMemory;');
@@ -425,9 +412,9 @@ PrintAllocate-Aux {
 }
 
 SwAllocator {
-  ElChar = 'alloc_char';
-  ElName = 'alloc_name';
-  ElNumber = 'alloc_number';
+  ElSymbol Char s.Char = 'alloc_char';
+  ElSymbol Name e.Name = 'alloc_name';
+  ElSymbol Number s.Number = 'alloc_number';
 
   ElOpenBracket = 'alloc_open_bracket';
   ElCloseBracket = 'alloc_close_bracket';
@@ -437,11 +424,9 @@ SwAllocator {
 }
 
 SwInfo {
-  ElChar s.Char = ', ' '\'' <EscapeChar s.Char> '\'';
+  ElSymbol Name e.Name = ', ' e.Name ', "' e.Name '"';
 
-  ElName e.Name = ', ' e.Name ', "' e.Name '"';
-
-  ElNumber s.Number = ', ' <StrFromInt s.Number> 'UL';
+  ElSymbol s.Type e.Value = ', ' <SymbolTextRep s.Type e.Value>;
 
   /* Остальное -- скобки */
   s.Other = ;
