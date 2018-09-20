@@ -13,7 +13,7 @@ setlocal
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
   move *.cpp ..\bootstrap >NUL
-  move ..\lib\LibraryEx.cpp ..\bootstrap >NUL
+  move ..\lib\Library*.cpp ..\bootstrap >NUL
   copy ..\lib\*.cpp ..\bootstrap >NUL
   copy refal05c.exe ..\bin >NUL
 endlocal

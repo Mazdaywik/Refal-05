@@ -12,6 +12,6 @@ cp refal05c refal05c_
   ./refal05c_ -c "g++ -I../lib -orefal05c" -d ../lib $MODULES
 )
 mv *.cpp ../bootstrap
-mv ../lib/LibraryEx.cpp ../bootstrap
+mv ../lib/Library*.cpp ../bootstrap
 cp ../lib/*.cpp ../bootstrap
 cp refal05c ../bin
