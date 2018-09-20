@@ -1,6 +1,6 @@
 *$FROM Library
 $EXTERN FReadLine, FOpen, FClose, FWriteLine, Add, Sub, Success, IntFromStr,
-  Arg, SymbCompare;
+  Arg;
 
 
 * Расширения библиотеки и функции, реализуемые
@@ -129,14 +129,6 @@ SwDoArgList {
   s.Next = ;
 
   s.Next e.Arg = (e.Arg) <DoArgList s.Next>;
-}
-
-$ENTRY Compare {
-  s.Left s.Right = <Compare-Sign <SymbCompare s.Left s.Right>>;
-}
-
-Compare-Sign {
-  '<' = '-'; '=' = '0'; '>' = '+';
 }
 
 $ENTRY Type {

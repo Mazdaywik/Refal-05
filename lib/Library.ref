@@ -991,183 +991,33 @@ $ENTRY Ord {
 %%
 }
 
-
+$ENTRY Compare {
 %%
-namespace {
+  refalrts::Iter func_name = arg_begin->next;
 
-template <typename T>
-char compare_char( T x, T y ) {
-  if( x < y ) {
-    return '<';
-  } else if( x == y ) {
-    return '=';
-  } else {
-    return '>';
+  refalrts::Iter sX = func_name->next;
+  if (sX->tag != refalrts::cDataNumber) {
+    return refalrts::cRecognitionImpossible;
   }
-}
 
-} // unnamed namespace
-%%
+  refalrts::Iter sY = sX->next;
+  if (sY->tag != refalrts::cDataNumber) {
+    return refalrts::cRecognitionImpossible;
+  }
 
+  if (sY->next != arg_end) {
+    return refalrts::cRecognitionImpossible;
+  }
 
-$ENTRY SymbCompare {
-%%
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::Iter sSymb1_1;
-    refalrts::Iter sSymb2_1;
-    // s.Num1 s.Num2
-    if( ! refalrts::svar_left( sSymb1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sSymb2_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
+  sX->char_info =
+    sX->number_info < sY->number_info ? '-' :
+    sX->number_info > sY->number_info ? '+' :
+    '0';
+  sX->tag = refalrts::cDataChar;
 
-    char order;
+  refalrts::splice_to_freelist(arg_begin, func_name);
+  refalrts::splice_to_freelist(sY, arg_end);
 
-    switch( sSymb1_1->tag ) {
-    case refalrts::cDataNumber:
-      switch( sSymb2_1->tag ) {
-        case refalrts::cDataNumber:
-          order = compare_char( sSymb1_1->number_info, sSymb2_1->number_info );
-          break;
-
-        case refalrts::cDataChar:
-          order = '>';
-          break;
-
-        case refalrts::cDataFunction:
-          order = '>';
-          break;
-
-        case refalrts::cDataFile:
-          order = '>';
-          break;
-
-        default:
-          order = '?';
-          break;
-      }
-      break;
-
-    case refalrts::cDataChar:
-      switch( sSymb2_1->tag ) {
-        case refalrts::cDataNumber:
-          order = '<';
-          break;
-
-        case refalrts::cDataChar:
-          order = compare_char( sSymb1_1->char_info, sSymb2_1->char_info );
-          break;
-
-        case refalrts::cDataFunction:
-          order = '>';
-          break;
-
-        case refalrts::cDataFile:
-          order = '>';
-          break;
-
-        default:
-          order = '?';
-          break;
-      }
-      break;
-
-    case refalrts::cDataFunction:
-      switch( sSymb2_1->tag ) {
-        case refalrts::cDataNumber:
-          order = '<';
-          break;
-
-        case refalrts::cDataChar:
-          order = '<';
-          break;
-
-        case refalrts::cDataFunction:
-          {
-            int cmpres =
-              strcmp(
-                sSymb1_1->function_info.name,
-                sSymb2_1->function_info.name
-              );
-
-            if( cmpres < 0 ) {
-              order = '<';
-            } else if (cmpres > 0) {
-              order = '>';
-            } else {
-              order =
-                compare_char(
-                  sSymb1_1->function_info.ptr,
-                  sSymb2_1->function_info.ptr
-                );
-            }
-          }
-          break;
-
-        case refalrts::cDataFile:
-          order = '>';
-          break;
-
-        default:
-          order = '?';
-          break;
-      }
-      break;
-
-    case refalrts::cDataFile:
-      switch( sSymb2_1->tag ) {
-        case refalrts::cDataNumber:
-          order = '<';
-          break;
-
-        case refalrts::cDataChar:
-          order = '<';
-          break;
-
-        case refalrts::cDataFunction:
-          order = '<';
-          break;
-
-        case refalrts::cDataFile:
-          order =
-            compare_char(
-              sSymb1_1->file_info,
-              sSymb2_1->file_info
-            );
-          break;
-
-        default:
-          order = '?';
-          break;
-      }
-      break;
-
-    default:
-      order = '?';
-      break;
-    }
-
-    if( '?' == order )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_char( n0, order ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
+  return refalrts::cSuccess;
 %%
 }
