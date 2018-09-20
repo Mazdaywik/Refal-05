@@ -7,18 +7,6 @@
 
 //FROM refalrts
 
-namespace {
-
-static refalrts::Iter next(refalrts::Iter current) {
-  return current->next;
-}
-
-static refalrts::Iter prev(refalrts::Iter current) {
-  return current->prev;
-}
-
-} // unnamed namespace
-
 //------------------------------------------------------------------------------
 
 // Операции распределителя памяти
@@ -285,8 +273,7 @@ $ENTRY FWriteLine {
 refalrts::FnResult read_from_stream(
   FILE *input, refalrts::Iter& begin, refalrts::Iter& end
 ) {
-  refalrts::Iter before_begin =
-    prev(refalrts::allocator::free_ptr());
+  refalrts::Iter before_begin = refalrts::allocator::free_ptr()->prev;
   refalrts::Iter cur_char_node = 0;
 
   int cur_char;
@@ -313,7 +300,7 @@ refalrts::FnResult read_from_stream(
   }
 
   if (cur_char_node != 0) {
-    begin = next(before_begin);
+    begin = before_begin->next;
     end = cur_char_node;
   } else {
     begin = 0;
