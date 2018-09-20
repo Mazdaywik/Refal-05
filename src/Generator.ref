@@ -232,7 +232,7 @@ GenCommand {
     (e.Indent 'refalrts::Iter ' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
     (e.Indent
       'if( ! refalrts::alloc_chars( ' <PrintStringVar s.StringNumber> ', '
-      '"' <Map EscapeChar e.String> '", ' <StrFromInt s.Len> ') )'
+      '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ') )'
     )
     (e.Indent '  return refalrts::cNoMemory;');
 
@@ -286,6 +286,10 @@ GenCommand {
     (e.Indent 'return refalrts::cSuccess;');
 }
 
+EscapeString {
+  e.String = <Map EscapeChar e.String>;
+}
+
 PrintVar {
   s.Usings s.Mode e.Index =
     s.Mode e.Index '_' <StrFromInt s.Usings>;
@@ -307,15 +311,11 @@ PrintEVars {
     <PrintEVar-E s.Usings s.Mode e.Index>;
 }
 
-Escape {
-  s.Char = <EscapeChar s.Char>;
-}
-
 PrintMatchChar {
   (e.Indent) s.Direction s.BracketNumber s.Char =
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
-      ('char') '\'' <Escape s.Char> '\''
+      ('char') '\'' <EscapeChar s.Char> '\''
     >;
 }
 
@@ -437,7 +437,7 @@ SwAllocator {
 }
 
 SwInfo {
-  ElChar s.Char = ', ' '\'' <Escape s.Char> '\'';
+  ElChar s.Char = ', ' '\'' <EscapeChar s.Char> '\'';
 
   ElName e.Name = ', ' e.Name ', "' e.Name '"';
 
@@ -474,11 +474,16 @@ $ENTRY GenPostprocess {
 EnumerateLines {
   (e.SrcName) (e.OutputName) s.LineNo (BeginNative s.NativeLineNo) =
     <Inc s.LineNo>
-    ('#line ' <StrFromInt <Inc s.NativeLineNo>> ' "' e.SrcName '"');
+    <LineDirective s.NativeLineNo e.SrcName>;
 
   (e.SrcName) (e.OutputName) s.LineNo (EndNative) =
     <Inc s.LineNo>
-    ('#line ' <StrFromInt <Inc s.LineNo>> ' "' e.OutputName '"');
+    <LineDirective s.LineNo e.OutputName>;
 
   (e.SrcName) (e.OutputName) s.LineNo (e.Line) = <Inc s.LineNo> (e.Line);
+}
+
+LineDirective {
+  s.LineNo e.FileName =
+    ('#line ' <StrFromInt <Inc s.LineNo>> ' "' <EscapeString e.FileName> '"');
 }
