@@ -529,20 +529,6 @@ ParsePattern {
       (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
     >;
 
-  t.ErrorList t.SymTable
-  (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-  (e.MultiBracket)
-  (e.Scanned) (TkVariable t.SrcPos s.NewMode e.Index) e.Tail =
-    <ParsePattern
-      <InvalidModeVariableError
-        t.ErrorList t.SrcPos s.OldMode s.NewMode e.Index
-      >
-      t.SymTable
-      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-      (e.MultiBracket)
-      (e.Scanned (TkVariable s.OldMode e.Index)) e.Tail
-    >;
-
   t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <ParsePattern
@@ -647,15 +633,6 @@ ParsePattern {
     (e.Pattern)  e.Tail;
 }
 
-InvalidModeVariableError {
-  t.ErrorList t.SrcPos s.OldMode s.NewMode e.Index =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos
-      'Variables ' s.OldMode '.' e.Index ' and '
-      s.NewMode '.' e.Index ' has different modes'
-    >;
-}
-
 StrFromBracket {
   TkOpenBracket = '('; TkCloseBracket = ')';
   TkOpenCall = '<'; TkCloseCall = '>';
@@ -701,18 +678,6 @@ ParseResult {
     <ParseResult
       t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket) (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
-    >;
-
-  t.ErrorList t.SymTable (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-  (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.NewMode e.Index) e.Tail =
-    <ParseResult
-      <InvalidModeVariableError
-        t.ErrorList t.SrcPos s.OldMode s.NewMode e.Index
-      >
-      t.SymTable
-      (e.Variables-B (s.OldMode e.Index) e.Variables-E)
-      (e.MultiBracket)
-      (e.Scanned (TkVariable s.OldMode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables)
