@@ -361,15 +361,12 @@ bool equal_nodes(
     switch (node1->tag) {
       case refalrts::cDataChar:
         return (node1->char_info == node2->char_info);
-        // break;
 
       case refalrts::cDataNumber:
         return (node1->number_info == node2->number_info);
-        // break;
 
       case refalrts::cDataFunction:
         return (node1->function_info.ptr == node2->function_info.ptr);
-        // break;
 
       /*
         Сведения о связях между скобками нужны для других целей, здесь
@@ -378,11 +375,9 @@ bool equal_nodes(
       case refalrts::cDataOpenBracket:
       case refalrts::cDataCloseBracket:
         return true;
-        // break;
 
       case refalrts::cDataFile:
         return (node1->file_info == node2->file_info);
-        // break;
 
       /*
         Данная функция предназначена только для использования функциями рас-
@@ -726,25 +721,20 @@ bool copy_node(refalrts::Iter& res, refalrts::Iter sample) {
   switch (sample->tag) {
     case refalrts::cDataChar:
       return refalrts::alloc_char(res, sample->char_info);
-      // break;
 
     case refalrts::cDataNumber:
       return refalrts::alloc_number(res, sample->number_info);
-      // break;
 
     case refalrts::cDataFunction:
       return refalrts::alloc_name(
         res, sample->function_info.ptr, sample->function_info.name
       );
-      // break;
 
     case refalrts::cDataOpenBracket:
       return refalrts::alloc_open_bracket(res);
-      // break;
 
     case refalrts::cDataCloseBracket:
       return refalrts::alloc_close_bracket(res);
-      // break;
 
     case refalrts::cDataFile: {
       bool allocated = refalrts::allocator::alloc_node(res);
@@ -756,7 +746,6 @@ bool copy_node(refalrts::Iter& res, refalrts::Iter sample) {
         return false;
       }
     }
-    // break;
 
     /*
       Копируем только объектное выражение -- никаких вызовов функций
