@@ -70,6 +70,10 @@ Scan {
   s.Row s.Col '\n' e.Tail = <Scan <Inc s.Row> 1 e.Tail>;
 
   /* гарантируется, что в конце файла есть \n, см. FlatLine */
+  s.Row 1 '*$' e.Pseudo '\n' e.Tail =
+    <ScanPseudo s.Row 3 () <Type e.Pseudo '\n'>>
+    <Scan <Inc s.Row> 1 e.Tail>;
+
   s.Row 1 '*' e.Comment '\n' e.Tail = <Scan <Inc s.Row> 1 e.Tail>;
 
   /* гарантируется, что в конце файла есть \n, см. FlatLine */
@@ -98,6 +102,30 @@ Scan {
     <Scan-ByPunctuation s.Row s.Col <Punctuation s.Next> e.Tail>;
 
   s.Row s.Col /* пусто */ = (TkEOF (s.Row s.Col));
+}
+
+ScanPseudo {
+  s.Row s.Col (e.Scanned) 'L' s.SubType s.Letter e.Tail =
+    <ScanPseudo s.Row <Inc s.Col> (e.Scanned s.Letter) <Type e.Tail>>;
+
+  s.Row s.Col (e.Scanned) 'D' s.SubType s.Digit e.Tail =
+    <ScanPseudo s.Row <Inc s.Col> (e.Scanned s.Digit) <Type e.Tail>>;
+
+  s.Row s.Col (e.Scanned) s.Type s.SubType e.Tail =
+    <ScanPseudo-SwDirective s.Row s.Col (<Directive e.Scanned>) e.Tail>;
+}
+
+ScanPseudo-SwDirective {
+  s.Row s.Col (Success s.Directive) e.Tail =
+    (TkDirective (s.Row 2) s.Directive)
+    <ScanPseudo-AddSemicolon <Scan s.Row s.Col e.Tail>>;
+
+  s.Row s.Col (Fails e.Directive) e.Tail =
+    /* ничего не генерируем, это обычный комментарий */;
+}
+
+ScanPseudo-AddSemicolon {
+  e.Tokens (TkEOF t.SrcPos) = e.Tokens (TkSemicolon t.SrcPos);
 }
 
 ScanCComment {
@@ -152,11 +180,23 @@ ScanDirective {
 }
 
 MakeDirective {
-  s.Row s.Col 'ENUM' = (TkDirective (s.Row s.Col) Enum);
-  s.Row s.Col 'EENUM' = (TkDirective (s.Row s.Col) EEnum);
-  s.Row s.Col 'ENTRY' = (TkDirective (s.Row s.Col) Entry);
-  s.Row s.Col 'EXTERN' = (TkDirective (s.Row s.Col) Extern);
-  s.Row s.Col e.Other = (TkError (s.Row s.Col) 'Unknown directive $' e.Other);
+  s.Row s.Col e.Directive =
+    <MakeDirective-SwValid s.Row s.Col <Directive e.Directive>>;
+}
+
+Directive {
+  'ENUM' = Success Enum;
+  'EENUM' = Success EEnum;
+  'ENTRY' = Success Entry;
+  'EXTERN' = Success Extern;
+  e.Other = Fails e.Other;
+}
+
+MakeDirective-SwValid {
+  s.Row s.Col Success s.Directive = (TkDirective (s.Row s.Col) s.Directive);
+
+  s.Row s.Col Fails e.Other =
+    (TkError (s.Row s.Col) 'Unknown directive $' e.Other);
 }
 
 ScanChars {
