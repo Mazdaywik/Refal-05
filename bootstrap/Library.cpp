@@ -1,10 +1,39 @@
+// Automatically generated file. Don't edit!
+#include "refalrts.h"
+
+
+extern refalrts::FnResult Add(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Arg(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Chr(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Div(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ExistFile(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Exit(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult FClose(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult FOpen(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult FReadLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult FWriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Fails(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult False(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GetEnv(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult IntFromStr(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Mod(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Mul(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Ord(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ReadLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Sub(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult SymbCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult System(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult True(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult WriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+
+#line 2 "..\lib/Library.ref"
 #include <stdio.h>
 #include <string.h>
 #include <vector>
 #include <ctype.h>
 #include <stdlib.h>
-
-#include "refalrts.h"
 
 //FROM refalrts
 
@@ -41,228 +70,102 @@ Iter free_ptr();
 } // namespace allocator
 
 } // namespace refalrts
-
-//==============================================================================
-// Библиотека "встроенных" функций
-//==============================================================================
-
-// Основные перечисления
-
-refalrts::FnResult Success( refalrts::Iter, refalrts::Iter ) {
-  return refalrts::cRecognitionImpossible;
+#line 74 "..\lib/Library.cpp"
+refalrts::FnResult Success(refalrts::Iter, refalrts::Iter) {
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
 }
 
-refalrts::FnResult Fails( refalrts::Iter, refalrts::Iter ) {
-  return refalrts::cRecognitionImpossible;
+refalrts::FnResult Fails(refalrts::Iter, refalrts::Iter) {
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
 }
 
-refalrts::FnResult True( refalrts::Iter, refalrts::Iter ) {
-  return refalrts::cRecognitionImpossible;
+refalrts::FnResult True(refalrts::Iter, refalrts::Iter) {
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
 }
 
-refalrts::FnResult False( refalrts::Iter, refalrts::Iter ) {
-  return refalrts::cRecognitionImpossible;
+refalrts::FnResult False(refalrts::Iter, refalrts::Iter) {
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
 }
 
-// Математические операции
+#line 58 "..\lib/Library.ref"
 
+#define ARITHM_OP(op, check) \
+  refalrts::Iter func_name = arg_begin->next; \
+  \
+  refalrts::Iter sX = func_name->next; \
+  if (sX->tag != refalrts::cDataNumber) { \
+    return refalrts::cRecognitionImpossible; \
+  } \
+  \
+  refalrts::Iter sY = sX->next; \
+  if (sY->tag != refalrts::cDataNumber) { \
+    return refalrts::cRecognitionImpossible; \
+  } \
+  \
+  if (sY->next != arg_end) { \
+    return refalrts::cRecognitionImpossible; \
+  } \
+  \
+  check \
+  \
+  sX->number_info = sX->number_info op sY->number_info; \
+  \
+  refalrts::splice_to_freelist(arg_begin, func_name); \
+  refalrts::splice_to_freelist(sY, arg_end); \
+  \
+  return refalrts::cSuccess;
+
+#define NO_CHECK
+#define CHECK_ZERODIV \
+  if (sY->number_info == 0) { \
+    return refalrts::cRecognitionImpossible; \
+  }
+
+#line 133 "..\lib/Library.cpp"
 refalrts::FnResult Add(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-
-    refalrts::Iter sNumber1_1;
-    refalrts::Iter sNumber2_1;
-    if( ! refalrts::svar_left( sNumber1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sNumber2_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    if( sNumber1_1->tag != refalrts::cDataNumber )
-      break;
-    if( sNumber2_1->tag != refalrts::cDataNumber )
-      break;
-
-    refalrts::RefalNumber result =
-      sNumber1_1->number_info + sNumber2_1->number_info;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_number( n0, result ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
+#line 96 "..\lib/Library.ref"
+  ARITHM_OP(+, NO_CHECK)
+#line 137 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Sub(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-
-    refalrts::Iter sNumber1_1;
-    refalrts::Iter sNumber2_1;
-    if( ! refalrts::svar_left( sNumber1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sNumber2_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    if( sNumber1_1->tag != refalrts::cDataNumber )
-      break;
-    if( sNumber2_1->tag != refalrts::cDataNumber )
-      break;
-
-    refalrts::RefalNumber result =
-      sNumber1_1->number_info - sNumber2_1->number_info;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_number( n0, result ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
+#line 102 "..\lib/Library.ref"
+  ARITHM_OP(-, NO_CHECK)
+#line 144 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Mul(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-
-    refalrts::Iter sNumber1_1;
-    refalrts::Iter sNumber2_1;
-    if( ! refalrts::svar_left( sNumber1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sNumber2_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    if( sNumber1_1->tag != refalrts::cDataNumber )
-      break;
-    if( sNumber2_1->tag != refalrts::cDataNumber )
-      break;
-
-    refalrts::RefalNumber result =
-      sNumber1_1->number_info * sNumber2_1->number_info;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_number( n0, result ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
+#line 108 "..\lib/Library.ref"
+  ARITHM_OP(*, NO_CHECK)
+#line 151 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Div(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-
-    refalrts::Iter sNumber1_1;
-    refalrts::Iter sNumber2_1;
-    if( ! refalrts::svar_left( sNumber1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sNumber2_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    if( sNumber1_1->tag != refalrts::cDataNumber )
-      break;
-    if( sNumber2_1->tag != refalrts::cDataNumber )
-      break;
-
-    refalrts::RefalNumber result =
-      sNumber1_1->number_info / sNumber2_1->number_info;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_number( n0, result ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
+#line 114 "..\lib/Library.ref"
+  ARITHM_OP(/, CHECK_ZERODIV);
+#line 158 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Mod(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-
-    refalrts::Iter sNumber1_1;
-    refalrts::Iter sNumber2_1;
-    if( ! refalrts::svar_left( sNumber1_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sNumber2_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    if( sNumber1_1->tag != refalrts::cDataNumber )
-      break;
-    if( sNumber2_1->tag != refalrts::cDataNumber )
-      break;
-
-    refalrts::RefalNumber result =
-      sNumber1_1->number_info % sNumber2_1->number_info;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_number( n0, result ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::cRecognitionImpossible;
+#line 120 "..\lib/Library.ref"
+  ARITHM_OP(%, CHECK_ZERODIV);
+#line 165 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
-// Ввод-вывод
-
+#line 129 "..\lib/Library.ref"
 refalrts::FnResult write_to_stream(
   FILE *out, refalrts::Iter str_begin, refalrts::Iter str_end
 ) {
@@ -350,8 +253,9 @@ refalrts::FnResult write_to_stream(
     return refalrts::cSuccess;
   }
 }
-
+#line 257 "..\lib/Library.cpp"
 refalrts::FnResult WriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 221 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -378,9 +282,12 @@ refalrts::FnResult WriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 286 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult FWriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 252 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -417,8 +324,11 @@ refalrts::FnResult FWriteLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 328 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
+#line 292 "..\lib/Library.ref"
 refalrts::FnResult read_from_stream(
   FILE *input, refalrts::Iter& begin, refalrts::Iter& end
 ) {
@@ -459,10 +369,9 @@ refalrts::FnResult read_from_stream(
 
   return refalrts::cSuccess;
 }
-
-refalrts::FnResult ReadLine(
-  refalrts::Iter arg_begin, refalrts::Iter arg_end
-) {
+#line 373 "..\lib/Library.cpp"
+refalrts::FnResult ReadLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 336 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -491,11 +400,12 @@ refalrts::FnResult ReadLine(
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 404 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
-refalrts::FnResult FReadLine(
-  refalrts::Iter arg_begin, refalrts::Iter arg_end
-) {
+refalrts::FnResult FReadLine(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 369 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -533,8 +443,11 @@ refalrts::FnResult FReadLine(
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 447 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
+#line 411 "..\lib/Library.ref"
 namespace {
 
 refalrts::FnResult string_from_seq(
@@ -576,8 +489,9 @@ refalrts::FnResult string_from_seq(
 }
 
 } // unnamed namespace
-
+#line 493 "..\lib/Library.cpp"
 refalrts::FnResult FOpen(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 457 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -636,9 +550,12 @@ refalrts::FnResult FOpen(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 554 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult FClose(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 520 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -672,8 +589,11 @@ refalrts::FnResult FClose(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 593 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
+#line 558 "..\lib/Library.ref"
 /*
   Глобальные переменные, хранящие параметры вызова
   (устанавливаются в refalrts.cpp).
@@ -681,8 +601,9 @@ refalrts::FnResult FClose(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
 
 extern char **g_argv;
 extern int g_argc;
-
+#line 605 "..\lib/Library.cpp"
 refalrts::FnResult Arg(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 570 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -718,9 +639,12 @@ refalrts::FnResult Arg(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 643 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult ExistFile(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 610 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -769,9 +693,12 @@ refalrts::FnResult ExistFile(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 697 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult GetEnv(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 663 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -822,9 +749,12 @@ refalrts::FnResult GetEnv(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 753 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Exit(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 718 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -849,9 +779,12 @@ refalrts::FnResult Exit(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 783 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult System(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 747 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -888,11 +821,12 @@ refalrts::FnResult System(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 825 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
-// Работа с типами символов
-
 refalrts::FnResult IntFromStr(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 790 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -960,9 +894,12 @@ refalrts::FnResult IntFromStr(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 898 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 862 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -1021,9 +958,12 @@ refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 962 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Chr(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 925 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -1054,9 +994,12 @@ refalrts::FnResult Chr(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 998 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
 refalrts::FnResult Ord(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 960 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -1088,8 +1031,11 @@ refalrts::FnResult Ord(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 1035 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
 
+#line 996 "..\lib/Library.ref"
 namespace {
 
 template <typename T>
@@ -1104,8 +1050,9 @@ char compare_char( T x, T y ) {
 }
 
 } // unnamed namespace
-
+#line 1054 "..\lib/Library.cpp"
 refalrts::FnResult SymbCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+#line 1015 "..\lib/Library.ref"
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -1263,4 +1210,9 @@ refalrts::FnResult SymbCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end)
   } while ( 0 );
 
   return refalrts::cRecognitionImpossible;
+#line 1214 "..\lib/Library.cpp"
+  //return refalrts::cRecognitionImpossible;
 }
+
+
+//End of file
