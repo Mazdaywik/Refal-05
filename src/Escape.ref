@@ -15,18 +15,22 @@ $ENTRY EscapeChar {
   '\"' = '\\\"';
   '\\' = '\\\\';
 
-  s.Other =
+  s.Other = <EscapeChar-Aux s.Other <Ord s.Other>>;
+}
+
+EscapeChar-Aux {
+  s.Other s.Code =
     <EscapeChar-SwCompare
-      s.Other <Compare <Ord s.Other> 32> <Ord s.Other>
+      s.Other <Compare 31 s.Code> <Compare s.Code 128> s.Code
     >;
 }
 
 EscapeChar-SwCompare {
-  s.Other '-' s.Code =
+  s.Other '-' '-' s.Code = s.Other;
+
+  s.Other s.Compare1 s.Compare2 s.Code =
     '\\'
     <OctDigit <Div s.Code 64>>
     <OctDigit <Mod <Div s.Code 8> 8>>
     <OctDigit <Mod s.Code 8>>;
-
-  s.Other s.Compare s.Code = s.Other;
 }
