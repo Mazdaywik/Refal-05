@@ -1,0 +1,29 @@
+$ENTRY Go {
+  = <Test 0 <Native>>
+    <Test 1 <Native>>;
+}
+
+Test {
+  s.Num '<' s.Num '>' = ;
+}
+
+%%
+int global = 0;
+%%
+
+Native {
+%%
+  refalrts::Iter func_name = arg_begin->next;
+
+  arg_begin->tag = refalrts::cDataChar;
+  arg_begin->char_info = '<';
+  func_name->tag = refalrts::cDataNumber;
+  func_name->number_info = global;
+  arg_end->tag = refalrts::cDataChar;
+  arg_end->char_info = '>';
+
+  ++global;
+
+  return refalrts::cSuccess;
+%%
+}
