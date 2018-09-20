@@ -60,11 +60,6 @@ AnalyzeFile {
       <ExistFile-T e.FileName '.ref'>
     >;
 
-  e.FileName '.sref' =
-    <AnalyzeSource-CheckExist
-      <ExistFile-T e.FileName '.sref'>
-    >;
-
   e.FileName '.cpp' =
     <AnalyzeOutput-CheckExist
       <ExistFile-T e.FileName '.cpp'>
@@ -72,18 +67,12 @@ AnalyzeFile {
 
   e.FileName =
     <AnalyzeBoth-CheckExist
-      ( <ExistFile-T e.FileName '.ref'> )
-      ( <ExistFile-T e.FileName '.sref'> )
-      <ExistFile-T e.FileName '.cpp'>
+      (<ExistFile-T e.FileName '.ref'>) <ExistFile-T e.FileName '.cpp'>
     >;
 }
 
 AnalyzeSource-CheckExist {
-  True e.UnitName '.ref' =
-    (Source (e.UnitName '.ref') e.UnitName '.cpp');
-
-  True e.UnitName '.sref' =
-    (Source (e.UnitName '.sref') e.UnitName '.cpp');
+  True e.UnitName '.ref' = (Source (e.UnitName '.ref') e.UnitName '.cpp');
 
   False e.SourceName = (NotFound e.SourceName);
 }
@@ -95,16 +84,9 @@ AnalyzeOutput-CheckExist {
 }
 
 AnalyzeBoth-CheckExist {
-  ( True e.SourceName_ref ) ( s.Res_sref e.SourceName_sref ) s.Res e.OutName =
-    (Source (e.SourceName_ref) e.OutName);
+  (True e.SoureName) s.Res e.OutName = (Source (e.SoureName) e.OutName);
 
-  ( False e.SourceName_ref ) ( True e.SourceName_sref ) s.Res e.OutName =
-    (Source (e.SourceName_sref) e.OutName);
+  (False e.SoureName) True e.OutName = (Output e.OutName);
 
-  ( False e.SourceName_ref ) ( False e.SourceName_sref ) True e.OutName =
-    (Output e.OutName);
-
-  ( False e.UnitName '.ref' ) ( False e.UnitName '.sref' )
-  False e.UnitName '.cpp' =
-    (NotFound e.UnitName);
+  (False e.UnitName '.ref') False e.UnitName '.cpp' = (NotFound e.UnitName);
 }
