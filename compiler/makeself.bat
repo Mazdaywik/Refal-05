@@ -4,7 +4,6 @@ setlocal
   if not exist refal05c.exe copy ..\bin\refal05c.exe refal05c.exe
   if not exist refal05c-s.exe copy ..\bin\refal05c.exe refal05c-s.exe
   copy refal05c.exe refal05c_.exe >NUL
-  ..\bin\lexgen Lexer.sref
   ..\bin\srmake -s refal05c_ -c "%CPPLINE% -I..\srlib" -d ..\srlib refal05c
   if exist a.exe move a.exe refal05c.exe
   if exist *.obj erase *.obj
