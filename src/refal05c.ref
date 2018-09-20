@@ -1,16 +1,16 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN ArgList, LoadFile, Map, DelAccumulator, MapReduce, Inc;
 
-//FROM ParseCmdLine
+*$FROM ParseCmdLine
 $EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
 
-//FROM Library
+*$FROM Library
 $EXTERN WriteLine, Success, Fails, System, Exit, StrFromInt;
 
-//FROM FindFile
+*$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
 
-//FROM Parser
+*$FROM Parser
 $EXTERN CompileFile;
 
 

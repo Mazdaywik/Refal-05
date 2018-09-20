@@ -1,7 +1,7 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN Map;
 
-//FROM Library
+*$FROM Library
 $EXTERN ExistFile, True, False;
 
 

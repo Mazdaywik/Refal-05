@@ -1,10 +1,10 @@
-//FROM Library
+*$FROM Library
 $EXTERN StrFromInt, WriteLine;
 
-//FROM Lexer
+*$FROM Lexer
 $EXTERN TkError, TkUnexpected, StrFromToken;
 
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN Map;
 
 

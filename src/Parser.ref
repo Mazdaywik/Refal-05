@@ -1,29 +1,29 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN Fetch, Seq, Map, SaveFile, Sort, Inc, Dec;
 
-//FROM Lexer
+*$FROM Lexer
 $EXTERN LexFolding, TkOpenBracket, TkCloseBracket,
   TkOpenCall, TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon,
   EEnum, Enum, Extern, Entry, TkComma, TkOpenBlock, TkCloseBlock,
   TkVariable, TkReplace, TkChar, TkNumber, TkOpen, TkClose, TkNative;
 
-//FROM Error
+*$FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
   EL-AddErrorAt;
 
-//FROM SymTable
+*$FROM SymTable
 $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
   ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall, ST-GetAnyName;
 
-//FROM Library
+*$FROM Library
 $EXTERN Success, Fails, StrFromInt;
 
-//FROM Generator
+*$FROM Generator
 $EXTERN GN-Entry, GenExtern, GN-Local, GenForward, GenEnum, GenFnStart,
   GenSentence, GenFnEnd-Success, GenFnEnd, GenNative, GenPostprocess,
   GenThisIsGeneratedFunction;
 
-//FROM Algorithm
+*$FROM Algorithm
 $EXTERN MakeAlgorithm, Brackets, CallBrackets;
 
 
@@ -350,20 +350,20 @@ ParseFunction-BlockParsed {
 }
 
 GenFunctionBody {
-  // Закомментированный код содержит вариант кодогенерации,
-  // при котором если последнее предложение имеет вид
-  // e.X = ...;, в конце не генерится возврат
-  // return RecognitionImpossible;
-
-  //s.ScopeClass (e.MainName) (e.Name)
-  //e.Sentences (((TkVariable 'e' e.Index)) (e.Result)) =
-  //  <GenFnStart s.ScopeClass e.Name>
-  //  <Map
-  //    <PrepareAndGenSentence e.MainName>
-  //    e.Sentences
-  //    (((TkVariable 'e' e.Index)) (e.Result))
-  //  >
-  //  <GenFnEnd-Success>;
+*   Закомментированный код содержит вариант кодогенерации,
+*   при котором если последнее предложение имеет вид
+*   e.X = ...;, в конце не генерится возврат
+*   return RecognitionImpossible;
+*
+*  s.ScopeClass (e.MainName) (e.Name)
+*  e.Sentences (((TkVariable 'e' e.Index)) (e.Result)) =
+*    <GenFnStart s.ScopeClass e.Name>
+*    <Map
+*      <PrepareAndGenSentence e.MainName>
+*      e.Sentences
+*      (((TkVariable 'e' e.Index)) (e.Result))
+*    >
+*    <GenFnEnd-Success>;
 
   s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
@@ -492,7 +492,7 @@ ParseSentence-AfterParseResult {
 }
 
 ParsePattern {
-  // Обработка литералов атомов
+  /* Обработка литералов атомов */
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
   (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
@@ -516,7 +516,7 @@ ParsePattern {
       (e.Scanned (TkName e.Name)) e.Tail
     >;
 
-  // Переменные
+  /* Переменные */
 
   t.ErrorList t.SymTable
   (e.Variables-B (s.Mode e.Index) e.Variables-E)
@@ -670,7 +670,7 @@ StrFromBracket {
   >
 */
 ParseResult {
-  // Обработка литералов атомов
+  /* Обработка литералов атомов */
 
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
@@ -694,7 +694,7 @@ ParseResult {
       (e.MultiBracket) (e.Scanned (TkName e.Name)) e.Tail
     >;
 
-  // Переменные
+  /* Переменные */
 
   t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
@@ -734,7 +734,7 @@ ParseResult {
     если имеем непарную закрывающую скобку, считаем её лишней.
   */
 
-  // Структурные и угловые скобки обрабатываются одинаково
+  /* Структурные и угловые скобки обрабатываются одинаково */
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkOpen t.SrcPos s.OpenBracket) e.Tail =
     <ParseResult
@@ -751,7 +751,7 @@ ParseResult {
       () e.Tail
     >;
 
-  // Правильная закрывающая скобка
+  /* Правильная закрывающая скобка */
   t.ErrorList t.SymTable t.VarTable
   (
     e.MultiBracket
@@ -764,7 +764,7 @@ ParseResult {
       e.Tail
     >;
 
-  // Неправильная закрывающая скобка или закрывающая скобка отсутствует
+  /* Неправильная закрывающая скобка или закрывающая скобка отсутствует */
   t.ErrorList t.SymTable t.VarTable
   (
     e.MultiBracket

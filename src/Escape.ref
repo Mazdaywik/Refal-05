@@ -1,4 +1,4 @@
-//FROM Library
+*$FROM Library
 $EXTERN Compare, Ord, Div, Mod;
 
 

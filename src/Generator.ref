@@ -1,10 +1,10 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN MapReduce, Dec, DelAccumulator, Inc;
 
-//FROM Library
+*$FROM Library
 $EXTERN StrFromInt;
 
-//FROM Algorithm
+*$FROM Algorithm
 $EXTERN CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
   CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
   AlgLeft, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
@@ -13,7 +13,7 @@ $EXTERN CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
   ElNumber, ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
 
-//FROM Escape
+*$FROM Escape
 $EXTERN EscapeChar;
 
 
@@ -422,7 +422,7 @@ SwInfo {
 
   ElNumber s.Number = ', ' <StrFromInt s.Number> 'UL';
 
-  // Остальное -- скобки
+  /* Остальное -- скобки */
   s.Other = ;
 }
 

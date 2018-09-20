@@ -1,10 +1,10 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN Map, LoadFile, Inc, Type, FastIntFromStr;
 
-//FROM Library
+*$FROM Library
 $EXTERN StrFromInt, WriteLine, Add, Chr, Mul, Fails, Success;
 
-//FROM Escape
+*$FROM Escape
 $EXTERN EscapeChar;
 
 
@@ -23,7 +23,7 @@ $ENTRY LexFolding {
 }
 
 SkipBOM {
-  // Игнорируем метку порядка байт для UTF-8
+  /* Игнорируем метку порядка байт для UTF-8 */
   '\xEF\xBB\xBF' e.Content = e.Content;
 
   e.Content = e.Content;

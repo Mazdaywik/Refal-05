@@ -1,13 +1,13 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN Fetch, Inc, Map, Seq, Dec;
 
-//FROM Lexer
+*$FROM Lexer
 $EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall;
 
-//FROM Library
+*$FROM Library
 $EXTERN StrFromInt;
 
-//FROM Escape
+*$FROM Escape
 $EXTERN EscapeChar;
 
 
@@ -23,11 +23,11 @@ $ENTRY MakeAlgorithm {
   e.Vars ::= (s.Count s.Mode e.Index)*
 */
 
-//==============================================================================
-// Генерация образца
-//==============================================================================
+*===============================================================================
+* Генерация образца
+*===============================================================================
 
-// Направление распознавания
+* Направление распознавания
 $EENUM AlgLeft, AlgRight;
 
 $EENUM Brackets, CallBrackets;
@@ -74,7 +74,7 @@ GenPattern {
 }
 
 DoGenPattern {
-  // Распознавание литералов (символьных, целочисленных, имён)
+  /* Распознавание литералов (символьных, целочисленных, имён) */
   s.NumRanges e.Ranges-B (s.Num (TkChar s.Char) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -117,7 +117,7 @@ DoGenPattern {
       (e.Vars) (e.Commands (CmdName AlgRight s.Num e.Name))
     >;
 
-  // Распознавание скобок
+  /* Распознавание скобок */
   s.NumRanges e.Ranges-B
   (s.Num (Brackets e.SubRange) e.Range)
   e.Ranges-E
@@ -138,7 +138,7 @@ DoGenPattern {
       (e.Vars) (e.Commands (CmdBrackets AlgRight s.Num s.NumRanges))
     >;
 
-  // Пустой диапазон
+  /* Пустой диапазон */
   s.NumRanges e.Ranges-B (s.Num /* пусто */) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -146,7 +146,7 @@ DoGenPattern {
       (e.Vars) (e.Commands (CmdEmpty AlgLeft s.Num))
     >;
 
-  // Распознавание переменных
+  /* Распознавание переменных */
   s.NumRanges e.Ranges-B (s.Num (TkVariable s.Mode e.Index) e.Range) e.Ranges-E
   (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
     <DoGenPattern
@@ -163,7 +163,7 @@ DoGenPattern {
       (e.Commands (CmdRepeated AlgRight s.Num <Inc s.Count> s.Mode e.Index))
     >;
 
-  // Диапазон с закрытой переменной
+  /* Диапазон с закрытой переменной */
   s.NumRanges e.Ranges-B (s.Num (TkVariable 'e' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
@@ -210,7 +210,7 @@ DoGenPattern {
       >
     >;
 
-  // Завершение разбора.
+  /* Завершение разбора. */
   s.NumRanges /* пусто */ (e.Vars) (e.Commands) =
     (e.Vars) (e.Commands);
 }
@@ -255,26 +255,26 @@ TextFromPattern-Char {
   e.Other = <TextFromPattern e.Other>;
 }
 
-//==============================================================================
-// Генерация результата
-//==============================================================================
+*===============================================================================
+* Генерация результата
+*===============================================================================
 
 GenResult {
   e.Result =
     <DoGenResult
       (/* vars */)
       (/* alloc commands */) (/* other commands */)
-      0 // счётчик новых элементов
+      0 /* счётчик новых элементов */
       e.Result
     >;
 }
 
-// Основные команды работы с образцом
-//  (CmdAllocateElem s.Number s.ElType e.Info)
-//  (CmdLinkBrackets s.Left s.Right)
-//  (CmdPushStack s.Number)
-//  (CmdInsertElem s.Number)
-//  (CmdInsertVar s.Usings s.Mode e.Index)
+* Основные команды работы с образцом
+*  (CmdAllocateElem s.Number s.ElType e.Info)
+*  (CmdLinkBrackets s.Left s.Right)
+*  (CmdPushStack s.Number)
+*  (CmdInsertElem s.Number)
+*  (CmdInsertVar s.Usings s.Mode e.Index)
 $EENUM
   CmdAllocateElem,
   CmdLinkBrackets,
@@ -282,7 +282,7 @@ $EENUM
   CmdInsertElem,
   CmdInsertVar;
 
-// Спецификаторы команд (элементы)
+* Спецификаторы команд (элементы)
 $EENUM
   ElChar, ElName, ElNumber,
   ElOpenBracket, ElCloseBracket,
@@ -296,7 +296,7 @@ $EENUM
 */
 
 DoGenResult {
-  // Создаём литералы
+  /* Создаём литералы */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter (TkChar s.Value) e.Result =
     <DoGenResult
       (e.Vars)
@@ -374,7 +374,7 @@ DoGenResult {
       <Inc s.Counter> e.Result
     >;
 
-  // Обработка переменных
+  /* Обработка переменных */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
   s.Counter (TkVariable s.Mode e.Index) e.Result =
     <DoGenResult
@@ -393,15 +393,15 @@ DoGenResult {
       s.Counter e.Result
     >;
 
-  // Завершение просмотра
+  /* Завершение просмотра */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter =
     (e.Vars) (e.AllocCommands) (e.Commands);
 }
 
-//==============================================================================
-// Обобщение информации -- уничтожение ненужных переменных,
-// копирование повторных.
-//==============================================================================
+*===============================================================================
+* Обобщение информации -- уничтожение ненужных переменных,
+* копирование повторных.
+*===============================================================================
 
 $EENUM CmdEmptyResult, CmdReturnResult;
 

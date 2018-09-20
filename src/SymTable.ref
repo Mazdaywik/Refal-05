@@ -1,10 +1,10 @@
-//FROM LibraryEx
+*$FROM LibraryEx
 $EXTERN Map, Reduce;
 
-//FROM Error
+*$FROM Error
 $EXTERN EL-AddErrorAt;
 
-//FROM Generator
+*$FROM Generator
 $EXTERN GN-Entry;
 
 
