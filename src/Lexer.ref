@@ -287,10 +287,10 @@ Scan-ByPunctuation {
 
 Scan-ByType {
   s.Row s.Col 'L' s.SubType s.Letter e.Tail =
-    <ScanName s.Row <Inc s.Col> (s.Letter) <Type e.Tail>>;
+    <ScanName s.Row s.Col <Inc s.Col> (s.Letter) <Type e.Tail>>;
 
   s.Row s.Col 'D' s.SubType s.Digit e.Tail =
-    <ScanNumber s.Row <Inc s.Col> (s.Digit) <Type e.Tail>>;
+    <ScanNumber s.Row s.Col <Inc s.Col> (s.Digit) <Type e.Tail>>;
 
   s.Row s.Col s.Type s.SubType s.Unexpected e.Text =
     <GlueUnexpecteds
@@ -308,29 +308,29 @@ GlueUnexpecteds {
 }
 
 ScanName {
-  s.Row s.Col (e.Name) 'L' s.SubType s.Letter e.Tail =
-    <ScanName s.Row <Inc s.Col> (e.Name s.Letter) <Type e.Tail>>;
+  s.Row s.StartCol s.Col (e.Name) 'L' s.SubType s.Letter e.Tail =
+    <ScanName s.Row s.StartCol <Inc s.Col> (e.Name s.Letter) <Type e.Tail>>;
 
-  s.Row s.Col (e.Name) 'D' s.SubType s.Digit e.Tail =
-    <ScanName s.Row <Inc s.Col> (e.Name s.Digit) <Type e.Tail>>;
+  s.Row s.StartCol s.Col (e.Name) 'D' s.SubType s.Digit e.Tail =
+    <ScanName s.Row s.StartCol <Inc s.Col> (e.Name s.Digit) <Type e.Tail>>;
 
-  s.Row s.Col (e.Name) s.Type s.SubType '-' e.Tail =
+  s.Row s.StartCol s.Col (e.Name) s.Type s.SubType '-' e.Tail =
     /* нормализация */
-    <ScanName s.Row <Inc s.Col> (e.Name '_') <Type e.Tail>>;
+    <ScanName s.Row s.StartCol <Inc s.Col> (e.Name '_') <Type e.Tail>>;
 
-  s.Row s.Col (e.Name) s.Type s.SubType '_' e.Tail =
-    <ScanName s.Row <Inc s.Col> (e.Name '_') <Type e.Tail>>;
+  s.Row s.StartCol s.Col (e.Name) s.Type s.SubType '_' e.Tail =
+    <ScanName s.Row s.StartCol <Inc s.Col> (e.Name '_') <Type e.Tail>>;
 
-  s.Row s.Col (e.Name) s.Type s.SubType e.Tail =
-    (TkName (s.Row s.Col) e.Name) <Scan s.Row s.Col e.Tail>;
+  s.Row s.StartCol s.Col (e.Name) s.Type s.SubType e.Tail =
+    (TkName (s.Row s.StartCol) e.Name) <Scan s.Row s.Col e.Tail>;
 }
 
 ScanNumber {
-  s.Row s.Col (e.Number) 'D' s.SubType s.Digit e.Tail =
-    <ScanNumber s.Row <Inc s.Col> (e.Number s.Digit) <Type e.Tail>>;
+  s.Row s.StartCol s.Col (e.Number) 'D' s.SubType s.Digit e.Tail =
+    <ScanNumber s.Row s.StartCol <Inc s.Col> (e.Number s.Digit) <Type e.Tail>>;
 
-  s.Row s.Col (e.Number) s.Type s.SubType e.Tail =
-    (TkNumber (s.Row s.Col) <FastIntFromStr e.Number>)
+  s.Row s.StartCol s.Col (e.Number) s.Type s.SubType e.Tail =
+    (TkNumber (s.Row s.StartCol) <FastIntFromStr e.Number>)
     <Scan s.Row s.Col e.Tail>;
 }
 
