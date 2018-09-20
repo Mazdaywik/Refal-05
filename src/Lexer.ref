@@ -83,11 +83,6 @@ Scan {
   s.Row s.Col '$' e.Tail =
     <ScanDirective s.Row <Inc s.Col> () <Type e.Tail>>;
 
-  s.Row s.Col '\'\'' e.Tail =
-    (TkChar (s.Row s.Col) '\'')
-    (Warning (s.Row s.Col) 'pair of quotes \'\' is deprecated')
-    <Scan s.Row <Inc2 s.Col> e.Tail>;
-
   s.Row s.Col '\'' e.Tail = <ScanChars s.Row <Inc s.Col> e.Tail>;
 
   s.Row s.Col 'e.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 'e' () <Type e.Tail>>;
@@ -196,11 +191,6 @@ MakeDirective-SwValid {
 }
 
 ScanChars {
-  s.Row s.Col '\'\'' e.Tail =
-    (TkChar (s.Row s.Col) '\'')
-    (Warning (s.Row s.Col) 'pair of quotes \'\' is deprecated')
-    <ScanChars s.Row <Inc2 s.Col> e.Tail>;
-
   s.Row s.Col '\'' e.Tail = <Scan s.Row <Inc s.Col> e.Tail>;
 
   s.Row s.Col '\n' e.Tail =
