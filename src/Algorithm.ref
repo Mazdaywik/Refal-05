@@ -2,7 +2,7 @@
 $EXTERN Fetch, Inc, Map, Seq, Dec;
 
 *$FROM Lexer
-$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall;
+$EXTERN TkChar, TkNumber, TkName, TkVariable, TkCloseBracket, TkCloseCall, Add;
 
 *$FROM Library
 $EXTERN StrFromInt;
@@ -280,11 +280,12 @@ $EENUM
   CmdLinkBrackets,
   CmdPushStack,
   CmdInsertElem,
-  CmdInsertVar;
+  CmdInsertVar,
+  CmdInsertString;
 
 * Спецификаторы команд (элементы)
 $EENUM
-  ElChar, ElName, ElNumber,
+  ElChar, ElName, ElNumber, ElString,
   ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall;
 
@@ -295,8 +296,17 @@ $EENUM
   построение результата (в обратном порядке)
 */
 
+$ENUM TkString;
+
 DoGenResult {
-  /* Создаём литералы */
+  /* Оптимизация для распределения последовательности char’ов */
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (TkChar s.Char1) (TkChar s.Char2) e.Result =
+    <DoGenResult
+      (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+      (TkString 2 s.Char1 s.Char2) e.Result
+    >;
+
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter (TkChar s.Value) e.Result =
     <DoGenResult
       (e.Vars)
@@ -305,6 +315,23 @@ DoGenResult {
       <Inc s.Counter> e.Result
     >;
 
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (TkString s.Len e.String) (TkChar s.Char) e.Result =
+    <DoGenResult
+      (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+      (TkString <Inc s.Len> e.String s.Char) e.Result
+    >;
+
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (TkString s.Len e.String) e.Result =
+    <DoGenResult
+      (e.Vars)
+      (e.AllocCommands (CmdAllocateElem s.Counter ElString s.Len e.String))
+      ((CmdInsertString s.Counter) e.Commands)
+      <Add 2 s.Counter> e.Result
+    >;
+
+  /* Создаём литералы */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter (TkName e.Name) e.Result =
     <DoGenResult
       (e.Vars)

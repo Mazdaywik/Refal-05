@@ -1,17 +1,18 @@
 *$FROM LibraryEx
-$EXTERN MapReduce, Dec, DelAccumulator, Inc;
+$EXTERN MapReduce, Dec, Inc, Map, DelAccumulator;
 
 *$FROM Library
 $EXTERN StrFromInt;
 
 *$FROM Algorithm
-$EXTERN CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
-  CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE,
-  AlgLeft, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
-  CmdCopyEVar, CmdCopyVar, CmdAllocateElem, CmdLinkBrackets, CmdPushStack,
-  CmdInsertElem, CmdInsertVar, CmdReturnResult, AlgRight, ElChar, ElName,
-  ElNumber, ElOpenBracket, ElCloseBracket,
-  ElOpenCall, ElCloseCall;
+$EXTERN
+  CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdChar, CmdNumber, CmdName,
+  CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft,
+  CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult, CmdCopyEVar,
+  CmdCopyVar, CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
+  CmdInsertElem, CmdInsertVar, CmdInsertString, CmdReturnResult, AlgRight,
+  ElChar, ElName, ElNumber, ElOpenBracket, ElCloseBracket, ElOpenCall,
+  ElCloseCall;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -225,6 +226,16 @@ GenCommand {
     )
     (e.Indent '  return refalrts::cNoMemory;');
 
+  (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
+    (e.Indent)
+    (e.Indent 'refalrts::Iter ' <PrintElemVar s.StringNumber> ' = 0;')
+    (e.Indent 'refalrts::Iter ' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
+    (e.Indent
+      'if( ! refalrts::alloc_chars( ' <PrintStringVar s.StringNumber> ', '
+      '"' <Map EscapeChar e.String> '", ' <StrFromInt s.Len> ') )'
+    )
+    (e.Indent '  return refalrts::cNoMemory;');
+
   (e.Indent) (CmdAllocateElem s.ElemNumber e.ElemInfo) =
     (e.Indent)
     (e.Indent 'refalrts::Iter ' <PrintElemVar s.ElemNumber> ' = 0;')
@@ -260,6 +271,12 @@ GenCommand {
     (e.Indent
       'res = refalrts::splice_stvar( res, '
       <PrintVar s.Usings s.Mode e.Index> ' );'
+    );
+
+  (e.Indent) (CmdInsertString s.StringNumber) =
+    (e.Indent)
+    (e.Indent
+      'res = refalrts::splice_evar( res, ' <PrintStringVar s.StringNumber> ' );'
     );
 
   (e.Indent) (CmdReturnResult) =
@@ -383,6 +400,10 @@ PrintMatch {
 
 PrintElemVar {
   s.Number = 'n' <StrFromInt s.Number>;
+}
+
+PrintStringVar {
+  s.Number = 'n' <StrFromInt s.Number> ', n' <StrFromInt <Inc s.Number>>;
 }
 
 PrintAllocateElem {
