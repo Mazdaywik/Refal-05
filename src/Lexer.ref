@@ -2,7 +2,7 @@
 $EXTERN Map, LoadFile, Inc, Type, FastIntFromStr;
 
 *$FROM Library
-$EXTERN StrFromInt, WriteLine, Add, Chr, Mul, Fails, Success;
+$EXTERN StrFromInt, Add, Chr, Mul, Fails, Success;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -13,13 +13,7 @@ FlatLine {
 }
 
 $ENTRY LexFolding {
-  e.FileName =
-    <ShowWarning
-      (e.FileName)
-      <Scan
-        1 1 <SkipBOM <Map FlatLine <LoadFile e.FileName>>>
-      >
-    >;
+  e.FileName = <Scan 1 1 <SkipBOM <Map FlatLine <LoadFile e.FileName>>>>;
 }
 
 SkipBOM {
@@ -27,21 +21,6 @@ SkipBOM {
   '\xEF\xBB\xBF' e.Content = e.Content;
 
   e.Content = e.Content;
-}
-
-$ENUM Warning;
-
-ShowWarning {
-  (e.FileName)
-  e.Tokens-B (Warning (s.Row s.Col) e.Message) e.Tokens-E =
-    e.Tokens-B
-    <WriteLine
-      e.FileName ':' <StrFromInt s.Row> ':' <StrFromInt s.Col> ':'
-      'Warning:' e.Message
-    >
-    <ShowWarning (e.FileName) e.Tokens-E>;
-
-  (e.FileName) e.Tokens = e.Tokens;
 }
 
 $EENUM
