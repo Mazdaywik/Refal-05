@@ -3,12 +3,13 @@
 
 
 extern refalrts::FnResult Compare(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult Div(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult Mod(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Ord(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult EscapeChar_SwCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Div(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Mod(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult EscapeChar_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult EscapeChar_SwCompare(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 static refalrts::FnResult OctDigit(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
@@ -370,7 +371,6 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::start_sentence();
     static refalrts::Iter sOther_1;
     static refalrts::Iter sOther_2;
-    static refalrts::Iter sOther_3;
     // s.Other
     if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
       break;
@@ -381,7 +381,72 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     refalrts::Iter res = arg_begin;
     if( ! refalrts::copy_stvar( sOther_2, sOther_1 ) )
       return refalrts::cNoMemory;
-    if( ! refalrts::copy_stvar( sOther_3, sOther_2 ) )
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, EscapeChar_Aux, "EscapeChar_Aux" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_name( n3, Ord, "Ord" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_close_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n5 );
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sOther_2 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sOther_1 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult EscapeChar_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sOther_1;
+    static refalrts::Iter sCode_1;
+    static refalrts::Iter sCode_2;
+    static refalrts::Iter sCode_3;
+    // s.Other s.Code
+    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( sCode_2, sCode_1 ) )
+      return refalrts::cNoMemory;
+    if( ! refalrts::copy_stvar( sCode_3, sCode_2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
@@ -396,7 +461,7 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     if( ! refalrts::alloc_name( n3, Compare, "Compare" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_char( n4, ' ' ) )
+    if( ! refalrts::alloc_number( n4, 31UL ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
     if( ! refalrts::alloc_close_call( n5 ) )
@@ -405,28 +470,33 @@ refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) 
     if( ! refalrts::alloc_open_call( n6 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_name( n7, Ord, "Ord" ) )
+    if( ! refalrts::alloc_name( n7, Compare, "Compare" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
+    if( ! refalrts::alloc_number( n8, 128UL ) )
       return refalrts::cNoMemory;
     refalrts::Iter n9 = 0;
     if( ! refalrts::alloc_close_call( n9 ) )
       return refalrts::cNoMemory;
-    refalrts::push_stack( n9 );
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_close_call( n10 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n10 );
     refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_stvar( res, sCode_3 );
+    refalrts::push_stack( n9 );
     refalrts::push_stack( n6 );
+    res = refalrts::splice_elem( res, n9 );
     res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sOther_3 );
+    res = refalrts::splice_stvar( res, sCode_2 );
     res = refalrts::splice_elem( res, n7 );
     res = refalrts::splice_elem( res, n6 );
     refalrts::push_stack( n5 );
     refalrts::push_stack( n2 );
     res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_stvar( res, sCode_1 );
     res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, sOther_2 );
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_stvar( res, sOther_1 );
@@ -451,14 +521,47 @@ static refalrts::FnResult EscapeChar_SwCompare(refalrts::Iter arg_begin, refalrt
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter sCode_1;
     static refalrts::Iter sOther_1;
-    static refalrts::Iter sCode_2;
-    static refalrts::Iter sCode_3;
-    // s.Other '< s.Code
+    static refalrts::Iter sCode_1;
+    // s.Other '-- s.Code
     if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::char_left( '<', bb_0, be_0 ) )
+    if( ! refalrts::char_left( '-', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::char_left( '-', bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    res = refalrts::splice_stvar( res, sOther_1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sCode_1;
+    static refalrts::Iter sOther_1;
+    static refalrts::Iter sCompare1_1;
+    static refalrts::Iter sCompare2_1;
+    static refalrts::Iter sCode_2;
+    static refalrts::Iter sCode_3;
+    // s.Other s.Compare1 s.Compare2 s.Code
+    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCompare1_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sCompare2_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
       break;
@@ -592,34 +695,6 @@ static refalrts::FnResult EscapeChar_SwCompare(refalrts::Iter arg_begin, refalrt
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter sOther_1;
-    static refalrts::Iter sCompare_1;
-    static refalrts::Iter sCode_1;
-    // s.Other s.Compare s.Code
-    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sCompare_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    res = refalrts::splice_stvar( res, sOther_1 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;

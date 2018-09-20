@@ -2,95 +2,95 @@
 #include "refalrts.h"
 
 
-extern refalrts::FnResult AlgLeft(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult AlgRight(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdAllocateElem(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdBrackets(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdClosedE(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdComment(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdCopyEVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdCopyVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdDeclareEVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdDeclareVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdEmpty(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdEmptyResult(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdInsertElem(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdInsertString(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdInsertVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdLinkBrackets(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdNumber(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdOpenedE_End(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdOpenedE_Start(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdPushStack(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdRepeated(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdReturnResult(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdSave(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult CmdVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult MapReduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Dec(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult DelAccumulator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElCloseBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElCloseCall(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElNumber(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElOpenBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElOpenCall(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ElString(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GN_Entry(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GN_Local(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenFnEnd(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenFnEnd_Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenFnStart(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenForward(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenPostprocess(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GenThisIsGeneratedFunction(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Inc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult Map(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult MapReduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult DelAccumulator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 extern refalrts::FnResult StrFromInt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult BeginNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdComment(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdDeclareEVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdDeclareVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdSymbol(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Char(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Number(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult Name(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdBrackets(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdEmpty(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdRepeated(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdClosedE(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult AlgLeft(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdOpenedE_Start(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdOpenedE_End(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdSave(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdEmptyResult(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdCopyEVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdCopyVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdAllocateElem(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ElString(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdLinkBrackets(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdPushStack(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdInsertElem(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdInsertVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdInsertString(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult CmdReturnResult(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult AlgRight(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ElSymbol(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ElOpenBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ElCloseBracket(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ElOpenCall(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult ElCloseCall(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult EscapeChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GN_Local(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GN_Entry(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult FuncArguments(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult NakedArguments(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult TextFromMemoryClass(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult SwGenFnStart(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenFnStart(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenThisIsGeneratedFunction(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenFnEnd(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenFnEnd_Success(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenEnum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenExtern(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenForward(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult GenCommonHeaders(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult GenCommonTailer(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenSentence(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult SkipIndentAccum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult BracketsVar_B(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult BracketsVar_E(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult BracketsVars(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult BreakerFromIndent(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult EndNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult EnumerateLines(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult Escape(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult FuncArguments(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult GenCommonHeaders(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult GenCommonTailer(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult NakedArguments(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintAllocateElem(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintAllocate_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult EscapeString(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult PrintEVar_B(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult PrintEVar_E(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult PrintEVars(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintElemVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintMatch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintMatchSymbol(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult SymbolFunc(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult SymbolTextRep(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult PrintMatchBrackets(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintMatchChar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult BreakerFromIndent(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult PrintMatchEmpty(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintMatchName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintMatchNumber(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintMatchRepeated(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintMatchSTVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintStringVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PrintVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult SkipIndentAccum(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult StrFromDirection(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult SwAllocator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult SwGenFnStart(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult SwInfo(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult TextFromMemoryClass(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 static refalrts::FnResult VarMatchFunction(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintMatchSTVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintMatchRepeated(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintMatch(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintElemVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintStringVar(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintAllocateElem(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult PrintAllocate_Aux(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult SwAllocator(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult SwInfo(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult BeginNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult EndNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenNative(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern refalrts::FnResult GenPostprocess(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult EnumerateLines(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+static refalrts::FnResult LineDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end);
 
 refalrts::FnResult GN_Local(refalrts::Iter, refalrts::Iter) {
   return refalrts::FnResult(
@@ -1654,10 +1654,12 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
     static refalrts::Iter eIndent_e_1;
     static refalrts::Iter sDirection_1;
     static refalrts::Iter sBracketNumber_1;
-    static refalrts::Iter sChar_1;
+    static refalrts::Iter sType_1;
+    static refalrts::Iter eValue_b_1;
+    static refalrts::Iter eValue_e_1;
     static refalrts::Iter eIndent_b_2;
     static refalrts::Iter eIndent_e_2;
-    // ( e.Indent ) ( & CmdChar s.Direction s.BracketNumber s.Char )
+    // ( e.Indent ) ( & CmdSymbol s.Direction s.BracketNumber s.Type e.Value )
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -1666,7 +1668,7 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
     refalrts::Iter be_2 = 0;
     if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( CmdChar, bb_2, be_2 ) )
+    if( ! refalrts::function_left( CmdSymbol, bb_2, be_2 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -1676,10 +1678,10 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
       break;
     if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
       break;
-    if( ! refalrts::svar_left( sChar_1, bb_2, be_2 ) )
+    if( ! refalrts::svar_left( sType_1, bb_2, be_2 ) )
       break;
-    if( ! refalrts::empty_seq( bb_2, be_2 ) )
-      break;
+    eValue_b_1 = bb_2;
+    eValue_e_1 = be_2;
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -1695,7 +1697,7 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
     if( ! refalrts::alloc_open_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, PrintMatchChar, "PrintMatchChar" ) )
+    if( ! refalrts::alloc_name( n3, PrintMatchSymbol, "PrintMatchSymbol" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
     if( ! refalrts::alloc_open_bracket( n4 ) )
@@ -1709,174 +1711,8 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
     refalrts::push_stack( n6 );
     refalrts::push_stack( n2 );
     res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_stvar( res, sBracketNumber_1 );
-    res = refalrts::splice_stvar( res, sDirection_1 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eIndent_b_2, eIndent_e_2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eIndent_b_1, eIndent_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter eIndent_b_1;
-    static refalrts::Iter eIndent_e_1;
-    static refalrts::Iter sDirection_1;
-    static refalrts::Iter sBracketNumber_1;
-    static refalrts::Iter sNumber_1;
-    static refalrts::Iter eIndent_b_2;
-    static refalrts::Iter eIndent_e_2;
-    // ( e.Indent ) ( & CmdNumber s.Direction s.BracketNumber s.Number )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
-      break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::function_left( CmdNumber, bb_2, be_2 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-    eIndent_b_1 = bb_1;
-    eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
-      break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
-      break;
-    if( ! refalrts::svar_left( sNumber_1, bb_2, be_2 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_2, be_2 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    if( ! refalrts::copy_evar( eIndent_b_2, eIndent_e_2, eIndent_b_1, eIndent_e_1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, PrintMatchNumber, "PrintMatchNumber" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_stvar( res, sNumber_1 );
-    res = refalrts::splice_stvar( res, sBracketNumber_1 );
-    res = refalrts::splice_stvar( res, sDirection_1 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eIndent_b_2, eIndent_e_2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eIndent_b_1, eIndent_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter eIndent_b_1;
-    static refalrts::Iter eIndent_e_1;
-    static refalrts::Iter sDirection_1;
-    static refalrts::Iter sBracketNumber_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eIndent_b_2;
-    static refalrts::Iter eIndent_e_2;
-    // ( e.Indent ) ( & CmdName s.Direction s.BracketNumber e.Name )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
-      break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::function_left( CmdName, bb_2, be_2 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-    eIndent_b_1 = bb_1;
-    eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
-      break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
-      break;
-    eName_b_1 = bb_2;
-    eName_e_1 = be_2;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    if( ! refalrts::copy_evar( eIndent_b_2, eIndent_e_2, eIndent_b_1, eIndent_e_1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, PrintMatchName, "PrintMatchName" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
+    res = refalrts::splice_evar( res, eValue_b_1, eValue_e_1 );
+    res = refalrts::splice_stvar( res, sType_1 );
     res = refalrts::splice_stvar( res, sBracketNumber_1 );
     res = refalrts::splice_stvar( res, sDirection_1 );
     refalrts::link_brackets( n4, n5 );
@@ -3528,64 +3364,60 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
     if( ! refalrts::alloc_open_call( n31 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n32 = 0;
-    if( ! refalrts::alloc_name( n32, Map, "Map" ) )
+    if( ! refalrts::alloc_name( n32, EscapeString, "EscapeString" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n33 = 0;
-    if( ! refalrts::alloc_name( n33, EscapeChar, "EscapeChar" ) )
+    if( ! refalrts::alloc_close_call( n33 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n34 = 0;
-    if( ! refalrts::alloc_close_call( n34 ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n35 = 0;
+    if( ! refalrts::alloc_chars( n34, n35, "\", ", 3) )
+      return refalrts::cNoMemory;
     refalrts::Iter n36 = 0;
-    if( ! refalrts::alloc_chars( n35, n36, "\", ", 3) )
+    if( ! refalrts::alloc_open_call( n36 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n37 = 0;
-    if( ! refalrts::alloc_open_call( n37 ) )
+    if( ! refalrts::alloc_name( n37, StrFromInt, "StrFromInt" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n38 = 0;
-    if( ! refalrts::alloc_name( n38, StrFromInt, "StrFromInt" ) )
+    if( ! refalrts::alloc_close_call( n38 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n39 = 0;
-    if( ! refalrts::alloc_close_call( n39 ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n40 = 0;
+    if( ! refalrts::alloc_chars( n39, n40, ") )", 3) )
+      return refalrts::cNoMemory;
     refalrts::Iter n41 = 0;
-    if( ! refalrts::alloc_chars( n40, n41, ") )", 3) )
+    if( ! refalrts::alloc_close_bracket( n41 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n42 = 0;
-    if( ! refalrts::alloc_close_bracket( n42 ) )
+    if( ! refalrts::alloc_open_bracket( n42 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n43 = 0;
-    if( ! refalrts::alloc_open_bracket( n43 ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n44 = 0;
+    if( ! refalrts::alloc_chars( n43, n44, "  return refalrts::cNoMemory;", 29) )
+      return refalrts::cNoMemory;
     refalrts::Iter n45 = 0;
-    if( ! refalrts::alloc_chars( n44, n45, "  return refalrts::cNoMemory;", 29) )
+    if( ! refalrts::alloc_close_bracket( n45 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n46 = 0;
-    if( ! refalrts::alloc_close_bracket( n46 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n43, n46 );
-    res = refalrts::splice_elem( res, n46 );
-    res = refalrts::splice_evar( res, n44, n45 );
+    refalrts::link_brackets( n42, n45 );
+    res = refalrts::splice_elem( res, n45 );
+    res = refalrts::splice_evar( res, n43, n44 );
     res = refalrts::splice_evar( res, eIndent_b_5, eIndent_e_5 );
-    res = refalrts::splice_elem( res, n43 );
-    refalrts::link_brackets( n23, n42 );
     res = refalrts::splice_elem( res, n42 );
-    res = refalrts::splice_evar( res, n40, n41 );
-    refalrts::push_stack( n39 );
-    refalrts::push_stack( n37 );
-    res = refalrts::splice_elem( res, n39 );
-    res = refalrts::splice_stvar( res, sLen_1 );
+    refalrts::link_brackets( n23, n41 );
+    res = refalrts::splice_elem( res, n41 );
+    res = refalrts::splice_evar( res, n39, n40 );
+    refalrts::push_stack( n38 );
+    refalrts::push_stack( n36 );
     res = refalrts::splice_elem( res, n38 );
+    res = refalrts::splice_stvar( res, sLen_1 );
     res = refalrts::splice_elem( res, n37 );
-    res = refalrts::splice_evar( res, n35, n36 );
-    refalrts::push_stack( n34 );
+    res = refalrts::splice_elem( res, n36 );
+    res = refalrts::splice_evar( res, n34, n35 );
+    refalrts::push_stack( n33 );
     refalrts::push_stack( n31 );
-    res = refalrts::splice_elem( res, n34 );
-    res = refalrts::splice_evar( res, eString_b_1, eString_e_1 );
     res = refalrts::splice_elem( res, n33 );
+    res = refalrts::splice_evar( res, eString_b_1, eString_e_1 );
     res = refalrts::splice_elem( res, n32 );
     res = refalrts::splice_elem( res, n31 );
     res = refalrts::splice_evar( res, n29, n30 );
@@ -4418,6 +4250,52 @@ static refalrts::FnResult GenCommand(refalrts::Iter arg_begin, refalrts::Iter ar
   );
 }
 
+static refalrts::FnResult EscapeString(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter eString_b_1;
+    static refalrts::Iter eString_e_1;
+    // e.String
+    eString_b_1 = bb_0;
+    eString_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_call( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_name( n1, Map, "Map" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_name( n2, EscapeChar, "EscapeChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::push_stack( n3 );
+    refalrts::push_stack( n0 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eString_b_1, eString_e_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
 static refalrts::FnResult PrintVar(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -4664,50 +4542,7 @@ static refalrts::FnResult PrintEVars(refalrts::Iter arg_begin, refalrts::Iter ar
   );
 }
 
-static refalrts::FnResult Escape(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
-    static refalrts::Iter sChar_1;
-    // s.Char
-    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, EscapeChar, "EscapeChar" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
-static refalrts::FnResult PrintMatchChar(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static refalrts::FnResult PrintMatchSymbol(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
     refalrts::Iter bb_0 = arg_begin;
@@ -4720,8 +4555,11 @@ static refalrts::FnResult PrintMatchChar(refalrts::Iter arg_begin, refalrts::Ite
     static refalrts::Iter eIndent_e_1;
     static refalrts::Iter sDirection_1;
     static refalrts::Iter sBracketNumber_1;
-    static refalrts::Iter sChar_1;
-    // ( e.Indent ) s.Direction s.BracketNumber s.Char
+    static refalrts::Iter sType_1;
+    static refalrts::Iter eValue_b_1;
+    static refalrts::Iter eValue_e_1;
+    static refalrts::Iter sType_2;
+    // ( e.Indent ) s.Direction s.BracketNumber s.Type e.Value
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
@@ -4732,13 +4570,15 @@ static refalrts::FnResult PrintMatchChar(refalrts::Iter arg_begin, refalrts::Ite
       break;
     if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
+    if( ! refalrts::svar_left( sType_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
+    eValue_b_1 = bb_0;
+    eValue_e_1 = be_0;
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
+    if( ! refalrts::copy_stvar( sType_2, sType_1 ) )
+      return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
@@ -4755,44 +4595,47 @@ static refalrts::FnResult PrintMatchChar(refalrts::Iter arg_begin, refalrts::Ite
     if( ! refalrts::alloc_open_bracket( n4 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_call( n5 ) )
+      return refalrts::cNoMemory;
     refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_chars( n5, n6, "char", 4) )
+    if( ! refalrts::alloc_name( n6, SymbolFunc, "SymbolFunc" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
+    if( ! refalrts::alloc_close_call( n7 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_char( n8, '\'' ) )
+    if( ! refalrts::alloc_close_bracket( n8 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n9 = 0;
     if( ! refalrts::alloc_open_call( n9 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_name( n10, Escape, "Escape" ) )
+    if( ! refalrts::alloc_name( n10, SymbolTextRep, "SymbolTextRep" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n11 = 0;
     if( ! refalrts::alloc_close_call( n11 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n12 = 0;
-    if( ! refalrts::alloc_char( n12, '\'' ) )
+    if( ! refalrts::alloc_close_call( n12 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n13 );
+    refalrts::push_stack( n12 );
     refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n13 );
     res = refalrts::splice_elem( res, n12 );
     refalrts::push_stack( n11 );
     refalrts::push_stack( n9 );
     res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, sChar_1 );
+    res = refalrts::splice_evar( res, eValue_b_1, eValue_e_1 );
+    res = refalrts::splice_stvar( res, sType_2 );
     res = refalrts::splice_elem( res, n10 );
     res = refalrts::splice_elem( res, n9 );
+    refalrts::link_brackets( n4, n8 );
     res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n4, n7 );
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n5 );
     res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, n5, n6 );
+    res = refalrts::splice_stvar( res, sType_1 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_stvar( res, sBracketNumber_1 );
     res = refalrts::splice_stvar( res, sDirection_1 );
@@ -4812,7 +4655,7 @@ static refalrts::FnResult PrintMatchChar(refalrts::Iter arg_begin, refalrts::Ite
   );
 }
 
-static refalrts::FnResult PrintMatchNumber(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static refalrts::FnResult SymbolFunc(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
   refalrts::this_is_generated_function();
   do {
     refalrts::Iter bb_0 = arg_begin;
@@ -4821,21 +4664,137 @@ static refalrts::FnResult PrintMatchNumber(refalrts::Iter arg_begin, refalrts::I
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter eIndent_b_1;
-    static refalrts::Iter eIndent_e_1;
-    static refalrts::Iter sDirection_1;
-    static refalrts::Iter sBracketNumber_1;
+    // & Char
+    if( ! refalrts::function_left( Char, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_chars( n0, n1, "char", 4) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, n0, n1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    // & Number
+    if( ! refalrts::function_left( Number, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_chars( n0, n1, "number", 6) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, n0, n1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    // & Name
+    if( ! refalrts::function_left( Name, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_chars( n0, n1, "function", 8) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_evar( res, n0, n1 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult SymbolTextRep(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sChar_1;
+    // & Char s.Char
+    if( ! refalrts::function_left( Char, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+      break;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_char( n0, '\'' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    if( ! refalrts::alloc_open_call( n1 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_name( n2, EscapeChar, "EscapeChar" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_close_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_char( n4, '\'' ) )
+      return refalrts::cNoMemory;
+    res = refalrts::splice_elem( res, n4 );
+    refalrts::push_stack( n3 );
+    refalrts::push_stack( n1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_stvar( res, sChar_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
     static refalrts::Iter sNumber_1;
-    // ( e.Indent ) s.Direction s.BracketNumber s.Number
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
-      break;
-    eIndent_b_1 = bb_1;
-    eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    // & Number s.Number
+    if( ! refalrts::function_left( Number, bb_0, be_0 ) )
       break;
     if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
       break;
@@ -4848,60 +4807,20 @@ static refalrts::FnResult PrintMatchNumber(refalrts::Iter arg_begin, refalrts::I
     if( ! refalrts::alloc_open_call( n0 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, PrintMatch, "PrintMatch" ) )
+    if( ! refalrts::alloc_name( n1, StrFromInt, "StrFromInt" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
+    if( ! refalrts::alloc_close_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
+    if( ! refalrts::alloc_chars( n3, n4, "UL", 2) )
       return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_chars( n5, n6, "number", 6) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_open_call( n8 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n9 = 0;
-    if( ! refalrts::alloc_name( n9, StrFromInt, "StrFromInt" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n11 = 0;
-    refalrts::Iter n12 = 0;
-    if( ! refalrts::alloc_chars( n11, n12, "UL", 2) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n13 );
+    res = refalrts::splice_evar( res, n3, n4 );
+    refalrts::push_stack( n2 );
     refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, n11, n12 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n8 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_stvar( res, sNumber_1 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n4, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, n5, n6 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, sBracketNumber_1 );
-    res = refalrts::splice_stvar( res, sDirection_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eIndent_b_1, eIndent_e_1 );
     res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_stvar( res, sNumber_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
@@ -4909,13 +4828,6 @@ static refalrts::FnResult PrintMatchNumber(refalrts::Iter arg_begin, refalrts::I
     return refalrts::cSuccess;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
-  );
-}
-
-static refalrts::FnResult PrintMatchName(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
-  refalrts::this_is_generated_function();
   do {
     refalrts::Iter bb_0 = arg_begin;
     refalrts::Iter be_0 = arg_end;
@@ -4923,69 +4835,17 @@ static refalrts::FnResult PrintMatchName(refalrts::Iter arg_begin, refalrts::Ite
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter eIndent_b_1;
-    static refalrts::Iter eIndent_e_1;
-    static refalrts::Iter sDirection_1;
-    static refalrts::Iter sBracketNumber_1;
     static refalrts::Iter eName_b_1;
     static refalrts::Iter eName_e_1;
-    // ( e.Indent ) s.Direction s.BracketNumber e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
-      break;
-    eIndent_b_1 = bb_1;
-    eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    // & Name e.Name
+    if( ! refalrts::function_left( Name, bb_0, be_0 ) )
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, PrintMatch, "PrintMatch" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_chars( n5, n6, "function", 8) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return refalrts::cNoMemory;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
     res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    refalrts::link_brackets( n4, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, n5, n6 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, sBracketNumber_1 );
-    res = refalrts::splice_stvar( res, sDirection_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eIndent_b_1, eIndent_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
     return refalrts::cSuccess;
@@ -6090,6 +5950,8 @@ static refalrts::FnResult PrintAllocateElem(refalrts::Iter arg_begin, refalrts::
     static refalrts::Iter eIndent_b_2;
     static refalrts::Iter eIndent_e_2;
     static refalrts::Iter sElementType_2;
+    static refalrts::Iter eInfo_b_2;
+    static refalrts::Iter eInfo_e_2;
     // ( e.Indent ) s.ElemNumber s.ElementType e.Info
     refalrts::Iter bb_1 = 0;
     refalrts::Iter be_1 = 0;
@@ -6109,6 +5971,8 @@ static refalrts::FnResult PrintAllocateElem(refalrts::Iter arg_begin, refalrts::
     if( ! refalrts::copy_evar( eIndent_b_2, eIndent_e_2, eIndent_b_1, eIndent_e_1 ) )
       return refalrts::cNoMemory;
     if( ! refalrts::copy_stvar( sElementType_2, sElementType_1 ) )
+      return refalrts::cNoMemory;
+    if( ! refalrts::copy_evar( eInfo_b_2, eInfo_e_2, eInfo_b_1, eInfo_e_1 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
@@ -6178,7 +6042,7 @@ static refalrts::FnResult PrintAllocateElem(refalrts::Iter arg_begin, refalrts::
     refalrts::push_stack( n12 );
     refalrts::push_stack( n10 );
     res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eInfo_b_1, eInfo_e_1 );
+    res = refalrts::splice_evar( res, eInfo_b_2, eInfo_e_2 );
     res = refalrts::splice_stvar( res, sElementType_2 );
     res = refalrts::splice_elem( res, n11 );
     res = refalrts::splice_elem( res, n10 );
@@ -6188,6 +6052,7 @@ static refalrts::FnResult PrintAllocateElem(refalrts::Iter arg_begin, refalrts::
     refalrts::push_stack( n7 );
     refalrts::push_stack( n5 );
     res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_evar( res, eInfo_b_1, eInfo_e_1 );
     res = refalrts::splice_stvar( res, sElementType_1 );
     res = refalrts::splice_elem( res, n6 );
     res = refalrts::splice_elem( res, n5 );
@@ -6312,8 +6177,13 @@ static refalrts::FnResult SwAllocator(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // & ElChar
-    if( ! refalrts::function_left( ElChar, bb_0, be_0 ) )
+    static refalrts::Iter sChar_1;
+    // & ElSymbol & Char s.Char
+    if( ! refalrts::function_left( ElSymbol, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Char, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -6337,11 +6207,12 @@ static refalrts::FnResult SwAllocator(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // & ElName
-    if( ! refalrts::function_left( ElName, bb_0, be_0 ) )
+    // & ElSymbol & Name e.Name
+    if( ! refalrts::function_left( ElSymbol, bb_0, be_0 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if( ! refalrts::function_left( Name, bb_0, be_0 ) )
       break;
+    // Unused closed variable e.Name
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -6362,8 +6233,13 @@ static refalrts::FnResult SwAllocator(refalrts::Iter arg_begin, refalrts::Iter a
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    // & ElNumber
-    if( ! refalrts::function_left( ElNumber, bb_0, be_0 ) )
+    static refalrts::Iter sNumber_1;
+    // & ElSymbol & Number s.Number
+    if( ! refalrts::function_left( ElSymbol, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Number, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::empty_seq( bb_0, be_0 ) )
       break;
@@ -6494,59 +6370,14 @@ static refalrts::FnResult SwInfo(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter sChar_1;
-    // & ElChar s.Char
-    if( ! refalrts::function_left( ElChar, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
-      break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
-
-    refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_chars( n0, n1, ", \'", 3) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, Escape, "Escape" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_char( n5, '\'' ) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, n0, n1 );
-    refalrts::use( res );
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
-  } while ( 0 );
-
-  do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
-    refalrts::start_sentence();
     static refalrts::Iter eName_b_1;
     static refalrts::Iter eName_e_1;
     static refalrts::Iter eName_b_2;
     static refalrts::Iter eName_e_2;
-    // & ElName e.Name
-    if( ! refalrts::function_left( ElName, bb_0, be_0 ) )
+    // & ElSymbol & Name e.Name
+    if( ! refalrts::function_left( ElSymbol, bb_0, be_0 ) )
+      break;
+    if( ! refalrts::function_left( Name, bb_0, be_0 ) )
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -6583,14 +6414,16 @@ static refalrts::FnResult SwInfo(refalrts::Iter arg_begin, refalrts::Iter arg_en
     refalrts::move_left( bb_0, be_0 );
     refalrts::move_right( bb_0, be_0 );
     refalrts::start_sentence();
-    static refalrts::Iter sNumber_1;
-    // & ElNumber s.Number
-    if( ! refalrts::function_left( ElNumber, bb_0, be_0 ) )
+    static refalrts::Iter sType_1;
+    static refalrts::Iter eValue_b_1;
+    static refalrts::Iter eValue_e_1;
+    // & ElSymbol s.Type e.Value
+    if( ! refalrts::function_left( ElSymbol, bb_0, be_0 ) )
       break;
-    if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
+    if( ! refalrts::svar_left( sType_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
-      break;
+    eValue_b_1 = bb_0;
+    eValue_e_1 = be_0;
 
     refalrts::reset_allocator();
     refalrts::Iter res = arg_begin;
@@ -6602,20 +6435,16 @@ static refalrts::FnResult SwInfo(refalrts::Iter arg_begin, refalrts::Iter arg_en
     if( ! refalrts::alloc_open_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, StrFromInt, "StrFromInt" ) )
+    if( ! refalrts::alloc_name( n3, SymbolTextRep, "SymbolTextRep" ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
     if( ! refalrts::alloc_close_call( n4 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_chars( n5, n6, "UL", 2) )
-      return refalrts::cNoMemory;
-    res = refalrts::splice_evar( res, n5, n6 );
     refalrts::push_stack( n4 );
     refalrts::push_stack( n2 );
     res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, sNumber_1 );
+    res = refalrts::splice_evar( res, eValue_b_1, eValue_e_1 );
+    res = refalrts::splice_stvar( res, sType_1 );
     res = refalrts::splice_elem( res, n3 );
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_evar( res, n0, n1 );
@@ -6999,57 +6828,20 @@ static refalrts::FnResult EnumerateLines(refalrts::Iter arg_begin, refalrts::Ite
     if( ! refalrts::alloc_close_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
+    if( ! refalrts::alloc_open_call( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, LineDirective, "LineDirective" ) )
+      return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "#line ", 6) )
+    if( ! refalrts::alloc_close_call( n5 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_name( n7, StrFromInt, "StrFromInt" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_open_call( n8 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n9 = 0;
-    if( ! refalrts::alloc_name( n9, Inc, "Inc" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n11 = 0;
-    if( ! refalrts::alloc_close_call( n11 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n12 = 0;
-    refalrts::Iter n13 = 0;
-    if( ! refalrts::alloc_chars( n12, n13, " \"", 2) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n14 = 0;
-    if( ! refalrts::alloc_char( n14, '\"' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n3, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_evar( res, eSrcName_b_1, eSrcName_e_1 );
-    res = refalrts::splice_evar( res, n12, n13 );
-    refalrts::push_stack( n11 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n8 );
-    res = refalrts::splice_elem( res, n10 );
     res = refalrts::splice_stvar( res, sNativeLineNo_1 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
+    res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_elem( res, n3 );
     refalrts::push_stack( n2 );
     refalrts::push_stack( n0 );
@@ -7112,57 +6904,20 @@ static refalrts::FnResult EnumerateLines(refalrts::Iter arg_begin, refalrts::Ite
     if( ! refalrts::alloc_close_call( n2 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
+    if( ! refalrts::alloc_open_call( n3 ) )
       return refalrts::cNoMemory;
     refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, LineDirective, "LineDirective" ) )
+      return refalrts::cNoMemory;
     refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "#line ", 6) )
+    if( ! refalrts::alloc_close_call( n5 ) )
       return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
-    if( ! refalrts::alloc_name( n7, StrFromInt, "StrFromInt" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
-    if( ! refalrts::alloc_open_call( n8 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n9 = 0;
-    if( ! refalrts::alloc_name( n9, Inc, "Inc" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n11 = 0;
-    if( ! refalrts::alloc_close_call( n11 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n12 = 0;
-    refalrts::Iter n13 = 0;
-    if( ! refalrts::alloc_chars( n12, n13, " \"", 2) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n14 = 0;
-    if( ! refalrts::alloc_char( n14, '\"' ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return refalrts::cNoMemory;
-    refalrts::link_brackets( n3, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
+    refalrts::push_stack( n5 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n5 );
     res = refalrts::splice_evar( res, eOutputName_b_1, eOutputName_e_1 );
-    res = refalrts::splice_evar( res, n12, n13 );
-    refalrts::push_stack( n11 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n8 );
-    res = refalrts::splice_elem( res, n10 );
     res = refalrts::splice_stvar( res, sLineNo_2 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
+    res = refalrts::splice_elem( res, n4 );
     res = refalrts::splice_elem( res, n3 );
     refalrts::push_stack( n2 );
     refalrts::push_stack( n0 );
@@ -7233,6 +6988,103 @@ static refalrts::FnResult EnumerateLines(refalrts::Iter arg_begin, refalrts::Ite
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_stvar( res, sLineNo_1 );
     res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    refalrts::use( res );
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return refalrts::cSuccess;
+  } while ( 0 );
+
+  return refalrts::FnResult(
+    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  );
+}
+
+static refalrts::FnResult LineDirective(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    refalrts::Iter bb_0 = arg_begin;
+    refalrts::Iter be_0 = arg_end;
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_left( bb_0, be_0 );
+    refalrts::move_right( bb_0, be_0 );
+    refalrts::start_sentence();
+    static refalrts::Iter sLineNo_1;
+    static refalrts::Iter eFileName_b_1;
+    static refalrts::Iter eFileName_e_1;
+    // s.LineNo e.FileName
+    if( ! refalrts::svar_left( sLineNo_1, bb_0, be_0 ) )
+      break;
+    eFileName_b_1 = bb_0;
+    eFileName_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    refalrts::Iter res = arg_begin;
+    refalrts::Iter n0 = 0;
+    if( ! refalrts::alloc_open_bracket( n0 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n1 = 0;
+    refalrts::Iter n2 = 0;
+    if( ! refalrts::alloc_chars( n1, n2, "#line ", 6) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n3 = 0;
+    if( ! refalrts::alloc_open_call( n3 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n4 = 0;
+    if( ! refalrts::alloc_name( n4, StrFromInt, "StrFromInt" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n5 = 0;
+    if( ! refalrts::alloc_open_call( n5 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n6 = 0;
+    if( ! refalrts::alloc_name( n6, Inc, "Inc" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n7 = 0;
+    if( ! refalrts::alloc_close_call( n7 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n9 = 0;
+    refalrts::Iter n10 = 0;
+    if( ! refalrts::alloc_chars( n9, n10, " \"", 2) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n11 = 0;
+    if( ! refalrts::alloc_open_call( n11 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n12 = 0;
+    if( ! refalrts::alloc_name( n12, EscapeString, "EscapeString" ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n13 = 0;
+    if( ! refalrts::alloc_close_call( n13 ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n14 = 0;
+    if( ! refalrts::alloc_char( n14, '\"' ) )
+      return refalrts::cNoMemory;
+    refalrts::Iter n15 = 0;
+    if( ! refalrts::alloc_close_bracket( n15 ) )
+      return refalrts::cNoMemory;
+    refalrts::link_brackets( n0, n15 );
+    res = refalrts::splice_elem( res, n15 );
+    res = refalrts::splice_elem( res, n14 );
+    refalrts::push_stack( n13 );
+    refalrts::push_stack( n11 );
+    res = refalrts::splice_elem( res, n13 );
+    res = refalrts::splice_evar( res, eFileName_b_1, eFileName_e_1 );
+    res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_elem( res, n11 );
+    res = refalrts::splice_evar( res, n9, n10 );
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n3 );
+    res = refalrts::splice_elem( res, n8 );
+    refalrts::push_stack( n7 );
+    refalrts::push_stack( n5 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_stvar( res, sLineNo_1 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_elem( res, n5 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, n1, n2 );
     res = refalrts::splice_elem( res, n0 );
     refalrts::use( res );
     refalrts::splice_to_freelist( arg_begin, arg_end );
