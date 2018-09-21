@@ -285,8 +285,11 @@ EscapeString {
 }
 
 PrintVar {
-  s.Usings s.Mode e.Index =
-    s.Mode e.Index '_' <StrFromInt s.Usings>;
+  s.Usings s.Mode e.Index = s.Mode e.Index '_' <StrFromInt s.Usings>;
+}
+
+PrintVarPtr {
+  s.Usings s.Mode e.Index = '&' s.Mode e.Index '_' <StrFromInt s.Usings>;
 }
 
 PrintEVar-B {
@@ -303,6 +306,12 @@ PrintEVars {
   s.Usings s.Mode e.Index =
     <PrintEVar-B s.Usings s.Mode e.Index> ', '
     <PrintEVar-E s.Usings s.Mode e.Index>;
+}
+
+PrintEVarsPtr {
+  s.Usings s.Mode e.Index =
+    '&' <PrintEVar-B s.Usings s.Mode e.Index> ', '
+    '&' <PrintEVar-E s.Usings s.Mode e.Index>;
 }
 
 PrintMatchSymbol {
@@ -330,7 +339,7 @@ PrintMatchBrackets {
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
       ('brackets')
-      <BracketsVars s.InnerNum>
+      <BracketsVarsPtr s.InnerNum>
     >;
 }
 
@@ -358,7 +367,7 @@ PrintMatchSTVar {
   (e.Indent) s.Direction s.BracketNumber s.Mode e.Index =
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
-      (<VarMatchFunction s.Mode>) <PrintVar 1 s.Mode e.Index>
+      (<VarMatchFunction s.Mode>) <PrintVarPtr 1 s.Mode e.Index>
     >;
 }
 
@@ -367,14 +376,14 @@ PrintMatchRepeated {
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
       ('repeated_evar')
-      <PrintEVars s.Usings 'e' e.Index> ', '
+      <PrintEVarsPtr s.Usings 'e' e.Index> ', '
       <PrintEVars <Dec s.Usings> 'e' e.Index>
     >;
 
   (e.Indent) s.Direction s.BracketNumber s.Usings s.Mode e.Index =
     <PrintMatch
       (e.Indent) s.Direction s.BracketNumber
-      ('repeated_stvar') <PrintVar s.Usings s.Mode e.Index>
+      ('repeated_stvar') <PrintVarPtr s.Usings s.Mode e.Index>
       ', ' <PrintVar <Dec s.Usings> s.Mode e.Index>
     >;
 }
@@ -382,8 +391,8 @@ PrintMatchRepeated {
 PrintMatch {
   (e.Indent) s.Direction s.BracketNumber (e.Function) e.TextRep =
     (e.Indent
-      'if( ! refalrts::' e.Function '_' <StrFromDirection s.Direction>
-      '( ' e.TextRep ', ' <BracketsVars s.BracketNumber> ' ) )'
+      'if( ! r05_' e.Function '_' <StrFromDirection s.Direction>
+      '( ' e.TextRep ', ' <BracketsVarsPtr s.BracketNumber> ' ) )'
     )
     (e.Indent '  ' <BreakerFromIndent e.Indent>);
 }

@@ -234,7 +234,7 @@ $ENTRY FWriteLine {
     struct r05_node *eLine_b_1;
     struct r05_node *eLine_e_1;
     // s.FileHandle e.Line
-    if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
+    if (! r05_svar_left(&sFileHandle_1, &bb_0, &be_0))
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
@@ -340,7 +340,7 @@ $ENTRY FReadLine {
 
     struct r05_node *sFileHandle_1;
     // s.FileHandle
-    if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
+    if (! r05_svar_left(&sFileHandle_1, &bb_0, &be_0))
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
@@ -428,9 +428,9 @@ $ENTRY FOpen {
 
     const char *mode;
 
-    if (refalrts::char_left('r', bb_0, be_0)) {
+    if (r05_char_left('r', &bb_0, &be_0)) {
       mode = "r";
-    } else if (refalrts::char_left('w', bb_0, be_0)) {
+    } else if (r05_char_left('w', &bb_0, &be_0)) {
       mode = "w";
     } else {
       break;
@@ -483,7 +483,7 @@ $ENTRY FClose {
 
     struct r05_node *sFileHandle_1;
     // s.FileHandle
-    if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
+    if (! r05_svar_left(&sFileHandle_1, &bb_0, &be_0))
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
@@ -528,7 +528,7 @@ $ENTRY Arg {
 
     struct r05_node *sParamNumber_1;
     // s.ParamNumber
-    if (! refalrts::svar_left(sParamNumber_1, bb_0, be_0))
+    if (! r05_svar_left(&sParamNumber_1, &bb_0, &be_0))
       break;
     if (sParamNumber_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -665,7 +665,7 @@ $ENTRY Exit {
 
     struct r05_node *sCode_1;
     // s.Code
-    if (! refalrts::svar_left(sCode_1, bb_0, be_0))
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -796,7 +796,7 @@ $ENTRY StrFromInt {
 
     struct r05_node *sNumber_1;
     // s.Number
-    if (! refalrts::svar_left(sNumber_1, bb_0, be_0))
+    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
       break;
     if (sNumber_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -857,7 +857,7 @@ $ENTRY Chr {
 
     struct r05_node *sCode_1;
     // s.Code
-    if (! refalrts::svar_left(sCode_1, bb_0, be_0))
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -889,7 +889,7 @@ $ENTRY Ord {
 
     struct r05_node *sChar_1;
     // s.Char
-    if (! refalrts::svar_left(sChar_1, bb_0, be_0))
+    if (! r05_svar_left(&sChar_1, &bb_0, &be_0))
       break;
     if (sChar_1->tag != R05_DATATAG_CHAR)
       break;

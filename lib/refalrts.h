@@ -65,6 +65,71 @@ void r05_move_right(struct r05_node **begin, struct r05_node **end);
 
 int r05_empty_seq(struct r05_node *begin, struct r05_node *end);
 
+int r05_function_left(
+  r05_function_ptr func, struct r05_node **first, struct r05_node **last
+);
+int r05_function_right(
+  r05_function_ptr func, struct r05_node **first, struct r05_node **last
+);
+
+int r05_char_left(char ch, struct r05_node **first, struct r05_node **last);
+int r05_char_right(char ch, struct r05_node **first, struct r05_node **last);
+
+int r05_number_left(
+  r05_number num, struct r05_node **first, struct r05_node **last
+);
+int r05_number_right(
+  r05_number num, struct r05_node **first, struct r05_node **last
+);
+
+int r05_brackets_left(
+  struct r05_node **res_first, struct r05_node **res_last,
+  struct r05_node **first, struct r05_node **last
+);
+
+int r05_brackets_right(
+  struct r05_node **res_first, struct r05_node **res_last,
+  struct r05_node **first, struct r05_node **last
+);
+
+int r05_svar_left(
+  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+);
+
+int r05_svar_right(
+  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+);
+
+int r05_tvar_left(
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+);
+
+int r05_tvar_right(
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+);
+
+int r05_repeated_stvar_left(
+  struct r05_node **stvar, struct r05_node *stvar_sample,
+  struct r05_node **first, struct r05_node **last
+);
+
+int r05_repeated_stvar_right(
+  struct r05_node **stvar, struct r05_node *stvar_sample,
+  struct r05_node **first, struct r05_node **last
+);
+
+int r05_repeated_evar_left(
+  struct r05_node **evar_b, struct r05_node **evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node **first, struct r05_node **last
+);
+
+int r05_repeated_evar_right(
+  struct r05_node **evar_b, struct r05_node **evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node **first, struct r05_node **last
+);
+
 
 /* Диагностика */
 
@@ -84,68 +149,104 @@ namespace refalrts {
 
 // ↓↓↓ DELETE
 // Операции распознавания образца
+
+inline bool function_left(
+  r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_function_left(func, &first, &last);
+}
+inline bool function_right(
+  r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_function_right(func, &first, &last);
+}
+
+inline bool char_left(char ch, struct r05_node *&first, struct r05_node *&last) {
+  return r05_char_left(ch, &first, &last);
+}
+inline bool char_right(char ch, struct r05_node *&first, struct r05_node *&last) {
+  return r05_char_right(ch, &first, &last);
+}
+
+inline bool number_left(
+  r05_number num, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_number_left(num, &first, &last);
+}
+inline bool number_right(
+  r05_number num, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_number_right(num, &first, &last);
+}
+
+inline bool brackets_left(
+  struct r05_node *&res_first, struct r05_node *&res_last,
+  struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_brackets_left(&res_first, &res_last, &first, &last);
+}
+inline bool brackets_right(
+  struct r05_node *&res_first, struct r05_node *&res_last,
+  struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_brackets_right(&res_first, &res_last, &first, &last);
+}
+
+inline bool svar_left(
+  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_svar_left(&svar, &first, &last);
+}
+inline bool svar_right(
+  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_svar_right(&svar, &first, &last);
+}
+
+inline bool tvar_left(
+  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_tvar_left(&tvar, &first, &last);
+}
+inline bool tvar_right(
+  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_tvar_right(&tvar, &first, &last);
+}
+
+inline bool repeated_stvar_left(
+  struct r05_node *&stvar, struct r05_node *stvar_sample,
+  struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_repeated_stvar_left(&stvar, stvar_sample, &first, &last);
+}
+inline bool repeated_stvar_right(
+  struct r05_node *&stvar, struct r05_node *stvar_sample,
+  struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_repeated_stvar_right(&stvar, stvar_sample, &first, &last);
+}
+
+inline bool repeated_evar_left(
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_repeated_evar_left(
+    &evar_b, &evar_e, evar_b_sample, evar_e_sample, &first, &last
+  );
+}
+
+inline bool repeated_evar_right(
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node *&first, struct r05_node *&last
+) {
+  return r05_repeated_evar_right(
+    &evar_b, &evar_e, evar_b_sample, evar_e_sample, &first, &last
+  );
+}
 // ↑↑↑ DELETE
-
-extern bool function_left(
-  r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
-);
-extern bool function_right(
-  r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool char_left(char ch, struct r05_node *&first, struct r05_node *&last);
-extern bool char_right(char ch, struct r05_node *&first, struct r05_node *&last);
-
-extern bool number_left(
-  r05_number num, struct r05_node *&first, struct r05_node *&last
-);
-extern bool number_right(
-  r05_number num, struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool brackets_left(
-  struct r05_node *&res_first, struct r05_node *&res_last,
-  struct r05_node *&first, struct r05_node *&last
-);
-extern bool brackets_right(
-  struct r05_node *&res_first, struct r05_node *&res_last,
-  struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool svar_left(
-  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
-);
-extern bool svar_right(
-  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool tvar_left(
-  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
-);
-extern bool tvar_right(
-  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool repeated_stvar_left(
-  struct r05_node *&stvar, struct r05_node *stvar_sample,
-  struct r05_node *&first, struct r05_node *&last
-);
-extern bool repeated_stvar_right(
-  struct r05_node *&stvar, struct r05_node *stvar_sample,
-  struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool repeated_evar_left(
-  struct r05_node *&evar_b, struct r05_node *&evar_e,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
-  struct r05_node *&first, struct r05_node *&last
-);
-
-extern bool repeated_evar_right(
-  struct r05_node *&evar_b, struct r05_node *&evar_e,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
-  struct r05_node *&first, struct r05_node *&last
-);
 
 extern bool open_evar_advance(
   struct r05_node *&evar_b, struct r05_node *&evar_e,
