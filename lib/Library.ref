@@ -383,7 +383,7 @@ enum r05_fnresult string_from_seq(
   char buffer[cBufLen + 1] = { 0 };
 
   for ( ; ; ) {
-    unsigned read = refalrts::read_chars(buffer, cBufLen, begin, end);
+    unsigned read = r05_read_chars(buffer, cBufLen, &begin, &end);
 
     if (read == 0) {
       break;

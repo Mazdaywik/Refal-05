@@ -1,6 +1,9 @@
 #ifndef RefalRTS_H_
 #define RefalRTS_H_
 
+#include <stddef.h>
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif  /* __cplusplus */
@@ -130,6 +133,16 @@ int r05_repeated_evar_right(
   struct r05_node **first, struct r05_node **last
 );
 
+int r05_open_evar_advance(
+  struct r05_node **evar_b, struct r05_node **evar_e,
+  struct r05_node **first, struct r05_node **last
+);
+
+size_t r05_read_chars(
+  char buffer[], size_t buflen,
+  struct r05_node **first, struct r05_node **last
+);
+
 
 /* Диагностика */
 
@@ -246,16 +259,20 @@ inline bool repeated_evar_right(
     &evar_b, &evar_e, evar_b_sample, evar_e_sample, &first, &last
   );
 }
-// ↑↑↑ DELETE
 
-extern bool open_evar_advance(
+inline bool open_evar_advance(
   struct r05_node *&evar_b, struct r05_node *&evar_e,
   struct r05_node *&first, struct r05_node *&last
-);
+) {
+  return r05_open_evar_advance(&evar_b, &evar_e, &first, &last);
+}
 
-extern unsigned read_chars(
+inline unsigned read_chars(
   char buffer[], unsigned buflen, struct r05_node *&first, struct r05_node *&last
-);
+) {
+  return (unsigned) r05_read_chars(buffer, buflen, &first, &last);
+}
+// ↑↑↑ DELETE
 
 // Операции построения результата
 

@@ -182,9 +182,9 @@ GenCommand {
   (CmdOpenedE-End AlgLeft s.BracketNumber 'e' e.Index) =
     (e.Indent)
     (e.Indent
-      '} while ( refalrts::open_evar_advance( '
-      <PrintEVars 1 'e' e.Index> ', ' <BracketsVars s.BracketNumber>
-      ' ) );'
+      '} while (r05_open_evar_advance('
+      <PrintEVarsPtr 1 'e' e.Index> ', ' <BracketsVarsPtr s.BracketNumber>
+      '));'
     );
 
   (e.Indent) (CmdSave s.OldBracketNumber s.NewBracketNumber) =
@@ -391,8 +391,8 @@ PrintMatchRepeated {
 PrintMatch {
   (e.Indent) s.Direction s.BracketNumber (e.Function) e.TextRep =
     (e.Indent
-      'if( ! r05_' e.Function '_' <StrFromDirection s.Direction>
-      '( ' e.TextRep ', ' <BracketsVarsPtr s.BracketNumber> ' ) )'
+      'if (! r05_' e.Function '_' <StrFromDirection s.Direction>
+      '(' e.TextRep ', ' <BracketsVarsPtr s.BracketNumber> '))'
     )
     (e.Indent '  ' <BreakerFromIndent e.Indent>);
 }

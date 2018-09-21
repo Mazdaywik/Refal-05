@@ -32,12 +32,10 @@ void valid_linked_aux(const char *text, struct r05_node *i) {
   }
 }
 
+
 /*==============================================================================
-   Примитивные операции
+   Операции сопоставления с образцом
 ==============================================================================*/
-
-
-/* Операции сопоставления с образцом */
 
 void r05_use(struct r05_node **) {
   /* Ничего не делаем. Эта функция добавляется, чтобы подавить предупреждение
@@ -615,23 +613,23 @@ int r05_repeated_evar_right(
 }
 
 
-bool refalrts::open_evar_advance(
-  struct r05_node *&evar_b, struct r05_node *&evar_e,
-  struct r05_node *&first, struct r05_node *&last
+int r05_open_evar_advance(
+  struct r05_node **evar_b, struct r05_node **evar_e,
+  struct r05_node **first, struct r05_node **last
 ) {
-  assert((evar_b == 0) == (evar_e == 0));
+  assert((*first == 0) == (*last == 0));
 
   struct r05_node *prev_first = 0;
 
-  if (r05_tvar_left(&prev_first, &first, &last)) {
-    if (! evar_b) {
-      evar_b = prev_first;
+  if (r05_tvar_left(&prev_first, first, last)) {
+    if (! *evar_b) {
+      *evar_b = prev_first;
     }
 
     if (is_open_bracket(prev_first)) {
-      evar_e = prev_first->info.link;
+      *evar_e = prev_first->info.link;
     } else {
-      evar_e = prev_first;
+      *evar_e = prev_first;
     }
 
     return true;
@@ -640,24 +638,27 @@ bool refalrts::open_evar_advance(
   }
 }
 
-unsigned refalrts::read_chars(
-  char buffer[], unsigned buflen, struct r05_node *&first, struct r05_node *&last
+
+size_t r05_read_chars(
+  char buffer[], size_t buflen,
+  struct r05_node **first, struct r05_node **last
 ) {
-  unsigned read = 0;
+  size_t read = 0;
   while (
-    read != buflen && ! r05_empty_seq(first, last)
-      && first->tag == R05_DATATAG_CHAR
+    read != buflen && ! r05_empty_seq(*first, *last)
+      && (*first)->tag == R05_DATATAG_CHAR
   ) {
-    buffer[read] = first->info.char_;
-    ++ read;
-    r05_move_left(&first, &last);
+    buffer[read] = (*first)->info.char_;
+    ++read;
+    r05_move_left(first, last);
   }
   return read;
 }
 
-//------------------------------------------------------------------------------
 
-// Операции распределителя памяти
+/*==============================================================================
+   Операции распределителя памяти
+==============================================================================*/
 
 namespace refalrts{
 
