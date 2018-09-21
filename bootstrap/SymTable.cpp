@@ -2,62 +2,60 @@
 #include "refalrts.h"
 
 
-extern refalrts::FnResult Map(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult Reduce(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult EL_AddErrorAt(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult GN_Entry(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult SymTable(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult Declared(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult Defined(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PatchReferences(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult PatchReferences_FilterThis(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult AddUnresolved(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_AllFunctions(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-static refalrts::FnResult FunctionFromKnown(refalrts::Iter arg_begin, refalrts::Iter arg_end);
-extern refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_end);
+extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Reduce(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_EL_AddErrorAt(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GN_Entry(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_SymTable(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_Create(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_Destroy(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_Declared(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_Defined(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_PatchReferences(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_PatchReferences_FilterThis(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_AddDefined(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_AddDeclared(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_AddFunctionCall(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_AddUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_AllFunctions(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_FunctionFromKnown(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ST_GetAnyName(struct r05_node *arg_begin, struct r05_node *arg_end);
 
-static refalrts::FnResult SymTable(refalrts::Iter, refalrts::Iter) {
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+static enum r05_fnresult r05c_SymTable(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_Create(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     //
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
     if( ! refalrts::alloc_close_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
     if( ! refalrts::alloc_close_bracket( n4 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n4 );
     res = refalrts::splice_elem( res, n4 );
     refalrts::link_brackets( n2, n3 );
@@ -65,81 +63,77 @@ refalrts::FnResult ST_Create(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_Destroy(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_Destroy(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // ( & SymTable e.Names ( e.References ) )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
     // Unused closed variable e.Names
     // Unused closed variable e.References
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::use( res );
+    struct r05_node *res = arg_begin;
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-static refalrts::FnResult Declared(refalrts::Iter, refalrts::Iter) {
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+static enum r05_fnresult r05c_Declared(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-static refalrts::FnResult Defined(refalrts::Iter, refalrts::Iter) {
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+static enum r05_fnresult r05c_Defined(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-static refalrts::FnResult PatchReferences(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static enum r05_fnresult r05c_PatchReferences(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
     // ( e.References ) e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
     eReferences_b_1 = bb_1;
@@ -148,31 +142,31 @@ static refalrts::FnResult PatchReferences(refalrts::Iter arg_begin, refalrts::It
     eName_e_1 = be_0;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
     if( ! refalrts::alloc_open_call( n1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, Map, "Map" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
+    if( ! refalrts::alloc_name( n2, r05c_Map, "Map" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
     if( ! refalrts::alloc_open_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    if( ! refalrts::alloc_name( n4, PatchReferences_FilterThis, "PatchReferences_FilterThis" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
+    if( ! refalrts::alloc_name( n4, r05c_PatchReferences_FilterThis, "PatchReferences_FilterThis" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n5 = 0;
     if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
     if( ! refalrts::alloc_close_call( n6 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n7 = 0;
     if( ! refalrts::alloc_close_bracket( n7 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n7 );
     res = refalrts::splice_elem( res, n7 );
     refalrts::push_stack( n6 );
@@ -187,33 +181,31 @@ static refalrts::FnResult PatchReferences(refalrts::Iter arg_begin, refalrts::It
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-static refalrts::FnResult PatchReferences_FilterThis(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static enum r05_fnresult r05c_PatchReferences_FilterThis(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
-    static refalrts::Iter tSrcPos_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
+    static struct r05_node *tSrcPos_1;
     // e.Name ( t.SrcPos e.Name )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
       break;
     eName_b_1 = bb_0;
@@ -222,29 +214,27 @@ static refalrts::FnResult PatchReferences_FilterThis(refalrts::Iter arg_begin, r
       break;
     if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
       break;
-    if( ! refalrts::empty_seq( bb_1, be_1 ) )
+    if (! r05_empty_seq(bb_1, be_1))
       break;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::use( res );
+    struct r05_node *res = arg_begin;
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eOtherName_b_1;
-    static refalrts::Iter eOtherName_e_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eOtherName_b_1;
+    static struct r05_node *eOtherName_e_1;
     // e.Name ( t.SrcPos e.OtherName )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
       break;
     // Unused closed variable e.Name
@@ -254,62 +244,60 @@ static refalrts::FnResult PatchReferences_FilterThis(refalrts::Iter arg_begin, r
     eOtherName_e_1 = be_1;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
     if( ! refalrts::alloc_close_bracket( n1 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_evar( res, eOtherName_b_1, eOtherName_e_1 );
     res = refalrts::splice_stvar( res, tSrcPos_1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_AddDefined(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter tErrorList_1;
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter eNames_E_b_1;
-    static refalrts::Iter eNames_E_e_1;
-    static refalrts::Iter sAnyScopeClass_1;
-    static refalrts::Iter sScopeClass_1;
+    static struct r05_node *tErrorList_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *eNames_E_b_1;
+    static struct r05_node *eNames_E_e_1;
+    static struct r05_node *sAnyScopeClass_1;
+    static struct r05_node *sScopeClass_1;
     // t.ErrorList ( & SymTable e.Names_B ( & Defined s.AnyScopeClass e.Name ) e.Names_E ( e.References ) ) s.ScopeClass t.SrcPos e.Name
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eReferences_b_1 = bb_2;
@@ -324,13 +312,13 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Defined, bb_4, be_4 ) )
         continue;
       if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
@@ -338,52 +326,52 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       eNames_E_e_1 = be_3;
       if( ! refalrts::svar_left( sAnyScopeClass_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_4, be_4 ) )
+      if (! r05_empty_seq(bb_4, be_4))
         continue;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
-      refalrts::Iter n0 = 0;
+      struct r05_node *res = arg_begin;
+      struct r05_node *n0 = 0;
       if( ! refalrts::alloc_open_call( n0 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n1 = 0;
-      if( ! refalrts::alloc_name( n1, EL_AddErrorAt, "EL_AddErrorAt" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n2 = 0;
-      refalrts::Iter n3 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n1 = 0;
+      if( ! refalrts::alloc_name( n1, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n2 = 0;
+      struct r05_node *n3 = 0;
       if( ! refalrts::alloc_chars( n2, n3, "Function ", 9) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n4 = 0;
-      refalrts::Iter n5 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n4 = 0;
+      struct r05_node *n5 = 0;
       if( ! refalrts::alloc_chars( n4, n5, " already defined", 16) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n6 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n6 = 0;
       if( ! refalrts::alloc_close_call( n6 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n7 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n7 = 0;
       if( ! refalrts::alloc_open_bracket( n7 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n8 = 0;
-      if( ! refalrts::alloc_name( n8, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n9 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n8 = 0;
+      if( ! refalrts::alloc_name( n8, r05c_SymTable, "SymTable" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n9 = 0;
       if( ! refalrts::alloc_open_bracket( n9 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n10 = 0;
-      if( ! refalrts::alloc_name( n10, Defined, "Defined" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n11 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n10 = 0;
+      if( ! refalrts::alloc_name( n10, r05c_Defined, "Defined" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n11 = 0;
       if( ! refalrts::alloc_close_bracket( n11 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n12 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n12 = 0;
       if( ! refalrts::alloc_open_bracket( n12 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n13 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n13 = 0;
       if( ! refalrts::alloc_close_bracket( n13 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n14 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n14 = 0;
       if( ! refalrts::alloc_close_bracket( n14 ) )
-        return refalrts::cNoMemory;
+        return R05_NO_MEMORY;
       refalrts::link_brackets( n7, n14 );
       res = refalrts::splice_elem( res, n14 );
       refalrts::link_brackets( n12, n13 );
@@ -410,43 +398,41 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       res = refalrts::splice_stvar( res, tErrorList_1 );
       res = refalrts::splice_elem( res, n1 );
       res = refalrts::splice_elem( res, n0 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter tErrorList_1;
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter sScopeClass_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter eNames_E_b_1;
-    static refalrts::Iter eNames_E_e_1;
-    static refalrts::Iter tSrcPos_1;
+    static struct r05_node *tErrorList_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *sScopeClass_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *eNames_E_b_1;
+    static struct r05_node *eNames_E_e_1;
+    static struct r05_node *tSrcPos_1;
     // t.ErrorList ( & SymTable e.Names_B ( & Declared e.Name ) e.Names_E ( e.References ) ) s.ScopeClass t.SrcPos e.Name
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eReferences_b_1 = bb_2;
@@ -461,56 +447,56 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Declared, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Declared, bb_4, be_4 ) )
         continue;
       if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_4, be_4 ) )
+      if (! r05_empty_seq(bb_4, be_4))
         continue;
       eNames_E_b_1 = bb_3;
       eNames_E_e_1 = be_3;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
-      refalrts::Iter n0 = 0;
+      struct r05_node *res = arg_begin;
+      struct r05_node *n0 = 0;
       if( ! refalrts::alloc_open_bracket( n0 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n1 = 0;
-      if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n2 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n1 = 0;
+      if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n2 = 0;
       if( ! refalrts::alloc_open_bracket( n2 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_name( n3, Defined, "Defined" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n4 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n3 = 0;
+      if( ! refalrts::alloc_name( n3, r05c_Defined, "Defined" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n4 = 0;
       if( ! refalrts::alloc_close_bracket( n4 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n5 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n5 = 0;
       if( ! refalrts::alloc_open_call( n5 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n6 = 0;
-      if( ! refalrts::alloc_name( n6, PatchReferences, "PatchReferences" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n7 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n6 = 0;
+      if( ! refalrts::alloc_name( n6, r05c_PatchReferences, "PatchReferences" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n7 = 0;
       if( ! refalrts::alloc_open_bracket( n7 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n8 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n8 = 0;
       if( ! refalrts::alloc_close_bracket( n8 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n9 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n9 = 0;
       if( ! refalrts::alloc_close_call( n9 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n10 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n10 = 0;
       if( ! refalrts::alloc_close_bracket( n10 ) )
-        return refalrts::cNoMemory;
+        return R05_NO_MEMORY;
       refalrts::link_brackets( n0, n10 );
       res = refalrts::splice_elem( res, n10 );
       refalrts::push_stack( n9 );
@@ -534,41 +520,39 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
       res = refalrts::splice_elem( res, n1 );
       res = refalrts::splice_elem( res, n0 );
       res = refalrts::splice_stvar( res, tErrorList_1 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter tErrorList_1;
-    static refalrts::Iter eNames_b_1;
-    static refalrts::Iter eNames_e_1;
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter sScopeClass_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
+    static struct r05_node *tErrorList_1;
+    static struct r05_node *eNames_b_1;
+    static struct r05_node *eNames_e_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *sScopeClass_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
     // t.ErrorList ( & SymTable e.Names ( e.References ) ) s.ScopeClass t.SrcPos e.Name
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eNames_b_1 = bb_1;
@@ -583,42 +567,42 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     eName_e_1 = be_0;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
+    struct r05_node *res = arg_begin;
     if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n0 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, Defined, "Defined" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
+    if( ! refalrts::alloc_name( n3, r05c_Defined, "Defined" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
     if( ! refalrts::alloc_close_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n5 = 0;
     if( ! refalrts::alloc_open_call( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_name( n6, PatchReferences, "PatchReferences" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
+    if( ! refalrts::alloc_name( n6, r05c_PatchReferences, "PatchReferences" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n7 = 0;
     if( ! refalrts::alloc_open_bracket( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n8 = 0;
     if( ! refalrts::alloc_close_bracket( n8 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n9 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n9 = 0;
     if( ! refalrts::alloc_close_call( n9 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n10 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n10 = 0;
     if( ! refalrts::alloc_close_bracket( n10 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n10 );
     res = refalrts::splice_elem( res, n10 );
     refalrts::push_stack( n9 );
@@ -641,44 +625,42 @@ refalrts::FnResult ST_AddDefined(refalrts::Iter arg_begin, refalrts::Iter arg_en
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
     res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_AddDeclared(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter eNames_E_b_1;
-    static refalrts::Iter eNames_E_e_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *eNames_E_b_1;
+    static struct r05_node *eNames_E_e_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
     // ( & SymTable e.Names_B ( & Declared e.Name ) e.Names_E ( e.References ) ) e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eReferences_b_1 = bb_2;
@@ -689,47 +671,47 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Declared, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Declared, bb_4, be_4 ) )
         continue;
       if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_4, be_4 ) )
+      if (! r05_empty_seq(bb_4, be_4))
         continue;
       eNames_E_b_1 = bb_3;
       eNames_E_e_1 = be_3;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
-      refalrts::Iter n0 = 0;
+      struct r05_node *res = arg_begin;
+      struct r05_node *n0 = 0;
       if( ! refalrts::alloc_open_bracket( n0 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n1 = 0;
-      if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n2 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n1 = 0;
+      if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n2 = 0;
       if( ! refalrts::alloc_open_bracket( n2 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_name( n3, Declared, "Declared" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n4 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n3 = 0;
+      if( ! refalrts::alloc_name( n3, r05c_Declared, "Declared" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n4 = 0;
       if( ! refalrts::alloc_close_bracket( n4 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n5 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n5 = 0;
       if( ! refalrts::alloc_open_bracket( n5 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n6 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n6 = 0;
       if( ! refalrts::alloc_close_bracket( n6 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n7 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n7 = 0;
       if( ! refalrts::alloc_close_bracket( n7 ) )
-        return refalrts::cNoMemory;
+        return R05_NO_MEMORY;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
       refalrts::link_brackets( n5, n6 );
@@ -745,39 +727,37 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       res = refalrts::splice_evar( res, eNames_B_b_1, eNames_B_e_1 );
       res = refalrts::splice_elem( res, n1 );
       res = refalrts::splice_elem( res, n0 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter eNames_E_b_1;
-    static refalrts::Iter eNames_E_e_1;
-    static refalrts::Iter sScopeClass_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *eNames_E_b_1;
+    static struct r05_node *eNames_E_e_1;
+    static struct r05_node *sScopeClass_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
     // ( & SymTable e.Names_B ( & Defined s.ScopeClass e.Name ) e.Names_E ( e.References ) ) e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eReferences_b_1 = bb_2;
@@ -788,13 +768,13 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Defined, bb_4, be_4 ) )
         continue;
       if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
@@ -802,35 +782,35 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       eNames_E_e_1 = be_3;
       if( ! refalrts::svar_left( sScopeClass_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_4, be_4 ) )
+      if (! r05_empty_seq(bb_4, be_4))
         continue;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
-      refalrts::Iter n0 = 0;
+      struct r05_node *res = arg_begin;
+      struct r05_node *n0 = 0;
       if( ! refalrts::alloc_open_bracket( n0 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n1 = 0;
-      if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n2 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n1 = 0;
+      if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n2 = 0;
       if( ! refalrts::alloc_open_bracket( n2 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_name( n3, Defined, "Defined" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n4 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n3 = 0;
+      if( ! refalrts::alloc_name( n3, r05c_Defined, "Defined" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n4 = 0;
       if( ! refalrts::alloc_close_bracket( n4 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n5 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n5 = 0;
       if( ! refalrts::alloc_open_bracket( n5 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n6 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n6 = 0;
       if( ! refalrts::alloc_close_bracket( n6 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n7 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n7 = 0;
       if( ! refalrts::alloc_close_bracket( n7 ) )
-        return refalrts::cNoMemory;
+        return R05_NO_MEMORY;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
       refalrts::link_brackets( n5, n6 );
@@ -847,36 +827,34 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
       res = refalrts::splice_evar( res, eNames_B_b_1, eNames_B_e_1 );
       res = refalrts::splice_elem( res, n1 );
       res = refalrts::splice_elem( res, n0 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eNames_b_1;
-    static refalrts::Iter eNames_e_1;
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
+    static struct r05_node *eNames_b_1;
+    static struct r05_node *eNames_e_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
     // ( & SymTable e.Names ( e.References ) ) e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eNames_b_1 = bb_1;
@@ -887,42 +865,42 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     eName_e_1 = be_0;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
+    struct r05_node *res = arg_begin;
     if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n0 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
-    if( ! refalrts::alloc_name( n3, Declared, "Declared" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
+    if( ! refalrts::alloc_name( n3, r05c_Declared, "Declared" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
     if( ! refalrts::alloc_close_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n5 = 0;
     if( ! refalrts::alloc_open_call( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
-    if( ! refalrts::alloc_name( n6, PatchReferences, "PatchReferences" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
+    if( ! refalrts::alloc_name( n6, r05c_PatchReferences, "PatchReferences" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n7 = 0;
     if( ! refalrts::alloc_open_bracket( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n8 = 0;
     if( ! refalrts::alloc_close_bracket( n8 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n9 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n9 = 0;
     if( ! refalrts::alloc_close_call( n9 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n10 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n10 = 0;
     if( ! refalrts::alloc_close_bracket( n10 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n10 );
     res = refalrts::splice_elem( res, n10 );
     refalrts::push_stack( n9 );
@@ -943,45 +921,43 @@ refalrts::FnResult ST_AddDeclared(refalrts::Iter arg_begin, refalrts::Iter arg_e
     res = refalrts::splice_evar( res, eNames_b_1, eNames_e_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_AddFunctionCall(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter eNames_E_b_1;
-    static refalrts::Iter eNames_E_e_1;
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *eNames_E_b_1;
+    static struct r05_node *eNames_E_e_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
     // ( & SymTable e.Names_B ( & Declared e.Name ) e.Names_E ( e.References ) ) t.SrcPos e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eReferences_b_1 = bb_2;
@@ -994,47 +970,47 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Declared, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Declared, bb_4, be_4 ) )
         continue;
       if( ! refalrts::repeated_evar_left( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_4, be_4 ) )
+      if (! r05_empty_seq(bb_4, be_4))
         continue;
       eNames_E_b_1 = bb_3;
       eNames_E_e_1 = be_3;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
-      refalrts::Iter n0 = 0;
+      struct r05_node *res = arg_begin;
+      struct r05_node *n0 = 0;
       if( ! refalrts::alloc_open_bracket( n0 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n1 = 0;
-      if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n2 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n1 = 0;
+      if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n2 = 0;
       if( ! refalrts::alloc_open_bracket( n2 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_name( n3, Declared, "Declared" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n4 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n3 = 0;
+      if( ! refalrts::alloc_name( n3, r05c_Declared, "Declared" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n4 = 0;
       if( ! refalrts::alloc_close_bracket( n4 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n5 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n5 = 0;
       if( ! refalrts::alloc_open_bracket( n5 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n6 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n6 = 0;
       if( ! refalrts::alloc_close_bracket( n6 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n7 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n7 = 0;
       if( ! refalrts::alloc_close_bracket( n7 ) )
-        return refalrts::cNoMemory;
+        return R05_NO_MEMORY;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
       refalrts::link_brackets( n5, n6 );
@@ -1050,40 +1026,38 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       res = refalrts::splice_evar( res, eNames_B_b_1, eNames_B_e_1 );
       res = refalrts::splice_elem( res, n1 );
       res = refalrts::splice_elem( res, n0 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter eNames_E_b_1;
-    static refalrts::Iter eNames_E_e_1;
-    static refalrts::Iter sScopeClass_1;
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eName_b_2;
-    static refalrts::Iter eName_e_2;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *eNames_E_b_1;
+    static struct r05_node *eNames_E_e_1;
+    static struct r05_node *sScopeClass_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eName_b_2;
+    static struct r05_node *eName_e_2;
     // ( & SymTable e.Names_B ( & Defined s.ScopeClass e.Name ) e.Names_E ( e.References ) ) t.SrcPos e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eReferences_b_1 = bb_2;
@@ -1096,13 +1070,13 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Defined, bb_4, be_4 ) )
         continue;
       if( ! refalrts::repeated_evar_right( eName_b_2, eName_e_2, eName_b_1, eName_e_1, bb_4, be_4 ) )
         continue;
@@ -1110,35 +1084,35 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       eNames_E_e_1 = be_3;
       if( ! refalrts::svar_left( sScopeClass_1, bb_4, be_4 ) )
         continue;
-      if( ! refalrts::empty_seq( bb_4, be_4 ) )
+      if (! r05_empty_seq(bb_4, be_4))
         continue;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
-      refalrts::Iter n0 = 0;
+      struct r05_node *res = arg_begin;
+      struct r05_node *n0 = 0;
       if( ! refalrts::alloc_open_bracket( n0 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n1 = 0;
-      if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n2 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n1 = 0;
+      if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n2 = 0;
       if( ! refalrts::alloc_open_bracket( n2 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n3 = 0;
-      if( ! refalrts::alloc_name( n3, Defined, "Defined" ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n4 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n3 = 0;
+      if( ! refalrts::alloc_name( n3, r05c_Defined, "Defined" ) )
+        return R05_NO_MEMORY;
+      struct r05_node *n4 = 0;
       if( ! refalrts::alloc_close_bracket( n4 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n5 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n5 = 0;
       if( ! refalrts::alloc_open_bracket( n5 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n6 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n6 = 0;
       if( ! refalrts::alloc_close_bracket( n6 ) )
-        return refalrts::cNoMemory;
-      refalrts::Iter n7 = 0;
+        return R05_NO_MEMORY;
+      struct r05_node *n7 = 0;
       if( ! refalrts::alloc_close_bracket( n7 ) )
-        return refalrts::cNoMemory;
+        return R05_NO_MEMORY;
       refalrts::link_brackets( n0, n7 );
       res = refalrts::splice_elem( res, n7 );
       refalrts::link_brackets( n5, n6 );
@@ -1155,35 +1129,33 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
       res = refalrts::splice_evar( res, eNames_B_b_1, eNames_B_e_1 );
       res = refalrts::splice_elem( res, n1 );
       res = refalrts::splice_elem( res, n0 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eNames_b_1;
-    static refalrts::Iter eNames_e_1;
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
+    static struct r05_node *eNames_b_1;
+    static struct r05_node *eNames_e_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
     // ( & SymTable e.Names ( e.References ) ) t.SrcPos e.Name
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eNames_b_1 = bb_1;
@@ -1196,28 +1168,28 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     eName_e_1 = be_0;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, SymTable, "SymTable" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_SymTable, "SymTable" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
     if( ! refalrts::alloc_open_bracket( n2 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
     if( ! refalrts::alloc_open_bracket( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
     if( ! refalrts::alloc_close_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n5 = 0;
     if( ! refalrts::alloc_close_bracket( n5 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
     if( ! refalrts::alloc_close_bracket( n6 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n6 );
     res = refalrts::splice_elem( res, n6 );
     refalrts::link_brackets( n2, n5 );
@@ -1232,41 +1204,39 @@ refalrts::FnResult ST_AddFunctionCall(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_evar( res, eNames_b_1, eNames_e_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eNames_b_1;
-    static refalrts::Iter eNames_e_1;
-    static refalrts::Iter eReferences_b_1;
-    static refalrts::Iter eReferences_e_1;
-    static refalrts::Iter tErrorList_1;
-    static refalrts::Iter eReferences_b_2;
-    static refalrts::Iter eReferences_e_2;
+    static struct r05_node *eNames_b_1;
+    static struct r05_node *eNames_e_1;
+    static struct r05_node *eReferences_b_1;
+    static struct r05_node *eReferences_e_1;
+    static struct r05_node *tErrorList_1;
+    static struct r05_node *eReferences_b_2;
+    static struct r05_node *eReferences_e_2;
     // t.ErrorList ( & SymTable e.Names ( e.References ) )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
     eNames_b_1 = bb_1;
@@ -1275,40 +1245,40 @@ refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter a
     eReferences_e_1 = be_2;
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
+    struct r05_node *res = arg_begin;
     if( ! refalrts::copy_evar( eReferences_b_2, eReferences_e_2, eReferences_b_1, eReferences_e_1 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n0 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, Reduce, "Reduce" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, AddUnresolved, "AddUnresolved" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_Reduce, "Reduce" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
+    if( ! refalrts::alloc_name( n2, r05c_AddUnresolved, "AddUnresolved" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
     if( ! refalrts::alloc_close_call( n3 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
     if( ! refalrts::alloc_open_bracket( n4 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n5 = 0;
-    if( ! refalrts::alloc_name( n5, SymTable, "SymTable" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n5 = 0;
+    if( ! refalrts::alloc_name( n5, r05c_SymTable, "SymTable" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
     if( ! refalrts::alloc_open_bracket( n6 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n7 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n7 = 0;
     if( ! refalrts::alloc_close_bracket( n7 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n8 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n8 = 0;
     if( ! refalrts::alloc_close_bracket( n8 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n4, n8 );
     res = refalrts::splice_elem( res, n8 );
     refalrts::link_brackets( n6, n7 );
@@ -1326,37 +1296,35 @@ refalrts::FnResult ST_CheckUnresolved(refalrts::Iter arg_begin, refalrts::Iter a
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-static refalrts::FnResult AddUnresolved(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static enum r05_fnresult r05c_AddUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter tErrorList_1;
-    static refalrts::Iter tSrcPos_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
+    static struct r05_node *tErrorList_1;
+    static struct r05_node *tSrcPos_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
     // t.ErrorList ( t.SrcPos e.Name )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
       break;
     if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
     if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
       break;
@@ -1364,24 +1332,24 @@ static refalrts::FnResult AddUnresolved(refalrts::Iter arg_begin, refalrts::Iter
     eName_e_1 = be_1;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    refalrts::Iter n3 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
+    struct r05_node *n3 = 0;
     if( ! refalrts::alloc_chars( n2, n3, "Function ", 9) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n4 = 0;
-    refalrts::Iter n5 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
+    struct r05_node *n5 = 0;
     if( ! refalrts::alloc_chars( n4, n5, " is not defined", 15) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n6 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
     if( ! refalrts::alloc_close_call( n6 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::push_stack( n6 );
     refalrts::push_stack( n0 );
     res = refalrts::splice_elem( res, n6 );
@@ -1392,58 +1360,56 @@ static refalrts::FnResult AddUnresolved(refalrts::Iter arg_begin, refalrts::Iter
     res = refalrts::splice_stvar( res, tErrorList_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_AllFunctions(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_AllFunctions(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eNames_b_1;
-    static refalrts::Iter eNames_e_1;
+    static struct r05_node *eNames_b_1;
+    static struct r05_node *eNames_e_1;
     // ( & SymTable e.Names ( e.References ) )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
     eNames_b_1 = bb_1;
     eNames_e_1 = be_1;
     // Unused closed variable e.References
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_call( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, Map, "Map" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
-    if( ! refalrts::alloc_name( n2, FunctionFromKnown, "FunctionFromKnown" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n3 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_Map, "Map" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
+    if( ! refalrts::alloc_name( n2, r05c_FunctionFromKnown, "FunctionFromKnown" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
     if( ! refalrts::alloc_close_call( n3 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::push_stack( n3 );
     refalrts::push_stack( n0 );
     res = refalrts::splice_elem( res, n3 );
@@ -1451,78 +1417,74 @@ refalrts::FnResult ST_AllFunctions(refalrts::Iter arg_begin, refalrts::Iter arg_
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-static refalrts::FnResult FunctionFromKnown(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+static enum r05_fnresult r05c_FunctionFromKnown(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
     // ( & Declared e.Name )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( Declared, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_Declared, bb_1, be_1 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
-    if( ! refalrts::alloc_name( n1, GN_Entry, "GN_Entry" ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n2 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_name( n1, r05c_GN_Entry, "GN_Entry" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
     if( ! refalrts::alloc_close_bracket( n2 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n2 );
     res = refalrts::splice_elem( res, n2 );
     res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter sScopeClass_1;
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
+    static struct r05_node *sScopeClass_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
     // ( & Defined s.ScopeClass e.Name )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( Defined, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_Defined, bb_1, be_1 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
     if( ! refalrts::svar_left( sScopeClass_1, bb_1, be_1 ) )
       break;
@@ -1530,67 +1492,65 @@ static refalrts::FnResult FunctionFromKnown(refalrts::Iter arg_begin, refalrts::
     eName_e_1 = be_1;
 
     refalrts::reset_allocator();
-    refalrts::Iter res = arg_begin;
-    refalrts::Iter n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if( ! refalrts::alloc_open_bracket( n0 ) )
-      return refalrts::cNoMemory;
-    refalrts::Iter n1 = 0;
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
     if( ! refalrts::alloc_close_bracket( n1 ) )
-      return refalrts::cNoMemory;
+      return R05_NO_MEMORY;
     refalrts::link_brackets( n0, n1 );
     res = refalrts::splice_elem( res, n1 );
     res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
     res = refalrts::splice_stvar( res, sScopeClass_1 );
     res = refalrts::splice_elem( res, n0 );
-    refalrts::use( res );
+    r05_use(&res);
     refalrts::splice_to_freelist( arg_begin, arg_end );
-    return refalrts::cSuccess;
+    return R05_SUCCESS;
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
-refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_end) {
+enum r05_fnresult r05c_ST_GetAnyName(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
-    refalrts::Iter bb_0 = arg_begin;
-    refalrts::Iter be_0 = arg_end;
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_left( bb_0, be_0 );
-    refalrts::move_right( bb_0, be_0 );
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static refalrts::Iter eName_b_1;
-    static refalrts::Iter eName_e_1;
-    static refalrts::Iter eNames_B_b_1;
-    static refalrts::Iter eNames_B_e_1;
-    static refalrts::Iter sScopeClass_1;
+    static struct r05_node *eName_b_1;
+    static struct r05_node *eName_e_1;
+    static struct r05_node *eNames_B_b_1;
+    static struct r05_node *eNames_B_e_1;
+    static struct r05_node *sScopeClass_1;
     // ( & SymTable e.Names_B ( & Defined s.ScopeClass e.Name ) e.Names_E ( e.References ) )
-    refalrts::Iter bb_1 = 0;
-    refalrts::Iter be_1 = 0;
+    struct r05_node *bb_1 = 0;
+    struct r05_node *be_1 = 0;
     if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
       break;
-    if( ! refalrts::function_left( SymTable, bb_1, be_1 ) )
+    if( ! refalrts::function_left( r05c_SymTable, bb_1, be_1 ) )
       break;
-    refalrts::Iter bb_2 = 0;
-    refalrts::Iter be_2 = 0;
+    struct r05_node *bb_2 = 0;
+    struct r05_node *be_2 = 0;
     if( ! refalrts::brackets_right( bb_2, be_2, bb_1, be_1 ) )
       break;
-    if( ! refalrts::empty_seq( bb_0, be_0 ) )
+    if (! r05_empty_seq(bb_0, be_0))
       break;
     // Unused closed variable e.References
     eNames_B_b_1 = 0;
     eNames_B_e_1 = 0;
     refalrts::start_e_loop();
     do {
-      refalrts::Iter bb_3 = bb_1;
-      refalrts::Iter be_3 = be_1;
-      refalrts::Iter bb_4 = 0;
-      refalrts::Iter be_4 = 0;
+      struct r05_node *bb_3 = bb_1;
+      struct r05_node *be_3 = be_1;
+      struct r05_node *bb_4 = 0;
+      struct r05_node *be_4 = 0;
       if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
         continue;
-      if( ! refalrts::function_left( Defined, bb_4, be_4 ) )
+      if( ! refalrts::function_left( r05c_Defined, bb_4, be_4 ) )
         continue;
       // Unused closed variable e.Names_E
       if( ! refalrts::svar_left( sScopeClass_1, bb_4, be_4 ) )
@@ -1599,16 +1559,16 @@ refalrts::FnResult ST_GetAnyName(refalrts::Iter arg_begin, refalrts::Iter arg_en
       eName_e_1 = be_4;
 
       refalrts::reset_allocator();
-      refalrts::Iter res = arg_begin;
+      struct r05_node *res = arg_begin;
       res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-      refalrts::use( res );
+      r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
-      return refalrts::cSuccess;
+      return R05_SUCCESS;
     } while ( refalrts::open_evar_advance( eNames_B_b_1, eNames_B_e_1, bb_1, be_1 ) );
   } while ( 0 );
 
-  return refalrts::FnResult(
-    refalrts::cRecognitionImpossible | (__LINE__ << 8)
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
 }
 
