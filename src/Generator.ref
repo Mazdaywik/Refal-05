@@ -20,7 +20,7 @@ $EXTERN EscapeChar;
 $EENUM GN-Local, GN-Entry;
 
 FuncArguments {
-  = 'refalrts::Iter arg_begin, refalrts::Iter arg_end';
+  = 'struct r05_Node *arg_begin, struct r05_Node *arg_end';
 }
 
 NakedArguments {
@@ -35,7 +35,7 @@ SwGenFnStart {
   s.MemoryClass s.FnArguments e.Name =
     (
       <TextFromMemoryClass s.MemoryClass>
-      'refalrts::FnResult ' e.Name '(' <s.FnArguments> ') {'
+      'enum r05_FnResult ' e.Name '(' <s.FnArguments> ') {'
     );
 }
 
@@ -50,7 +50,7 @@ $ENTRY GenThisIsGeneratedFunction {
 
 $ENTRY GenFnEnd {
   =
-    ('  return refalrts::FnResult(')
+    ('  return (enum r05_FnResult)(')
     ('    refalrts::cRecognitionImpossible | (__LINE__ << 8)')
     ('  );')
     ('}') ();
@@ -67,12 +67,12 @@ $ENTRY GenEnum {
 
 $ENTRY GenExtern {
   e.Name =
-    ('extern refalrts::FnResult ' e.Name '(' <FuncArguments> ');');
+    ('extern enum r05_FnResult ' e.Name '(' <FuncArguments> ');');
 }
 
 $ENTRY GenForward {
   e.Name =
-    ('static refalrts::FnResult ' e.Name '(' <FuncArguments> ');');
+    ('static enum r05_FnResult ' e.Name '(' <FuncArguments> ');');
 }
 
 GenCommonHeaders {
@@ -88,8 +88,8 @@ GenCommonTailer {
 $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
-    ('    refalrts::Iter ' <BracketsVar-B 0> ' = arg_begin;')
-    ('    refalrts::Iter ' <BracketsVar-E 0> ' = arg_end;')
+    ('    struct r05_Node *' <BracketsVar-B 0> ' = arg_begin;')
+    ('    struct r05_Node *' <BracketsVar-E 0> ' = arg_end;')
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_right( ' <BracketsVars 0> ' );')
@@ -129,12 +129,12 @@ GenCommand {
 
   (e.Indent) (CmdDeclareEVar e.VarInfo) =
     (e.Indent)
-    (e.Indent 'static refalrts::Iter ' <PrintEVar-B e.VarInfo> ';')
-    (e.Indent 'static refalrts::Iter ' <PrintEVar-E e.VarInfo> ';');
+    (e.Indent 'static struct r05_Node *' <PrintEVar-B e.VarInfo> ';')
+    (e.Indent 'static struct r05_Node *' <PrintEVar-E e.VarInfo> ';');
 
   (e.Indent) (CmdDeclareVar e.VarInfo) =
     (e.Indent)
-    (e.Indent 'static refalrts::Iter ' <PrintVar e.VarInfo> ';');
+    (e.Indent 'static struct r05_Node *' <PrintVar e.VarInfo> ';');
 
   (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
     (e.Indent)
@@ -142,8 +142,8 @@ GenCommand {
 
   (e.Indent) (CmdBrackets s.Direction s.BracketNumber s.InnerBrackets) =
     (e.Indent)
-    (e.Indent 'refalrts::Iter ' <BracketsVar-B s.InnerBrackets> ' = 0;')
-    (e.Indent 'refalrts::Iter ' <BracketsVar-E s.InnerBrackets> ' = 0;')
+    (e.Indent 'struct r05_Node *' <BracketsVar-B s.InnerBrackets> ' = 0;')
+    (e.Indent 'struct r05_Node *' <BracketsVar-E s.InnerBrackets> ' = 0;')
     <PrintMatchBrackets (e.Indent) s.Direction s.BracketNumber s.InnerBrackets>;
 
   (e.Indent) (CmdEmpty s.Direction s.BracketNumber) =
@@ -187,11 +187,11 @@ GenCommand {
   (e.Indent) (CmdSave s.OldBracketNumber s.NewBracketNumber) =
     (e.Indent)
     (e.Indent
-      'refalrts::Iter ' <BracketsVar-B s.NewBracketNumber>
+      'struct r05_Node *' <BracketsVar-B s.NewBracketNumber>
       ' = ' <BracketsVar-B s.OldBracketNumber> ';'
     )
     (e.Indent
-      'refalrts::Iter ' <BracketsVar-E s.NewBracketNumber>
+      'struct r05_Node *' <BracketsVar-E s.NewBracketNumber>
       ' = ' <BracketsVar-E s.OldBracketNumber> ';'
     );
 
@@ -199,7 +199,7 @@ GenCommand {
     (e.Indent)
     ()
     (e.Indent 'refalrts::reset_allocator();')
-    (e.Indent 'refalrts::Iter res = arg_begin;');
+    (e.Indent 'struct r05_Node *res = arg_begin;');
 
   (e.Indent) (CmdCopyEVar s.Usings 'e' e.Index) =
     (e.Indent)
@@ -219,8 +219,8 @@ GenCommand {
 
   (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
     (e.Indent)
-    (e.Indent 'refalrts::Iter ' <PrintElemVar s.StringNumber> ' = 0;')
-    (e.Indent 'refalrts::Iter ' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
+    (e.Indent 'struct r05_Node *' <PrintElemVar s.StringNumber> ' = 0;')
+    (e.Indent 'struct r05_Node *' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
     (e.Indent
       'if( ! refalrts::alloc_chars( ' <PrintStringVar s.StringNumber> ', '
       '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ') )'
@@ -229,7 +229,7 @@ GenCommand {
 
   (e.Indent) (CmdAllocateElem s.ElemNumber e.ElemInfo) =
     (e.Indent)
-    (e.Indent 'refalrts::Iter ' <PrintElemVar s.ElemNumber> ' = 0;')
+    (e.Indent 'struct r05_Node *' <PrintElemVar s.ElemNumber> ' = 0;')
     <PrintAllocateElem (e.Indent) s.ElemNumber e.ElemInfo>;
 
   (e.Indent) (CmdLinkBrackets s.Left s.Right) =
@@ -274,7 +274,7 @@ GenCommand {
     (e.Indent)
     (e.Indent 'refalrts::use( res );')
     (e.Indent 'refalrts::splice_to_freelist( arg_begin, arg_end );')
-    (e.Indent 'return refalrts::cSuccess;');
+    (e.Indent 'return r05_cSuccess;');
 }
 
 EscapeString {
