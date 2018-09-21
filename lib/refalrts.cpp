@@ -1325,7 +1325,7 @@ void stop_e_loop();
 #ifndef DONT_PRINT_STATISTICS
 struct TimeItem {
   const char *name;
-  unsigned long counter;
+  clock_t counter;
 };
 
 int reverse_compare(const void *left_void, const void *right_void);
