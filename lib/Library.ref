@@ -15,9 +15,9 @@ namespace refalrts{
 
 namespace allocator {
 
-bool alloc_node(struct r05_Node *&node);
+bool alloc_node(struct r05_node *&node);
 
-struct r05_Node *free_ptr();
+struct r05_node *free_ptr();
 
 } // namespace allocator
 
@@ -39,20 +39,20 @@ $EENUM Success, Fails, True, False;
 %%
 
 #define ARITHM_OP(op, check) \
-  struct r05_Node *func_name = arg_begin->next; \
+  struct r05_node *func_name = arg_begin->next; \
   \
-  struct r05_Node *sX = func_name->next; \
-  if (sX->tag != r05_cDataNumber) { \
-    return r05_cRecognitionImpossible; \
+  struct r05_node *sX = func_name->next; \
+  if (sX->tag != R05_DATATAG_NUMBER) { \
+    return R05_RECOGNITION_IMPOSSIBLE; \
   } \
   \
-  struct r05_Node *sY = sX->next; \
-  if (sY->tag != r05_cDataNumber) { \
-    return r05_cRecognitionImpossible; \
+  struct r05_node *sY = sX->next; \
+  if (sY->tag != R05_DATATAG_NUMBER) { \
+    return R05_RECOGNITION_IMPOSSIBLE; \
   } \
   \
   if (sY->next != arg_end) { \
-    return r05_cRecognitionImpossible; \
+    return R05_RECOGNITION_IMPOSSIBLE; \
   } \
   \
   check \
@@ -62,12 +62,12 @@ $EENUM Success, Fails, True, False;
   refalrts::splice_to_freelist(arg_begin, func_name); \
   refalrts::splice_to_freelist(sY, arg_end); \
   \
-  return r05_cSuccess;
+  return R05_SUCCESS;
 
 #define NO_CHECK
 #define CHECK_ZERODIV \
   if (sY->info.number == 0) { \
-    return r05_cRecognitionImpossible; \
+    return R05_RECOGNITION_IMPOSSIBLE; \
   }
 
 %%
@@ -108,40 +108,40 @@ $ENTRY Mod {
 
 
 %%
-enum r05_FnResult write_to_stream(
-  FILE *out, struct r05_Node *str_begin, struct r05_Node *str_end
+enum r05_fnresult write_to_stream(
+  FILE *out, struct r05_node *str_begin, struct r05_node *str_end
 ) {
   if (ferror(out)) {
-    return r05_cRecognitionImpossible;
+    return R05_RECOGNITION_IMPOSSIBLE;
   }
 
   int printf_res;
 
   for (
-    struct r05_Node *p = str_begin;
+    struct r05_node *p = str_begin;
     ! refalrts::empty_seq(p, str_end);
     refalrts::move_left(p, str_end)
   ) {
     switch(p->tag) {
-      case r05_cDataChar: {
+      case R05_DATATAG_CHAR: {
         printf_res = fprintf(out, "%c", p->info.char_);
         if (printf_res < 0) {
-          return r05_cRecognitionImpossible;
+          return R05_RECOGNITION_IMPOSSIBLE;
         } else {
           break;
         }
       }
 
-      case r05_cDataNumber: {
+      case R05_DATATAG_NUMBER: {
         printf_res = fprintf(out, "%lu ", p->info.number);
         if (printf_res < 0) {
-          return r05_cRecognitionImpossible;
+          return R05_RECOGNITION_IMPOSSIBLE;
         } else {
           break;
         }
       }
 
-      case r05_cDataFunction: {
+      case R05_DATATAG_FUNCTION: {
         if (p->info.function.name[0] != '\0') {
           printf_res = fprintf(out, "%s ", p->info.function.name);
         } else {
@@ -149,34 +149,34 @@ enum r05_FnResult write_to_stream(
         }
 
         if (printf_res < 0) {
-          return r05_cRecognitionImpossible;
+          return R05_RECOGNITION_IMPOSSIBLE;
         } else {
           break;
         }
       }
 
-      case r05_cDataOpenBracket: {
+      case R05_DATATAG_OPEN_BRACKET: {
         printf_res = fprintf(out, "(");
         if (printf_res < 0) {
-          return r05_cRecognitionImpossible;
+          return R05_RECOGNITION_IMPOSSIBLE;
         } else {
           break;
         }
       }
 
-      case r05_cDataCloseBracket: {
+      case R05_DATATAG_CLOSE_BRACKET: {
         printf_res = fprintf(out, ")");
         if (printf_res < 0) {
-          return r05_cRecognitionImpossible;
+          return R05_RECOGNITION_IMPOSSIBLE;
         } else {
           break;
         }
       }
 
-      case r05_cDataFile: {
+      case R05_DATATAG_FILE: {
         printf_res = fprintf(out, "*%p", p->info.file);
         if (printf_res < 0) {
-          return r05_cRecognitionImpossible;
+          return R05_RECOGNITION_IMPOSSIBLE;
         } else {
           break;
         }
@@ -189,9 +189,9 @@ enum r05_FnResult write_to_stream(
 
   printf_res = fprintf(out, "\n");
   if (printf_res < 0) {
-    return r05_cRecognitionImpossible;
+    return R05_RECOGNITION_IMPOSSIBLE;
   } else {
-    return r05_cSuccess;
+    return R05_SUCCESS;
   }
 }
 %%
@@ -200,23 +200,23 @@ enum r05_FnResult write_to_stream(
 $ENTRY WriteLine {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *eLine_b_1;
-    struct r05_Node *eLine_e_1;
+    struct r05_node *eLine_b_1;
+    struct r05_node *eLine_e_1;
     eLine_b_1 = bb_0;
     refalrts::use(eLine_b_1);
     eLine_e_1 = be_0;
     refalrts::use(eLine_e_1);
 
-    enum r05_FnResult fnres =
+    enum r05_fnresult fnres =
       write_to_stream(stdout, eLine_b_1, eLine_e_1);
 
-    if (fnres != r05_cSuccess)
+    if (fnres != R05_SUCCESS)
       return fnres;
 
     refalrts::reset_allocator();
@@ -224,57 +224,57 @@ $ENTRY WriteLine {
     return fnres;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY FWriteLine {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sFileHandle_1;
-    struct r05_Node *eLine_b_1;
-    struct r05_Node *eLine_e_1;
+    struct r05_node *sFileHandle_1;
+    struct r05_node *eLine_b_1;
+    struct r05_node *eLine_e_1;
     // s.FileHandle e.Line
     if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
       break;
-    if (sFileHandle_1->tag != r05_cDataFile)
+    if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
     eLine_b_1 = bb_0;
     refalrts::use(eLine_b_1);
     eLine_e_1 = be_0;
     refalrts::use(eLine_e_1);
 
-    enum r05_FnResult write_result =
+    enum r05_fnresult write_result =
       write_to_stream(
         static_cast<FILE*>(sFileHandle_1->info.file), eLine_b_1, eLine_e_1
       );
 
-    if (write_result != r05_cSuccess)
+    if (write_result != R05_SUCCESS)
       return write_result;
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
     refalrts::splice_stvar(res, sFileHandle_1);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 %%
-enum r05_FnResult read_from_stream(
-  FILE *input, struct r05_Node *&begin, struct r05_Node *&end
+enum r05_fnresult read_from_stream(
+  FILE *input, struct r05_node *&begin, struct r05_node *&end
 ) {
-  struct r05_Node *before_begin = refalrts::allocator::free_ptr()->prev;
-  struct r05_Node *cur_char_node = 0;
+  struct r05_node *before_begin = refalrts::allocator::free_ptr()->prev;
+  struct r05_node *cur_char_node = 0;
 
   int cur_char;
 
@@ -282,7 +282,7 @@ enum r05_FnResult read_from_stream(
     cur_char = getc(input);
     if (EOF == cur_char) {
       if (! refalrts::alloc_number(cur_char_node, 0UL)) {
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
       }
       break;
     } else if ('\n' == cur_char) {
@@ -294,7 +294,7 @@ enum r05_FnResult read_from_stream(
         начинаться с before_begin->next.
       */
       if (! refalrts::alloc_char(cur_char_node, static_cast<char>(cur_char))) {
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
       }
     }
   }
@@ -307,15 +307,15 @@ enum r05_FnResult read_from_stream(
     end = 0;
   }
 
-  return r05_cSuccess;
+  return R05_SUCCESS;
 }
 %%
 
 $ENTRY ReadLine {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
@@ -324,64 +324,64 @@ $ENTRY ReadLine {
       break;
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
 
-    struct r05_Node *str_begin, *str_end;
+    struct r05_node *str_begin, *str_end;
 
-    enum r05_FnResult fn_result = read_from_stream(stdin, str_begin, str_end);
+    enum r05_fnresult fn_result = read_from_stream(stdin, str_begin, str_end);
 
-    if (fn_result != r05_cSuccess)
+    if (fn_result != R05_SUCCESS)
       return fn_result;
 
     res = refalrts::splice_evar(res, str_begin, str_end);
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY FReadLine {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sFileHandle_1;
+    struct r05_node *sFileHandle_1;
     // s.FileHandle
     if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
       break;
-    if (sFileHandle_1->tag != r05_cDataFile)
+    if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
 
-    struct r05_Node *str_begin, *str_end;
+    struct r05_node *str_begin, *str_end;
 
-    enum r05_FnResult fn_result =
+    enum r05_fnresult fn_result =
       read_from_stream(
         static_cast<FILE*>(sFileHandle_1->info.file), str_begin, str_end
       );
 
-    if (fn_result != r05_cSuccess)
+    if (fn_result != R05_SUCCESS)
       return fn_result;
 
     res = refalrts::splice_evar(res, str_begin, str_end);
     res = refalrts::splice_stvar(res, sFileHandle_1);
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
@@ -389,8 +389,8 @@ $ENTRY FReadLine {
 %%
 namespace {
 
-enum r05_FnResult string_from_seq(
-  std::vector<char>& string, struct r05_Node *begin, struct r05_Node *end
+enum r05_fnresult string_from_seq(
+  std::vector<char>& string, struct r05_node *begin, struct r05_node *end
 ) {
   std::vector<char> result;
 
@@ -420,10 +420,10 @@ enum r05_FnResult string_from_seq(
   if (refalrts::empty_seq(begin, end)) {
     result.push_back('\0');
     string.swap(result);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } else {
     // здесь begin->tag != cDataChar
-    return r05_cRecognitionImpossible;
+    return R05_RECOGNITION_IMPOSSIBLE;
   }
 }
 
@@ -434,14 +434,14 @@ enum r05_FnResult string_from_seq(
 $ENTRY FOpen {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *eFileName_b_1;
-    struct r05_Node *eFileName_e_1;
+    struct r05_node *eFileName_b_1;
+    struct r05_node *eFileName_e_1;
 
     const char *mode;
 
@@ -460,54 +460,54 @@ $ENTRY FOpen {
 
     std::vector<char> filename;
 
-    enum r05_FnResult fname_read =
+    enum r05_fnresult fname_read =
       string_from_seq(filename, eFileName_b_1, eFileName_e_1);
 
-    if (r05_cSuccess != fname_read)
+    if (R05_SUCCESS != fname_read)
       return fname_read;
 
     if (filename.empty())
-      return r05_cRecognitionImpossible;
+      return R05_RECOGNITION_IMPOSSIBLE;
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
 
-    struct r05_Node *file_ptr = 0;
+    struct r05_node *file_ptr = 0;
     if (! refalrts::allocator::alloc_node(file_ptr))
-      return r05_cNoMemory;
+      return R05_NO_MEMORY;
 
-    file_ptr->tag = r05_cDataFile;
+    file_ptr->tag = R05_DATATAG_FILE;
 
     if (FILE *f = fopen(&filename[0], mode)) {
       file_ptr->info.file = f;
     } else {
-      return r05_cRecognitionImpossible;
+      return R05_RECOGNITION_IMPOSSIBLE;
     }
 
     res = refalrts::splice_elem(res, file_ptr);
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY FClose {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sFileHandle_1;
+    struct r05_node *sFileHandle_1;
     // s.FileHandle
     if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
       break;
-    if (sFileHandle_1->tag != r05_cDataFile)
+    if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
@@ -516,19 +516,19 @@ $ENTRY FClose {
       fclose(static_cast<FILE*>(sFileHandle_1->info.file));
 
     if (EOF == fclose_res) {
-      return r05_cRecognitionImpossible;
+      return R05_RECOGNITION_IMPOSSIBLE;
     } else {
       /* Ничего не делаем */;
     }
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
@@ -547,17 +547,17 @@ extern int g_argc;
 $ENTRY Arg {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sParamNumber_1;
+    struct r05_node *sParamNumber_1;
     // s.ParamNumber
     if (! refalrts::svar_left(sParamNumber_1, bb_0, be_0))
       break;
-    if (sParamNumber_1->tag != r05_cDataNumber)
+    if (sParamNumber_1->tag != R05_DATATAG_NUMBER)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
@@ -566,35 +566,35 @@ $ENTRY Arg {
 
     int arg_number = sParamNumber_1->info.number;
 
-    struct r05_Node *res_begin = 0;
-    struct r05_Node *res_end = 0;
+    struct r05_node *res_begin = 0;
+    struct r05_node *res_end = 0;
 
     if (arg_number < g_argc) {
       if (! refalrts::alloc_string(res_begin, res_end, g_argv[arg_number]))
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       refalrts::splice_evar(arg_begin, res_begin, res_end);
     }
 
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY ExistFile {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *eFileName_b_1;
-    struct r05_Node *eFileName_e_1;
+    struct r05_node *eFileName_b_1;
+    struct r05_node *eFileName_e_1;
     // e.FileName
     eFileName_b_1 = bb_0;
     refalrts::use(eFileName_b_1);
@@ -603,50 +603,50 @@ $ENTRY ExistFile {
 
     std::vector<char> fname;
 
-    enum r05_FnResult fname_res =
+    enum r05_fnresult fname_res =
       string_from_seq(fname, eFileName_b_1, eFileName_e_1);
 
-    if (fname_res != r05_cSuccess)
+    if (fname_res != R05_SUCCESS)
       return fname_res;
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
 
-    struct r05_Node *ans = 0;
+    struct r05_node *ans = 0;
     if (FILE *f = fopen(&fname[0], "r")) {
       // Файл существует
       fclose(f);
 
       if (! refalrts::alloc_name(ans, True, "True")) {
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
       }
     } else {
       // Файл по-видимому не существует
       if (! refalrts::alloc_name(ans, False, "False")) {
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
       }
     }
 
     res = refalrts::splice_elem(res, ans);
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY GetEnv {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
-    struct r05_Node *eEnvName_b_1;
-    struct r05_Node *eEnvName_e_1;
+    struct r05_node *eEnvName_b_1;
+    struct r05_node *eEnvName_e_1;
     // e.EnvName
     eEnvName_b_1 = bb_0;
     refalrts::use(eEnvName_b_1);
@@ -655,10 +655,10 @@ $ENTRY GetEnv {
 
     std::vector<char> envname;
 
-    enum r05_FnResult envname_res =
+    enum r05_fnresult envname_res =
       string_from_seq(envname, eEnvName_b_1, eEnvName_e_1);
 
-    if (envname_res != r05_cSuccess)
+    if (envname_res != R05_SUCCESS)
       return envname_res;
 
     refalrts::reset_allocator();
@@ -666,46 +666,46 @@ $ENTRY GetEnv {
     const char *envres = getenv(& envname[0]);
 
     if (envres != 0) {
-      struct r05_Node *env_begin;
-      struct r05_Node *env_end;
+      struct r05_node *env_begin;
+      struct r05_node *env_end;
 
       if (! refalrts::alloc_string(env_begin, env_end, envres))
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       refalrts::splice_evar(arg_begin, env_begin, env_end);
 
-      //struct r05_Node *char_pos;
+      //struct r05_node *char_pos;
       //
       //for (const char *env = envres; *env != '\0'; ++ env) {
       //  if (! refalrts::alloc_char(char_pos, *env))
-      //    return r05_cNoMemory;
+      //    return R05_NO_MEMORY;
       //
       //  refalrts::splice_elem(res, char_pos);
       //}
     }
 
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY Exit {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sCode_1;
+    struct r05_node *sCode_1;
     // s.Code
     if (! refalrts::svar_left(sCode_1, bb_0, be_0))
       break;
-    if (sCode_1->tag != r05_cDataNumber)
+    if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
@@ -714,24 +714,24 @@ $ENTRY Exit {
 
     refalrts::reset_allocator();
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cExit;
+    return R05_EXIT;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY System {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *eCommand_b_1;
-    struct r05_Node *eCommand_e_1;
+    struct r05_node *eCommand_b_1;
+    struct r05_node *eCommand_e_1;
     // e.Command
     eCommand_b_1 = bb_0;
     refalrts::use(eCommand_b_1);
@@ -740,10 +740,10 @@ $ENTRY System {
 
     std::vector<char> command;
 
-    enum r05_FnResult read_res =
+    enum r05_fnresult read_res =
       string_from_seq(command, eCommand_b_1, eCommand_e_1);
 
-    if (read_res != r05_cSuccess)
+    if (read_res != R05_SUCCESS)
       return read_res;
 
     fflush(stdout);
@@ -752,13 +752,13 @@ $ENTRY System {
     system(&command[0]);
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
@@ -767,14 +767,14 @@ $ENTRY System {
 $ENTRY IntFromStr {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *eNumber_b_1;
-    struct r05_Node *eNumber_e_1;
+    struct r05_node *eNumber_b_1;
+    struct r05_node *eNumber_e_1;
     // e.NoNumber
     eNumber_b_1 = bb_0;
     refalrts::use(eNumber_b_1);
@@ -783,26 +783,26 @@ $ENTRY IntFromStr {
 
     bool start_is_digit =
       ! refalrts::empty_seq(eNumber_b_1, eNumber_e_1)
-      && (r05_cDataChar == eNumber_b_1->tag)
+      && (R05_DATATAG_CHAR == eNumber_b_1->tag)
       && isdigit(eNumber_b_1->info.char_);
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
 
     if (! start_is_digit) {
-      struct r05_Node *fail_pos = 0;
+      struct r05_node *fail_pos = 0;
       if (! refalrts::alloc_name(fail_pos, Fails, "Fails"))
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
       res = refalrts::splice_elem(res, fail_pos);
     } else {
-      r05_Number acc = 0;
+      r05_number acc = 0;
 
       for ( ; ; ) {
         if (refalrts::empty_seq(eNumber_b_1, eNumber_e_1)) {
           break;
-        } else if (eNumber_b_1->tag != r05_cDataChar) {
+        } else if (eNumber_b_1->tag != R05_DATATAG_CHAR) {
           break;
         } else if (! isdigit(eNumber_b_1->info.char_)) {
           break;
@@ -813,14 +813,14 @@ $ENTRY IntFromStr {
         refalrts::move_left(eNumber_b_1, eNumber_e_1);
       }
 
-      struct r05_Node *success_pos = 0;
-      struct r05_Node *number_pos = 0;
+      struct r05_node *success_pos = 0;
+      struct r05_node *number_pos = 0;
 
       if (! refalrts::alloc_name(success_pos, Success, "Success"))
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       if (! refalrts::alloc_number(number_pos, acc))
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
       res = refalrts::splice_elem(res, number_pos);
@@ -829,39 +829,39 @@ $ENTRY IntFromStr {
 
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY StrFromInt {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sNumber_1;
+    struct r05_node *sNumber_1;
     // s.Number
     if (! refalrts::svar_left(sNumber_1, bb_0, be_0))
       break;
-    if (sNumber_1->tag != r05_cDataNumber)
+    if (sNumber_1->tag != R05_DATATAG_NUMBER)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
+    struct r05_node *res = arg_begin;
 
-    struct r05_Node *char_pos = 0;
-    if (r05_Number num = sNumber_1->info.number) {
+    struct r05_node *char_pos = 0;
+    if (r05_number num = sNumber_1->info.number) {
       // Длина десятичного числа = 0,3 * длина двоичного числа,
       // т.к. lg(2) = 0,3. Хрен с ним, что много. Главное, что не мало.
-      enum { cMaxNumberLen = 8 * sizeof(r05_Number) * 3 / 10 + 2 };
+      enum { cMaxNumberLen = 8 * sizeof(r05_number) * 3 / 10 + 2 };
 
       char buffer[cMaxNumberLen + 1] = { 0 };
       char *lim_digit = buffer + cMaxNumberLen;
@@ -873,46 +873,46 @@ $ENTRY StrFromInt {
         num /= 10;
       }
 
-      struct r05_Node *num_begin;
-      struct r05_Node *num_end;
+      struct r05_node *num_begin;
+      struct r05_node *num_end;
       bool allocated = refalrts::alloc_chars(
         num_begin, num_end, cur_digit, unsigned(lim_digit - cur_digit)
       );
 
       if (! allocated)
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       refalrts::splice_evar(res, num_begin, num_end);
     } else {
       if (! refalrts::alloc_char(char_pos, '0'))
-        return r05_cNoMemory;
+        return R05_NO_MEMORY;
 
       refalrts::splice_elem(res, char_pos);
     }
 
     refalrts::splice_to_freelist(arg_begin, arg_end);
 
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY Chr {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sCode_1;
+    struct r05_node *sCode_1;
     // s.Code
     if (! refalrts::svar_left(sCode_1, bb_0, be_0))
       break;
-    if (sCode_1->tag != r05_cDataNumber)
+    if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
@@ -920,82 +920,82 @@ $ENTRY Chr {
     char result = static_cast<char>(sCode_1->info.number);
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
-    struct r05_Node *n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if (! refalrts::alloc_char(n0, result))
-      return r05_cNoMemory;
+      return R05_NO_MEMORY;
     res = refalrts::splice_elem(res, n0);
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY Ord {
 %%
   do {
-    struct r05_Node *bb_0 = arg_begin;
-    struct r05_Node *be_0 = arg_end;
+    struct r05_node *bb_0 = arg_begin;
+    struct r05_node *be_0 = arg_end;
     refalrts::move_left(bb_0, be_0);
     refalrts::move_left(bb_0, be_0);
     refalrts::move_right(bb_0, be_0);
 
-    struct r05_Node *sChar_1;
+    struct r05_node *sChar_1;
     // s.Char
     if (! refalrts::svar_left(sChar_1, bb_0, be_0))
       break;
-    if (sChar_1->tag != r05_cDataChar)
+    if (sChar_1->tag != R05_DATATAG_CHAR)
       break;
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
 
-    r05_Number result = static_cast<unsigned char>(sChar_1->info.char_);
+    r05_number result = static_cast<unsigned char>(sChar_1->info.char_);
 
     refalrts::reset_allocator();
-    struct r05_Node *res = arg_begin;
-    struct r05_Node *n0 = 0;
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
     if (! refalrts::alloc_number(n0, result))
-      return r05_cNoMemory;
+      return R05_NO_MEMORY;
     res = refalrts::splice_elem(res, n0);
     refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
-    return r05_cSuccess;
+    return R05_SUCCESS;
   } while (0);
 
-  return r05_cRecognitionImpossible;
+  return R05_RECOGNITION_IMPOSSIBLE;
 %%
 }
 
 $ENTRY Compare {
 %%
-  struct r05_Node *func_name = arg_begin->next;
+  struct r05_node *func_name = arg_begin->next;
 
-  struct r05_Node *sX = func_name->next;
-  if (sX->tag != r05_cDataNumber) {
-    return r05_cRecognitionImpossible;
+  struct r05_node *sX = func_name->next;
+  if (sX->tag != R05_DATATAG_NUMBER) {
+    return R05_RECOGNITION_IMPOSSIBLE;
   }
 
-  struct r05_Node *sY = sX->next;
-  if (sY->tag != r05_cDataNumber) {
-    return r05_cRecognitionImpossible;
+  struct r05_node *sY = sX->next;
+  if (sY->tag != R05_DATATAG_NUMBER) {
+    return R05_RECOGNITION_IMPOSSIBLE;
   }
 
   if (sY->next != arg_end) {
-    return r05_cRecognitionImpossible;
+    return R05_RECOGNITION_IMPOSSIBLE;
   }
 
   sX->info.char_ =
     sX->info.number < sY->info.number ? '-' :
     sX->info.number > sY->info.number ? '+' :
     '0';
-  sX->tag = r05_cDataChar;
+  sX->tag = R05_DATATAG_CHAR;
 
   refalrts::splice_to_freelist(arg_begin, func_name);
   refalrts::splice_to_freelist(sY, arg_end);
 
-  return r05_cSuccess;
+  return R05_SUCCESS;
 %%
 }

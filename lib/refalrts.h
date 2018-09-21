@@ -6,47 +6,47 @@ extern "C" {
 #endif  /* __cplusplus */
 
 
-enum r05_FnResult {
-  r05_cSuccess = 0,
-  r05_cRecognitionImpossible = 1,
-  r05_cNoMemory = 2,
-  r05_cExit = 3,
+enum r05_fnresult {
+  R05_SUCCESS = 0,
+  R05_RECOGNITION_IMPOSSIBLE = 1,
+  R05_NO_MEMORY = 2,
+  R05_EXIT = 3,
 };
 
-enum r05_DataTag {
-  r05_cDataIllegal = 0,
-  r05_cDataChar,
-  r05_cDataFile,
-  r05_cDataFunction,
-  r05_cDataNumber,
+enum r05_datatag {
+  R05_DATATAG_ILLEGAL = 0,
+  R05_DATATAG_CHAR,
+  R05_DATATAG_FILE,
+  R05_DATATAG_FUNCTION,
+  R05_DATATAG_NUMBER,
 
-  r05_cDataOpenBracket,
-  r05_cDataCloseBracket,
-  r05_cDataOpenCall,
-  r05_cDataCloseCall,
+  R05_DATATAG_OPEN_BRACKET,
+  R05_DATATAG_CLOSE_BRACKET,
+  R05_DATATAG_OPEN_CALL,
+  R05_DATATAG_CLOSE_CALL,
 };
 
-typedef r05_FnResult (*r05_FunctionPtr) (
-  struct r05_Node *begin, struct r05_Node *end
+typedef r05_fnresult (*r05_function_ptr) (
+  struct r05_node *begin, struct r05_node *end
 );
 
-struct r05_Function {
-  r05_FunctionPtr ptr;
+struct r05_function {
+  r05_function_ptr ptr;
   const char *name;
 };
 
-typedef unsigned long r05_Number;
+typedef unsigned long r05_number;
 
-struct r05_Node {
-  struct r05_Node *prev;
-  struct r05_Node *next;
-  enum r05_DataTag tag;
+struct r05_node {
+  struct r05_node *prev;
+  struct r05_node *next;
+  enum r05_datatag tag;
   union {
     char char_;
     void *file;
-    struct r05_Function function;
-    r05_Number number;
-    struct r05_Node *link;
+    struct r05_function function;
+    r05_number number;
+    struct r05_node *link;
   } info;
 };
 
@@ -66,31 +66,31 @@ void r05_switch_default_violation_impl(
 namespace refalrts {
 
 // ↓↓↓ DELETE
-typedef ::r05_FnResult FnResult;
+typedef ::r05_fnresult FnResult;
 
-const FnResult cRecognitionImpossible = ::r05_cRecognitionImpossible;
-const FnResult cNoMemory = ::r05_cNoMemory;
-const FnResult cSuccess = ::r05_cSuccess;
-const FnResult cExit = ::r05_cExit;
+const FnResult cRecognitionImpossible = ::R05_RECOGNITION_IMPOSSIBLE;
+const FnResult cNoMemory = ::R05_NO_MEMORY;
+const FnResult cSuccess = ::R05_SUCCESS;
+const FnResult cExit = ::R05_EXIT;
 
-typedef ::r05_DataTag DataTag;
-const DataTag cDataIllegal      = ::r05_cDataIllegal;
-const DataTag cDataChar         = ::r05_cDataChar;
-const DataTag cDataNumber       = ::r05_cDataNumber;
-const DataTag cDataFunction     = ::r05_cDataFunction;
-const DataTag cDataOpenBracket  = ::r05_cDataOpenBracket;
-const DataTag cDataCloseBracket = ::r05_cDataCloseBracket;
-const DataTag cDataOpenCall     = ::r05_cDataOpenCall;
-const DataTag cDataCloseCall    = ::r05_cDataCloseCall;
-const DataTag cDataFile         = ::r05_cDataFile;
+typedef ::r05_datatag DataTag;
+const DataTag cDataIllegal      = ::R05_DATATAG_ILLEGAL;
+const DataTag cDataChar         = ::R05_DATATAG_CHAR;
+const DataTag cDataNumber       = ::R05_DATATAG_NUMBER;
+const DataTag cDataFunction     = ::R05_DATATAG_FUNCTION;
+const DataTag cDataOpenBracket  = ::R05_DATATAG_OPEN_BRACKET;
+const DataTag cDataCloseBracket = ::R05_DATATAG_CLOSE_BRACKET;
+const DataTag cDataOpenCall     = ::R05_DATATAG_OPEN_CALL;
+const DataTag cDataCloseCall    = ::R05_DATATAG_CLOSE_CALL;
+const DataTag cDataFile         = ::R05_DATATAG_FILE;
 
-typedef struct ::r05_Node Node;
+typedef struct ::r05_node Node;
 typedef Node *NodePtr;
 typedef Node *Iter;
-typedef ::r05_FunctionPtr RefalFunctionPtr;
+typedef ::r05_function_ptr RefalFunctionPtr;
 typedef const char *RefalFuncName;
-typedef struct r05_Function RefalFunction;
-typedef ::r05_Number RefalNumber;
+typedef struct r05_function RefalFunction;
+typedef ::r05_number RefalNumber;
 
 #define char_info info.char_
 #define number_info info.number
@@ -99,82 +99,82 @@ typedef ::r05_Number RefalNumber;
 #define file_info info.file
 // ↑↑↑ DELETE
 
-extern void use(struct r05_Node *&);
+extern void use(struct r05_node *&);
 
 // Операции распознавания образца
 
-extern void move_left(struct r05_Node *&begin, struct r05_Node *&end);
-extern void move_right(struct r05_Node *&begin, struct r05_Node *&end);
-extern bool empty_seq(struct r05_Node *begin, struct r05_Node *end);
+extern void move_left(struct r05_node *&begin, struct r05_node *&end);
+extern void move_right(struct r05_node *&begin, struct r05_node *&end);
+extern bool empty_seq(struct r05_node *begin, struct r05_node *end);
 
 extern bool function_left(
-  r05_FunctionPtr func, struct r05_Node *&first, struct r05_Node *&last
+  r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
 );
 extern bool function_right(
-  r05_FunctionPtr func, struct r05_Node *&first, struct r05_Node *&last
+  r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
 );
 
-extern bool char_left(char ch, struct r05_Node *&first, struct r05_Node *&last);
-extern bool char_right(char ch, struct r05_Node *&first, struct r05_Node *&last);
+extern bool char_left(char ch, struct r05_node *&first, struct r05_node *&last);
+extern bool char_right(char ch, struct r05_node *&first, struct r05_node *&last);
 
 extern bool number_left(
-  r05_Number num, struct r05_Node *&first, struct r05_Node *&last
+  r05_number num, struct r05_node *&first, struct r05_node *&last
 );
 extern bool number_right(
-  r05_Number num, struct r05_Node *&first, struct r05_Node *&last
+  r05_number num, struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool brackets_left(
-  struct r05_Node *&res_first, struct r05_Node *&res_last,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&res_first, struct r05_node *&res_last,
+  struct r05_node *&first, struct r05_node *&last
 );
 extern bool brackets_right(
-  struct r05_Node *&res_first, struct r05_Node *&res_last,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&res_first, struct r05_node *&res_last,
+  struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool svar_left(
-  struct r05_Node *&svar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
 );
 extern bool svar_right(
-  struct r05_Node *&svar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool tvar_left(
-  struct r05_Node *&tvar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
 );
 extern bool tvar_right(
-  struct r05_Node *&tvar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool repeated_stvar_left(
-  struct r05_Node *&stvar, struct r05_Node *stvar_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&stvar, struct r05_node *stvar_sample,
+  struct r05_node *&first, struct r05_node *&last
 );
 extern bool repeated_stvar_right(
-  struct r05_Node *&stvar, struct r05_Node *stvar_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&stvar, struct r05_node *stvar_sample,
+  struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool repeated_evar_left(
-  struct r05_Node *&evar_b, struct r05_Node *&evar_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool repeated_evar_right(
-  struct r05_Node *&evar_b, struct r05_Node *&evar_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node *&first, struct r05_node *&last
 );
 
 extern bool open_evar_advance(
-  struct r05_Node *&evar_b, struct r05_Node *&evar_e,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *&first, struct r05_node *&last
 );
 
 extern unsigned read_chars(
-  char buffer[], unsigned buflen, struct r05_Node *&first, struct r05_Node *&last
+  char buffer[], unsigned buflen, struct r05_node *&first, struct r05_node *&last
 );
 
 // Операции построения результата
@@ -182,21 +182,21 @@ extern unsigned read_chars(
 extern void reset_allocator();
 
 extern bool copy_evar(
-  struct r05_Node *&evar_res_b, struct r05_Node *&evar_res_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample
+  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 );
 
-extern bool copy_stvar(struct r05_Node *&stvar_res, struct r05_Node *stvar_sample);
+extern bool copy_stvar(struct r05_node *&stvar_res, struct r05_node *stvar_sample);
 
-extern bool alloc_char(struct r05_Node *&res, char ch);
-extern bool alloc_number(struct r05_Node *&res, r05_Number num);
+extern bool alloc_char(struct r05_node *&res, char ch);
+extern bool alloc_number(struct r05_node *&res, r05_number num);
 extern bool alloc_name(
-  struct r05_Node *&res, r05_FunctionPtr func, const char *name = 0
+  struct r05_node *&res, r05_function_ptr func, const char *name = 0
 );
-extern bool alloc_open_bracket(struct r05_Node *&res);
-extern bool alloc_close_bracket(struct r05_Node *&res);
-extern bool alloc_open_call(struct r05_Node *&res);
-extern bool alloc_close_call(struct r05_Node *&res);
+extern bool alloc_open_bracket(struct r05_node *&res);
+extern bool alloc_close_bracket(struct r05_node *&res);
+extern bool alloc_open_call(struct r05_node *&res);
+extern bool alloc_close_call(struct r05_node *&res);
 
 #ifndef alloc_copy_svar
 #define alloc_copy_svar alloc_copy_svar_
@@ -207,31 +207,31 @@ extern bool alloc_close_call(struct r05_Node *&res);
 #endif
 
 extern bool alloc_copy_evar(
-  struct r05_Node *&res,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample
+  struct r05_node *&res,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 );
 extern bool alloc_copy_svar_(
-  struct r05_Node *&svar_res, struct r05_Node *svar_sample
+  struct r05_node *&svar_res, struct r05_node *svar_sample
 );
 
 extern bool alloc_chars(
-  struct r05_Node *&res_b, struct r05_Node *&res_e,
+  struct r05_node *&res_b, struct r05_node *&res_e,
   const char buffer[], unsigned buflen
 );
 extern bool alloc_string(
-  struct r05_Node *&res_b, struct r05_Node *&res_e, const char *string
+  struct r05_node *&res_b, struct r05_node *&res_e, const char *string
 );
 
-extern void push_stack(struct r05_Node *call_bracket);
-extern void link_brackets(struct r05_Node *left, struct r05_Node *right);
+extern void push_stack(struct r05_node *call_bracket);
+extern void link_brackets(struct r05_node *left, struct r05_node *right);
 
-extern struct r05_Node *splice_elem(struct r05_Node *res, struct r05_Node *elem);
-extern struct r05_Node *splice_stvar(struct r05_Node *res, struct r05_Node *var);
-extern struct r05_Node *splice_evar(
-  struct r05_Node *res, struct r05_Node *first, struct r05_Node *last
+extern struct r05_node *splice_elem(struct r05_node *res, struct r05_node *elem);
+extern struct r05_node *splice_stvar(struct r05_node *res, struct r05_node *var);
+extern struct r05_node *splice_evar(
+  struct r05_node *res, struct r05_node *first, struct r05_node *last
 );
-extern void splice_to_freelist(struct r05_Node *first, struct r05_Node *last);
-extern void splice_from_freelist(struct r05_Node *pos);
+extern void splice_to_freelist(struct r05_node *first, struct r05_node *last);
+extern void splice_from_freelist(struct r05_node *pos);
 
 // Профилирование
 
@@ -244,7 +244,7 @@ extern void start_e_loop();
 extern void set_return_code(int retcode);
 extern void use_counter(unsigned& counter);
 
-inline void set_return_code(r05_Number retcode) {
+inline void set_return_code(r05_number retcode) {
   set_return_code(static_cast<int>(retcode));
 }
 
@@ -257,7 +257,7 @@ inline void set_return_code(r05_Number retcode) {
   для того, чтобы не включать сюда лишние заголовочные файлы
   (пусть даже и стандартные).
 */
-void debug_print_expr(void *file, struct r05_Node *first, struct r05_Node *last);
+void debug_print_expr(void *file, struct r05_node *first, struct r05_node *last);
 
 } //namespace refalrts
 

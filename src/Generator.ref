@@ -20,11 +20,11 @@ $EXTERN EscapeChar;
 $EENUM GN-Local, GN-Entry;
 
 FuncArguments {
-  = 'struct r05_Node *arg_begin, struct r05_Node *arg_end';
+  = 'struct r05_node *arg_begin, struct r05_node *arg_end';
 }
 
 NakedArguments {
-  = 'struct r05_Node *, struct r05_Node *';
+  = 'struct r05_node *, struct r05_node *';
 }
 
 TextFromMemoryClass {
@@ -35,7 +35,7 @@ SwGenFnStart {
   s.MemoryClass s.FnArguments e.Name =
     (
       <TextFromMemoryClass s.MemoryClass>
-      'enum r05_FnResult ' e.Name '(' <s.FnArguments> ') {'
+      'enum r05_fnresult ' e.Name '(' <s.FnArguments> ') {'
     );
 }
 
@@ -50,14 +50,14 @@ $ENTRY GenThisIsGeneratedFunction {
 
 $ENTRY GenFnEnd {
   =
-    ('  return (enum r05_FnResult)(')
-    ('    refalrts::cRecognitionImpossible | (__LINE__ << 8)')
+    ('  return (enum r05_fnresult)(')
+    ('    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)')
     ('  );')
     ('}') ();
 }
 
 $ENTRY GenFnEnd-Success {
-  = ('  //return refalrts::cRecognitionImpossible;') ('}') ();
+  = ('  //return R05_RECOGNITION_IMPOSSIBLE;') ('}') ();
 }
 
 $ENTRY GenEnum {
@@ -67,12 +67,12 @@ $ENTRY GenEnum {
 
 $ENTRY GenExtern {
   e.Name =
-    ('extern enum r05_FnResult ' e.Name '(' <FuncArguments> ');');
+    ('extern enum r05_fnresult ' e.Name '(' <FuncArguments> ');');
 }
 
 $ENTRY GenForward {
   e.Name =
-    ('static enum r05_FnResult ' e.Name '(' <FuncArguments> ');');
+    ('static enum r05_fnresult ' e.Name '(' <FuncArguments> ');');
 }
 
 GenCommonHeaders {
@@ -88,8 +88,8 @@ GenCommonTailer {
 $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
-    ('    struct r05_Node *' <BracketsVar-B 0> ' = arg_begin;')
-    ('    struct r05_Node *' <BracketsVar-E 0> ' = arg_end;')
+    ('    struct r05_node *' <BracketsVar-B 0> ' = arg_begin;')
+    ('    struct r05_node *' <BracketsVar-E 0> ' = arg_end;')
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_left( ' <BracketsVars 0> ' );')
     ('    refalrts::move_right( ' <BracketsVars 0> ' );')
@@ -129,12 +129,12 @@ GenCommand {
 
   (e.Indent) (CmdDeclareEVar e.VarInfo) =
     (e.Indent)
-    (e.Indent 'static struct r05_Node *' <PrintEVar-B e.VarInfo> ';')
-    (e.Indent 'static struct r05_Node *' <PrintEVar-E e.VarInfo> ';');
+    (e.Indent 'static struct r05_node *' <PrintEVar-B e.VarInfo> ';')
+    (e.Indent 'static struct r05_node *' <PrintEVar-E e.VarInfo> ';');
 
   (e.Indent) (CmdDeclareVar e.VarInfo) =
     (e.Indent)
-    (e.Indent 'static struct r05_Node *' <PrintVar e.VarInfo> ';');
+    (e.Indent 'static struct r05_node *' <PrintVar e.VarInfo> ';');
 
   (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
     (e.Indent)
@@ -142,8 +142,8 @@ GenCommand {
 
   (e.Indent) (CmdBrackets s.Direction s.BracketNumber s.InnerBrackets) =
     (e.Indent)
-    (e.Indent 'struct r05_Node *' <BracketsVar-B s.InnerBrackets> ' = 0;')
-    (e.Indent 'struct r05_Node *' <BracketsVar-E s.InnerBrackets> ' = 0;')
+    (e.Indent 'struct r05_node *' <BracketsVar-B s.InnerBrackets> ' = 0;')
+    (e.Indent 'struct r05_node *' <BracketsVar-E s.InnerBrackets> ' = 0;')
     <PrintMatchBrackets (e.Indent) s.Direction s.BracketNumber s.InnerBrackets>;
 
   (e.Indent) (CmdEmpty s.Direction s.BracketNumber) =
@@ -187,11 +187,11 @@ GenCommand {
   (e.Indent) (CmdSave s.OldBracketNumber s.NewBracketNumber) =
     (e.Indent)
     (e.Indent
-      'struct r05_Node *' <BracketsVar-B s.NewBracketNumber>
+      'struct r05_node *' <BracketsVar-B s.NewBracketNumber>
       ' = ' <BracketsVar-B s.OldBracketNumber> ';'
     )
     (e.Indent
-      'struct r05_Node *' <BracketsVar-E s.NewBracketNumber>
+      'struct r05_node *' <BracketsVar-E s.NewBracketNumber>
       ' = ' <BracketsVar-E s.OldBracketNumber> ';'
     );
 
@@ -199,7 +199,7 @@ GenCommand {
     (e.Indent)
     ()
     (e.Indent 'refalrts::reset_allocator();')
-    (e.Indent 'struct r05_Node *res = arg_begin;');
+    (e.Indent 'struct r05_node *res = arg_begin;');
 
   (e.Indent) (CmdCopyEVar s.Usings 'e' e.Index) =
     (e.Indent)
@@ -207,7 +207,7 @@ GenCommand {
       'if( ! refalrts::copy_evar( ' <PrintEVars s.Usings 'e' e.Index> ', '
       <PrintEVars <Dec s.Usings> 'e' e.Index> ' ) )'
     )
-    (e.Indent '  return refalrts::cNoMemory;');
+    (e.Indent '  return R05_NO_MEMORY;');
 
   (e.Indent) (CmdCopyVar s.Usings s.Mode e.Index) =
     (e.Indent)
@@ -215,21 +215,21 @@ GenCommand {
       'if( ! refalrts::copy_stvar( ' <PrintVar s.Usings s.Mode e.Index> ', '
       <PrintVar <Dec s.Usings> s.Mode e.Index> ' ) )'
     )
-    (e.Indent '  return refalrts::cNoMemory;');
+    (e.Indent '  return R05_NO_MEMORY;');
 
   (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
     (e.Indent)
-    (e.Indent 'struct r05_Node *' <PrintElemVar s.StringNumber> ' = 0;')
-    (e.Indent 'struct r05_Node *' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
+    (e.Indent 'struct r05_node *' <PrintElemVar s.StringNumber> ' = 0;')
+    (e.Indent 'struct r05_node *' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
     (e.Indent
       'if( ! refalrts::alloc_chars( ' <PrintStringVar s.StringNumber> ', '
       '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ') )'
     )
-    (e.Indent '  return refalrts::cNoMemory;');
+    (e.Indent '  return R05_NO_MEMORY;');
 
   (e.Indent) (CmdAllocateElem s.ElemNumber e.ElemInfo) =
     (e.Indent)
-    (e.Indent 'struct r05_Node *' <PrintElemVar s.ElemNumber> ' = 0;')
+    (e.Indent 'struct r05_node *' <PrintElemVar s.ElemNumber> ' = 0;')
     <PrintAllocateElem (e.Indent) s.ElemNumber e.ElemInfo>;
 
   (e.Indent) (CmdLinkBrackets s.Left s.Right) =
@@ -274,7 +274,7 @@ GenCommand {
     (e.Indent)
     (e.Indent 'refalrts::use( res );')
     (e.Indent 'refalrts::splice_to_freelist( arg_begin, arg_end );')
-    (e.Indent 'return r05_cSuccess;');
+    (e.Indent 'return R05_SUCCESS;');
 }
 
 EscapeString {
@@ -400,7 +400,7 @@ PrintAllocateElem {
       ( <SwAllocator s.ElementType e.Info> )
       ( <SwInfo s.ElementType e.Info> )
     >
-    (e.Indent '  return refalrts::cNoMemory;');
+    (e.Indent '  return R05_NO_MEMORY;');
 }
 
 PrintAllocate-Aux {

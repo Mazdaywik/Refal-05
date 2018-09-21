@@ -17,7 +17,7 @@
 #define SHOW_DEBUG 0
 #endif // ifdef SHOW_DEBUG
 
-void valid_linked_aux(const char *text, struct r05_Node *i) {
+void valid_linked_aux(const char *text, struct r05_node *i) {
   printf("checking %s\n", text);
   if (0 == i) {
     return;
@@ -38,7 +38,7 @@ void valid_linked_aux(const char *text, struct r05_Node *i) {
 
 // Операции распознавания
 
-void refalrts::use(struct r05_Node *&) {
+void refalrts::use(struct r05_node *&) {
   /* Ничего не делаем. Эта функция добавляется, чтобы подавить предупреждение
   компилятора о том, что переменная не используется */;
 }
@@ -50,18 +50,18 @@ void refalrts::use_counter(unsigned&) {
 
 namespace {
 
-bool is_open_bracket(struct r05_Node *node) {
-  return (r05_cDataOpenBracket == node->tag);
+bool is_open_bracket(struct r05_node *node) {
+  return (R05_DATATAG_OPEN_BRACKET == node->tag);
 }
 
-bool is_close_bracket(struct r05_Node *node) {
-  return (r05_cDataCloseBracket == node->tag);
+bool is_close_bracket(struct r05_node *node) {
+  return (R05_DATATAG_CLOSE_BRACKET == node->tag);
 }
 
 } // unnamed namespace
 
 void refalrts::move_left(
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&first, struct r05_node *&last
 ) {
   //assert((first == 0) == (last == 0));
   if (first == 0) assert (last == 0);
@@ -76,7 +76,7 @@ void refalrts::move_left(
 }
 
 void refalrts::move_right(
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&first, struct r05_node *&last
 ) {
   //assert((first == 0) == (last == 0));
   if (first == 0) assert (last == 0);
@@ -90,7 +90,7 @@ void refalrts::move_right(
   }
 }
 
-bool refalrts::empty_seq(struct r05_Node *first, struct r05_Node *last) {
+bool refalrts::empty_seq(struct r05_node *first, struct r05_node *last) {
   //assert((first == 0) == (last == 0));
   if (first == 0) assert (last == 0);
   if (first != 0) assert (last != 0);
@@ -99,13 +99,13 @@ bool refalrts::empty_seq(struct r05_Node *first, struct r05_Node *last) {
 }
 
 bool refalrts::function_left(
-  r05_FunctionPtr fn, struct r05_Node *&first, struct r05_Node *&last
+  r05_function_ptr fn, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (first->tag != r05_cDataFunction) {
+  } else if (first->tag != R05_DATATAG_FUNCTION) {
     return false;
   } else if (first->info.function.ptr != fn) {
     return false;
@@ -116,13 +116,13 @@ bool refalrts::function_left(
 }
 
 bool refalrts::function_right(
-  r05_FunctionPtr fn, struct r05_Node *&first, struct r05_Node *&last
+  r05_function_ptr fn, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataFunction != last->tag) {
+  } else if (R05_DATATAG_FUNCTION != last->tag) {
     return false;
   } else if (last->info.function.ptr != fn) {
     return false;
@@ -133,13 +133,13 @@ bool refalrts::function_right(
 }
 
 bool refalrts::char_left(
-  char ch, struct r05_Node *&first, struct r05_Node *&last
+  char ch, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataChar != first->tag) {
+  } else if (R05_DATATAG_CHAR != first->tag) {
     return false;
   } else if (first->info.char_ != ch) {
     return false;
@@ -150,13 +150,13 @@ bool refalrts::char_left(
 }
 
 bool refalrts::char_right(
-  char ch, struct r05_Node *&first, struct r05_Node *&last
+  char ch, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataChar != last->tag) {
+  } else if (R05_DATATAG_CHAR != last->tag) {
     return false;
   } else if (last->info.char_ != ch) {
     return false;
@@ -168,13 +168,13 @@ bool refalrts::char_right(
 
 
 bool refalrts::number_left(
-  r05_Number num, struct r05_Node *&first, struct r05_Node *&last
+  r05_number num, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataNumber != first->tag) {
+  } else if (R05_DATATAG_NUMBER != first->tag) {
     return false;
   } else if (first->info.number != num) {
     return false;
@@ -185,13 +185,13 @@ bool refalrts::number_left(
 }
 
 bool refalrts::number_right(
-  r05_Number num, struct r05_Node *&first, struct r05_Node *&last
+  r05_number num, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataNumber != last->tag) {
+  } else if (R05_DATATAG_NUMBER != last->tag) {
     return false;
   } else if (last->info.number != num) {
     return false;
@@ -202,18 +202,18 @@ bool refalrts::number_right(
 }
 
 bool refalrts::brackets_left(
-  struct r05_Node *&res_first, struct r05_Node *&res_last,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&res_first, struct r05_node *&res_last,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataOpenBracket != first->tag) {
+  } else if (R05_DATATAG_OPEN_BRACKET != first->tag) {
     return false;
   } else {
-    struct r05_Node *left_bracket = first;
-    struct r05_Node *right_bracket = left_bracket->info.link;
+    struct r05_node *left_bracket = first;
+    struct r05_node *right_bracket = left_bracket->info.link;
 
     if (left_bracket->next != right_bracket) {
       res_first = left_bracket->next;
@@ -235,18 +235,18 @@ bool refalrts::brackets_left(
 }
 
 bool refalrts::brackets_right(
-  struct r05_Node *&res_first, struct r05_Node *&res_last,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&res_first, struct r05_node *&res_last,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
-  } else if (r05_cDataCloseBracket != last->tag) {
+  } else if (R05_DATATAG_CLOSE_BRACKET != last->tag) {
     return false;
   } else {
-    struct r05_Node *right_bracket = last;
-    struct r05_Node *left_bracket = right_bracket->info.link;
+    struct r05_node *right_bracket = last;
+    struct r05_node *left_bracket = right_bracket->info.link;
 
     if (left_bracket->next != right_bracket) {
       res_first = left_bracket->next;
@@ -268,7 +268,7 @@ bool refalrts::brackets_right(
 }
 
 bool refalrts::svar_left(
-  struct r05_Node *&svar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
@@ -284,7 +284,7 @@ bool refalrts::svar_left(
 }
 
 bool refalrts::svar_right(
-  struct r05_Node *&svar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&svar, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
@@ -300,14 +300,14 @@ bool refalrts::svar_right(
 }
 
 bool refalrts::tvar_left(
-  struct r05_Node *&tvar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
   } else if (is_open_bracket(first)) {
-    struct r05_Node *right_bracket = first->info.link;
+    struct r05_node *right_bracket = first->info.link;
 
     tvar = first;
     first = right_bracket;
@@ -321,15 +321,15 @@ bool refalrts::tvar_left(
 }
 
 bool refalrts::tvar_right(
-  struct r05_Node *&tvar, struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&tvar, struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
   if (empty_seq(first, last)) {
     return false;
   } else if (is_close_bracket(last)) {
-    struct r05_Node *right_bracket = last;
-    struct r05_Node *left_bracket = right_bracket->info.link;
+    struct r05_node *right_bracket = last;
+    struct r05_node *left_bracket = right_bracket->info.link;
 
     tvar = left_bracket;
     last = left_bracket;
@@ -345,30 +345,30 @@ bool refalrts::tvar_right(
 namespace {
 
 bool equal_nodes(
-  struct r05_Node *node1, struct r05_Node *node2
+  struct r05_node *node1, struct r05_node *node2
 ) {
   if (node1->tag != node2->tag) {
     return false;
   } else {
     switch (node1->tag) {
-      case r05_cDataChar:
+      case R05_DATATAG_CHAR:
         return (node1->info.char_ == node2->info.char_);
 
-      case r05_cDataNumber:
+      case R05_DATATAG_NUMBER:
         return (node1->info.number == node2->info.number);
 
-      case r05_cDataFunction:
+      case R05_DATATAG_FUNCTION:
         return (node1->info.function.ptr == node2->info.function.ptr);
 
       /*
         Сведения о связях между скобками нужны для других целей, здесь
         же нам важны только их одновременные появления.
       */
-      case r05_cDataOpenBracket:
-      case r05_cDataCloseBracket:
+      case R05_DATATAG_OPEN_BRACKET:
+      case R05_DATATAG_CLOSE_BRACKET:
         return true;
 
-      case r05_cDataFile:
+      case R05_DATATAG_FILE:
         return (node1->info.file == node2->info.file);
 
       /*
@@ -398,8 +398,8 @@ void add_match_repeated_evar_time(clock_t duration);
 namespace {
 
 bool equal_expressions(
-  struct r05_Node *first1, struct r05_Node *last1,
-  struct r05_Node *first2, struct r05_Node *last2
+  struct r05_node *first1, struct r05_node *last1,
+  struct r05_node *first2, struct r05_node *last2
 ) {
   assert((first1 == 0) == (last1 == 0));
   assert((first2 == 0) == (last2 == 0));
@@ -438,19 +438,19 @@ bool equal_expressions(
 } // unnamed namespace
 
 bool refalrts::repeated_stvar_left(
-  struct r05_Node *&stvar, struct r05_Node *stvar_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&stvar, struct r05_node *stvar_sample,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
-  struct r05_Node *left_term = 0;
-  struct r05_Node *copy_last = last;
+  struct r05_node *left_term = 0;
+  struct r05_node *copy_last = last;
 
   if (! is_open_bracket(stvar_sample) && svar_left(stvar, first, last)) {
     return equal_nodes(stvar, stvar_sample);
   } else if (tvar_left(left_term, first, last)) {
-    struct r05_Node *left_term_e;
-    struct r05_Node *stvar_sample_e;
+    struct r05_node *left_term_e;
+    struct r05_node *stvar_sample_e;
 
     if (empty_seq(first, last)) {
       left_term_e = copy_last;
@@ -482,19 +482,19 @@ bool refalrts::repeated_stvar_left(
 }
 
 bool refalrts::repeated_stvar_right(
-  struct r05_Node *&stvar, struct r05_Node *stvar_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&stvar, struct r05_node *stvar_sample,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   assert((first == 0) == (last == 0));
 
-  struct r05_Node *right_term = 0;
-  struct r05_Node *old_last = last;
+  struct r05_node *right_term = 0;
+  struct r05_node *old_last = last;
 
   if (! is_open_bracket(stvar_sample) && svar_right(stvar, first, last)) {
     return equal_nodes(stvar, stvar_sample);
   } else if (tvar_right(right_term, first, last)) {
-    struct r05_Node *right_term_e = old_last;
-    struct r05_Node *stvar_sample_e;
+    struct r05_node *right_term_e = old_last;
+    struct r05_node *stvar_sample_e;
 
     if (is_open_bracket(stvar_sample)) {
       stvar_sample_e = stvar_sample->info.link;
@@ -520,14 +520,14 @@ bool refalrts::repeated_stvar_right(
 }
 
 bool refalrts::repeated_evar_left(
-  struct r05_Node *&evar_b, struct r05_Node *&evar_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   clock_t start_match = clock();
-  struct r05_Node *current = first;
-  struct r05_Node *cur_sample = evar_b_sample;
-  struct r05_Node *copy_last = last;
+  struct r05_node *current = first;
+  struct r05_node *cur_sample = evar_b_sample;
+  struct r05_node *copy_last = last;
 
   for (
     /* инициализация выше */;
@@ -573,14 +573,14 @@ bool refalrts::repeated_evar_left(
 }
 
 bool refalrts::repeated_evar_right(
-  struct r05_Node *&evar_b, struct r05_Node *&evar_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   clock_t start_match = clock();
-  struct r05_Node *current = last;
-  struct r05_Node *cur_sample = evar_e_sample;
-  struct r05_Node *copy_first = first;
+  struct r05_node *current = last;
+  struct r05_node *cur_sample = evar_e_sample;
+  struct r05_node *copy_first = first;
 
   for (
     /* инициализация выше */;
@@ -627,12 +627,12 @@ bool refalrts::repeated_evar_right(
 }
 
 bool refalrts::open_evar_advance(
-  struct r05_Node *&evar_b, struct r05_Node *&evar_e,
-  struct r05_Node *&first, struct r05_Node *&last
+  struct r05_node *&evar_b, struct r05_node *&evar_e,
+  struct r05_node *&first, struct r05_node *&last
 ) {
   assert((evar_b == 0) == (evar_e == 0));
 
-  struct r05_Node *prev_first = 0;
+  struct r05_node *prev_first = 0;
 
   if (tvar_left(prev_first, first, last)) {
     if (! evar_b) {
@@ -652,12 +652,12 @@ bool refalrts::open_evar_advance(
 }
 
 unsigned refalrts::read_chars(
-  char buffer[], unsigned buflen, struct r05_Node *&first, struct r05_Node *&last
+  char buffer[], unsigned buflen, struct r05_node *&first, struct r05_node *&last
 ) {
   unsigned read = 0;
   while (
     read != buflen && ! empty_seq(first, last)
-      && first->tag == r05_cDataChar
+      && first->tag == R05_DATATAG_CHAR
   ) {
     buffer[read] = first->info.char_;
     ++ read;
@@ -675,10 +675,10 @@ namespace refalrts{
 namespace allocator {
 
 void reset_allocator();
-bool alloc_node(struct r05_Node *&node);
-struct r05_Node *free_ptr();
-void splice_to_freelist(struct r05_Node *begin, struct r05_Node *end);
-void splice_from_freelist(struct r05_Node *pos);
+bool alloc_node(struct r05_node *&node);
+struct r05_node *free_ptr();
+void splice_to_freelist(struct r05_node *begin, struct r05_node *end);
+void splice_from_freelist(struct r05_node *pos);
 
 } // namespace allocator
 
@@ -709,29 +709,29 @@ void refalrts::reset_allocator() {
 
 namespace {
 
-bool copy_node(struct r05_Node *&res, struct r05_Node *sample) {
+bool copy_node(struct r05_node *&res, struct r05_node *sample) {
   switch (sample->tag) {
-    case r05_cDataChar:
+    case R05_DATATAG_CHAR:
       return refalrts::alloc_char(res, sample->info.char_);
 
-    case r05_cDataNumber:
+    case R05_DATATAG_NUMBER:
       return refalrts::alloc_number(res, sample->info.number);
 
-    case r05_cDataFunction:
+    case R05_DATATAG_FUNCTION:
       return refalrts::alloc_name(
         res, sample->info.function.ptr, sample->info.function.name
       );
 
-    case r05_cDataOpenBracket:
+    case R05_DATATAG_OPEN_BRACKET:
       return refalrts::alloc_open_bracket(res);
 
-    case r05_cDataCloseBracket:
+    case R05_DATATAG_CLOSE_BRACKET:
       return refalrts::alloc_close_bracket(res);
 
-    case r05_cDataFile: {
+    case R05_DATATAG_FILE: {
       bool allocated = refalrts::allocator::alloc_node(res);
       if (allocated) {
-        res->tag = r05_cDataFile;
+        res->tag = R05_DATATAG_FILE;
         res->info.file = sample->info.file;
         return true;
       } else {
@@ -756,7 +756,7 @@ namespace refalrts {
 
 namespace vm {
 
-void make_dump(struct r05_Node *begin, struct r05_Node *end);
+void make_dump(struct r05_node *begin, struct r05_node *end);
 
 } // namespace vm
 
@@ -771,15 +771,15 @@ void add_copy_tevar_time(clock_t duration);
 namespace {
 
 bool copy_nonempty_evar(
-  struct r05_Node *&evar_res_b, struct r05_Node *&evar_res_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample
+  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
   clock_t start_copy_time = clock();
 
-  struct r05_Node *res = 0;
-  struct r05_Node *bracket_stack = 0;
+  struct r05_node *res = 0;
+  struct r05_node *bracket_stack = 0;
 
-  struct r05_Node *prev_res_begin = refalrts::allocator::free_ptr()->prev;
+  struct r05_node *prev_res_begin = refalrts::allocator::free_ptr()->prev;
 
   while (! refalrts::empty_seq(evar_b_sample, evar_e_sample)) {
     if (! copy_node(res, evar_b_sample)) {
@@ -792,7 +792,7 @@ bool copy_nonempty_evar(
     } else if (is_close_bracket(res)) {
       assert(bracket_stack != 0);
 
-      struct r05_Node *open_cobracket = bracket_stack;
+      struct r05_node *open_cobracket = bracket_stack;
       bracket_stack = bracket_stack->info.link;
       refalrts::link_brackets(open_cobracket, res);
     }
@@ -813,8 +813,8 @@ bool copy_nonempty_evar(
 } // unnamed namespace
 
 bool refalrts::copy_evar(
-  struct r05_Node *&evar_res_b, struct r05_Node *&evar_res_e,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample
+  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
   if (empty_seq(evar_b_sample, evar_e_sample)) {
     evar_res_b = 0;
@@ -828,11 +828,11 @@ bool refalrts::copy_evar(
 }
 
 bool refalrts::copy_stvar(
-  struct r05_Node *&stvar_res, struct r05_Node *stvar_sample
+  struct r05_node *&stvar_res, struct r05_node *stvar_sample
 ) {
   if (is_open_bracket(stvar_sample)) {
-    struct r05_Node *end_of_sample = stvar_sample->info.link;
-    struct r05_Node *end_of_res;
+    struct r05_node *end_of_sample = stvar_sample->info.link;
+    struct r05_node *end_of_res;
     return copy_evar(
       stvar_res, end_of_res, stvar_sample, end_of_sample
     );
@@ -842,14 +842,14 @@ bool refalrts::copy_stvar(
 }
 
 bool refalrts::alloc_copy_evar(
-  struct r05_Node *&res,
-  struct r05_Node *evar_b_sample, struct r05_Node *evar_e_sample
+  struct r05_node *&res,
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
   if (empty_seq(evar_b_sample, evar_e_sample)) {
     res = 0;
     return true;
   } else {
-    struct r05_Node *res_e = 0;
+    struct r05_node *res_e = 0;
     return copy_nonempty_evar(
       res, res_e, evar_b_sample, evar_e_sample
     );
@@ -857,15 +857,15 @@ bool refalrts::alloc_copy_evar(
 }
 
 bool refalrts::alloc_copy_svar_(
-  struct r05_Node *&svar_res, struct r05_Node *svar_sample
+  struct r05_node *&svar_res, struct r05_node *svar_sample
 ) {
   return copy_node(svar_res, svar_sample);
 }
 
 
-bool refalrts::alloc_char(struct r05_Node *&res, char ch) {
+bool refalrts::alloc_char(struct r05_node *&res, char ch) {
   if (allocator::alloc_node(res)) {
-    res->tag = r05_cDataChar;
+    res->tag = R05_DATATAG_CHAR;
     res->info.char_ = ch;
     return true;
   } else {
@@ -874,10 +874,10 @@ bool refalrts::alloc_char(struct r05_Node *&res, char ch) {
 }
 
 bool refalrts::alloc_number(
-  struct r05_Node *&res, r05_Number num
+  struct r05_node *&res, r05_number num
 ) {
   if (allocator::alloc_node(res)) {
-    res->tag = r05_cDataNumber;
+    res->tag = R05_DATATAG_NUMBER;
     res->info.number = num;
     return true;
   } else {
@@ -888,10 +888,10 @@ bool refalrts::alloc_number(
 const char *unknown = "@unknown";
 
 bool refalrts::alloc_name(
-  struct r05_Node *&res, r05_FunctionPtr fn, const char *name
+  struct r05_node *&res, r05_function_ptr fn, const char *name
 ) {
   if (allocator::alloc_node(res)) {
-    res->tag = r05_cDataFunction;
+    res->tag = R05_DATATAG_FUNCTION;
     res->info.function.ptr = fn;
     if (name != 0) {
       res->info.function.name = name;
@@ -906,7 +906,7 @@ bool refalrts::alloc_name(
 
 namespace {
 
-bool alloc_some_bracket(struct r05_Node *&res, r05_DataTag tag) {
+bool alloc_some_bracket(struct r05_node *&res, r05_datatag tag) {
   if (refalrts::allocator::alloc_node(res)) {
     res->tag = tag;
     return true;
@@ -915,7 +915,7 @@ bool alloc_some_bracket(struct r05_Node *&res, r05_DataTag tag) {
   }
 }
 
-void link_adjacent(struct r05_Node *left, struct r05_Node *right) {
+void link_adjacent(struct r05_node *left, struct r05_node *right) {
   if (left != 0) {
     left->next = right;
   }
@@ -927,24 +927,24 @@ void link_adjacent(struct r05_Node *left, struct r05_Node *right) {
 
 } // unnamed namespace
 
-bool refalrts::alloc_open_bracket(struct r05_Node *&res) {
-  return alloc_some_bracket(res, r05_cDataOpenBracket);
+bool refalrts::alloc_open_bracket(struct r05_node *&res) {
+  return alloc_some_bracket(res, R05_DATATAG_OPEN_BRACKET);
 }
 
-bool refalrts::alloc_close_bracket(struct r05_Node *&res) {
-  return alloc_some_bracket(res, r05_cDataCloseBracket);
+bool refalrts::alloc_close_bracket(struct r05_node *&res) {
+  return alloc_some_bracket(res, R05_DATATAG_CLOSE_BRACKET);
 }
 
-bool refalrts::alloc_open_call(struct r05_Node *&res) {
-  return alloc_some_bracket(res, r05_cDataOpenCall);
+bool refalrts::alloc_open_call(struct r05_node *&res) {
+  return alloc_some_bracket(res, R05_DATATAG_OPEN_CALL);
 }
 
-bool refalrts::alloc_close_call(struct r05_Node *&res) {
-  return alloc_some_bracket(res, r05_cDataCloseCall);
+bool refalrts::alloc_close_call(struct r05_node *&res) {
+  return alloc_some_bracket(res, R05_DATATAG_CLOSE_CALL);
 }
 
 bool refalrts::alloc_chars(
-  struct r05_Node *&res_b, struct r05_Node *&res_e,
+  struct r05_node *&res_b, struct r05_node *&res_e,
   const char buffer[], unsigned buflen
 ) {
   if (buflen == 0) {
@@ -952,8 +952,8 @@ bool refalrts::alloc_chars(
     res_e = 0;
     return true;
   } else {
-    struct r05_Node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
-    struct r05_Node *end_seq = 0;
+    struct r05_node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
+    struct r05_node *end_seq = 0;
 
     for (unsigned i = 0; i < buflen; ++ i) {
       if (! alloc_char(end_seq, buffer[i])) {
@@ -969,15 +969,15 @@ bool refalrts::alloc_chars(
 }
 
 bool refalrts::alloc_string(
-  struct r05_Node *&res_b, struct r05_Node *&res_e, const char *string
+  struct r05_node *&res_b, struct r05_node *&res_e, const char *string
 ) {
   if (*string == '\0') {
     res_b = 0;
     res_e = 0;
     return true;
   } else {
-    struct r05_Node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
-    struct r05_Node *end_seq = 0;
+    struct r05_node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
+    struct r05_node *end_seq = 0;
 
     for (const char *p = string; *p != '\0'; ++ p) {
       if (! alloc_char(end_seq, *p)) {
@@ -996,25 +996,25 @@ namespace refalrts {
 
 namespace vm {
 
-void push_stack(struct r05_Node *call_bracket);
+void push_stack(struct r05_node *call_bracket);
 
 } // namespace vm
 
 } // namespace refalrts
 
-void refalrts::push_stack(struct r05_Node *call_bracket) {
+void refalrts::push_stack(struct r05_node *call_bracket) {
   vm::push_stack(call_bracket);
 }
 
-void refalrts::link_brackets(struct r05_Node *left, struct r05_Node *right) {
+void refalrts::link_brackets(struct r05_node *left, struct r05_node *right) {
   left->info.link = right;
   right->info.link = left;
 }
 
 namespace {
 
-struct r05_Node *list_splice(
-  struct r05_Node *res, struct r05_Node *begin, struct r05_Node *end
+struct r05_node *list_splice(
+  struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
 
   VALID_LINKED(res);
@@ -1029,9 +1029,9 @@ struct r05_Node *list_splice(
     // Цель достигнута сама по себе
     return res;
   } else {
-    struct r05_Node *prev_res = res->prev;
-    struct r05_Node *prev_begin = begin->prev;
-    struct r05_Node *next_end = end->next;
+    struct r05_node *prev_res = res->prev;
+    struct r05_node *prev_begin = begin->prev;
+    struct r05_node *next_end = end->next;
 
     link_adjacent(prev_res, begin);
     link_adjacent(end, res);
@@ -1050,16 +1050,16 @@ struct r05_Node *list_splice(
 
 } // unnamed namespace
 
-struct r05_Node *refalrts::splice_elem(
-  struct r05_Node *res, struct r05_Node *elem
+struct r05_node *refalrts::splice_elem(
+  struct r05_node *res, struct r05_node *elem
 ) {
   return list_splice(res, elem, elem);
 }
 
-struct r05_Node *refalrts::splice_stvar(
-  struct r05_Node *res, struct r05_Node *var
+struct r05_node *refalrts::splice_stvar(
+  struct r05_node *res, struct r05_node *var
 ) {
-  struct r05_Node *var_end;
+  struct r05_node *var_end;
   if (is_open_bracket(var)) {
     var_end = var->info.link;
   } else {
@@ -1069,17 +1069,17 @@ struct r05_Node *refalrts::splice_stvar(
   return list_splice(res, var, var_end);
 }
 
-struct r05_Node *refalrts::splice_evar(
-  struct r05_Node *res, struct r05_Node *begin, struct r05_Node *end
+struct r05_node *refalrts::splice_evar(
+  struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
   return list_splice(res, begin, end);
 }
 
-void refalrts::splice_to_freelist(struct r05_Node *begin, struct r05_Node *end) {
+void refalrts::splice_to_freelist(struct r05_node *begin, struct r05_node *end) {
   allocator::splice_to_freelist(begin, end);
 }
 
-void refalrts::splice_from_freelist(struct r05_Node *pos) {
+void refalrts::splice_from_freelist(struct r05_node *pos) {
   allocator::splice_from_freelist(pos);
 }
 
@@ -1120,7 +1120,7 @@ namespace refalrts {
 namespace vm {
 
 extern int g_ret_code;
-extern void print_seq(FILE *output, struct r05_Node *begin, struct r05_Node *end);
+extern void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
 
 } // namespace vm
 
@@ -1131,7 +1131,7 @@ void refalrts::set_return_code(int code) {
 }
 
 void refalrts::debug_print_expr(
-  void *file, struct r05_Node *first, struct r05_Node *last
+  void *file, struct r05_node *first, struct r05_node *last
 ) {
   refalrts::vm::print_seq(static_cast<FILE*>(file), first, last);
 }
@@ -1148,32 +1148,32 @@ bool create_nodes();
 
 void free_memory();
 
-extern struct r05_Node g_last_marker;
+extern struct r05_node g_last_marker;
 
-struct r05_Node g_first_marker =
-  { 0, & g_last_marker, r05_cDataIllegal, { '\0' } };
-struct r05_Node g_last_marker =
-  { & g_first_marker, 0, r05_cDataIllegal, { '\0' } };
+struct r05_node g_first_marker =
+  { 0, & g_last_marker, R05_DATATAG_ILLEGAL, { '\0' } };
+struct r05_node g_last_marker =
+  { & g_first_marker, 0, R05_DATATAG_ILLEGAL, { '\0' } };
 
-struct r05_Node *g_free_ptr = & g_last_marker;
+struct r05_node *g_free_ptr = & g_last_marker;
 
 namespace pool {
 
 enum { cChunkSize = 1000 };
 typedef struct Chunk {
   Chunk *next;
-  struct r05_Node elems[cChunkSize];
+  struct r05_node elems[cChunkSize];
 } Chunk;
 
 typedef Chunk *ChunkPtr;
 
-struct r05_Node *alloc_node();
+struct r05_node *alloc_node();
 void free();
 bool grow();
 
 ChunkPtr g_pool = 0;
 unsigned g_avail = 0;
-struct r05_Node *g_pnext_node = 0;
+struct r05_node *g_pnext_node = 0;
 
 } // namespace pool
 
@@ -1187,36 +1187,36 @@ inline void refalrts::allocator::reset_allocator() {
   g_free_ptr = g_first_marker.next;
 }
 
-bool refalrts::allocator::alloc_node(struct r05_Node *&node) {
+bool refalrts::allocator::alloc_node(struct r05_node *&node) {
   if ((g_free_ptr == & g_last_marker) && ! create_nodes()) {
     return false;
   } else {
     node = g_free_ptr;
     g_free_ptr = g_free_ptr->next;
-    node->tag = r05_cDataIllegal;
+    node->tag = R05_DATATAG_ILLEGAL;
     return true;
   }
 }
 
-struct r05_Node *refalrts::allocator::free_ptr() {
+struct r05_node *refalrts::allocator::free_ptr() {
   return g_free_ptr;
 }
 
 void refalrts::allocator::splice_to_freelist(
-  struct r05_Node *begin, struct r05_Node *end
+  struct r05_node *begin, struct r05_node *end
 ) {
   reset_allocator();
   g_free_ptr = list_splice(g_free_ptr, begin, end);
 }
 
-void refalrts::allocator::splice_from_freelist(struct r05_Node *pos) {
+void refalrts::allocator::splice_from_freelist(struct r05_node *pos) {
   if (g_free_ptr != g_first_marker.next) {
     list_splice(pos, g_first_marker.next, g_free_ptr->prev);
   }
 }
 
 bool refalrts::allocator::create_nodes() {
-  struct r05_Node *new_node = refalrts::allocator::pool::alloc_node();
+  struct r05_node *new_node = refalrts::allocator::pool::alloc_node();
 
 #ifdef MEMORY_LIMIT
 
@@ -1229,7 +1229,7 @@ bool refalrts::allocator::create_nodes() {
   if (new_node == 0) {
     return false;
   } else {
-    struct r05_Node *before_free_ptr = g_free_ptr->prev;
+    struct r05_node *before_free_ptr = g_free_ptr->prev;
     before_free_ptr->next = new_node;
     new_node->prev = before_free_ptr;
 
@@ -1237,7 +1237,7 @@ bool refalrts::allocator::create_nodes() {
     new_node->next = g_free_ptr;
 
     g_free_ptr = new_node;
-    g_free_ptr->tag = r05_cDataIllegal;
+    g_free_ptr->tag = R05_DATATAG_ILLEGAL;
     ++ g_memory_use;
 
     return true;
@@ -1258,7 +1258,7 @@ void refalrts::allocator::free_memory() {
 #endif // DONT_PRINT_STATISTICS
 }
 
-struct r05_Node *refalrts::allocator::pool::alloc_node() {
+struct r05_node *refalrts::allocator::pool::alloc_node() {
   if ((g_avail != 0) || grow()) {
     -- g_avail;
     return g_pnext_node++;
@@ -1492,35 +1492,35 @@ void refalrts::profiler::stop_e_loop() {
 // Виртуальная машина
 //==============================================================================
 
-extern enum r05_FnResult Go(struct r05_Node *begin, struct r05_Node *end);
+extern enum r05_fnresult Go(struct r05_node *begin, struct r05_node *end);
 
 namespace refalrts {
 
 namespace vm {
 
-void push_stack(struct r05_Node *call_bracket);
-struct r05_Node *pop_stack();
+void push_stack(struct r05_node *call_bracket);
+struct r05_node *pop_stack();
 bool empty_stack();
 
 bool init_view_field();
 
-enum r05_FnResult main_loop();
-enum r05_FnResult execute_active(struct r05_Node *begin, struct r05_Node *end);
-void make_dump(struct r05_Node *begin, struct r05_Node *end);
+enum r05_fnresult main_loop();
+enum r05_fnresult execute_active(struct r05_node *begin, struct r05_node *end);
+void make_dump(struct r05_node *begin, struct r05_node *end);
 FILE* dump_stream();
 
 void free_view_field();
 
-struct r05_Node *g_stack_ptr = 0;
+struct r05_node *g_stack_ptr = 0;
 
-extern struct r05_Node g_last_marker;
+extern struct r05_node g_last_marker;
 
-struct r05_Node g_first_marker =
-  { 0, & g_last_marker, r05_cDataIllegal, { '\0' } };
-struct r05_Node g_last_marker =
-  { & g_first_marker, 0, r05_cDataIllegal, { '\0' } };
+struct r05_node g_first_marker =
+  { 0, & g_last_marker, R05_DATATAG_ILLEGAL, { '\0' } };
+struct r05_node g_last_marker =
+  { & g_first_marker, 0, R05_DATATAG_ILLEGAL, { '\0' } };
 
-struct r05_Node *g_begin_view_field = & g_last_marker;
+struct r05_node *g_begin_view_field = & g_last_marker;
 
 unsigned g_step_counter = 0;
 
@@ -1530,13 +1530,13 @@ int g_ret_code;
 
 } // namespace refalrts
 
-void refalrts::vm::push_stack(struct r05_Node *call_bracket) {
+void refalrts::vm::push_stack(struct r05_node *call_bracket) {
   call_bracket->info.link = g_stack_ptr;
   g_stack_ptr = call_bracket;
 }
 
-struct r05_Node *refalrts::vm::pop_stack() {
-  struct r05_Node *res = g_stack_ptr;
+struct r05_node *refalrts::vm::pop_stack() {
+  struct r05_node *res = g_stack_ptr;
   g_stack_ptr = g_stack_ptr->info.link;
   return res;
 }
@@ -1547,14 +1547,14 @@ bool refalrts::vm::empty_stack() {
 
 bool refalrts::vm::init_view_field() {
   refalrts::reset_allocator();
-  struct r05_Node *res = g_begin_view_field;
-  struct r05_Node *n0 = 0;
+  struct r05_node *res = g_begin_view_field;
+  struct r05_node *n0 = 0;
   if (! refalrts::alloc_open_call(n0))
     return false;
-  struct r05_Node *n1 = 0;
+  struct r05_node *n1 = 0;
   if (! refalrts::alloc_name(n1, Go, "Go"))
     return false;
-  struct r05_Node *n2 = 0;
+  struct r05_node *n2 = 0;
   if (! refalrts::alloc_close_call(n2))
     return false;
   refalrts::push_stack(n2);
@@ -1567,29 +1567,29 @@ bool refalrts::vm::init_view_field() {
   return true;
 }
 
-enum r05_FnResult refalrts::vm::main_loop() {
-  enum r05_FnResult res = r05_cSuccess;
+enum r05_fnresult refalrts::vm::main_loop() {
+  enum r05_fnresult res = R05_SUCCESS;
   while (! empty_stack()) {
-    struct r05_Node *active_begin = pop_stack();
+    struct r05_node *active_begin = pop_stack();
     assert(! empty_stack());
-    struct r05_Node *active_end = pop_stack();
+    struct r05_node *active_end = pop_stack();
 
     res = execute_active(active_begin, active_end);
     refalrts::profiler::after_step();
 
     ++ g_step_counter;
 
-    if (res != r05_cSuccess) {
+    if (res != R05_SUCCESS) {
       switch (res) {
-        case r05_cRecognitionImpossible:
+        case R05_RECOGNITION_IMPOSSIBLE:
           fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
           break;
 
-        case r05_cNoMemory:
+        case R05_NO_MEMORY:
           fprintf(stderr, "\nNO MEMORY\n\n");
           break;
 
-        case r05_cExit:
+        case R05_EXIT:
           return res;
 
         default:
@@ -1608,8 +1608,8 @@ enum r05_FnResult refalrts::vm::main_loop() {
   return res;
 }
 
-enum r05_FnResult refalrts::vm::execute_active(
-  struct r05_Node *begin, struct r05_Node *end
+enum r05_fnresult refalrts::vm::execute_active(
+  struct r05_node *begin, struct r05_node *end
 ) {
 
 #if SHOW_DEBUG
@@ -1620,13 +1620,13 @@ enum r05_FnResult refalrts::vm::execute_active(
 
 #endif // SHOW_DEBUG
 
-  struct r05_Node *function = begin->next;
-  if (r05_cDataFunction == function->tag) {
-    return (enum r05_FnResult)(
+  struct r05_node *function = begin->next;
+  if (R05_DATATAG_FUNCTION == function->tag) {
+    return (enum r05_fnresult)(
       (function->info.function.ptr)(begin, end) & 0xFFU
     );
   } else {
-    return r05_cRecognitionImpossible;
+    return R05_RECOGNITION_IMPOSSIBLE;
   }
 }
 
@@ -1653,7 +1653,7 @@ void print_indent(FILE *output, int level) {
 } // unnamed namespace
 
 void refalrts::vm::print_seq(
-  FILE *output, struct r05_Node *begin, struct r05_Node *end
+  FILE *output, struct r05_node *begin, struct r05_node *end
 ) {
   enum {
     cStateView = 100,
@@ -1678,7 +1678,7 @@ void refalrts::vm::print_seq(
     switch (state) {
       case cStateView:
         switch (begin->tag) {
-          case r05_cDataIllegal:
+          case R05_DATATAG_ILLEGAL:
             if (0 == begin->prev) {
               fprintf(output, "[FIRST] ");
             } else if (0 == begin->next) {
@@ -1690,17 +1690,17 @@ void refalrts::vm::print_seq(
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataChar:
+          case R05_DATATAG_CHAR:
             state = cStateString;
             fprintf(output, "\'");
             continue;
 
-          case r05_cDataNumber:
+          case R05_DATATAG_NUMBER:
             fprintf(output, "%ld ", begin->info.number);
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataFunction:
+          case R05_DATATAG_FUNCTION:
             if (begin->info.function.name[0] != 0) {
               fprintf(output, "&%s ", begin->info.function.name);
             } else {
@@ -1709,7 +1709,7 @@ void refalrts::vm::print_seq(
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataOpenBracket:
+          case R05_DATATAG_OPEN_BRACKET:
             if (! after_bracket) {
               print_indent(output, indent);
             }
@@ -1720,13 +1720,13 @@ void refalrts::vm::print_seq(
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataCloseBracket:
+          case R05_DATATAG_CLOSE_BRACKET:
             --indent;
             fprintf(output, ")");
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataOpenCall:
+          case R05_DATATAG_OPEN_CALL:
             if (! after_bracket) {
               print_indent(output, indent);
             }
@@ -1737,13 +1737,13 @@ void refalrts::vm::print_seq(
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataCloseCall:
+          case R05_DATATAG_CLOSE_CALL:
             --indent;
             fprintf(output, ">");
             refalrts::move_left(begin, end);
             continue;
 
-          case r05_cDataFile:
+          case R05_DATATAG_FILE:
             fprintf(output, "*%p ", begin->info.file);
             refalrts::move_left(begin, end);
             continue;
@@ -1754,7 +1754,7 @@ void refalrts::vm::print_seq(
 
       case cStateString:
         switch (begin->tag) {
-          case r05_cDataChar: {
+          case R05_DATATAG_CHAR: {
             unsigned char ch = static_cast<unsigned char>(begin->info.char_);
             switch (ch) {
               case '(': case ')':
@@ -1809,7 +1809,7 @@ void refalrts::vm::print_seq(
   }
 }
 
-void refalrts::vm::make_dump(struct r05_Node *begin, struct r05_Node *end) {
+void refalrts::vm::make_dump(struct r05_node *begin, struct r05_node *end) {
   using refalrts::vm::dump_stream;
 
   fprintf(dump_stream(), "\nSTEP NUMBER %u\n", g_step_counter);
@@ -1858,8 +1858,8 @@ FILE *refalrts::vm::dump_stream() {
 }
 
 void refalrts::vm::free_view_field() {
-  struct r05_Node *begin = g_first_marker.next;
-  struct r05_Node *end = & g_last_marker;
+  struct r05_node *begin = g_first_marker.next;
+  struct r05_node *end = & g_last_marker;
 
   if (begin != end) {
     end = end->prev;
@@ -1895,7 +1895,7 @@ int main(int argc, char **argv) {
   g_argc = argc;
   g_argv = argv;
 
-  enum r05_FnResult res;
+  enum r05_fnresult res;
   try {
     refalrts::vm::init_view_field();
     refalrts::profiler::start_profiler();
@@ -1917,16 +1917,16 @@ int main(int argc, char **argv) {
   fflush(stdout);
 
   switch (res) {
-    case r05_cSuccess:
+    case R05_SUCCESS:
       return 0;
 
-    case r05_cRecognitionImpossible:
+    case R05_RECOGNITION_IMPOSSIBLE:
       return 1;
 
-    case r05_cNoMemory:
+    case R05_NO_MEMORY:
       return 2;
 
-    case r05_cExit:
+    case R05_EXIT:
       return refalrts::vm::g_ret_code;
 
     default:
