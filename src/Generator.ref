@@ -11,7 +11,8 @@ $EXTERN
   CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult, CmdCopyEVar,
   CmdCopyVar, CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
   CmdInsertElem, CmdInsertVar, CmdInsertString, CmdReturnResult, AlgRight,
-  ElSymbol, ElOpenBracket, ElCloseBracket, ElOpenCall, ElCloseCall;
+  ElSymbol, ElOpenBracket, ElCloseBracket, ElOpenCall, ElCloseCall,
+  CmdRangeArray, CmdInitB0, CmdResultArray;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -88,10 +89,6 @@ GenCommonTailer {
 $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
-    ('    struct r05_node *' <BracketsVar-B 0> ' = 0;')
-    ('    struct r05_node *' <BracketsVar-E 0> ' = 0;')
-    ('    r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);')
-    ('    refalrts::start_sentence();')
     <SkipIndentAccum
       <MapReduce GenCommand ('    ' /* отступ */) e.Algorithm>
     >
@@ -105,11 +102,11 @@ SkipIndentAccum {
 }
 
 BracketsVar-B {
-  s.BracketNumber = 'bb_' <StrFromInt s.BracketNumber>;
+  s.BracketNumber = 'bb[' <StrFromInt s.BracketNumber> ']';
 }
 
 BracketsVar-E {
-  s.BracketNumber = 'be_' <StrFromInt s.BracketNumber>;
+  s.BracketNumber = 'be[' <StrFromInt s.BracketNumber> ']';
 }
 
 BracketsVars {
@@ -139,14 +136,22 @@ GenCommand {
     (e.Indent)
     (e.Indent 'struct r05_node *' <PrintVar e.VarInfo> ';');
 
+  (e.Indent) (CmdRangeArray s.Size) =
+    (e.Indent)
+    (e.Indent 'struct r05_node *bb[' <StrFromInt s.Size> '] = { 0 };')
+    (e.Indent 'struct r05_node *be[' <StrFromInt s.Size> '] = { 0 };');
+
+  (e.Indent) (CmdInitB0) =
+    (e.Indent)
+    (e.Indent 'refalrts::start_sentence();')
+    (e.Indent 'r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);');
+
   (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
     (e.Indent)
     <PrintMatchSymbol (e.Indent) s.Direction s.BracketNumber s.Type e.Value>;
 
   (e.Indent) (CmdBrackets s.Direction s.BracketNumber s.InnerBrackets) =
     (e.Indent)
-    (e.Indent 'struct r05_node *' <BracketsVar-B s.InnerBrackets> ' = 0;')
-    (e.Indent 'struct r05_node *' <BracketsVar-E s.InnerBrackets> ' = 0;')
     <PrintMatchBrackets (e.Indent) s.Direction s.BracketNumber s.InnerBrackets>;
 
   (e.Indent) (CmdEmpty s.Direction s.BracketNumber) =
@@ -187,22 +192,20 @@ GenCommand {
       '));'
     );
 
-  (e.Indent) (CmdSave s.OldBracketNumber s.NewBracketNumber) =
+  (e.Indent) (CmdSave s.Old s.New) =
     (e.Indent)
-    (e.Indent
-      'struct r05_node *' <BracketsVar-B s.NewBracketNumber>
-      ' = ' <BracketsVar-B s.OldBracketNumber> ';'
-    )
-    (e.Indent
-      'struct r05_node *' <BracketsVar-E s.NewBracketNumber>
-      ' = ' <BracketsVar-E s.OldBracketNumber> ';'
-    );
+    (e.Indent <BracketsVar-B s.New> ' = ' <BracketsVar-B s.Old> ';')
+    (e.Indent <BracketsVar-E s.New> ' = ' <BracketsVar-E s.Old> ';');
 
   (e.Indent) (CmdEmptyResult) =
     (e.Indent)
     ()
     (e.Indent 'refalrts::reset_allocator();')
     (e.Indent 'struct r05_node *res = arg_begin;');
+
+  (e.Indent) (CmdResultArray s.Size) =
+    (e.Indent)
+    (e.Indent 'struct r05_node *n[' <StrFromInt s.Size> '] = { 0 };');
 
   (e.Indent) (CmdCopyEVar s.Usings 'e' e.Index) =
     (e.Indent)
@@ -222,8 +225,6 @@ GenCommand {
 
   (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
     (e.Indent)
-    (e.Indent 'struct r05_node *' <PrintElemVar s.StringNumber> ' = 0;')
-    (e.Indent 'struct r05_node *' <PrintElemVar <Inc s.StringNumber>> ' = 0;')
     (e.Indent
       'if( ! refalrts::alloc_chars( ' <PrintStringVar s.StringNumber> ', '
       '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ') )'
@@ -232,7 +233,6 @@ GenCommand {
 
   (e.Indent) (CmdAllocateElem s.ElemNumber e.ElemInfo) =
     (e.Indent)
-    (e.Indent 'struct r05_node *' <PrintElemVar s.ElemNumber> ' = 0;')
     <PrintAllocateElem (e.Indent) s.ElemNumber e.ElemInfo>;
 
   (e.Indent) (CmdLinkBrackets s.Left s.Right) =
@@ -398,11 +398,11 @@ PrintMatch {
 }
 
 PrintElemVar {
-  s.Number = 'n' <StrFromInt s.Number>;
+  s.Number = 'n[' <StrFromInt s.Number> ']';
 }
 
 PrintStringVar {
-  s.Number = 'n' <StrFromInt s.Number> ', n' <StrFromInt <Inc s.Number>>;
+  s.Number = 'n[' <StrFromInt s.Number> '], n[' <StrFromInt <Inc s.Number>> ']';
 }
 
 PrintAllocateElem {

@@ -183,7 +183,7 @@ DoGenPattern {
 
   /* Завершение разбора. */
   s.NumRanges /* пусто */ (e.Vars) (e.Commands) =
-    (e.Vars) (e.Commands);
+    s.NumRanges (e.Vars) (e.Commands);
 }
 
 SaveRanges {
@@ -386,7 +386,7 @@ DoGenResult {
 
   /* Завершение просмотра */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter =
-    (e.Vars) (e.AllocCommands) (e.Commands);
+    s.Counter (e.Vars) (e.AllocCommands) (e.Commands);
 }
 
 *===============================================================================
@@ -397,8 +397,8 @@ DoGenResult {
 $EENUM CmdEmptyResult, CmdReturnResult;
 
 GeneralizeResult {
-  (e.PatternVars) (e.PatternCommands)
-  (e.ResultVars) (e.ResultAllocCommands) (e.ResultCommands) =
+  s.NumRanges (e.PatternVars) (e.PatternCommands)
+  s.ResultCounter (e.ResultVars) (e.ResultAllocCommands) (e.ResultCommands) =
     <Fetch
       (<ReplicateVars e.PatternVars>)
       (<ReplicateVars e.ResultVars>)
@@ -407,7 +407,10 @@ GeneralizeResult {
       <Seq
         MakeVarsSets
         (FilterCommonVarsAndPatternCommands (e.PatternCommands))
-        (ComposeSentenceCommands (e.ResultAllocCommands e.ResultCommands))
+        (ComposeSentenceCommands
+          s.NumRanges s.ResultCounter
+          (e.ResultAllocCommands e.ResultCommands)
+        )
       >
     >;
 }
@@ -473,10 +476,16 @@ FilterUnusedCmdClosedE {
   e.Unuseds t.OtherCommand = t.OtherCommand;
 }
 
+$EENUM CmdRangeArray, CmdInitB0, CmdResultArray;
+
 ComposeSentenceCommands {
+  s.NumRanges s.ResultCounter
   (e.ResultCommands) (e.CommonVars) (e.CopiedVars) e.PatternCommands =
     <GenerateResult-OpenELoops
       <Map MakeDeclaration e.CommonVars>
+      (CmdRangeArray s.NumRanges)
+      <MakeCmdResultCommand s.ResultCounter>
+      (CmdInitB0)
       e.PatternCommands
       (CmdEmptyResult)
       <Map MakeCopyVar e.CopiedVars>
@@ -497,6 +506,11 @@ $EENUM CmdCopyEVar, CmdCopyVar;
 MakeCopyVar {
   (s.Usings 'e' e.Index) = (CmdCopyEVar s.Usings 'e' e.Index);
   (s.Usings s.Mode e.Index) = (CmdCopyVar s.Usings s.Mode e.Index);
+}
+
+MakeCmdResultCommand {
+  0 = /* пусто */;
+  s.Counter = (CmdResultArray s.Counter);
 }
 
 GenerateResult-OpenELoops {
