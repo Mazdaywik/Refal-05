@@ -615,12 +615,12 @@ $ENTRY ExistFile {
       // Файл существует
       fclose(f);
 
-      if (! refalrts::alloc_name(ans, True, "True")) {
+      if (! refalrts::alloc_name(ans, r05c_True, "True")) {
         return R05_NO_MEMORY;
       }
     } else {
       // Файл по-видимому не существует
-      if (! refalrts::alloc_name(ans, False, "False")) {
+      if (! refalrts::alloc_name(ans, r05c_False, "False")) {
         return R05_NO_MEMORY;
       }
     }
@@ -789,7 +789,7 @@ $ENTRY IntFromStr {
 
     if (! start_is_digit) {
       struct r05_node *fail_pos = 0;
-      if (! refalrts::alloc_name(fail_pos, Fails, "Fails"))
+      if (! refalrts::alloc_name(fail_pos, r05c_Fails, "Fails"))
         return R05_NO_MEMORY;
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
@@ -814,7 +814,7 @@ $ENTRY IntFromStr {
       struct r05_node *success_pos = 0;
       struct r05_node *number_pos = 0;
 
-      if (! refalrts::alloc_name(success_pos, Success, "Success"))
+      if (! refalrts::alloc_name(success_pos, r05c_Success, "Success"))
         return R05_NO_MEMORY;
 
       if (! refalrts::alloc_number(number_pos, acc))

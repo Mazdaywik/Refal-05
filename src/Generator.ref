@@ -35,7 +35,7 @@ SwGenFnStart {
   s.MemoryClass s.FnArguments e.Name =
     (
       <TextFromMemoryClass s.MemoryClass>
-      'enum r05_fnresult ' e.Name '(' <s.FnArguments> ') {'
+      'enum r05_fnresult r05c_' e.Name '(' <s.FnArguments> ') {'
     );
 }
 
@@ -67,12 +67,12 @@ $ENTRY GenEnum {
 
 $ENTRY GenExtern {
   e.Name =
-    ('extern enum r05_fnresult ' e.Name '(' <FuncArguments> ');');
+    ('extern enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ');');
 }
 
 $ENTRY GenForward {
   e.Name =
-    ('static enum r05_fnresult ' e.Name '(' <FuncArguments> ');');
+    ('static enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ');');
 }
 
 GenCommonHeaders {
@@ -319,7 +319,7 @@ SymbolFunc {
 SymbolTextRep {
   Char s.Char = '\'' <EscapeChar s.Char> '\'';
   Number s.Number = <StrFromInt s.Number> 'UL';
-  Name e.Name = e.Name;
+  Name e.Name = 'r05c_' e.Name;
 }
 
 PrintMatchBrackets {
@@ -424,7 +424,7 @@ SwAllocator {
 }
 
 SwInfo {
-  ElSymbol Name e.Name = ', ' e.Name ', "' e.Name '"';
+  ElSymbol Name e.Name = ', r05c_' e.Name ', "' e.Name '"';
 
   ElSymbol s.Type e.Value = ', ' <SymbolTextRep s.Type e.Value>;
 

@@ -1487,7 +1487,7 @@ void refalrts::profiler::stop_e_loop() {
 // Виртуальная машина
 //==============================================================================
 
-extern enum r05_fnresult Go(struct r05_node *begin, struct r05_node *end);
+extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
 
 namespace refalrts {
 
@@ -1547,7 +1547,7 @@ bool refalrts::vm::init_view_field() {
   if (! refalrts::alloc_open_call(n0))
     return false;
   struct r05_node *n1 = 0;
-  if (! refalrts::alloc_name(n1, Go, "Go"))
+  if (! refalrts::alloc_name(n1, r05c_Go, "Go"))
     return false;
   struct r05_node *n2 = 0;
   if (! refalrts::alloc_close_call(n2))
