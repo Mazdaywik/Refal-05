@@ -1261,8 +1261,8 @@ void refalrts::allocator::free_memory() {
     "Memory used %d nodes, %d * %lu = %lu bytes\n",
     g_memory_use,
     g_memory_use,
-    static_cast<unsigned long>(sizeof(Node)),
-    static_cast<unsigned long>(g_memory_use * sizeof(Node))
+    static_cast<unsigned long>(sizeof(struct r05_node)),
+    static_cast<unsigned long>(g_memory_use * sizeof(struct r05_node))
   );
 #endif // DONT_PRINT_STATISTICS
 }
