@@ -16,8 +16,8 @@ enum r05_fnresult r05c_ParseCommandLine(struct r05_node *arg_begin, struct r05_n
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eArguments_b_1;
-    static struct r05_node *eArguments_e_1;
+    struct r05_node *eArguments_b_1;
+    struct r05_node *eArguments_e_1;
     // e.Arguments
     eArguments_b_1 = bb_0;
     eArguments_e_1 = be_0;
@@ -105,40 +105,40 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eFolders_b_1;
-    static struct r05_node *eFolders_e_1;
-    static struct r05_node *eCompileCommand_b_1;
-    static struct r05_node *eCompileCommand_e_1;
-    static struct r05_node *eOptions_b_1;
-    static struct r05_node *eOptions_e_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eFolders_b_1;
+    struct r05_node *eFolders_e_1;
+    struct r05_node *eCompileCommand_b_1;
+    struct r05_node *eCompileCommand_e_1;
+    struct r05_node *eOptions_b_1;
+    struct r05_node *eOptions_e_1;
     // ( & NoCompile ) ( e.ScannedFiles ) ( e.Folders ) ( '-c' ) ( e.CompileCommand ) e.Options
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_NoCompile, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_NoCompile, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_4, be_4 ) )
+    if (! r05_char_left('-', &bb_4, &be_4))
       break;
-    if( ! refalrts::char_left( 'c', bb_4, be_4 ) )
+    if (! r05_char_left('c', &bb_4, &be_4))
       break;
     struct r05_node *bb_5 = 0;
     struct r05_node *be_5 = 0;
-    if( ! refalrts::brackets_left( bb_5, be_5, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -217,29 +217,29 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     // ( & CompileCommand e.Command ) ( e.ScannedFiles ) ( e.Folders ) ( '-c' ) ( e.CompileCommand ) e.Options
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CompileCommand, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_CompileCommand, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_4, be_4 ) )
+    if (! r05_char_left('-', &bb_4, &be_4))
       break;
-    if( ! refalrts::char_left( 'c', bb_4, be_4 ) )
+    if (! r05_char_left('c', &bb_4, &be_4))
       break;
     struct r05_node *bb_5 = 0;
     struct r05_node *be_5 = 0;
-    if( ! refalrts::brackets_left( bb_5, be_5, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
@@ -279,29 +279,29 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tCompiler_1;
+    struct r05_node *tCompiler_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '-c' )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_1, be_1 ) )
+    if (! r05_char_left('-', &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'c', bb_1, be_1 ) )
+    if (! r05_char_left('c', &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
     // Unused closed variable e.ScannedFiles
     // Unused closed variable e.Folders
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -336,37 +336,37 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tCompiler_1;
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eFolders_b_1;
-    static struct r05_node *eFolders_e_1;
-    static struct r05_node *eDirectory_b_1;
-    static struct r05_node *eDirectory_e_1;
-    static struct r05_node *eOptions_b_1;
-    static struct r05_node *eOptions_e_1;
+    struct r05_node *tCompiler_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eFolders_b_1;
+    struct r05_node *eFolders_e_1;
+    struct r05_node *eDirectory_b_1;
+    struct r05_node *eDirectory_e_1;
+    struct r05_node *eOptions_b_1;
+    struct r05_node *eOptions_e_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '-d' ) ( e.Directory ) e.Options
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_3, be_3 ) )
+    if (! r05_char_left('-', &bb_3, &be_3))
       break;
-    if( ! refalrts::char_left( 'd', bb_3, be_3 ) )
+    if (! r05_char_left('d', &bb_3, &be_3))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -437,29 +437,29 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tCompiler_1;
+    struct r05_node *tCompiler_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '-d' )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_1, be_1 ) )
+    if (! r05_char_left('-', &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'd', bb_1, be_1 ) )
+    if (! r05_char_left('d', &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
     // Unused closed variable e.ScannedFiles
     // Unused closed variable e.Folders
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -494,31 +494,31 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tCompiler_1;
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eFolders_b_1;
-    static struct r05_node *eFolders_e_1;
-    static struct r05_node *eFiles_b_1;
-    static struct r05_node *eFiles_e_1;
+    struct r05_node *tCompiler_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eFolders_b_1;
+    struct r05_node *eFolders_e_1;
+    struct r05_node *eFiles_b_1;
+    struct r05_node *eFiles_e_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '--' ) e.Files
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_3, be_3 ) )
+    if (! r05_char_left('-', &bb_3, &be_3))
       break;
-    if( ! refalrts::char_left( '-', bb_3, be_3 ) )
+    if (! r05_char_left('-', &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -577,29 +577,29 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tCompiler_1;
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eFolders_b_1;
-    static struct r05_node *eFolders_e_1;
-    static struct r05_node *eNextFileName_b_1;
-    static struct r05_node *eNextFileName_e_1;
-    static struct r05_node *eOptions_b_1;
-    static struct r05_node *eOptions_e_1;
+    struct r05_node *tCompiler_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eFolders_b_1;
+    struct r05_node *eFolders_e_1;
+    struct r05_node *eNextFileName_b_1;
+    struct r05_node *eNextFileName_e_1;
+    struct r05_node *eOptions_b_1;
+    struct r05_node *eOptions_e_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( e.NextFileName ) e.Options
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eScannedFiles_b_1 = bb_1;
     eScannedFiles_e_1 = be_1;
@@ -668,25 +668,25 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eFolders_b_1;
-    static struct r05_node *eFolders_e_1;
-    static struct r05_node *tCompiler_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eFolders_b_1;
+    struct r05_node *eFolders_e_1;
+    struct r05_node *tCompiler_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eScannedFiles_b_1 = bb_2;
     eScannedFiles_e_1 = be_2;
     eFolders_b_1 = bb_1;
     eFolders_e_1 = be_1;
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -722,27 +722,27 @@ static enum r05_fnresult r05c_DoParseFileNamesOnly(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tCompiler_1;
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eNextFileName_b_1;
-    static struct r05_node *eNextFileName_e_1;
-    static struct r05_node *eFiles_b_1;
-    static struct r05_node *eFiles_e_1;
+    struct r05_node *tCompiler_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eNextFileName_b_1;
+    struct r05_node *eNextFileName_e_1;
+    struct r05_node *eFiles_b_1;
+    struct r05_node *eFiles_e_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( e.NextFileName ) e.Files
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eScannedFiles_b_1 = bb_1;
     eScannedFiles_e_1 = be_1;
@@ -800,25 +800,25 @@ static enum r05_fnresult r05c_DoParseFileNamesOnly(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eScannedFiles_b_1;
-    static struct r05_node *eScannedFiles_e_1;
-    static struct r05_node *eFolders_b_1;
-    static struct r05_node *eFolders_e_1;
-    static struct r05_node *tCompiler_1;
+    struct r05_node *eScannedFiles_b_1;
+    struct r05_node *eScannedFiles_e_1;
+    struct r05_node *eFolders_b_1;
+    struct r05_node *eFolders_e_1;
+    struct r05_node *tCompiler_1;
     // t.Compiler ( e.ScannedFiles ) ( e.Folders )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eScannedFiles_b_1 = bb_2;
     eScannedFiles_e_1 = be_2;
     eFolders_b_1 = bb_1;
     eFolders_e_1 = be_1;
-    if( ! refalrts::tvar_left( tCompiler_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;

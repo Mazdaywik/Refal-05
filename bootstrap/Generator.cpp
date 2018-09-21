@@ -66,9 +66,11 @@ static enum r05_fnresult r05c_BracketsVarsPtr(struct r05_node *arg_begin, struct
 static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_EscapeString(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintVar(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_PrintVarPtr(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintEVar_B(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintEVar_E(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintEVars(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_PrintEVarsPtr(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintMatchSymbol(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_SymbolFunc(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_SymbolTextRep(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -169,7 +171,7 @@ static enum r05_fnresult r05c_TextFromMemoryClass(struct r05_node *arg_begin, st
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & GN_Local
-    if( ! refalrts::function_left( r05c_GN_Local, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_GN_Local, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -192,7 +194,7 @@ static enum r05_fnresult r05c_TextFromMemoryClass(struct r05_node *arg_begin, st
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & GN_Entry
-    if( ! refalrts::function_left( r05c_GN_Entry, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_GN_Entry, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -216,14 +218,14 @@ static enum r05_fnresult r05c_SwGenFnStart(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sMemoryClass_1;
-    static struct r05_node *sFnArguments_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *sMemoryClass_1;
+    struct r05_node *sFnArguments_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // s.MemoryClass s.FnArguments e.Name
-    if( ! refalrts::svar_left( sMemoryClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMemoryClass_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sFnArguments_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sFnArguments_1, &bb_0, &be_0))
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -297,11 +299,11 @@ enum r05_fnresult r05c_GenFnStart(struct r05_node *arg_begin, struct r05_node *a
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sMemoryClass_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *sMemoryClass_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // s.MemoryClass e.Name
-    if( ! refalrts::svar_left( sMemoryClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMemoryClass_1, &bb_0, &be_0))
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -528,11 +530,11 @@ enum r05_fnresult r05c_GenEnum(struct r05_node *arg_begin, struct r05_node *arg_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // s.ScopeClass e.Name
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -590,8 +592,8 @@ enum r05_fnresult r05c_GenExtern(struct r05_node *arg_begin, struct r05_node *ar
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // e.Name
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -653,8 +655,8 @@ enum r05_fnresult r05c_GenForward(struct r05_node *arg_begin, struct r05_node *a
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // e.Name
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -831,8 +833,8 @@ enum r05_fnresult r05c_GenSentence(struct r05_node *arg_begin, struct r05_node *
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eAlgorithm_b_1;
-    static struct r05_node *eAlgorithm_e_1;
+    struct r05_node *eAlgorithm_b_1;
+    struct r05_node *eAlgorithm_e_1;
     // e.Algorithm
     eAlgorithm_b_1 = bb_0;
     eAlgorithm_e_1 = be_0;
@@ -1065,20 +1067,20 @@ static enum r05_fnresult r05c_SkipIndentAccum(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
     // ( '    ' ) e.Generated
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( ' ', bb_1, be_1 ) )
+    if (! r05_char_left(' ', &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( ' ', bb_1, be_1 ) )
+    if (! r05_char_left(' ', &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( ' ', bb_1, be_1 ) )
+    if (! r05_char_left(' ', &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( ' ', bb_1, be_1 ) )
+    if (! r05_char_left(' ', &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -1105,9 +1107,9 @@ static enum r05_fnresult r05c_BracketsVar_B(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sBracketNumber_1;
+    struct r05_node *sBracketNumber_1;
     // s.BracketNumber
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1151,9 +1153,9 @@ static enum r05_fnresult r05c_BracketsVar_E(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sBracketNumber_1;
+    struct r05_node *sBracketNumber_1;
     // s.BracketNumber
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1197,10 +1199,10 @@ static enum r05_fnresult r05c_BracketsVars(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sBracketNumber_2;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sBracketNumber_2;
     // s.BracketNumber
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1261,10 +1263,10 @@ static enum r05_fnresult r05c_BracketsVarsPtr(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sBracketNumber_2;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sBracketNumber_2;
     // s.BracketNumber
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1329,22 +1331,22 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eText_b_1;
-    static struct r05_node *eText_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eText_b_1;
+    struct r05_node *eText_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdComment e.Text )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdComment, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdComment, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1393,26 +1395,26 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eVarInfo_b_1;
-    static struct r05_node *eVarInfo_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *eVarInfo_b_2;
-    static struct r05_node *eVarInfo_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eVarInfo_b_1;
+    struct r05_node *eVarInfo_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *eVarInfo_b_2;
+    struct r05_node *eVarInfo_e_2;
     // ( e.Indent ) ( & CmdDeclareEVar e.VarInfo )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdDeclareEVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdDeclareEVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1440,7 +1442,7 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
       return R05_NO_MEMORY;
     struct r05_node *n3 = 0;
     struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_chars( n3, n4, "static struct r05_node *", 24) )
+    if( ! refalrts::alloc_chars( n3, n4, "struct r05_node *", 17) )
       return R05_NO_MEMORY;
     struct r05_node *n5 = 0;
     if( ! refalrts::alloc_open_call( n5 ) )
@@ -1462,7 +1464,7 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
       return R05_NO_MEMORY;
     struct r05_node *n11 = 0;
     struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_chars( n11, n12, "static struct r05_node *", 24) )
+    if( ! refalrts::alloc_chars( n11, n12, "struct r05_node *", 17) )
       return R05_NO_MEMORY;
     struct r05_node *n13 = 0;
     if( ! refalrts::alloc_open_call( n13 ) )
@@ -1517,22 +1519,22 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eVarInfo_b_1;
-    static struct r05_node *eVarInfo_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eVarInfo_b_1;
+    struct r05_node *eVarInfo_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdDeclareVar e.VarInfo )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdDeclareVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdDeclareVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1556,7 +1558,7 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
       return R05_NO_MEMORY;
     struct r05_node *n3 = 0;
     struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_chars( n3, n4, "static struct r05_node *", 24) )
+    if( ! refalrts::alloc_chars( n3, n4, "struct r05_node *", 17) )
       return R05_NO_MEMORY;
     struct r05_node *n5 = 0;
     if( ! refalrts::alloc_open_call( n5 ) )
@@ -1599,35 +1601,35 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sType_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sType_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdSymbol s.Direction s.BracketNumber s.Type e.Value )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdSymbol, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdSymbol, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sType_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sType_1, &bb_2, &be_2))
       break;
     eValue_b_1 = bb_2;
     eValue_e_1 = be_2;
@@ -1684,39 +1686,39 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sInnerBrackets_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *eIndent_b_4;
-    static struct r05_node *eIndent_e_4;
-    static struct r05_node *sInnerBrackets_2;
-    static struct r05_node *sInnerBrackets_3;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sInnerBrackets_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_4;
+    struct r05_node *eIndent_e_4;
+    struct r05_node *sInnerBrackets_2;
+    struct r05_node *sInnerBrackets_3;
     // ( e.Indent ) ( & CmdBrackets s.Direction s.BracketNumber s.InnerBrackets )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdBrackets, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdBrackets, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sInnerBrackets_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sInnerBrackets_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -1850,30 +1852,30 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdEmpty s.Direction s.BracketNumber )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdEmpty, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdEmpty, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -1927,35 +1929,35 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eInfo_b_1;
-    static struct r05_node *eInfo_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eInfo_b_1;
+    struct r05_node *eInfo_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdVar s.Direction s.BracketNumber s.Mode e.Info )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sMode_1, &bb_2, &be_2))
       break;
     eInfo_b_1 = bb_2;
     eInfo_e_1 = be_2;
@@ -2012,32 +2014,32 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *eVarInfo_b_1;
-    static struct r05_node *eVarInfo_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *eVarInfo_b_1;
+    struct r05_node *eVarInfo_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdRepeated s.Direction s.BracketNumber e.VarInfo )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdRepeated, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdRepeated, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
     eVarInfo_b_1 = bb_2;
     eVarInfo_e_1 = be_2;
@@ -2093,38 +2095,38 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *sBracketNumber_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *sBracketNumber_2;
     // ( e.Indent ) ( & CmdClosedE & AlgLeft s.BracketNumber 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdClosedE, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdClosedE, &bb_2, &be_2))
       break;
-    if( ! refalrts::function_left( r05c_AlgLeft, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_AlgLeft, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::char_left( 'e', bb_2, be_2 ) )
+    if (! r05_char_left('e', &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -2273,41 +2275,41 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *eIndent_b_4;
-    static struct r05_node *eIndent_e_4;
-    static struct r05_node *eIndent_b_5;
-    static struct r05_node *eIndent_e_5;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_4;
+    struct r05_node *eIndent_e_4;
+    struct r05_node *eIndent_b_5;
+    struct r05_node *eIndent_e_5;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( e.Indent ) ( & CmdOpenedE_Start & AlgLeft s.BracketNumber 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdOpenedE_Start, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdOpenedE_Start, &bb_2, &be_2))
       break;
-    if( ! refalrts::function_left( r05c_AlgLeft, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_AlgLeft, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::char_left( 'e', bb_2, be_2 ) )
+    if (! r05_char_left('e', &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -2455,37 +2457,37 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent '  ' ) ( & CmdOpenedE_End & AlgLeft s.BracketNumber 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_right( ' ', bb_1, be_1 ) )
+    if (! r05_char_right(' ', &bb_1, &be_1))
       break;
-    if( ! refalrts::char_right( ' ', bb_1, be_1 ) )
+    if (! r05_char_right(' ', &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdOpenedE_End, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdOpenedE_End, &bb_2, &be_2))
       break;
-    if( ! refalrts::function_left( r05c_AlgLeft, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_AlgLeft, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::char_left( 'e', bb_2, be_2 ) )
+    if (! r05_char_left('e', &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -2505,13 +2507,13 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
       return R05_NO_MEMORY;
     struct r05_node *n3 = 0;
     struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_chars( n3, n4, "} while ( refalrts::open_evar_advance( ", 39) )
+    if( ! refalrts::alloc_chars( n3, n4, "} while (r05_open_evar_advance(", 31) )
       return R05_NO_MEMORY;
     struct r05_node *n5 = 0;
     if( ! refalrts::alloc_open_call( n5 ) )
       return R05_NO_MEMORY;
     struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_PrintEVars, "PrintEVars" ) )
+    if( ! refalrts::alloc_name( n6, r05c_PrintEVarsPtr, "PrintEVarsPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n7 = 0;
     if( ! refalrts::alloc_number( n7, 1UL ) )
@@ -2530,14 +2532,14 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     if( ! refalrts::alloc_open_call( n12 ) )
       return R05_NO_MEMORY;
     struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_name( n13, r05c_BracketsVars, "BracketsVars" ) )
+    if( ! refalrts::alloc_name( n13, r05c_BracketsVarsPtr, "BracketsVarsPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n14 = 0;
     if( ! refalrts::alloc_close_call( n14 ) )
       return R05_NO_MEMORY;
     struct r05_node *n15 = 0;
     struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_chars( n15, n16, " ) );", 5) )
+    if( ! refalrts::alloc_chars( n15, n16, "));", 3) )
       return R05_NO_MEMORY;
     struct r05_node *n17 = 0;
     if( ! refalrts::alloc_close_bracket( n17 ) )
@@ -2577,34 +2579,34 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sOldBracketNumber_1;
-    static struct r05_node *sNewBracketNumber_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *sNewBracketNumber_2;
-    static struct r05_node *sOldBracketNumber_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sOldBracketNumber_1;
+    struct r05_node *sNewBracketNumber_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *sNewBracketNumber_2;
+    struct r05_node *sOldBracketNumber_2;
     // ( e.Indent ) ( & CmdSave s.OldBracketNumber s.NewBracketNumber )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdSave, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdSave, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sOldBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sOldBracketNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sNewBracketNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sNewBracketNumber_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -2747,22 +2749,22 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
     // ( e.Indent ) ( & CmdEmptyResult )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdEmptyResult, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdEmptyResult, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -2836,36 +2838,36 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *sUsings_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *sUsings_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( e.Indent ) ( & CmdCopyEVar s.Usings 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdCopyEVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdCopyEVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sUsings_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::char_left( 'e', bb_2, be_2 ) )
+    if (! r05_char_left('e', &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -2994,38 +2996,38 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *sUsings_2;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *sUsings_2;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( e.Indent ) ( & CmdCopyVar s.Usings s.Mode e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdCopyVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdCopyVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sUsings_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sMode_1, &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -3150,42 +3152,42 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sStringNumber_1;
-    static struct r05_node *sLen_1;
-    static struct r05_node *eString_b_1;
-    static struct r05_node *eString_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *eIndent_b_4;
-    static struct r05_node *eIndent_e_4;
-    static struct r05_node *eIndent_b_5;
-    static struct r05_node *eIndent_e_5;
-    static struct r05_node *sStringNumber_2;
-    static struct r05_node *sStringNumber_3;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sStringNumber_1;
+    struct r05_node *sLen_1;
+    struct r05_node *eString_b_1;
+    struct r05_node *eString_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_4;
+    struct r05_node *eIndent_e_4;
+    struct r05_node *eIndent_b_5;
+    struct r05_node *eIndent_e_5;
+    struct r05_node *sStringNumber_2;
+    struct r05_node *sStringNumber_3;
     // ( e.Indent ) ( & CmdAllocateElem s.StringNumber & ElString s.Len e.String )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdAllocateElem, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdAllocateElem, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sStringNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sStringNumber_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::function_left( r05c_ElString, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_ElString, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sLen_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sLen_1, &bb_2, &be_2))
       break;
     eString_b_1 = bb_2;
     eString_e_1 = be_2;
@@ -3398,32 +3400,32 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sElemNumber_1;
-    static struct r05_node *eElemInfo_b_1;
-    static struct r05_node *eElemInfo_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *sElemNumber_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sElemNumber_1;
+    struct r05_node *eElemInfo_b_1;
+    struct r05_node *eElemInfo_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *sElemNumber_2;
     // ( e.Indent ) ( & CmdAllocateElem s.ElemNumber e.ElemInfo )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdAllocateElem, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdAllocateElem, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sElemNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sElemNumber_1, &bb_2, &be_2))
       break;
     eElemInfo_b_1 = bb_2;
     eElemInfo_e_1 = be_2;
@@ -3517,30 +3519,30 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sLeft_1;
-    static struct r05_node *sRight_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sLeft_1;
+    struct r05_node *sRight_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdLinkBrackets s.Left s.Right )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdLinkBrackets, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdLinkBrackets, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sLeft_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sLeft_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sRight_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sRight_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3624,27 +3626,27 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sElemNumber_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sElemNumber_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdPushStack s.ElemNumber )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdPushStack, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdPushStack, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sElemNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sElemNumber_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3708,27 +3710,27 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sElemNumber_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sElemNumber_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdInsertElem s.ElemNumber )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdInsertElem, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdInsertElem, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sElemNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sElemNumber_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3792,31 +3794,31 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdInsertVar s.Usings 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdInsertVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdInsertVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sUsings_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::char_left( 'e', bb_2, be_2 ) )
+    if (! r05_char_left('e', &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -3885,32 +3887,32 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdInsertVar s.Usings s.Mode e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdInsertVar, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdInsertVar, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sUsings_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sMode_1, &bb_2, &be_2))
       break;
     eIndex_b_1 = bb_2;
     eIndex_e_1 = be_2;
@@ -3976,27 +3978,27 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sStringNumber_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sStringNumber_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
     // ( e.Indent ) ( & CmdInsertString s.StringNumber )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdInsertString, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdInsertString, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sStringNumber_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sStringNumber_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -4060,24 +4062,24 @@ static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
-    static struct r05_node *eIndent_b_4;
-    static struct r05_node *eIndent_e_4;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_4;
+    struct r05_node *eIndent_e_4;
     // ( e.Indent ) ( & CmdReturnResult )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdReturnResult, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_CmdReturnResult, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -4166,8 +4168,8 @@ static enum r05_fnresult r05c_EscapeString(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eString_b_1;
-    static struct r05_node *eString_e_1;
+    struct r05_node *eString_b_1;
+    struct r05_node *eString_e_1;
     // e.String
     eString_b_1 = bb_0;
     eString_e_1 = be_0;
@@ -4210,14 +4212,14 @@ static enum r05_fnresult r05c_PrintVar(struct r05_node *arg_begin, struct r05_no
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // s.Usings s.Mode e.Index
-    if( ! refalrts::svar_left( sUsings_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -4255,6 +4257,62 @@ static enum r05_fnresult r05c_PrintVar(struct r05_node *arg_begin, struct r05_no
   );
 }
 
+static enum r05_fnresult r05c_PrintVarPtr(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
+    refalrts::start_sentence();
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    // s.Usings s.Mode e.Index
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
+      break;
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
+      break;
+    eIndex_b_1 = bb_0;
+    eIndex_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    struct r05_node *res = arg_begin;
+    struct r05_node *n0 = 0;
+    if( ! refalrts::alloc_char( n0, '&' ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_char( n1, '_' ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
+    if( ! refalrts::alloc_open_call( n2 ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
+    if( ! refalrts::alloc_name( n3, r05c_StrFromInt, "StrFromInt" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
+    if( ! refalrts::alloc_close_call( n4 ) )
+      return R05_NO_MEMORY;
+    refalrts::push_stack( n4 );
+    refalrts::push_stack( n2 );
+    res = refalrts::splice_elem( res, n4 );
+    res = refalrts::splice_stvar( res, sUsings_1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
+    res = refalrts::splice_stvar( res, sMode_1 );
+    res = refalrts::splice_elem( res, n0 );
+    r05_use(&res);
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
 static enum r05_fnresult r05c_PrintEVar_B(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -4262,14 +4320,14 @@ static enum r05_fnresult r05c_PrintEVar_B(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // s.Usings s.Mode e.Index
-    if( ! refalrts::svar_left( sUsings_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -4315,14 +4373,14 @@ static enum r05_fnresult r05c_PrintEVar_E(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // s.Usings s.Mode e.Index
-    if( ! refalrts::svar_left( sUsings_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -4368,18 +4426,18 @@ static enum r05_fnresult r05c_PrintEVars(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sUsings_2;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_2;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.Usings s.Mode e.Index
-    if( ! refalrts::svar_left( sUsings_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -4441,6 +4499,90 @@ static enum r05_fnresult r05c_PrintEVars(struct r05_node *arg_begin, struct r05_
   );
 }
 
+static enum r05_fnresult r05c_PrintEVarsPtr(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  refalrts::this_is_generated_function();
+  do {
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
+    refalrts::start_sentence();
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_2;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    // s.Usings s.Mode e.Index
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
+      break;
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
+      break;
+    eIndex_b_1 = bb_0;
+    eIndex_e_1 = be_0;
+
+    refalrts::reset_allocator();
+    struct r05_node *res = arg_begin;
+    if( ! refalrts::copy_stvar( sUsings_2, sUsings_1 ) )
+      return R05_NO_MEMORY;
+    if( ! refalrts::copy_stvar( sMode_2, sMode_1 ) )
+      return R05_NO_MEMORY;
+    if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n0 = 0;
+    if( ! refalrts::alloc_char( n0, '&' ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n1 = 0;
+    if( ! refalrts::alloc_open_call( n1 ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n2 = 0;
+    if( ! refalrts::alloc_name( n2, r05c_PrintEVar_B, "PrintEVar_B" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n3 = 0;
+    if( ! refalrts::alloc_close_call( n3 ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n4 = 0;
+    struct r05_node *n5 = 0;
+    if( ! refalrts::alloc_chars( n4, n5, ", &", 3) )
+      return R05_NO_MEMORY;
+    struct r05_node *n6 = 0;
+    if( ! refalrts::alloc_open_call( n6 ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n7 = 0;
+    if( ! refalrts::alloc_name( n7, r05c_PrintEVar_E, "PrintEVar_E" ) )
+      return R05_NO_MEMORY;
+    struct r05_node *n8 = 0;
+    if( ! refalrts::alloc_close_call( n8 ) )
+      return R05_NO_MEMORY;
+    refalrts::push_stack( n8 );
+    refalrts::push_stack( n6 );
+    res = refalrts::splice_elem( res, n8 );
+    res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
+    res = refalrts::splice_stvar( res, sMode_2 );
+    res = refalrts::splice_stvar( res, sUsings_2 );
+    res = refalrts::splice_elem( res, n7 );
+    res = refalrts::splice_elem( res, n6 );
+    res = refalrts::splice_evar( res, n4, n5 );
+    refalrts::push_stack( n3 );
+    refalrts::push_stack( n1 );
+    res = refalrts::splice_elem( res, n3 );
+    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
+    res = refalrts::splice_stvar( res, sMode_1 );
+    res = refalrts::splice_stvar( res, sUsings_1 );
+    res = refalrts::splice_elem( res, n2 );
+    res = refalrts::splice_elem( res, n1 );
+    res = refalrts::splice_elem( res, n0 );
+    r05_use(&res);
+    refalrts::splice_to_freelist( arg_begin, arg_end );
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
 static enum r05_fnresult r05c_PrintMatchSymbol(struct r05_node *arg_begin, struct r05_node *arg_end) {
   refalrts::this_is_generated_function();
   do {
@@ -4448,26 +4590,26 @@ static enum r05_fnresult r05c_PrintMatchSymbol(struct r05_node *arg_begin, struc
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sType_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
-    static struct r05_node *sType_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sType_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
+    struct r05_node *sType_2;
     // ( e.Indent ) s.Direction s.BracketNumber s.Type e.Value
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sType_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sType_1, &bb_0, &be_0))
       break;
     eValue_b_1 = bb_0;
     eValue_e_1 = be_0;
@@ -4560,7 +4702,7 @@ static enum r05_fnresult r05c_SymbolFunc(struct r05_node *arg_begin, struct r05_
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & Char
-    if( ! refalrts::function_left( r05c_Char, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Char, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4583,7 +4725,7 @@ static enum r05_fnresult r05c_SymbolFunc(struct r05_node *arg_begin, struct r05_
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & Number
-    if( ! refalrts::function_left( r05c_Number, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Number, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4606,7 +4748,7 @@ static enum r05_fnresult r05c_SymbolFunc(struct r05_node *arg_begin, struct r05_
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & Name
-    if( ! refalrts::function_left( r05c_Name, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Name, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4635,11 +4777,11 @@ static enum r05_fnresult r05c_SymbolTextRep(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sChar_1;
+    struct r05_node *sChar_1;
     // & Char s.Char
-    if( ! refalrts::function_left( r05c_Char, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Char, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sChar_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4679,11 +4821,11 @@ static enum r05_fnresult r05c_SymbolTextRep(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sNumber_1;
+    struct r05_node *sNumber_1;
     // & Number s.Number
-    if( ! refalrts::function_left( r05c_Number, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Number, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4720,10 +4862,10 @@ static enum r05_fnresult r05c_SymbolTextRep(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // & Name e.Name
-    if( ! refalrts::function_left( r05c_Name, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Name, &bb_0, &be_0))
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -4753,23 +4895,23 @@ static enum r05_fnresult r05c_PrintMatchBrackets(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sInnerNum_1;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sInnerNum_1;
     // ( e.Indent ) s.Direction s.BracketNumber s.InnerNum
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sInnerNum_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sInnerNum_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4802,7 +4944,7 @@ static enum r05_fnresult r05c_PrintMatchBrackets(struct r05_node *arg_begin, str
     if( ! refalrts::alloc_open_call( n8 ) )
       return R05_NO_MEMORY;
     struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_BracketsVars, "BracketsVars" ) )
+    if( ! refalrts::alloc_name( n9, r05c_BracketsVarsPtr, "BracketsVarsPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n10 = 0;
     if( ! refalrts::alloc_close_call( n10 ) )
@@ -4849,13 +4991,13 @@ static enum r05_fnresult r05c_BreakerFromIndent(struct r05_node *arg_begin, stru
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '    '
-    if( ! refalrts::char_left( ' ', bb_0, be_0 ) )
+    if (! r05_char_left(' ', &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( ' ', bb_0, be_0 ) )
+    if (! r05_char_left(' ', &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( ' ', bb_0, be_0 ) )
+    if (! r05_char_left(' ', &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( ' ', bb_0, be_0 ) )
+    if (! r05_char_left(' ', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -4904,21 +5046,21 @@ static enum r05_fnresult r05c_PrintMatchEmpty(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
     // ( e.Indent ) s.BracketNumber
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5012,7 +5154,7 @@ static enum r05_fnresult r05c_StrFromDirection(struct r05_node *arg_begin, struc
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & AlgLeft
-    if( ! refalrts::function_left( r05c_AlgLeft, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_AlgLeft, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5035,7 +5177,7 @@ static enum r05_fnresult r05c_StrFromDirection(struct r05_node *arg_begin, struc
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & AlgRight
-    if( ! refalrts::function_left( r05c_AlgRight, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_AlgRight, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5065,7 +5207,7 @@ static enum r05_fnresult r05c_VarMatchFunction(struct r05_node *arg_begin, struc
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 's'
-    if( ! refalrts::char_left( 's', bb_0, be_0 ) )
+    if (! r05_char_left('s', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5088,7 +5230,7 @@ static enum r05_fnresult r05c_VarMatchFunction(struct r05_node *arg_begin, struc
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 't'
-    if( ! refalrts::char_left( 't', bb_0, be_0 ) )
+    if (! r05_char_left('t', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5117,26 +5259,26 @@ static enum r05_fnresult r05c_PrintMatchSTVar(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sMode_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_2;
     // ( e.Indent ) s.Direction s.BracketNumber s.Mode e.Index
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -5176,7 +5318,7 @@ static enum r05_fnresult r05c_PrintMatchSTVar(struct r05_node *arg_begin, struct
     if( ! refalrts::alloc_open_call( n9 ) )
       return R05_NO_MEMORY;
     struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_PrintVar, "PrintVar" ) )
+    if( ! refalrts::alloc_name( n10, r05c_PrintVarPtr, "PrintVarPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n11 = 0;
     if( ! refalrts::alloc_number( n11, 1UL ) )
@@ -5232,30 +5374,30 @@ static enum r05_fnresult r05c_PrintMatchRepeated(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sUsings_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( e.Indent ) s.Direction s.BracketNumber s.Usings 'e e.Index
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sUsings_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( 'e', bb_0, be_0 ) )
+    if (! r05_char_left('e', &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -5292,7 +5434,7 @@ static enum r05_fnresult r05c_PrintMatchRepeated(struct r05_node *arg_begin, str
     if( ! refalrts::alloc_open_call( n8 ) )
       return R05_NO_MEMORY;
     struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_PrintEVars, "PrintEVars" ) )
+    if( ! refalrts::alloc_name( n9, r05c_PrintEVarsPtr, "PrintEVarsPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n10 = 0;
     if( ! refalrts::alloc_char( n10, 'e' ) )
@@ -5375,32 +5517,32 @@ static enum r05_fnresult r05c_PrintMatchRepeated(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sUsings_2;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_2;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( e.Indent ) s.Direction s.BracketNumber s.Usings s.Mode e.Index
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sUsings_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sMode_1, &bb_0, &be_0))
       break;
     eIndex_b_1 = bb_0;
     eIndex_e_1 = be_0;
@@ -5439,7 +5581,7 @@ static enum r05_fnresult r05c_PrintMatchRepeated(struct r05_node *arg_begin, str
     if( ! refalrts::alloc_open_call( n8 ) )
       return R05_NO_MEMORY;
     struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_PrintVar, "PrintVar" ) )
+    if( ! refalrts::alloc_name( n9, r05c_PrintVarPtr, "PrintVarPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n10 = 0;
     if( ! refalrts::alloc_close_call( n10 ) )
@@ -5523,32 +5665,32 @@ static enum r05_fnresult r05c_PrintMatch(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sBracketNumber_1;
-    static struct r05_node *eFunction_b_1;
-    static struct r05_node *eFunction_e_1;
-    static struct r05_node *eTextRep_b_1;
-    static struct r05_node *eTextRep_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *eIndent_b_3;
-    static struct r05_node *eIndent_e_3;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sBracketNumber_1;
+    struct r05_node *eFunction_b_1;
+    struct r05_node *eFunction_e_1;
+    struct r05_node *eTextRep_b_1;
+    struct r05_node *eTextRep_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *eIndent_b_3;
+    struct r05_node *eIndent_e_3;
     // ( e.Indent ) s.Direction s.BracketNumber ( e.Function ) e.TextRep
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sDirection_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sBracketNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sBracketNumber_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eFunction_b_1 = bb_2;
     eFunction_e_1 = be_2;
@@ -5566,7 +5708,7 @@ static enum r05_fnresult r05c_PrintMatch(struct r05_node *arg_begin, struct r05_
       return R05_NO_MEMORY;
     struct r05_node *n1 = 0;
     struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_chars( n1, n2, "if( ! refalrts::", 16) )
+    if( ! refalrts::alloc_chars( n1, n2, "if (! r05_", 10) )
       return R05_NO_MEMORY;
     struct r05_node *n3 = 0;
     if( ! refalrts::alloc_char( n3, '_' ) )
@@ -5581,71 +5723,70 @@ static enum r05_fnresult r05c_PrintMatch(struct r05_node *arg_begin, struct r05_
     if( ! refalrts::alloc_close_call( n6 ) )
       return R05_NO_MEMORY;
     struct r05_node *n7 = 0;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_chars( n7, n8, "( ", 2) )
+    if( ! refalrts::alloc_char( n7, '(' ) )
       return R05_NO_MEMORY;
+    struct r05_node *n8 = 0;
     struct r05_node *n9 = 0;
+    if( ! refalrts::alloc_chars( n8, n9, ", ", 2) )
+      return R05_NO_MEMORY;
     struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_chars( n9, n10, ", ", 2) )
+    if( ! refalrts::alloc_open_call( n10 ) )
       return R05_NO_MEMORY;
     struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_call( n11 ) )
+    if( ! refalrts::alloc_name( n11, r05c_BracketsVarsPtr, "BracketsVarsPtr" ) )
       return R05_NO_MEMORY;
     struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_BracketsVars, "BracketsVars" ) )
+    if( ! refalrts::alloc_close_call( n12 ) )
       return R05_NO_MEMORY;
     struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return R05_NO_MEMORY;
     struct r05_node *n14 = 0;
+    if( ! refalrts::alloc_chars( n13, n14, "))", 2) )
+      return R05_NO_MEMORY;
     struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_chars( n14, n15, " ) )", 4) )
+    if( ! refalrts::alloc_close_bracket( n15 ) )
       return R05_NO_MEMORY;
     struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_bracket( n16 ) )
+    if( ! refalrts::alloc_open_bracket( n16 ) )
       return R05_NO_MEMORY;
     struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_open_bracket( n17 ) )
-      return R05_NO_MEMORY;
     struct r05_node *n18 = 0;
+    if( ! refalrts::alloc_chars( n17, n18, "  ", 2) )
+      return R05_NO_MEMORY;
     struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_chars( n18, n19, "  ", 2) )
+    if( ! refalrts::alloc_open_call( n19 ) )
       return R05_NO_MEMORY;
     struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_open_call( n20 ) )
+    if( ! refalrts::alloc_name( n20, r05c_BreakerFromIndent, "BreakerFromIndent" ) )
       return R05_NO_MEMORY;
     struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_name( n21, r05c_BreakerFromIndent, "BreakerFromIndent" ) )
+    if( ! refalrts::alloc_close_call( n21 ) )
       return R05_NO_MEMORY;
     struct r05_node *n22 = 0;
-    if( ! refalrts::alloc_close_call( n22 ) )
+    if( ! refalrts::alloc_close_bracket( n22 ) )
       return R05_NO_MEMORY;
-    struct r05_node *n23 = 0;
-    if( ! refalrts::alloc_close_bracket( n23 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n17, n23 );
-    res = refalrts::splice_elem( res, n23 );
-    refalrts::push_stack( n22 );
-    refalrts::push_stack( n20 );
+    refalrts::link_brackets( n16, n22 );
     res = refalrts::splice_elem( res, n22 );
-    res = refalrts::splice_evar( res, eIndent_b_3, eIndent_e_3 );
+    refalrts::push_stack( n21 );
+    refalrts::push_stack( n19 );
     res = refalrts::splice_elem( res, n21 );
+    res = refalrts::splice_evar( res, eIndent_b_3, eIndent_e_3 );
     res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_evar( res, n18, n19 );
+    res = refalrts::splice_elem( res, n19 );
+    res = refalrts::splice_evar( res, n17, n18 );
     res = refalrts::splice_evar( res, eIndent_b_2, eIndent_e_2 );
-    res = refalrts::splice_elem( res, n17 );
-    refalrts::link_brackets( n0, n16 );
     res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_evar( res, n14, n15 );
-    refalrts::push_stack( n13 );
-    refalrts::push_stack( n11 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sBracketNumber_1 );
+    refalrts::link_brackets( n0, n15 );
+    res = refalrts::splice_elem( res, n15 );
+    res = refalrts::splice_evar( res, n13, n14 );
+    refalrts::push_stack( n12 );
+    refalrts::push_stack( n10 );
     res = refalrts::splice_elem( res, n12 );
+    res = refalrts::splice_stvar( res, sBracketNumber_1 );
     res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, n9, n10 );
+    res = refalrts::splice_elem( res, n10 );
+    res = refalrts::splice_evar( res, n8, n9 );
     res = refalrts::splice_evar( res, eTextRep_b_1, eTextRep_e_1 );
-    res = refalrts::splice_evar( res, n7, n8 );
+    res = refalrts::splice_elem( res, n7 );
     refalrts::push_stack( n6 );
     refalrts::push_stack( n4 );
     res = refalrts::splice_elem( res, n6 );
@@ -5674,9 +5815,9 @@ static enum r05_fnresult r05c_PrintElemVar(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sNumber_1;
+    struct r05_node *sNumber_1;
     // s.Number
-    if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5719,10 +5860,10 @@ static enum r05_fnresult r05c_PrintStringVar(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sNumber_1;
-    static struct r05_node *sNumber_2;
+    struct r05_node *sNumber_1;
+    struct r05_node *sNumber_2;
     // s.Number
-    if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5801,27 +5942,27 @@ static enum r05_fnresult r05c_PrintAllocateElem(struct r05_node *arg_begin, stru
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *sElemNumber_1;
-    static struct r05_node *sElementType_1;
-    static struct r05_node *eInfo_b_1;
-    static struct r05_node *eInfo_e_1;
-    static struct r05_node *eIndent_b_2;
-    static struct r05_node *eIndent_e_2;
-    static struct r05_node *sElementType_2;
-    static struct r05_node *eInfo_b_2;
-    static struct r05_node *eInfo_e_2;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *sElemNumber_1;
+    struct r05_node *sElementType_1;
+    struct r05_node *eInfo_b_1;
+    struct r05_node *eInfo_e_1;
+    struct r05_node *eIndent_b_2;
+    struct r05_node *eIndent_e_2;
+    struct r05_node *sElementType_2;
+    struct r05_node *eInfo_b_2;
+    struct r05_node *eInfo_e_2;
     // ( e.Indent ) s.ElemNumber s.ElementType e.Info
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
-    if( ! refalrts::svar_left( sElemNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sElemNumber_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sElementType_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sElementType_1, &bb_0, &be_0))
       break;
     eInfo_b_1 = bb_0;
     eInfo_e_1 = be_0;
@@ -5941,25 +6082,25 @@ static enum r05_fnresult r05c_PrintAllocate_Aux(struct r05_node *arg_begin, stru
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndent_b_1;
-    static struct r05_node *eIndent_e_1;
-    static struct r05_node *eConstructor_b_1;
-    static struct r05_node *eConstructor_e_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
-    static struct r05_node *sElemNumber_1;
+    struct r05_node *eIndent_b_1;
+    struct r05_node *eIndent_e_1;
+    struct r05_node *eConstructor_b_1;
+    struct r05_node *eConstructor_e_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
+    struct r05_node *sElemNumber_1;
     // ( e.Indent ) s.ElemNumber ( e.Constructor ) ( e.Value )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eIndent_b_1 = bb_1;
     eIndent_e_1 = be_1;
@@ -5967,7 +6108,7 @@ static enum r05_fnresult r05c_PrintAllocate_Aux(struct r05_node *arg_begin, stru
     eConstructor_e_1 = be_3;
     eValue_b_1 = bb_2;
     eValue_e_1 = be_2;
-    if( ! refalrts::svar_left( sElemNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sElemNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6033,13 +6174,13 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sChar_1;
+    struct r05_node *sChar_1;
     // & ElSymbol & Char s.Char
-    if( ! refalrts::function_left( r05c_ElSymbol, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElSymbol, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Char, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sChar_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sChar_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6062,9 +6203,9 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & ElSymbol & Name e.Name
-    if( ! refalrts::function_left( r05c_ElSymbol, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElSymbol, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Name, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Name, &bb_0, &be_0))
       break;
     // Unused closed variable e.Name
 
@@ -6085,13 +6226,13 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sNumber_1;
+    struct r05_node *sNumber_1;
     // & ElSymbol & Number s.Number
-    if( ! refalrts::function_left( r05c_ElSymbol, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElSymbol, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Number, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Number, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sNumber_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6114,7 +6255,7 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & ElOpenBracket
-    if( ! refalrts::function_left( r05c_ElOpenBracket, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElOpenBracket, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6137,7 +6278,7 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & ElCloseBracket
-    if( ! refalrts::function_left( r05c_ElCloseBracket, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElCloseBracket, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6160,7 +6301,7 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & ElOpenCall
-    if( ! refalrts::function_left( r05c_ElOpenCall, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElOpenCall, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6183,7 +6324,7 @@ static enum r05_fnresult r05c_SwAllocator(struct r05_node *arg_begin, struct r05
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & ElCloseCall
-    if( ! refalrts::function_left( r05c_ElCloseCall, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElCloseCall, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6212,14 +6353,14 @@ static enum r05_fnresult r05c_SwInfo(struct r05_node *arg_begin, struct r05_node
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eName_b_2;
-    static struct r05_node *eName_e_2;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eName_b_2;
+    struct r05_node *eName_e_2;
     // & ElSymbol & Name e.Name
-    if( ! refalrts::function_left( r05c_ElSymbol, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElSymbol, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Name, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Name, &bb_0, &be_0))
       break;
     eName_b_1 = bb_0;
     eName_e_1 = be_0;
@@ -6254,13 +6395,13 @@ static enum r05_fnresult r05c_SwInfo(struct r05_node *arg_begin, struct r05_node
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sType_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
+    struct r05_node *sType_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
     // & ElSymbol s.Type e.Value
-    if( ! refalrts::function_left( r05c_ElSymbol, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_ElSymbol, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sType_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sType_1, &bb_0, &be_0))
       break;
     eValue_b_1 = bb_0;
     eValue_e_1 = be_0;
@@ -6298,9 +6439,9 @@ static enum r05_fnresult r05c_SwInfo(struct r05_node *arg_begin, struct r05_node
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sOther_1;
+    struct r05_node *sOther_1;
     // s.Other
-    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sOther_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6336,11 +6477,11 @@ enum r05_fnresult r05c_GenNative(struct r05_node *arg_begin, struct r05_node *ar
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sNativeLineNo_1;
-    static struct r05_node *eCode_b_1;
-    static struct r05_node *eCode_e_1;
+    struct r05_node *sNativeLineNo_1;
+    struct r05_node *eCode_b_1;
+    struct r05_node *eCode_e_1;
     // s.NativeLineNo e.Code
-    if( ! refalrts::svar_left( sNativeLineNo_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNativeLineNo_1, &bb_0, &be_0))
       break;
     eCode_b_1 = bb_0;
     eCode_e_1 = be_0;
@@ -6392,22 +6533,22 @@ enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_nod
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSrcName_b_1;
-    static struct r05_node *eSrcName_e_1;
-    static struct r05_node *eOutputName_b_1;
-    static struct r05_node *eOutputName_e_1;
-    static struct r05_node *eLines_B_b_1;
-    static struct r05_node *eLines_B_e_1;
-    static struct r05_node *eLines_E_b_1;
-    static struct r05_node *eLines_E_e_1;
+    struct r05_node *eSrcName_b_1;
+    struct r05_node *eSrcName_e_1;
+    struct r05_node *eOutputName_b_1;
+    struct r05_node *eOutputName_e_1;
+    struct r05_node *eLines_B_b_1;
+    struct r05_node *eLines_B_e_1;
+    struct r05_node *eLines_E_b_1;
+    struct r05_node *eLines_E_e_1;
     // ( e.SrcName ) ( e.OutputName ) e.Lines_B ( & EndNative ) e.Lines_E
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eSrcName_b_1 = bb_1;
     eSrcName_e_1 = be_1;
@@ -6421,9 +6562,9 @@ enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_nod
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
-      if( ! refalrts::function_left( r05c_EndNative, bb_4, be_4 ) )
+      if (! r05_function_left(r05c_EndNative, &bb_4, &be_4))
         continue;
       if (! r05_empty_seq(bb_4, be_4))
         continue;
@@ -6543,7 +6684,7 @@ enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_nod
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eLines_B_b_1, eLines_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eLines_B_b_1, &eLines_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -6551,16 +6692,16 @@ enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_nod
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eLines_b_1;
-    static struct r05_node *eLines_e_1;
+    struct r05_node *eLines_b_1;
+    struct r05_node *eLines_e_1;
     // ( e.SrcName ) ( e.OutputName ) e.Lines
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     // Unused closed variable e.SrcName
     // Unused closed variable e.OutputName
@@ -6615,33 +6756,33 @@ static enum r05_fnresult r05c_EnumerateLines(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSrcName_b_1;
-    static struct r05_node *eSrcName_e_1;
-    static struct r05_node *sLineNo_1;
-    static struct r05_node *sNativeLineNo_1;
+    struct r05_node *eSrcName_b_1;
+    struct r05_node *eSrcName_e_1;
+    struct r05_node *sLineNo_1;
+    struct r05_node *sNativeLineNo_1;
     // ( e.SrcName ) ( e.OutputName ) s.LineNo ( & BeginNative s.NativeLineNo )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_BeginNative, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_BeginNative, &bb_3, &be_3))
       break;
     eSrcName_b_1 = bb_1;
     eSrcName_e_1 = be_1;
     // Unused closed variable e.OutputName
-    if( ! refalrts::svar_left( sLineNo_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sLineNo_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sNativeLineNo_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sNativeLineNo_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -6689,31 +6830,31 @@ static enum r05_fnresult r05c_EnumerateLines(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eOutputName_b_1;
-    static struct r05_node *eOutputName_e_1;
-    static struct r05_node *sLineNo_1;
-    static struct r05_node *sLineNo_2;
+    struct r05_node *eOutputName_b_1;
+    struct r05_node *eOutputName_e_1;
+    struct r05_node *sLineNo_1;
+    struct r05_node *sLineNo_2;
     // ( e.SrcName ) ( e.OutputName ) s.LineNo ( & EndNative )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_EndNative, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_EndNative, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
     // Unused closed variable e.SrcName
     eOutputName_b_1 = bb_2;
     eOutputName_e_1 = be_2;
-    if( ! refalrts::svar_left( sLineNo_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sLineNo_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6763,27 +6904,27 @@ static enum r05_fnresult r05c_EnumerateLines(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eLine_b_1;
-    static struct r05_node *eLine_e_1;
-    static struct r05_node *sLineNo_1;
+    struct r05_node *eLine_b_1;
+    struct r05_node *eLine_e_1;
+    struct r05_node *sLineNo_1;
     // ( e.SrcName ) ( e.OutputName ) s.LineNo ( e.Line )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
     // Unused closed variable e.SrcName
     // Unused closed variable e.OutputName
     eLine_b_1 = bb_3;
     eLine_e_1 = be_3;
-    if( ! refalrts::svar_left( sLineNo_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sLineNo_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6832,11 +6973,11 @@ static enum r05_fnresult r05c_LineDirective(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sLineNo_1;
-    static struct r05_node *eFileName_b_1;
-    static struct r05_node *eFileName_e_1;
+    struct r05_node *sLineNo_1;
+    struct r05_node *eFileName_b_1;
+    struct r05_node *eFileName_e_1;
     // s.LineNo e.FileName
-    if( ! refalrts::svar_left( sLineNo_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sLineNo_1, &bb_0, &be_0))
       break;
     eFileName_b_1 = bb_0;
     eFileName_e_1 = be_0;

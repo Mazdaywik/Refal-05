@@ -273,7 +273,7 @@ enum r05_fnresult r05c_FWriteLine(struct r05_node *arg_begin, struct r05_node *a
     struct r05_node *eLine_b_1;
     struct r05_node *eLine_e_1;
     // s.FileHandle e.Line
-    if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
+    if (! r05_svar_left(&sFileHandle_1, &bb_0, &be_0))
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
@@ -380,7 +380,7 @@ enum r05_fnresult r05c_FReadLine(struct r05_node *arg_begin, struct r05_node *ar
 
     struct r05_node *sFileHandle_1;
     // s.FileHandle
-    if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
+    if (! r05_svar_left(&sFileHandle_1, &bb_0, &be_0))
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
@@ -423,7 +423,7 @@ enum r05_fnresult string_from_seq(
   char buffer[cBufLen + 1] = { 0 };
 
   for ( ; ; ) {
-    unsigned read = refalrts::read_chars(buffer, cBufLen, begin, end);
+    unsigned read = r05_read_chars(buffer, cBufLen, &begin, &end);
 
     if (read == 0) {
       break;
@@ -466,9 +466,9 @@ enum r05_fnresult r05c_FOpen(struct r05_node *arg_begin, struct r05_node *arg_en
 
     const char *mode;
 
-    if (refalrts::char_left('r', bb_0, be_0)) {
+    if (r05_char_left('r', &bb_0, &be_0)) {
       mode = "r";
-    } else if (refalrts::char_left('w', bb_0, be_0)) {
+    } else if (r05_char_left('w', &bb_0, &be_0)) {
       mode = "w";
     } else {
       break;
@@ -522,7 +522,7 @@ enum r05_fnresult r05c_FClose(struct r05_node *arg_begin, struct r05_node *arg_e
 
     struct r05_node *sFileHandle_1;
     // s.FileHandle
-    if (! refalrts::svar_left(sFileHandle_1, bb_0, be_0))
+    if (! r05_svar_left(&sFileHandle_1, &bb_0, &be_0))
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
@@ -565,7 +565,7 @@ enum r05_fnresult r05c_Arg(struct r05_node *arg_begin, struct r05_node *arg_end)
 
     struct r05_node *sParamNumber_1;
     // s.ParamNumber
-    if (! refalrts::svar_left(sParamNumber_1, bb_0, be_0))
+    if (! r05_svar_left(&sParamNumber_1, &bb_0, &be_0))
       break;
     if (sParamNumber_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -705,7 +705,7 @@ enum r05_fnresult r05c_Exit(struct r05_node *arg_begin, struct r05_node *arg_end
 
     struct r05_node *sCode_1;
     // s.Code
-    if (! refalrts::svar_left(sCode_1, bb_0, be_0))
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -837,7 +837,7 @@ enum r05_fnresult r05c_StrFromInt(struct r05_node *arg_begin, struct r05_node *a
 
     struct r05_node *sNumber_1;
     // s.Number
-    if (! refalrts::svar_left(sNumber_1, bb_0, be_0))
+    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
       break;
     if (sNumber_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -899,7 +899,7 @@ enum r05_fnresult r05c_Chr(struct r05_node *arg_begin, struct r05_node *arg_end)
 
     struct r05_node *sCode_1;
     // s.Code
-    if (! refalrts::svar_left(sCode_1, bb_0, be_0))
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
@@ -932,7 +932,7 @@ enum r05_fnresult r05c_Ord(struct r05_node *arg_begin, struct r05_node *arg_end)
 
     struct r05_node *sChar_1;
     // s.Char
-    if (! refalrts::svar_left(sChar_1, bb_0, be_0))
+    if (! r05_svar_left(&sChar_1, &bb_0, &be_0))
       break;
     if (sChar_1->tag != R05_DATATAG_CHAR)
       break;

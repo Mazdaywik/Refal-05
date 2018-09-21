@@ -32,8 +32,8 @@ enum r05_fnresult r05c_EL_Create(struct r05_node *arg_begin, struct r05_node *ar
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eFileName_b_1;
-    static struct r05_node *eFileName_e_1;
+    struct r05_node *eFileName_b_1;
+    struct r05_node *eFileName_e_1;
     // e.FileName
     eFileName_b_1 = bb_0;
     eFileName_e_1 = be_0;
@@ -80,22 +80,22 @@ enum r05_fnresult r05c_EL_AddError(struct r05_node *arg_begin, struct r05_node *
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eFileName_b_1;
-    static struct r05_node *eFileName_e_1;
-    static struct r05_node *eErrors_b_1;
-    static struct r05_node *eErrors_e_1;
-    static struct r05_node *eMessage_b_1;
-    static struct r05_node *eMessage_e_1;
+    struct r05_node *eFileName_b_1;
+    struct r05_node *eFileName_e_1;
+    struct r05_node *eErrors_b_1;
+    struct r05_node *eErrors_e_1;
+    struct r05_node *eMessage_b_1;
+    struct r05_node *eMessage_e_1;
     // ( & ErrorList ( e.FileName ) e.Errors ) e.Message
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_ErrorList, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_ErrorList, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
       break;
     eFileName_b_1 = bb_2;
     eFileName_e_1 = be_2;
@@ -162,31 +162,31 @@ enum r05_fnresult r05c_EL_AddErrorAt(struct r05_node *arg_begin, struct r05_node
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eFileName_b_1;
-    static struct r05_node *eFileName_e_1;
-    static struct r05_node *eErrors_b_1;
-    static struct r05_node *eErrors_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eMessage_b_1;
-    static struct r05_node *eMessage_e_1;
-    static struct r05_node *eFileName_b_2;
-    static struct r05_node *eFileName_e_2;
+    struct r05_node *eFileName_b_1;
+    struct r05_node *eFileName_e_1;
+    struct r05_node *eErrors_b_1;
+    struct r05_node *eErrors_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eMessage_b_1;
+    struct r05_node *eMessage_e_1;
+    struct r05_node *eFileName_b_2;
+    struct r05_node *eFileName_e_2;
     // ( & ErrorList ( e.FileName ) e.Errors ) t.SrcPos e.Message
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_ErrorList, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_ErrorList, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
       break;
     eFileName_b_1 = bb_2;
     eFileName_e_1 = be_2;
     eErrors_b_1 = bb_1;
     eErrors_e_1 = be_1;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_0, &be_0))
       break;
     eMessage_b_1 = bb_0;
     eMessage_e_1 = be_0;
@@ -271,18 +271,18 @@ static enum r05_fnresult r05c_StrFromSrcPos(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sLine_1;
-    static struct r05_node *sCol_1;
+    struct r05_node *sLine_1;
+    struct r05_node *sCol_1;
     // ( s.Line s.Col )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sLine_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sLine_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sCol_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sCol_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -340,21 +340,21 @@ enum r05_fnresult r05c_EL_AddUnexpected(struct r05_node *arg_begin, struct r05_n
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eMessage_b_1;
-    static struct r05_node *eMessage_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eMessage_b_1;
+    struct r05_node *eMessage_e_1;
     // t.ErrorList ( & TkError t.SrcPos e.Message ) e.Expected
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkError, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkError, &bb_1, &be_1))
       break;
     // Unused closed variable e.Expected
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     eMessage_b_1 = bb_1;
     eMessage_e_1 = be_1;
@@ -388,21 +388,21 @@ enum r05_fnresult r05c_EL_AddUnexpected(struct r05_node *arg_begin, struct r05_n
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eUnexpected_b_1;
-    static struct r05_node *eUnexpected_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eUnexpected_b_1;
+    struct r05_node *eUnexpected_e_1;
     // t.ErrorList ( & TkUnexpected t.SrcPos e.Unexpected ) e.Expected
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkUnexpected, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkUnexpected, &bb_1, &be_1))
       break;
     // Unused closed variable e.Expected
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     eUnexpected_b_1 = bb_1;
     eUnexpected_e_1 = be_1;
@@ -445,25 +445,25 @@ enum r05_fnresult r05c_EL_AddUnexpected(struct r05_node *arg_begin, struct r05_n
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *eExpected_b_1;
-    static struct r05_node *eExpected_e_1;
-    static struct r05_node *sUnexpected_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eInfo_b_1;
-    static struct r05_node *eInfo_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *eExpected_b_1;
+    struct r05_node *eExpected_e_1;
+    struct r05_node *sUnexpected_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eInfo_b_1;
+    struct r05_node *eInfo_e_1;
     // t.ErrorList ( s.Unexpected t.SrcPos e.Info ) e.Expected
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eExpected_b_1 = bb_0;
     eExpected_e_1 = be_0;
-    if( ! refalrts::svar_left( sUnexpected_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sUnexpected_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     eInfo_b_1 = bb_1;
     eInfo_e_1 = be_1;
@@ -545,13 +545,13 @@ enum r05_fnresult r05c_EL_Destroy(struct r05_node *arg_begin, struct r05_node *a
     // ( & ErrorList ( e.FileName ) )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_ErrorList, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_ErrorList, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -575,18 +575,18 @@ enum r05_fnresult r05c_EL_Destroy(struct r05_node *arg_begin, struct r05_node *a
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eErrors_b_1;
-    static struct r05_node *eErrors_e_1;
+    struct r05_node *eErrors_b_1;
+    struct r05_node *eErrors_e_1;
     // ( & ErrorList ( e.FileName ) e.Errors )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_ErrorList, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_ErrorList, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -636,12 +636,12 @@ static enum r05_fnresult r05c_WriteBracketedLine(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eLine_b_1;
-    static struct r05_node *eLine_e_1;
+    struct r05_node *eLine_b_1;
+    struct r05_node *eLine_e_1;
     // ( e.Line )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;

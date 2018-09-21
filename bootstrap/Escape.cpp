@@ -19,7 +19,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 0
-    if( ! refalrts::number_left( 0UL, bb_0, be_0 ) )
+    if (! r05_number_left(0UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -41,7 +41,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 1
-    if( ! refalrts::number_left( 1UL, bb_0, be_0 ) )
+    if (! r05_number_left(1UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -63,7 +63,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 2
-    if( ! refalrts::number_left( 2UL, bb_0, be_0 ) )
+    if (! r05_number_left(2UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -85,7 +85,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 3
-    if( ! refalrts::number_left( 3UL, bb_0, be_0 ) )
+    if (! r05_number_left(3UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -107,7 +107,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 4
-    if( ! refalrts::number_left( 4UL, bb_0, be_0 ) )
+    if (! r05_number_left(4UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -129,7 +129,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 5
-    if( ! refalrts::number_left( 5UL, bb_0, be_0 ) )
+    if (! r05_number_left(5UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -151,7 +151,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 6
-    if( ! refalrts::number_left( 6UL, bb_0, be_0 ) )
+    if (! r05_number_left(6UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -173,7 +173,7 @@ static enum r05_fnresult r05c_OctDigit(struct r05_node *arg_begin, struct r05_no
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // 7
-    if( ! refalrts::number_left( 7UL, bb_0, be_0 ) )
+    if (! r05_number_left(7UL, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -202,7 +202,7 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '\n'
-    if( ! refalrts::char_left( '\n', bb_0, be_0 ) )
+    if (! r05_char_left('\n', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -225,7 +225,7 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '\t'
-    if( ! refalrts::char_left( '\t', bb_0, be_0 ) )
+    if (! r05_char_left('\t', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -248,7 +248,7 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '\r'
-    if( ! refalrts::char_left( '\r', bb_0, be_0 ) )
+    if (! r05_char_left('\r', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -271,7 +271,7 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '\''
-    if( ! refalrts::char_left( '\'', bb_0, be_0 ) )
+    if (! r05_char_left('\'', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -294,7 +294,7 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '\"'
-    if( ! refalrts::char_left( '\"', bb_0, be_0 ) )
+    if (! r05_char_left('\"', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -317,7 +317,7 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // '\\'
-    if( ! refalrts::char_left( '\\', bb_0, be_0 ) )
+    if (! r05_char_left('\\', &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -339,10 +339,10 @@ enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *a
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sOther_1;
-    static struct r05_node *sOther_2;
+    struct r05_node *sOther_1;
+    struct r05_node *sOther_2;
     // s.Other
-    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sOther_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -398,14 +398,14 @@ static enum r05_fnresult r05c_EscapeChar_Aux(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sOther_1;
-    static struct r05_node *sCode_1;
-    static struct r05_node *sCode_2;
-    static struct r05_node *sCode_3;
+    struct r05_node *sOther_1;
+    struct r05_node *sCode_1;
+    struct r05_node *sCode_2;
+    struct r05_node *sCode_3;
     // s.Other s.Code
-    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sOther_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -487,16 +487,16 @@ static enum r05_fnresult r05c_EscapeChar_SwCompare(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sOther_1;
-    static struct r05_node *sCode_1;
+    struct r05_node *sOther_1;
+    struct r05_node *sCode_1;
     // s.Other '-- s.Code
-    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sOther_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_0, be_0 ) )
+    if (! r05_char_left('-', &bb_0, &be_0))
       break;
-    if( ! refalrts::char_left( '-', bb_0, be_0 ) )
+    if (! r05_char_left('-', &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -514,20 +514,20 @@ static enum r05_fnresult r05c_EscapeChar_SwCompare(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sCode_1;
-    static struct r05_node *sOther_1;
-    static struct r05_node *sCompare1_1;
-    static struct r05_node *sCompare2_1;
-    static struct r05_node *sCode_2;
-    static struct r05_node *sCode_3;
+    struct r05_node *sCode_1;
+    struct r05_node *sOther_1;
+    struct r05_node *sCompare1_1;
+    struct r05_node *sCompare2_1;
+    struct r05_node *sCode_2;
+    struct r05_node *sCode_3;
     // s.Other s.Compare1 s.Compare2 s.Code
-    if( ! refalrts::svar_left( sOther_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sOther_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sCompare1_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCompare1_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sCompare2_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCompare2_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sCode_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;

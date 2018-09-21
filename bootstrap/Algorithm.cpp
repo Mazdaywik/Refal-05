@@ -81,18 +81,18 @@ enum r05_fnresult r05c_MakeAlgorithm(struct r05_node *arg_begin, struct r05_node
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
     // ( e.Pattern ) ( e.Result )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -278,10 +278,10 @@ static enum r05_fnresult r05c_GenPattern(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *ePattern_b_2;
-    static struct r05_node *ePattern_e_2;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *ePattern_b_2;
+    struct r05_node *ePattern_e_2;
     // e.Pattern
     ePattern_b_1 = bb_0;
     ePattern_e_1 = be_0;
@@ -385,36 +385,36 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sType_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
-    static struct r05_node *sNum_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sType_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
+    struct r05_node *sNum_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & Symbol s.Type e.Value ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -424,21 +424,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_Symbol, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
         continue;
       eRange_b_1 = bb_4;
       eRange_e_1 = be_4;
-      if( ! refalrts::svar_left( sType_1, bb_5, be_5 ) )
+      if (! r05_svar_left(&sType_1, &bb_5, &be_5))
         continue;
       eValue_b_1 = bb_5;
       eValue_e_1 = be_5;
@@ -518,7 +518,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -526,36 +526,36 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sType_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
-    static struct r05_node *sNum_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sType_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
+    struct r05_node *sNum_2;
     // s.NumRanges e.Ranges_B ( s.Num e.Range ( & Symbol s.Type e.Value ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -565,21 +565,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_right( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_Symbol, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       eRange_b_1 = bb_4;
       eRange_e_1 = be_4;
-      if( ! refalrts::svar_left( sType_1, bb_5, be_5 ) )
+      if (! r05_svar_left(&sType_1, &bb_5, &be_5))
         continue;
       eValue_b_1 = bb_5;
       eValue_e_1 = be_5;
@@ -659,7 +659,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -667,37 +667,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eSubRange_b_1;
-    static struct r05_node *eSubRange_e_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNumRanges_2;
-    static struct r05_node *sNumRanges_3;
-    static struct r05_node *sNum_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eSubRange_b_1;
+    struct r05_node *eSubRange_e_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNumRanges_2;
+    struct r05_node *sNumRanges_3;
+    struct r05_node *sNum_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & Brackets e.SubRange ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -707,17 +707,17 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_Brackets, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_Brackets, &bb_5, &be_5))
         continue;
       eSubRange_b_1 = bb_5;
       eSubRange_e_1 = be_5;
@@ -827,7 +827,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -835,37 +835,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eSubRange_b_1;
-    static struct r05_node *eSubRange_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNumRanges_2;
-    static struct r05_node *sNumRanges_3;
-    static struct r05_node *sNum_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eSubRange_b_1;
+    struct r05_node *eSubRange_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNumRanges_2;
+    struct r05_node *sNumRanges_3;
+    struct r05_node *sNum_2;
     // s.NumRanges e.Ranges_B ( s.Num e.Range ( & Brackets e.SubRange ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -875,19 +875,19 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_right( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_Brackets, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_Brackets, &bb_5, &be_5))
         continue;
       eSubRange_b_1 = bb_5;
       eSubRange_e_1 = be_5;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       eRange_b_1 = bb_4;
       eRange_e_1 = be_4;
@@ -995,7 +995,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -1003,30 +1003,30 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
     // s.NumRanges e.Ranges_B ( s.Num ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -1036,11 +1036,11 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       if (! r05_empty_seq(bb_4, be_4))
         continue;
@@ -1105,7 +1105,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -1113,41 +1113,41 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *eVars_B_b_1;
-    static struct r05_node *eVars_B_e_1;
-    static struct r05_node *eVars_E_b_1;
-    static struct r05_node *eVars_E_e_1;
-    static struct r05_node *sCount_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *sCount_2;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_B_b_1;
+    struct r05_node *eVars_B_e_1;
+    struct r05_node *eVars_E_b_1;
+    struct r05_node *eVars_E_e_1;
+    struct r05_node *sCount_1;
+    struct r05_node *sNum_2;
+    struct r05_node *sCount_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable s.Mode e.Index ) e.Range ) e.Ranges_E ( e.Vars_B ( s.Count s.Mode e.Index ) e.Vars_E ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -1159,21 +1159,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_4 = be_2;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_5, be_5 ) )
+      if (! r05_svar_left(&sNum_1, &bb_5, &be_5))
         continue;
       struct r05_node *bb_6 = 0;
       struct r05_node *be_6 = 0;
-      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
+      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_6, be_6 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_6, &be_6))
         continue;
       eRange_b_1 = bb_5;
       eRange_e_1 = be_5;
-      if( ! refalrts::svar_left( sMode_1, bb_6, be_6 ) )
+      if (! r05_svar_left(&sMode_1, &bb_6, &be_6))
         continue;
       eIndex_b_1 = bb_6;
       eIndex_e_1 = be_6;
@@ -1185,15 +1185,15 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
         struct r05_node *be_7 = be_4;
         struct r05_node *bb_8 = 0;
         struct r05_node *be_8 = 0;
-        if( ! refalrts::brackets_left( bb_8, be_8, bb_7, be_7 ) )
+        if (! r05_brackets_left(&bb_8, &be_8, &bb_7, &be_7))
           continue;
-        if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_8, be_8 ) )
+        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_8, &be_8))
           continue;
-        if( ! refalrts::repeated_stvar_right( sMode_2, sMode_1, bb_8, be_8 ) )
+        if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb_8, &be_8))
           continue;
         eVars_E_b_1 = bb_7;
         eVars_E_e_1 = be_7;
-        if( ! refalrts::svar_left( sCount_1, bb_8, be_8 ) )
+        if (! r05_svar_left(&sCount_1, &bb_8, &be_8))
           continue;
         if (! r05_empty_seq(bb_8, be_8))
           continue;
@@ -1317,8 +1317,8 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
         r05_use(&res);
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return R05_SUCCESS;
-      } while ( refalrts::open_evar_advance( eVars_B_b_1, eVars_B_e_1, bb_4, be_4 ) );
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+      } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb_4, &be_4));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -1326,41 +1326,41 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *eVars_B_b_1;
-    static struct r05_node *eVars_B_e_1;
-    static struct r05_node *eVars_E_b_1;
-    static struct r05_node *eVars_E_e_1;
-    static struct r05_node *sCount_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *sCount_2;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_B_b_1;
+    struct r05_node *eVars_B_e_1;
+    struct r05_node *eVars_E_b_1;
+    struct r05_node *eVars_E_e_1;
+    struct r05_node *sCount_1;
+    struct r05_node *sNum_2;
+    struct r05_node *sCount_2;
     // s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable s.Mode e.Index ) ) e.Ranges_E ( e.Vars_B ( s.Count s.Mode e.Index ) e.Vars_E ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -1372,21 +1372,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_4 = be_2;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_3, &be_3))
         continue;
       struct r05_node *bb_6 = 0;
       struct r05_node *be_6 = 0;
-      if( ! refalrts::brackets_right( bb_6, be_6, bb_5, be_5 ) )
+      if (! r05_brackets_right(&bb_6, &be_6, &bb_5, &be_5))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_6, be_6 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_6, &be_6))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_5, be_5 ) )
+      if (! r05_svar_left(&sNum_1, &bb_5, &be_5))
         continue;
       eRange_b_1 = bb_5;
       eRange_e_1 = be_5;
-      if( ! refalrts::svar_left( sMode_1, bb_6, be_6 ) )
+      if (! r05_svar_left(&sMode_1, &bb_6, &be_6))
         continue;
       eIndex_b_1 = bb_6;
       eIndex_e_1 = be_6;
@@ -1398,15 +1398,15 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
         struct r05_node *be_7 = be_4;
         struct r05_node *bb_8 = 0;
         struct r05_node *be_8 = 0;
-        if( ! refalrts::brackets_left( bb_8, be_8, bb_7, be_7 ) )
+        if (! r05_brackets_left(&bb_8, &be_8, &bb_7, &be_7))
           continue;
-        if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_8, be_8 ) )
+        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_8, &be_8))
           continue;
-        if( ! refalrts::repeated_stvar_right( sMode_2, sMode_1, bb_8, be_8 ) )
+        if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb_8, &be_8))
           continue;
         eVars_E_b_1 = bb_7;
         eVars_E_e_1 = be_7;
-        if( ! refalrts::svar_left( sCount_1, bb_8, be_8 ) )
+        if (! r05_svar_left(&sCount_1, &bb_8, &be_8))
           continue;
         if (! r05_empty_seq(bb_8, be_8))
           continue;
@@ -1530,8 +1530,8 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
         r05_use(&res);
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return R05_SUCCESS;
-      } while ( refalrts::open_evar_advance( eVars_B_b_1, eVars_B_e_1, bb_4, be_4 ) );
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+      } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb_4, &be_4));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -1539,34 +1539,34 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 'e e.Index ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -1576,21 +1576,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_right( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
         continue;
-      if( ! refalrts::char_left( 'e', bb_5, be_5 ) )
+      if (! r05_char_left('e', &bb_5, &be_5))
         continue;
       eIndex_b_1 = bb_5;
       eIndex_e_1 = be_5;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       if (! r05_empty_seq(bb_4, be_4))
         continue;
@@ -1680,7 +1680,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -1688,37 +1688,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNum_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 's e.Index ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -1728,19 +1728,19 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
         continue;
-      if( ! refalrts::char_left( 's', bb_5, be_5 ) )
+      if (! r05_char_left('s', &bb_5, &be_5))
         continue;
       eIndex_b_1 = bb_5;
       eIndex_e_1 = be_5;
@@ -1845,7 +1845,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -1853,37 +1853,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNum_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 't e.Index ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -1893,19 +1893,19 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
         continue;
-      if( ! refalrts::char_left( 't', bb_5, be_5 ) )
+      if (! r05_char_left('t', &bb_5, &be_5))
         continue;
       eIndex_b_1 = bb_5;
       eIndex_e_1 = be_5;
@@ -2010,7 +2010,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -2018,37 +2018,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNum_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable 's e.Index ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -2058,21 +2058,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_right( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
         continue;
-      if( ! refalrts::char_left( 's', bb_5, be_5 ) )
+      if (! r05_char_left('s', &bb_5, &be_5))
         continue;
       eIndex_b_1 = bb_5;
       eIndex_e_1 = be_5;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       eRange_b_1 = bb_4;
       eRange_e_1 = be_4;
@@ -2175,7 +2175,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -2183,37 +2183,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNum_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable 't e.Index ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -2223,21 +2223,21 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_right( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
         continue;
-      if( ! refalrts::char_left( 't', bb_5, be_5 ) )
+      if (! r05_char_left('t', &bb_5, &be_5))
         continue;
       eIndex_b_1 = bb_5;
       eIndex_e_1 = be_5;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       eRange_b_1 = bb_4;
       eRange_e_1 = be_4;
@@ -2340,7 +2340,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -2348,37 +2348,37 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eRanges_B_b_1;
-    static struct r05_node *eRanges_B_e_1;
-    static struct r05_node *eRanges_E_b_1;
-    static struct r05_node *eRanges_E_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNum_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eRanges_B_b_1;
+    struct r05_node *eRanges_B_e_1;
+    struct r05_node *eRanges_E_b_1;
+    struct r05_node *eRanges_E_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNum_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 'e e.Index ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
@@ -2388,19 +2388,19 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_3 = be_0;
       struct r05_node *bb_4 = 0;
       struct r05_node *be_4 = 0;
-      if( ! refalrts::brackets_left( bb_4, be_4, bb_3, be_3 ) )
+      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
         continue;
       eRanges_E_b_1 = bb_3;
       eRanges_E_e_1 = be_3;
-      if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
         continue;
       struct r05_node *bb_5 = 0;
       struct r05_node *be_5 = 0;
-      if( ! refalrts::brackets_left( bb_5, be_5, bb_4, be_4 ) )
+      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
         continue;
-      if( ! refalrts::function_left( r05c_TkVariable, bb_5, be_5 ) )
+      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
         continue;
-      if( ! refalrts::char_left( 'e', bb_5, be_5 ) )
+      if (! r05_char_left('e', &bb_5, &be_5))
         continue;
       eIndex_b_1 = bb_5;
       eIndex_e_1 = be_5;
@@ -2528,7 +2528,7 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eRanges_B_b_1, eRanges_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -2536,25 +2536,25 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
     // s.NumRanges ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -2598,48 +2598,48 @@ static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
-    static struct r05_node *eScannedRanges_b_1;
-    static struct r05_node *eScannedRanges_e_1;
-    static struct r05_node *eRanges_b_1;
-    static struct r05_node *eRanges_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eRange_b_1;
-    static struct r05_node *eRange_e_1;
-    static struct r05_node *sNumRanges_2;
-    static struct r05_node *sNumRanges_3;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
+    struct r05_node *eScannedRanges_b_1;
+    struct r05_node *eScannedRanges_e_1;
+    struct r05_node *eRanges_b_1;
+    struct r05_node *eRanges_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eRange_b_1;
+    struct r05_node *eRange_e_1;
+    struct r05_node *sNumRanges_2;
+    struct r05_node *sNumRanges_3;
     // s.NumRanges ( e.ScannedRanges ) ( s.Num e.Range ) e.Ranges ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_2;
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
     eScannedRanges_b_1 = bb_3;
     eScannedRanges_e_1 = be_3;
     eRanges_b_1 = bb_0;
     eRanges_e_1 = be_0;
-    if( ! refalrts::svar_left( sNum_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
       break;
     eRange_b_1 = bb_4;
     eRange_e_1 = be_4;
@@ -2746,25 +2746,25 @@ static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eScannedRanges_b_1;
-    static struct r05_node *eScannedRanges_e_1;
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sNumRanges_1;
+    struct r05_node *eScannedRanges_b_1;
+    struct r05_node *eScannedRanges_e_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sNumRanges_1;
     // s.NumRanges ( e.ScannedRanges ) ( e.Vars ) ( e.Commands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eScannedRanges_b_1 = bb_3;
     eScannedRanges_e_1 = be_3;
@@ -2772,7 +2772,7 @@ static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_
     eVars_e_1 = be_2;
     eCommands_b_1 = bb_1;
     eCommands_e_1 = be_1;
-    if( ! refalrts::svar_left( sNumRanges_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -2818,16 +2818,16 @@ static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eInner_b_1;
-    static struct r05_node *eInner_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *eInner_b_1;
+    struct r05_node *eInner_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // ( & Brackets e.Inner ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Brackets, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Brackets, &bb_1, &be_1))
       break;
     eInner_b_1 = bb_1;
     eInner_e_1 = be_1;
@@ -2886,21 +2886,21 @@ static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sChar_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sChar_1;
     // ( & Symbol & Char s.Char ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Char, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sChar_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sChar_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -2955,21 +2955,21 @@ static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sNumber_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sNumber_1;
     // ( & Symbol & Number s.Number ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
       break;
-    if( ! refalrts::function_left( r05c_Number, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Number, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sNumber_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -3020,18 +3020,18 @@ static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // ( & Symbol & Name e.Name ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
       break;
-    if( ! refalrts::function_left( r05c_Name, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Name, &bb_1, &be_1))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
@@ -3071,21 +3071,21 @@ static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // ( & TkVariable s.Mode e.Index ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sMode_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -3150,21 +3150,21 @@ static enum r05_fnresult r05c_TextFromPattern_Char(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sChar_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sChar_1;
     // ( & Symbol & Char s.Char ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_Char, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sChar_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sChar_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -3231,8 +3231,8 @@ static enum r05_fnresult r05c_TextFromPattern_Char(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eOther_b_1;
-    static struct r05_node *eOther_e_1;
+    struct r05_node *eOther_b_1;
+    struct r05_node *eOther_e_1;
     // e.Other
     eOther_b_1 = bb_0;
     eOther_e_1 = be_0;
@@ -3271,8 +3271,8 @@ static enum r05_fnresult r05c_GenResult(struct r05_node *arg_begin, struct r05_n
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
     // e.Result
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
@@ -3420,29 +3420,29 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sChar1_1;
-    static struct r05_node *sChar2_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sChar1_1;
+    struct r05_node *sChar2_1;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Symbol & Char s.Char1 ) ( & Symbol & Char s.Char2 ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -3450,31 +3450,31 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_4, &be_4))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_Char, &bb_4, &be_4))
       break;
     struct r05_node *bb_5 = 0;
     struct r05_node *be_5 = 0;
-    if( ! refalrts::brackets_left( bb_5, be_5, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_5, be_5 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_5, be_5 ) )
+    if (! r05_function_left(r05c_Char, &bb_5, &be_5))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sChar1_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sChar1_1, &bb_4, &be_4))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
-    if( ! refalrts::svar_left( sChar2_1, bb_5, be_5 ) )
+    if (! r05_svar_left(&sChar2_1, &bb_5, &be_5))
       break;
     if (! r05_empty_seq(bb_5, be_5))
       break;
@@ -3556,30 +3556,30 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sValue_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sValue_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Symbol & Char s.Value ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -3587,19 +3587,19 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_4, &be_4))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_Char, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sValue_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sValue_1, &bb_4, &be_4))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
@@ -3717,31 +3717,31 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sLen_1;
-    static struct r05_node *eString_b_1;
-    static struct r05_node *eString_e_1;
-    static struct r05_node *sChar_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sLen_1;
+    struct r05_node *eString_b_1;
+    struct r05_node *eString_e_1;
+    struct r05_node *sChar_1;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkString s.Len e.String ) ( & Symbol & Char s.Char ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -3749,29 +3749,29 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkString, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkString, &bb_4, &be_4))
       break;
     struct r05_node *bb_5 = 0;
     struct r05_node *be_5 = 0;
-    if( ! refalrts::brackets_left( bb_5, be_5, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_5, be_5 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
       break;
-    if( ! refalrts::function_left( r05c_Char, bb_5, be_5 ) )
+    if (! r05_function_left(r05c_Char, &bb_5, &be_5))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sLen_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sLen_1, &bb_4, &be_4))
       break;
     eString_b_1 = bb_4;
     eString_e_1 = be_4;
-    if( ! refalrts::svar_left( sChar_1, bb_5, be_5 ) )
+    if (! r05_svar_left(&sChar_1, &bb_5, &be_5))
       break;
     if (! r05_empty_seq(bb_5, be_5))
       break;
@@ -3864,32 +3864,32 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sLen_1;
-    static struct r05_node *eString_b_1;
-    static struct r05_node *eString_e_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sLen_1;
+    struct r05_node *eString_b_1;
+    struct r05_node *eString_e_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkString s.Len e.String ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -3897,17 +3897,17 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkString, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkString, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sLen_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sLen_1, &bb_4, &be_4))
       break;
     eString_b_1 = bb_4;
     eString_e_1 = be_4;
@@ -4026,32 +4026,32 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sType_1;
-    static struct r05_node *eValue_b_1;
-    static struct r05_node *eValue_e_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sType_1;
+    struct r05_node *eValue_b_1;
+    struct r05_node *eValue_e_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Symbol s.Type e.Value ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -4059,17 +4059,17 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Symbol, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_Symbol, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sType_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sType_1, &bb_4, &be_4))
       break;
     eValue_b_1 = bb_4;
     eValue_e_1 = be_4;
@@ -4184,32 +4184,32 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eInBrackets_b_1;
-    static struct r05_node *eInBrackets_e_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
-    static struct r05_node *sCounter_4;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eInBrackets_b_1;
+    struct r05_node *eInBrackets_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
+    struct r05_node *sCounter_4;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Brackets e.InBrackets ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -4217,13 +4217,13 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Brackets, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_Brackets, &bb_4, &be_4))
       break;
     eInBrackets_b_1 = bb_4;
     eInBrackets_e_1 = be_4;
@@ -4355,32 +4355,32 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eInBrackets_b_1;
-    static struct r05_node *eInBrackets_e_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
-    static struct r05_node *sCounter_4;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eInBrackets_b_1;
+    struct r05_node *eInBrackets_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
+    struct r05_node *sCounter_4;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & CallBrackets e.InBrackets ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -4388,13 +4388,13 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CallBrackets, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_CallBrackets, &bb_4, &be_4))
       break;
     eInBrackets_b_1 = bb_4;
     eInBrackets_e_1 = be_4;
@@ -4526,31 +4526,31 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sOpenCounter_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
-    static struct r05_node *sCounter_4;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sOpenCounter_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
+    struct r05_node *sCounter_4;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkCloseBracket s.OpenCounter ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -4558,17 +4558,17 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseBracket, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkCloseBracket, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sOpenCounter_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sOpenCounter_1, &bb_4, &be_4))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
@@ -4698,31 +4698,31 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sOpenCounter_1;
-    static struct r05_node *sCounter_2;
-    static struct r05_node *sCounter_3;
-    static struct r05_node *sCounter_4;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sOpenCounter_1;
+    struct r05_node *sCounter_2;
+    struct r05_node *sCounter_3;
+    struct r05_node *sCounter_4;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkCloseCall s.OpenCounter ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -4730,17 +4730,17 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseCall, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkCloseCall, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sOpenCounter_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sOpenCounter_1, &bb_4, &be_4))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
@@ -4883,53 +4883,53 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *eVars_B_b_1;
-    static struct r05_node *eVars_B_e_1;
-    static struct r05_node *eVars_E_b_1;
-    static struct r05_node *eVars_E_e_1;
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sUsings_2;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_B_b_1;
+    struct r05_node *eVars_B_e_1;
+    struct r05_node *eVars_E_b_1;
+    struct r05_node *eVars_E_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sUsings_2;
     // ( e.Vars_B ( s.Usings s.Mode e.Index ) e.Vars_E ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkVariable s.Mode e.Index ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eAllocCommands_b_1 = bb_2;
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sMode_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
       break;
     eIndex_b_1 = bb_4;
     eIndex_e_1 = be_4;
@@ -4941,15 +4941,15 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
       struct r05_node *be_5 = be_1;
       struct r05_node *bb_6 = 0;
       struct r05_node *be_6 = 0;
-      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
+      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
         continue;
-      if( ! refalrts::repeated_evar_right( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
+      if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_6, &be_6))
         continue;
-      if( ! refalrts::repeated_stvar_right( sMode_2, sMode_1, bb_6, be_6 ) )
+      if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb_6, &be_6))
         continue;
       eVars_E_b_1 = bb_5;
       eVars_E_e_1 = be_5;
-      if( ! refalrts::svar_left( sUsings_1, bb_6, be_6 ) )
+      if (! r05_svar_left(&sUsings_1, &bb_6, &be_6))
         continue;
       if (! r05_empty_seq(bb_6, be_6))
         continue;
@@ -5064,7 +5064,7 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eVars_B_b_1, eVars_B_e_1, bb_1, be_1 ) );
+    } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb_1, &be_1));
   } while ( 0 );
 
   do {
@@ -5072,33 +5072,33 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkVariable s.Mode e.Index ) e.Result
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -5106,17 +5106,17 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_0;
     eResult_e_1 = be_0;
-    if( ! refalrts::svar_left( sMode_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
       break;
     eIndex_b_1 = bb_4;
     eIndex_e_1 = be_4;
@@ -5217,25 +5217,25 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
-    static struct r05_node *eAllocCommands_b_1;
-    static struct r05_node *eAllocCommands_e_1;
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
-    static struct r05_node *sCounter_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
     // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eVars_b_1 = bb_1;
     eVars_e_1 = be_1;
@@ -5243,7 +5243,7 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     eAllocCommands_e_1 = be_2;
     eCommands_b_1 = bb_3;
     eCommands_e_1 = be_3;
-    if( ! refalrts::svar_left( sCounter_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5309,40 +5309,40 @@ static enum r05_fnresult r05c_GeneralizeResult(struct r05_node *arg_begin, struc
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *ePatternVars_b_1;
-    static struct r05_node *ePatternVars_e_1;
-    static struct r05_node *ePatternCommands_b_1;
-    static struct r05_node *ePatternCommands_e_1;
-    static struct r05_node *eResultVars_b_1;
-    static struct r05_node *eResultVars_e_1;
-    static struct r05_node *eResultAllocCommands_b_1;
-    static struct r05_node *eResultAllocCommands_e_1;
-    static struct r05_node *eResultCommands_b_1;
-    static struct r05_node *eResultCommands_e_1;
-    static struct r05_node *ePatternCommands_b_2;
-    static struct r05_node *ePatternCommands_e_2;
-    static struct r05_node *ePatternCommands_b_3;
-    static struct r05_node *ePatternCommands_e_3;
+    struct r05_node *ePatternVars_b_1;
+    struct r05_node *ePatternVars_e_1;
+    struct r05_node *ePatternCommands_b_1;
+    struct r05_node *ePatternCommands_e_1;
+    struct r05_node *eResultVars_b_1;
+    struct r05_node *eResultVars_e_1;
+    struct r05_node *eResultAllocCommands_b_1;
+    struct r05_node *eResultAllocCommands_e_1;
+    struct r05_node *eResultCommands_b_1;
+    struct r05_node *eResultCommands_e_1;
+    struct r05_node *ePatternCommands_b_2;
+    struct r05_node *ePatternCommands_e_2;
+    struct r05_node *ePatternCommands_b_3;
+    struct r05_node *ePatternCommands_e_3;
     // ( e.PatternVars ) ( e.PatternCommands ) ( e.ResultVars ) ( e.ResultAllocCommands ) ( e.ResultCommands )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
     struct r05_node *bb_5 = 0;
     struct r05_node *be_5 = 0;
-    if( ! refalrts::brackets_left( bb_5, be_5, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5554,19 +5554,19 @@ static enum r05_fnresult r05c_ReplicateVar(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // ( 1 s.Mode e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::number_left( 1UL, bb_1, be_1 ) )
+    if (! r05_number_left(1UL, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -5598,24 +5598,24 @@ static enum r05_fnresult r05c_ReplicateVar(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsing_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sUsing_2;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *sUsing_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sUsing_2;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // ( s.Using s.Mode e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sUsing_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sUsing_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -5697,8 +5697,8 @@ static enum r05_fnresult r05c_ReplicateVars(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eVars_b_1;
-    static struct r05_node *eVars_e_1;
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
     // e.Vars
     eVars_b_1 = bb_0;
     eVars_e_1 = be_0;
@@ -5741,24 +5741,24 @@ static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSet1_B_b_1;
-    static struct r05_node *eSet1_B_e_1;
-    static struct r05_node *tCommon_1;
-    static struct r05_node *eSet1_E_b_1;
-    static struct r05_node *eSet1_E_e_1;
-    static struct r05_node *eSet2_B_b_1;
-    static struct r05_node *eSet2_B_e_1;
-    static struct r05_node *eSet2_E_b_1;
-    static struct r05_node *eSet2_E_e_1;
-    static struct r05_node *tCommon_2;
+    struct r05_node *eSet1_B_b_1;
+    struct r05_node *eSet1_B_e_1;
+    struct r05_node *tCommon_1;
+    struct r05_node *eSet1_E_b_1;
+    struct r05_node *eSet1_E_e_1;
+    struct r05_node *eSet2_B_b_1;
+    struct r05_node *eSet2_B_e_1;
+    struct r05_node *eSet2_E_b_1;
+    struct r05_node *eSet2_E_e_1;
+    struct r05_node *tCommon_2;
     // ( e.Set1_B t.Common e.Set1_E ) ( e.Set2_B t.Common e.Set2_E )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5770,7 +5770,7 @@ static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05
       struct r05_node *be_3 = be_1;
       struct r05_node *bb_4 = bb_2;
       struct r05_node *be_4 = be_2;
-      if( ! refalrts::tvar_left( tCommon_1, bb_3, be_3 ) )
+      if (! r05_tvar_left(&tCommon_1, &bb_3, &be_3))
         continue;
       eSet1_E_b_1 = bb_3;
       eSet1_E_e_1 = be_3;
@@ -5780,7 +5780,7 @@ static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05
       do {
         struct r05_node *bb_5 = bb_4;
         struct r05_node *be_5 = be_4;
-        if( ! refalrts::repeated_stvar_left( tCommon_2, tCommon_1, bb_5, be_5 ) )
+        if (! r05_repeated_stvar_left(&tCommon_2, tCommon_1, &bb_5, &be_5))
           continue;
         eSet2_E_b_1 = bb_5;
         eSet2_E_e_1 = be_5;
@@ -5827,8 +5827,8 @@ static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05
         r05_use(&res);
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return R05_SUCCESS;
-      } while ( refalrts::open_evar_advance( eSet2_B_b_1, eSet2_B_e_1, bb_4, be_4 ) );
-    } while ( refalrts::open_evar_advance( eSet1_B_b_1, eSet1_B_e_1, bb_1, be_1 ) );
+      } while (r05_open_evar_advance(&eSet2_B_b_1, &eSet2_B_e_1, &bb_4, &be_4));
+    } while (r05_open_evar_advance(&eSet1_B_b_1, &eSet1_B_e_1, &bb_1, &be_1));
   } while ( 0 );
 
   do {
@@ -5836,18 +5836,18 @@ static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSet1_b_1;
-    static struct r05_node *eSet1_e_1;
-    static struct r05_node *eSet2_b_1;
-    static struct r05_node *eSet2_e_1;
+    struct r05_node *eSet1_b_1;
+    struct r05_node *eSet1_e_1;
+    struct r05_node *eSet2_b_1;
+    struct r05_node *eSet2_e_1;
     // ( e.Set1 ) ( e.Set2 )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5877,24 +5877,24 @@ static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struc
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSet1_B_b_1;
-    static struct r05_node *eSet1_B_e_1;
-    static struct r05_node *eSet1_E_b_1;
-    static struct r05_node *eSet1_E_e_1;
-    static struct r05_node *eSet2_B_b_1;
-    static struct r05_node *eSet2_B_e_1;
-    static struct r05_node *eSet2_E_b_1;
-    static struct r05_node *eSet2_E_e_1;
-    static struct r05_node *tCommon_1;
-    static struct r05_node *tCommon_2;
+    struct r05_node *eSet1_B_b_1;
+    struct r05_node *eSet1_B_e_1;
+    struct r05_node *eSet1_E_b_1;
+    struct r05_node *eSet1_E_e_1;
+    struct r05_node *eSet2_B_b_1;
+    struct r05_node *eSet2_B_e_1;
+    struct r05_node *eSet2_E_b_1;
+    struct r05_node *eSet2_E_e_1;
+    struct r05_node *tCommon_1;
+    struct r05_node *tCommon_2;
     // ( e.Set1_B t.Common e.Set1_E ) ( e.Set2_B t.Common e.Set2_E )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -5906,7 +5906,7 @@ static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struc
       struct r05_node *be_3 = be_1;
       struct r05_node *bb_4 = bb_2;
       struct r05_node *be_4 = be_2;
-      if( ! refalrts::tvar_left( tCommon_1, bb_3, be_3 ) )
+      if (! r05_tvar_left(&tCommon_1, &bb_3, &be_3))
         continue;
       eSet1_E_b_1 = bb_3;
       eSet1_E_e_1 = be_3;
@@ -5916,7 +5916,7 @@ static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struc
       do {
         struct r05_node *bb_5 = bb_4;
         struct r05_node *be_5 = be_4;
-        if( ! refalrts::repeated_stvar_left( tCommon_2, tCommon_1, bb_5, be_5 ) )
+        if (! r05_repeated_stvar_left(&tCommon_2, tCommon_1, &bb_5, &be_5))
           continue;
         eSet2_E_b_1 = bb_5;
         eSet2_E_e_1 = be_5;
@@ -5962,8 +5962,8 @@ static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struc
         r05_use(&res);
         refalrts::splice_to_freelist( arg_begin, arg_end );
         return R05_SUCCESS;
-      } while ( refalrts::open_evar_advance( eSet2_B_b_1, eSet2_B_e_1, bb_4, be_4 ) );
-    } while ( refalrts::open_evar_advance( eSet1_B_b_1, eSet1_B_e_1, bb_1, be_1 ) );
+      } while (r05_open_evar_advance(&eSet2_B_b_1, &eSet2_B_e_1, &bb_4, &be_4));
+    } while (r05_open_evar_advance(&eSet1_B_b_1, &eSet1_B_e_1, &bb_1, &be_1));
   } while ( 0 );
 
   do {
@@ -5971,16 +5971,16 @@ static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struc
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSet1_b_1;
-    static struct r05_node *eSet1_e_1;
+    struct r05_node *eSet1_b_1;
+    struct r05_node *eSet1_e_1;
     // ( e.Set1 ) ( e.Set2 )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6008,23 +6008,23 @@ static enum r05_fnresult r05c_ClosedEVariables(struct r05_node *arg_begin, struc
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sNum_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sNum_1;
     // ( & CmdClosedE & AlgLeft s.Num 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdClosedE, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_CmdClosedE, &bb_1, &be_1))
       break;
-    if( ! refalrts::function_left( r05c_AlgLeft, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_AlgLeft, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sNum_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sNum_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'e', bb_1, be_1 ) )
+    if (! r05_char_left('e', &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6059,9 +6059,9 @@ static enum r05_fnresult r05c_ClosedEVariables(struct r05_node *arg_begin, struc
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tOther_1;
+    struct r05_node *tOther_1;
     // t.Other
-    if( ! refalrts::tvar_left( tOther_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tOther_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6085,27 +6085,27 @@ static enum r05_fnresult r05c_RepeatedEVariables(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sDirection_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *sCount_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sDirection_1;
+    struct r05_node *sNum_1;
+    struct r05_node *sCount_1;
     // ( & CmdRepeated s.Direction s.Num s.Count 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdRepeated, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_CmdRepeated, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sDirection_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sDirection_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sNum_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sNum_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sCount_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sCount_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'e', bb_1, be_1 ) )
+    if (! r05_char_left('e', &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6140,9 +6140,9 @@ static enum r05_fnresult r05c_RepeatedEVariables(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tOther_1;
+    struct r05_node *tOther_1;
     // t.Other
-    if( ! refalrts::tvar_left( tOther_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tOther_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6166,25 +6166,25 @@ static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin,
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sNum_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *eUnuseds_B_b_1;
-    static struct r05_node *eUnuseds_B_e_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sNum_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eUnuseds_B_b_1;
+    struct r05_node *eUnuseds_B_e_1;
     // e.Unuseds_B ( 1 'e e.Index ) e.Unuseds_E ( & CmdClosedE & AlgLeft s.Num 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_CmdClosedE, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_CmdClosedE, &bb_1, &be_1))
       break;
-    if( ! refalrts::function_left( r05c_AlgLeft, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_AlgLeft, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sNum_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sNum_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'e', bb_1, be_1 ) )
+    if (! r05_char_left('e', &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6196,13 +6196,13 @@ static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin,
       struct r05_node *be_2 = be_0;
       struct r05_node *bb_3 = 0;
       struct r05_node *be_3 = 0;
-      if( ! refalrts::brackets_left( bb_3, be_3, bb_2, be_2 ) )
+      if (! r05_brackets_left(&bb_3, &be_3, &bb_2, &be_2))
         continue;
-      if( ! refalrts::number_left( 1UL, bb_3, be_3 ) )
+      if (! r05_number_left(1UL, &bb_3, &be_3))
         continue;
-      if( ! refalrts::char_left( 'e', bb_3, be_3 ) )
+      if (! r05_char_left('e', &bb_3, &be_3))
         continue;
-      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_3, be_3 ) )
+      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_3, &be_3))
         continue;
       if (! r05_empty_seq(bb_3, be_3))
         continue;
@@ -6232,7 +6232,7 @@ static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin,
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eUnuseds_B_b_1, eUnuseds_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eUnuseds_B_b_1, &eUnuseds_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -6240,9 +6240,9 @@ static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin,
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tOtherCommand_1;
+    struct r05_node *tOtherCommand_1;
     // e.Unuseds t.OtherCommand
-    if( ! refalrts::tvar_right( tOtherCommand_1, bb_0, be_0 ) )
+    if (! r05_tvar_right(&tOtherCommand_1, &bb_0, &be_0))
       break;
     // Unused closed variable e.Unuseds
 
@@ -6278,19 +6278,19 @@ static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // ( s.Usings 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sUsings_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'e', bb_1, be_1 ) )
+    if (! r05_char_left('e', &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6326,20 +6326,20 @@ static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // ( s.Usings s.Mode e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sUsings_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6391,19 +6391,19 @@ static enum r05_fnresult r05c_MakeCopyVar(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // ( s.Usings 'e e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sUsings_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::char_left( 'e', bb_1, be_1 ) )
+    if (! r05_char_left('e', &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6439,20 +6439,20 @@ static enum r05_fnresult r05c_MakeCopyVar(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sUsings_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // ( s.Usings s.Mode e.Index )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::svar_left( sUsings_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_1, be_1 ) )
+    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
       break;
     eIndex_b_1 = bb_1;
     eIndex_e_1 = be_1;
@@ -6492,32 +6492,32 @@ static enum r05_fnresult r05c_MakeVarsSets(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *ePatternVars_b_1;
-    static struct r05_node *ePatternVars_e_1;
-    static struct r05_node *eResultVars_b_1;
-    static struct r05_node *eResultVars_e_1;
-    static struct r05_node *eRepeatedEs_b_1;
-    static struct r05_node *eRepeatedEs_e_1;
-    static struct r05_node *eClosedEs_b_1;
-    static struct r05_node *eClosedEs_e_1;
-    static struct r05_node *ePatternVars_b_2;
-    static struct r05_node *ePatternVars_e_2;
-    static struct r05_node *eResultVars_b_2;
-    static struct r05_node *eResultVars_e_2;
-    static struct r05_node *eResultVars_b_3;
-    static struct r05_node *eResultVars_e_3;
+    struct r05_node *ePatternVars_b_1;
+    struct r05_node *ePatternVars_e_1;
+    struct r05_node *eResultVars_b_1;
+    struct r05_node *eResultVars_e_1;
+    struct r05_node *eRepeatedEs_b_1;
+    struct r05_node *eRepeatedEs_e_1;
+    struct r05_node *eClosedEs_b_1;
+    struct r05_node *eClosedEs_e_1;
+    struct r05_node *ePatternVars_b_2;
+    struct r05_node *ePatternVars_e_2;
+    struct r05_node *eResultVars_b_2;
+    struct r05_node *eResultVars_e_2;
+    struct r05_node *eResultVars_b_3;
+    struct r05_node *eResultVars_e_3;
     // ( e.PatternVars ) ( e.ResultVars ) ( e.RepeatedEs ) e.ClosedEs
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     ePatternVars_b_1 = bb_1;
     ePatternVars_e_1 = be_1;
@@ -6674,28 +6674,28 @@ static enum r05_fnresult r05c_FilterCommonVarsAndPatternCommands(struct r05_node
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *ePatternCommands_b_1;
-    static struct r05_node *ePatternCommands_e_1;
-    static struct r05_node *eCommonVars_b_1;
-    static struct r05_node *eCommonVars_e_1;
-    static struct r05_node *eCopiedVars_b_1;
-    static struct r05_node *eCopiedVars_e_1;
-    static struct r05_node *eUnusedClosedEs_b_1;
-    static struct r05_node *eUnusedClosedEs_e_1;
-    static struct r05_node *eUnusedClosedEs_b_2;
-    static struct r05_node *eUnusedClosedEs_e_2;
+    struct r05_node *ePatternCommands_b_1;
+    struct r05_node *ePatternCommands_e_1;
+    struct r05_node *eCommonVars_b_1;
+    struct r05_node *eCommonVars_e_1;
+    struct r05_node *eCopiedVars_b_1;
+    struct r05_node *eCopiedVars_e_1;
+    struct r05_node *eUnusedClosedEs_b_1;
+    struct r05_node *eUnusedClosedEs_e_1;
+    struct r05_node *eUnusedClosedEs_b_2;
+    struct r05_node *eUnusedClosedEs_e_2;
     // ( e.PatternCommands ) ( e.CommonVars ) ( e.CopiedVars ) e.UnusedClosedEs
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     ePatternCommands_b_1 = bb_1;
     ePatternCommands_e_1 = be_1;
@@ -6809,26 +6809,26 @@ static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eResultCommands_b_1;
-    static struct r05_node *eResultCommands_e_1;
-    static struct r05_node *eCommonVars_b_1;
-    static struct r05_node *eCommonVars_e_1;
-    static struct r05_node *eCopiedVars_b_1;
-    static struct r05_node *eCopiedVars_e_1;
-    static struct r05_node *ePatternCommands_b_1;
-    static struct r05_node *ePatternCommands_e_1;
+    struct r05_node *eResultCommands_b_1;
+    struct r05_node *eResultCommands_e_1;
+    struct r05_node *eCommonVars_b_1;
+    struct r05_node *eCommonVars_e_1;
+    struct r05_node *eCopiedVars_b_1;
+    struct r05_node *eCopiedVars_e_1;
+    struct r05_node *ePatternCommands_b_1;
+    struct r05_node *ePatternCommands_e_1;
     // ( e.ResultCommands ) ( e.CommonVars ) ( e.CopiedVars ) e.PatternCommands
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eResultCommands_b_1 = bb_1;
     eResultCommands_e_1 = be_1;
@@ -6938,16 +6938,16 @@ static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eCommands_B_b_1;
-    static struct r05_node *eCommands_B_e_1;
-    static struct r05_node *eCommands_E_b_1;
-    static struct r05_node *eCommands_E_e_1;
-    static struct r05_node *sBracketNum_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *sBracketNum_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *eCommands_B_b_1;
+    struct r05_node *eCommands_B_e_1;
+    struct r05_node *eCommands_E_b_1;
+    struct r05_node *eCommands_E_e_1;
+    struct r05_node *sBracketNum_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *sBracketNum_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // e.Commands_B ( & CmdOpenedE & AlgLeft s.BracketNum 'e e.Index ) e.Commands_E
     eCommands_B_b_1 = 0;
     eCommands_B_e_1 = 0;
@@ -6957,17 +6957,17 @@ static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_beg
       struct r05_node *be_1 = be_0;
       struct r05_node *bb_2 = 0;
       struct r05_node *be_2 = 0;
-      if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+      if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
         continue;
-      if( ! refalrts::function_left( r05c_CmdOpenedE, bb_2, be_2 ) )
+      if (! r05_function_left(r05c_CmdOpenedE, &bb_2, &be_2))
         continue;
-      if( ! refalrts::function_left( r05c_AlgLeft, bb_2, be_2 ) )
+      if (! r05_function_left(r05c_AlgLeft, &bb_2, &be_2))
         continue;
       eCommands_E_b_1 = bb_1;
       eCommands_E_e_1 = be_1;
-      if( ! refalrts::svar_left( sBracketNum_1, bb_2, be_2 ) )
+      if (! r05_svar_left(&sBracketNum_1, &bb_2, &be_2))
         continue;
-      if( ! refalrts::char_left( 'e', bb_2, be_2 ) )
+      if (! r05_char_left('e', &bb_2, &be_2))
         continue;
       eIndex_b_1 = bb_2;
       eIndex_e_1 = be_2;
@@ -7043,7 +7043,7 @@ static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_beg
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eCommands_B_b_1, eCommands_B_e_1, bb_0, be_0 ) );
+    } while (r05_open_evar_advance(&eCommands_B_b_1, &eCommands_B_e_1, &bb_0, &be_0));
   } while ( 0 );
 
   do {
@@ -7051,8 +7051,8 @@ static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eCommands_b_1;
-    static struct r05_node *eCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
     // e.Commands
     eCommands_b_1 = bb_0;
     eCommands_e_1 = be_0;

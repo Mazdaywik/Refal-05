@@ -109,18 +109,18 @@ enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSrcName_b_1;
-    static struct r05_node *eSrcName_e_1;
-    static struct r05_node *eOutputName_b_1;
-    static struct r05_node *eOutputName_e_1;
-    static struct r05_node *eSrcName_b_2;
-    static struct r05_node *eSrcName_e_2;
-    static struct r05_node *eSrcName_b_3;
-    static struct r05_node *eSrcName_e_3;
+    struct r05_node *eSrcName_b_1;
+    struct r05_node *eSrcName_e_1;
+    struct r05_node *eOutputName_b_1;
+    struct r05_node *eOutputName_e_1;
+    struct r05_node *eSrcName_b_2;
+    struct r05_node *eSrcName_e_2;
+    struct r05_node *eSrcName_b_3;
+    struct r05_node *eSrcName_e_3;
     // ( e.SrcName ) e.OutputName
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eSrcName_b_1 = bb_1;
     eSrcName_e_1 = be_1;
@@ -270,17 +270,17 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tSrcPos_1;
     // ( & TkOpenBracket t.SrcPos )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkOpenBracket, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkOpenBracket, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -315,17 +315,17 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tSrcPos_1;
     // ( & TkCloseBracket t.SrcPos )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseBracket, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkCloseBracket, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -360,17 +360,17 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tSrcPos_1;
     // ( & TkOpenCall t.SrcPos )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkOpenCall, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkOpenCall, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -405,17 +405,17 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tSrcPos_1;
     // ( & TkCloseCall t.SrcPos )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseCall, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkCloseCall, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -450,9 +450,9 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tOtherToken_1;
+    struct r05_node *tOtherToken_1;
     // t.OtherToken
-    if( ! refalrts::tvar_left( tOtherToken_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tOtherToken_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -477,14 +477,14 @@ static enum r05_fnresult r05c_Pass_Lexer(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSrcName_b_1;
-    static struct r05_node *eSrcName_e_1;
-    static struct r05_node *eLexFolding_b_1;
-    static struct r05_node *eLexFolding_e_1;
+    struct r05_node *eSrcName_b_1;
+    struct r05_node *eSrcName_e_1;
+    struct r05_node *eLexFolding_b_1;
+    struct r05_node *eLexFolding_e_1;
     // ( e.SrcName ) e.LexFolding
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eSrcName_b_1 = bb_1;
     eSrcName_e_1 = be_1;
@@ -563,14 +563,14 @@ static enum r05_fnresult r05c_Pass_CheckUnresolved(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eLines_b_1;
-    static struct r05_node *eLines_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eLines_b_1;
+    struct r05_node *eLines_e_1;
     // t.ErrorList t.SymTable e.Lines
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eLines_b_1 = bb_0;
     eLines_e_1 = be_0;
@@ -611,30 +611,30 @@ static enum r05_fnresult r05c_Pass_Final(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSrcName_b_1;
-    static struct r05_node *eSrcName_e_1;
-    static struct r05_node *eOutputName_b_1;
-    static struct r05_node *eOutputName_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eLines_b_1;
-    static struct r05_node *eLines_e_1;
+    struct r05_node *eSrcName_b_1;
+    struct r05_node *eSrcName_e_1;
+    struct r05_node *eOutputName_b_1;
+    struct r05_node *eOutputName_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eLines_b_1;
+    struct r05_node *eLines_e_1;
     // ( e.SrcName ) ( e.OutputName ) t.ErrorList t.SymTable e.Lines
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eSrcName_b_1 = bb_1;
     eSrcName_e_1 = be_1;
     eOutputName_b_1 = bb_2;
     eOutputName_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eLines_b_1 = bb_0;
     eLines_e_1 = be_0;
@@ -723,26 +723,26 @@ static enum r05_fnresult r05c_Pass_Final_SwNoErrors(struct r05_node *arg_begin, 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSrcName_b_1;
-    static struct r05_node *eSrcName_e_1;
-    static struct r05_node *eOutputName_b_1;
-    static struct r05_node *eOutputName_e_1;
-    static struct r05_node *eLines_b_1;
-    static struct r05_node *eLines_e_1;
-    static struct r05_node *eOutputName_b_2;
-    static struct r05_node *eOutputName_e_2;
-    static struct r05_node *eOutputName_b_3;
-    static struct r05_node *eOutputName_e_3;
+    struct r05_node *eSrcName_b_1;
+    struct r05_node *eSrcName_e_1;
+    struct r05_node *eOutputName_b_1;
+    struct r05_node *eOutputName_e_1;
+    struct r05_node *eLines_b_1;
+    struct r05_node *eLines_e_1;
+    struct r05_node *eOutputName_b_2;
+    struct r05_node *eOutputName_e_2;
+    struct r05_node *eOutputName_b_3;
+    struct r05_node *eOutputName_e_3;
     // ( e.SrcName ) ( e.OutputName ) e.Lines & EL_NoErrors
-    if( ! refalrts::function_right( r05c_EL_NoErrors, bb_0, be_0 ) )
+    if (! r05_function_right(r05c_EL_NoErrors, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eSrcName_b_1 = bb_1;
     eSrcName_e_1 = be_1;
@@ -832,15 +832,15 @@ static enum r05_fnresult r05c_Pass_Final_SwNoErrors(struct r05_node *arg_begin, 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // ( e.SrcName ) ( e.OutputName ) e.Lines & EL_HasErrors
-    if( ! refalrts::function_right( r05c_EL_HasErrors, bb_0, be_0 ) )
+    if (! r05_function_right(r05c_EL_HasErrors, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     // Unused closed variable e.SrcName
     // Unused closed variable e.OutputName
@@ -869,32 +869,32 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *tSymTable_2;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *tSymTable_2;
     // t.ErrorList t.SymTable ( e.Generated ) ( & TkEOF t.SrcPos )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_right( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkEOF, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkEOF, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_right( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_2;
     eGenerated_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -958,36 +958,36 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sDirective_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sDirective_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( e.Generated ) ( & TkDirective t.SrcPos s.Directive ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkDirective, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkDirective, &bb_2, &be_2))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sDirective_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sDirective_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -1046,37 +1046,37 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eName_b_2;
-    static struct r05_node *eName_e_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eName_b_2;
+    struct r05_node *eName_e_2;
     // t.ErrorList t.SymTable ( e.Generated ) ( & TkName t.SrcPos e.Name ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkName, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkName, &bb_2, &be_2))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     eName_b_1 = bb_2;
     eName_e_1 = be_2;
@@ -1170,33 +1170,33 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( e.Generated ) ( & TkSemicolon t.SrcPos ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkSemicolon, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkSemicolon, &bb_2, &be_2))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -1240,34 +1240,34 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *eCode_b_1;
-    static struct r05_node *eCode_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sRow_1;
-    static struct r05_node *sCol_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *eCode_b_1;
+    struct r05_node *eCode_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sRow_1;
+    struct r05_node *sCol_1;
     // t.ErrorList t.SymTable ( e.Generated ) ( & TkNative ( s.Row s.Col ) e.Code ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkNative, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkNative, &bb_2, &be_2))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_2, be_2 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_2, &be_2))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
@@ -1275,9 +1275,9 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     eCode_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sRow_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sRow_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sCol_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sCol_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -1337,25 +1337,25 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // t.ErrorList t.SymTable ( e.Generated ) t.Unexpected e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -1426,14 +1426,14 @@ static enum r05_fnresult r05c_GenDeclaration(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // ( & GN_Entry e.Name )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_GN_Entry, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_GN_Entry, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1467,14 +1467,14 @@ static enum r05_fnresult r05c_GenDeclaration(struct r05_node *arg_begin, struct 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
     // ( & GN_Local e.Name )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_GN_Local, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_GN_Local, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1515,30 +1515,30 @@ static enum r05_fnresult r05c_ParseElements_DirectiveParsed(struct r05_node *arg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *eNewGenerated_b_1;
-    static struct r05_node *eNewGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *eNewGenerated_b_1;
+    struct r05_node *eNewGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // ( e.Generated ) ( e.NewGenerated ) t.ErrorList t.SymTable e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
     eNewGenerated_b_1 = bb_2;
     eNewGenerated_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -1590,30 +1590,30 @@ static enum r05_fnresult r05c_ParseElements_FunctionParsed(struct r05_node *arg_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *eNewGenerated_b_1;
-    static struct r05_node *eNewGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *eNewGenerated_b_1;
+    struct r05_node *eNewGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // ( e.Generated ) ( e.NewGenerated ) t.ErrorList t.SymTable e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
     eNewGenerated_b_1 = bb_2;
     eNewGenerated_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -1666,7 +1666,7 @@ static enum r05_fnresult r05c_ScopeClassFromEnumDirective(struct r05_node *arg_b
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & EEnum
-    if( ! refalrts::function_left( r05c_EEnum, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_EEnum, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1688,7 +1688,7 @@ static enum r05_fnresult r05c_ScopeClassFromEnumDirective(struct r05_node *arg_b
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & Enum
-    if( ! refalrts::function_left( r05c_Enum, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Enum, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -1716,31 +1716,31 @@ static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begi
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eName_b_2;
-    static struct r05_node *eName_e_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eName_b_2;
+    struct r05_node *eName_e_2;
     // t.ErrorList t.SymTable & Entry ( & TkName t.SrcPos e.Name ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Entry, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Entry, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkName, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkName, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
@@ -1810,20 +1810,20 @@ static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begi
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tUnexpected_2;
     // t.ErrorList t.SymTable & Entry t.Unexpected e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Entry, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Entry, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -1875,16 +1875,16 @@ static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begi
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // t.ErrorList t.SymTable & Extern e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Extern, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Extern, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -1927,17 +1927,17 @@ static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begi
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *sDirective_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *sDirective_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // t.ErrorList t.SymTable s.Directive e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sDirective_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sDirective_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2002,42 +2002,42 @@ static enum r05_fnresult r05c_ParseNameList_Enum(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *sScopeClass_2;
-    static struct r05_node *sScopeClass_3;
-    static struct r05_node *eName_b_2;
-    static struct r05_node *eName_e_2;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *sScopeClass_2;
+    struct r05_node *sScopeClass_3;
+    struct r05_node *eName_b_2;
+    struct r05_node *eName_e_2;
     // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkName t.SrcPos e.Name ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkName, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkName, &bb_2, &be_2))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     eName_b_1 = bb_2;
     eName_e_1 = be_2;
@@ -2121,29 +2121,29 @@ static enum r05_fnresult r05c_ParseNameList_Enum(struct r05_node *arg_begin, str
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *tUnexpected_2;
     // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2203,36 +2203,36 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Enum(struct r05_node *arg_begin
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkComma t.SrcPos ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkComma, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkComma, &bb_2, &be_2))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -2277,36 +2277,36 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Enum(struct r05_node *arg_begin
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *tSrcPos_1;
     // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkSemicolon t.SrcPos ) e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkSemicolon, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkSemicolon, &bb_2, &be_2))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -2336,29 +2336,29 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Enum(struct r05_node *arg_begin
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eGenerated_b_1;
-    static struct r05_node *eGenerated_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *eGenerated_b_1;
+    struct r05_node *eGenerated_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *tUnexpected_2;
     // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eGenerated_b_1 = bb_1;
     eGenerated_e_1 = be_1;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2418,27 +2418,27 @@ static enum r05_fnresult r05c_ParseNameList_Extern(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( & TkName t.SrcPos e.Name ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkName, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkName, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
@@ -2487,18 +2487,18 @@ static enum r05_fnresult r05c_ParseNameList_Extern(struct r05_node *arg_begin, s
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tUnexpected_2;
     // t.ErrorList t.SymTable t.Unexpected e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2548,25 +2548,25 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Extern(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( & TkComma t.SrcPos ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkComma, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkComma, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -2600,25 +2600,25 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Extern(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( & TkSemicolon t.SrcPos ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkSemicolon, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkSemicolon, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -2638,18 +2638,18 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Extern(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tUnexpected_2;
     // t.ErrorList t.SymTable t.Unexpected e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2699,36 +2699,36 @@ static enum r05_fnresult r05c_ParseFunction(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // s.ScopeClass ( e.Name ) t.ErrorList t.SymTable ( & TkOpenBlock t.SrcPos ) e.Tail
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkOpenBlock, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkOpenBlock, &bb_2, &be_2))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -2787,26 +2787,26 @@ static enum r05_fnresult r05c_ParseFunction(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *tUnexpected_2;
     // s.ScopeClass ( e.Name ) t.ErrorList t.SymTable t.Unexpected e.Tail
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     // Unused closed variable e.Name
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2877,35 +2877,35 @@ static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // s.ScopeClass ( e.Name ) ( & Sentences e.Sentences ) t.ErrorList t.SymTable e.Tail
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Sentences, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_Sentences, &bb_2, &be_2))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
     eSentences_b_1 = bb_2;
     eSentences_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -2960,38 +2960,38 @@ static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *sLineNo_1;
-    static struct r05_node *eCode_b_1;
-    static struct r05_node *eCode_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *sLineNo_1;
+    struct r05_node *eCode_b_1;
+    struct r05_node *eCode_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // s.ScopeClass ( e.Name ) ( & Native s.LineNo e.Code ) t.ErrorList t.SymTable e.Tail
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_Native, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_Native, &bb_2, &be_2))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
-    if( ! refalrts::svar_left( sLineNo_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sLineNo_1, &bb_2, &be_2))
       break;
     eCode_b_1 = bb_2;
     eCode_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -3073,17 +3073,17 @@ static enum r05_fnresult r05c_GenFunctionBody(struct r05_node *arg_begin, struct
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *sScopeClass_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
+    struct r05_node *sScopeClass_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
     // s.ScopeClass ( e.Name ) e.Sentences
-    if( ! refalrts::svar_left( sScopeClass_1, bb_0, be_0 ) )
+    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eName_b_1 = bb_1;
     eName_e_1 = be_1;
@@ -3172,22 +3172,22 @@ static enum r05_fnresult r05c_MakeAlgorithm_and_GenSentence(struct r05_node *arg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
     // ( ( e.Pattern ) ( e.Result ) )
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -3265,36 +3265,36 @@ static enum r05_fnresult r05c_ParseBlock(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eCode_b_1;
-    static struct r05_node *eCode_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sRow_1;
-    static struct r05_node *sCol_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eCode_b_1;
+    struct r05_node *eCode_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sRow_1;
+    struct r05_node *sCol_1;
     // t.ErrorList t.SymTable ( & TkNative ( s.Row s.Col ) e.Code ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkNative, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkNative, &bb_1, &be_1))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_1, be_1 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
       break;
     eCode_b_1 = bb_1;
     eCode_e_1 = be_1;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sRow_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sRow_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::svar_left( sCol_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sCol_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3343,14 +3343,14 @@ static enum r05_fnresult r05c_ParseBlock(struct r05_node *arg_begin, struct r05_
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
     // t.ErrorList t.SymTable e.Tokens
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     eTokens_b_1 = bb_0;
     eTokens_e_1 = be_0;
@@ -3400,25 +3400,25 @@ static enum r05_fnresult r05c_ParseBlock_CloseBlock(struct r05_node *arg_begin, 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( & TkCloseBlock t.SrcPos ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseBlock, bb_1, be_1 ) )
+    if (! r05_function_left(r05c_TkCloseBlock, &bb_1, &be_1))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_1, be_1 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -3438,18 +3438,18 @@ static enum r05_fnresult r05c_ParseBlock_CloseBlock(struct r05_node *arg_begin, 
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tUnexpected_2;
     // t.ErrorList t.SymTable t.Unexpected e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
@@ -3499,33 +3499,33 @@ static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( e.Sentences ) ( & TkCloseBlock t.SrcPos ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseBlock, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkCloseBlock, &bb_2, &be_2))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3559,34 +3559,34 @@ static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *tSrcPos_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *tSrcPos_2;
     // t.ErrorList t.SymTable ( e.Sentences ) ( & TkEOF t.SrcPos ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkEOF, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkEOF, &bb_2, &be_2))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3656,20 +3656,20 @@ static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
     // t.ErrorList t.SymTable ( e.Sentences ) e.Tokens
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
@@ -3736,20 +3736,20 @@ static enum r05_fnresult r05c_ParseSentence(struct r05_node *arg_begin, struct r
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
     // t.ErrorList t.SymTable ( e.Sentences ) e.Tokens
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
@@ -3878,36 +3878,36 @@ static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *a
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) ( & TkReplace t.SrcPos ) e.Tokens
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkReplace, bb_2, be_2 ) )
+    if (! r05_function_left(r05c_TkReplace, &bb_2, &be_2))
       break;
     ePattern_b_1 = bb_1;
     ePattern_e_1 = be_1;
     eTokens_b_1 = bb_0;
     eTokens_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     if (! r05_empty_seq(bb_2, be_2))
       break;
@@ -3938,37 +3938,37 @@ static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *a
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sNextResultTerm_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sNextResultTerm_1;
     // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) ( s.NextResultTerm t.SrcPos e.Info ) e.Tokens
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     ePattern_b_1 = bb_1;
     ePattern_e_1 = be_1;
     eTokens_b_1 = bb_0;
     eTokens_e_1 = be_0;
-    if( ! refalrts::svar_left( sNextResultTerm_1, bb_2, be_2 ) )
+    if (! r05_svar_left(&sNextResultTerm_1, &bb_2, &be_2))
       break;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_2, be_2 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
       break;
     // Unused closed variable e.Info
 
@@ -4025,23 +4025,23 @@ static enum r05_fnresult r05c_ParseSentence_ParseResult(struct r05_node *arg_beg
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
     // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) e.Tokens
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     ePattern_b_1 = bb_1;
     ePattern_e_1 = be_1;
@@ -4113,52 +4113,52 @@ static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *ar
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *tSrcPos_1;
     // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) ( & TkSemicolon t.SrcPos ) e.Tokens
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
     ePattern_b_1 = bb_2;
     ePattern_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkSemicolon, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkSemicolon, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_3;
     eResult_e_1 = be_3;
     eTokens_b_1 = bb_0;
     eTokens_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
@@ -4217,53 +4217,53 @@ static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *ar
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *tSrcPos_2;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *tSrcPos_2;
     // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) ( & TkCloseBlock t.SrcPos ) e.Tokens
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
     ePattern_b_1 = bb_2;
     ePattern_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkCloseBlock, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkCloseBlock, &bb_4, &be_4))
       break;
     eResult_b_1 = bb_3;
     eResult_e_1 = be_3;
     eTokens_b_1 = bb_0;
     eTokens_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
       break;
     if (! r05_empty_seq(bb_4, be_4))
       break;
@@ -4358,45 +4358,45 @@ static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *ar
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *eSentences_b_1;
-    static struct r05_node *eSentences_e_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *tUnexpected_1;
-    static struct r05_node *eTokens_b_1;
-    static struct r05_node *eTokens_e_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *tUnexpected_2;
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *tUnexpected_2;
     // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) t.Unexpected e.Tokens
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     eSentences_b_1 = bb_1;
     eSentences_e_1 = be_1;
     ePattern_b_1 = bb_2;
     ePattern_e_1 = be_2;
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     eResult_b_1 = bb_3;
     eResult_e_1 = be_3;
-    if( ! refalrts::tvar_left( tUnexpected_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
       break;
     eTokens_b_1 = bb_0;
     eTokens_e_1 = be_0;
@@ -4485,37 +4485,37 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBrackets_b_1;
-    static struct r05_node *eMultiBrackets_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sChar_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBrackets_b_1;
+    struct r05_node *eMultiBrackets_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sChar_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkChar, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkChar, &bb_3, &be_3))
       break;
     eMultiBrackets_b_1 = bb_1;
     eMultiBrackets_e_1 = be_1;
@@ -4523,9 +4523,9 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sChar_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sChar_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -4598,37 +4598,37 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBrackets_b_1;
-    static struct r05_node *eMultiBrackets_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sNumber_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBrackets_b_1;
+    struct r05_node *eMultiBrackets_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sNumber_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkNumber, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkNumber, &bb_3, &be_3))
       break;
     eMultiBrackets_b_1 = bb_1;
     eMultiBrackets_e_1 = be_1;
@@ -4636,9 +4636,9 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sNumber_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -4711,40 +4711,40 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBrackets_b_1;
-    static struct r05_node *eMultiBrackets_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eName_b_2;
-    static struct r05_node *eName_e_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBrackets_b_1;
+    struct r05_node *eMultiBrackets_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eName_b_2;
+    struct r05_node *eName_e_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkName, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkName, &bb_3, &be_3))
       break;
     eMultiBrackets_b_1 = bb_1;
     eMultiBrackets_e_1 = be_1;
@@ -4752,7 +4752,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
     eName_b_1 = bb_3;
     eName_e_1 = be_3;
@@ -4843,47 +4843,47 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *eVariables_B_b_1;
-    static struct r05_node *eVariables_B_e_1;
-    static struct r05_node *eVariables_E_b_1;
-    static struct r05_node *eVariables_E_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eVariables_B_b_1;
+    struct r05_node *eVariables_B_e_1;
+    struct r05_node *eVariables_E_b_1;
+    struct r05_node *eVariables_E_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( e.Variables_B ( s.Mode e.Index ) e.Variables_E ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
       break;
     eMultiBracket_b_1 = bb_2;
     eMultiBracket_e_1 = be_2;
@@ -4891,9 +4891,9 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_3;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
       break;
     eIndex_b_1 = bb_4;
     eIndex_e_1 = be_4;
@@ -4905,11 +4905,11 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
       struct r05_node *be_5 = be_1;
       struct r05_node *bb_6 = 0;
       struct r05_node *be_6 = 0;
-      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
+      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
         continue;
-      if( ! refalrts::repeated_stvar_left( sMode_2, sMode_1, bb_6, be_6 ) )
+      if (! r05_repeated_stvar_left(&sMode_2, sMode_1, &bb_6, &be_6))
         continue;
-      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
+      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_6, &be_6))
         continue;
       if (! r05_empty_seq(bb_6, be_6))
         continue;
@@ -4995,7 +4995,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eVariables_B_b_1, eVariables_B_e_1, bb_1, be_1 ) );
+    } while (r05_open_evar_advance(&eVariables_B_b_1, &eVariables_B_e_1, &bb_1, &be_1));
   } while ( 0 );
 
   do {
@@ -5003,45 +5003,45 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eVariables_b_1;
-    static struct r05_node *eVariables_e_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eVariables_b_1;
+    struct r05_node *eVariables_e_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
     // t.ErrorList t.SymTable ( e.Variables ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
       break;
     eVariables_b_1 = bb_1;
     eVariables_e_1 = be_1;
@@ -5051,9 +5051,9 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_3;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
       break;
     eIndex_b_1 = bb_4;
     eIndex_e_1 = be_4;
@@ -5147,38 +5147,38 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkOpen, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkOpen, &bb_3, &be_3))
       break;
-    if( ! refalrts::function_right( r05c_TkOpenBracket, bb_3, be_3 ) )
+    if (! r05_function_right(r05c_TkOpenBracket, &bb_3, &be_3))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -5186,7 +5186,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -5259,39 +5259,39 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *tSrcPos_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *tSrcPos_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenCall ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkOpen, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkOpen, &bb_3, &be_3))
       break;
-    if( ! refalrts::function_right( r05c_TkOpenCall, bb_3, be_3 ) )
+    if (! r05_function_right(r05c_TkOpenCall, &bb_3, &be_3))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -5299,7 +5299,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -5394,46 +5394,46 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eInnerScanned_b_1;
-    static struct r05_node *eInnerScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sBracketsSign_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *tInnerSrcPos_1;
-    static struct r05_node *sCloseBracket_1;
-    static struct r05_node *sCloseBracket_2;
-    static struct r05_node *tCloseSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eInnerScanned_b_1;
+    struct r05_node *eInnerScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sBracketsSign_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *tInnerSrcPos_1;
+    struct r05_node *sCloseBracket_1;
+    struct r05_node *sCloseBracket_2;
+    struct r05_node *tCloseSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.CloseSrcPos s.CloseBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkClose, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_right( bb_4, be_4, bb_1, be_1 ) )
+    if (! r05_brackets_right(&bb_4, &be_4, &bb_1, &be_1))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -5441,17 +5441,17 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eInnerScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sBracketsSign_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sBracketsSign_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::tvar_left( tInnerSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tInnerSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::repeated_stvar_right( sCloseBracket_2, sCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_repeated_stvar_right(&sCloseBracket_2, sCloseBracket_1, &bb_3, &be_3))
       break;
     eScanned_b_1 = bb_4;
     eScanned_e_1 = be_4;
-    if( ! refalrts::tvar_left( tCloseSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tCloseSrcPos_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -5517,47 +5517,47 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eInnerScanned_b_1;
-    static struct r05_node *eInnerScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sBracketsSign_1;
-    static struct r05_node *tInnerSrcPos_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sOtherCloseBracket_1;
-    static struct r05_node *sCloseBracket_1;
-    static struct r05_node *sBracketsSign_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eInnerScanned_b_1;
+    struct r05_node *eInnerScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sBracketsSign_1;
+    struct r05_node *tInnerSrcPos_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sOtherCloseBracket_1;
+    struct r05_node *sCloseBracket_1;
+    struct r05_node *sBracketsSign_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.OtherCloseBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkClose, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_right( bb_4, be_4, bb_1, be_1 ) )
+    if (! r05_brackets_right(&bb_4, &be_4, &bb_1, &be_1))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -5565,17 +5565,17 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eInnerScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sBracketsSign_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sBracketsSign_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::tvar_left( tInnerSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tInnerSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_4, &be_4))
       break;
     eScanned_b_1 = bb_4;
     eScanned_e_1 = be_4;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sOtherCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sOtherCloseBracket_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -5697,35 +5697,35 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sCloseBracket_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sCloseBracket_1;
     // t.ErrorList t.SymTable t.VarTable ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkClose, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -5733,9 +5733,9 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -5828,39 +5828,39 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eInnerScanned_b_1;
-    static struct r05_node *eInnerScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sBracketsSign_1;
-    static struct r05_node *tInnerSrcPos_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *sCloseBracket_1;
-    static struct r05_node *sBracketsSign_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eInnerScanned_b_1;
+    struct r05_node *eInnerScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sBracketsSign_1;
+    struct r05_node *tInnerSrcPos_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *sCloseBracket_1;
+    struct r05_node *sBracketsSign_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_1, be_1 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_1, &be_1))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -5868,11 +5868,11 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eInnerScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sBracketsSign_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sBracketsSign_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::tvar_left( tInnerSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tInnerSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
       break;
     eScanned_b_1 = bb_3;
     eScanned_e_1 = be_3;
@@ -5979,27 +5979,27 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *ePattern_b_1;
-    static struct r05_node *ePattern_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // t.ErrorList t.SymTable t.VarTable ( ) ( e.Pattern ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -6042,7 +6042,7 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkOpenBracket
-    if( ! refalrts::function_left( r05c_TkOpenBracket, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkOpenBracket, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6064,7 +6064,7 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkCloseBracket
-    if( ! refalrts::function_left( r05c_TkCloseBracket, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkCloseBracket, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6086,7 +6086,7 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkOpenCall
-    if( ! refalrts::function_left( r05c_TkOpenCall, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkOpenCall, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6108,7 +6108,7 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkCloseCall
-    if( ! refalrts::function_left( r05c_TkCloseCall, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkCloseCall, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6130,7 +6130,7 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & Brackets
-    if( ! refalrts::function_left( r05c_Brackets, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_Brackets, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6152,7 +6152,7 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & CallBrackets
-    if( ! refalrts::function_left( r05c_CallBrackets, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_CallBrackets, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -6180,37 +6180,37 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sChar_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sChar_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkChar, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkChar, &bb_3, &be_3))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -6218,9 +6218,9 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sChar_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sChar_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -6293,37 +6293,37 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sNumber_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sNumber_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkNumber, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkNumber, &bb_3, &be_3))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -6331,9 +6331,9 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sNumber_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sNumber_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -6406,40 +6406,40 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *eName_b_1;
-    static struct r05_node *eName_e_1;
-    static struct r05_node *eName_b_2;
-    static struct r05_node *eName_e_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *eName_b_1;
+    struct r05_node *eName_e_1;
+    struct r05_node *eName_b_2;
+    struct r05_node *eName_e_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkName, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkName, &bb_3, &be_3))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -6447,7 +6447,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
     eName_b_1 = bb_3;
     eName_e_1 = be_3;
@@ -6538,47 +6538,47 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *sMode_2;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
-    static struct r05_node *eIndex_b_2;
-    static struct r05_node *eIndex_e_2;
-    static struct r05_node *eVariables_B_b_1;
-    static struct r05_node *eVariables_B_e_1;
-    static struct r05_node *eVariables_E_b_1;
-    static struct r05_node *eVariables_E_e_1;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sMode_1;
+    struct r05_node *sMode_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eVariables_B_b_1;
+    struct r05_node *eVariables_B_e_1;
+    struct r05_node *eVariables_E_b_1;
+    struct r05_node *eVariables_E_e_1;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable ( e.Variables_B ( s.Mode e.Index ) e.Variables_E ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
       break;
     eMultiBracket_b_1 = bb_2;
     eMultiBracket_e_1 = be_2;
@@ -6586,9 +6586,9 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_3;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
       break;
     eIndex_b_1 = bb_4;
     eIndex_e_1 = be_4;
@@ -6600,11 +6600,11 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
       struct r05_node *be_5 = be_1;
       struct r05_node *bb_6 = 0;
       struct r05_node *be_6 = 0;
-      if( ! refalrts::brackets_left( bb_6, be_6, bb_5, be_5 ) )
+      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
         continue;
-      if( ! refalrts::repeated_stvar_left( sMode_2, sMode_1, bb_6, be_6 ) )
+      if (! r05_repeated_stvar_left(&sMode_2, sMode_1, &bb_6, &be_6))
         continue;
-      if( ! refalrts::repeated_evar_left( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1, bb_6, be_6 ) )
+      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_6, &be_6))
         continue;
       if (! r05_empty_seq(bb_6, be_6))
         continue;
@@ -6690,7 +6690,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
       r05_use(&res);
       refalrts::splice_to_freelist( arg_begin, arg_end );
       return R05_SUCCESS;
-    } while ( refalrts::open_evar_advance( eVariables_B_b_1, eVariables_B_e_1, bb_1, be_1 ) );
+    } while (r05_open_evar_advance(&eVariables_B_b_1, &eVariables_B_e_1, &bb_1, &be_1));
   } while ( 0 );
 
   do {
@@ -6698,42 +6698,42 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *eVariables_b_1;
-    static struct r05_node *eVariables_e_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sMode_1;
-    static struct r05_node *eIndex_b_1;
-    static struct r05_node *eIndex_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eVariables_b_1;
+    struct r05_node *eVariables_e_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     // t.ErrorList t.SymTable ( e.Variables ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_left( bb_4, be_4, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkVariable, bb_4, be_4 ) )
+    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
       break;
     eVariables_b_1 = bb_1;
     eVariables_e_1 = be_1;
@@ -6743,9 +6743,9 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_3;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sMode_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
       break;
     eIndex_b_1 = bb_4;
     eIndex_e_1 = be_4;
@@ -6840,38 +6840,38 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sOpenBracket_1;
-    static struct r05_node *sOpenBracket_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sOpenBracket_1;
+    struct r05_node *sOpenBracket_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos s.OpenBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkOpen, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkOpen, &bb_3, &be_3))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -6879,9 +6879,9 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sOpenBracket_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sOpenBracket_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -6978,46 +6978,46 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eInnerScanned_b_1;
-    static struct r05_node *eInnerScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sBracketsSign_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *tOpenSrcPos_1;
-    static struct r05_node *sCloseBracket_1;
-    static struct r05_node *sCloseBracket_2;
-    static struct r05_node *tSrcPos_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eInnerScanned_b_1;
+    struct r05_node *eInnerScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sBracketsSign_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *tOpenSrcPos_1;
+    struct r05_node *sCloseBracket_1;
+    struct r05_node *sCloseBracket_2;
+    struct r05_node *tSrcPos_1;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkClose, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
       break;
     struct r05_node *bb_4 = 0;
     struct r05_node *be_4 = 0;
-    if( ! refalrts::brackets_right( bb_4, be_4, bb_1, be_1 ) )
+    if (! r05_brackets_right(&bb_4, &be_4, &bb_1, &be_1))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -7025,17 +7025,17 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eInnerScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sBracketsSign_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sBracketsSign_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::tvar_left( tOpenSrcPos_1, bb_4, be_4 ) )
+    if (! r05_tvar_left(&tOpenSrcPos_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_4, be_4 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_4, &be_4))
       break;
-    if( ! refalrts::repeated_stvar_right( sCloseBracket_2, sCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_repeated_stvar_right(&sCloseBracket_2, sCloseBracket_1, &bb_3, &be_3))
       break;
     eScanned_b_1 = bb_4;
     eScanned_e_1 = be_4;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -7101,39 +7101,39 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eMultiBracket_b_1;
-    static struct r05_node *eMultiBracket_e_1;
-    static struct r05_node *eInnerScanned_b_1;
-    static struct r05_node *eInnerScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *sBracketsSign_1;
-    static struct r05_node *tOpenSrcPos_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *sCloseBracket_1;
-    static struct r05_node *sBracketsSign_2;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eInnerScanned_b_1;
+    struct r05_node *eInnerScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sBracketsSign_1;
+    struct r05_node *tOpenSrcPos_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *sCloseBracket_1;
+    struct r05_node *sBracketsSign_2;
     // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_right( bb_3, be_3, bb_1, be_1 ) )
+    if (! r05_brackets_right(&bb_3, &be_3, &bb_1, &be_1))
       break;
     eMultiBracket_b_1 = bb_1;
     eMultiBracket_e_1 = be_1;
@@ -7141,11 +7141,11 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eInnerScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::svar_left( sBracketsSign_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sBracketsSign_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::tvar_left( tOpenSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tOpenSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
       break;
     eScanned_b_1 = bb_3;
     eScanned_e_1 = be_3;
@@ -7252,35 +7252,35 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eScanned_b_1;
-    static struct r05_node *eScanned_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
-    static struct r05_node *tSrcPos_1;
-    static struct r05_node *sCloseBracket_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *sCloseBracket_1;
     // t.ErrorList t.SymTable t.VarTable ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     struct r05_node *bb_3 = 0;
     struct r05_node *be_3 = 0;
-    if( ! refalrts::brackets_left( bb_3, be_3, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
       break;
-    if( ! refalrts::function_left( r05c_TkClose, bb_3, be_3 ) )
+    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -7288,9 +7288,9 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eScanned_e_1 = be_2;
     eTail_b_1 = bb_0;
     eTail_e_1 = be_0;
-    if( ! refalrts::tvar_left( tSrcPos_1, bb_3, be_3 ) )
+    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
       break;
-    if( ! refalrts::svar_left( sCloseBracket_1, bb_3, be_3 ) )
+    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
       break;
     if (! r05_empty_seq(bb_3, be_3))
       break;
@@ -7383,27 +7383,27 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *be_0 = 0;
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
-    static struct r05_node *tErrorList_1;
-    static struct r05_node *tSymTable_1;
-    static struct r05_node *tVarTable_1;
-    static struct r05_node *eResult_b_1;
-    static struct r05_node *eResult_e_1;
-    static struct r05_node *eTail_b_1;
-    static struct r05_node *eTail_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
     // t.ErrorList t.SymTable t.VarTable ( ) ( e.Result ) e.Tail
-    if( ! refalrts::tvar_left( tErrorList_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tSymTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
       break;
-    if( ! refalrts::tvar_left( tVarTable_1, bb_0, be_0 ) )
+    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_1 = 0;
     struct r05_node *be_1 = 0;
-    if( ! refalrts::brackets_left( bb_1, be_1, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
       break;
     struct r05_node *bb_2 = 0;
     struct r05_node *be_2 = 0;
-    if( ! refalrts::brackets_left( bb_2, be_2, bb_0, be_0 ) )
+    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_1, be_1))
       break;
@@ -7446,7 +7446,7 @@ static enum r05_fnresult r05c_BracketPairName(struct r05_node *arg_begin, struct
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkOpenBracket
-    if( ! refalrts::function_left( r05c_TkOpenBracket, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkOpenBracket, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -7468,7 +7468,7 @@ static enum r05_fnresult r05c_BracketPairName(struct r05_node *arg_begin, struct
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkOpenCall
-    if( ! refalrts::function_left( r05c_TkOpenCall, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkOpenCall, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -7497,7 +7497,7 @@ static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struc
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkOpenBracket
-    if( ! refalrts::function_left( r05c_TkOpenBracket, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkOpenBracket, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
@@ -7519,7 +7519,7 @@ static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struc
     r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     refalrts::start_sentence();
     // & TkOpenCall
-    if( ! refalrts::function_left( r05c_TkOpenCall, bb_0, be_0 ) )
+    if (! r05_function_left(r05c_TkOpenCall, &bb_0, &be_0))
       break;
     if (! r05_empty_seq(bb_0, be_0))
       break;
