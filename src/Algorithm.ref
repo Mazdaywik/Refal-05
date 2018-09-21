@@ -424,57 +424,16 @@ ReplicateVars {
   e.Vars = <Map ReplicateVar e.Vars>;
 }
 
-VarSetUnion {
-  ( e.Set1-B t.Common e.Set1-E ) ( e.Set2-B t.Common e.Set2-E ) =
-    t.Common
-    <VarSetUnion (e.Set1-B e.Set1-E) (e.Set2-B e.Set2-E)>;
-
-  ( e.Set1 ) ( e.Set2 ) = e.Set1 e.Set2;
-}
-
-VarSetDifference {
-  ( e.Set1-B t.Common e.Set1-E ) ( e.Set2-B t.Common e.Set2-E ) =
-    e.Set1-B <VarSetDifference (e.Set1-E) ( e.Set2-B e.Set2-E )>;
-
-  ( e.Set1 ) ( e.Set2 ) = e.Set1;
-}
-
-ClosedEVariables {
-  (CmdClosedE AlgLeft s.Num 'e' e.Index) = (1 'e' e.Index);
-
-  t.Other = /* игнорируем */;
-}
-
 RepeatedEVariables {
   (CmdRepeated s.Direction s.Num s.Count 'e' e.Index) = (1 'e' e.Index);
 
   t.Other = /* игнорируем */;
 }
 
-FilterUnusedCmdClosedE {
-  e.Unuseds-B (1 'e' e.Index) e.Unuseds-E
-  (CmdClosedE AlgLeft s.Num 'e' e.Index) =
-    (CmdComment ' Unused closed variable e.' e.Index);
+ClosedEVariables {
+  (CmdClosedE AlgLeft s.Num 'e' e.Index) = (1 'e' e.Index);
 
-  e.Unuseds t.OtherCommand = t.OtherCommand;
-}
-
-$EENUM CmdDeclareEVar, CmdDeclareVar;
-
-MakeDeclaration {
-  ( s.Usings 'e' e.Index ) = (CmdDeclareEVar s.Usings 'e' e.Index);
-
-  ( s.Usings s.Mode e.Index ) =
-    (CmdDeclareVar s.Usings s.Mode e.Index);
-}
-
-$EENUM CmdCopyEVar, CmdCopyVar;
-
-MakeCopyVar {
-  ( s.Usings 'e' e.Index ) = (CmdCopyEVar s.Usings 'e' e.Index);
-
-  ( s.Usings s.Mode e.Index ) =
-    (CmdCopyVar s.Usings s.Mode e.Index);
+  t.Other = /* игнорируем */;
 }
 
 MakeVarsSets {
@@ -484,12 +443,34 @@ MakeVarsSets {
     <VarSetDifference (e.ClosedEs) (e.RepeatedEs e.ResultVars)>;
 }
 
+VarSetUnion {
+  (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) =
+    t.Common <VarSetUnion (e.Set1-B e.Set1-E) (e.Set2-B e.Set2-E)>;
+
+  (e.Set1) (e.Set2) = e.Set1 e.Set2;
+}
+
+VarSetDifference {
+  (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) =
+    e.Set1-B <VarSetDifference (e.Set1-E) (e.Set2-B e.Set2-E)>;
+
+  (e.Set1) (e.Set2) = e.Set1;
+}
+
 FilterCommonVarsAndPatternCommands {
   (e.PatternCommands)
   (e.CommonVars) (e.CopiedVars) e.UnusedClosedEs =
     (<VarSetDifference (e.CommonVars) (e.UnusedClosedEs)>)
     (e.CopiedVars)
     <Map (FilterUnusedCmdClosedE e.UnusedClosedEs) e.PatternCommands>;
+}
+
+FilterUnusedCmdClosedE {
+  e.Unuseds-B (1 'e' e.Index) e.Unuseds-E
+  (CmdClosedE AlgLeft s.Num 'e' e.Index) =
+    (CmdComment ' Unused closed variable e.' e.Index);
+
+  e.Unuseds t.OtherCommand = t.OtherCommand;
 }
 
 ComposeSentenceCommands {
@@ -502,6 +483,20 @@ ComposeSentenceCommands {
       e.ResultCommands
       (CmdReturnResult)
     >;
+}
+
+$EENUM CmdDeclareEVar, CmdDeclareVar;
+
+MakeDeclaration {
+  (s.Usings 'e' e.Index) = (CmdDeclareEVar s.Usings 'e' e.Index);
+  (s.Usings s.Mode e.Index) = (CmdDeclareVar s.Usings s.Mode e.Index);
+}
+
+$EENUM CmdCopyEVar, CmdCopyVar;
+
+MakeCopyVar {
+  (s.Usings 'e' e.Index) = (CmdCopyEVar s.Usings 'e' e.Index);
+  (s.Usings s.Mode e.Index) = (CmdCopyVar s.Usings s.Mode e.Index);
 }
 
 GenerateResult-OpenELoops {
