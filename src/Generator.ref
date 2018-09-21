@@ -132,12 +132,12 @@ GenCommand {
 
   (e.Indent) (CmdDeclareEVar e.VarInfo) =
     (e.Indent)
-    (e.Indent 'static struct r05_node *' <PrintEVar-B e.VarInfo> ';')
-    (e.Indent 'static struct r05_node *' <PrintEVar-E e.VarInfo> ';');
+    (e.Indent 'struct r05_node *' <PrintEVar-B e.VarInfo> ';')
+    (e.Indent 'struct r05_node *' <PrintEVar-E e.VarInfo> ';');
 
   (e.Indent) (CmdDeclareVar e.VarInfo) =
     (e.Indent)
-    (e.Indent 'static struct r05_node *' <PrintVar e.VarInfo> ';');
+    (e.Indent 'struct r05_node *' <PrintVar e.VarInfo> ';');
 
   (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
     (e.Indent)
