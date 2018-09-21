@@ -24,7 +24,7 @@ FuncArguments {
 }
 
 NakedArguments {
-  = 'refalrts::Iter, refalrts::Iter';
+  = 'struct r05_Node *, struct r05_Node *';
 }
 
 TextFromMemoryClass {
