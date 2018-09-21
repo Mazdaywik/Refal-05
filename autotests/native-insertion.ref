@@ -13,17 +13,17 @@ int global = 0;
 
 Native {
 %%
-  refalrts::Iter func_name = arg_begin->next;
+  struct r05_node *func_name = arg_begin->next;
 
-  arg_begin->tag = refalrts::cDataChar;
-  arg_begin->char_info = '<';
-  func_name->tag = refalrts::cDataNumber;
-  func_name->number_info = global;
-  arg_end->tag = refalrts::cDataChar;
-  arg_end->char_info = '>';
+  arg_begin->tag = R05_DATATAG_CHAR;
+  arg_begin->info.char_ = '<';
+  func_name->tag = R05_DATATAG_NUMBER;
+  func_name->info.number = global;
+  arg_end->tag = R05_DATATAG_CHAR;
+  arg_end->info.char_ = '>';
 
   ++global;
 
-  return refalrts::cSuccess;
+  return R05_SUCCESS;
 %%
 }
