@@ -119,8 +119,8 @@ enum r05_fnresult write_to_stream(
 
   for (
     struct r05_node *p = str_begin;
-    ! refalrts::empty_seq(p, str_end);
-    refalrts::move_left(p, str_end)
+    ! r05_empty_seq(p, str_end);
+    r05_move_left(&p, &str_end)
   ) {
     switch(p->tag) {
       case R05_DATATAG_CHAR: {
@@ -200,18 +200,14 @@ enum r05_fnresult write_to_stream(
 $ENTRY WriteLine {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *eLine_b_1;
     struct r05_node *eLine_e_1;
     eLine_b_1 = bb_0;
-    refalrts::use(eLine_b_1);
     eLine_e_1 = be_0;
-    refalrts::use(eLine_e_1);
 
     enum r05_fnresult fnres = write_to_stream(stdout, eLine_b_1, eLine_e_1);
 
@@ -230,11 +226,9 @@ $ENTRY WriteLine {
 $ENTRY FWriteLine {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sFileHandle_1;
     struct r05_node *eLine_b_1;
@@ -245,9 +239,7 @@ $ENTRY FWriteLine {
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
     eLine_b_1 = bb_0;
-    refalrts::use(eLine_b_1);
     eLine_e_1 = be_0;
-    refalrts::use(eLine_e_1);
 
     enum r05_fnresult write_result =
       write_to_stream(
@@ -313,13 +305,11 @@ enum r05_fnresult read_from_stream(
 $ENTRY ReadLine {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
@@ -332,8 +322,7 @@ $ENTRY ReadLine {
     if (fn_result != R05_SUCCESS)
       return fn_result;
 
-    res = refalrts::splice_evar(res, str_begin, str_end);
-    refalrts::use(res);
+    refalrts::splice_evar(res, str_begin, str_end);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -345,11 +334,9 @@ $ENTRY ReadLine {
 $ENTRY FReadLine {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sFileHandle_1;
     // s.FileHandle
@@ -357,7 +344,7 @@ $ENTRY FReadLine {
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
@@ -374,8 +361,7 @@ $ENTRY FReadLine {
       return fn_result;
 
     res = refalrts::splice_evar(res, str_begin, str_end);
-    res = refalrts::splice_stvar(res, sFileHandle_1);
-    refalrts::use(res);
+    refalrts::splice_stvar(res, sFileHandle_1);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -413,10 +399,10 @@ enum r05_fnresult string_from_seq(
   }
 
   /*
-    Здесь refalrts::empty_seq(begin, end) || (begin->tag != cDataChar).
+    Здесь r05_empty_seq(begin, end) || (begin->tag != cDataChar).
   */
 
-  if (refalrts::empty_seq(begin, end)) {
+  if (r05_empty_seq(begin, end)) {
     result.push_back('\0');
     string.swap(result);
     return R05_SUCCESS;
@@ -433,11 +419,9 @@ enum r05_fnresult string_from_seq(
 $ENTRY FOpen {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *eFileName_b_1;
     struct r05_node *eFileName_e_1;
@@ -453,9 +437,7 @@ $ENTRY FOpen {
     }
 
     eFileName_b_1 = bb_0;
-    refalrts::use(eFileName_b_1);
     eFileName_e_1 = be_0;
-    refalrts::use(eFileName_e_1);
 
     std::vector<char> filename;
 
@@ -483,8 +465,7 @@ $ENTRY FOpen {
       return R05_RECOGNITION_IMPOSSIBLE;
     }
 
-    res = refalrts::splice_elem(res, file_ptr);
-    refalrts::use(res);
+    refalrts::splice_elem(res, file_ptr);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -496,11 +477,9 @@ $ENTRY FOpen {
 $ENTRY FClose {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sFileHandle_1;
     // s.FileHandle
@@ -508,7 +487,7 @@ $ENTRY FClose {
       break;
     if (sFileHandle_1->tag != R05_DATATAG_FILE)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     int fclose_res = fclose(static_cast<FILE*>(sFileHandle_1->info.file));
@@ -520,8 +499,6 @@ $ENTRY FClose {
     }
 
     refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -545,11 +522,9 @@ extern int g_argc;
 $ENTRY Arg {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sParamNumber_1;
     // s.ParamNumber
@@ -557,7 +532,7 @@ $ENTRY Arg {
       break;
     if (sParamNumber_1->tag != R05_DATATAG_NUMBER)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
@@ -585,19 +560,15 @@ $ENTRY Arg {
 $ENTRY ExistFile {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *eFileName_b_1;
     struct r05_node *eFileName_e_1;
     // e.FileName
     eFileName_b_1 = bb_0;
-    refalrts::use(eFileName_b_1);
     eFileName_e_1 = be_0;
-    refalrts::use(eFileName_e_1);
 
     std::vector<char> fname;
 
@@ -625,8 +596,7 @@ $ENTRY ExistFile {
       }
     }
 
-    res = refalrts::splice_elem(res, ans);
-    refalrts::use(res);
+    refalrts::splice_elem(res, ans);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -638,18 +608,14 @@ $ENTRY ExistFile {
 $ENTRY GetEnv {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
     struct r05_node *eEnvName_b_1;
     struct r05_node *eEnvName_e_1;
     // e.EnvName
     eEnvName_b_1 = bb_0;
-    refalrts::use(eEnvName_b_1);
     eEnvName_e_1 = be_0;
-    refalrts::use(eEnvName_e_1);
 
     std::vector<char> envname;
 
@@ -693,11 +659,9 @@ $ENTRY GetEnv {
 $ENTRY Exit {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sCode_1;
     // s.Code
@@ -705,7 +669,7 @@ $ENTRY Exit {
       break;
     if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::set_return_code(sCode_1->info.number);
@@ -722,19 +686,15 @@ $ENTRY Exit {
 $ENTRY System {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *eCommand_b_1;
     struct r05_node *eCommand_e_1;
     // e.Command
     eCommand_b_1 = bb_0;
-    refalrts::use(eCommand_b_1);
     eCommand_e_1 = be_0;
-    refalrts::use(eCommand_e_1);
 
     std::vector<char> command;
 
@@ -750,8 +710,6 @@ $ENTRY System {
     system(&command[0]);
 
     refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -765,22 +723,18 @@ $ENTRY System {
 $ENTRY IntFromStr {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *eNumber_b_1;
     struct r05_node *eNumber_e_1;
     // e.NoNumber
     eNumber_b_1 = bb_0;
-    refalrts::use(eNumber_b_1);
     eNumber_e_1 = be_0;
-    refalrts::use(eNumber_e_1);
 
     bool start_is_digit =
-      ! refalrts::empty_seq(eNumber_b_1, eNumber_e_1)
+      ! r05_empty_seq(eNumber_b_1, eNumber_e_1)
       && (R05_DATATAG_CHAR == eNumber_b_1->tag)
       && isdigit(eNumber_b_1->info.char_);
 
@@ -793,12 +747,12 @@ $ENTRY IntFromStr {
         return R05_NO_MEMORY;
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
-      res = refalrts::splice_elem(res, fail_pos);
+      refalrts::splice_elem(res, fail_pos);
     } else {
       r05_number acc = 0;
 
       for ( ; ; ) {
-        if (refalrts::empty_seq(eNumber_b_1, eNumber_e_1)) {
+        if (r05_empty_seq(eNumber_b_1, eNumber_e_1)) {
           break;
         } else if (eNumber_b_1->tag != R05_DATATAG_CHAR) {
           break;
@@ -808,7 +762,7 @@ $ENTRY IntFromStr {
           (acc *= 10) += eNumber_b_1->info.char_ - '0';
         }
 
-        refalrts::move_left(eNumber_b_1, eNumber_e_1);
+        r05_move_left(&eNumber_b_1, &eNumber_e_1);
       }
 
       struct r05_node *success_pos = 0;
@@ -822,10 +776,9 @@ $ENTRY IntFromStr {
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
       res = refalrts::splice_elem(res, number_pos);
-      res = refalrts::splice_elem(res, success_pos);
+      refalrts::splice_elem(res, success_pos);
     }
 
-    refalrts::use(res);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -837,11 +790,9 @@ $ENTRY IntFromStr {
 $ENTRY StrFromInt {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sNumber_1;
     // s.Number
@@ -849,7 +800,7 @@ $ENTRY StrFromInt {
       break;
     if (sNumber_1->tag != R05_DATATAG_NUMBER)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     refalrts::reset_allocator();
@@ -900,11 +851,9 @@ $ENTRY StrFromInt {
 $ENTRY Chr {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sCode_1;
     // s.Code
@@ -912,7 +861,7 @@ $ENTRY Chr {
       break;
     if (sCode_1->tag != R05_DATATAG_NUMBER)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     char result = static_cast<char>(sCode_1->info.number);
@@ -922,8 +871,7 @@ $ENTRY Chr {
     struct r05_node *n0 = 0;
     if (! refalrts::alloc_char(n0, result))
       return R05_NO_MEMORY;
-    res = refalrts::splice_elem(res, n0);
-    refalrts::use(res);
+    refalrts::splice_elem(res, n0);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -935,11 +883,9 @@ $ENTRY Chr {
 $ENTRY Ord {
 %%
   do {
-    struct r05_node *bb_0 = arg_begin;
-    struct r05_node *be_0 = arg_end;
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_left(bb_0, be_0);
-    refalrts::move_right(bb_0, be_0);
+    struct r05_node *bb_0 = 0;
+    struct r05_node *be_0 = 0;
+    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
 
     struct r05_node *sChar_1;
     // s.Char
@@ -947,7 +893,7 @@ $ENTRY Ord {
       break;
     if (sChar_1->tag != R05_DATATAG_CHAR)
       break;
-    if (! refalrts::empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb_0, be_0))
       break;
 
     r05_number result = static_cast<unsigned char>(sChar_1->info.char_);
@@ -957,8 +903,7 @@ $ENTRY Ord {
     struct r05_node *n0 = 0;
     if (! refalrts::alloc_number(n0, result))
       return R05_NO_MEMORY;
-    res = refalrts::splice_elem(res, n0);
-    refalrts::use(res);
+    refalrts::splice_elem(res, n0);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);

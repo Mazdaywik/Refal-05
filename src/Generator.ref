@@ -88,11 +88,9 @@ GenCommonTailer {
 $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
-    ('    struct r05_node *' <BracketsVar-B 0> ' = arg_begin;')
-    ('    struct r05_node *' <BracketsVar-E 0> ' = arg_end;')
-    ('    refalrts::move_left( ' <BracketsVars 0> ' );')
-    ('    refalrts::move_left( ' <BracketsVars 0> ' );')
-    ('    refalrts::move_right( ' <BracketsVars 0> ' );')
+    ('    struct r05_node *' <BracketsVar-B 0> ' = 0;')
+    ('    struct r05_node *' <BracketsVar-E 0> ' = 0;')
+    ('    r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);')
     ('    refalrts::start_sentence();')
     <SkipIndentAccum
       <MapReduce GenCommand ('    ' /* отступ */) e.Algorithm>
@@ -117,6 +115,11 @@ BracketsVar-E {
 BracketsVars {
   s.BracketNumber =
     <BracketsVar-B s.BracketNumber> ', ' <BracketsVar-E s.BracketNumber>;
+}
+
+BracketsVarsPtr {
+  s.BracketNumber =
+    '&' <BracketsVar-B s.BracketNumber> ', &' <BracketsVar-E s.BracketNumber>;
 }
 
 /*
@@ -272,7 +275,7 @@ GenCommand {
 
   (e.Indent) (CmdReturnResult) =
     (e.Indent)
-    (e.Indent 'refalrts::use( res );')
+    (e.Indent 'r05_use(&res);')
     (e.Indent 'refalrts::splice_to_freelist( arg_begin, arg_end );')
     (e.Indent 'return R05_SUCCESS;');
 }
@@ -340,7 +343,7 @@ BreakerFromIndent {
 PrintMatchEmpty {
   (e.Indent) s.BracketNumber =
     (e.Indent
-      'if( ! refalrts::empty_seq( ' <BracketsVars s.BracketNumber> ' ) )'
+      'if (! r05_empty_seq(' <BracketsVars s.BracketNumber> '))'
     )
     (e.Indent '  ' <BreakerFromIndent e.Indent>);
 }

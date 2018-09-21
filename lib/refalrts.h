@@ -51,6 +51,23 @@ struct r05_node {
 };
 
 
+/* Операции сопоставления с образцом */
+
+void r05_use(struct r05_node **ref);
+
+void r05_prepare_argument(
+  struct r05_node **left, struct r05_node **right,
+  struct r05_node *arg_begin, struct r05_node *arg_end
+);
+
+void r05_move_left(struct r05_node **begin, struct r05_node **end);
+void r05_move_right(struct r05_node **begin, struct r05_node **end);
+
+int r05_empty_seq(struct r05_node *begin, struct r05_node *end);
+
+
+/* Диагностика */
+
 #define r05_switch_default_violation(value) \
   r05_switch_default_violation_impl(#value, value, __FILE__, __LINE__)
 
@@ -97,15 +114,21 @@ typedef ::r05_number RefalNumber;
 #define function_info info.function
 #define link_info info.link
 #define file_info info.file
-// ↑↑↑ DELETE
 
-extern void use(struct r05_node *&);
+inline void use(struct r05_node *&ref) { r05_use(&ref); }
 
 // Операции распознавания образца
 
-extern void move_left(struct r05_node *&begin, struct r05_node *&end);
-extern void move_right(struct r05_node *&begin, struct r05_node *&end);
-extern bool empty_seq(struct r05_node *begin, struct r05_node *end);
+inline void move_left(struct r05_node *&begin, struct r05_node *&end) {
+  r05_move_left(&begin, &end);
+}
+inline void move_right(struct r05_node *&begin, struct r05_node *&end) {
+  r05_move_right(&begin, &end);
+}
+inline bool empty_seq(struct r05_node *begin, struct r05_node *end) {
+  return r05_empty_seq(begin, end);
+}
+// ↑↑↑ DELETE
 
 extern bool function_left(
   r05_function_ptr func, struct r05_node *&first, struct r05_node *&last
