@@ -83,51 +83,7 @@ void r05_switch_default_violation_impl(
 namespace refalrts {
 
 // ↓↓↓ DELETE
-typedef ::r05_fnresult FnResult;
-
-const FnResult cRecognitionImpossible = ::R05_RECOGNITION_IMPOSSIBLE;
-const FnResult cNoMemory = ::R05_NO_MEMORY;
-const FnResult cSuccess = ::R05_SUCCESS;
-const FnResult cExit = ::R05_EXIT;
-
-typedef ::r05_datatag DataTag;
-const DataTag cDataIllegal      = ::R05_DATATAG_ILLEGAL;
-const DataTag cDataChar         = ::R05_DATATAG_CHAR;
-const DataTag cDataNumber       = ::R05_DATATAG_NUMBER;
-const DataTag cDataFunction     = ::R05_DATATAG_FUNCTION;
-const DataTag cDataOpenBracket  = ::R05_DATATAG_OPEN_BRACKET;
-const DataTag cDataCloseBracket = ::R05_DATATAG_CLOSE_BRACKET;
-const DataTag cDataOpenCall     = ::R05_DATATAG_OPEN_CALL;
-const DataTag cDataCloseCall    = ::R05_DATATAG_CLOSE_CALL;
-const DataTag cDataFile         = ::R05_DATATAG_FILE;
-
-typedef struct ::r05_node Node;
-typedef Node *NodePtr;
-typedef Node *Iter;
-typedef ::r05_function_ptr RefalFunctionPtr;
-typedef const char *RefalFuncName;
-typedef struct r05_function RefalFunction;
-typedef ::r05_number RefalNumber;
-
-#define char_info info.char_
-#define number_info info.number
-#define function_info info.function
-#define link_info info.link
-#define file_info info.file
-
-inline void use(struct r05_node *&ref) { r05_use(&ref); }
-
 // Операции распознавания образца
-
-inline void move_left(struct r05_node *&begin, struct r05_node *&end) {
-  r05_move_left(&begin, &end);
-}
-inline void move_right(struct r05_node *&begin, struct r05_node *&end) {
-  r05_move_right(&begin, &end);
-}
-inline bool empty_seq(struct r05_node *begin, struct r05_node *end) {
-  return r05_empty_seq(begin, end);
-}
 // ↑↑↑ DELETE
 
 extern bool function_left(
