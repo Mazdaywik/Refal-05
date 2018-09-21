@@ -43,11 +43,6 @@ void refalrts::use(struct r05_node *&) {
   компилятора о том, что переменная не используется */;
 }
 
-void refalrts::use_counter(unsigned&) {
-  /* Ничего не делаем. Эта функция добавляется, чтобы подавить предупреждение
-  компилятора о том, что переменная не используется */;
-}
-
 namespace {
 
 bool is_open_bracket(struct r05_node *node) {

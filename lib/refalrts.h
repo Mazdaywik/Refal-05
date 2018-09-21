@@ -242,7 +242,6 @@ extern void start_e_loop();
 // Прочие функции
 
 extern void set_return_code(int retcode);
-extern void use_counter(unsigned& counter);
 
 inline void set_return_code(r05_number retcode) {
   set_return_code(static_cast<int>(retcode));

@@ -213,8 +213,7 @@ $ENTRY WriteLine {
     eLine_e_1 = be_0;
     refalrts::use(eLine_e_1);
 
-    enum r05_fnresult fnres =
-      write_to_stream(stdout, eLine_b_1, eLine_e_1);
+    enum r05_fnresult fnres = write_to_stream(stdout, eLine_b_1, eLine_e_1);
 
     if (fnres != R05_SUCCESS)
       return fnres;
@@ -512,8 +511,7 @@ $ENTRY FClose {
     if (! refalrts::empty_seq(bb_0, be_0))
       break;
 
-    int fclose_res =
-      fclose(static_cast<FILE*>(sFileHandle_1->info.file));
+    int fclose_res = fclose(static_cast<FILE*>(sFileHandle_1->info.file));
 
     if (EOF == fclose_res) {
       return R05_RECOGNITION_IMPOSSIBLE;
