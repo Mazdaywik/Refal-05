@@ -33,6 +33,12 @@ void valid_linked_aux(const char *text, struct r05_node *i) {
 }
 
 
+#define EXIT_CODE_RECOGNITION_IMPOSSIBLE 1
+#define EXIT_CODE_NO_MEMORY 2
+#define EXIT_CODE_STD_EXCEPTION 4
+#define EXIT_CODE_UNKNOWN_EXCEPTION 5
+
+
 /*==============================================================================
    Операции сопоставления с образцом
 ==============================================================================*/
@@ -1892,10 +1898,10 @@ int main(int argc, char **argv) {
     fflush(stdout);
   } catch (std::exception& e) {
     fprintf(stderr, "INTERNAL ERROR: std::exception %s\n", e.what());
-    return 4;
+    return EXIT_CODE_STD_EXCEPTION;
   } catch (...) {
     fprintf(stderr, "INTERNAL ERROR: unknown exception\n");
-    return 5;
+    return EXIT_CODE_UNKNOWN_EXCEPTION;
   }
 
   refalrts::profiler::end_profiler();
@@ -1909,10 +1915,10 @@ int main(int argc, char **argv) {
       return 0;
 
     case R05_RECOGNITION_IMPOSSIBLE:
-      return 1;
+      return EXIT_CODE_RECOGNITION_IMPOSSIBLE;
 
     case R05_NO_MEMORY:
-      return 2;
+      return EXIT_CODE_NO_MEMORY;
 
     case R05_EXIT:
       return refalrts::vm::g_ret_code;
