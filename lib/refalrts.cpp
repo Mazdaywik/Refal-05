@@ -752,7 +752,7 @@ namespace refalrts {
 
 namespace vm {
 
-void make_dump(struct r05_node *begin, struct r05_node *end);
+void make_dump(void);
 
 } // namespace vm
 
@@ -1183,15 +1183,26 @@ inline void refalrts::allocator::reset_allocator() {
   g_free_ptr = g_first_marker.next;
 }
 
-bool refalrts::allocator::alloc_node(struct r05_node *&node) {
+static void refal_machine_teardown(int retcode);
+
+static void ensure_memory(void) {
+  using namespace refalrts;
+  using namespace allocator;
+
   if ((g_free_ptr == & g_last_marker) && ! create_nodes()) {
-    return false;
-  } else {
-    node = g_free_ptr;
-    g_free_ptr = g_free_ptr->next;
-    node->tag = R05_DATATAG_ILLEGAL;
-    return true;
+    fprintf(stderr, "\nNO MEMORY\n\n");
+    vm::make_dump();
+
+    refal_machine_teardown(EXIT_CODE_NO_MEMORY);
   }
+}
+
+bool refalrts::allocator::alloc_node(struct r05_node *&node) {
+  ensure_memory();
+  node = g_free_ptr;
+  g_free_ptr = g_free_ptr->next;
+  node->tag = R05_DATATAG_ILLEGAL;
+  return true;
 }
 
 struct r05_node *refalrts::allocator::free_ptr() {
@@ -1499,8 +1510,8 @@ bool empty_stack();
 bool init_view_field();
 
 enum r05_fnresult main_loop();
-enum r05_fnresult execute_active(struct r05_node *begin, struct r05_node *end);
-void make_dump(struct r05_node *begin, struct r05_node *end);
+enum r05_fnresult execute_active(void);
+void make_dump(void);
 FILE* dump_stream();
 
 void free_view_field();
@@ -1561,14 +1572,17 @@ bool refalrts::vm::init_view_field() {
   return true;
 }
 
+static struct r05_node *s_arg_begin;
+static struct r05_node *s_arg_end;
+
 enum r05_fnresult refalrts::vm::main_loop() {
   enum r05_fnresult res = R05_SUCCESS;
   while (! empty_stack()) {
-    struct r05_node *active_begin = pop_stack();
+    s_arg_begin = pop_stack();
     assert(! empty_stack());
-    struct r05_node *active_end = pop_stack();
+    s_arg_end = pop_stack();
 
-    res = execute_active(active_begin, active_end);
+    res = execute_active();
     refalrts::profiler::after_step();
 
     ++ g_step_counter;
@@ -1590,7 +1604,7 @@ enum r05_fnresult refalrts::vm::main_loop() {
           fprintf(stderr, "\nUNKNOWN ERROR (res = %d)\n\n", (int) res);
           break;
       }
-      make_dump(active_begin, active_end);
+      make_dump();
       return res;
     } else {
       continue;
@@ -1602,22 +1616,20 @@ enum r05_fnresult refalrts::vm::main_loop() {
   return res;
 }
 
-enum r05_fnresult refalrts::vm::execute_active(
-  struct r05_node *begin, struct r05_node *end
-) {
+enum r05_fnresult refalrts::vm::execute_active(void) {
 
 #if SHOW_DEBUG
 
   if (g_step_counter >= (unsigned) SHOW_DEBUG) {
-    make_dump(begin, end);
+    make_dump();
   }
 
 #endif // SHOW_DEBUG
 
-  struct r05_node *function = begin->next;
+  struct r05_node *function = s_arg_begin->next;
   if (R05_DATATAG_FUNCTION == function->tag) {
     return (enum r05_fnresult)(
-      (function->info.function.ptr)(begin, end) & 0xFFU
+      (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
     );
   } else {
     return R05_RECOGNITION_IMPOSSIBLE;
@@ -1803,12 +1815,12 @@ void refalrts::vm::print_seq(
   }
 }
 
-void refalrts::vm::make_dump(struct r05_node *begin, struct r05_node *end) {
+void refalrts::vm::make_dump(void) {
   using refalrts::vm::dump_stream;
 
   fprintf(dump_stream(), "\nSTEP NUMBER %u\n", g_step_counter);
   fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
-  print_seq(dump_stream(), begin, end);
+  print_seq(dump_stream(), s_arg_begin, s_arg_end);
   fprintf(dump_stream(), "\nVIEW FIELD:\n");
   print_seq(dump_stream(), & g_first_marker, & g_last_marker);
 
@@ -1867,6 +1879,17 @@ void refalrts::vm::free_view_field() {
 #ifndef DONT_PRINT_STATISTICS
   fprintf(stderr, "Step count %d\n", g_step_counter);
 #endif // DONT_PRINT_STATISTICS
+}
+
+static void refal_machine_teardown(int retcode) {
+  fflush(stderr);
+  fflush(stdout);
+  refalrts::profiler::end_profiler();
+  refalrts::vm::free_view_field();
+  refalrts::allocator::free_memory();
+  fflush(stdout);
+
+  exit(retcode);
 }
 
 void r05_switch_default_violation_impl(
