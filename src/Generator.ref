@@ -8,11 +8,11 @@ $EXTERN StrFromInt;
 $EXTERN
   CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdSymbol, Char, Number, Name,
   CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft,
-  CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult, CmdCopyEVar,
+  CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
   CmdCopyVar, CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
-  CmdInsertElem, CmdInsertVar, CmdInsertString, CmdReturnResult, AlgRight,
+  CmdInsertVar, CmdReturnResult, AlgRight,
   ElSymbol, ElOpenBracket, ElCloseBracket, ElOpenCall, ElCloseCall,
-  CmdRangeArray, CmdInitB0, CmdResultArray;
+  CmdRangeArray, CmdInitB0, CmdResultArray, CmdSavePos;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -207,18 +207,18 @@ GenCommand {
     (e.Indent)
     (e.Indent 'struct r05_node *n[' <StrFromInt s.Size> '] = { 0 };');
 
-  (e.Indent) (CmdCopyEVar s.Usings 'e' e.Index) =
+  (e.Indent) (CmdCopyVar 'e' e.Index) =
     (e.Indent)
     (e.Indent
-      'refalrts::copy_evar(' <PrintEVars s.Usings 'e' e.Index> ', '
-      <PrintEVars <Dec s.Usings> 'e' e.Index> ');'
+      'refalrts::copy_evar(' <PrintStringVar 1> ', '
+      <PrintEVars 1 'e' e.Index> ');'
     );
 
-  (e.Indent) (CmdCopyVar s.Usings s.Mode e.Index) =
+  (e.Indent) (CmdCopyVar s.Mode e.Index) =
     (e.Indent)
     (e.Indent
-      'refalrts::copy_stvar(' <PrintVar s.Usings s.Mode e.Index> ', '
-      <PrintVar <Dec s.Usings> s.Mode e.Index> ');'
+      'refalrts::copy_stvar(' <PrintElemVar 1> ', '
+      <PrintVar 1 s.Mode e.Index> ');'
     );
 
   (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
@@ -244,35 +244,29 @@ GenCommand {
     (e.Indent)
     (e.Indent 'refalrts::push_stack( ' <PrintElemVar s.ElemNumber> ' );');
 
-  (e.Indent) (CmdInsertElem s.ElemNumber) =
+  (e.Indent) (CmdSavePos s.Pos) =
+    (e.Indent)
+    (e.Indent <PrintElemVar s.Pos> ' = r05_insert_pos();');
+
+  (e.Indent) (CmdInsertVar s.Pos s.Usings 'e' e.Index) =
     (e.Indent)
     (e.Indent
-      'res = refalrts::splice_elem( res, ' <PrintElemVar s.ElemNumber> ' );'
+      'refalrts::splice_evar(' <PrintElemVar s.Pos> ', '
+      <PrintEVars s.Usings 'e' e.Index> ');'
     );
 
-  (e.Indent) (CmdInsertVar s.Usings 'e' e.Index) =
+  (e.Indent) (CmdInsertVar s.Pos s.Usings s.Mode e.Index) =
     (e.Indent)
     (e.Indent
-      'res = refalrts::splice_evar( res, '
-      <PrintEVars s.Usings 'e' e.Index> ' );'
-    );
-
-  (e.Indent) (CmdInsertVar s.Usings s.Mode e.Index) =
-    (e.Indent)
-    (e.Indent
-      'res = refalrts::splice_stvar( res, '
-      <PrintVar s.Usings s.Mode e.Index> ' );'
-    );
-
-  (e.Indent) (CmdInsertString s.StringNumber) =
-    (e.Indent)
-    (e.Indent
-      'res = refalrts::splice_evar( res, ' <PrintStringVar s.StringNumber> ' );'
+      'refalrts::splice_stvar(' <PrintElemVar s.Pos> ', '
+      <PrintVar s.Usings s.Mode e.Index> ');'
     );
 
   (e.Indent) (CmdReturnResult) =
     (e.Indent)
     (e.Indent 'r05_use(&res);')
+    (e.Indent 'r05_use(&n[0]);')
+    (e.Indent 'refalrts::splice_from_freelist(arg_begin);')
     (e.Indent 'refalrts::splice_to_freelist( arg_begin, arg_end );')
     (e.Indent 'return R05_SUCCESS;');
 }

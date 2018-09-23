@@ -13,9 +13,14 @@ $EXTERN EscapeChar;
 
 $ENTRY MakeAlgorithm {
   (e.Pattern) (e.Result) =
+    <MakeAlgorithm-Aux <GenPattern e.Pattern> e.Result>;
+}
+
+MakeAlgorithm-Aux {
+  s.NumRanges (e.PatternVars) (e.PatternCommands) e.Result =
     <GeneralizeResult
-      <GenPattern e.Pattern>
-      <GenResult e.Result>
+      s.NumRanges (e.PatternVars) (e.PatternCommands)
+      <GenResult (e.PatternVars) e.Result>
     >;
 }
 
@@ -231,11 +236,11 @@ TextFromPattern-Char {
 *===============================================================================
 
 GenResult {
-  e.Result =
+  (e.PatternVars) e.Result =
     <DoGenResult
-      (/* vars */)
+      (e.PatternVars)
       (/* alloc commands */) (/* other commands */)
-      0 /* счётчик новых элементов */
+      3 /* счётчик новых элементов */
       e.Result
     >;
 }
@@ -244,15 +249,17 @@ GenResult {
 *  (CmdAllocateElem s.Number s.ElType e.Info)
 *  (CmdLinkBrackets s.Left s.Right)
 *  (CmdPushStack s.Number)
-*  (CmdInsertElem s.Number)
-*  (CmdInsertVar s.Usings s.Mode e.Index)
+*  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
+*  (CmdSavePos s.Pos)
+*  (CmdCopyVar s.Mode e.Index)
 $EENUM
   CmdAllocateElem,
   CmdLinkBrackets,
   CmdPushStack,
-  CmdInsertElem,
   CmdInsertVar,
-  CmdInsertString;
+  CmdSavePos,
+  CmdCopyVar;
+
 
 * Спецификаторы команд (элементы)
 $EENUM
@@ -282,9 +289,9 @@ DoGenResult {
   s.Counter (Symbol Char s.Value) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElSymbol Char s.Value))
-      ((CmdInsertElem s.Counter) e.Commands)
-      <Inc s.Counter> e.Result
+      (e.AllocCommands (CmdAllocateElem 0 ElSymbol Char s.Value))
+      (e.Commands)
+      s.Counter e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
@@ -298,9 +305,9 @@ DoGenResult {
   (TkString s.Len e.String) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElString s.Len e.String))
-      ((CmdInsertString s.Counter) e.Commands)
-      <Add 2 s.Counter> e.Result
+      (e.AllocCommands (CmdAllocateElem 0 ElString s.Len e.String))
+      (e.Commands)
+      s.Counter e.Result
     >;
 
   /* Создаём литералы */
@@ -308,20 +315,20 @@ DoGenResult {
   s.Counter (Symbol s.Type e.Value) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElSymbol s.Type e.Value))
-      ((CmdInsertElem s.Counter) e.Commands)
-      <Inc s.Counter> e.Result
+      (e.AllocCommands (CmdAllocateElem 0 ElSymbol s.Type e.Value))
+      (e.Commands)
+      s.Counter e.Result
     >;
 
   /*
-    Обработка открывающих скобок всех трёх типов осуществляется похоже.
+    Обработка открывающих скобок всех типов осуществляется похоже.
   */
   (e.Vars) (e.AllocCommands) (e.Commands)
   s.Counter (Brackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElOpenBracket))
-      ((CmdInsertElem s.Counter) e.Commands)
+      (e.Commands)
       <Inc s.Counter> e.InBrackets (TkCloseBracket s.Counter) e.Result
     >;
 
@@ -330,7 +337,7 @@ DoGenResult {
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElOpenCall))
-      ((CmdInsertElem s.Counter) e.Commands)
+      (e.Commands)
       <Inc s.Counter> e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
 
@@ -338,55 +345,76 @@ DoGenResult {
     Закрывающие скобки надо обрабатывать особым образом.
     Круглые скобки и АТД -- слинковать, угловые -- добавить в стек.
   */
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkCloseBracket s.OpenCounter) e.Result =
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (TkCloseBracket s.OpenCounter) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElCloseBracket))
       (
         (CmdLinkBrackets s.OpenCounter s.Counter)
-        (CmdInsertElem s.Counter)
         e.Commands
       )
       <Inc s.Counter> e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkCloseCall s.OpenCounter) e.Result =
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (TkCloseCall s.OpenCounter) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem s.Counter ElCloseCall))
       (
         (CmdPushStack s.Counter)
         (CmdPushStack s.OpenCounter)
-        (CmdInsertElem s.Counter)
         e.Commands
       )
       <Inc s.Counter> e.Result
     >;
 
-  /* Обработка переменных */
-  (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
+  /* Переменная есть в образце — переносим, позиция подготовлена */
+  (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
+  (e.AllocCommands (CmdSavePos s.InsertPos)) (e.Commands)
   s.Counter (TkVariable s.Mode e.Index) e.Result =
     <DoGenResult
-      (e.Vars-B (<Inc s.Usings> s.Mode e.Index) e.Vars-E)
-      (e.AllocCommands)
-      ((CmdInsertVar <Inc s.Usings> s.Mode e.Index) e.Commands)
+      (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
+      (e.AllocCommands (CmdSavePos s.InsertPos))
+      /* вставляем в конец списка команд */
+      (
+        e.Commands
+        (CmdInsertVar s.InsertPos s.Usings s.Mode e.Index)
+      )
       s.Counter e.Result
     >;
 
+  /* Переменная есть в образце — переносим, позиция не подготовлена */
+  (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
+  s.Counter (TkVariable s.Mode e.Index) e.Result =
+    <DoGenResult
+      (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
+      (e.AllocCommands (CmdSavePos s.Counter))
+      /* вставляем в конец списка команд */
+      (
+        e.Commands
+        (CmdInsertVar s.Counter s.Usings s.Mode e.Index)
+      )
+      <Inc s.Counter> e.Result
+    >;
+
+  /* Переменной нет в образце — копируем */
   (e.Vars) (e.AllocCommands) (e.Commands)
   s.Counter (TkVariable s.Mode e.Index) e.Result =
     <DoGenResult
-      (e.Vars (1 s.Mode e.Index))
-      (e.AllocCommands)
-      ((CmdInsertVar 1 s.Mode e.Index) e.Commands)
+      (e.Vars) (e.AllocCommands (CmdCopyVar s.Mode e.Index)) (e.Commands)
       s.Counter e.Result
     >;
 
   /* Завершение просмотра */
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter =
-    s.Counter (e.Vars) (e.AllocCommands) (e.Commands);
+  (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Counter =
+    s.Counter (e.UnusedVars) (e.AllocCommands e.Commands);
+}
+
+DecUsings {
+  1 s.Mode e.Index = /* пусто */;
+  s.Usings s.Mode e.Index = (<Dec s.Usings> s.Mode e.Index);
 }
 
 *===============================================================================
@@ -398,19 +426,16 @@ $EENUM CmdEmptyResult, CmdReturnResult;
 
 GeneralizeResult {
   s.NumRanges (e.PatternVars) (e.PatternCommands)
-  s.ResultCounter (e.ResultVars) (e.ResultAllocCommands) (e.ResultCommands) =
+  s.ResultCounter (e.UnusedVars) (e.ResultCommands) =
     <Fetch
       (<ReplicateVars e.PatternVars>)
-      (<ReplicateVars e.ResultVars>)
+      (<ReplicateVars e.UnusedVars>)
       (<Map RepeatedEVariables e.PatternCommands>)
       <Map ClosedEVariables e.PatternCommands>
       <Seq
         MakeVarsSets
         (FilterCommonVarsAndPatternCommands (e.PatternCommands))
-        (ComposeSentenceCommands
-          s.NumRanges s.ResultCounter
-          (e.ResultAllocCommands e.ResultCommands)
-        )
+        (ComposeSentenceCommands s.NumRanges s.ResultCounter (e.ResultCommands))
       >
     >;
 }
@@ -440,17 +465,18 @@ ClosedEVariables {
 }
 
 MakeVarsSets {
-  (e.PatternVars) (e.ResultVars) (e.RepeatedEs) e.ClosedEs =
-    (<VarSetUnion (e.PatternVars) (e.ResultVars)>)
-    (<VarSetDifference (e.ResultVars) (e.PatternVars)>)
-    <VarSetDifference (e.ClosedEs) (e.RepeatedEs e.ResultVars)>;
+  (e.PatternVars) (e.UnusedVars) (e.RepeatedEs) e.ClosedEs =
+    (e.PatternVars)
+    <VarSetDifference
+      (<VarSetIntersect (e.UnusedVars) (e.ClosedEs)>) (e.RepeatedEs)
+    >;
 }
 
-VarSetUnion {
+VarSetIntersect {
   (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) =
-    t.Common <VarSetUnion (e.Set1-B e.Set1-E) (e.Set2-B e.Set2-E)>;
+    t.Common <VarSetIntersect (e.Set1-B e.Set1-E) (e.Set2-B e.Set2-E)>;
 
-  (e.Set1) (e.Set2) = e.Set1 e.Set2;
+  (e.Set1) (e.Set2) = /* пусто */;
 }
 
 VarSetDifference {
@@ -461,10 +487,8 @@ VarSetDifference {
 }
 
 FilterCommonVarsAndPatternCommands {
-  (e.PatternCommands)
-  (e.CommonVars) (e.CopiedVars) e.UnusedClosedEs =
-    (<VarSetDifference (e.CommonVars) (e.UnusedClosedEs)>)
-    (e.CopiedVars)
+  (e.PatternCommands) (e.PatternVars) e.UnusedClosedEs =
+    (<VarSetDifference (e.PatternVars) (e.UnusedClosedEs)>)
     <Map (FilterUnusedCmdClosedE e.UnusedClosedEs) e.PatternCommands>;
 }
 
@@ -479,16 +503,15 @@ FilterUnusedCmdClosedE {
 $EENUM CmdRangeArray, CmdInitB0, CmdResultArray;
 
 ComposeSentenceCommands {
-  s.NumRanges s.ResultCounter
-  (e.ResultCommands) (e.CommonVars) (e.CopiedVars) e.PatternCommands =
+  s.NumRanges s.ResultCounter (e.ResultCommands)
+  (e.PatternVars) e.PatternCommands =
     <GenerateResult-OpenELoops
-      <Map MakeDeclaration e.CommonVars>
+      <Map MakeDeclaration e.PatternVars>
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
       (CmdInitB0)
       e.PatternCommands
       (CmdEmptyResult)
-      <Map MakeCopyVar e.CopiedVars>
       e.ResultCommands
       (CmdReturnResult)
     >;
@@ -499,13 +522,6 @@ $EENUM CmdDeclareEVar, CmdDeclareVar;
 MakeDeclaration {
   (s.Usings 'e' e.Index) = (CmdDeclareEVar s.Usings 'e' e.Index);
   (s.Usings s.Mode e.Index) = (CmdDeclareVar s.Usings s.Mode e.Index);
-}
-
-$EENUM CmdCopyEVar, CmdCopyVar;
-
-MakeCopyVar {
-  (s.Usings 'e' e.Index) = (CmdCopyEVar s.Usings 'e' e.Index);
-  (s.Usings s.Mode e.Index) = (CmdCopyVar s.Usings s.Mode e.Index);
 }
 
 MakeCmdResultCommand {
