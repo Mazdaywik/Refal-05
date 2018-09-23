@@ -12,7 +12,6 @@ extern "C" {
 enum r05_fnresult {
   R05_SUCCESS = 0,
   R05_RECOGNITION_IMPOSSIBLE = 1,
-  R05_NO_MEMORY = 2,
   R05_EXIT = 3,
 };
 
@@ -55,10 +54,6 @@ struct r05_node {
 
 
 /* Операции сопоставления с образцом */
-
-// ↓↓↓ DELETE
-void r05_use(struct r05_node **ref);
-// ↑↑↑ DELETE
 
 void r05_prepare_argument(
   struct r05_node **left, struct r05_node **right,
@@ -226,41 +221,10 @@ namespace refalrts {
 // ↓↓↓ DELETE
 // Операции построения результата
 
-inline void reset_allocator() {
-  r05_reset_allocator();
-}
-
-extern bool copy_evar(
-  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-);
-
-extern bool copy_stvar(struct r05_node *&stvar_res, struct r05_node *stvar_sample);
-
 extern bool alloc_char(struct r05_node *&res, char ch);
 extern bool alloc_number(struct r05_node *&res, r05_number num);
 extern bool alloc_name(
   struct r05_node *&res, r05_function_ptr func, const char *name = 0
-);
-extern bool alloc_open_bracket(struct r05_node *&res);
-extern bool alloc_close_bracket(struct r05_node *&res);
-extern bool alloc_open_call(struct r05_node *&res);
-extern bool alloc_close_call(struct r05_node *&res);
-
-#ifndef alloc_copy_svar
-#define alloc_copy_svar alloc_copy_svar_
-#endif
-
-#ifndef alloc_copy_tvar
-#define alloc_copy_tvar copy_stvar
-#endif
-
-extern bool alloc_copy_evar(
-  struct r05_node *&res,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-);
-extern bool alloc_copy_svar_(
-  struct r05_node *&svar_res, struct r05_node *svar_sample
 );
 
 extern bool alloc_chars(
@@ -271,37 +235,11 @@ extern bool alloc_string(
   struct r05_node *&res_b, struct r05_node *&res_e, const char *string
 );
 
-
-inline void push_stack(struct r05_node *call_bracket) {
-  r05_push_stack(call_bracket);
-}
-inline void link_brackets(struct r05_node *left, struct r05_node *right) {
-  r05_link_brackets(left, right);
-}
-
 extern struct r05_node *splice_elem(struct r05_node *res, struct r05_node *elem);
 extern struct r05_node *splice_stvar(struct r05_node *res, struct r05_node *var);
 extern struct r05_node *splice_evar(
   struct r05_node *res, struct r05_node *first, struct r05_node *last
 );
-inline void splice_to_freelist(struct r05_node *first, struct r05_node *last) {
-  r05_splice_to_freelist(first, last);
-}
-inline void splice_from_freelist(struct r05_node *pos) {
-  r05_splice_from_freelist(pos);
-}
-
-// Профилирование
-
-inline void this_is_generated_function() {
-  r05_this_is_generated_function();
-}
-inline void start_sentence() {
-  r05_start_sentence();
-}
-inline void start_e_loop() {
-  r05_start_e_loop();
-}
 // ↑↑↑ DELETE
 
 // Прочие функции

@@ -22,14 +22,6 @@
    Операции сопоставления с образцом
 ==============================================================================*/
 
-// ↓↓↓ DELETE
-void r05_use(struct r05_node **) {
-  /* Ничего не делаем. Эта функция добавляется, чтобы подавить предупреждение
-  компилятора о том, что переменная не используется */;
-}
-// ↑↑↑ DELETE
-
-
 void r05_prepare_argument(
   struct r05_node **left, struct r05_node **right,
   struct r05_node *arg_begin, struct r05_node *arg_end
@@ -797,16 +789,9 @@ static struct r05_node *list_splice(
 }
 
 
-static void copy_node(struct r05_node *&res, struct r05_node *sample) {
-  res = r05_alloc_node(sample->tag);
-  res->info = sample->info;
-}
-
-
 static void add_copy_tevar_time(clock_t duration);
 
 static void copy_nonempty_evar(
-  struct r05_node **evar_res_b, struct r05_node **evar_res_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
   clock_t start_copy_time = clock();
@@ -814,29 +799,26 @@ static void copy_nonempty_evar(
   struct r05_node *res = 0;
   struct r05_node *bracket_stack = 0;
 
-  struct r05_node *prev_res_begin = s_free_ptr->prev;
-
   while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    copy_node(res, evar_b_sample);
+    res = r05_alloc_node(evar_b_sample->tag);
 
     if (is_open_bracket(res)) {
       res->info.link = bracket_stack;
       bracket_stack = res;
     } else if (is_close_bracket(res)) {
-      assert(bracket_stack != 0);
-
       struct r05_node *open_cobracket = bracket_stack;
+
+      assert(bracket_stack != 0);
       bracket_stack = bracket_stack->info.link;
       r05_link_brackets(open_cobracket, res);
+    } else {
+      res->info = evar_b_sample->info;
     }
 
     r05_move_left(&evar_b_sample, &evar_e_sample);
   }
 
   assert(bracket_stack == 0);
-
-  *evar_res_b = prev_res_begin->next;
-  *evar_res_e = res;
 
   add_copy_tevar_time(clock() - start_copy_time);
 }
@@ -856,62 +838,10 @@ struct r05_function r05_make_function(r05_function_ptr func, const char *name) {
 }
 
 
-// ↓↓↓ DELETE
-bool refalrts::copy_evar(
-  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-) {
-  if (r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    evar_res_b = 0;
-    evar_res_e = 0;
-  } else {
-    copy_nonempty_evar(&evar_res_b, &evar_res_e, evar_b_sample, evar_e_sample);
-  }
-  return true;
-}
-
-bool refalrts::copy_stvar(
-  struct r05_node *&stvar_res, struct r05_node *stvar_sample
-) {
-  if (is_open_bracket(stvar_sample)) {
-    struct r05_node *end_of_sample = stvar_sample->info.link;
-    struct r05_node *end_of_res;
-    return copy_evar(
-      stvar_res, end_of_res, stvar_sample, end_of_sample
-    );
-  } else {
-    copy_node(stvar_res, stvar_sample);
-  }
-  return true;
-}
-
-bool refalrts::alloc_copy_evar(
-  struct r05_node *&res,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-) {
-  if (r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    res = 0;
-  } else {
-    struct r05_node *res_e = 0;
-    copy_nonempty_evar(&res, &res_e, evar_b_sample, evar_e_sample);
-  }
-  return true;
-}
-
-bool refalrts::alloc_copy_svar_(
-  struct r05_node *&svar_res, struct r05_node *svar_sample
-) {
-  copy_node(svar_res, svar_sample);
-  return true;
-}
-// ↑↑↑ DELETE
-
-
 void r05_alloc_tvar(struct r05_node *sample) {
   if (is_open_bracket(sample)) {
     struct r05_node *end_of_sample = sample->info.link;
-    struct r05_node *res_b, *res_e;
-    copy_nonempty_evar(&res_b, &res_e, sample, end_of_sample);
+    copy_nonempty_evar(sample, end_of_sample);
   } else {
     r05_alloc_svar(sample);
   }
@@ -920,8 +850,7 @@ void r05_alloc_tvar(struct r05_node *sample) {
 
 void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e) {
   if (! r05_empty_seq(sample_b, sample_e)) {
-    struct r05_node *res_b, *res_e;
-    copy_nonempty_evar(&res_b, &res_e, sample_b, sample_e);
+    copy_nonempty_evar(sample_b, sample_e);
   }
 }
 
@@ -957,31 +886,6 @@ bool refalrts::alloc_name(
     res->info.function.name = "@unknown";
   }
   return true;
-}
-
-namespace {
-
-bool alloc_some_bracket(struct r05_node *&res, r05_datatag tag) {
-  res = r05_alloc_node(tag);
-  return true;
-}
-
-} // unnamed namespace
-
-bool refalrts::alloc_open_bracket(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_OPEN_BRACKET);
-}
-
-bool refalrts::alloc_close_bracket(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_CLOSE_BRACKET);
-}
-
-bool refalrts::alloc_open_call(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_OPEN_CALL);
-}
-
-bool refalrts::alloc_close_call(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_CLOSE_CALL);
 }
 
 bool refalrts::alloc_chars(
@@ -1393,11 +1297,6 @@ void refalrts::vm::main_loop() {
       g_ret_code = EXIT_CODE_RECOGNITION_IMPOSSIBLE;
       break;
 
-    case R05_NO_MEMORY:
-      fprintf(stderr, "\nNO MEMORY\n\n");
-      g_ret_code = EXIT_CODE_NO_MEMORY;
-      break;
-
     case R05_EXIT:
       break;
 
@@ -1405,7 +1304,7 @@ void refalrts::vm::main_loop() {
       r05_switch_default_violation(res);
   }
 
-  if (res == R05_RECOGNITION_IMPOSSIBLE || res == R05_NO_MEMORY) {
+  if (res == R05_RECOGNITION_IMPOSSIBLE) {
     vm_make_dump();
   }
 
