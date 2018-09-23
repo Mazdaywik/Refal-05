@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN Fetch, Inc, Map, Seq, Dec;
+$EXTERN Inc, Map, Dec;
 
 *$FROM Lexer
 $EXTERN TkVariable, TkCloseBracket, TkCloseCall, Add;
@@ -427,77 +427,39 @@ $EENUM CmdEmptyResult, CmdReturnResult;
 GeneralizeResult {
   s.NumRanges (e.PatternVars) (e.PatternCommands)
   s.ResultCounter (e.UnusedVars) (e.ResultCommands) =
-    <Fetch
-      (<ReplicateVars e.PatternVars>)
-      (<ReplicateVars e.UnusedVars>)
-      (<Map RepeatedEVariables e.PatternCommands>)
-      <Map ClosedEVariables e.PatternCommands>
-      <Seq
-        MakeVarsSets
-        (FilterCommonVarsAndPatternCommands (e.PatternCommands))
-        (ComposeSentenceCommands s.NumRanges s.ResultCounter (e.ResultCommands))
+    <ComposeSentenceCommands
+      s.NumRanges s.ResultCounter (e.ResultCommands)
+      <FilterCommonVarsAndPatternCommands
+        (e.PatternVars) (e.PatternCommands) e.UnusedVars
       >
     >;
 }
 
-ReplicateVar {
-  (1 s.Mode e.Index) = (1 s.Mode e.Index);
-
-  (s.Using s.Mode e.Index) =
-    <ReplicateVar (<Dec s.Using> s.Mode e.Index)>
-    (s.Using s.Mode e.Index);
-}
-
-ReplicateVars {
-  e.Vars = <Map ReplicateVar e.Vars>;
-}
-
-RepeatedEVariables {
-  (CmdRepeated s.Direction s.Num s.Count 'e' e.Index) = (1 'e' e.Index);
-
-  t.Other = /* игнорируем */;
-}
-
-ClosedEVariables {
-  (CmdClosedE AlgLeft s.Num 'e' e.Index) = (1 'e' e.Index);
-
-  t.Other = /* игнорируем */;
-}
-
-MakeVarsSets {
-  (e.PatternVars) (e.UnusedVars) (e.RepeatedEs) e.ClosedEs =
-    (e.PatternVars)
-    <VarSetDifference
-      (<VarSetIntersect (e.UnusedVars) (e.ClosedEs)>) (e.RepeatedEs)
-    >;
-}
-
-VarSetIntersect {
-  (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) =
-    t.Common <VarSetIntersect (e.Set1-B e.Set1-E) (e.Set2-B e.Set2-E)>;
-
-  (e.Set1) (e.Set2) = /* пусто */;
-}
-
-VarSetDifference {
-  (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) =
-    e.Set1-B <VarSetDifference (e.Set1-E) (e.Set2-B e.Set2-E)>;
-
-  (e.Set1) (e.Set2) = e.Set1;
-}
-
 FilterCommonVarsAndPatternCommands {
-  (e.PatternCommands) (e.PatternVars) e.UnusedClosedEs =
-    (<VarSetDifference (e.PatternVars) (e.UnusedClosedEs)>)
-    <Map (FilterUnusedCmdClosedE e.UnusedClosedEs) e.PatternCommands>;
-}
+  /*
+    Если в образце e-переменная имеет счётчик 1, значит, повторных
+    e-переменных с этим индексом не было. Если эта переменная есть
+    ещё и в списке unused, значит, она не используется.
+  */
+  (e.PatternVars-B (1 'e' e.Index) e.PatternVars-E)
+  (
+    e.PatternCommands-B
+    (CmdClosedE AlgLeft s.Num 'e' e.Index)
+    e.PatternCommands-E
+  )
+  e.Unuseds-B (1 'e' e.Index) e.Unuseds-E =
+    <FilterCommonVarsAndPatternCommands
+      (e.PatternVars-B e.PatternVars-E)
+      (
+        e.PatternCommands-B
+        (CmdComment ' Unused closed variable e.' e.Index)
+        e.PatternCommands-E
+      )
+      e.Unuseds-B e.Unuseds-E
+    >;
 
-FilterUnusedCmdClosedE {
-  e.Unuseds-B (1 'e' e.Index) e.Unuseds-E
-  (CmdClosedE AlgLeft s.Num 'e' e.Index) =
-    (CmdComment ' Unused closed variable e.' e.Index);
-
-  e.Unuseds t.OtherCommand = t.OtherCommand;
+  (e.PatternVars) (e.PatternCommands) e.Unuseds =
+    (e.PatternVars) e.PatternCommands;
 }
 
 $EENUM CmdRangeArray, CmdInitB0, CmdResultArray;
@@ -517,11 +479,19 @@ ComposeSentenceCommands {
     >;
 }
 
-$EENUM CmdDeclareEVar, CmdDeclareVar;
+$EENUM CmdDeclareVar;
 
 MakeDeclaration {
-  (s.Usings 'e' e.Index) = (CmdDeclareEVar s.Usings 'e' e.Index);
-  (s.Usings s.Mode e.Index) = (CmdDeclareVar s.Usings s.Mode e.Index);
+  (s.Usings s.Mode e.Index) =
+    (CmdDeclareVar s.Usings s.Mode e.Index)
+    <MakeDeclaration-Aux s.Usings s.Mode e.Index>;
+}
+
+MakeDeclaration-Aux {
+  1 s.Mode e.Index = /* это была последняя */;
+
+  s.Usings s.Mode e.Index =
+    <MakeDeclaration (<Dec s.Usings> s.Mode e.Index)>;
 }
 
 MakeCmdResultCommand {

@@ -6,7 +6,7 @@ $EXTERN StrFromInt;
 
 *$FROM Algorithm
 $EXTERN
-  CmdComment, CmdDeclareEVar, CmdDeclareVar, CmdSymbol, Char, Number, Name,
+  CmdComment, CmdDeclareVar, CmdSymbol, Char, Number, Name,
   CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft,
   CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
   CmdCopyVar, CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
@@ -127,14 +127,14 @@ BracketsVarsPtr {
 GenCommand {
   (e.Indent) (CmdComment e.Text) = (e.Indent) (e.Indent '//' e.Text);
 
-  (e.Indent) (CmdDeclareEVar e.VarInfo) =
+  (e.Indent) (CmdDeclareVar s.Usings 'e' e.Index) =
     (e.Indent)
-    (e.Indent 'struct r05_node *' <PrintEVar-B e.VarInfo> ';')
-    (e.Indent 'struct r05_node *' <PrintEVar-E e.VarInfo> ';');
+    (e.Indent 'struct r05_node *' <PrintEVar-B s.Usings 'e' e.Index> ';')
+    (e.Indent 'struct r05_node *' <PrintEVar-E s.Usings 'e' e.Index> ';');
 
-  (e.Indent) (CmdDeclareVar e.VarInfo) =
+  (e.Indent) (CmdDeclareVar s.Usings s.Mode e.Index) =
     (e.Indent)
-    (e.Indent 'struct r05_node *' <PrintVar e.VarInfo> ';');
+    (e.Indent 'struct r05_node *' <PrintVar s.Usings s.Mode e.Index> ';');
 
   (e.Indent) (CmdRangeArray s.Size) =
     (e.Indent)
