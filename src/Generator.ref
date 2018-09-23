@@ -210,26 +210,23 @@ GenCommand {
   (e.Indent) (CmdCopyEVar s.Usings 'e' e.Index) =
     (e.Indent)
     (e.Indent
-      'if( ! refalrts::copy_evar( ' <PrintEVars s.Usings 'e' e.Index> ', '
-      <PrintEVars <Dec s.Usings> 'e' e.Index> ' ) )'
-    )
-    (e.Indent '  return R05_NO_MEMORY;');
+      'refalrts::copy_evar(' <PrintEVars s.Usings 'e' e.Index> ', '
+      <PrintEVars <Dec s.Usings> 'e' e.Index> ');'
+    );
 
   (e.Indent) (CmdCopyVar s.Usings s.Mode e.Index) =
     (e.Indent)
     (e.Indent
-      'if( ! refalrts::copy_stvar( ' <PrintVar s.Usings s.Mode e.Index> ', '
-      <PrintVar <Dec s.Usings> s.Mode e.Index> ' ) )'
-    )
-    (e.Indent '  return R05_NO_MEMORY;');
+      'refalrts::copy_stvar(' <PrintVar s.Usings s.Mode e.Index> ', '
+      <PrintVar <Dec s.Usings> s.Mode e.Index> ');'
+    );
 
   (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
     (e.Indent)
     (e.Indent
-      'if( ! refalrts::alloc_chars( ' <PrintStringVar s.StringNumber> ', '
-      '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ') )'
-    )
-    (e.Indent '  return R05_NO_MEMORY;');
+      'refalrts::alloc_chars(' <PrintStringVar s.StringNumber> ', '
+      '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ');'
+    );
 
   (e.Indent) (CmdAllocateElem s.ElemNumber e.ElemInfo) =
     (e.Indent)
@@ -407,19 +404,9 @@ PrintStringVar {
 
 PrintAllocateElem {
   (e.Indent) s.ElemNumber s.ElementType e.Info =
-    <PrintAllocate-Aux
-      (e.Indent) s.ElemNumber
-      ( <SwAllocator s.ElementType e.Info> )
-      ( <SwInfo s.ElementType e.Info> )
-    >
-    (e.Indent '  return R05_NO_MEMORY;');
-}
-
-PrintAllocate-Aux {
-  (e.Indent) s.ElemNumber (e.Constructor) (e.Value) =
     (e.Indent
-      'if( ! refalrts::' e.Constructor '( ' <PrintElemVar s.ElemNumber>
-      e.Value ' ) )'
+      'refalrts::' <SwAllocator s.ElementType e.Info>
+      '(' <PrintElemVar s.ElemNumber> <SwInfo s.ElementType e.Info> ');'
     );
 }
 
