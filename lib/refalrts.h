@@ -56,7 +56,9 @@ struct r05_node {
 
 /* Операции сопоставления с образцом */
 
+// ↓↓↓ DELETE
 void r05_use(struct r05_node **ref);
+// ↑↑↑ DELETE
 
 void r05_prepare_argument(
   struct r05_node **left, struct r05_node **right,
@@ -143,6 +145,16 @@ size_t r05_read_chars(
   struct r05_node **first, struct r05_node **last
 );
 
+void r05_push_stack(struct r05_node *call_bracket);
+void r05_link_brackets(struct r05_node *left, struct r05_node *right);
+
+void r05_splice_tvar(struct r05_node *res, struct r05_node *var);
+void r05_splice_evar(
+  struct r05_node *res, struct r05_node *first, struct r05_node *last
+);
+
+void r05_splice_to_freelist(struct r05_node *first, struct r05_node *last);
+void r05_splice_from_freelist(struct r05_node *pos);
 
 /* Операции построения результата */
 
@@ -151,6 +163,41 @@ void r05_reset_allocator(void);
 struct r05_node *r05_alloc_node(enum r05_datatag tag);
 
 struct r05_node *r05_insert_pos(void);
+
+#define r05_alloc_char(ch) \
+  (r05_alloc_node(R05_DATATAG_CHAR)->info.char_ = (ch))
+
+void r05_alloc_chars(const char buffer[], size_t len);
+
+#define r05_alloc_number(num) \
+  (r05_alloc_node(R05_DATATAG_NUMBER)->info.number = (num))
+
+#define r05_alloc_function(func, name) \
+  (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function =\
+     r05_make_function(func, name))
+
+struct r05_function r05_make_function(r05_function_ptr func, const char *name);
+
+#define r05_alloc_open_bracket(pos) \
+  ((pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET))
+
+#define r05_alloc_close_bracket(pos) \
+  ((pos) = r05_alloc_node(R05_DATATAG_CLOSE_BRACKET))
+
+#define r05_alloc_open_call(pos) \
+  ((pos) = r05_alloc_node(R05_DATATAG_OPEN_CALL))
+
+#define r05_alloc_close_call(pos) \
+  ((pos) = r05_alloc_node(R05_DATATAG_CLOSE_CALL))
+
+#define r05_alloc_insert_pos(pos) ((pos) = r05_insert_pos());
+
+#define r05_alloc_svar(sample) \
+  (r05_alloc_node((sample)->tag)->info = (sample)->info);
+
+void r05_alloc_tvar(struct r05_node *sample);
+void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e);
+void r05_alloc_string(const char *string);
 
 
 /* Диагностика */
@@ -175,8 +222,6 @@ namespace refalrts {
 inline void reset_allocator() {
   r05_reset_allocator();
 }
-// ↑↑↑ DELETE
-
 
 extern bool copy_evar(
   struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
@@ -219,16 +264,26 @@ extern bool alloc_string(
   struct r05_node *&res_b, struct r05_node *&res_e, const char *string
 );
 
-extern void push_stack(struct r05_node *call_bracket);
-extern void link_brackets(struct r05_node *left, struct r05_node *right);
+
+inline void push_stack(struct r05_node *call_bracket) {
+  r05_push_stack(call_bracket);
+}
+inline void link_brackets(struct r05_node *left, struct r05_node *right) {
+  r05_link_brackets(left, right);
+}
 
 extern struct r05_node *splice_elem(struct r05_node *res, struct r05_node *elem);
 extern struct r05_node *splice_stvar(struct r05_node *res, struct r05_node *var);
 extern struct r05_node *splice_evar(
   struct r05_node *res, struct r05_node *first, struct r05_node *last
 );
-extern void splice_to_freelist(struct r05_node *first, struct r05_node *last);
-extern void splice_from_freelist(struct r05_node *pos);
+inline void splice_to_freelist(struct r05_node *first, struct r05_node *last) {
+  r05_splice_to_freelist(first, last);
+}
+inline void splice_from_freelist(struct r05_node *pos) {
+  r05_splice_from_freelist(pos);
+}
+// ↑↑↑ DELETE
 
 // Профилирование
 

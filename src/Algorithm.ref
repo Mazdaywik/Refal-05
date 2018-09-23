@@ -2,7 +2,7 @@
 $EXTERN Inc, Map, Dec;
 
 *$FROM Lexer
-$EXTERN TkVariable, TkCloseBracket, TkCloseCall, Add;
+$EXTERN TkVariable, TkCloseBracket, TkCloseCall;
 
 *$FROM Library
 $EXTERN StrFromInt;
@@ -240,7 +240,7 @@ GenResult {
     <DoGenResult
       (e.PatternVars)
       (/* alloc commands */) (/* other commands */)
-      3 /* счётчик новых элементов */
+      0 /* счётчик новых элементов */
       e.Result
     >;
 }
@@ -250,22 +250,19 @@ GenResult {
 *  (CmdLinkBrackets s.Left s.Right)
 *  (CmdPushStack s.Number)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
-*  (CmdSavePos s.Pos)
-*  (CmdCopyVar s.Mode e.Index)
 $EENUM
   CmdAllocateElem,
   CmdLinkBrackets,
   CmdPushStack,
-  CmdInsertVar,
-  CmdSavePos,
-  CmdCopyVar;
+  CmdInsertVar;
 
 
 * Спецификаторы команд (элементы)
 $EENUM
   ElSymbol, ElString,
   ElOpenBracket, ElCloseBracket,
-  ElOpenCall, ElCloseCall;
+  ElOpenCall, ElCloseCall,
+  ElSavePos, ElVariable;
 
 /*
   Порядок выполнения команд.
@@ -289,7 +286,7 @@ DoGenResult {
   s.Counter (Symbol Char s.Value) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem 0 ElSymbol Char s.Value))
+      (e.AllocCommands (CmdAllocateElem ElSymbol Char s.Value))
       (e.Commands)
       s.Counter e.Result
     >;
@@ -305,7 +302,7 @@ DoGenResult {
   (TkString s.Len e.String) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem 0 ElString s.Len e.String))
+      (e.AllocCommands (CmdAllocateElem ElString s.Len e.String))
       (e.Commands)
       s.Counter e.Result
     >;
@@ -315,7 +312,7 @@ DoGenResult {
   s.Counter (Symbol s.Type e.Value) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem 0 ElSymbol s.Type e.Value))
+      (e.AllocCommands (CmdAllocateElem ElSymbol s.Type e.Value))
       (e.Commands)
       s.Counter e.Result
     >;
@@ -327,7 +324,7 @@ DoGenResult {
   s.Counter (Brackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElOpenBracket))
+      (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Counter))
       (e.Commands)
       <Inc s.Counter> e.InBrackets (TkCloseBracket s.Counter) e.Result
     >;
@@ -336,7 +333,7 @@ DoGenResult {
   s.Counter (CallBrackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElOpenCall))
+      (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
       <Inc s.Counter> e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
@@ -349,7 +346,7 @@ DoGenResult {
   (TkCloseBracket s.OpenCounter) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElCloseBracket))
+      (e.AllocCommands (CmdAllocateElem ElCloseBracket s.Counter))
       (
         (CmdLinkBrackets s.OpenCounter s.Counter)
         e.Commands
@@ -361,7 +358,7 @@ DoGenResult {
   (TkCloseCall s.OpenCounter) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem s.Counter ElCloseCall))
+      (e.AllocCommands (CmdAllocateElem ElCloseCall s.Counter))
       (
         (CmdPushStack s.Counter)
         (CmdPushStack s.OpenCounter)
@@ -370,13 +367,23 @@ DoGenResult {
       <Inc s.Counter> e.Result
     >;
 
+  /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter (TkVariable 's' e.Index) e.Result =
+    <DoGenResult
+      (e.Vars)
+      (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
+      (e.Commands)
+      s.Counter e.Result
+    >;
+
   /* Переменная есть в образце — переносим, позиция подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
-  (e.AllocCommands (CmdSavePos s.InsertPos)) (e.Commands)
+  (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos)) (e.Commands)
   s.Counter (TkVariable s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
-      (e.AllocCommands (CmdSavePos s.InsertPos))
+      (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
       /* вставляем в конец списка команд */
       (
         e.Commands
@@ -390,7 +397,7 @@ DoGenResult {
   s.Counter (TkVariable s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
-      (e.AllocCommands (CmdSavePos s.Counter))
+      (e.AllocCommands (CmdAllocateElem ElSavePos s.Counter))
       /* вставляем в конец списка команд */
       (
         e.Commands
@@ -403,7 +410,9 @@ DoGenResult {
   (e.Vars) (e.AllocCommands) (e.Commands)
   s.Counter (TkVariable s.Mode e.Index) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands (CmdCopyVar s.Mode e.Index)) (e.Commands)
+      (e.Vars)
+      (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))
+      (e.Commands)
       s.Counter e.Result
     >;
 

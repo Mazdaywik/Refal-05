@@ -7,30 +7,9 @@
 
 #include "refalrts.h"
 
-#if 1
-#  define VALID_LINKED(iter)
-#else
-#  define VALID_LINKED(iter) valid_linked_aux(#iter, iter);
-#endif
-
 #ifndef SHOW_DEBUG
 #define SHOW_DEBUG 0
 #endif // ifdef SHOW_DEBUG
-
-void valid_linked_aux(const char *text, struct r05_node *i) {
-  printf("checking %s\n", text);
-  if (0 == i) {
-    return;
-  }
-
-  if (i->next) {
-    assert(i->next->prev == i);
-  }
-
-  if (i->prev) {
-    assert(i->prev->next == i);
-  }
-}
 
 
 #define EXIT_CODE_RECOGNITION_IMPOSSIBLE 1
@@ -43,10 +22,12 @@ void valid_linked_aux(const char *text, struct r05_node *i) {
    Операции сопоставления с образцом
 ==============================================================================*/
 
+// ↓↓↓ DELETE
 void r05_use(struct r05_node **) {
   /* Ничего не делаем. Эта функция добавляется, чтобы подавить предупреждение
   компилятора о том, что переменная не используется */;
 }
+// ↑↑↑ DELETE
 
 
 void r05_prepare_argument(
@@ -692,6 +673,8 @@ static struct memory_chunk *s_pool = NULL;
 
 
 static void weld(struct r05_node *left, struct r05_node *right) {
+  assert(left != 0 && right != 0);
+
   left->next = right;
   right->prev = left;
 }
@@ -792,34 +775,36 @@ struct r05_node *r05_insert_pos(void) {
 }
 
 
-//------------------------------------------------------------------------------
+static struct r05_node *list_splice(
+  struct r05_node *res, struct r05_node *begin, struct r05_node *end
+) {
+  if ((res == begin) || r05_empty_seq(begin, end)) {
+    // Цель достигнута сама по себе
+    return res;
+  } else {
+    struct r05_node *prev_res = res->prev;
+    struct r05_node *prev_begin = begin->prev;
+    struct r05_node *next_end = end->next;
 
-// Операции построения результата
+    weld(prev_res, begin);
+    weld(end, res);
+    weld(prev_begin, next_end);
+  }
 
-namespace {
+  return begin;
+}
 
-void copy_node(struct r05_node *&res, struct r05_node *sample) {
+
+static void copy_node(struct r05_node *&res, struct r05_node *sample) {
   res = r05_alloc_node(sample->tag);
   res->info = sample->info;
 }
 
-} // unnamed namespace
 
+static void add_copy_tevar_time(clock_t duration);
 
-namespace refalrts {
-
-namespace profiler {
-
-void add_copy_tevar_time(clock_t duration);
-
-} // namespace profiler
-
-} // namespace refalrts
-
-namespace {
-
-void copy_nonempty_evar(
-  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
+static void copy_nonempty_evar(
+  struct r05_node **evar_res_b, struct r05_node **evar_res_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
   clock_t start_copy_time = clock();
@@ -840,7 +825,7 @@ void copy_nonempty_evar(
 
       struct r05_node *open_cobracket = bracket_stack;
       bracket_stack = bracket_stack->info.link;
-      refalrts::link_brackets(open_cobracket, res);
+      r05_link_brackets(open_cobracket, res);
     }
 
     r05_move_left(&evar_b_sample, &evar_e_sample);
@@ -848,14 +833,28 @@ void copy_nonempty_evar(
 
   assert(bracket_stack == 0);
 
-  evar_res_b = prev_res_begin->next;
-  evar_res_e = res;
+  *evar_res_b = prev_res_begin->next;
+  *evar_res_e = res;
 
-  refalrts::profiler::add_copy_tevar_time(clock() - start_copy_time);
+  add_copy_tevar_time(clock() - start_copy_time);
 }
 
-} // unnamed namespace
 
+void r05_alloc_chars(const char buffer[], size_t len) {
+  size_t i;
+  for (i = 0; i < len; ++i) {
+    r05_alloc_char(buffer[i]);
+  }
+}
+
+
+struct r05_function r05_make_function(r05_function_ptr func, const char *name) {
+  struct r05_function res = { func, name };
+  return res;
+}
+
+
+// ↓↓↓ DELETE
 bool refalrts::copy_evar(
   struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
@@ -864,7 +863,7 @@ bool refalrts::copy_evar(
     evar_res_b = 0;
     evar_res_e = 0;
   } else {
-    copy_nonempty_evar(evar_res_b, evar_res_e, evar_b_sample, evar_e_sample);
+    copy_nonempty_evar(&evar_res_b, &evar_res_e, evar_b_sample, evar_e_sample);
   }
   return true;
 }
@@ -892,7 +891,7 @@ bool refalrts::alloc_copy_evar(
     res = 0;
   } else {
     struct r05_node *res_e = 0;
-    copy_nonempty_evar(res, res_e, evar_b_sample, evar_e_sample);
+    copy_nonempty_evar(&res, &res_e, evar_b_sample, evar_e_sample);
   }
   return true;
 }
@@ -903,8 +902,36 @@ bool refalrts::alloc_copy_svar_(
   copy_node(svar_res, svar_sample);
   return true;
 }
+// ↑↑↑ DELETE
 
 
+void r05_alloc_tvar(struct r05_node *sample) {
+  if (is_open_bracket(sample)) {
+    struct r05_node *end_of_sample = sample->info.link;
+    struct r05_node *res_b, *res_e;
+    copy_nonempty_evar(&res_b, &res_e, sample, end_of_sample);
+  } else {
+    r05_alloc_svar(sample);
+  }
+}
+
+
+void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e) {
+  if (! r05_empty_seq(sample_b, sample_e)) {
+    struct r05_node *res_b, *res_e;
+    copy_nonempty_evar(&res_b, &res_e, sample_b, sample_e);
+  }
+}
+
+
+void r05_alloc_string(const char *string) {
+  for (/* пусто */; *string != '\0'; ++string) {
+    r05_alloc_char(*string);
+  }
+}
+
+
+// ↓↓↓ DELETE
 bool refalrts::alloc_char(struct r05_node *&res, char ch) {
   res = r05_alloc_node(R05_DATATAG_CHAR);
   res->info.char_ = ch;
@@ -935,16 +962,6 @@ namespace {
 bool alloc_some_bracket(struct r05_node *&res, r05_datatag tag) {
   res = r05_alloc_node(tag);
   return true;
-}
-
-void link_adjacent(struct r05_node *left, struct r05_node *right) {
-  if (left != 0) {
-    left->next = right;
-  }
-
-  if (right != 0) {
-    right->prev = left;
-  }
 }
 
 } // unnamed namespace
@@ -1007,65 +1024,24 @@ bool refalrts::alloc_string(
 
   return true;
 }
+// ↑↑↑ DELETE
 
-namespace refalrts {
 
-namespace vm {
+static struct r05_node *s_stack_ptr = NULL;
 
-void push_stack(struct r05_node *call_bracket);
-
-} // namespace vm
-
-} // namespace refalrts
-
-void refalrts::push_stack(struct r05_node *call_bracket) {
-  vm::push_stack(call_bracket);
+void r05_push_stack(struct r05_node *call_bracket) {
+  call_bracket->info.link = s_stack_ptr;
+  s_stack_ptr = call_bracket;
 }
 
-void refalrts::link_brackets(struct r05_node *left, struct r05_node *right) {
+
+void r05_link_brackets(struct r05_node *left, struct r05_node *right) {
   left->info.link = right;
   right->info.link = left;
 }
 
-namespace {
 
-struct r05_node *list_splice(
-  struct r05_node *res, struct r05_node *begin, struct r05_node *end
-) {
-
-  VALID_LINKED(res);
-  VALID_LINKED(res->prev);
-  VALID_LINKED(begin);
-  VALID_LINKED(begin->prev);
-  VALID_LINKED(end);
-  VALID_LINKED(end->prev);
-
-  if ((res == begin) || r05_empty_seq(begin, end)) {
-
-    // Цель достигнута сама по себе
-    return res;
-  } else {
-    struct r05_node *prev_res = res->prev;
-    struct r05_node *prev_begin = begin->prev;
-    struct r05_node *next_end = end->next;
-
-    link_adjacent(prev_res, begin);
-    link_adjacent(end, res);
-    link_adjacent(prev_begin, next_end);
-  }
-
-  VALID_LINKED(res);
-  VALID_LINKED(res->prev);
-  VALID_LINKED(begin);
-  VALID_LINKED(begin->prev);
-  VALID_LINKED(end);
-  VALID_LINKED(end->next);
-
-  return begin;
-}
-
-} // unnamed namespace
-
+// ↓↓↓ DELETE
 struct r05_node *refalrts::splice_elem(
   struct r05_node *res, struct r05_node *elem
 ) {
@@ -1090,17 +1066,39 @@ struct r05_node *refalrts::splice_evar(
 ) {
   return list_splice(res, begin, end);
 }
+// ↑↑↑ DELETE
 
-void refalrts::splice_to_freelist(struct r05_node *begin, struct r05_node *end) {
+
+void r05_splice_tvar(struct r05_node *res, struct r05_node *var) {
+  struct r05_node *var_end;
+  if (is_open_bracket(var)) {
+    var_end = var->info.link;
+  } else {
+    var_end = var;
+  }
+
+  list_splice(res, var, var_end);
+}
+
+void r05_splice_evar(
+  struct r05_node *res, struct r05_node *begin, struct r05_node *end
+) {
+  list_splice(res, begin, end);
+}
+
+
+void r05_splice_to_freelist(struct r05_node *begin, struct r05_node *end) {
   s_free_ptr = s_begin_free_list.next;
   s_free_ptr = list_splice(s_free_ptr, begin, end);
 }
 
-void refalrts::splice_from_freelist(struct r05_node *pos) {
+
+void r05_splice_from_freelist(struct r05_node *pos) {
   if (s_free_ptr != s_begin_free_list.next) {
     list_splice(pos, s_begin_free_list.next, s_free_ptr->prev);
   }
 }
+
 
 //------------------------------------------------------------------------------
 
@@ -1183,7 +1181,6 @@ void start_profiler();
 void end_profiler();
 void start_generated_function();
 void after_step();
-void add_copy_tevar_time(clock_t duration);
 void start_e_loop();
 void stop_e_loop();
 
@@ -1322,7 +1319,8 @@ extern unsigned g_step_counter;
 
 } // namespace refalrts
 
-void refalrts::profiler::add_copy_tevar_time(clock_t duration) {
+static void add_copy_tevar_time(clock_t duration) {
+  using namespace refalrts::profiler;
   g_total_copy_tevar_time += duration;
 }
 
@@ -1365,17 +1363,14 @@ namespace refalrts {
 
 namespace vm {
 
-void push_stack(struct r05_node *call_bracket);
 struct r05_node *pop_stack();
 bool empty_stack();
 
-bool init_view_field();
+void init_view_field();
 
 void main_loop();
 enum r05_fnresult execute_active(void);
 FILE* dump_stream();
-
-struct r05_node *g_stack_ptr = 0;
 
 extern struct r05_node g_last_marker;
 
@@ -1383,8 +1378,6 @@ struct r05_node g_first_marker =
   { 0, & g_last_marker, R05_DATATAG_ILLEGAL, { '\0' } };
 struct r05_node g_last_marker =
   { & g_first_marker, 0, R05_DATATAG_ILLEGAL, { '\0' } };
-
-struct r05_node *g_begin_view_field = & g_last_marker;
 
 unsigned g_step_counter = 0;
 
@@ -1394,41 +1387,26 @@ int g_ret_code;
 
 } // namespace refalrts
 
-void refalrts::vm::push_stack(struct r05_node *call_bracket) {
-  call_bracket->info.link = g_stack_ptr;
-  g_stack_ptr = call_bracket;
-}
-
 struct r05_node *refalrts::vm::pop_stack() {
-  struct r05_node *res = g_stack_ptr;
-  g_stack_ptr = g_stack_ptr->info.link;
+  struct r05_node *res = s_stack_ptr;
+  s_stack_ptr = s_stack_ptr->info.link;
   return res;
 }
 
 bool refalrts::vm::empty_stack() {
-  return (g_stack_ptr == 0);
+  return (s_stack_ptr == 0);
 }
 
-bool refalrts::vm::init_view_field() {
-  r05_reset_allocator();
-  struct r05_node *res = g_begin_view_field;
-  struct r05_node *n0 = 0;
-  if (! refalrts::alloc_open_call(n0))
-    return false;
-  struct r05_node *n1 = 0;
-  if (! refalrts::alloc_name(n1, r05c_Go, "Go"))
-    return false;
-  struct r05_node *n2 = 0;
-  if (! refalrts::alloc_close_call(n2))
-    return false;
-  refalrts::push_stack(n2);
-  refalrts::push_stack(n0);
-  res = refalrts::splice_elem(res, n2);
-  res = refalrts::splice_elem(res, n1);
-  res = refalrts::splice_elem(res, n0);
-  g_begin_view_field = res;
+void refalrts::vm::init_view_field() {
+  struct r05_node *open, *close;
 
-  return true;
+  r05_reset_allocator();
+  r05_alloc_open_call(open);
+  r05_alloc_function(r05c_Go, "Go");
+  r05_alloc_close_call(close);
+  r05_push_stack(close);
+  r05_push_stack(open);
+  r05_splice_from_freelist(g_first_marker.next);
 }
 
 static struct r05_node *s_arg_begin;

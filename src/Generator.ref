@@ -9,10 +9,10 @@ $EXTERN
   CmdComment, CmdDeclareVar, CmdSymbol, Char, Number, Name,
   CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft,
   CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
-  CmdCopyVar, CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
+  CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
   CmdInsertVar, CmdReturnResult, AlgRight,
   ElSymbol, ElOpenBracket, ElCloseBracket, ElOpenCall, ElCloseCall,
-  CmdRangeArray, CmdInitB0, CmdResultArray, CmdSavePos;
+  CmdRangeArray, CmdInitB0, CmdResultArray, ElSavePos, ElVariable;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -200,74 +200,45 @@ GenCommand {
   (e.Indent) (CmdEmptyResult) =
     (e.Indent)
     ()
-    (e.Indent 'refalrts::reset_allocator();')
-    (e.Indent 'struct r05_node *res = arg_begin;');
+    (e.Indent 'r05_reset_allocator();');
 
   (e.Indent) (CmdResultArray s.Size) =
     (e.Indent)
     (e.Indent 'struct r05_node *n[' <StrFromInt s.Size> '] = { 0 };');
 
-  (e.Indent) (CmdCopyVar 'e' e.Index) =
+  (e.Indent) (CmdAllocateElem e.ElemInfo) =
     (e.Indent)
-    (e.Indent
-      'refalrts::copy_evar(' <PrintStringVar 1> ', '
-      <PrintEVars 1 'e' e.Index> ');'
-    );
-
-  (e.Indent) (CmdCopyVar s.Mode e.Index) =
-    (e.Indent)
-    (e.Indent
-      'refalrts::copy_stvar(' <PrintElemVar 1> ', '
-      <PrintVar 1 s.Mode e.Index> ');'
-    );
-
-  (e.Indent) (CmdAllocateElem s.StringNumber ElString s.Len e.String) =
-    (e.Indent)
-    (e.Indent
-      'refalrts::alloc_chars(' <PrintStringVar s.StringNumber> ', '
-      '"' <EscapeString e.String> '", ' <StrFromInt s.Len> ');'
-    );
-
-  (e.Indent) (CmdAllocateElem s.ElemNumber e.ElemInfo) =
-    (e.Indent)
-    <PrintAllocateElem (e.Indent) s.ElemNumber e.ElemInfo>;
+    <PrintAllocateElem (e.Indent) e.ElemInfo>;
 
   (e.Indent) (CmdLinkBrackets s.Left s.Right) =
     (e.Indent)
     (e.Indent
-      'refalrts::link_brackets( '
-      <PrintElemVar s.Left> ', ' <PrintElemVar s.Right>
-      ' );'
+      'r05_link_brackets'
+      '(' <PrintElemVar s.Left> ', ' <PrintElemVar s.Right> ');'
     );
 
   (e.Indent) (CmdPushStack s.ElemNumber) =
     (e.Indent)
-    (e.Indent 'refalrts::push_stack( ' <PrintElemVar s.ElemNumber> ' );');
-
-  (e.Indent) (CmdSavePos s.Pos) =
-    (e.Indent)
-    (e.Indent <PrintElemVar s.Pos> ' = r05_insert_pos();');
+    (e.Indent 'r05_push_stack(' <PrintElemVar s.ElemNumber> ');');
 
   (e.Indent) (CmdInsertVar s.Pos s.Usings 'e' e.Index) =
     (e.Indent)
     (e.Indent
-      'refalrts::splice_evar(' <PrintElemVar s.Pos> ', '
+      'r05_splice_evar(' <PrintElemVar s.Pos> ', '
       <PrintEVars s.Usings 'e' e.Index> ');'
     );
 
-  (e.Indent) (CmdInsertVar s.Pos s.Usings s.Mode e.Index) =
+  (e.Indent) (CmdInsertVar s.Pos s.Usings 't' e.Index) =
     (e.Indent)
     (e.Indent
-      'refalrts::splice_stvar(' <PrintElemVar s.Pos> ', '
-      <PrintVar s.Usings s.Mode e.Index> ');'
+      'r05_splice_tvar(' <PrintElemVar s.Pos> ', '
+      <PrintVar s.Usings 't' e.Index> ');'
     );
 
   (e.Indent) (CmdReturnResult) =
     (e.Indent)
-    (e.Indent 'r05_use(&res);')
-    (e.Indent 'r05_use(&n[0]);')
-    (e.Indent 'refalrts::splice_from_freelist(arg_begin);')
-    (e.Indent 'refalrts::splice_to_freelist( arg_begin, arg_end );')
+    (e.Indent 'r05_splice_from_freelist(arg_begin);')
+    (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end);')
     (e.Indent 'return R05_SUCCESS;');
 }
 
@@ -392,37 +363,44 @@ PrintElemVar {
   s.Number = 'n[' <StrFromInt s.Number> ']';
 }
 
-PrintStringVar {
-  s.Number = 'n[' <StrFromInt s.Number> '], n[' <StrFromInt <Inc s.Number>> ']';
-}
-
 PrintAllocateElem {
-  (e.Indent) s.ElemNumber s.ElementType e.Info =
+  (e.Indent) s.ElementType e.Info =
     (e.Indent
-      'refalrts::' <SwAllocator s.ElementType e.Info>
-      '(' <PrintElemVar s.ElemNumber> <SwInfo s.ElementType e.Info> ');'
+      'r05_alloc_' <SwAllocator s.ElementType e.Info>
+      '(' <SwInfo s.ElementType e.Info> ');'
     );
 }
 
 SwAllocator {
-  ElSymbol Char s.Char = 'alloc_char';
-  ElSymbol Name e.Name = 'alloc_name';
-  ElSymbol Number s.Number = 'alloc_number';
+  ElSymbol s.Type e.Value = <SymbolFunc s.Type>;
+  ElString s.Len e.String = 'chars';
 
-  ElOpenBracket = 'alloc_open_bracket';
-  ElCloseBracket = 'alloc_close_bracket';
+  ElOpenBracket s.Pos = 'open_bracket';
+  ElCloseBracket s.Pos = 'close_bracket';
 
-  ElOpenCall = 'alloc_open_call';
-  ElCloseCall = 'alloc_close_call';
+  ElOpenCall s.Pos = 'open_call';
+  ElCloseCall s.Pos = 'close_call';
+
+  ElSavePos s.Pos = 'insert_pos';
+
+  ElVariable s.Mode e.Index = s.Mode 'var';
 }
 
 SwInfo {
-  ElSymbol Name e.Name = ', r05c_' e.Name ', "' e.Name '"';
+  ElSymbol Name e.Name = 'r05c_' e.Name ', "' e.Name '"';
+  ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
+  ElString s.Len e.String = '"' <EscapeString e.String> '", ' <StrFromInt s.Len>;
 
-  ElSymbol s.Type e.Value = ', ' <SymbolTextRep s.Type e.Value>;
+  ElOpenBracket s.Pos = <PrintElemVar s.Pos>;
+  ElCloseBracket s.Pos = <PrintElemVar s.Pos>;
 
-  /* Остальное -- скобки */
-  s.Other = ;
+  ElOpenCall s.Pos = <PrintElemVar s.Pos>;
+  ElCloseCall s.Pos = <PrintElemVar s.Pos>;
+
+  ElSavePos s.Pos = <PrintElemVar s.Pos>;
+
+  ElVariable 'e' e.Index = <PrintEVars 1 'e' e.Index>;
+  ElVariable s.Mode e.Index = <PrintVar 1 s.Mode e.Index>;
 }
 
 $ENUM BeginNative, EndNative;
