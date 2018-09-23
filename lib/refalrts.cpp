@@ -703,7 +703,9 @@ static int create_nodes(void) {
   for (i = 0; i < CHUNK_SIZE - 1; ++i) {
     chunk->elems[i].next = &chunk->elems[i + 1];
     chunk->elems[i + 1].prev = &chunk->elems[i];
+    chunk->elems[i].tag = R05_DATATAG_ILLEGAL;
   }
+  chunk->elems[CHUNK_SIZE - 1].tag = R05_DATATAG_ILLEGAL;
 
   weld(s_end_free_list.prev, &chunk->elems[0]);
   weld(&chunk->elems[CHUNK_SIZE - 1], &s_end_free_list);
