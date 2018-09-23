@@ -325,4 +325,4 @@ void debug_print_expr(void *file, struct r05_node *first, struct r05_node *last)
 
 } //namespace refalrts
 
-#endif //RefalRTS_H_
+#endif /* RefalRTS_H_ */

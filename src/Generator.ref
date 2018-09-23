@@ -58,7 +58,7 @@ $ENTRY GenFnEnd {
 }
 
 $ENTRY GenFnEnd-Success {
-  = ('  //return R05_RECOGNITION_IMPOSSIBLE;') ('}') ();
+  = ('  /* return R05_RECOGNITION_IMPOSSIBLE; */') ('}') ();
 }
 
 $ENTRY GenEnum {
@@ -77,13 +77,13 @@ $ENTRY GenForward {
 }
 
 GenCommonHeaders {
-  = ('// Automatically generated file. Don\'t edit!')
+  = ('/* Automatically generated file. Don\'t edit! */')
   ('#include "refalrts.h"')
   () ();
 }
 
 GenCommonTailer {
-  = () ('//End of file');
+  = () ('/* End of file */');
 }
 
 $ENTRY GenSentence {
@@ -124,8 +124,19 @@ BracketsVarsPtr {
   вне цикла по открытой e-переменной, отступ больше -- внутри оного цикла.
 */
 
+SafeComment {
+  e.Comment-B '/*' e.Comment-E =
+    <SafeComment e.Comment-B '/\' \'*' e.Comment-E>;
+
+  e.Comment-B '*/' e.Comment-E =
+    <SafeComment e.Comment-B '*\' \'/' e.Comment-E>;
+
+  e.Comment = e.Comment;
+}
+
 GenCommand {
-  (e.Indent) (CmdComment e.Text) = (e.Indent) (e.Indent '//' e.Text);
+  (e.Indent) (CmdComment e.Text) =
+    (e.Indent) (e.Indent '/*' <SafeComment e.Text> '*/');
 
   (e.Indent) (CmdDeclareVar s.Usings 'e' e.Index) =
     (e.Indent)

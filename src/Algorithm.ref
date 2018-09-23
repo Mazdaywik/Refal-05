@@ -219,16 +219,14 @@ TextFromPattern {
   (TkVariable s.Mode e.Index) e.Tail =
     ' ' s.Mode '.' e.Index <TextFromPattern e.Tail>;
 
-  = ;
+  = ' ';
 }
 
 TextFromPattern-Char {
   (Symbol Char s.Char) e.Tail =
     <EscapeChar s.Char> <TextFromPattern-Char e.Tail>;
 
-  = '\'';
-
-  e.Other = <TextFromPattern e.Other>;
+  e.Other = '\'' <TextFromPattern e.Other>;
 }
 
 *===============================================================================
