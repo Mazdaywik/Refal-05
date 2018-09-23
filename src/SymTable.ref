@@ -138,8 +138,3 @@ FunctionFromKnown {
   (Declared e.Name) = (GN-Entry e.Name);
   (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
 }
-
-$ENTRY ST-GetAnyName {
-  (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References)) =
-    e.Name;
-}

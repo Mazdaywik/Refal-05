@@ -13,7 +13,7 @@ $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
 
 *$FROM SymTable
 $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
-  ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall, ST-GetAnyName;
+  ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Library
 $EXTERN Success, Fails, StrFromInt;
