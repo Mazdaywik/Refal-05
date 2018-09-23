@@ -61,8 +61,37 @@ $ENTRY Add {
 }
 
 
-* 3 Arg
-** $EENUM Arg;
+/**
+   3. <Ars s.ArgNo> == e.Argument
+
+      s.ArgNo ::= s.NUMBER
+      e.Argument ::= s.CHAR*
+*/
+$ENTRY Arg {
+%%
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *parg_no = callable->next;
+  int arg_no;
+
+  if (
+    parg_no == arg_end
+    || R05_DATATAG_NUMBER != parg_no->tag
+    || parg_no->next != arg_end
+  ) {
+    return R05_RECOGNITION_IMPOSSIBLE;
+  }
+
+  arg_no = (int) parg_no->info.number;
+
+  r05_reset_allocator();
+  r05_alloc_string(r05_arg(arg_no));
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 4 Br
 $EENUM Br;
@@ -820,40 +849,6 @@ $ENTRY FClose {
 %%
 }
 
-
-$ENTRY Arg {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *sParamNumber_1;
-    // s.ParamNumber
-    if (! r05_svar_left(&sParamNumber_1, &bb_0, &be_0))
-      break;
-    if (sParamNumber_1->tag != R05_DATATAG_NUMBER)
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    r05_reset_allocator();
-
-    int arg_number = sParamNumber_1->info.number;
-
-    struct r05_node *res_begin = 0;
-    struct r05_node *res_end = 0;
-
-    refalrts::alloc_string(res_begin, res_end, r05_arg(arg_number));
-    refalrts::splice_evar(arg_begin, res_begin, res_end);
-
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
 
 $ENTRY ExistFile {
 %%
