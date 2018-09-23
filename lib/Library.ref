@@ -7,7 +7,328 @@
 %%
 
 
-*$FROM refalrts
+* 1 Mu
+$EENUM Mu;
+
+* 2 Add
+** $EENUM Add;
+
+* 3 Arg
+** $EENUM Arg;
+
+* 4 Br
+$EENUM Br;
+
+* 5 Card
+$EENUM Card;
+
+* 6 Chr
+** $EENUM Chr;
+
+* 7 Cp
+$EENUM Cp;
+
+* 8 Dg
+$EENUM Dg;
+
+* 9 Dgall
+$EENUM Dgall;
+
+* 10 Div
+** $EENUM Div;
+
+* 11 Divmod
+$EENUM Divmod;
+
+
+/**
+  12. <Explode s.FUNCTION> == s.CHAR+
+*/
+$ENTRY Explode {
+%%
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *ident = callable->next;
+
+  if (
+     ident == arg_end
+     || R05_DATATAG_FUNCTION != ident->tag
+     || ident->next != arg_end
+  ) {
+    return R05_RECOGNITION_IMPOSSIBLE;
+  }
+
+  r05_reset_allocator();
+  r05_alloc_string(ident->info.function.name);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
+
+* 13 First
+$EENUM First;
+
+* 14 Get
+$EENUM Get;
+
+* 15 Implode
+$EENUM Implode;
+
+* 16 Last
+$EENUM Last;
+
+* 17 Lenw
+$EENUM Lenw;
+
+* 18 Lower
+$EENUM Lower;
+
+* 19 Mod
+** $EENUM Mod;
+
+* 20 Mul
+** $EENUM Mul;
+
+* 21 Numb
+$EENUM Numb;
+
+* 22 Open
+$EENUM Open;
+
+* 23 Ord
+** $EENUM Ord;
+
+* 24 Print
+$EENUM Print;
+
+* 25 Prout
+$EENUM Prout;
+
+* 26 Put
+$EENUM Put;
+
+* 27 Putout
+$EENUM Putout;
+
+* 28 Rp
+$EENUM Rp;
+
+* 29 Step
+$EENUM Step;
+
+* 30 Sub
+** $EENUM Sub;
+
+* 31 Symb
+$EENUM Symb;
+
+* 32 Time
+$EENUM Time;
+
+* 33 Type
+** $EENUM Type;
+
+* 34 Upper
+$EENUM Upper;
+
+* 35 Sysfun
+$EENUM Sysfun;
+
+* 45 Freeze
+$EENUM Freeze;
+
+* 46 Freezer
+$EENUM Freezer;
+
+* 47 Dn
+$EENUM Dn;
+
+* 48 Up
+$EENUM Up;
+
+* 49 Ev-met
+$EENUM Ev-met;
+
+* 50 Residue
+$EENUM Residue;
+
+* 51 GetEnv
+** $EENUM GetEnv;
+
+* 52 System
+** $EENUM System;
+
+* 53 Exit
+** $EENUM Exit;
+
+* 54 Close
+$EENUM Close;
+
+* 55 ExistFile
+** $EENUM ExistFile;
+
+* 56 GetCurrentDirectory
+$EENUM GetCurrentDirectory;
+
+* 57 RemoveFile
+$EENUM RemoveFile;
+
+* 58 Implode_Ext
+$EENUM Implode_Ext;
+
+* 59 Explode_Ext
+$EENUM Explode_Ext;
+
+* 60 TimeElapsed
+$EENUM TimeElapsed;
+
+/**
+  61. <Compare s.X s.Y>
+        == '-' | '0' | '+'
+      s.X, s.Y ::= s.NUMBER
+
+  Функция возвращает знак разности между s.X и s.Y
+*/
+$ENTRY Compare {
+%%
+  struct r05_node *func_name, *sX, *sY;
+
+  func_name = arg_begin->next;
+  sX = func_name->next;
+  if (sX->tag != R05_DATATAG_NUMBER) {
+    return R05_RECOGNITION_IMPOSSIBLE;
+  }
+
+  sY = sX->next;
+  if (sY->tag != R05_DATATAG_NUMBER) {
+    return R05_RECOGNITION_IMPOSSIBLE;
+  }
+
+  if (sY->next != arg_end) {
+    return R05_RECOGNITION_IMPOSSIBLE;
+  }
+
+  sX->info.char_ =
+    sX->info.number < sY->info.number ? '-' :
+    sX->info.number > sY->info.number ? '+' :
+    '0';
+  sX->tag = R05_DATATAG_CHAR;
+
+  r05_splice_to_freelist(arg_begin, func_name);
+  r05_splice_to_freelist(sY, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
+* 62 DeSysfun
+$EENUM DeSysfun;
+
+* 63 XMLParse
+$EENUM XMLParse;
+
+* 64 Random
+$EENUM Random;
+
+* 65 RandomDigit
+$EENUM RandomDigit;
+
+* 66 Write
+$EENUM Write;
+
+
+/**
+  67. <ListOfBuiltin> == (s.No s.Name s.Type)*
+
+      s.No ::= s.NUMBER
+      s.Name ::= s.FUNCTION
+      s.Type ::= special | regular
+*/
+$EENUM special, regular;
+
+$ENTRY ListOfBuiltin {
+  = (1 Mu special)
+    (2 Add regular)
+    (3 Arg regular)
+    (4 Br regular)
+    (5 Card regular)
+    (6 Chr regular)
+    (7 Cp regular)
+    (8 Dg regular)
+    (9 Dgall regular)
+    (10 Div regular)
+    (11 Divmod regular)
+    (12 Explode regular)
+    (13 First regular)
+    (14 Get regular)
+    (15 Implode regular)
+    (16 Last regular)
+    (17 Lenw regular)
+    (18 Lower regular)
+    (19 Mod regular)
+    (20 Mul regular)
+    (21 Numb regular)
+    (22 Open regular)
+    (23 Ord regular)
+    (24 Print regular)
+    (25 Prout regular)
+    (26 Put regular)
+    (27 Putout regular)
+    (28 Rp regular)
+    (29 Step regular)
+    (30 Sub regular)
+    (31 Symb regular)
+    (32 Time regular)
+*    (33 Type regular)  /* in LibraryEx */
+    (34 Upper regular)
+    (35 Sysfun regular)
+    /* (42 "Imp$$" regular) */
+    /* (43 "Stop$$" regular) */
+    /* (44 "" regular) */
+    (45 Freeze regular)
+    (46 Freezer regular)
+    (47 Dn regular)
+    (48 Up special)
+    (49 Ev-met special)
+    (50 Residue special)
+    (51 GetEnv regular)
+    (52 System regular)
+    (53 Exit regular)
+    (54 Close regular)
+    (55 ExistFile regular)
+    (56 GetCurrentDirectory regular)
+    (57 RemoveFile regular)
+    (58 Implode_Ext regular)
+    (59 Explode_Ext regular)
+    (60 TimeElapsed regular)
+    (61 Compare regular)
+    (62 DeSysfun regular)
+    (63 XMLParse regular)
+    (64 Random regular)
+    (65 RandomDigit regular)
+    (66 Write regular)
+    (67 ListOfBuiltin regular)
+    (68 SizeOf regular)
+    (69 GetPID regular)
+    (70 int4fab_1 regular)
+    (71 GetPPID regular);
+}
+
+
+* 68 SizeOf
+$EENUM SizeOf;
+
+* 69 GetPID
+$EENUM GetPID;
+
+* 70 int4fab_1
+$EENUM int4fab_1;
+
+* 71 GetPPID
+$EENUM GetPPID;
+
 
 
 *===============================================================================
@@ -868,36 +1189,5 @@ $ENTRY Ord {
   } while (0);
 
   return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
-
-$ENTRY Compare {
-%%
-  struct r05_node *func_name = arg_begin->next;
-
-  struct r05_node *sX = func_name->next;
-  if (sX->tag != R05_DATATAG_NUMBER) {
-    return R05_RECOGNITION_IMPOSSIBLE;
-  }
-
-  struct r05_node *sY = sX->next;
-  if (sY->tag != R05_DATATAG_NUMBER) {
-    return R05_RECOGNITION_IMPOSSIBLE;
-  }
-
-  if (sY->next != arg_end) {
-    return R05_RECOGNITION_IMPOSSIBLE;
-  }
-
-  sX->info.char_ =
-    sX->info.number < sY->info.number ? '-' :
-    sX->info.number > sY->info.number ? '+' :
-    '0';
-  sX->tag = R05_DATATAG_CHAR;
-
-  refalrts::splice_to_freelist(arg_begin, func_name);
-  refalrts::splice_to_freelist(sY, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
