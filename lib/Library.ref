@@ -7,11 +7,59 @@
 %%
 
 
-* 1 Mu
-$EENUM Mu;
+/**
+   1. <Mu s.Func e.Arg> == <s.Func e.Arg>
+*/
+$ENTRY Mu {
+  s.Func e.Arg = <s.Func e.Arg>;
+}
 
-* 2 Add
-** $EENUM Add;
+
+/**
+   2. <Add s.NUMBER s.NUMBER> == s.NUMBER
+*/
+%%
+#define ARITHM_OP(op, check) \
+  struct r05_node *func_name, *sX, *sY; \
+  func_name = arg_begin->next; \
+  \
+  sX = func_name->next; \
+  if (sX->tag != R05_DATATAG_NUMBER) { \
+    return R05_RECOGNITION_IMPOSSIBLE; \
+  } \
+  \
+  sY = sX->next; \
+  if (sY->tag != R05_DATATAG_NUMBER) { \
+    return R05_RECOGNITION_IMPOSSIBLE; \
+  } \
+  \
+  if (sY->next != arg_end) { \
+    return R05_RECOGNITION_IMPOSSIBLE; \
+  } \
+  \
+  check \
+  \
+  sX->info.number = sX->info.number op sY->info.number; \
+  \
+  r05_splice_to_freelist(arg_begin, func_name); \
+  r05_splice_to_freelist(sY, arg_end); \
+  \
+  return R05_SUCCESS;
+
+#define NO_CHECK
+#define CHECK_ZERODIV \
+  if (sY->info.number == 0) { \
+    return R05_RECOGNITION_IMPOSSIBLE; \
+  }
+%%
+
+
+$ENTRY Add {
+%%
+  ARITHM_OP(+, NO_CHECK)
+%%
+}
+
 
 * 3 Arg
 ** $EENUM Arg;
@@ -34,11 +82,24 @@ $EENUM Dg;
 * 9 Dgall
 $EENUM Dgall;
 
-* 10 Div
-** $EENUM Div;
 
-* 11 Divmod
-$EENUM Divmod;
+/**
+  10. <Div s.NUMBER s.NUMBER> == s.NUMBER
+*/
+$ENTRY Div {
+%%
+  ARITHM_OP(/, CHECK_ZERODIV);
+%%
+}
+
+
+/**
+  11. <Divmod s.NUMBER s.NUMBER> == s.Div s.Mod
+      s.Div, s.Mod ::= s.NUMBER
+*/
+$ENTRY Divmod {
+  s.X s.Y = <Div s.X s.Y> <Mod s.X s.Y>;
+}
 
 
 /**
@@ -85,11 +146,26 @@ $EENUM Lenw;
 * 18 Lower
 $EENUM Lower;
 
-* 19 Mod
-** $EENUM Mod;
 
-* 20 Mul
-** $EENUM Mul;
+/**
+  19. <Mod s.NUMBER s.NUMBER> == s.NUMBER
+*/
+$ENTRY Mod {
+%%
+  ARITHM_OP(%, CHECK_ZERODIV);
+%%
+}
+
+
+/**
+  18. <Mul s.NUMBER s.NUMBER> == s.NUMBER
+*/
+$ENTRY Mul {
+%%
+  ARITHM_OP(*, NO_CHECK)
+%%
+}
+
 
 * 21 Numb
 $EENUM Numb;
@@ -118,8 +194,16 @@ $EENUM Rp;
 * 29 Step
 $EENUM Step;
 
-* 30 Sub
-** $EENUM Sub;
+
+/**
+  30. <Sub s.NUMBER s.NUMBER> == s.NUMBER
+*/
+$ENTRY Sub {
+%%
+  ARITHM_OP(-, NO_CHECK)
+%%
+}
+
 
 * 31 Symb
 $EENUM Symb;
@@ -338,77 +422,6 @@ $EENUM GetPPID;
 * Основные перечисления
 
 $EENUM Success, Fails, True, False;
-
-* Математические операции
-
-
-%%
-
-#define ARITHM_OP(op, check) \
-  struct r05_node *func_name = arg_begin->next; \
-  \
-  struct r05_node *sX = func_name->next; \
-  if (sX->tag != R05_DATATAG_NUMBER) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
-  } \
-  \
-  struct r05_node *sY = sX->next; \
-  if (sY->tag != R05_DATATAG_NUMBER) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
-  } \
-  \
-  if (sY->next != arg_end) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
-  } \
-  \
-  check \
-  \
-  sX->info.number = sX->info.number op sY->info.number; \
-  \
-  r05_splice_to_freelist(arg_begin, func_name); \
-  r05_splice_to_freelist(sY, arg_end); \
-  \
-  return R05_SUCCESS;
-
-#define NO_CHECK
-#define CHECK_ZERODIV \
-  if (sY->info.number == 0) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
-  }
-
-%%
-
-
-$ENTRY Add {
-%%
-  ARITHM_OP(+, NO_CHECK)
-%%
-}
-
-$ENTRY Sub {
-%%
-  ARITHM_OP(-, NO_CHECK)
-%%
-}
-
-$ENTRY Mul {
-%%
-  ARITHM_OP(*, NO_CHECK)
-%%
-}
-
-$ENTRY Div {
-%%
-  ARITHM_OP(/, CHECK_ZERODIV);
-%%
-}
-
-$ENTRY Mod {
-%%
-  ARITHM_OP(%, CHECK_ZERODIV);
-%%
-}
-
 
 * Ввод-вывод
 
