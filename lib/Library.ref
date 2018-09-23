@@ -96,11 +96,72 @@ $ENTRY Arg {
 * 4 Br
 $EENUM Br;
 
-* 5 Card
-$EENUM Card;
 
-* 6 Chr
-** $EENUM Chr;
+/**
+   5. <Card> == s.CHAR* 0?
+*/
+%%
+static void read_from_stream(FILE *input);
+%%
+
+$ENTRY Card {
+%%
+  struct r05_node *callee = arg_begin->next;
+
+  if (callee->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  r05_reset_allocator();
+  read_from_stream(stdin);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
+
+%%
+static void read_from_stream(FILE *input) {
+  int cur_char;
+
+  while (cur_char = fgetc(input), cur_char != EOF && cur_char != '\n') {
+    r05_alloc_char(cur_char);
+  }
+
+  if (cur_char == EOF) {
+    r05_alloc_number(0);
+  }
+}
+%%
+
+
+/**
+   6. <Chr e.Expr> == e.Expr’
+
+   В e.Expr’ все числа заменены на литеры с соответствующими кодами
+*/
+$ENTRY Chr {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_NUMBER) {
+      p->tag = R05_DATATAG_CHAR;
+      p->info.char_ = (unsigned char) p->info.number;
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 7 Cp
 $EENUM Cp;
@@ -647,32 +708,7 @@ enum r05_fnresult read_from_stream(
 %%
 
 $ENTRY ReadLine {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    r05_reset_allocator();
-    struct r05_node *res = arg_begin;
-
-    struct r05_node *str_begin, *str_end;
-
-    enum r05_fnresult fn_result = read_from_stream(stdin, str_begin, str_end);
-
-    if (fn_result != R05_SUCCESS)
-      return fn_result;
-
-    refalrts::splice_evar(res, str_begin, str_end);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
+  = <Card>;
 }
 
 $ENTRY FReadLine {
@@ -1114,37 +1150,6 @@ $ENTRY StrFromInt {
 
     r05_splice_to_freelist(arg_begin, arg_end);
 
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
-
-$ENTRY Chr {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *sCode_1;
-    // s.Code
-    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
-      break;
-    if (sCode_1->tag != R05_DATATAG_NUMBER)
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    char result = static_cast<char>(sCode_1->info.number);
-
-    r05_reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    refalrts::alloc_char(n0, result);
-    refalrts::splice_elem(res, n0);
-    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
