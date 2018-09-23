@@ -1721,18 +1721,6 @@ FILE *refalrts::vm::dump_stream() {
 }
 
 void refalrts::vm::free_view_field() {
-  struct r05_node *begin = g_first_marker.next;
-  struct r05_node *end = & g_last_marker;
-
-  if (begin != end) {
-    end = end->prev;
-    s_free_ptr = list_splice(s_free_ptr, begin, end);
-  } else {
-    /*
-      Поле зрения пустое -- его не нужно освобождать.
-    */;
-  }
-
 #ifndef DONT_PRINT_STATISTICS
   fprintf(stderr, "Step count %d\n", g_step_counter);
 #endif // DONT_PRINT_STATISTICS
