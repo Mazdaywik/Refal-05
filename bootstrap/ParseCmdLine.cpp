@@ -1,4 +1,4 @@
-// Automatically generated file. Don't edit!
+/* Automatically generated file. Don't edit! */
 #include "refalrts.h"
 
 
@@ -10,68 +10,39 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
 static enum r05_fnresult r05c_DoParseFileNamesOnly(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 enum r05_fnresult r05c_ParseCommandLine(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eArguments_b_1;
     struct r05_node *eArguments_e_1;
-    // e.Arguments
-    eArguments_b_1 = bb_0;
-    eArguments_e_1 = be_0;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[9] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* e.Arguments */
+    eArguments_b_1 = bb[0];
+    eArguments_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseCommandLine, "DoParseCommandLine" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_NoCompile, "NoCompile" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eArguments_b_1, eArguments_e_1 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n2, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseCommandLine, "DoParseCommandLine");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_function(r05c_NoCompile, "NoCompile");
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_call(n[8]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[6]);
+    r05_link_brackets(n[3], n[4]);
+    r05_link_brackets(n[1], n[2]);
+    r05_splice_evar(n[7], eArguments_b_1, eArguments_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -99,12 +70,8 @@ enum r05_fnresult r05c_CmdLineError(struct r05_node *, struct r05_node *) {
 }
 
 static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
     struct r05_node *eFolders_b_1;
@@ -113,229 +80,151 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *eCompileCommand_e_1;
     struct r05_node *eOptions_b_1;
     struct r05_node *eOptions_e_1;
-    // ( & NoCompile ) ( e.ScannedFiles ) ( e.Folders ) ( '-c' ) ( e.CompileCommand ) e.Options
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[12] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & NoCompile  ) ( e.ScannedFiles  ) ( e.Folders  ) ( '-c'  ) ( e.CompileCommand  ) e.Options */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_NoCompile, &bb_1, &be_1))
+    if (! r05_function_left(r05c_NoCompile, &bb[1], &be[1]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_char_left('-', &bb_4, &be_4))
+    if (! r05_char_left('-', &bb[4], &be[4]))
       break;
-    if (! r05_char_left('c', &bb_4, &be_4))
+    if (! r05_char_left('c', &bb[4], &be[4]))
       break;
-    struct r05_node *bb_5 = 0;
-    struct r05_node *be_5 = 0;
-    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[5], &be[5], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
-    eScannedFiles_b_1 = bb_2;
-    eScannedFiles_e_1 = be_2;
-    eFolders_b_1 = bb_3;
-    eFolders_e_1 = be_3;
-    eCompileCommand_b_1 = bb_5;
-    eCompileCommand_e_1 = be_5;
-    eOptions_b_1 = bb_0;
-    eOptions_e_1 = be_0;
+    eScannedFiles_b_1 = bb[2];
+    eScannedFiles_e_1 = be[2];
+    eFolders_b_1 = bb[3];
+    eFolders_e_1 = be[3];
+    eCompileCommand_b_1 = bb[5];
+    eCompileCommand_e_1 = be[5];
+    eOptions_b_1 = bb[0];
+    eOptions_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseCommandLine, "DoParseCommandLine" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_CompileCommand, "CompileCommand" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eOptions_b_1, eOptions_e_1 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eFolders_b_1, eFolders_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n2, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eCompileCommand_b_1, eCompileCommand_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseCommandLine, "DoParseCommandLine");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_function(r05c_CompileCommand, "CompileCommand");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[4], n[6]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eCompileCommand_b_1, eCompileCommand_e_1);
+    r05_splice_evar(n[5], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_evar(n[8], eFolders_b_1, eFolders_e_1);
+    r05_splice_evar(n[10], eOptions_b_1, eOptions_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // ( & CompileCommand e.Command ) ( e.ScannedFiles ) ( e.Folders ) ( '-c' ) ( e.CompileCommand ) e.Options
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[2] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & CompileCommand e.Command  ) ( e.ScannedFiles  ) ( e.Folders  ) ( '-c'  ) ( e.CompileCommand  ) e.Options */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_CompileCommand, &bb_1, &be_1))
+    if (! r05_function_left(r05c_CompileCommand, &bb[1], &be[1]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_char_left('-', &bb_4, &be_4))
+    if (! r05_char_left('-', &bb[4], &be[4]))
       break;
-    if (! r05_char_left('c', &bb_4, &be_4))
+    if (! r05_char_left('c', &bb[4], &be[4]))
       break;
-    struct r05_node *bb_5 = 0;
-    struct r05_node *be_5 = 0;
-    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[5], &be[5], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
-    // Unused closed variable e.Command
-    // Unused closed variable e.ScannedFiles
-    // Unused closed variable e.Folders
-    // Unused closed variable e.CompileCommand
-    // Unused closed variable e.Options
+    /* Unused closed variable e.Command*/
+    /* Unused closed variable e.ScannedFiles*/
+    /* Unused closed variable e.Folders*/
+    /* Unused closed variable e.CompileCommand*/
+    /* Unused closed variable e.Options*/
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdLineError, "CmdLineError" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "Multiple declaration of C++ compiler command line", 49) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_CmdLineError, "CmdLineError");
+    r05_alloc_chars("Multiple declaration of C++ compiler command line", 49);
+    r05_alloc_close_bracket(n[1]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tCompiler_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '-c' )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[2] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) ( '-c'  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_char_left('-', &bb_1, &be_1))
+    if (! r05_char_left('-', &bb[1], &be[1]))
       break;
-    if (! r05_char_left('c', &bb_1, &be_1))
+    if (! r05_char_left('c', &bb[1], &be[1]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    // Unused closed variable e.ScannedFiles
-    // Unused closed variable e.Folders
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    /* Unused closed variable e.ScannedFiles*/
+    /* Unused closed variable e.Folders*/
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdLineError, "CmdLineError" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "After option \'-c\' expected C++ compiler command line", 52) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_CmdLineError, "CmdLineError");
+    r05_alloc_chars("After option \'-c\' expected C++ compiler command line", 52);
+    r05_alloc_close_bracket(n[1]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tCompiler_1;
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
@@ -345,155 +234,106 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *eDirectory_e_1;
     struct r05_node *eOptions_b_1;
     struct r05_node *eOptions_e_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '-d' ) ( e.Directory ) e.Options
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) ( '-d'  ) ( e.Directory  ) e.Options */
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_char_left('-', &bb_3, &be_3))
+    if (! r05_char_left('-', &bb[3], &be[3]))
       break;
-    if (! r05_char_left('d', &bb_3, &be_3))
+    if (! r05_char_left('d', &bb[3], &be[3]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
-    eScannedFiles_b_1 = bb_1;
-    eScannedFiles_e_1 = be_1;
-    eFolders_b_1 = bb_2;
-    eFolders_e_1 = be_2;
-    eDirectory_b_1 = bb_4;
-    eDirectory_e_1 = be_4;
-    eOptions_b_1 = bb_0;
-    eOptions_e_1 = be_0;
+    eScannedFiles_b_1 = bb[1];
+    eScannedFiles_e_1 = be[1];
+    eFolders_b_1 = bb[2];
+    eFolders_e_1 = be[2];
+    eDirectory_b_1 = bb[4];
+    eDirectory_e_1 = be[4];
+    eOptions_b_1 = bb[0];
+    eOptions_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseCommandLine, "DoParseCommandLine" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eOptions_b_1, eOptions_e_1 );
-    refalrts::link_brackets( n4, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eDirectory_b_1, eDirectory_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eFolders_b_1, eFolders_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tCompiler_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseCommandLine, "DoParseCommandLine");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[10]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tCompiler_1);
+    r05_splice_evar(n[3], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_evar(n[6], eFolders_b_1, eFolders_e_1);
+    r05_splice_evar(n[8], eDirectory_b_1, eDirectory_e_1);
+    r05_splice_evar(n[11], eOptions_b_1, eOptions_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tCompiler_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '-d' )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[2] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) ( '-d'  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_char_left('-', &bb_1, &be_1))
+    if (! r05_char_left('-', &bb[1], &be[1]))
       break;
-    if (! r05_char_left('d', &bb_1, &be_1))
+    if (! r05_char_left('d', &bb[1], &be[1]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    // Unused closed variable e.ScannedFiles
-    // Unused closed variable e.Folders
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    /* Unused closed variable e.ScannedFiles*/
+    /* Unused closed variable e.Folders*/
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdLineError, "CmdLineError" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "After option \'-d\' expected find directory", 41) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_CmdLineError, "CmdLineError");
+    r05_alloc_chars("After option \'-d\' expected find directory", 41);
+    r05_alloc_close_bracket(n[1]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tCompiler_1;
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
@@ -501,82 +341,59 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *eFolders_e_1;
     struct r05_node *eFiles_b_1;
     struct r05_node *eFiles_e_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( '--' ) e.Files
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) ( '--'  ) e.Files */
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_char_left('-', &bb_3, &be_3))
+    if (! r05_char_left('-', &bb[3], &be[3]))
       break;
-    if (! r05_char_left('-', &bb_3, &be_3))
+    if (! r05_char_left('-', &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
-    eScannedFiles_b_1 = bb_1;
-    eScannedFiles_e_1 = be_1;
-    eFolders_b_1 = bb_2;
-    eFolders_e_1 = be_2;
-    eFiles_b_1 = bb_0;
-    eFiles_e_1 = be_0;
+    eScannedFiles_b_1 = bb[1];
+    eScannedFiles_e_1 = be[1];
+    eFolders_b_1 = bb[2];
+    eFolders_e_1 = be[2];
+    eFiles_b_1 = bb[0];
+    eFiles_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eFiles_b_1, eFiles_e_1 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eFolders_b_1, eFolders_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tCompiler_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseFileNamesOnly, "DoParseFileNamesOnly");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[7]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tCompiler_1);
+    r05_splice_evar(n[3], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_evar(n[6], eFolders_b_1, eFolders_e_1);
+    r05_splice_evar(n[8], eFiles_b_1, eFiles_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tCompiler_1;
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
@@ -586,127 +403,96 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
     struct r05_node *eNextFileName_e_1;
     struct r05_node *eOptions_b_1;
     struct r05_node *eOptions_e_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( e.NextFileName ) e.Options
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) ( e.NextFileName  ) e.Options */
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eScannedFiles_b_1 = bb_1;
-    eScannedFiles_e_1 = be_1;
-    eFolders_b_1 = bb_2;
-    eFolders_e_1 = be_2;
-    eNextFileName_b_1 = bb_3;
-    eNextFileName_e_1 = be_3;
-    eOptions_b_1 = bb_0;
-    eOptions_e_1 = be_0;
+    eScannedFiles_b_1 = bb[1];
+    eScannedFiles_e_1 = be[1];
+    eFolders_b_1 = bb[2];
+    eFolders_e_1 = be[2];
+    eNextFileName_b_1 = bb[3];
+    eNextFileName_e_1 = be[3];
+    eOptions_b_1 = bb[0];
+    eOptions_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseCommandLine, "DoParseCommandLine" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eOptions_b_1, eOptions_e_1 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eFolders_b_1, eFolders_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n2, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eNextFileName_b_1, eNextFileName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tCompiler_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseCommandLine, "DoParseCommandLine");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[8], n[10]);
+    r05_link_brackets(n[2], n[7]);
+    r05_link_brackets(n[4], n[6]);
+    r05_splice_tvar(n[1], tCompiler_1);
+    r05_splice_evar(n[3], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_evar(n[5], eNextFileName_b_1, eNextFileName_e_1);
+    r05_splice_evar(n[9], eFolders_b_1, eFolders_e_1);
+    r05_splice_evar(n[11], eOptions_b_1, eOptions_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
     struct r05_node *eFolders_b_1;
     struct r05_node *eFolders_e_1;
     struct r05_node *tCompiler_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eScannedFiles_b_1 = bb_2;
-    eScannedFiles_e_1 = be_2;
-    eFolders_b_1 = bb_1;
-    eFolders_e_1 = be_1;
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    eScannedFiles_b_1 = bb[2];
+    eScannedFiles_e_1 = be[2];
+    eFolders_b_1 = bb[1];
+    eFolders_e_1 = be[1];
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eFolders_b_1, eFolders_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tCompiler_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_tvar(n[0], tCompiler_1);
+    r05_splice_evar(n[2], eFolders_b_1, eFolders_e_1);
+    r05_splice_evar(n[4], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -716,12 +502,8 @@ static enum r05_fnresult r05c_DoParseCommandLine(struct r05_node *arg_begin, str
 }
 
 static enum r05_fnresult r05c_DoParseFileNamesOnly(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tCompiler_1;
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
@@ -729,116 +511,90 @@ static enum r05_fnresult r05c_DoParseFileNamesOnly(struct r05_node *arg_begin, s
     struct r05_node *eNextFileName_e_1;
     struct r05_node *eFiles_b_1;
     struct r05_node *eFiles_e_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders ) ( e.NextFileName ) e.Files
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) ( e.NextFileName  ) e.Files */
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eScannedFiles_b_1 = bb_1;
-    eScannedFiles_e_1 = be_1;
-    // Unused closed variable e.Folders
-    eNextFileName_b_1 = bb_3;
-    eNextFileName_e_1 = be_3;
-    eFiles_b_1 = bb_0;
-    eFiles_e_1 = be_0;
+    eScannedFiles_b_1 = bb[1];
+    eScannedFiles_e_1 = be[1];
+    /* Unused closed variable e.Folders*/
+    eNextFileName_b_1 = bb[3];
+    eNextFileName_e_1 = be[3];
+    eFiles_b_1 = bb[0];
+    eFiles_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseFileNamesOnly, "DoParseFileNamesOnly" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eFiles_b_1, eFiles_e_1 );
-    refalrts::link_brackets( n2, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eNextFileName_b_1, eNextFileName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tCompiler_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseFileNamesOnly, "DoParseFileNamesOnly");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[2], n[7]);
+    r05_link_brackets(n[4], n[6]);
+    r05_splice_tvar(n[1], tCompiler_1);
+    r05_splice_evar(n[3], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_evar(n[5], eNextFileName_b_1, eNextFileName_e_1);
+    r05_splice_evar(n[8], eFiles_b_1, eFiles_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eScannedFiles_b_1;
     struct r05_node *eScannedFiles_e_1;
     struct r05_node *eFolders_b_1;
     struct r05_node *eFolders_e_1;
     struct r05_node *tCompiler_1;
-    // t.Compiler ( e.ScannedFiles ) ( e.Folders )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.Compiler ( e.ScannedFiles  ) ( e.Folders  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eScannedFiles_b_1 = bb_2;
-    eScannedFiles_e_1 = be_2;
-    eFolders_b_1 = bb_1;
-    eFolders_e_1 = be_1;
-    if (! r05_tvar_left(&tCompiler_1, &bb_0, &be_0))
+    eScannedFiles_b_1 = bb[2];
+    eScannedFiles_e_1 = be[2];
+    eFolders_b_1 = bb[1];
+    eFolders_e_1 = be[1];
+    if (! r05_tvar_left(&tCompiler_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eScannedFiles_b_1, eScannedFiles_e_1 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eFolders_b_1, eFolders_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tCompiler_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_tvar(n[0], tCompiler_1);
+    r05_splice_evar(n[2], eFolders_b_1, eFolders_e_1);
+    r05_splice_evar(n[4], eScannedFiles_b_1, eScannedFiles_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -848,4 +604,4 @@ static enum r05_fnresult r05c_DoParseFileNamesOnly(struct r05_node *arg_begin, s
 }
 
 
-//End of file
+/* End of file */

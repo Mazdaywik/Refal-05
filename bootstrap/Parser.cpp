@@ -1,4 +1,4 @@
-// Automatically generated file. Don't edit!
+/* Automatically generated file. Don't edit! */
 #include "refalrts.h"
 
 
@@ -103,158 +103,72 @@ static enum r05_fnresult r05c_BracketPairName(struct r05_node *arg_begin, struct
 static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eSrcName_b_1;
     struct r05_node *eSrcName_e_1;
     struct r05_node *eOutputName_b_1;
     struct r05_node *eOutputName_e_1;
-    struct r05_node *eSrcName_b_2;
-    struct r05_node *eSrcName_e_2;
-    struct r05_node *eSrcName_b_3;
-    struct r05_node *eSrcName_e_3;
-    // ( e.SrcName ) e.OutputName
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[20] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.SrcName  ) e.OutputName */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eSrcName_b_1 = bb_1;
-    eSrcName_e_1 = be_1;
-    eOutputName_b_1 = bb_0;
-    eOutputName_e_1 = be_0;
+    eSrcName_b_1 = bb[1];
+    eSrcName_e_1 = be[1];
+    eOutputName_b_1 = bb[0];
+    eOutputName_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eSrcName_b_2, eSrcName_e_2, eSrcName_b_1, eSrcName_e_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eSrcName_b_3, eSrcName_e_3, eSrcName_b_2, eSrcName_e_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Fetch, "Fetch" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_LexFolding, "LexFolding" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_Seq, "Seq" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_PrepareBracket, "PrepareBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_Pass_Lexer, "Pass_Lexer" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_name( n16, r05c_Pass_CheckUnresolved, "Pass_CheckUnresolved" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_open_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_name( n18, r05c_Pass_Final, "Pass_Final" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_open_bracket( n19 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_bracket( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_open_bracket( n21 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n22 = 0;
-    if( ! refalrts::alloc_close_bracket( n22 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n23 = 0;
-    if( ! refalrts::alloc_close_bracket( n23 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n24 = 0;
-    if( ! refalrts::alloc_close_call( n24 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n25 = 0;
-    if( ! refalrts::alloc_close_call( n25 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n25 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n25 );
-    refalrts::push_stack( n24 );
-    refalrts::push_stack( n5 );
-    res = refalrts::splice_elem( res, n24 );
-    refalrts::link_brackets( n17, n23 );
-    res = refalrts::splice_elem( res, n23 );
-    refalrts::link_brackets( n21, n22 );
-    res = refalrts::splice_elem( res, n22 );
-    res = refalrts::splice_evar( res, eOutputName_b_1, eOutputName_e_1 );
-    res = refalrts::splice_elem( res, n21 );
-    refalrts::link_brackets( n19, n20 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_evar( res, eSrcName_b_3, eSrcName_e_3 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n11, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n13, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eSrcName_b_2, eSrcName_e_2 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n7, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eSrcName_b_1, eSrcName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_Fetch, "Fetch");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_LexFolding, "LexFolding");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_Seq, "Seq");
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_function(r05c_Map, "Map");
+    r05_alloc_function(r05c_PrepareBracket, "PrepareBracket");
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_Pass_Lexer, "Pass_Lexer");
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_evar(eSrcName_b_1, eSrcName_e_1);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_function(r05c_Pass_CheckUnresolved, "Pass_CheckUnresolved");
+    r05_alloc_open_bracket(n[11]);
+    r05_alloc_function(r05c_Pass_Final, "Pass_Final");
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_evar(eSrcName_b_1, eSrcName_e_1);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_open_bracket(n[14]);
+    r05_alloc_insert_pos(n[15]);
+    r05_alloc_close_bracket(n[16]);
+    r05_alloc_close_bracket(n[17]);
+    r05_alloc_close_call(n[18]);
+    r05_alloc_close_call(n[19]);
+    r05_push_stack(n[19]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[18]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[11], n[17]);
+    r05_link_brackets(n[14], n[16]);
+    r05_link_brackets(n[12], n[13]);
+    r05_link_brackets(n[7], n[10]);
+    r05_link_brackets(n[8], n[9]);
+    r05_link_brackets(n[5], n[6]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[2], eSrcName_b_1, eSrcName_e_1);
+    r05_splice_evar(n[15], eOutputName_b_1, eOutputName_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -264,204 +178,153 @@ enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *
 }
 
 static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tSrcPos_1;
-    // ( & TkOpenBracket t.SrcPos )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & TkOpenBracket t.SrcPos  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkOpenBracket, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkOpenBracket, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_TkOpen, "TkOpen" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_TkOpenBracket, "TkOpenBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_TkOpen, "TkOpen");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_function(r05c_TkOpenBracket, "TkOpenBracket");
+    r05_alloc_close_bracket(n[2]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_tvar(n[1], tSrcPos_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tSrcPos_1;
-    // ( & TkCloseBracket t.SrcPos )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & TkCloseBracket t.SrcPos  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseBracket, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkCloseBracket, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_TkClose, "TkClose" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_TkCloseBracket, "TkCloseBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_TkClose, "TkClose");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_function(r05c_TkCloseBracket, "TkCloseBracket");
+    r05_alloc_close_bracket(n[2]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_tvar(n[1], tSrcPos_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tSrcPos_1;
-    // ( & TkOpenCall t.SrcPos )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & TkOpenCall t.SrcPos  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkOpenCall, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkOpenCall, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_TkOpen, "TkOpen" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_TkOpenCall, "TkOpenCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_TkOpen, "TkOpen");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_function(r05c_TkOpenCall, "TkOpenCall");
+    r05_alloc_close_bracket(n[2]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_tvar(n[1], tSrcPos_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tSrcPos_1;
-    // ( & TkCloseCall t.SrcPos )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & TkCloseCall t.SrcPos  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseCall, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkCloseCall, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_TkClose, "TkClose" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_TkCloseCall, "TkCloseCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_TkClose, "TkClose");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_function(r05c_TkCloseCall, "TkCloseCall");
+    r05_alloc_close_bracket(n[2]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_tvar(n[1], tSrcPos_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tOtherToken_1;
-    // t.OtherToken
-    if (! r05_tvar_left(&tOtherToken_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.OtherToken */
+    if (! r05_tvar_left(&tOtherToken_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_stvar( res, tOtherToken_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_splice_tvar(n[0], tOtherToken_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -471,83 +334,50 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
 }
 
 static enum r05_fnresult r05c_Pass_Lexer(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eSrcName_b_1;
     struct r05_node *eSrcName_e_1;
     struct r05_node *eLexFolding_b_1;
     struct r05_node *eLexFolding_e_1;
-    // ( e.SrcName ) e.LexFolding
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.SrcName  ) e.LexFolding */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eSrcName_b_1 = bb_1;
-    eSrcName_e_1 = be_1;
-    eLexFolding_b_1 = bb_0;
-    eLexFolding_e_1 = be_0;
+    eSrcName_b_1 = bb[1];
+    eSrcName_e_1 = be[1];
+    eLexFolding_b_1 = bb[0];
+    eLexFolding_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements, "ParseElements" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_Create, "EL_Create" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_ST_Create, "ST_Create" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eLexFolding_b_1, eLexFolding_e_1 );
-    refalrts::link_brackets( n8, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n5 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eSrcName_b_1, eSrcName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements, "ParseElements");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_Create, "EL_Create");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ST_Create, "ST_Create");
+    r05_alloc_close_call(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[6], n[7]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[2], eSrcName_b_1, eSrcName_e_1);
+    r05_splice_evar(n[8], eLexFolding_b_1, eLexFolding_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -557,45 +387,38 @@ static enum r05_fnresult r05c_Pass_Lexer(struct r05_node *arg_begin, struct r05_
 }
 
 static enum r05_fnresult r05c_Pass_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eLines_b_1;
     struct r05_node *eLines_e_1;
-    // t.ErrorList t.SymTable e.Lines
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[4] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable e.Lines */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eLines_b_1 = bb_0;
-    eLines_e_1 = be_0;
+    eLines_b_1 = bb[0];
+    eLines_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ST_CheckUnresolved, "ST_CheckUnresolved" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eLines_b_1, eLines_e_1 );
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ST_CheckUnresolved, "ST_CheckUnresolved");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[3], eLines_b_1, eLines_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -605,12 +428,8 @@ static enum r05_fnresult r05c_Pass_CheckUnresolved(struct r05_node *arg_begin, s
 }
 
 static enum r05_fnresult r05c_Pass_Final(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eSrcName_b_1;
     struct r05_node *eSrcName_e_1;
     struct r05_node *eOutputName_b_1;
@@ -619,95 +438,61 @@ static enum r05_fnresult r05c_Pass_Final(struct r05_node *arg_begin, struct r05_
     struct r05_node *tSymTable_1;
     struct r05_node *eLines_b_1;
     struct r05_node *eLines_e_1;
-    // ( e.SrcName ) ( e.OutputName ) t.ErrorList t.SymTable e.Lines
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.SrcName  ) ( e.OutputName  ) t.ErrorList t.SymTable e.Lines */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eSrcName_b_1 = bb_1;
-    eSrcName_e_1 = be_1;
-    eOutputName_b_1 = bb_2;
-    eOutputName_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eSrcName_b_1 = bb[1];
+    eSrcName_e_1 = be[1];
+    eOutputName_b_1 = bb[2];
+    eOutputName_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eLines_b_1 = bb_0;
-    eLines_e_1 = be_0;
+    eLines_b_1 = bb[0];
+    eLines_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ST_Destroy, "ST_Destroy" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_Pass_Final_SwNoErrors, "Pass_Final_SwNoErrors" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_EL_Destroy, "EL_Destroy" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_call( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_call( n12 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n12 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::push_stack( n11 );
-    refalrts::push_stack( n9 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eLines_b_1, eLines_e_1 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eOutputName_b_1, eOutputName_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eSrcName_b_1, eSrcName_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ST_Destroy, "ST_Destroy");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_Pass_Final_SwNoErrors, "Pass_Final_SwNoErrors");
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_open_call(n[11]);
+    r05_alloc_function(r05c_EL_Destroy, "EL_Destroy");
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[11]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[4], n[6]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[5], eSrcName_b_1, eSrcName_e_1);
+    r05_splice_evar(n[8], eOutputName_b_1, eOutputName_e_1);
+    r05_splice_evar(n[10], eLines_b_1, eLines_e_1);
+    r05_splice_tvar(n[12], tErrorList_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -717,143 +502,87 @@ static enum r05_fnresult r05c_Pass_Final(struct r05_node *arg_begin, struct r05_
 }
 
 static enum r05_fnresult r05c_Pass_Final_SwNoErrors(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eSrcName_b_1;
     struct r05_node *eSrcName_e_1;
     struct r05_node *eOutputName_b_1;
     struct r05_node *eOutputName_e_1;
     struct r05_node *eLines_b_1;
     struct r05_node *eLines_e_1;
-    struct r05_node *eOutputName_b_2;
-    struct r05_node *eOutputName_e_2;
-    struct r05_node *eOutputName_b_3;
-    struct r05_node *eOutputName_e_3;
-    // ( e.SrcName ) ( e.OutputName ) e.Lines & EL_NoErrors
-    if (! r05_function_right(r05c_EL_NoErrors, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.SrcName  ) ( e.OutputName  ) e.Lines & EL_NoErrors */
+    if (! r05_function_right(r05c_EL_NoErrors, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eSrcName_b_1 = bb_1;
-    eSrcName_e_1 = be_1;
-    eOutputName_b_1 = bb_2;
-    eOutputName_e_1 = be_2;
-    eLines_b_1 = bb_0;
-    eLines_e_1 = be_0;
+    eSrcName_b_1 = bb[1];
+    eSrcName_e_1 = be[1];
+    eOutputName_b_1 = bb[2];
+    eOutputName_e_1 = be[2];
+    eLines_b_1 = bb[0];
+    eLines_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eOutputName_b_2, eOutputName_e_2, eOutputName_b_1, eOutputName_e_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eOutputName_b_3, eOutputName_e_3, eOutputName_b_2, eOutputName_e_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_SaveFile, "SaveFile" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_GenPostprocess, "GenPostprocess" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_call( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_Success, "Success" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eOutputName_b_3, eOutputName_e_3 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::push_stack( n11 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eLines_b_1, eLines_e_1 );
-    refalrts::link_brackets( n8, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eOutputName_b_2, eOutputName_e_2 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eSrcName_b_1, eSrcName_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eOutputName_b_1, eOutputName_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_SaveFile, "SaveFile");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_GenPostprocess, "GenPostprocess");
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_evar(eOutputName_b_1, eOutputName_e_1);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_alloc_function(r05c_Success, "Success");
+    r05_alloc_evar(eOutputName_b_1, eOutputName_e_1);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[8], n[9]);
+    r05_link_brackets(n[5], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eOutputName_b_1, eOutputName_e_1);
+    r05_splice_evar(n[6], eSrcName_b_1, eSrcName_e_1);
+    r05_splice_evar(n[10], eLines_b_1, eLines_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // ( e.SrcName ) ( e.OutputName ) e.Lines & EL_HasErrors
-    if (! r05_function_right(r05c_EL_HasErrors, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.SrcName  ) ( e.OutputName  ) e.Lines & EL_HasErrors */
+    if (! r05_function_right(r05c_EL_HasErrors, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    // Unused closed variable e.SrcName
-    // Unused closed variable e.OutputName
-    // Unused closed variable e.Lines
+    /* Unused closed variable e.SrcName*/
+    /* Unused closed variable e.OutputName*/
+    /* Unused closed variable e.Lines*/
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_Fails, "Fails" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_Fails, "Fails");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -863,189 +592,128 @@ static enum r05_fnresult r05c_Pass_Final_SwNoErrors(struct r05_node *arg_begin, 
 }
 
 static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tSrcPos_1;
-    struct r05_node *tSymTable_2;
-    // t.ErrorList t.SymTable ( e.Generated ) ( & TkEOF t.SrcPos )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Generated  ) ( & TkEOF t.SrcPos  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkEOF, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkEOF, &bb[1], &be[1]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_2;
-    eGenerated_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[2];
+    eGenerated_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tSymTable_2, tSymTable_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_GenDeclaration, "GenDeclaration" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_ST_AllFunctions, "ST_AllFunctions" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tSymTable_2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_Map, "Map");
+    r05_alloc_function(r05c_GenDeclaration, "GenDeclaration");
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_ST_AllFunctions, "ST_AllFunctions");
+    r05_alloc_tvar(tSymTable_1);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_link_brackets(n[5], n[6]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[2]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_evar(n[7], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sDirective_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( e.Generated ) ( & TkDirective t.SrcPos s.Directive ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *sDirective_1;
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[9] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Generated  ) ( & TkDirective t.SrcPos s.Directive  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkDirective, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkDirective, &bb[2], &be[2]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_svar_left(&sDirective_1, &bb_2, &be_2))
+    if (! r05_svar_left(&sDirective_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements_DirectiveParsed, "ParseElements_DirectiveParsed" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_ParseElement_SwDirective, "ParseElement_SwDirective" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, sDirective_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements_DirectiveParsed, "ParseElements_DirectiveParsed");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ParseElement_SwDirective, "ParseElement_SwDirective");
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_svar(sDirective_1);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_alloc_close_call(n[8]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_tvar(n[5], tErrorList_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_evar(n[6], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eGenerated_b_1;
@@ -1055,121 +723,73 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *tSrcPos_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    struct r05_node *eName_b_2;
-    struct r05_node *eName_e_2;
-    // t.ErrorList t.SymTable ( e.Generated ) ( & TkName t.SrcPos e.Name ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Generated  ) ( & TkName t.SrcPos e.Name  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkName, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkName, &bb[2], &be[2]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    eName_b_1 = bb_2;
-    eName_e_1 = be_2;
+    eName_b_1 = bb[2];
+    eName_e_1 = be[2];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements_FunctionParsed, "ParseElements_FunctionParsed" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_ParseFunction, "ParseFunction" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_GN_Local, "GN_Local" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_ST_AddDefined, "ST_AddDefined" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_name( n11, r05c_GN_Local, "GN_Local" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_call( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_call( n14 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n14 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n14 );
-    refalrts::push_stack( n13 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::push_stack( n12 );
-    refalrts::push_stack( n9 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements_FunctionParsed, "ParseElements_FunctionParsed");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ParseFunction, "ParseFunction");
+    r05_alloc_function(r05c_GN_Local, "GN_Local");
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_open_call(n[8]);
+    r05_alloc_function(r05c_ST_AddDefined, "ST_AddDefined");
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_function(r05c_GN_Local, "GN_Local");
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_evar(eName_b_1, eName_e_1);
+    r05_alloc_close_call(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[8]);
+    r05_link_brackets(n[5], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[6], eName_b_1, eName_e_1);
+    r05_splice_tvar(n[9], tErrorList_1);
+    r05_splice_tvar(n[9], tSymTable_1);
+    r05_splice_tvar(n[10], tSrcPos_1);
+    r05_splice_evar(n[12], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eGenerated_b_1;
@@ -1177,69 +797,53 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( e.Generated ) ( & TkSemicolon t.SrcPos ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Generated  ) ( & TkSemicolon t.SrcPos  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkSemicolon, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkSemicolon, &bb[2], &be[2]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements, "ParseElements" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements, "ParseElements");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[3], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[5], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eGenerated_b_1;
@@ -1250,93 +854,67 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *eTail_e_1;
     struct r05_node *sRow_1;
     struct r05_node *sCol_1;
-    // t.ErrorList t.SymTable ( e.Generated ) ( & TkNative ( s.Row s.Col ) e.Code ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Generated  ) ( & TkNative ( s.Row s.Col  ) e.Code  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkNative, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkNative, &bb[2], &be[2]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_2, &be_2))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[2], &be[2]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    eCode_b_1 = bb_2;
-    eCode_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sRow_1, &bb_3, &be_3))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    eCode_b_1 = bb[2];
+    eCode_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sRow_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sCol_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sCol_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements, "ParseElements" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_GenNative, "GenNative" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n2, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eCode_b_1, eCode_e_1 );
-    res = refalrts::splice_stvar( res, sRow_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements, "ParseElements");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_GenNative, "GenNative");
+    r05_alloc_svar(sRow_1);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[2], n[7]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[3], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[5], eCode_b_1, eCode_e_1);
+    r05_splice_evar(n[8], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eGenerated_b_1;
@@ -1344,73 +922,51 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // t.ErrorList t.SymTable ( e.Generated ) t.Unexpected e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Generated  ) t.Unexpected e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements, "ParseElements" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "directive or name", 17) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements, "ParseElements");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("directive or name", 17);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[7]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tUnexpected_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_evar(n[6], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[8], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -1420,86 +976,66 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
 }
 
 static enum r05_fnresult r05c_GenDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    // ( & GN_Entry e.Name )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & GN_Entry e.Name  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_GN_Entry, &bb_1, &be_1))
+    if (! r05_function_left(r05c_GN_Entry, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_GenExtern, "GenExtern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_GenExtern, "GenExtern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[1], eName_b_1, eName_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    // ( & GN_Local e.Name )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & GN_Local e.Name  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_GN_Local, &bb_1, &be_1))
+    if (! r05_function_left(r05c_GN_Local, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_GenForward, "GenForward" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_GenForward, "GenForward");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[1], eName_b_1, eName_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -1509,12 +1045,8 @@ static enum r05_fnresult r05c_GenDeclaration(struct r05_node *arg_begin, struct 
 }
 
 static enum r05_fnresult r05c_ParseElements_DirectiveParsed(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *eNewGenerated_b_1;
@@ -1523,58 +1055,46 @@ static enum r05_fnresult r05c_ParseElements_DirectiveParsed(struct r05_node *arg
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // ( e.Generated ) ( e.NewGenerated ) t.ErrorList t.SymTable e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) ( e.NewGenerated  ) t.ErrorList t.SymTable e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    eNewGenerated_b_1 = bb_2;
-    eNewGenerated_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    eNewGenerated_b_1 = bb[2];
+    eNewGenerated_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements, "ParseElements" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eNewGenerated_b_1, eNewGenerated_e_1 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements, "ParseElements");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[3], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[3], eNewGenerated_b_1, eNewGenerated_e_1);
+    r05_splice_evar(n[5], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -1584,12 +1104,8 @@ static enum r05_fnresult r05c_ParseElements_DirectiveParsed(struct r05_node *arg
 }
 
 static enum r05_fnresult r05c_ParseElements_FunctionParsed(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *eNewGenerated_b_1;
@@ -1598,58 +1114,46 @@ static enum r05_fnresult r05c_ParseElements_FunctionParsed(struct r05_node *arg_
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // ( e.Generated ) ( e.NewGenerated ) t.ErrorList t.SymTable e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) ( e.NewGenerated  ) t.ErrorList t.SymTable e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    eNewGenerated_b_1 = bb_2;
-    eNewGenerated_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    eNewGenerated_b_1 = bb[2];
+    eNewGenerated_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseElements, "ParseElements" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eNewGenerated_b_1, eNewGenerated_e_1 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseElements, "ParseElements");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[3], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[3], eNewGenerated_b_1, eNewGenerated_e_1);
+    r05_splice_evar(n[5], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -1659,48 +1163,40 @@ static enum r05_fnresult r05c_ParseElements_FunctionParsed(struct r05_node *arg_
 }
 
 static enum r05_fnresult r05c_ScopeClassFromEnumDirective(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & EEnum
-    if (! r05_function_left(r05c_EEnum, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & EEnum */
+    if (! r05_function_left(r05c_EEnum, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_GN_Entry, "GN_Entry" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_GN_Entry, "GN_Entry");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & Enum
-    if (! r05_function_left(r05c_Enum, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & Enum */
+    if (! r05_function_left(r05c_Enum, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_GN_Local, "GN_Local" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_GN_Local, "GN_Local");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -1710,12 +1206,8 @@ static enum r05_fnresult r05c_ScopeClassFromEnumDirective(struct r05_node *arg_b
 }
 
 static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
@@ -1723,270 +1215,187 @@ static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begi
     struct r05_node *tSrcPos_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    struct r05_node *eName_b_2;
-    struct r05_node *eName_e_2;
-    // t.ErrorList t.SymTable & Entry ( & TkName t.SrcPos e.Name ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable & Entry ( & TkName t.SrcPos e.Name  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Entry, &bb_0, &be_0))
+    if (! r05_function_left(r05c_Entry, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkName, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkName, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseFunction, "ParseFunction" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_GN_Entry, "GN_Entry" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_ST_AddDefined, "ST_AddDefined" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_GN_Entry, "GN_Entry" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n5 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseFunction, "ParseFunction");
+    r05_alloc_function(r05c_GN_Entry, "GN_Entry");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ST_AddDefined, "ST_AddDefined");
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_function(r05c_GN_Entry, "GN_Entry");
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_evar(eName_b_1, eName_e_1);
+    r05_alloc_close_call(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eName_b_1, eName_e_1);
+    r05_splice_tvar(n[5], tErrorList_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_tvar(n[6], tSrcPos_1);
+    r05_splice_evar(n[8], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *tUnexpected_2;
-    // t.ErrorList t.SymTable & Entry t.Unexpected e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable & Entry t.Unexpected e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Entry, &bb_0, &be_0))
+    if (! r05_function_left(r05c_Entry, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "function name", 13) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_close_bracket(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_chars("function name", 13);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[6]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_tvar(n[3], tErrorList_1);
+    r05_splice_tvar(n[3], tUnexpected_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_evar(n[6], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // t.ErrorList t.SymTable & Extern e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable & Extern e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Extern, &bb_0, &be_0))
+    if (! r05_function_left(r05c_Extern, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ParseNameList_Extern, "ParseNameList_Extern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_close_bracket(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_ParseNameList_Extern, "ParseNameList_Extern");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_tvar(n[3], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[3], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *sDirective_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // t.ErrorList t.SymTable s.Directive e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable s.Directive e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sDirective_1, &bb_0, &be_0))
+    if (! r05_svar_left(&sDirective_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseNameList_Enum, "ParseNameList_Enum" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_ScopeClassFromEnumDirective, "ScopeClassFromEnumDirective" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_stvar( res, sDirective_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseNameList_Enum, "ParseNameList_Enum");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ScopeClassFromEnumDirective, "ScopeClassFromEnumDirective");
+    r05_alloc_svar(sDirective_1);
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[1], n[2]);
+    r05_splice_tvar(n[3], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[6], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -1996,12 +1405,8 @@ static enum r05_fnresult r05c_ParseElement_SwDirective(struct r05_node *arg_begi
 }
 
 static enum r05_fnresult r05c_ParseNameList_Enum(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *tErrorList_1;
@@ -2012,182 +1417,124 @@ static enum r05_fnresult r05c_ParseNameList_Enum(struct r05_node *arg_begin, str
     struct r05_node *tSrcPos_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    struct r05_node *sScopeClass_2;
-    struct r05_node *sScopeClass_3;
-    struct r05_node *eName_b_2;
-    struct r05_node *eName_e_2;
-    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkName t.SrcPos e.Name ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) t.ErrorList t.SymTable s.ScopeClass ( & TkName t.SrcPos e.Name  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkName, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkName, &bb[2], &be[2]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    eName_b_1 = bb_2;
-    eName_e_1 = be_2;
+    eName_b_1 = bb[2];
+    eName_e_1 = be[2];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sScopeClass_2, sScopeClass_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sScopeClass_3, sScopeClass_2 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseNameList_Tail_Enum, "ParseNameList_Tail_Enum" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_GenEnum, "GenEnum" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_ST_AddDefined, "ST_AddDefined" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_3 );
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n7 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n2, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseNameList_Tail_Enum, "ParseNameList_Tail_Enum");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_GenEnum, "GenEnum");
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_call(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_call(n[7]);
+    r05_alloc_function(r05c_ST_AddDefined, "ST_AddDefined");
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_evar(eName_b_1, eName_e_1);
+    r05_alloc_close_call(n[10]);
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[10]);
+    r05_push_stack(n[7]);
+    r05_link_brackets(n[1], n[6]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_splice_evar(n[2], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_evar(n[4], eName_b_1, eName_e_1);
+    r05_splice_tvar(n[8], tErrorList_1);
+    r05_splice_tvar(n[8], tSymTable_1);
+    r05_splice_tvar(n[9], tSrcPos_1);
+    r05_splice_evar(n[11], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
+    struct r05_node *sScopeClass_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sScopeClass_1;
-    struct r05_node *tUnexpected_2;
-    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "function name", 13) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_chars("function name", 13);
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[7]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tUnexpected_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_evar(n[7], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2197,12 +1544,8 @@ static enum r05_fnresult r05c_ParseNameList_Enum(struct r05_node *arg_begin, str
 }
 
 static enum r05_fnresult r05c_ParseNameList_Tail_Enum(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *tErrorList_1;
@@ -2211,198 +1554,158 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Enum(struct r05_node *arg_begin
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkComma t.SrcPos ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) t.ErrorList t.SymTable s.ScopeClass ( & TkComma t.SrcPos  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkComma, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkComma, &bb[2], &be[2]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseNameList_Enum, "ParseNameList_Enum" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseNameList_Enum, "ParseNameList_Enum");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_evar(n[5], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
+    struct r05_node *sScopeClass_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sScopeClass_1;
     struct r05_node *tSrcPos_1;
-    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass ( & TkSemicolon t.SrcPos ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[4] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) t.ErrorList t.SymTable s.ScopeClass ( & TkSemicolon t.SrcPos  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkSemicolon, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkSemicolon, &bb[2], &be[2]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_tvar(n[3], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[3], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eGenerated_b_1;
     struct r05_node *eGenerated_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
+    struct r05_node *sScopeClass_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sScopeClass_1;
-    struct r05_node *tUnexpected_2;
-    // ( e.Generated ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Generated  ) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eGenerated_b_1 = bb_1;
-    eGenerated_e_1 = be_1;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eGenerated_b_1 = bb[1];
+    eGenerated_e_1 = be[1];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "comma or semicolon", 18) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eGenerated_b_1, eGenerated_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_chars("comma or semicolon", 18);
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[7]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eGenerated_b_1, eGenerated_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tUnexpected_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_evar(n[7], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2412,127 +1715,97 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Enum(struct r05_node *arg_begin
 }
 
 static enum r05_fnresult r05c_ParseNameList_Extern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( & TkName t.SrcPos e.Name ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkName t.SrcPos e.Name  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkName, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkName, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseNameList_Tail_Extern, "ParseNameList_Tail_Extern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ST_AddDeclared, "ST_AddDeclared" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseNameList_Tail_Extern, "ParseNameList_Tail_Extern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_ST_AddDeclared, "ST_AddDeclared");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[3], eName_b_1, eName_e_1);
+    r05_splice_evar(n[5], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *tUnexpected_2;
-    // t.ErrorList t.SymTable t.Unexpected e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.Unexpected e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "function name", 13) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("function name", 13);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tUnexpected_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2542,148 +1815,124 @@ static enum r05_fnresult r05c_ParseNameList_Extern(struct r05_node *arg_begin, s
 }
 
 static enum r05_fnresult r05c_ParseNameList_Tail_Extern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( & TkComma t.SrcPos ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkComma t.SrcPos  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkComma, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkComma, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseNameList_Extern, "ParseNameList_Extern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseNameList_Extern, "ParseNameList_Extern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[1], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( & TkSemicolon t.SrcPos ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkSemicolon t.SrcPos  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkSemicolon, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkSemicolon, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_evar(n[0], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *tUnexpected_2;
-    // t.ErrorList t.SymTable t.Unexpected e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.Unexpected e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "comma or semicolon", 18) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("comma or semicolon", 18);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tUnexpected_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2693,12 +1942,8 @@ static enum r05_fnresult r05c_ParseNameList_Tail_Extern(struct r05_node *arg_beg
 }
 
 static enum r05_fnresult r05c_ParseFunction(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *sScopeClass_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
@@ -2707,149 +1952,106 @@ static enum r05_fnresult r05c_ParseFunction(struct r05_node *arg_begin, struct r
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // s.ScopeClass ( e.Name ) t.ErrorList t.SymTable ( & TkOpenBlock t.SrcPos ) e.Tail
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.ScopeClass ( e.Name  ) t.ErrorList t.SymTable ( & TkOpenBlock t.SrcPos  ) e.Tail */
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkOpenBlock, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkOpenBlock, &bb[2], &be[2]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseFunction_BlockParsed, "ParseFunction_BlockParsed" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_ParseBlock, "ParseBlock" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseFunction_BlockParsed, "ParseFunction_BlockParsed");
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ParseBlock, "ParseBlock");
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eName_b_1, eName_e_1);
+    r05_splice_tvar(n[5], tErrorList_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_evar(n[5], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
+    struct r05_node *sScopeClass_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sScopeClass_1;
-    struct r05_node *tUnexpected_2;
-    // s.ScopeClass ( e.Name ) t.ErrorList t.SymTable t.Unexpected e.Tail
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.ScopeClass ( e.Name  ) t.ErrorList t.SymTable t.Unexpected e.Tail */
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    // Unused closed variable e.Name
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    /* Unused closed variable e.Name*/
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "open brace", 10) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_close_bracket(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_chars("open brace", 10);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[6]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_tvar(n[3], tErrorList_1);
+    r05_splice_tvar(n[3], tUnexpected_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_evar(n[6], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2871,12 +2073,8 @@ static enum r05_fnresult r05c_Native(struct r05_node *, struct r05_node *) {
 }
 
 static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *sScopeClass_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
@@ -2886,80 +2084,58 @@ static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_beg
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // s.ScopeClass ( e.Name ) ( & Sentences e.Sentences ) t.ErrorList t.SymTable e.Tail
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[9] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.ScopeClass ( e.Name  ) ( & Sentences e.Sentences  ) t.ErrorList t.SymTable e.Tail */
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Sentences, &bb_2, &be_2))
+    if (! r05_function_left(r05c_Sentences, &bb[2], &be[2]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
-    eSentences_b_1 = bb_2;
-    eSentences_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
+    eSentences_b_1 = bb[2];
+    eSentences_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_open_call( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_GenFunctionBody, "GenFunctionBody" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::link_brackets( n0, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_GenFunctionBody, "GenFunctionBody");
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_link_brackets(n[0], n[7]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[1]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_evar(n[3], eName_b_1, eName_e_1);
+    r05_splice_evar(n[5], eSentences_b_1, eSentences_e_1);
+    r05_splice_tvar(n[8], tErrorList_1);
+    r05_splice_tvar(n[8], tSymTable_1);
+    r05_splice_evar(n[8], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *sScopeClass_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
@@ -2970,94 +2146,64 @@ static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_beg
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // s.ScopeClass ( e.Name ) ( & Native s.LineNo e.Code ) t.ErrorList t.SymTable e.Tail
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[11] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.ScopeClass ( e.Name  ) ( & Native s.LineNo e.Code  ) t.ErrorList t.SymTable e.Tail */
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Native, &bb_2, &be_2))
+    if (! r05_function_left(r05c_Native, &bb[2], &be[2]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
-    if (! r05_svar_left(&sLineNo_1, &bb_2, &be_2))
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
+    if (! r05_svar_left(&sLineNo_1, &bb[2], &be[2]))
       break;
-    eCode_b_1 = bb_2;
-    eCode_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eCode_b_1 = bb[2];
+    eCode_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_open_call( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_GenFnStart, "GenFnStart" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_GenNative, "GenNative" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_GenFnEnd_Success, "GenFnEnd_Success" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::link_brackets( n0, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n7 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eCode_b_1, eCode_e_1 );
-    res = refalrts::splice_stvar( res, sLineNo_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::push_stack( n3 );
-    refalrts::push_stack( n1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_GenFnStart, "GenFnStart");
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_GenNative, "GenNative");
+    r05_alloc_svar(sLineNo_1);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_alloc_open_call(n[7]);
+    r05_alloc_function(r05c_GenFnEnd_Success, "GenFnEnd_Success");
+    r05_alloc_close_call(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_link_brackets(n[0], n[9]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[2], eName_b_1, eName_e_1);
+    r05_splice_evar(n[5], eCode_b_1, eCode_e_1);
+    r05_splice_tvar(n[10], tErrorList_1);
+    r05_splice_tvar(n[10], tSymTable_1);
+    r05_splice_evar(n[10], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3067,96 +2213,57 @@ static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_beg
 }
 
 static enum r05_fnresult r05c_GenFunctionBody(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *sScopeClass_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
     struct r05_node *eSentences_b_1;
     struct r05_node *eSentences_e_1;
-    // s.ScopeClass ( e.Name ) e.Sentences
-    if (! r05_svar_left(&sScopeClass_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.ScopeClass ( e.Name  ) e.Sentences */
+    if (! r05_svar_left(&sScopeClass_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
-    eSentences_b_1 = bb_0;
-    eSentences_e_1 = be_0;
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
+    eSentences_b_1 = bb[0];
+    eSentences_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_GenFnStart, "GenFnStart" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_GenThisIsGeneratedFunction, "GenThisIsGeneratedFunction" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_MakeAlgorithm_and_GenSentence, "MakeAlgorithm_and_GenSentence" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_name( n11, r05c_GenFnEnd, "GenFnEnd" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_call( n12 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n12 );
-    refalrts::push_stack( n10 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, sScopeClass_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_GenFnStart, "GenFnStart");
+    r05_alloc_svar(sScopeClass_1);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_GenThisIsGeneratedFunction, "GenThisIsGeneratedFunction");
+    r05_alloc_close_call(n[4]);
+    r05_alloc_open_call(n[5]);
+    r05_alloc_function(r05c_Map, "Map");
+    r05_alloc_function(r05c_MakeAlgorithm_and_GenSentence, "MakeAlgorithm_and_GenSentence");
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_alloc_open_call(n[8]);
+    r05_alloc_function(r05c_GenFnEnd, "GenFnEnd");
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[1], eName_b_1, eName_e_1);
+    r05_splice_evar(n[6], eSentences_b_1, eSentences_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3166,90 +2273,56 @@ static enum r05_fnresult r05c_GenFunctionBody(struct r05_node *arg_begin, struct
 }
 
 static enum r05_fnresult r05c_MakeAlgorithm_and_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *ePattern_b_1;
     struct r05_node *ePattern_e_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
-    // ( ( e.Pattern ) ( e.Result ) )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( ( e.Pattern  ) ( e.Result  )  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[1], &be[1]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_1, &be_1))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    ePattern_b_1 = bb_2;
-    ePattern_e_1 = be_2;
-    eResult_b_1 = bb_3;
-    eResult_e_1 = be_3;
+    ePattern_b_1 = bb[2];
+    ePattern_e_1 = be[2];
+    eResult_b_1 = bb[3];
+    eResult_e_1 = be[3];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_GenSentence, "GenSentence" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_MakeAlgorithm, "MakeAlgorithm" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_GenSentence, "GenSentence");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_MakeAlgorithm, "MakeAlgorithm");
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_call(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[1]);
+    r05_link_brackets(n[5], n[7]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_evar(n[3], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[6], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3259,12 +2332,8 @@ static enum r05_fnresult r05c_MakeAlgorithm_and_GenSentence(struct r05_node *arg
 }
 
 static enum r05_fnresult r05c_ParseBlock(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eCode_b_1;
@@ -3273,118 +2342,89 @@ static enum r05_fnresult r05c_ParseBlock(struct r05_node *arg_begin, struct r05_
     struct r05_node *eTail_e_1;
     struct r05_node *sRow_1;
     struct r05_node *sCol_1;
-    // t.ErrorList t.SymTable ( & TkNative ( s.Row s.Col ) e.Code ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[6] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkNative ( s.Row s.Col  ) e.Code  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkNative, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkNative, &bb[1], &be[1]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[1], &be[1]))
       break;
-    eCode_b_1 = bb_1;
-    eCode_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sRow_1, &bb_2, &be_2))
+    eCode_b_1 = bb[1];
+    eCode_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sRow_1, &bb[2], &be[2]))
       break;
-    if (! r05_svar_left(&sCol_1, &bb_2, &be_2))
+    if (! r05_svar_left(&sCol_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Native, "Native" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_ParseBlock_CloseBlock, "ParseBlock_CloseBlock" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    refalrts::link_brackets( n0, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eCode_b_1, eCode_e_1 );
-    res = refalrts::splice_stvar( res, sRow_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_Native, "Native");
+    r05_alloc_svar(sRow_1);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_ParseBlock_CloseBlock, "ParseBlock_CloseBlock");
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_call(n[5]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eCode_b_1, eCode_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    // t.ErrorList t.SymTable e.Tokens
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[6] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseBlock, "DoParseBlock" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseBlock, "DoParseBlock");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_call(n[5]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[2], n[3]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[4], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3394,96 +2434,82 @@ static enum r05_fnresult r05c_ParseBlock(struct r05_node *arg_begin, struct r05_
 }
 
 static enum r05_fnresult r05c_ParseBlock_CloseBlock(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( & TkCloseBlock t.SrcPos ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkCloseBlock t.SrcPos  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseBlock, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkCloseBlock, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_evar(n[0], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *tUnexpected_2;
-    // t.ErrorList t.SymTable t.Unexpected e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.Unexpected e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "\"}\"", 3) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("\"}\"", 3);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tUnexpected_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3493,12 +2519,8 @@ static enum r05_fnresult r05c_ParseBlock_CloseBlock(struct r05_node *arg_begin, 
 }
 
 static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eSentences_b_1;
@@ -3506,59 +2528,48 @@ static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( e.Sentences ) ( & TkCloseBlock t.SrcPos ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[4] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Sentences  ) ( & TkCloseBlock t.SrcPos  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseBlock, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkCloseBlock, &bb[2], &be[2]))
       break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Sentences, "Sentences" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    refalrts::link_brackets( n0, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_Sentences, "Sentences");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eSentences_b_1, eSentences_e_1);
+    r05_splice_tvar(n[3], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[3], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eSentences_b_1;
@@ -3566,161 +2577,108 @@ static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    struct r05_node *tSrcPos_2;
-    // t.ErrorList t.SymTable ( e.Sentences ) ( & TkEOF t.SrcPos ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Sentences  ) ( & TkEOF t.SrcPos  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkEOF, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkEOF, &bb[2], &be[2]))
       break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tSrcPos_2, tSrcPos_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Sentences, "Sentences" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_chars( n5, n6, "Unexpected EOF, expected \"}\"", 28) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_TkEOF, "TkEOF" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n8, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_stvar( res, tSrcPos_2 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, n5, n6 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    refalrts::link_brackets( n0, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_Sentences, "Sentences");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_chars("Unexpected EOF, expected \"}\"", 28);
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_TkEOF, "TkEOF");
+    r05_alloc_tvar(tSrcPos_1);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_link_brackets(n[7], n[8]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eSentences_b_1, eSentences_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tSrcPos_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_evar(n[9], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eSentences_b_1;
     struct r05_node *eSentences_e_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    // t.ErrorList t.SymTable ( e.Sentences ) e.Tokens
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[9] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Sentences  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoParseBlock, "DoParseBlock" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ParseSentence, "ParseSentence" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseBlock, "DoParseBlock");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_ParseSentence, "ParseSentence");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_alloc_close_call(n[8]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[1]);
+    r05_link_brackets(n[3], n[5]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tSymTable_1);
+    r05_splice_evar(n[4], eSentences_b_1, eSentences_e_1);
+    r05_splice_evar(n[6], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3730,139 +2688,74 @@ static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r0
 }
 
 static enum r05_fnresult r05c_ParseSentence(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eSentences_b_1;
     struct r05_node *eSentences_e_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    // t.ErrorList t.SymTable ( e.Sentences ) e.Tokens
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[19] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Sentences  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Fetch, "Fetch" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_call( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_Seq, "Seq" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_name( n13, r05c_ParseSentence_AfterParsePattern, "ParseSentence_AfterParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_name( n14, r05c_ParseSentence_ParseResult, "ParseSentence_ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_open_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_name( n16, r05c_ParseSentence_AfterParseResult, "ParseSentence_AfterParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_open_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_close_bracket( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_close_bracket( n19 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_call( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_close_call( n21 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n21 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n21 );
-    refalrts::push_stack( n20 );
-    refalrts::push_stack( n11 );
-    res = refalrts::splice_elem( res, n20 );
-    refalrts::link_brackets( n15, n19 );
-    res = refalrts::splice_elem( res, n19 );
-    refalrts::link_brackets( n17, n18 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n8, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_Fetch, "Fetch");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_close_call(n[10]);
+    r05_alloc_open_call(n[11]);
+    r05_alloc_function(r05c_Seq, "Seq");
+    r05_alloc_function(r05c_ParseSentence_AfterParsePattern, "ParseSentence_AfterParsePattern");
+    r05_alloc_function(r05c_ParseSentence_ParseResult, "ParseSentence_ParseResult");
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_function(r05c_ParseSentence_AfterParseResult, "ParseSentence_AfterParseResult");
+    r05_alloc_open_bracket(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_close_bracket(n[16]);
+    r05_alloc_close_call(n[17]);
+    r05_alloc_close_call(n[18]);
+    r05_push_stack(n[18]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[17]);
+    r05_push_stack(n[11]);
+    r05_link_brackets(n[12], n[16]);
+    r05_link_brackets(n[13], n[15]);
+    r05_push_stack(n[10]);
+    r05_push_stack(n[1]);
+    r05_link_brackets(n[7], n[8]);
+    r05_link_brackets(n[5], n[6]);
+    r05_link_brackets(n[3], n[4]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tSymTable_1);
+    r05_splice_evar(n[9], eTokens_b_1, eTokens_e_1);
+    r05_splice_evar(n[14], eSentences_b_1, eSentences_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3872,12 +2765,8 @@ static enum r05_fnresult r05c_ParseSentence(struct r05_node *arg_begin, struct r
 }
 
 static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -3886,58 +2775,51 @@ static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *a
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) ( & TkReplace t.SrcPos ) e.Tokens
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.Pattern  ) ( & TkReplace t.SrcPos  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkReplace, &bb_2, &be_2))
+    if (! r05_function_left(r05c_TkReplace, &bb[2], &be[2]))
       break;
-    ePattern_b_1 = bb_1;
-    ePattern_e_1 = be_1;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    ePattern_b_1 = bb[1];
+    ePattern_e_1 = be[1];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    if (! r05_empty_seq(bb_2, be_2))
+    if (! r05_empty_seq(bb[2], be[2]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_tvar(n[0], tVarTable_1);
+    r05_splice_evar(n[2], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[4], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -3945,71 +2827,56 @@ static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *a
     struct r05_node *ePattern_e_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    struct r05_node *tSrcPos_1;
     struct r05_node *sNextResultTerm_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) ( s.NextResultTerm t.SrcPos e.Info ) e.Tokens
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *tSrcPos_1;
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.Pattern  ) ( s.NextResultTerm t.SrcPos e.Info  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    ePattern_b_1 = bb_1;
-    ePattern_e_1 = be_1;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
-    if (! r05_svar_left(&sNextResultTerm_1, &bb_2, &be_2))
+    ePattern_b_1 = bb[1];
+    ePattern_e_1 = be[1];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_svar_left(&sNextResultTerm_1, &bb[2], &be[2]))
       break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_2, &be_2))
+    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
       break;
-    // Unused closed variable e.Info
+    /* Unused closed variable e.Info*/
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "Incorrect pattern termination", 29) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("Incorrect pattern termination", 29);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_link_brackets(n[4], n[6]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSrcPos_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_tvar(n[3], tVarTable_1);
+    r05_splice_evar(n[5], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[7], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -4019,12 +2886,8 @@ static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *a
 }
 
 static enum r05_fnresult r05c_ParseSentence_ParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -4032,72 +2895,50 @@ static enum r05_fnresult r05c_ParseSentence_ParseResult(struct r05_node *arg_beg
     struct r05_node *ePattern_e_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.Pattern ) e.Tokens
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[11] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.Pattern  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    ePattern_b_1 = bb_1;
-    ePattern_e_1 = be_1;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
+    ePattern_b_1 = bb[1];
+    ePattern_e_1 = be[1];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_close_call(n[10]);
+    r05_push_stack(n[10]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[7], n[8]);
+    r05_link_brackets(n[5], n[6]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], ePattern_b_1, ePattern_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_tvar(n[4], tVarTable_1);
+    r05_splice_evar(n[9], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -4107,369 +2948,251 @@ static enum r05_fnresult r05c_ParseSentence_ParseResult(struct r05_node *arg_beg
 }
 
 static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eSentences_b_1;
     struct r05_node *eSentences_e_1;
     struct r05_node *ePattern_b_1;
     struct r05_node *ePattern_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
-    struct r05_node *eResult_b_1;
-    struct r05_node *eResult_e_1;
-    struct r05_node *eTokens_b_1;
-    struct r05_node *eTokens_e_1;
     struct r05_node *tVarTable_1;
-    struct r05_node *tSrcPos_1;
-    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) ( & TkSemicolon t.SrcPos ) e.Tokens
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    ePattern_b_1 = bb_2;
-    ePattern_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
-      break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
-      break;
-    if (! r05_function_left(r05c_TkSemicolon, &bb_4, &be_4))
-      break;
-    eResult_b_1 = bb_3;
-    eResult_e_1 = be_3;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
-      break;
-    if (! r05_empty_seq(bb_4, be_4))
-      break;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_open_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n0, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n1, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eSentences_b_1;
-    struct r05_node *eSentences_e_1;
-    struct r05_node *ePattern_b_1;
-    struct r05_node *ePattern_e_1;
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
     struct r05_node *tSrcPos_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *tSrcPos_2;
-    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) ( & TkCloseBlock t.SrcPos ) e.Tokens
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Sentences  ) ( e.Pattern  ) t.ErrorList t.SymTable t.VarTable ( e.Result  ) ( & TkSemicolon t.SrcPos  ) e.Tokens */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    ePattern_b_1 = bb_2;
-    ePattern_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    ePattern_b_1 = bb[2];
+    ePattern_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseBlock, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkSemicolon, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_3;
-    eResult_e_1 = be_3;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
+    eResult_b_1 = bb[3];
+    eResult_e_1 = be[3];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tSrcPos_2, tSrcPos_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "Missed semicolon", 16) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_name( n14, r05c_TkCloseBlock, "TkCloseBlock" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    refalrts::link_brackets( n13, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_stvar( res, tSrcPos_2 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n5, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n6, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n9, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_link_brackets(n[1], n[11]);
+    r05_link_brackets(n[3], n[10]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[4], n[6]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_evar(n[2], eSentences_b_1, eSentences_e_1);
+    r05_splice_evar(n[5], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[8], eResult_b_1, eResult_e_1);
+    r05_splice_evar(n[12], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eSentences_b_1;
     struct r05_node *eSentences_e_1;
     struct r05_node *ePattern_b_1;
     struct r05_node *ePattern_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Sentences  ) ( e.Pattern  ) t.ErrorList t.SymTable t.VarTable ( e.Result  ) ( & TkCloseBlock t.SrcPos  ) e.Tokens */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    ePattern_b_1 = bb[2];
+    ePattern_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkCloseBlock, &bb[4], &be[4]))
+      break;
+    eResult_b_1 = bb[3];
+    eResult_e_1 = be[3];
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
+      break;
+    if (! r05_empty_seq(bb[4], be[4]))
+      break;
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("Missed semicolon", 16);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_open_bracket(n[15]);
+    r05_alloc_function(r05c_TkCloseBlock, "TkCloseBlock");
+    r05_alloc_tvar(tSrcPos_1);
+    r05_alloc_close_bracket(n[16]);
+    r05_alloc_insert_pos(n[17]);
+    r05_link_brackets(n[15], n[16]);
+    r05_link_brackets(n[4], n[14]);
+    r05_link_brackets(n[6], n[13]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[7], n[9]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSrcPos_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[5], eSentences_b_1, eSentences_e_1);
+    r05_splice_evar(n[8], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[11], eResult_b_1, eResult_e_1);
+    r05_splice_evar(n[17], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  do {
+    struct r05_node *eSentences_b_1;
+    struct r05_node *eSentences_e_1;
+    struct r05_node *ePattern_b_1;
+    struct r05_node *ePattern_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
     struct r05_node *tUnexpected_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *tUnexpected_2;
-    // ( e.Sentences ) ( e.Pattern ) t.ErrorList t.SymTable t.VarTable ( e.Result ) t.Unexpected e.Tokens
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[16] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Sentences  ) ( e.Pattern  ) t.ErrorList t.SymTable t.VarTable ( e.Result  ) t.Unexpected e.Tokens */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eSentences_b_1 = bb_1;
-    eSentences_e_1 = be_1;
-    ePattern_b_1 = bb_2;
-    ePattern_e_1 = be_2;
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    eSentences_b_1 = bb[1];
+    eSentences_e_1 = be[1];
+    ePattern_b_1 = bb[2];
+    ePattern_e_1 = be[2];
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eResult_b_1 = bb_3;
-    eResult_e_1 = be_3;
-    if (! r05_tvar_left(&tUnexpected_1, &bb_0, &be_0))
+    eResult_b_1 = bb[3];
+    eResult_e_1 = be[3];
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
-    eTokens_b_1 = bb_0;
-    eTokens_e_1 = be_0;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tUnexpected_2, tUnexpected_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EL_AddUnexpected, "EL_AddUnexpected" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_chars( n2, n3, "semicolon", 9) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTokens_b_1, eTokens_e_1 );
-    res = refalrts::splice_stvar( res, tUnexpected_2 );
-    refalrts::link_brackets( n5, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n6, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n9, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eSentences_b_1, eSentences_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, n2, n3 );
-    res = refalrts::splice_stvar( res, tUnexpected_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("semicolon", 9);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[15]);
+    r05_link_brackets(n[4], n[14]);
+    r05_link_brackets(n[6], n[13]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[7], n[9]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tUnexpected_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[5], eSentences_b_1, eSentences_e_1);
+    r05_splice_evar(n[8], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[11], eResult_b_1, eResult_e_1);
+    r05_splice_evar(n[15], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -4479,12 +3202,8 @@ static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *ar
 }
 
 static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -4494,110 +3213,75 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     struct r05_node *sChar_1;
-    struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[12] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets  ) ( e.Scanned  ) ( & TkChar t.SrcPos s.Char  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkChar, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkChar, &bb[3], &be[3]))
       break;
-    eMultiBrackets_b_1 = bb_1;
-    eMultiBrackets_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBrackets_b_1 = bb[1];
+    eMultiBrackets_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sChar_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sChar_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_Char, "Char" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBrackets_b_1, eMultiBrackets_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Char, "Char");
+    r05_alloc_svar(sChar_1);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[9]);
+    r05_link_brackets(n[7], n[8]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBrackets_b_1, eMultiBrackets_e_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[10], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -4607,110 +3291,75 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sNumber_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *sNumber_1;
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[12] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets  ) ( e.Scanned  ) ( & TkNumber t.SrcPos s.Number  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkNumber, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkNumber, &bb[3], &be[3]))
       break;
-    eMultiBrackets_b_1 = bb_1;
-    eMultiBrackets_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBrackets_b_1 = bb[1];
+    eMultiBrackets_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sNumber_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sNumber_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_Number, "Number" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sNumber_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBrackets_b_1, eMultiBrackets_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Number, "Number");
+    r05_alloc_svar(sNumber_1);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[9]);
+    r05_link_brackets(n[7], n[8]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBrackets_b_1, eMultiBrackets_e_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[10], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -4723,126 +3372,80 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *tSrcPos_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    struct r05_node *eName_b_2;
-    struct r05_node *eName_e_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[16] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBrackets  ) ( e.Scanned  ) ( & TkName t.SrcPos e.Name  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkName, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkName, &bb[3], &be[3]))
       break;
-    eMultiBrackets_b_1 = bb_1;
-    eMultiBrackets_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBrackets_b_1 = bb[1];
+    eMultiBrackets_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    eName_b_1 = bb_3;
-    eName_e_1 = be_3;
+    eName_b_1 = bb[3];
+    eName_e_1 = be[3];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ST_AddFunctionCall, "ST_AddFunctionCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_Name, "Name" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n13 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n7, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n8, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eMultiBrackets_b_1, eMultiBrackets_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_ST_AddFunctionCall, "ST_AddFunctionCall");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_open_bracket(n[11]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Name, "Name");
+    r05_alloc_evar(eName_b_1, eName_e_1);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_close_call(n[15]);
+    r05_push_stack(n[15]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[9], n[13]);
+    r05_link_brackets(n[11], n[12]);
+    r05_link_brackets(n[6], n[8]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_tvar(n[3], tSrcPos_1);
+    r05_splice_evar(n[3], eName_b_1, eName_e_1);
+    r05_splice_tvar(n[5], tVarTable_1);
+    r05_splice_evar(n[7], eMultiBrackets_b_1, eMultiBrackets_e_1);
+    r05_splice_evar(n[10], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[14], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eMultiBracket_b_1;
@@ -4851,158 +3454,114 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sMode_1;
+    struct r05_node *tSrcPos_1;
     struct r05_node *sMode_2;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_1;
     struct r05_node *eIndex_b_2;
     struct r05_node *eIndex_e_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     struct r05_node *eVariables_B_b_1;
     struct r05_node *eVariables_B_e_1;
     struct r05_node *eVariables_E_b_1;
     struct r05_node *eVariables_E_e_1;
-    struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( e.Variables_B ( s.Mode e.Index ) e.Variables_E ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[7] = { 0 };
+    struct r05_node *be[7] = { 0 };
+    struct r05_node *n[20] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Variables_B ( s.Mode e.Index  ) e.Variables_E  ) ( e.MultiBracket  ) ( e.Scanned  ) ( & TkVariable t.SrcPos s.Mode e.Index  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
       break;
-    eMultiBracket_b_1 = bb_2;
-    eMultiBracket_e_1 = be_2;
-    eScanned_b_1 = bb_3;
-    eScanned_e_1 = be_3;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
+    eMultiBracket_b_1 = bb[2];
+    eMultiBracket_e_1 = be[2];
+    eScanned_b_1 = bb[3];
+    eScanned_e_1 = be[3];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
+    if (! r05_svar_left(&sMode_1, &bb[4], &be[4]))
       break;
-    eIndex_b_1 = bb_4;
-    eIndex_e_1 = be_4;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
     eVariables_B_b_1 = 0;
     eVariables_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_5 = bb_1;
-      struct r05_node *be_5 = be_1;
-      struct r05_node *bb_6 = 0;
-      struct r05_node *be_6 = 0;
-      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
+      bb[5] = bb[1];
+      be[5] = be[1];
+      if (! r05_brackets_left(&bb[6], &be[6], &bb[5], &be[5]))
         continue;
-      if (! r05_repeated_stvar_left(&sMode_2, sMode_1, &bb_6, &be_6))
+      if (! r05_repeated_stvar_left(&sMode_2, sMode_1, &bb[6], &be[6]))
         continue;
-      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_6, &be_6))
+      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[6], &be[6]))
         continue;
-      if (! r05_empty_seq(bb_6, be_6))
+      if (! r05_empty_seq(bb[6], be[6]))
         continue;
-      eVariables_E_b_1 = bb_5;
-      eVariables_E_e_1 = be_5;
+      eVariables_E_b_1 = bb[5];
+      eVariables_E_e_1 = be[5];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_open_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_close_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_close_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_open_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_close_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_open_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_name( n10, r05c_TkVariable, "TkVariable" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_close_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_close_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_close_call( n13 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n13 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-      refalrts::link_brackets( n8, n12 );
-      res = refalrts::splice_elem( res, n12 );
-      refalrts::link_brackets( n9, n11 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_stvar( res, sMode_2 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-      res = refalrts::splice_elem( res, n8 );
-      refalrts::link_brackets( n6, n7 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-      res = refalrts::splice_elem( res, n6 );
-      refalrts::link_brackets( n2, n5 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVariables_E_b_1, eVariables_E_e_1 );
-      refalrts::link_brackets( n3, n4 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_stvar( res, sMode_1 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eVariables_B_b_1, eVariables_B_e_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_stvar( res, tSymTable_1 );
-      res = refalrts::splice_stvar( res, tErrorList_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_open_bracket(n[4]);
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_close_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_close_bracket(n[8]);
+      r05_alloc_open_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_open_bracket(n[12]);
+      r05_alloc_insert_pos(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_function(r05c_TkVariable, "TkVariable");
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[15]);
+      r05_alloc_close_bracket(n[16]);
+      r05_alloc_close_bracket(n[17]);
+      r05_alloc_insert_pos(n[18]);
+      r05_alloc_close_call(n[19]);
+      r05_push_stack(n[19]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[12], n[17]);
+      r05_link_brackets(n[14], n[16]);
+      r05_link_brackets(n[9], n[11]);
+      r05_link_brackets(n[2], n[8]);
+      r05_link_brackets(n[4], n[6]);
+      r05_splice_tvar(n[1], tErrorList_1);
+      r05_splice_tvar(n[1], tSymTable_1);
+      r05_splice_evar(n[3], eVariables_B_b_1, eVariables_B_e_1);
+      r05_splice_evar(n[5], eIndex_b_2, eIndex_e_2);
+      r05_splice_evar(n[7], eVariables_E_b_1, eVariables_E_e_1);
+      r05_splice_evar(n[10], eMultiBracket_b_1, eMultiBracket_e_1);
+      r05_splice_evar(n[13], eScanned_b_1, eScanned_e_1);
+      r05_splice_evar(n[15], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[18], eTail_b_1, eTail_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eVariables_B_b_1, &eVariables_B_e_1, &bb_1, &be_1));
+    } while (r05_open_evar_advance(&eVariables_B_b_1, &eVariables_B_e_1, &bb[1], &be[1]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eVariables_b_1;
@@ -5013,140 +3572,89 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     struct r05_node *sMode_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    struct r05_node *tSrcPos_1;
-    struct r05_node *sMode_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // t.ErrorList t.SymTable ( e.Variables ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Variables  ) ( e.MultiBracket  ) ( e.Scanned  ) ( & TkVariable t.SrcPos s.Mode e.Index  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
       break;
-    eVariables_b_1 = bb_1;
-    eVariables_e_1 = be_1;
-    eMultiBracket_b_1 = bb_2;
-    eMultiBracket_e_1 = be_2;
-    eScanned_b_1 = bb_3;
-    eScanned_e_1 = be_3;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
+    eVariables_b_1 = bb[1];
+    eVariables_e_1 = be[1];
+    eMultiBracket_b_1 = bb[2];
+    eMultiBracket_e_1 = be[2];
+    eScanned_b_1 = bb[3];
+    eScanned_e_1 = be[3];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
+    if (! r05_svar_left(&sMode_1, &bb[4], &be[4]))
       break;
-    eIndex_b_1 = bb_4;
-    eIndex_e_1 = be_4;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sMode_2, sMode_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_TkVariable, "TkVariable" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n13 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n8, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n9, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-    res = refalrts::splice_stvar( res, sMode_2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n2, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eVariables_b_1, eVariables_e_1 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_svar(sMode_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_open_bracket(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_open_bracket(n[13]);
+    r05_alloc_function(r05c_TkVariable, "TkVariable");
+    r05_alloc_svar(sMode_1);
+    r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_insert_pos(n[16]);
+    r05_alloc_close_call(n[17]);
+    r05_push_stack(n[17]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[11], n[15]);
+    r05_link_brackets(n[13], n[14]);
+    r05_link_brackets(n[8], n[10]);
+    r05_link_brackets(n[2], n[7]);
+    r05_link_brackets(n[3], n[5]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[4], eIndex_b_1, eIndex_e_1);
+    r05_splice_evar(n[6], eVariables_b_1, eVariables_e_1);
+    r05_splice_evar(n[9], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[12], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[16], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -5157,108 +3665,74 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket  ) ( e.Scanned  ) ( & TkOpen t.SrcPos & TkOpenBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkOpen, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkOpen, &bb[3], &be[3]))
       break;
-    if (! r05_function_right(r05c_TkOpenBracket, &bb_3, &be_3))
+    if (! r05_function_right(r05c_TkOpenBracket, &bb[3], &be[3]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_Brackets, "Brackets" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_TkCloseBracket, "TkCloseBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n8, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n2, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n3, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_function(r05c_Brackets, "Brackets");
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_function(r05c_TkCloseBracket, "TkCloseBracket");
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[9], n[10]);
+    r05_link_brackets(n[2], n[8]);
+    r05_link_brackets(n[4], n[7]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_tvar(n[5], tSrcPos_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[11], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -5269,131 +3743,81 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
-    struct r05_node *tSrcPos_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos & TkOpenCall ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket  ) ( e.Scanned  ) ( & TkOpen t.SrcPos & TkOpenCall  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkOpen, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkOpen, &bb[3], &be[3]))
       break;
-    if (! r05_function_right(r05c_TkOpenCall, &bb_3, &be_3))
+    if (! r05_function_right(r05c_TkOpenCall, &bb[3], &be[3]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( tSrcPos_2, tSrcPos_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Unexpected call bracket in pattern expression", 45) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_Brackets, "Brackets" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_TkCloseCall, "TkCloseCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_call( n15 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n15 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n13, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n7, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n8, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_stvar( res, tSrcPos_2 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Unexpected call bracket in pattern expression", 45);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_Brackets, "Brackets");
+    r05_alloc_tvar(tSrcPos_1);
+    r05_alloc_function(r05c_TkCloseCall, "TkCloseCall");
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_open_bracket(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[11], n[12]);
+    r05_link_brackets(n[5], n[10]);
+    r05_link_brackets(n[7], n[9]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tSrcPos_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_tvar(n[4], tVarTable_1);
+    r05_splice_evar(n[6], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[8], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[13], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -5404,299 +3828,204 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *sBracketsSign_1;
+    struct r05_node *tInnerSrcPos_1;
+    struct r05_node *sCloseBracket_2;
+    struct r05_node *sCloseBracket_1;
     struct r05_node *eScanned_b_1;
     struct r05_node *eScanned_e_1;
+    struct r05_node *tCloseSrcPos_1;
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned  )  ) ( e.InnerScanned  ) ( & TkClose t.CloseSrcPos s.CloseBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkClose, &bb[3], &be[3]))
+      break;
+    if (! r05_brackets_right(&bb[4], &be[4], &bb[1], &be[1]))
+      break;
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eInnerScanned_b_1 = bb[2];
+    eInnerScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sBracketsSign_1, &bb[4], &be[4]))
+      break;
+    if (! r05_tvar_left(&tInnerSrcPos_1, &bb[4], &be[4]))
+      break;
+    if (! r05_svar_left(&sCloseBracket_1, &bb[4], &be[4]))
+      break;
+    if (! r05_repeated_stvar_right(&sCloseBracket_2, sCloseBracket_1, &bb[3], &be[3]))
+      break;
+    eScanned_b_1 = bb[4];
+    eScanned_e_1 = be[4];
+    if (! r05_tvar_left(&tCloseSrcPos_1, &bb[3], &be[3]))
+      break;
+    if (! r05_empty_seq(bb[3], be[3]))
+      break;
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[10]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[8], eInnerScanned_b_1, eInnerScanned_e_1);
+    r05_splice_evar(n[11], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eMultiBracket_b_1;
+    struct r05_node *eMultiBracket_e_1;
+    struct r05_node *eInnerScanned_b_1;
+    struct r05_node *eInnerScanned_e_1;
+    struct r05_node *eTail_b_1;
+    struct r05_node *eTail_e_1;
+    struct r05_node *sBracketsSign_1;
     struct r05_node *tInnerSrcPos_1;
     struct r05_node *sCloseBracket_1;
-    struct r05_node *sCloseBracket_2;
-    struct r05_node *tCloseSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.CloseSrcPos s.CloseBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
-      break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
-      break;
-    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
-      break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_right(&bb_4, &be_4, &bb_1, &be_1))
-      break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eInnerScanned_b_1 = bb_2;
-    eInnerScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sBracketsSign_1, &bb_4, &be_4))
-      break;
-    if (! r05_tvar_left(&tInnerSrcPos_1, &bb_4, &be_4))
-      break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_4, &be_4))
-      break;
-    if (! r05_repeated_stvar_right(&sCloseBracket_2, sCloseBracket_1, &bb_3, &be_3))
-      break;
-    eScanned_b_1 = bb_4;
-    eScanned_e_1 = be_4;
-    if (! r05_tvar_left(&tCloseSrcPos_1, &bb_3, &be_3))
-      break;
-    if (! r05_empty_seq(bb_3, be_3))
-      break;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eInnerScanned_b_1, eInnerScanned_e_1 );
-    res = refalrts::splice_stvar( res, sBracketsSign_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *eMultiBracket_b_1;
-    struct r05_node *eMultiBracket_e_1;
-    struct r05_node *eInnerScanned_b_1;
-    struct r05_node *eInnerScanned_e_1;
-    struct r05_node *eTail_b_1;
-    struct r05_node *eTail_e_1;
-    struct r05_node *sBracketsSign_1;
-    struct r05_node *tInnerSrcPos_1;
     struct r05_node *eScanned_b_1;
     struct r05_node *eScanned_e_1;
     struct r05_node *tSrcPos_1;
     struct r05_node *sOtherCloseBracket_1;
-    struct r05_node *sCloseBracket_1;
-    struct r05_node *sBracketsSign_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.OtherCloseBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[21] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned  )  ) ( e.InnerScanned  ) ( & TkClose t.SrcPos s.OtherCloseBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkClose, &bb[3], &be[3]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_right(&bb_4, &be_4, &bb_1, &be_1))
+    if (! r05_brackets_right(&bb[4], &be[4], &bb[1], &be[1]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eInnerScanned_b_1 = bb_2;
-    eInnerScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sBracketsSign_1, &bb_4, &be_4))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eInnerScanned_b_1 = bb[2];
+    eInnerScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sBracketsSign_1, &bb[4], &be[4]))
       break;
-    if (! r05_tvar_left(&tInnerSrcPos_1, &bb_4, &be_4))
+    if (! r05_tvar_left(&tInnerSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_4, &be_4))
+    if (! r05_svar_left(&sCloseBracket_1, &bb[4], &be[4]))
       break;
-    eScanned_b_1 = bb_4;
-    eScanned_e_1 = be_4;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eScanned_b_1 = bb[4];
+    eScanned_e_1 = be[4];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sOtherCloseBracket_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sOtherCloseBracket_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sBracketsSign_2, sBracketsSign_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Unbalanced bracket \"", 20) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_StrFromBracket, "StrFromBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_char( n9, '\"' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_bracket( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_open_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_name( n18, r05c_TkClose, "TkClose" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_close_bracket( n19 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_call( n20 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n20 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n17, n19 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_stvar( res, sOtherCloseBracket_1 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_elem( res, n17 );
-    refalrts::link_brackets( n13, n16 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n14, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eInnerScanned_b_1, eInnerScanned_e_1 );
-    res = refalrts::splice_stvar( res, sBracketsSign_2 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n11, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sBracketsSign_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tInnerSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Unbalanced bracket \"", 20);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_StrFromBracket, "StrFromBracket");
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_char('\"');
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_open_bracket(n[16]);
+    r05_alloc_function(r05c_TkClose, "TkClose");
+    r05_alloc_insert_pos(n[17]);
+    r05_alloc_svar(sOtherCloseBracket_1);
+    r05_alloc_close_bracket(n[18]);
+    r05_alloc_insert_pos(n[19]);
+    r05_alloc_close_call(n[20]);
+    r05_push_stack(n[20]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[16], n[18]);
+    r05_link_brackets(n[10], n[15]);
+    r05_link_brackets(n[12], n[14]);
+    r05_link_brackets(n[7], n[9]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tInnerSrcPos_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_tvar(n[6], tVarTable_1);
+    r05_splice_evar(n[8], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[11], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[13], eInnerScanned_b_1, eInnerScanned_e_1);
+    r05_splice_tvar(n[17], tSrcPos_1);
+    r05_splice_evar(n[19], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -5706,128 +4035,80 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
     struct r05_node *sCloseBracket_1;
-    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[14] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable (  ) ( e.Scanned  ) ( & TkClose t.SrcPos s.CloseBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkClose, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sCloseBracket_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Unbalanced bracket \"", 20) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_StrFromBracket, "StrFromBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_char( n9, '\"' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_call( n15 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n15 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n13, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n11, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sCloseBracket_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Unbalanced bracket \"", 20);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_StrFromBracket, "StrFromBracket");
+    r05_alloc_svar(sCloseBracket_1);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_char('\"');
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[9], n[11]);
+    r05_link_brackets(n[7], n[8]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tSrcPos_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_tvar(n[6], tVarTable_1);
+    r05_splice_evar(n[10], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[12], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -5839,146 +4120,91 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_e_1;
     struct r05_node *sBracketsSign_1;
     struct r05_node *tInnerSrcPos_1;
+    struct r05_node *sCloseBracket_1;
     struct r05_node *eScanned_b_1;
     struct r05_node *eScanned_e_1;
-    struct r05_node *sCloseBracket_1;
-    struct r05_node *sBracketsSign_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned  )  ) ( e.InnerScanned  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_right(&bb_3, &be_3, &bb_1, &be_1))
+    if (! r05_brackets_right(&bb[3], &be[3], &bb[1], &be[1]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eInnerScanned_b_1 = bb_2;
-    eInnerScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sBracketsSign_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eInnerScanned_b_1 = bb[2];
+    eInnerScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sBracketsSign_1, &bb[3], &be[3]))
       break;
-    if (! r05_tvar_left(&tInnerSrcPos_1, &bb_3, &be_3))
+    if (! r05_tvar_left(&tInnerSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sCloseBracket_1, &bb[3], &be[3]))
       break;
-    eScanned_b_1 = bb_3;
-    eScanned_e_1 = be_3;
+    eScanned_b_1 = bb[3];
+    eScanned_e_1 = be[3];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sBracketsSign_2, sBracketsSign_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParsePattern, "ParsePattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Unbalanced bracket \"", 20) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_StrFromBracket, "StrFromBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_char( n9, '\"' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_bracket( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_call( n17 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n17 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n13, n16 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n14, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eInnerScanned_b_1, eInnerScanned_e_1 );
-    res = refalrts::splice_stvar( res, sBracketsSign_2 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n11, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sBracketsSign_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tInnerSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Unbalanced bracket \"", 20);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_StrFromBracket, "StrFromBracket");
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_char('\"');
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_insert_pos(n[16]);
+    r05_alloc_close_call(n[17]);
+    r05_push_stack(n[17]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[15]);
+    r05_link_brackets(n[12], n[14]);
+    r05_link_brackets(n[7], n[9]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tInnerSrcPos_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_tvar(n[6], tVarTable_1);
+    r05_splice_evar(n[8], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[11], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[13], eInnerScanned_b_1, eInnerScanned_e_1);
+    r05_splice_evar(n[16], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -5986,46 +4212,43 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *ePattern_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Pattern ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable (  ) ( e.Pattern  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    ePattern_b_1 = bb_2;
-    ePattern_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    ePattern_b_1 = bb[2];
+    ePattern_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_tvar(n[0], tVarTable_1);
+    r05_splice_evar(n[2], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -6035,136 +4258,112 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 }
 
 static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkOpenBracket
-    if (! r05_function_left(r05c_TkOpenBracket, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkOpenBracket */
+    if (! r05_function_left(r05c_TkOpenBracket, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, '(' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char('(');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkCloseBracket
-    if (! r05_function_left(r05c_TkCloseBracket, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkCloseBracket */
+    if (! r05_function_left(r05c_TkCloseBracket, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, ')' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char(')');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkOpenCall
-    if (! r05_function_left(r05c_TkOpenCall, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkOpenCall */
+    if (! r05_function_left(r05c_TkOpenCall, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, '<' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char('<');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkCloseCall
-    if (! r05_function_left(r05c_TkCloseCall, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkCloseCall */
+    if (! r05_function_left(r05c_TkCloseCall, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, '>' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char('>');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & Brackets
-    if (! r05_function_left(r05c_Brackets, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & Brackets */
+    if (! r05_function_left(r05c_Brackets, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, '(' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char('(');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & CallBrackets
-    if (! r05_function_left(r05c_CallBrackets, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & CallBrackets */
+    if (! r05_function_left(r05c_CallBrackets, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, '<' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char('<');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -6174,12 +4373,8 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
 }
 
 static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -6189,110 +4384,75 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
+    struct r05_node *tSrcPos_1;
     struct r05_node *sChar_1;
-    struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkChar t.SrcPos s.Char ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[12] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket  ) ( e.Scanned  ) ( & TkChar t.SrcPos s.Char  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkChar, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkChar, &bb[3], &be[3]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sChar_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sChar_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_Char, "Char" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Char, "Char");
+    r05_alloc_svar(sChar_1);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[9]);
+    r05_link_brackets(n[7], n[8]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[10], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -6302,110 +4462,75 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sNumber_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkNumber t.SrcPos s.Number ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *sNumber_1;
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[12] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket  ) ( e.Scanned  ) ( & TkNumber t.SrcPos s.Number  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkNumber, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkNumber, &bb[3], &be[3]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sNumber_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sNumber_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_Number, "Number" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sNumber_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Number, "Number");
+    r05_alloc_svar(sNumber_1);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[9]);
+    r05_link_brackets(n[7], n[8]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[10], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -6418,126 +4543,80 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *tSrcPos_1;
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
-    struct r05_node *eName_b_2;
-    struct r05_node *eName_e_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkName t.SrcPos e.Name ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[16] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket  ) ( e.Scanned  ) ( & TkName t.SrcPos e.Name  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkName, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkName, &bb[3], &be[3]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    eName_b_1 = bb_3;
-    eName_e_1 = be_3;
+    eName_b_1 = bb[3];
+    eName_e_1 = be[3];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eName_b_2, eName_e_2, eName_b_1, eName_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_ST_AddFunctionCall, "ST_AddFunctionCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_Name, "Name" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n13 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n7, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n8, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, eName_b_2, eName_e_2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_ST_AddFunctionCall, "ST_AddFunctionCall");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_open_bracket(n[11]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Name, "Name");
+    r05_alloc_evar(eName_b_1, eName_e_1);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_close_call(n[15]);
+    r05_push_stack(n[15]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[9], n[13]);
+    r05_link_brackets(n[11], n[12]);
+    r05_link_brackets(n[6], n[8]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_tvar(n[3], tSrcPos_1);
+    r05_splice_evar(n[3], eName_b_1, eName_e_1);
+    r05_splice_tvar(n[5], tVarTable_1);
+    r05_splice_evar(n[7], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[10], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[14], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eMultiBracket_b_1;
@@ -6546,158 +4625,114 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eScanned_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    struct r05_node *sMode_1;
+    struct r05_node *tSrcPos_1;
     struct r05_node *sMode_2;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_1;
     struct r05_node *eIndex_b_2;
     struct r05_node *eIndex_e_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     struct r05_node *eVariables_B_b_1;
     struct r05_node *eVariables_B_e_1;
     struct r05_node *eVariables_E_b_1;
     struct r05_node *eVariables_E_e_1;
-    struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable ( e.Variables_B ( s.Mode e.Index ) e.Variables_E ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[7] = { 0 };
+    struct r05_node *be[7] = { 0 };
+    struct r05_node *n[20] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Variables_B ( s.Mode e.Index  ) e.Variables_E  ) ( e.MultiBracket  ) ( e.Scanned  ) ( & TkVariable t.SrcPos s.Mode e.Index  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
       break;
-    eMultiBracket_b_1 = bb_2;
-    eMultiBracket_e_1 = be_2;
-    eScanned_b_1 = bb_3;
-    eScanned_e_1 = be_3;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
+    eMultiBracket_b_1 = bb[2];
+    eMultiBracket_e_1 = be[2];
+    eScanned_b_1 = bb[3];
+    eScanned_e_1 = be[3];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
+    if (! r05_svar_left(&sMode_1, &bb[4], &be[4]))
       break;
-    eIndex_b_1 = bb_4;
-    eIndex_e_1 = be_4;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
     eVariables_B_b_1 = 0;
     eVariables_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_5 = bb_1;
-      struct r05_node *be_5 = be_1;
-      struct r05_node *bb_6 = 0;
-      struct r05_node *be_6 = 0;
-      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
+      bb[5] = bb[1];
+      be[5] = be[1];
+      if (! r05_brackets_left(&bb[6], &be[6], &bb[5], &be[5]))
         continue;
-      if (! r05_repeated_stvar_left(&sMode_2, sMode_1, &bb_6, &be_6))
+      if (! r05_repeated_stvar_left(&sMode_2, sMode_1, &bb[6], &be[6]))
         continue;
-      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_6, &be_6))
+      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[6], &be[6]))
         continue;
-      if (! r05_empty_seq(bb_6, be_6))
+      if (! r05_empty_seq(bb[6], be[6]))
         continue;
-      eVariables_E_b_1 = bb_5;
-      eVariables_E_e_1 = be_5;
+      eVariables_E_b_1 = bb[5];
+      eVariables_E_e_1 = be[5];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_open_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_close_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_close_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_open_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_close_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_open_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_name( n10, r05c_TkVariable, "TkVariable" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_close_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_close_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_close_call( n13 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n13 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-      refalrts::link_brackets( n8, n12 );
-      res = refalrts::splice_elem( res, n12 );
-      refalrts::link_brackets( n9, n11 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_stvar( res, sMode_2 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-      res = refalrts::splice_elem( res, n8 );
-      refalrts::link_brackets( n6, n7 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-      res = refalrts::splice_elem( res, n6 );
-      refalrts::link_brackets( n2, n5 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVariables_E_b_1, eVariables_E_e_1 );
-      refalrts::link_brackets( n3, n4 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_stvar( res, sMode_1 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eVariables_B_b_1, eVariables_B_e_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_stvar( res, tSymTable_1 );
-      res = refalrts::splice_stvar( res, tErrorList_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_ParseResult, "ParseResult");
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_open_bracket(n[4]);
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_close_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_close_bracket(n[8]);
+      r05_alloc_open_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_open_bracket(n[12]);
+      r05_alloc_insert_pos(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_function(r05c_TkVariable, "TkVariable");
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[15]);
+      r05_alloc_close_bracket(n[16]);
+      r05_alloc_close_bracket(n[17]);
+      r05_alloc_insert_pos(n[18]);
+      r05_alloc_close_call(n[19]);
+      r05_push_stack(n[19]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[12], n[17]);
+      r05_link_brackets(n[14], n[16]);
+      r05_link_brackets(n[9], n[11]);
+      r05_link_brackets(n[2], n[8]);
+      r05_link_brackets(n[4], n[6]);
+      r05_splice_tvar(n[1], tErrorList_1);
+      r05_splice_tvar(n[1], tSymTable_1);
+      r05_splice_evar(n[3], eVariables_B_b_1, eVariables_B_e_1);
+      r05_splice_evar(n[5], eIndex_b_2, eIndex_e_2);
+      r05_splice_evar(n[7], eVariables_E_b_1, eVariables_E_e_1);
+      r05_splice_evar(n[10], eMultiBracket_b_1, eMultiBracket_e_1);
+      r05_splice_evar(n[13], eScanned_b_1, eScanned_e_1);
+      r05_splice_evar(n[15], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[18], eTail_b_1, eTail_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eVariables_B_b_1, &eVariables_B_e_1, &bb_1, &be_1));
+    } while (r05_open_evar_advance(&eVariables_B_b_1, &eVariables_B_e_1, &bb[1], &be[1]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *eVariables_b_1;
@@ -6712,134 +4747,86 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *sMode_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    // t.ErrorList t.SymTable ( e.Variables ) ( e.MultiBracket ) ( e.Scanned ) ( & TkVariable t.SrcPos s.Mode e.Index ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[17] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( e.Variables  ) ( e.MultiBracket  ) ( e.Scanned  ) ( & TkVariable t.SrcPos s.Mode e.Index  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
       break;
-    eVariables_b_1 = bb_1;
-    eVariables_e_1 = be_1;
-    eMultiBracket_b_1 = bb_2;
-    eMultiBracket_e_1 = be_2;
-    eScanned_b_1 = bb_3;
-    eScanned_e_1 = be_3;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_4, &be_4))
+    eVariables_b_1 = bb[1];
+    eVariables_e_1 = be[1];
+    eMultiBracket_b_1 = bb[2];
+    eMultiBracket_e_1 = be[2];
+    eScanned_b_1 = bb[3];
+    eScanned_e_1 = be[3];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
+    if (! r05_svar_left(&sMode_1, &bb[4], &be[4]))
       break;
-    eIndex_b_1 = bb_4;
-    eIndex_e_1 = be_4;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Variable ", 9) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_char( n6, '.' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_chars( n7, n8, " not found", 10) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_open_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n14, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n14 );
-    refalrts::link_brackets( n12, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n10, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_evar( res, eVariables_b_1, eVariables_e_1 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, n7, n8 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Variable ", 9);
+    r05_alloc_svar(sMode_1);
+    r05_alloc_char('.');
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_chars(" not found", 10);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_insert_pos(n[15]);
+    r05_alloc_close_call(n[16]);
+    r05_push_stack(n[16]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[12], n[14]);
+    r05_link_brackets(n[9], n[11]);
+    r05_link_brackets(n[6], n[8]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[1]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tSrcPos_1);
+    r05_splice_evar(n[3], eIndex_b_1, eIndex_e_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_evar(n[7], eVariables_b_1, eVariables_e_1);
+    r05_splice_evar(n[10], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[13], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[15], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -6851,133 +4838,84 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
     struct r05_node *sOpenBracket_1;
-    struct r05_node *sOpenBracket_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ) ( e.Scanned ) ( & TkOpen t.SrcPos s.OpenBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[17] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket  ) ( e.Scanned  ) ( & TkOpen t.SrcPos s.OpenBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkOpen, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkOpen, &bb[3], &be[3]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sOpenBracket_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sOpenBracket_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sOpenBracket_2, sOpenBracket_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_BracketPairName, "BracketPairName" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_CloseBracketName, "CloseBracketName" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_open_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_call( n14 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n14 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n12, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n2, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n3, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n7 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_stvar( res, sOpenBracket_2 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_stvar( res, sOpenBracket_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_open_call(n[5]);
+    r05_alloc_function(r05c_BracketPairName, "BracketPairName");
+    r05_alloc_svar(sOpenBracket_1);
+    r05_alloc_close_call(n[6]);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_open_call(n[8]);
+    r05_alloc_function(r05c_CloseBracketName, "CloseBracketName");
+    r05_alloc_svar(sOpenBracket_1);
+    r05_alloc_close_call(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_open_bracket(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_insert_pos(n[15]);
+    r05_alloc_close_call(n[16]);
+    r05_push_stack(n[16]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[13], n[14]);
+    r05_link_brackets(n[2], n[12]);
+    r05_link_brackets(n[4], n[11]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[5]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_tvar(n[7], tSrcPos_1);
+    r05_splice_evar(n[10], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[15], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -6988,119 +4926,89 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *sBracketsSign_1;
-    struct r05_node *eScanned_b_1;
-    struct r05_node *eScanned_e_1;
     struct r05_node *tOpenSrcPos_1;
-    struct r05_node *sCloseBracket_1;
     struct r05_node *sCloseBracket_2;
+    struct r05_node *sCloseBracket_1;
+    struct r05_node *eScanned_b_1;
+    struct r05_node *eScanned_e_1;
     struct r05_node *tSrcPos_1;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned  )  ) ( e.InnerScanned  ) ( & TkClose t.SrcPos s.CloseBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkClose, &bb[3], &be[3]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_right(&bb_4, &be_4, &bb_1, &be_1))
+    if (! r05_brackets_right(&bb[4], &be[4], &bb[1], &be[1]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eInnerScanned_b_1 = bb_2;
-    eInnerScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sBracketsSign_1, &bb_4, &be_4))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eInnerScanned_b_1 = bb[2];
+    eInnerScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sBracketsSign_1, &bb[4], &be[4]))
       break;
-    if (! r05_tvar_left(&tOpenSrcPos_1, &bb_4, &be_4))
+    if (! r05_tvar_left(&tOpenSrcPos_1, &bb[4], &be[4]))
       break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_4, &be_4))
+    if (! r05_svar_left(&sCloseBracket_1, &bb[4], &be[4]))
       break;
-    if (! r05_repeated_stvar_right(&sCloseBracket_2, sCloseBracket_1, &bb_3, &be_3))
+    if (! r05_repeated_stvar_right(&sCloseBracket_2, sCloseBracket_1, &bb[3], &be[3]))
       break;
-    eScanned_b_1 = bb_4;
-    eScanned_e_1 = be_4;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eScanned_b_1 = bb[4];
+    eScanned_e_1 = be[4];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eInnerScanned_b_1, eInnerScanned_e_1 );
-    res = refalrts::splice_stvar( res, sBracketsSign_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[5], n[10]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[2], n[4]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[3], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[6], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[8], eInnerScanned_b_1, eInnerScanned_e_1);
+    r05_splice_evar(n[11], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -7112,146 +5020,91 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eTail_e_1;
     struct r05_node *sBracketsSign_1;
     struct r05_node *tOpenSrcPos_1;
+    struct r05_node *sCloseBracket_1;
     struct r05_node *eScanned_b_1;
     struct r05_node *eScanned_e_1;
-    struct r05_node *sCloseBracket_1;
-    struct r05_node *sBracketsSign_2;
-    // t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned ) ) ( e.InnerScanned ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( e.MultiBracket ( s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned  )  ) ( e.InnerScanned  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_right(&bb_3, &be_3, &bb_1, &be_1))
+    if (! r05_brackets_right(&bb[3], &be[3], &bb[1], &be[1]))
       break;
-    eMultiBracket_b_1 = bb_1;
-    eMultiBracket_e_1 = be_1;
-    eInnerScanned_b_1 = bb_2;
-    eInnerScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sBracketsSign_1, &bb_3, &be_3))
+    eMultiBracket_b_1 = bb[1];
+    eMultiBracket_e_1 = be[1];
+    eInnerScanned_b_1 = bb[2];
+    eInnerScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sBracketsSign_1, &bb[3], &be[3]))
       break;
-    if (! r05_tvar_left(&tOpenSrcPos_1, &bb_3, &be_3))
+    if (! r05_tvar_left(&tOpenSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sCloseBracket_1, &bb[3], &be[3]))
       break;
-    eScanned_b_1 = bb_3;
-    eScanned_e_1 = be_3;
+    eScanned_b_1 = bb[3];
+    eScanned_e_1 = be[3];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sBracketsSign_2, sBracketsSign_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Unbalanced bracket \"", 20) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_StrFromBracket, "StrFromBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_char( n9, '\"' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_bracket( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_call( n17 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n17 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n13, n16 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n14, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eInnerScanned_b_1, eInnerScanned_e_1 );
-    res = refalrts::splice_stvar( res, sBracketsSign_2 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n11, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eMultiBracket_b_1, eMultiBracket_e_1 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sBracketsSign_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tOpenSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Unbalanced bracket \"", 20);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_StrFromBracket, "StrFromBracket");
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_char('\"');
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_svar(sBracketsSign_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_insert_pos(n[16]);
+    r05_alloc_close_call(n[17]);
+    r05_push_stack(n[17]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[15]);
+    r05_link_brackets(n[12], n[14]);
+    r05_link_brackets(n[7], n[9]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tOpenSrcPos_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_tvar(n[6], tVarTable_1);
+    r05_splice_evar(n[8], eMultiBracket_b_1, eMultiBracket_e_1);
+    r05_splice_evar(n[11], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[13], eInnerScanned_b_1, eInnerScanned_e_1);
+    r05_splice_evar(n[16], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -7261,128 +5114,80 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eTail_e_1;
     struct r05_node *tSrcPos_1;
     struct r05_node *sCloseBracket_1;
-    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Scanned ) ( & TkClose t.SrcPos s.CloseBracket ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[14] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable (  ) ( e.Scanned  ) ( & TkClose t.SrcPos s.CloseBracket  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkClose, &bb_3, &be_3))
+    if (! r05_function_left(r05c_TkClose, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    eScanned_b_1 = bb_2;
-    eScanned_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_tvar_left(&tSrcPos_1, &bb_3, &be_3))
+    eScanned_b_1 = bb[2];
+    eScanned_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[3], &be[3]))
       break;
-    if (! r05_svar_left(&sCloseBracket_1, &bb_3, &be_3))
+    if (! r05_svar_left(&sCloseBracket_1, &bb[3], &be[3]))
       break;
-    if (! r05_empty_seq(bb_3, be_3))
+    if (! r05_empty_seq(bb[3], be[3]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ParseResult, "ParseResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_EL_AddErrorAt, "EL_AddErrorAt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_chars( n4, n5, "Unbalanced bracket \"", 20) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_call( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_StrFromBracket, "StrFromBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_char( n9, '\"' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_call( n15 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n15 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n13, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eScanned_b_1, eScanned_e_1 );
-    res = refalrts::splice_elem( res, n13 );
-    refalrts::link_brackets( n11, n12 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n6 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sCloseBracket_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, n4, n5 );
-    res = refalrts::splice_stvar( res, tSrcPos_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("Unbalanced bracket \"", 20);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_StrFromBracket, "StrFromBracket");
+    r05_alloc_svar(sCloseBracket_1);
+    r05_alloc_close_call(n[4]);
+    r05_alloc_char('\"');
+    r05_alloc_close_call(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[9], n[11]);
+    r05_link_brackets(n[7], n[8]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tSrcPos_1);
+    r05_splice_tvar(n[6], tSymTable_1);
+    r05_splice_tvar(n[6], tVarTable_1);
+    r05_splice_evar(n[10], eScanned_b_1, eScanned_e_1);
+    r05_splice_evar(n[12], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
     struct r05_node *tVarTable_1;
@@ -7390,46 +5195,43 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eResult_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // t.ErrorList t.SymTable t.VarTable ( ) ( e.Result ) e.Tail
-    if (! r05_tvar_left(&tErrorList_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable (  ) ( e.Result  ) e.Tail */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tSymTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb_0, &be_0))
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
-    eResult_b_1 = bb_2;
-    eResult_e_1 = be_2;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eResult_b_1 = bb[2];
+    eResult_e_1 = be[2];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_stvar( res, tVarTable_1 );
-    res = refalrts::splice_stvar( res, tSymTable_1 );
-    res = refalrts::splice_stvar( res, tErrorList_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_tvar(n[0], tVarTable_1);
+    r05_splice_evar(n[2], eResult_b_1, eResult_e_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -7439,48 +5241,40 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 }
 
 static enum r05_fnresult r05c_BracketPairName(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkOpenBracket
-    if (! r05_function_left(r05c_TkOpenBracket, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkOpenBracket */
+    if (! r05_function_left(r05c_TkOpenBracket, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_Brackets, "Brackets" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_Brackets, "Brackets");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkOpenCall
-    if (! r05_function_left(r05c_TkOpenCall, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkOpenCall */
+    if (! r05_function_left(r05c_TkOpenCall, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_CallBrackets, "CallBrackets" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_CallBrackets, "CallBrackets");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -7490,48 +5284,40 @@ static enum r05_fnresult r05c_BracketPairName(struct r05_node *arg_begin, struct
 }
 
 static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkOpenBracket
-    if (! r05_function_left(r05c_TkOpenBracket, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkOpenBracket */
+    if (! r05_function_left(r05c_TkOpenBracket, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_TkCloseBracket, "TkCloseBracket" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_TkCloseBracket, "TkCloseBracket");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    // & TkOpenCall
-    if (! r05_function_left(r05c_TkOpenCall, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* & TkOpenCall */
+    if (! r05_function_left(r05c_TkOpenCall, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_name( n0, r05c_TkCloseCall, "TkCloseCall" ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_function(r05c_TkCloseCall, "TkCloseCall");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -7541,4 +5327,4 @@ static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struc
 }
 
 
-//End of file
+/* End of file */

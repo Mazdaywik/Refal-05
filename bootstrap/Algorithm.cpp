@@ -1,19 +1,17 @@
-// Automatically generated file. Don't edit!
+/* Automatically generated file. Don't edit! */
 #include "refalrts.h"
 
 
-extern enum r05_fnresult r05c_Fetch(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Seq(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkVariable(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseCall(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Add(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_StrFromInt(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_MakeAlgorithm(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_MakeAlgorithm_Aux(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_AlgLeft(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_AlgRight(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Brackets(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -42,113 +40,140 @@ static enum r05_fnresult r05c_GenResult(struct r05_node *arg_begin, struct r05_n
 extern enum r05_fnresult r05c_CmdAllocateElem(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdLinkBrackets(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdPushStack(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdInsertElem(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdInsertVar(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdInsertString(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElSymbol(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElString(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElOpenBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElCloseBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElOpenCall(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElCloseCall(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ElSavePos(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ElVariable(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_TkString(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_DecUsings(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdEmptyResult(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdReturnResult(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_GeneralizeResult(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ReplicateVar(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ReplicateVars(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ClosedEVariables(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_RepeatedEVariables(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdDeclareEVar(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_FilterCommonVarsAndPatternCommands(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CmdRangeArray(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CmdInitB0(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CmdResultArray(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdDeclareVar(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdCopyEVar(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdCopyVar(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_MakeCopyVar(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_MakeVarsSets(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_FilterCommonVarsAndPatternCommands(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_MakeDeclaration_Aux(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_MakeCmdResultCommand(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 enum r05_fnresult r05c_MakeAlgorithm(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *ePattern_b_1;
     struct r05_node *ePattern_e_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
-    // ( e.Pattern ) ( e.Result )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[6] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Pattern  ) ( e.Result  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    ePattern_b_1 = bb_1;
-    ePattern_e_1 = be_1;
-    eResult_b_1 = bb_2;
-    eResult_e_1 = be_2;
+    ePattern_b_1 = bb[1];
+    ePattern_e_1 = be[1];
+    eResult_b_1 = bb[2];
+    eResult_e_1 = be[2];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_GeneralizeResult, "GeneralizeResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_GenPattern, "GenPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_GenResult, "GenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n5 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_MakeAlgorithm_Aux, "MakeAlgorithm_Aux");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_GenPattern, "GenPattern");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_call(n[5]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[2], ePattern_b_1, ePattern_e_1);
+    r05_splice_evar(n[4], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_MakeAlgorithm_Aux(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *sNumRanges_1;
+    struct r05_node *ePatternVars_b_1;
+    struct r05_node *ePatternVars_e_1;
+    struct r05_node *ePatternCommands_b_1;
+    struct r05_node *ePatternCommands_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges ( e.PatternVars  ) ( e.PatternCommands  ) e.Result */
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    ePatternVars_b_1 = bb[1];
+    ePatternVars_e_1 = be[1];
+    ePatternCommands_b_1 = bb[2];
+    ePatternCommands_e_1 = be[2];
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_GeneralizeResult, "GeneralizeResult");
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_call(n[7]);
+    r05_alloc_function(r05c_GenResult, "GenResult");
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_evar(ePatternVars_b_1, ePatternVars_e_1);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[7]);
+    r05_link_brackets(n[8], n[9]);
+    r05_link_brackets(n[4], n[6]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], ePatternVars_b_1, ePatternVars_e_1);
+    r05_splice_evar(n[5], ePatternCommands_b_1, ePatternCommands_e_1);
+    r05_splice_evar(n[10], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -272,104 +297,50 @@ static enum r05_fnresult r05c_CmdOpenedE(struct r05_node *, struct r05_node *) {
 }
 
 static enum r05_fnresult r05c_GenPattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *ePattern_b_1;
     struct r05_node *ePattern_e_1;
-    struct r05_node *ePattern_b_2;
-    struct r05_node *ePattern_e_2;
-    // e.Pattern
-    ePattern_b_1 = bb_0;
-    ePattern_e_1 = be_0;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* e.Pattern */
+    ePattern_b_1 = bb[0];
+    ePattern_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( ePattern_b_2, ePattern_e_2, ePattern_b_1, ePattern_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_number( n2, 1UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_number( n4, 0UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_CmdComment, "CmdComment" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_call( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_call( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n8, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n9, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    refalrts::push_stack( n13 );
-    refalrts::push_stack( n11 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, ePattern_b_2, ePattern_e_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n3, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, ePattern_b_1, ePattern_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+    r05_alloc_number(1UL);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_number(0UL);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_function(r05c_CmdComment, "CmdComment");
+    r05_alloc_open_call(n[8]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_evar(ePattern_b_1, ePattern_e_1);
+    r05_alloc_close_call(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[6], n[11]);
+    r05_link_brackets(n[7], n[10]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[8]);
+    r05_link_brackets(n[4], n[5]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], ePattern_b_1, ePattern_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -379,12 +350,8 @@ static enum r05_fnresult r05c_GenPattern(struct r05_node *arg_begin, struct r05_
 }
 
 static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -400,132 +367,88 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sType_1;
     struct r05_node *eValue_b_1;
     struct r05_node *eValue_e_1;
-    struct r05_node *sNum_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & Symbol s.Type e.Value ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[16] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & Symbol s.Type e.Value  ) e.Range  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
+      if (! r05_function_left(r05c_Symbol, &bb[5], &be[5]))
         continue;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
-      if (! r05_svar_left(&sType_1, &bb_5, &be_5))
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
+      if (! r05_svar_left(&sType_1, &bb[5], &be[5]))
         continue;
-      eValue_b_1 = bb_5;
-      eValue_e_1 = be_5;
+      eValue_b_1 = bb[5];
+      eValue_e_1 = be[5];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_close_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_open_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_open_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_name( n8, r05c_CmdSymbol, "CmdSymbol" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_name( n9, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_close_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_close_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_close_call( n12 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n12 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n12 );
-      refalrts::link_brackets( n6, n11 );
-      res = refalrts::splice_elem( res, n11 );
-      refalrts::link_brackets( n7, n10 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_evar( res, eValue_b_1, eValue_e_1 );
-      res = refalrts::splice_stvar( res, sType_1 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n6 );
-      refalrts::link_brackets( n4, n5 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_open_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_close_bracket(n[8]);
+      r05_alloc_open_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_open_bracket(n[11]);
+      r05_alloc_function(r05c_CmdSymbol, "CmdSymbol");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_svar(sType_1);
+      r05_alloc_insert_pos(n[12]);
+      r05_alloc_close_bracket(n[13]);
+      r05_alloc_close_bracket(n[14]);
+      r05_alloc_close_call(n[15]);
+      r05_push_stack(n[15]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[9], n[14]);
+      r05_link_brackets(n[11], n[13]);
+      r05_link_brackets(n[6], n[8]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[7], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[10], eCommands_b_1, eCommands_e_1);
+      r05_splice_evar(n[12], eValue_b_1, eValue_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -541,132 +464,88 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sType_1;
     struct r05_node *eValue_b_1;
     struct r05_node *eValue_e_1;
-    struct r05_node *sNum_2;
-    // s.NumRanges e.Ranges_B ( s.Num e.Range ( & Symbol s.Type e.Value ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[16] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num e.Range ( & Symbol s.Type e.Value  )  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_right(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
+      if (! r05_function_left(r05c_Symbol, &bb[5], &be[5]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
-      if (! r05_svar_left(&sType_1, &bb_5, &be_5))
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
+      if (! r05_svar_left(&sType_1, &bb[5], &be[5]))
         continue;
-      eValue_b_1 = bb_5;
-      eValue_e_1 = be_5;
+      eValue_b_1 = bb[5];
+      eValue_e_1 = be[5];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_close_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_open_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_open_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_name( n8, r05c_CmdSymbol, "CmdSymbol" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_name( n9, r05c_AlgRight, "AlgRight" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_close_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_close_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_close_call( n12 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n12 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n12 );
-      refalrts::link_brackets( n6, n11 );
-      res = refalrts::splice_elem( res, n11 );
-      refalrts::link_brackets( n7, n10 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_evar( res, eValue_b_1, eValue_e_1 );
-      res = refalrts::splice_stvar( res, sType_1 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n6 );
-      refalrts::link_brackets( n4, n5 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_open_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_close_bracket(n[8]);
+      r05_alloc_open_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_open_bracket(n[11]);
+      r05_alloc_function(r05c_CmdSymbol, "CmdSymbol");
+      r05_alloc_function(r05c_AlgRight, "AlgRight");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_svar(sType_1);
+      r05_alloc_insert_pos(n[12]);
+      r05_alloc_close_bracket(n[13]);
+      r05_alloc_close_bracket(n[14]);
+      r05_alloc_close_call(n[15]);
+      r05_push_stack(n[15]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[9], n[14]);
+      r05_link_brackets(n[11], n[13]);
+      r05_link_brackets(n[6], n[8]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[7], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[10], eCommands_b_1, eCommands_e_1);
+      r05_splice_evar(n[12], eValue_b_1, eValue_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -681,160 +560,95 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eSubRange_e_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNumRanges_2;
-    struct r05_node *sNumRanges_3;
-    struct r05_node *sNum_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & Brackets e.SubRange ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[20] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & Brackets e.SubRange  ) e.Range  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_Brackets, &bb_5, &be_5))
+      if (! r05_function_left(r05c_Brackets, &bb[5], &be[5]))
         continue;
-      eSubRange_b_1 = bb_5;
-      eSubRange_e_1 = be_5;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eSubRange_b_1 = bb[5];
+      eSubRange_e_1 = be[5];
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNumRanges_2, sNumRanges_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_stvar( sNumRanges_3, sNumRanges_2 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_call( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_name( n3, r05c_Inc, "Inc" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_close_call( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_close_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_open_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_close_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_open_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_CmdBrackets, "CmdBrackets" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_name( n14, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_bracket( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_call( n17 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n17 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n17 );
-      refalrts::link_brackets( n11, n16 );
-      res = refalrts::splice_elem( res, n16 );
-      refalrts::link_brackets( n12, n15 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_stvar( res, sNumRanges_3 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n11 );
-      refalrts::link_brackets( n9, n10 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n7, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n7 );
-      refalrts::link_brackets( n5, n6 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_evar( res, eSubRange_b_1, eSubRange_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_2 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      refalrts::push_stack( n4 );
-      refalrts::push_stack( n2 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_open_call(n[1]);
+      r05_alloc_function(r05c_Inc, "Inc");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_close_call(n[2]);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_open_bracket(n[4]);
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_close_bracket(n[6]);
+      r05_alloc_open_bracket(n[7]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[8]);
+      r05_alloc_close_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_open_bracket(n[11]);
+      r05_alloc_insert_pos(n[12]);
+      r05_alloc_close_bracket(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_insert_pos(n[15]);
+      r05_alloc_open_bracket(n[16]);
+      r05_alloc_function(r05c_CmdBrackets, "CmdBrackets");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_close_bracket(n[17]);
+      r05_alloc_close_bracket(n[18]);
+      r05_alloc_close_call(n[19]);
+      r05_push_stack(n[19]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[14], n[18]);
+      r05_link_brackets(n[16], n[17]);
+      r05_link_brackets(n[11], n[13]);
+      r05_link_brackets(n[7], n[9]);
+      r05_link_brackets(n[4], n[6]);
+      r05_push_stack(n[2]);
+      r05_push_stack(n[1]);
+      r05_splice_evar(n[3], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[5], eSubRange_b_1, eSubRange_e_1);
+      r05_splice_evar(n[8], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[10], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[12], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[15], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -849,160 +663,95 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sNum_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNumRanges_2;
-    struct r05_node *sNumRanges_3;
-    struct r05_node *sNum_2;
-    // s.NumRanges e.Ranges_B ( s.Num e.Range ( & Brackets e.SubRange ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[20] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num e.Range ( & Brackets e.SubRange  )  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_right(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_Brackets, &bb_5, &be_5))
+      if (! r05_function_left(r05c_Brackets, &bb[5], &be[5]))
         continue;
-      eSubRange_b_1 = bb_5;
-      eSubRange_e_1 = be_5;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eSubRange_b_1 = bb[5];
+      eSubRange_e_1 = be[5];
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNumRanges_2, sNumRanges_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_stvar( sNumRanges_3, sNumRanges_2 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_call( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_name( n3, r05c_Inc, "Inc" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_close_call( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_close_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_open_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_close_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_open_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_CmdBrackets, "CmdBrackets" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_name( n14, r05c_AlgRight, "AlgRight" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_bracket( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_call( n17 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n17 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n17 );
-      refalrts::link_brackets( n11, n16 );
-      res = refalrts::splice_elem( res, n16 );
-      refalrts::link_brackets( n12, n15 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_stvar( res, sNumRanges_3 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n11 );
-      refalrts::link_brackets( n9, n10 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n7, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eSubRange_b_1, eSubRange_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_2 );
-      res = refalrts::splice_elem( res, n7 );
-      refalrts::link_brackets( n5, n6 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      refalrts::push_stack( n4 );
-      refalrts::push_stack( n2 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_open_call(n[1]);
+      r05_alloc_function(r05c_Inc, "Inc");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_close_call(n[2]);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_open_bracket(n[4]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_close_bracket(n[6]);
+      r05_alloc_open_bracket(n[7]);
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[8]);
+      r05_alloc_close_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_open_bracket(n[11]);
+      r05_alloc_insert_pos(n[12]);
+      r05_alloc_close_bracket(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_insert_pos(n[15]);
+      r05_alloc_open_bracket(n[16]);
+      r05_alloc_function(r05c_CmdBrackets, "CmdBrackets");
+      r05_alloc_function(r05c_AlgRight, "AlgRight");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_close_bracket(n[17]);
+      r05_alloc_close_bracket(n[18]);
+      r05_alloc_close_call(n[19]);
+      r05_push_stack(n[19]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[14], n[18]);
+      r05_link_brackets(n[16], n[17]);
+      r05_link_brackets(n[11], n[13]);
+      r05_link_brackets(n[7], n[9]);
+      r05_link_brackets(n[4], n[6]);
+      r05_push_stack(n[2]);
+      r05_push_stack(n[1]);
+      r05_splice_evar(n[3], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[5], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[8], eSubRange_b_1, eSubRange_e_1);
+      r05_splice_evar(n[10], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[12], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[15], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -1013,106 +762,70 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eRanges_E_b_1;
     struct r05_node *eRanges_E_e_1;
     struct r05_node *sNum_1;
-    // s.NumRanges e.Ranges_B ( s.Num ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[11] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      if (! r05_empty_seq(bb_4, be_4))
+      if (! r05_empty_seq(bb[4], be[4]))
         continue;
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_name( n6, r05c_CmdEmpty, "CmdEmpty" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_name( n7, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_close_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_close_call( n10 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n10 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n10 );
-      refalrts::link_brackets( n4, n9 );
-      res = refalrts::splice_elem( res, n9 );
-      refalrts::link_brackets( n5, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_open_bracket(n[5]);
+      r05_alloc_insert_pos(n[6]);
+      r05_alloc_open_bracket(n[7]);
+      r05_alloc_function(r05c_CmdEmpty, "CmdEmpty");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_close_bracket(n[8]);
+      r05_alloc_close_bracket(n[9]);
+      r05_alloc_close_call(n[10]);
+      r05_push_stack(n[10]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[5], n[9]);
+      r05_link_brackets(n[7], n[8]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[1], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[3], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[6], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
     struct r05_node *sNumRanges_1;
@@ -1123,209 +836,138 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sNum_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sMode_1;
     struct r05_node *sMode_2;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_1;
     struct r05_node *eIndex_b_2;
     struct r05_node *eIndex_e_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     struct r05_node *eVars_B_b_1;
     struct r05_node *eVars_B_e_1;
     struct r05_node *eVars_E_b_1;
     struct r05_node *eVars_E_e_1;
     struct r05_node *sCount_1;
-    struct r05_node *sNum_2;
-    struct r05_node *sCount_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable s.Mode e.Index ) e.Range ) e.Ranges_E ( e.Vars_B ( s.Count s.Mode e.Index ) e.Vars_E ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[9] = { 0 };
+    struct r05_node *be[9] = { 0 };
+    struct r05_node *n[24] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & TkVariable s.Mode e.Index  ) e.Range  ) e.Ranges_E ( e.Vars_B ( s.Count s.Mode e.Index  ) e.Vars_E  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = bb_2;
-      struct r05_node *be_4 = be_2;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      bb[4] = bb[2];
+      be[4] = be[2];
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_5, &be_5))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[5], &be[5]))
         continue;
-      struct r05_node *bb_6 = 0;
-      struct r05_node *be_6 = 0;
-      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
+      if (! r05_brackets_left(&bb[6], &be[6], &bb[5], &be[5]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_6, &be_6))
+      if (! r05_function_left(r05c_TkVariable, &bb[6], &be[6]))
         continue;
-      eRange_b_1 = bb_5;
-      eRange_e_1 = be_5;
-      if (! r05_svar_left(&sMode_1, &bb_6, &be_6))
+      eRange_b_1 = bb[5];
+      eRange_e_1 = be[5];
+      if (! r05_svar_left(&sMode_1, &bb[6], &be[6]))
         continue;
-      eIndex_b_1 = bb_6;
-      eIndex_e_1 = be_6;
+      eIndex_b_1 = bb[6];
+      eIndex_e_1 = be[6];
       eVars_B_b_1 = 0;
       eVars_B_e_1 = 0;
-      refalrts::start_e_loop();
+      r05_start_e_loop();
       do {
-        struct r05_node *bb_7 = bb_4;
-        struct r05_node *be_7 = be_4;
-        struct r05_node *bb_8 = 0;
-        struct r05_node *be_8 = 0;
-        if (! r05_brackets_left(&bb_8, &be_8, &bb_7, &be_7))
+        bb[7] = bb[4];
+        be[7] = be[4];
+        if (! r05_brackets_left(&bb[8], &be[8], &bb[7], &be[7]))
           continue;
-        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_8, &be_8))
+        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[8], &be[8]))
           continue;
-        if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb_8, &be_8))
+        if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb[8], &be[8]))
           continue;
-        eVars_E_b_1 = bb_7;
-        eVars_E_e_1 = be_7;
-        if (! r05_svar_left(&sCount_1, &bb_8, &be_8))
+        eVars_E_b_1 = bb[7];
+        eVars_E_e_1 = be[7];
+        if (! r05_svar_left(&sCount_1, &bb[8], &be[8]))
           continue;
-        if (! r05_empty_seq(bb_8, be_8))
+        if (! r05_empty_seq(bb[8], be[8]))
           continue;
 
-        refalrts::reset_allocator();
-        struct r05_node *res = arg_begin;
-        if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-          return R05_NO_MEMORY;
-        if( ! refalrts::copy_stvar( sCount_2, sCount_1 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n0 = 0;
-        if( ! refalrts::alloc_open_call( n0 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n1 = 0;
-        if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n2 = 0;
-        if( ! refalrts::alloc_open_bracket( n2 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n3 = 0;
-        if( ! refalrts::alloc_close_bracket( n3 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n4 = 0;
-        if( ! refalrts::alloc_open_bracket( n4 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n5 = 0;
-        if( ! refalrts::alloc_open_bracket( n5 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n6 = 0;
-        if( ! refalrts::alloc_open_call( n6 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n7 = 0;
-        if( ! refalrts::alloc_name( n7, r05c_Inc, "Inc" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n8 = 0;
-        if( ! refalrts::alloc_close_call( n8 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n9 = 0;
-        if( ! refalrts::alloc_close_bracket( n9 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n10 = 0;
-        if( ! refalrts::alloc_close_bracket( n10 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n11 = 0;
-        if( ! refalrts::alloc_open_bracket( n11 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n12 = 0;
-        if( ! refalrts::alloc_open_bracket( n12 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n13 = 0;
-        if( ! refalrts::alloc_name( n13, r05c_CmdRepeated, "CmdRepeated" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n14 = 0;
-        if( ! refalrts::alloc_name( n14, r05c_AlgLeft, "AlgLeft" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n15 = 0;
-        if( ! refalrts::alloc_open_call( n15 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n16 = 0;
-        if( ! refalrts::alloc_name( n16, r05c_Inc, "Inc" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n17 = 0;
-        if( ! refalrts::alloc_close_call( n17 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n18 = 0;
-        if( ! refalrts::alloc_close_bracket( n18 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n19 = 0;
-        if( ! refalrts::alloc_close_bracket( n19 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n20 = 0;
-        if( ! refalrts::alloc_close_call( n20 ) )
-          return R05_NO_MEMORY;
-        refalrts::push_stack( n20 );
-        refalrts::push_stack( n0 );
-        res = refalrts::splice_elem( res, n20 );
-        refalrts::link_brackets( n11, n19 );
-        res = refalrts::splice_elem( res, n19 );
-        refalrts::link_brackets( n12, n18 );
-        res = refalrts::splice_elem( res, n18 );
-        res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-        res = refalrts::splice_stvar( res, sMode_2 );
-        refalrts::push_stack( n17 );
-        refalrts::push_stack( n15 );
-        res = refalrts::splice_elem( res, n17 );
-        res = refalrts::splice_stvar( res, sCount_2 );
-        res = refalrts::splice_elem( res, n16 );
-        res = refalrts::splice_elem( res, n15 );
-        res = refalrts::splice_stvar( res, sNum_2 );
-        res = refalrts::splice_elem( res, n14 );
-        res = refalrts::splice_elem( res, n13 );
-        res = refalrts::splice_elem( res, n12 );
-        res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-        res = refalrts::splice_elem( res, n11 );
-        refalrts::link_brackets( n4, n10 );
-        res = refalrts::splice_elem( res, n10 );
-        res = refalrts::splice_evar( res, eVars_E_b_1, eVars_E_e_1 );
-        refalrts::link_brackets( n5, n9 );
-        res = refalrts::splice_elem( res, n9 );
-        res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-        res = refalrts::splice_stvar( res, sMode_1 );
-        refalrts::push_stack( n8 );
-        refalrts::push_stack( n6 );
-        res = refalrts::splice_elem( res, n8 );
-        res = refalrts::splice_stvar( res, sCount_1 );
-        res = refalrts::splice_elem( res, n7 );
-        res = refalrts::splice_elem( res, n6 );
-        res = refalrts::splice_elem( res, n5 );
-        res = refalrts::splice_evar( res, eVars_B_b_1, eVars_B_e_1 );
-        res = refalrts::splice_elem( res, n4 );
-        res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-        refalrts::link_brackets( n2, n3 );
-        res = refalrts::splice_elem( res, n3 );
-        res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-        res = refalrts::splice_stvar( res, sNum_1 );
-        res = refalrts::splice_elem( res, n2 );
-        res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-        res = refalrts::splice_stvar( res, sNumRanges_1 );
-        res = refalrts::splice_elem( res, n1 );
-        res = refalrts::splice_elem( res, n0 );
-        r05_use(&res);
-        refalrts::splice_to_freelist( arg_begin, arg_end );
+        r05_reset_allocator();
+        r05_alloc_open_call(n[0]);
+        r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+        r05_alloc_svar(sNumRanges_1);
+        r05_alloc_insert_pos(n[1]);
+        r05_alloc_open_bracket(n[2]);
+        r05_alloc_svar(sNum_1);
+        r05_alloc_insert_pos(n[3]);
+        r05_alloc_close_bracket(n[4]);
+        r05_alloc_insert_pos(n[5]);
+        r05_alloc_open_bracket(n[6]);
+        r05_alloc_insert_pos(n[7]);
+        r05_alloc_open_bracket(n[8]);
+        r05_alloc_open_call(n[9]);
+        r05_alloc_function(r05c_Inc, "Inc");
+        r05_alloc_svar(sCount_1);
+        r05_alloc_close_call(n[10]);
+        r05_alloc_svar(sMode_1);
+        r05_alloc_insert_pos(n[11]);
+        r05_alloc_close_bracket(n[12]);
+        r05_alloc_insert_pos(n[13]);
+        r05_alloc_close_bracket(n[14]);
+        r05_alloc_open_bracket(n[15]);
+        r05_alloc_insert_pos(n[16]);
+        r05_alloc_open_bracket(n[17]);
+        r05_alloc_function(r05c_CmdRepeated, "CmdRepeated");
+        r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+        r05_alloc_svar(sNum_1);
+        r05_alloc_open_call(n[18]);
+        r05_alloc_function(r05c_Inc, "Inc");
+        r05_alloc_svar(sCount_1);
+        r05_alloc_close_call(n[19]);
+        r05_alloc_svar(sMode_1);
+        r05_alloc_insert_pos(n[20]);
+        r05_alloc_close_bracket(n[21]);
+        r05_alloc_close_bracket(n[22]);
+        r05_alloc_close_call(n[23]);
+        r05_push_stack(n[23]);
+        r05_push_stack(n[0]);
+        r05_link_brackets(n[15], n[22]);
+        r05_link_brackets(n[17], n[21]);
+        r05_push_stack(n[19]);
+        r05_push_stack(n[18]);
+        r05_link_brackets(n[6], n[14]);
+        r05_link_brackets(n[8], n[12]);
+        r05_push_stack(n[10]);
+        r05_push_stack(n[9]);
+        r05_link_brackets(n[2], n[4]);
+        r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+        r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+        r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+        r05_splice_evar(n[7], eVars_B_b_1, eVars_B_e_1);
+        r05_splice_evar(n[11], eIndex_b_2, eIndex_e_2);
+        r05_splice_evar(n[13], eVars_E_b_1, eVars_E_e_1);
+        r05_splice_evar(n[16], eCommands_b_1, eCommands_e_1);
+        r05_splice_evar(n[20], eIndex_b_1, eIndex_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
         return R05_SUCCESS;
-      } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb_4, &be_4));
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+      } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb[4], &be[4]));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
     struct r05_node *sNumRanges_1;
@@ -1336,209 +978,138 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sNum_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sMode_1;
     struct r05_node *sMode_2;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
+    struct r05_node *sMode_1;
     struct r05_node *eIndex_b_2;
     struct r05_node *eIndex_e_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     struct r05_node *eVars_B_b_1;
     struct r05_node *eVars_B_e_1;
     struct r05_node *eVars_E_b_1;
     struct r05_node *eVars_E_e_1;
     struct r05_node *sCount_1;
-    struct r05_node *sNum_2;
-    struct r05_node *sCount_2;
-    // s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable s.Mode e.Index ) ) e.Ranges_E ( e.Vars_B ( s.Count s.Mode e.Index ) e.Vars_E ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[9] = { 0 };
+    struct r05_node *be[9] = { 0 };
+    struct r05_node *n[24] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable s.Mode e.Index  )  ) e.Ranges_E ( e.Vars_B ( s.Count s.Mode e.Index  ) e.Vars_E  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = bb_2;
-      struct r05_node *be_4 = be_2;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      bb[4] = bb[2];
+      be[4] = be[2];
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[3], &be[3]))
         continue;
-      struct r05_node *bb_6 = 0;
-      struct r05_node *be_6 = 0;
-      if (! r05_brackets_right(&bb_6, &be_6, &bb_5, &be_5))
+      if (! r05_brackets_right(&bb[6], &be[6], &bb[5], &be[5]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_6, &be_6))
+      if (! r05_function_left(r05c_TkVariable, &bb[6], &be[6]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_5, &be_5))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[5], &be[5]))
         continue;
-      eRange_b_1 = bb_5;
-      eRange_e_1 = be_5;
-      if (! r05_svar_left(&sMode_1, &bb_6, &be_6))
+      eRange_b_1 = bb[5];
+      eRange_e_1 = be[5];
+      if (! r05_svar_left(&sMode_1, &bb[6], &be[6]))
         continue;
-      eIndex_b_1 = bb_6;
-      eIndex_e_1 = be_6;
+      eIndex_b_1 = bb[6];
+      eIndex_e_1 = be[6];
       eVars_B_b_1 = 0;
       eVars_B_e_1 = 0;
-      refalrts::start_e_loop();
+      r05_start_e_loop();
       do {
-        struct r05_node *bb_7 = bb_4;
-        struct r05_node *be_7 = be_4;
-        struct r05_node *bb_8 = 0;
-        struct r05_node *be_8 = 0;
-        if (! r05_brackets_left(&bb_8, &be_8, &bb_7, &be_7))
+        bb[7] = bb[4];
+        be[7] = be[4];
+        if (! r05_brackets_left(&bb[8], &be[8], &bb[7], &be[7]))
           continue;
-        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_8, &be_8))
+        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[8], &be[8]))
           continue;
-        if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb_8, &be_8))
+        if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb[8], &be[8]))
           continue;
-        eVars_E_b_1 = bb_7;
-        eVars_E_e_1 = be_7;
-        if (! r05_svar_left(&sCount_1, &bb_8, &be_8))
+        eVars_E_b_1 = bb[7];
+        eVars_E_e_1 = be[7];
+        if (! r05_svar_left(&sCount_1, &bb[8], &be[8]))
           continue;
-        if (! r05_empty_seq(bb_8, be_8))
+        if (! r05_empty_seq(bb[8], be[8]))
           continue;
 
-        refalrts::reset_allocator();
-        struct r05_node *res = arg_begin;
-        if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-          return R05_NO_MEMORY;
-        if( ! refalrts::copy_stvar( sCount_2, sCount_1 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n0 = 0;
-        if( ! refalrts::alloc_open_call( n0 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n1 = 0;
-        if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n2 = 0;
-        if( ! refalrts::alloc_open_bracket( n2 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n3 = 0;
-        if( ! refalrts::alloc_close_bracket( n3 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n4 = 0;
-        if( ! refalrts::alloc_open_bracket( n4 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n5 = 0;
-        if( ! refalrts::alloc_open_bracket( n5 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n6 = 0;
-        if( ! refalrts::alloc_open_call( n6 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n7 = 0;
-        if( ! refalrts::alloc_name( n7, r05c_Inc, "Inc" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n8 = 0;
-        if( ! refalrts::alloc_close_call( n8 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n9 = 0;
-        if( ! refalrts::alloc_close_bracket( n9 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n10 = 0;
-        if( ! refalrts::alloc_close_bracket( n10 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n11 = 0;
-        if( ! refalrts::alloc_open_bracket( n11 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n12 = 0;
-        if( ! refalrts::alloc_open_bracket( n12 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n13 = 0;
-        if( ! refalrts::alloc_name( n13, r05c_CmdRepeated, "CmdRepeated" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n14 = 0;
-        if( ! refalrts::alloc_name( n14, r05c_AlgRight, "AlgRight" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n15 = 0;
-        if( ! refalrts::alloc_open_call( n15 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n16 = 0;
-        if( ! refalrts::alloc_name( n16, r05c_Inc, "Inc" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n17 = 0;
-        if( ! refalrts::alloc_close_call( n17 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n18 = 0;
-        if( ! refalrts::alloc_close_bracket( n18 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n19 = 0;
-        if( ! refalrts::alloc_close_bracket( n19 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n20 = 0;
-        if( ! refalrts::alloc_close_call( n20 ) )
-          return R05_NO_MEMORY;
-        refalrts::push_stack( n20 );
-        refalrts::push_stack( n0 );
-        res = refalrts::splice_elem( res, n20 );
-        refalrts::link_brackets( n11, n19 );
-        res = refalrts::splice_elem( res, n19 );
-        refalrts::link_brackets( n12, n18 );
-        res = refalrts::splice_elem( res, n18 );
-        res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-        res = refalrts::splice_stvar( res, sMode_2 );
-        refalrts::push_stack( n17 );
-        refalrts::push_stack( n15 );
-        res = refalrts::splice_elem( res, n17 );
-        res = refalrts::splice_stvar( res, sCount_2 );
-        res = refalrts::splice_elem( res, n16 );
-        res = refalrts::splice_elem( res, n15 );
-        res = refalrts::splice_stvar( res, sNum_2 );
-        res = refalrts::splice_elem( res, n14 );
-        res = refalrts::splice_elem( res, n13 );
-        res = refalrts::splice_elem( res, n12 );
-        res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-        res = refalrts::splice_elem( res, n11 );
-        refalrts::link_brackets( n4, n10 );
-        res = refalrts::splice_elem( res, n10 );
-        res = refalrts::splice_evar( res, eVars_E_b_1, eVars_E_e_1 );
-        refalrts::link_brackets( n5, n9 );
-        res = refalrts::splice_elem( res, n9 );
-        res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-        res = refalrts::splice_stvar( res, sMode_1 );
-        refalrts::push_stack( n8 );
-        refalrts::push_stack( n6 );
-        res = refalrts::splice_elem( res, n8 );
-        res = refalrts::splice_stvar( res, sCount_1 );
-        res = refalrts::splice_elem( res, n7 );
-        res = refalrts::splice_elem( res, n6 );
-        res = refalrts::splice_elem( res, n5 );
-        res = refalrts::splice_evar( res, eVars_B_b_1, eVars_B_e_1 );
-        res = refalrts::splice_elem( res, n4 );
-        res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-        refalrts::link_brackets( n2, n3 );
-        res = refalrts::splice_elem( res, n3 );
-        res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-        res = refalrts::splice_stvar( res, sNum_1 );
-        res = refalrts::splice_elem( res, n2 );
-        res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-        res = refalrts::splice_stvar( res, sNumRanges_1 );
-        res = refalrts::splice_elem( res, n1 );
-        res = refalrts::splice_elem( res, n0 );
-        r05_use(&res);
-        refalrts::splice_to_freelist( arg_begin, arg_end );
+        r05_reset_allocator();
+        r05_alloc_open_call(n[0]);
+        r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+        r05_alloc_svar(sNumRanges_1);
+        r05_alloc_insert_pos(n[1]);
+        r05_alloc_open_bracket(n[2]);
+        r05_alloc_svar(sNum_1);
+        r05_alloc_insert_pos(n[3]);
+        r05_alloc_close_bracket(n[4]);
+        r05_alloc_insert_pos(n[5]);
+        r05_alloc_open_bracket(n[6]);
+        r05_alloc_insert_pos(n[7]);
+        r05_alloc_open_bracket(n[8]);
+        r05_alloc_open_call(n[9]);
+        r05_alloc_function(r05c_Inc, "Inc");
+        r05_alloc_svar(sCount_1);
+        r05_alloc_close_call(n[10]);
+        r05_alloc_svar(sMode_1);
+        r05_alloc_insert_pos(n[11]);
+        r05_alloc_close_bracket(n[12]);
+        r05_alloc_insert_pos(n[13]);
+        r05_alloc_close_bracket(n[14]);
+        r05_alloc_open_bracket(n[15]);
+        r05_alloc_insert_pos(n[16]);
+        r05_alloc_open_bracket(n[17]);
+        r05_alloc_function(r05c_CmdRepeated, "CmdRepeated");
+        r05_alloc_function(r05c_AlgRight, "AlgRight");
+        r05_alloc_svar(sNum_1);
+        r05_alloc_open_call(n[18]);
+        r05_alloc_function(r05c_Inc, "Inc");
+        r05_alloc_svar(sCount_1);
+        r05_alloc_close_call(n[19]);
+        r05_alloc_svar(sMode_1);
+        r05_alloc_insert_pos(n[20]);
+        r05_alloc_close_bracket(n[21]);
+        r05_alloc_close_bracket(n[22]);
+        r05_alloc_close_call(n[23]);
+        r05_push_stack(n[23]);
+        r05_push_stack(n[0]);
+        r05_link_brackets(n[15], n[22]);
+        r05_link_brackets(n[17], n[21]);
+        r05_push_stack(n[19]);
+        r05_push_stack(n[18]);
+        r05_link_brackets(n[6], n[14]);
+        r05_link_brackets(n[8], n[12]);
+        r05_push_stack(n[10]);
+        r05_push_stack(n[9]);
+        r05_link_brackets(n[2], n[4]);
+        r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+        r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+        r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+        r05_splice_evar(n[7], eVars_B_b_1, eVars_B_e_1);
+        r05_splice_evar(n[11], eIndex_b_2, eIndex_e_2);
+        r05_splice_evar(n[13], eVars_E_b_1, eVars_E_e_1);
+        r05_splice_evar(n[16], eCommands_b_1, eCommands_e_1);
+        r05_splice_evar(n[20], eIndex_b_1, eIndex_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
         return R05_SUCCESS;
-      } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb_4, &be_4));
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+      } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb[4], &be[4]));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -1551,143 +1122,87 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eRanges_E_b_1;
     struct r05_node *eRanges_E_e_1;
     struct r05_node *sNum_1;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 'e e.Index ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[14] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 'e' e.Index  )  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_right(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
+      if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
         continue;
-      if (! r05_char_left('e', &bb_5, &be_5))
+      if (! r05_char_left('e', &bb[5], &be[5]))
         continue;
-      eIndex_b_1 = bb_5;
-      eIndex_e_1 = be_5;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eIndex_b_1 = bb[5];
+      eIndex_e_1 = be[5];
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      if (! r05_empty_seq(bb_4, be_4))
+      if (! r05_empty_seq(bb[4], be[4]))
         continue;
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_open_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_number( n4, 1UL ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_char( n5, 'e' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_close_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_close_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_open_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_name( n10, r05c_CmdClosedE, "CmdClosedE" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_name( n11, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_char( n12, 'e' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_close_bracket( n13 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_close_bracket( n14 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_call( n15 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n15 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n15 );
-      refalrts::link_brackets( n8, n14 );
-      res = refalrts::splice_elem( res, n14 );
-      refalrts::link_brackets( n9, n13 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n8 );
-      refalrts::link_brackets( n2, n7 );
-      res = refalrts::splice_elem( res, n7 );
-      refalrts::link_brackets( n3, n6 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_open_bracket(n[4]);
+      r05_alloc_number(1UL);
+      r05_alloc_char('e');
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_close_bracket(n[6]);
+      r05_alloc_close_bracket(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_open_bracket(n[10]);
+      r05_alloc_function(r05c_CmdClosedE, "CmdClosedE");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_char('e');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_close_bracket(n[12]);
+      r05_alloc_close_call(n[13]);
+      r05_push_stack(n[13]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[8], n[12]);
+      r05_link_brackets(n[10], n[11]);
+      r05_link_brackets(n[2], n[7]);
+      r05_link_brackets(n[4], n[6]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[1], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[3], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[5], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[9], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -1702,157 +1217,94 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eIndex_e_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNum_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 's e.Index ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 's' e.Index  ) e.Range  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
+      if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
         continue;
-      if (! r05_char_left('s', &bb_5, &be_5))
+      if (! r05_char_left('s', &bb[5], &be[5]))
         continue;
-      eIndex_b_1 = bb_5;
-      eIndex_e_1 = be_5;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eIndex_b_1 = bb[5];
+      eIndex_e_1 = be[5];
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_number( n6, 1UL ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_char( n7, 's' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_close_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_open_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_name( n12, r05c_CmdVar, "CmdVar" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_char( n14, 's' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_bracket( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_call( n17 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n17 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n17 );
-      refalrts::link_brackets( n10, n16 );
-      res = refalrts::splice_elem( res, n16 );
-      refalrts::link_brackets( n11, n15 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n10 );
-      refalrts::link_brackets( n4, n9 );
-      res = refalrts::splice_elem( res, n9 );
-      refalrts::link_brackets( n5, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_open_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_number(1UL);
+      r05_alloc_char('s');
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_close_bracket(n[10]);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_open_bracket(n[12]);
+      r05_alloc_insert_pos(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_function(r05c_CmdVar, "CmdVar");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_char('s');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[15]);
+      r05_alloc_close_bracket(n[16]);
+      r05_alloc_close_call(n[17]);
+      r05_push_stack(n[17]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[12], n[16]);
+      r05_link_brackets(n[14], n[15]);
+      r05_link_brackets(n[6], n[11]);
+      r05_link_brackets(n[8], n[10]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[7], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[9], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[13], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -1867,157 +1319,94 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eIndex_e_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNum_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 't e.Index ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 't' e.Index  ) e.Range  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
+      if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
         continue;
-      if (! r05_char_left('t', &bb_5, &be_5))
+      if (! r05_char_left('t', &bb[5], &be[5]))
         continue;
-      eIndex_b_1 = bb_5;
-      eIndex_e_1 = be_5;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eIndex_b_1 = bb[5];
+      eIndex_e_1 = be[5];
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_number( n6, 1UL ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_char( n7, 't' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_close_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_open_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_name( n12, r05c_CmdVar, "CmdVar" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_char( n14, 't' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_bracket( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_call( n17 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n17 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n17 );
-      refalrts::link_brackets( n10, n16 );
-      res = refalrts::splice_elem( res, n16 );
-      refalrts::link_brackets( n11, n15 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n10 );
-      refalrts::link_brackets( n4, n9 );
-      res = refalrts::splice_elem( res, n9 );
-      refalrts::link_brackets( n5, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_open_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_number(1UL);
+      r05_alloc_char('t');
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_close_bracket(n[10]);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_open_bracket(n[12]);
+      r05_alloc_insert_pos(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_function(r05c_CmdVar, "CmdVar");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_char('t');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[15]);
+      r05_alloc_close_bracket(n[16]);
+      r05_alloc_close_call(n[17]);
+      r05_push_stack(n[17]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[12], n[16]);
+      r05_link_brackets(n[14], n[15]);
+      r05_link_brackets(n[6], n[11]);
+      r05_link_brackets(n[8], n[10]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[7], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[9], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[13], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -2032,157 +1421,94 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sNum_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNum_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable 's e.Index ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable 's' e.Index  )  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_right(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
+      if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
         continue;
-      if (! r05_char_left('s', &bb_5, &be_5))
+      if (! r05_char_left('s', &bb[5], &be[5]))
         continue;
-      eIndex_b_1 = bb_5;
-      eIndex_e_1 = be_5;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eIndex_b_1 = bb[5];
+      eIndex_e_1 = be[5];
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_number( n6, 1UL ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_char( n7, 's' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_close_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_open_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_name( n12, r05c_CmdVar, "CmdVar" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_AlgRight, "AlgRight" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_char( n14, 's' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_bracket( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_call( n17 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n17 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n17 );
-      refalrts::link_brackets( n10, n16 );
-      res = refalrts::splice_elem( res, n16 );
-      refalrts::link_brackets( n11, n15 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n10 );
-      refalrts::link_brackets( n4, n9 );
-      res = refalrts::splice_elem( res, n9 );
-      refalrts::link_brackets( n5, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_open_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_number(1UL);
+      r05_alloc_char('s');
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_close_bracket(n[10]);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_open_bracket(n[12]);
+      r05_alloc_insert_pos(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_function(r05c_CmdVar, "CmdVar");
+      r05_alloc_function(r05c_AlgRight, "AlgRight");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_char('s');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[15]);
+      r05_alloc_close_bracket(n[16]);
+      r05_alloc_close_call(n[17]);
+      r05_push_stack(n[17]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[12], n[16]);
+      r05_link_brackets(n[14], n[15]);
+      r05_link_brackets(n[6], n[11]);
+      r05_link_brackets(n[8], n[10]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[7], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[9], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[13], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -2197,157 +1523,94 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *sNum_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNum_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable 't e.Index ) ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num e.Range ( & TkVariable 't' e.Index  )  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_right(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_right(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
+      if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
         continue;
-      if (! r05_char_left('t', &bb_5, &be_5))
+      if (! r05_char_left('t', &bb[5], &be[5]))
         continue;
-      eIndex_b_1 = bb_5;
-      eIndex_e_1 = be_5;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eIndex_b_1 = bb[5];
+      eIndex_e_1 = be[5];
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_close_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_number( n6, 1UL ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_char( n7, 't' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_close_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_open_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_name( n12, r05c_CmdVar, "CmdVar" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_AlgRight, "AlgRight" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_char( n14, 't' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_close_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_bracket( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_call( n17 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n17 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n17 );
-      refalrts::link_brackets( n10, n16 );
-      res = refalrts::splice_elem( res, n16 );
-      refalrts::link_brackets( n11, n15 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n10 );
-      refalrts::link_brackets( n4, n9 );
-      res = refalrts::splice_elem( res, n9 );
-      refalrts::link_brackets( n5, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n2, n3 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_insert_pos(n[1]);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[3]);
+      r05_alloc_close_bracket(n[4]);
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_open_bracket(n[6]);
+      r05_alloc_insert_pos(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_number(1UL);
+      r05_alloc_char('t');
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_close_bracket(n[10]);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_open_bracket(n[12]);
+      r05_alloc_insert_pos(n[13]);
+      r05_alloc_open_bracket(n[14]);
+      r05_alloc_function(r05c_CmdVar, "CmdVar");
+      r05_alloc_function(r05c_AlgRight, "AlgRight");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_char('t');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[15]);
+      r05_alloc_close_bracket(n[16]);
+      r05_alloc_close_call(n[17]);
+      r05_push_stack(n[17]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[12], n[16]);
+      r05_link_brackets(n[14], n[15]);
+      r05_link_brackets(n[6], n[11]);
+      r05_link_brackets(n[8], n[10]);
+      r05_link_brackets(n[2], n[4]);
+      r05_splice_evar(n[1], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[3], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[5], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[7], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[9], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[13], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -2362,227 +1625,140 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eIndex_e_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNum_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 'e e.Index ) e.Range ) e.Ranges_E ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[22] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges e.Ranges_B ( s.Num ( & TkVariable 'e' e.Index  ) e.Range  ) e.Ranges_E ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
     eRanges_B_b_1 = 0;
     eRanges_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_3 = bb_0;
-      struct r05_node *be_3 = be_0;
-      struct r05_node *bb_4 = 0;
-      struct r05_node *be_4 = 0;
-      if (! r05_brackets_left(&bb_4, &be_4, &bb_3, &be_3))
+      bb[3] = bb[0];
+      be[3] = be[0];
+      if (! r05_brackets_left(&bb[4], &be[4], &bb[3], &be[3]))
         continue;
-      eRanges_E_b_1 = bb_3;
-      eRanges_E_e_1 = be_3;
-      if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+      eRanges_E_b_1 = bb[3];
+      eRanges_E_e_1 = be[3];
+      if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
         continue;
-      struct r05_node *bb_5 = 0;
-      struct r05_node *be_5 = 0;
-      if (! r05_brackets_left(&bb_5, &be_5, &bb_4, &be_4))
+      if (! r05_brackets_left(&bb[5], &be[5], &bb[4], &be[4]))
         continue;
-      if (! r05_function_left(r05c_TkVariable, &bb_5, &be_5))
+      if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
         continue;
-      if (! r05_char_left('e', &bb_5, &be_5))
+      if (! r05_char_left('e', &bb[5], &be[5]))
         continue;
-      eIndex_b_1 = bb_5;
-      eIndex_e_1 = be_5;
-      eRange_b_1 = bb_4;
-      eRange_e_1 = be_4;
+      eIndex_b_1 = bb[5];
+      eIndex_e_1 = be[5];
+      eRange_b_1 = bb[4];
+      eRange_e_1 = be[4];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sNum_2, sNum_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenPattern, "DoGenPattern" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_call( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_name( n3, r05c_SaveRanges, "SaveRanges" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_close_bracket( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_open_bracket( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_close_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_open_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_number( n10, 1UL ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_char( n11, 'e' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_close_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_close_bracket( n13 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_open_bracket( n14 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_open_bracket( n15 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_name( n16, r05c_CmdOpenedE, "CmdOpenedE" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_name( n17, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n18 = 0;
-      if( ! refalrts::alloc_char( n18, 'e' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n19 = 0;
-      if( ! refalrts::alloc_close_bracket( n19 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n20 = 0;
-      if( ! refalrts::alloc_close_bracket( n20 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n21 = 0;
-      if( ! refalrts::alloc_close_call( n21 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n22 = 0;
-      if( ! refalrts::alloc_close_call( n22 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n22 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n22 );
-      refalrts::push_stack( n21 );
-      refalrts::push_stack( n2 );
-      res = refalrts::splice_elem( res, n21 );
-      refalrts::link_brackets( n14, n20 );
-      res = refalrts::splice_elem( res, n20 );
-      refalrts::link_brackets( n15, n19 );
-      res = refalrts::splice_elem( res, n19 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n18 );
-      res = refalrts::splice_stvar( res, sNum_2 );
-      res = refalrts::splice_elem( res, n17 );
-      res = refalrts::splice_elem( res, n16 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      res = refalrts::splice_elem( res, n14 );
-      refalrts::link_brackets( n8, n13 );
-      res = refalrts::splice_elem( res, n13 );
-      refalrts::link_brackets( n9, n12 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eRanges_E_b_1, eRanges_E_e_1 );
-      refalrts::link_brackets( n6, n7 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-      res = refalrts::splice_stvar( res, sNum_1 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_evar( res, eRanges_B_b_1, eRanges_B_e_1 );
-      refalrts::link_brackets( n4, n5 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_stvar( res, sNumRanges_1 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenPattern, "DoGenPattern");
+      r05_alloc_open_call(n[1]);
+      r05_alloc_function(r05c_SaveRanges, "SaveRanges");
+      r05_alloc_svar(sNumRanges_1);
+      r05_alloc_open_bracket(n[2]);
+      r05_alloc_close_bracket(n[3]);
+      r05_alloc_insert_pos(n[4]);
+      r05_alloc_open_bracket(n[5]);
+      r05_alloc_svar(sNum_1);
+      r05_alloc_insert_pos(n[6]);
+      r05_alloc_close_bracket(n[7]);
+      r05_alloc_insert_pos(n[8]);
+      r05_alloc_open_bracket(n[9]);
+      r05_alloc_insert_pos(n[10]);
+      r05_alloc_open_bracket(n[11]);
+      r05_alloc_number(1UL);
+      r05_alloc_char('e');
+      r05_alloc_insert_pos(n[12]);
+      r05_alloc_close_bracket(n[13]);
+      r05_alloc_close_bracket(n[14]);
+      r05_alloc_open_bracket(n[15]);
+      r05_alloc_insert_pos(n[16]);
+      r05_alloc_open_bracket(n[17]);
+      r05_alloc_function(r05c_CmdOpenedE, "CmdOpenedE");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sNum_1);
+      r05_alloc_char('e');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[18]);
+      r05_alloc_close_bracket(n[19]);
+      r05_alloc_close_call(n[20]);
+      r05_alloc_close_call(n[21]);
+      r05_push_stack(n[21]);
+      r05_push_stack(n[0]);
+      r05_push_stack(n[20]);
+      r05_push_stack(n[1]);
+      r05_link_brackets(n[15], n[19]);
+      r05_link_brackets(n[17], n[18]);
+      r05_link_brackets(n[9], n[14]);
+      r05_link_brackets(n[11], n[13]);
+      r05_link_brackets(n[5], n[7]);
+      r05_link_brackets(n[2], n[3]);
+      r05_splice_evar(n[4], eRanges_B_b_1, eRanges_B_e_1);
+      r05_splice_evar(n[6], eRange_b_1, eRange_e_1);
+      r05_splice_evar(n[8], eRanges_E_b_1, eRanges_E_e_1);
+      r05_splice_evar(n[10], eVars_b_1, eVars_e_1);
+      r05_splice_evar(n[12], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[16], eCommands_b_1, eCommands_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eRanges_B_b_1, &eRanges_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
     struct r05_node *sNumRanges_1;
-    // s.NumRanges ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[6] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_link_brackets(n[3], n[5]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[4], eCommands_b_1, eCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2592,12 +1768,8 @@ static enum r05_fnresult r05c_DoGenPattern(struct r05_node *arg_begin, struct r0
 }
 
 static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eCommands_b_1;
@@ -2610,142 +1782,82 @@ static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_
     struct r05_node *sNum_1;
     struct r05_node *eRange_b_1;
     struct r05_node *eRange_e_1;
-    struct r05_node *sNumRanges_2;
-    struct r05_node *sNumRanges_3;
-    // s.NumRanges ( e.ScannedRanges ) ( s.Num e.Range ) e.Ranges ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[19] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges ( e.ScannedRanges  ) ( s.Num e.Range  ) e.Ranges ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    eScannedRanges_b_1 = bb_3;
-    eScannedRanges_e_1 = be_3;
-    eRanges_b_1 = bb_0;
-    eRanges_e_1 = be_0;
-    if (! r05_svar_left(&sNum_1, &bb_4, &be_4))
+    eScannedRanges_b_1 = bb[3];
+    eScannedRanges_e_1 = be[3];
+    eRanges_b_1 = bb[0];
+    eRanges_e_1 = be[0];
+    if (! r05_svar_left(&sNum_1, &bb[4], &be[4]))
       break;
-    eRange_b_1 = bb_4;
-    eRange_e_1 = be_4;
+    eRange_b_1 = bb[4];
+    eRange_e_1 = be[4];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sNumRanges_2, sNumRanges_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sNumRanges_3, sNumRanges_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_SaveRanges, "SaveRanges" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_open_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_name( n13, r05c_CmdSave, "CmdSave" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n11, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n12, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_stvar( res, sNumRanges_3 );
-    res = refalrts::splice_stvar( res, sNum_1 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n9, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eRanges_b_1, eRanges_e_1 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eRange_b_1, eRange_e_1 );
-    res = refalrts::splice_stvar( res, sNumRanges_2 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eScannedRanges_b_1, eScannedRanges_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_stvar( res, sNumRanges_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_SaveRanges, "SaveRanges");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_Inc, "Inc");
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_open_bracket(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_open_bracket(n[15]);
+    r05_alloc_function(r05c_CmdSave, "CmdSave");
+    r05_alloc_svar(sNum_1);
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_close_bracket(n[16]);
+    r05_alloc_close_bracket(n[17]);
+    r05_alloc_close_call(n[18]);
+    r05_push_stack(n[18]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[13], n[17]);
+    r05_link_brackets(n[15], n[16]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[3], n[8]);
+    r05_link_brackets(n[5], n[7]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[4], eScannedRanges_b_1, eScannedRanges_e_1);
+    r05_splice_evar(n[6], eRange_b_1, eRange_e_1);
+    r05_splice_evar(n[9], eRanges_b_1, eRanges_e_1);
+    r05_splice_evar(n[11], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[14], eCommands_b_1, eCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eScannedRanges_b_1;
     struct r05_node *eScannedRanges_e_1;
     struct r05_node *eVars_b_1;
@@ -2753,56 +1865,45 @@ static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
     struct r05_node *sNumRanges_1;
-    // s.NumRanges ( e.ScannedRanges ) ( e.Vars ) ( e.Commands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges ( e.ScannedRanges  ) ( e.Vars  ) ( e.Commands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_right(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_right(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eScannedRanges_b_1 = bb_3;
-    eScannedRanges_e_1 = be_3;
-    eVars_b_1 = bb_2;
-    eVars_e_1 = be_2;
-    eCommands_b_1 = bb_1;
-    eCommands_e_1 = be_1;
-    if (! r05_svar_left(&sNumRanges_1, &bb_0, &be_0))
+    eScannedRanges_b_1 = bb[3];
+    eScannedRanges_e_1 = be[3];
+    eVars_b_1 = bb[2];
+    eVars_e_1 = be[2];
+    eCommands_b_1 = bb[1];
+    eCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    res = refalrts::splice_evar( res, eScannedRanges_b_1, eScannedRanges_e_1 );
-    res = refalrts::splice_stvar( res, sNumRanges_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_link_brackets(n[4], n[6]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[0], eScannedRanges_b_1, eScannedRanges_e_1);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eCommands_b_1, eCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -2812,329 +1913,227 @@ static enum r05_fnresult r05c_SaveRanges(struct r05_node *arg_begin, struct r05_
 }
 
 static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eInner_b_1;
     struct r05_node *eInner_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // ( & Brackets e.Inner ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[6] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & Brackets e.Inner  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Brackets, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Brackets, &bb[1], &be[1]))
       break;
-    eInner_b_1 = bb_1;
-    eInner_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eInner_b_1 = bb[1];
+    eInner_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_chars( n0, n1, " (", 2) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_chars( n5, n6, " )", 2) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n7 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, n5, n6 );
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eInner_b_1, eInner_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, n0, n1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_chars(" (", 2);
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_chars(" )", 2);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_call(n[5]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[1], eInner_b_1, eInner_e_1);
+    r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *sChar_1;
-    // ( & Symbol & Char s.Char ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & Symbol & Char s.Char  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Symbol, &bb[1], &be[1]))
       break;
-    if (! r05_function_left(r05c_Char, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Char, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sChar_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sChar_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_chars( n0, n1, " \'", 2) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_TextFromPattern_Char, "TextFromPattern_Char" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_Symbol, "Symbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_Char, "Char" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_call( n8 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n8 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    refalrts::link_brackets( n4, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, n0, n1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_chars(" \'", 2);
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_TextFromPattern_Char, "TextFromPattern_Char");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_function(r05c_Symbol, "Symbol");
+    r05_alloc_function(r05c_Char, "Char");
+    r05_alloc_svar(sChar_1);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[1], n[2]);
+    r05_splice_evar(n[3], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *sNumber_1;
-    // ( & Symbol & Number s.Number ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & Symbol & Number s.Number  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Symbol, &bb[1], &be[1]))
       break;
-    if (! r05_function_left(r05c_Number, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Number, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sNumber_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sNumber_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, ' ' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_open_call( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_StrFromInt, "StrFromInt" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_call( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_name( n5, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_call( n6 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n6 );
-    refalrts::push_stack( n4 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::push_stack( n3 );
-    refalrts::push_stack( n1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_stvar( res, sNumber_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char(' ');
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_StrFromInt, "StrFromInt");
+    r05_alloc_svar(sNumber_1);
+    r05_alloc_close_call(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[3], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eName_b_1;
     struct r05_node *eName_e_1;
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
-    // ( & Symbol & Name e.Name ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[4] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & Symbol & Name e.Name  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Symbol, &bb[1], &be[1]))
       break;
-    if (! r05_function_left(r05c_Name, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Name, &bb[1], &be[1]))
       break;
-    eName_b_1 = bb_1;
-    eName_e_1 = be_1;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
+    eName_b_1 = bb[1];
+    eName_e_1 = be[1];
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_chars( n0, n1, " & ", 3) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eName_b_1, eName_e_1 );
-    res = refalrts::splice_evar( res, n0, n1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_chars(" & ", 3);
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[0], eName_b_1, eName_e_1);
+    r05_splice_evar(n[2], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *sMode_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    // ( & TkVariable s.Mode e.Index ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[4] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & TkVariable s.Mode e.Index  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_1, &be_1))
+    if (! r05_function_left(r05c_TkVariable, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sMode_1, &bb[1], &be[1]))
       break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
+    eIndex_b_1 = bb[1];
+    eIndex_e_1 = be[1];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, ' ' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_char( n1, '.' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_call( n4 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n4 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char(' ');
+    r05_alloc_svar(sMode_1);
+    r05_alloc_char('.');
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[0], eIndex_b_1, eIndex_e_1);
+    r05_splice_evar(n[2], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    //
-    if (! r05_empty_seq(bb_0, be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* */
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char(' ');
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3144,118 +2143,72 @@ static enum r05_fnresult r05c_TextFromPattern(struct r05_node *arg_begin, struct
 }
 
 static enum r05_fnresult r05c_TextFromPattern_Char(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eTail_b_1;
     struct r05_node *eTail_e_1;
     struct r05_node *sChar_1;
-    // ( & Symbol & Char s.Char ) e.Tail
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( & Symbol & Char s.Char  ) e.Tail */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Symbol, &bb[1], &be[1]))
       break;
-    if (! r05_function_left(r05c_Char, &bb_1, &be_1))
+    if (! r05_function_left(r05c_Char, &bb[1], &be[1]))
       break;
-    eTail_b_1 = bb_0;
-    eTail_e_1 = be_0;
-    if (! r05_svar_left(&sChar_1, &bb_1, &be_1))
+    eTail_b_1 = bb[0];
+    eTail_e_1 = be[0];
+    if (! r05_svar_left(&sChar_1, &bb[1], &be[1]))
       break;
-    if (! r05_empty_seq(bb_1, be_1))
+    if (! r05_empty_seq(bb[1], be[1]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_EscapeChar, "EscapeChar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_TextFromPattern_Char, "TextFromPattern_Char" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eTail_b_1, eTail_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EscapeChar, "EscapeChar");
+    r05_alloc_svar(sChar_1);
+    r05_alloc_close_call(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_TextFromPattern_Char, "TextFromPattern_Char");
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[3], eTail_b_1, eTail_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    //
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_char( n0, '\'' ) )
-      return R05_NO_MEMORY;
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eOther_b_1;
     struct r05_node *eOther_e_1;
-    // e.Other
-    eOther_b_1 = bb_0;
-    eOther_e_1 = be_0;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* e.Other */
+    eOther_b_1 = bb[0];
+    eOther_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_TextFromPattern, "TextFromPattern" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_call( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n2 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eOther_b_1, eOther_e_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_char('\'');
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_TextFromPattern, "TextFromPattern");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_evar(n[1], eOther_b_1, eOther_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3265,68 +2218,47 @@ static enum r05_fnresult r05c_TextFromPattern_Char(struct r05_node *arg_begin, s
 }
 
 static enum r05_fnresult r05c_GenResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
+    struct r05_node *ePatternVars_b_1;
+    struct r05_node *ePatternVars_e_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
-    // e.Result
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[10] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.PatternVars  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    ePatternVars_b_1 = bb[1];
+    ePatternVars_e_1 = be[1];
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_number( n8, 0UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_call( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n9 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_number(0UL);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[4], n[5]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], ePatternVars_b_1, ePatternVars_e_1);
+    r05_splice_evar(n[8], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -3353,19 +2285,7 @@ enum r05_fnresult r05c_CmdPushStack(struct r05_node *, struct r05_node *) {
   );
 }
 
-enum r05_fnresult r05c_CmdInsertElem(struct r05_node *, struct r05_node *) {
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
 enum r05_fnresult r05c_CmdInsertVar(struct r05_node *, struct r05_node *) {
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-enum r05_fnresult r05c_CmdInsertString(struct r05_node *, struct r05_node *) {
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
@@ -3407,6 +2327,18 @@ enum r05_fnresult r05c_ElCloseCall(struct r05_node *, struct r05_node *) {
   );
 }
 
+enum r05_fnresult r05c_ElSavePos(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+enum r05_fnresult r05c_ElVariable(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
 static enum r05_fnresult r05c_TkString(struct r05_node *, struct r05_node *) {
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -3414,12 +2346,8 @@ static enum r05_fnresult r05c_TkString(struct r05_node *, struct r05_node *) {
 }
 
 static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -3431,131 +2359,86 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eResult_e_1;
     struct r05_node *sChar1_1;
     struct r05_node *sChar2_1;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Symbol & Char s.Char1 ) ( & Symbol & Char s.Char2 ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[14] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & Symbol & Char s.Char1  ) ( & Symbol & Char s.Char2  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_4, &be_4))
+    if (! r05_function_left(r05c_Symbol, &bb[4], &be[4]))
       break;
-    if (! r05_function_left(r05c_Char, &bb_4, &be_4))
+    if (! r05_function_left(r05c_Char, &bb[4], &be[4]))
       break;
-    struct r05_node *bb_5 = 0;
-    struct r05_node *be_5 = 0;
-    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[5], &be[5], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
+    if (! r05_function_left(r05c_Symbol, &bb[5], &be[5]))
       break;
-    if (! r05_function_left(r05c_Char, &bb_5, &be_5))
+    if (! r05_function_left(r05c_Char, &bb[5], &be[5]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sChar1_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sChar1_1, &bb[4], &be[4]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
-    if (! r05_svar_left(&sChar2_1, &bb_5, &be_5))
+    if (! r05_svar_left(&sChar2_1, &bb[5], &be[5]))
       break;
-    if (! r05_empty_seq(bb_5, be_5))
+    if (! r05_empty_seq(bb[5], be[5]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_TkString, "TkString" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_number( n10, 2UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_call( n12 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n12 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::link_brackets( n8, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_stvar( res, sChar2_1 );
-    res = refalrts::splice_stvar( res, sChar1_1 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_function(r05c_TkString, "TkString");
+    r05_alloc_number(2UL);
+    r05_alloc_svar(sChar1_1);
+    r05_alloc_svar(sChar2_1);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[11]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[4], n[6]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[8], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[12], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -3566,157 +2449,76 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
     struct r05_node *sValue_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Symbol & Char s.Value ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[14] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & Symbol & Char s.Value  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_4, &be_4))
+    if (! r05_function_left(r05c_Symbol, &bb[4], &be[4]))
       break;
-    if (! r05_function_left(r05c_Char, &bb_4, &be_4))
+    if (! r05_function_left(r05c_Char, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sValue_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sValue_1, &bb[4], &be[4]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElSymbol, "ElSymbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_name( n8, r05c_Char, "Char" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_open_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_name( n13, r05c_CmdInsertElem, "CmdInsertElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_open_call( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_name( n17, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_close_call( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_close_call( n19 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n19 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::push_stack( n18 );
-    refalrts::push_stack( n16 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n11, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n12, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n4, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n5, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_stvar( res, sValue_1 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElSymbol, "ElSymbol");
+    r05_alloc_function(r05c_Char, "Char");
+    r05_alloc_svar(sValue_1);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[9], n[11]);
+    r05_link_brackets(n[4], n[8]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[10], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[12], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -3730,140 +2532,90 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eString_b_1;
     struct r05_node *eString_e_1;
     struct r05_node *sChar_1;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkString s.Len e.String ) ( & Symbol & Char s.Char ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[6] = { 0 };
+    struct r05_node *be[6] = { 0 };
+    struct r05_node *n[17] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkString s.Len e.String  ) ( & Symbol & Char s.Char  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkString, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkString, &bb[4], &be[4]))
       break;
-    struct r05_node *bb_5 = 0;
-    struct r05_node *be_5 = 0;
-    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[5], &be[5], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_5, &be_5))
+    if (! r05_function_left(r05c_Symbol, &bb[5], &be[5]))
       break;
-    if (! r05_function_left(r05c_Char, &bb_5, &be_5))
+    if (! r05_function_left(r05c_Char, &bb[5], &be[5]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sLen_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sLen_1, &bb[4], &be[4]))
       break;
-    eString_b_1 = bb_4;
-    eString_e_1 = be_4;
-    if (! r05_svar_left(&sChar_1, &bb_5, &be_5))
+    eString_b_1 = bb[4];
+    eString_e_1 = be[4];
+    if (! r05_svar_left(&sChar_1, &bb[5], &be[5]))
       break;
-    if (! r05_empty_seq(bb_5, be_5))
+    if (! r05_empty_seq(bb[5], be[5]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_TkString, "TkString" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_name( n11, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_call( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_call( n14 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n14 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::link_brackets( n8, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sChar_1 );
-    res = refalrts::splice_evar( res, eString_b_1, eString_e_1 );
-    refalrts::push_stack( n12 );
-    refalrts::push_stack( n10 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_stvar( res, sLen_1 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    refalrts::link_brackets( n6, n7 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[6]);
+    r05_alloc_open_bracket(n[7]);
+    r05_alloc_insert_pos(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_function(r05c_TkString, "TkString");
+    r05_alloc_open_call(n[11]);
+    r05_alloc_function(r05c_Inc, "Inc");
+    r05_alloc_svar(sLen_1);
+    r05_alloc_close_call(n[12]);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_svar(sChar_1);
+    r05_alloc_close_bracket(n[14]);
+    r05_alloc_insert_pos(n[15]);
+    r05_alloc_close_call(n[16]);
+    r05_push_stack(n[16]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[14]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[11]);
+    r05_link_brackets(n[7], n[9]);
+    r05_link_brackets(n[4], n[6]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[8], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[13], eString_b_1, eString_e_1);
+    r05_splice_evar(n[15], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -3876,156 +2628,75 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *sLen_1;
     struct r05_node *eString_b_1;
     struct r05_node *eString_e_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkString s.Len e.String ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkString s.Len e.String  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkString, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkString, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sLen_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sLen_1, &bb[4], &be[4]))
       break;
-    eString_b_1 = bb_4;
-    eString_e_1 = be_4;
+    eString_b_1 = bb[4];
+    eString_e_1 = be[4];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElString, "ElString" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_CmdInsertString, "CmdInsertString" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_open_call( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_name( n16, r05c_Add, "Add" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_number( n17, 2UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_close_call( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_close_call( n19 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n19 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::push_stack( n18 );
-    refalrts::push_stack( n15 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n10, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n11, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eString_b_1, eString_e_1 );
-    res = refalrts::splice_stvar( res, sLen_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElString, "ElString");
+    r05_alloc_svar(sLen_1);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[4], n[9]);
+    r05_link_brackets(n[6], n[8]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[7], eString_b_1, eString_e_1);
+    r05_splice_evar(n[11], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[13], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -4038,152 +2709,75 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *sType_1;
     struct r05_node *eValue_b_1;
     struct r05_node *eValue_e_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Symbol s.Type e.Value ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & Symbol s.Type e.Value  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Symbol, &bb_4, &be_4))
+    if (! r05_function_left(r05c_Symbol, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sType_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sType_1, &bb[4], &be[4]))
       break;
-    eValue_b_1 = bb_4;
-    eValue_e_1 = be_4;
+    eValue_b_1 = bb[4];
+    eValue_e_1 = be[4];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElSymbol, "ElSymbol" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_CmdInsertElem, "CmdInsertElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_open_call( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_name( n16, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_call( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_close_call( n18 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n18 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::push_stack( n17 );
-    refalrts::push_stack( n15 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n10, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n11, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eValue_b_1, eValue_e_1 );
-    res = refalrts::splice_stvar( res, sType_1 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElSymbol, "ElSymbol");
+    r05_alloc_svar(sType_1);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[4], n[9]);
+    r05_link_brackets(n[6], n[8]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[7], eValue_b_1, eValue_e_1);
+    r05_splice_evar(n[11], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[13], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -4195,166 +2789,83 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eInBrackets_e_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    struct r05_node *sCounter_4;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & Brackets e.InBrackets ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[19] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & Brackets e.InBrackets  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_Brackets, &bb_4, &be_4))
+    if (! r05_function_left(r05c_Brackets, &bb[4], &be[4]))
       break;
-    eInBrackets_b_1 = bb_4;
-    eInBrackets_e_1 = be_4;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
+    eInBrackets_b_1 = bb[4];
+    eInBrackets_e_1 = be[4];
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_4, sCounter_3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElOpenBracket, "ElOpenBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_CmdInsertElem, "CmdInsertElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_open_call( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_name( n16, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_call( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_open_bracket( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_name( n19, r05c_TkCloseBracket, "TkCloseBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_bracket( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_close_call( n21 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n21 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n21 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::link_brackets( n18, n20 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_stvar( res, sCounter_4 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_evar( res, eInBrackets_b_1, eInBrackets_e_1 );
-    refalrts::push_stack( n17 );
-    refalrts::push_stack( n15 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n10, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n11, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElOpenBracket, "ElOpenBracket");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_open_call(n[12]);
+    r05_alloc_function(r05c_Inc, "Inc");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_call(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_open_bracket(n[15]);
+    r05_alloc_function(r05c_TkCloseBracket, "TkCloseBracket");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[16]);
+    r05_alloc_insert_pos(n[17]);
+    r05_alloc_close_call(n[18]);
+    r05_push_stack(n[18]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[15], n[16]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[12]);
+    r05_link_brackets(n[9], n[11]);
+    r05_link_brackets(n[4], n[8]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[10], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[14], eInBrackets_b_1, eInBrackets_e_1);
+    r05_splice_evar(n[17], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -4366,166 +2877,83 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eInBrackets_e_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    struct r05_node *sCounter_4;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & CallBrackets e.InBrackets ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[19] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & CallBrackets e.InBrackets  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_CallBrackets, &bb_4, &be_4))
+    if (! r05_function_left(r05c_CallBrackets, &bb[4], &be[4]))
       break;
-    eInBrackets_b_1 = bb_4;
-    eInBrackets_e_1 = be_4;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
+    eInBrackets_b_1 = bb[4];
+    eInBrackets_e_1 = be[4];
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_4, sCounter_3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElOpenCall, "ElOpenCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_CmdInsertElem, "CmdInsertElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_open_call( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_name( n16, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_call( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_open_bracket( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_name( n19, r05c_TkCloseCall, "TkCloseCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_bracket( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_close_call( n21 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n21 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n21 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::link_brackets( n18, n20 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_stvar( res, sCounter_4 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_evar( res, eInBrackets_b_1, eInBrackets_e_1 );
-    refalrts::push_stack( n17 );
-    refalrts::push_stack( n15 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_elem( res, n15 );
-    refalrts::link_brackets( n10, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n11, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElOpenCall, "ElOpenCall");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_open_call(n[12]);
+    r05_alloc_function(r05c_Inc, "Inc");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_call(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_open_bracket(n[15]);
+    r05_alloc_function(r05c_TkCloseCall, "TkCloseCall");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[16]);
+    r05_alloc_insert_pos(n[17]);
+    r05_alloc_close_call(n[18]);
+    r05_push_stack(n[18]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[15], n[16]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[12]);
+    r05_link_brackets(n[9], n[11]);
+    r05_link_brackets(n[4], n[8]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[10], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[14], eInBrackets_b_1, eInBrackets_e_1);
+    r05_splice_evar(n[17], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -4536,168 +2964,84 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
     struct r05_node *sOpenCounter_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    struct r05_node *sCounter_4;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkCloseBracket s.OpenCounter ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[18] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkCloseBracket s.OpenCounter  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseBracket, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkCloseBracket, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sOpenCounter_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sOpenCounter_1, &bb[4], &be[4]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_4, sCounter_3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElCloseBracket, "ElCloseBracket" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_CmdLinkBrackets, "CmdLinkBrackets" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_name( n15, r05c_CmdInsertElem, "CmdInsertElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_bracket( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_open_call( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_name( n19, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_call( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_close_call( n21 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n21 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n21 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::push_stack( n20 );
-    refalrts::push_stack( n18 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_stvar( res, sCounter_4 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    refalrts::link_brackets( n10, n17 );
-    res = refalrts::splice_elem( res, n17 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n14, n16 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
-    refalrts::link_brackets( n11, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_stvar( res, sOpenCounter_1 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElCloseBracket, "ElCloseBracket");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_function(r05c_CmdLinkBrackets, "CmdLinkBrackets");
+    r05_alloc_svar(sOpenCounter_1);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_insert_pos(n[12]);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_open_call(n[14]);
+    r05_alloc_function(r05c_Inc, "Inc");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_call(n[15]);
+    r05_alloc_insert_pos(n[16]);
+    r05_alloc_close_call(n[17]);
+    r05_push_stack(n[17]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[15]);
+    r05_push_stack(n[14]);
+    r05_link_brackets(n[9], n[13]);
+    r05_link_brackets(n[10], n[11]);
+    r05_link_brackets(n[4], n[8]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[12], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[16], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -4708,370 +3052,428 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
     struct r05_node *sOpenCounter_1;
-    struct r05_node *sCounter_2;
-    struct r05_node *sCounter_3;
-    struct r05_node *sCounter_4;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkCloseCall s.OpenCounter ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[20] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkCloseCall s.OpenCounter  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkCloseCall, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkCloseCall, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sOpenCounter_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sOpenCounter_1, &bb[4], &be[4]))
       break;
-    if (! r05_empty_seq(bb_4, be_4))
+    if (! r05_empty_seq(bb[4], be[4]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sCounter_2, sCounter_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_3, sCounter_2 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sCounter_4, sCounter_3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_name( n6, r05c_CmdAllocateElem, "CmdAllocateElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_ElCloseCall, "ElCloseCall" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_CmdPushStack, "CmdPushStack" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_name( n15, r05c_CmdPushStack, "CmdPushStack" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_bracket( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_open_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_name( n18, r05c_CmdInsertElem, "CmdInsertElem" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_close_bracket( n19 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_close_bracket( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_open_call( n21 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n22 = 0;
-    if( ! refalrts::alloc_name( n22, r05c_Inc, "Inc" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n23 = 0;
-    if( ! refalrts::alloc_close_call( n23 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n24 = 0;
-    if( ! refalrts::alloc_close_call( n24 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n24 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n24 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    refalrts::push_stack( n23 );
-    refalrts::push_stack( n21 );
-    res = refalrts::splice_elem( res, n23 );
-    res = refalrts::splice_stvar( res, sCounter_4 );
-    res = refalrts::splice_elem( res, n22 );
-    res = refalrts::splice_elem( res, n21 );
-    refalrts::link_brackets( n10, n20 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n17, n19 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_stvar( res, sCounter_3 );
-    res = refalrts::splice_elem( res, n18 );
-    res = refalrts::splice_elem( res, n17 );
-    refalrts::link_brackets( n14, n16 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_stvar( res, sOpenCounter_1 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
-    refalrts::link_brackets( n11, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_stvar( res, sCounter_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    refalrts::link_brackets( n4, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n5, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElCloseCall, "ElCloseCall");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_open_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_function(r05c_CmdPushStack, "CmdPushStack");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[11]);
+    r05_alloc_open_bracket(n[12]);
+    r05_alloc_function(r05c_CmdPushStack, "CmdPushStack");
+    r05_alloc_svar(sOpenCounter_1);
+    r05_alloc_close_bracket(n[13]);
+    r05_alloc_insert_pos(n[14]);
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_open_call(n[16]);
+    r05_alloc_function(r05c_Inc, "Inc");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_call(n[17]);
+    r05_alloc_insert_pos(n[18]);
+    r05_alloc_close_call(n[19]);
+    r05_push_stack(n[19]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[17]);
+    r05_push_stack(n[16]);
+    r05_link_brackets(n[9], n[15]);
+    r05_link_brackets(n[12], n[13]);
+    r05_link_brackets(n[10], n[11]);
+    r05_link_brackets(n[4], n[8]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[14], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[18], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
+    struct r05_node *eVars_b_1;
+    struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
     struct r05_node *eAllocCommands_e_1;
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
     struct r05_node *sCounter_1;
-    struct r05_node *eResult_b_1;
-    struct r05_node *eResult_e_1;
-    struct r05_node *sMode_1;
-    struct r05_node *sMode_2;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkVariable 's' e.Index  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
+      break;
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
+      break;
+    if (! r05_char_left('s', &bb[4], &be[4]))
+      break;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElVariable, "ElVariable");
+    r05_alloc_char('s');
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[4], n[9]);
+    r05_link_brackets(n[6], n[8]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[7], eIndex_b_1, eIndex_e_1);
+    r05_splice_evar(n[11], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[13], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  do {
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sInsertPos_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sMode_2;
+    struct r05_node *sMode_1;
     struct r05_node *eIndex_b_2;
     struct r05_node *eIndex_e_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
     struct r05_node *eVars_B_b_1;
     struct r05_node *eVars_B_e_1;
     struct r05_node *eVars_E_b_1;
     struct r05_node *eVars_E_e_1;
     struct r05_node *sUsings_1;
-    struct r05_node *sUsings_2;
-    // ( e.Vars_B ( s.Usings s.Mode e.Index ) e.Vars_E ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkVariable s.Mode e.Index ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[8] = { 0 };
+    struct r05_node *be[8] = { 0 };
+    struct r05_node *n[21] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars_B ( s.Usings s.Mode e.Index  ) e.Vars_E  ) ( e.AllocCommands ( & CmdAllocateElem & ElSavePos s.InsertPos  )  ) ( e.Commands  ) s.Counter ( & TkVariable s.Mode e.Index  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[4], &be[4], &bb[2], &be[2]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_function_left(r05c_CmdAllocateElem, &bb[4], &be[4]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
+    if (! r05_function_left(r05c_ElSavePos, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sInsertPos_1, &bb[4], &be[4]))
       break;
-    eIndex_b_1 = bb_4;
-    eIndex_e_1 = be_4;
+    if (! r05_empty_seq(bb[4], be[4]))
+      break;
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[5], &be[5], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkVariable, &bb[5], &be[5]))
+      break;
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sMode_1, &bb[5], &be[5]))
+      break;
+    eIndex_b_1 = bb[5];
+    eIndex_e_1 = be[5];
     eVars_B_b_1 = 0;
     eVars_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_5 = bb_1;
-      struct r05_node *be_5 = be_1;
-      struct r05_node *bb_6 = 0;
-      struct r05_node *be_6 = 0;
-      if (! r05_brackets_left(&bb_6, &be_6, &bb_5, &be_5))
+      bb[6] = bb[1];
+      be[6] = be[1];
+      if (! r05_brackets_left(&bb[7], &be[7], &bb[6], &be[6]))
         continue;
-      if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_6, &be_6))
+      if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[7], &be[7]))
         continue;
-      if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb_6, &be_6))
+      if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb[7], &be[7]))
         continue;
-      eVars_E_b_1 = bb_5;
-      eVars_E_e_1 = be_5;
-      if (! r05_svar_left(&sUsings_1, &bb_6, &be_6))
+      eVars_E_b_1 = bb[6];
+      eVars_E_e_1 = be[6];
+      if (! r05_svar_left(&sUsings_1, &bb[7], &be[7]))
         continue;
-      if (! r05_empty_seq(bb_6, be_6))
+      if (! r05_empty_seq(bb[7], be[7]))
         continue;
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sUsings_2, sUsings_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_call( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_open_bracket( n2 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_open_bracket( n3 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_open_call( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_name( n5, r05c_Inc, "Inc" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_close_call( n6 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_close_bracket( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_close_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_open_bracket( n9 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_close_bracket( n10 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_open_bracket( n11 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_open_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n13 = 0;
-      if( ! refalrts::alloc_name( n13, r05c_CmdInsertVar, "CmdInsertVar" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n14 = 0;
-      if( ! refalrts::alloc_open_call( n14 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n15 = 0;
-      if( ! refalrts::alloc_name( n15, r05c_Inc, "Inc" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n16 = 0;
-      if( ! refalrts::alloc_close_call( n16 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n17 = 0;
-      if( ! refalrts::alloc_close_bracket( n17 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n18 = 0;
-      if( ! refalrts::alloc_close_bracket( n18 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n19 = 0;
-      if( ! refalrts::alloc_close_call( n19 ) )
-        return R05_NO_MEMORY;
-      refalrts::push_stack( n19 );
-      refalrts::push_stack( n0 );
-      res = refalrts::splice_elem( res, n19 );
-      res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-      res = refalrts::splice_stvar( res, sCounter_1 );
-      refalrts::link_brackets( n11, n18 );
-      res = refalrts::splice_elem( res, n18 );
-      res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-      refalrts::link_brackets( n12, n17 );
-      res = refalrts::splice_elem( res, n17 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_stvar( res, sMode_2 );
-      refalrts::push_stack( n16 );
-      refalrts::push_stack( n14 );
-      res = refalrts::splice_elem( res, n16 );
-      res = refalrts::splice_stvar( res, sUsings_2 );
-      res = refalrts::splice_elem( res, n15 );
-      res = refalrts::splice_elem( res, n14 );
-      res = refalrts::splice_elem( res, n13 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_elem( res, n11 );
-      refalrts::link_brackets( n9, n10 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-      res = refalrts::splice_elem( res, n9 );
-      refalrts::link_brackets( n2, n8 );
-      res = refalrts::splice_elem( res, n8 );
-      res = refalrts::splice_evar( res, eVars_E_b_1, eVars_E_e_1 );
-      refalrts::link_brackets( n3, n7 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_stvar( res, sMode_1 );
-      refalrts::push_stack( n6 );
-      refalrts::push_stack( n4 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_stvar( res, sUsings_1 );
-      res = refalrts::splice_elem( res, n5 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_evar( res, eVars_B_b_1, eVars_B_e_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+      r05_alloc_open_bracket(n[1]);
+      r05_alloc_insert_pos(n[2]);
+      r05_alloc_open_call(n[3]);
+      r05_alloc_function(r05c_DecUsings, "DecUsings");
+      r05_alloc_svar(sUsings_1);
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[4]);
+      r05_alloc_close_call(n[5]);
+      r05_alloc_insert_pos(n[6]);
+      r05_alloc_close_bracket(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_open_bracket(n[10]);
+      r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+      r05_alloc_function(r05c_ElSavePos, "ElSavePos");
+      r05_alloc_svar(sInsertPos_1);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_close_bracket(n[12]);
+      r05_alloc_open_bracket(n[13]);
+      r05_alloc_insert_pos(n[14]);
+      r05_alloc_open_bracket(n[15]);
+      r05_alloc_function(r05c_CmdInsertVar, "CmdInsertVar");
+      r05_alloc_svar(sInsertPos_1);
+      r05_alloc_svar(sUsings_1);
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[16]);
+      r05_alloc_close_bracket(n[17]);
+      r05_alloc_close_bracket(n[18]);
+      r05_alloc_svar(sCounter_1);
+      r05_alloc_insert_pos(n[19]);
+      r05_alloc_close_call(n[20]);
+      r05_push_stack(n[20]);
+      r05_push_stack(n[0]);
+      r05_link_brackets(n[13], n[18]);
+      r05_link_brackets(n[15], n[17]);
+      r05_link_brackets(n[8], n[12]);
+      r05_link_brackets(n[10], n[11]);
+      r05_link_brackets(n[1], n[7]);
+      r05_push_stack(n[5]);
+      r05_push_stack(n[3]);
+      r05_splice_evar(n[2], eVars_B_b_1, eVars_B_e_1);
+      r05_splice_evar(n[4], eIndex_b_2, eIndex_e_2);
+      r05_splice_evar(n[6], eVars_E_b_1, eVars_E_e_1);
+      r05_splice_evar(n[9], eAllocCommands_b_1, eAllocCommands_e_1);
+      r05_splice_evar(n[14], eCommands_b_1, eCommands_e_1);
+      r05_splice_evar(n[16], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[19], eResult_b_1, eResult_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb_1, &be_1));
+    } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb[1], &be[1]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
+    struct r05_node *eAllocCommands_b_1;
+    struct r05_node *eAllocCommands_e_1;
+    struct r05_node *eCommands_b_1;
+    struct r05_node *eCommands_e_1;
+    struct r05_node *sCounter_1;
+    struct r05_node *eResult_b_1;
+    struct r05_node *eResult_e_1;
+    struct r05_node *sMode_2;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_2;
+    struct r05_node *eIndex_e_2;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *eVars_B_b_1;
+    struct r05_node *eVars_B_e_1;
+    struct r05_node *eVars_E_b_1;
+    struct r05_node *eVars_E_e_1;
+    struct r05_node *sUsings_1;
+    struct r05_node *bb[7] = { 0 };
+    struct r05_node *be[7] = { 0 };
+    struct r05_node *n[23] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars_B ( s.Usings s.Mode e.Index  ) e.Vars_E  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkVariable s.Mode e.Index  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
+      break;
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
+      break;
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sMode_1, &bb[4], &be[4]))
+      break;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
+    eVars_B_b_1 = 0;
+    eVars_B_e_1 = 0;
+    r05_start_e_loop();
+    do {
+      bb[5] = bb[1];
+      be[5] = be[1];
+      if (! r05_brackets_left(&bb[6], &be[6], &bb[5], &be[5]))
+        continue;
+      if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[6], &be[6]))
+        continue;
+      if (! r05_repeated_stvar_right(&sMode_2, sMode_1, &bb[6], &be[6]))
+        continue;
+      eVars_E_b_1 = bb[5];
+      eVars_E_e_1 = be[5];
+      if (! r05_svar_left(&sUsings_1, &bb[6], &be[6]))
+        continue;
+      if (! r05_empty_seq(bb[6], be[6]))
+        continue;
+
+      r05_reset_allocator();
+      r05_alloc_open_call(n[0]);
+      r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+      r05_alloc_open_bracket(n[1]);
+      r05_alloc_insert_pos(n[2]);
+      r05_alloc_open_call(n[3]);
+      r05_alloc_function(r05c_DecUsings, "DecUsings");
+      r05_alloc_svar(sUsings_1);
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[4]);
+      r05_alloc_close_call(n[5]);
+      r05_alloc_insert_pos(n[6]);
+      r05_alloc_close_bracket(n[7]);
+      r05_alloc_open_bracket(n[8]);
+      r05_alloc_insert_pos(n[9]);
+      r05_alloc_open_bracket(n[10]);
+      r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+      r05_alloc_function(r05c_ElSavePos, "ElSavePos");
+      r05_alloc_svar(sCounter_1);
+      r05_alloc_close_bracket(n[11]);
+      r05_alloc_close_bracket(n[12]);
+      r05_alloc_open_bracket(n[13]);
+      r05_alloc_insert_pos(n[14]);
+      r05_alloc_open_bracket(n[15]);
+      r05_alloc_function(r05c_CmdInsertVar, "CmdInsertVar");
+      r05_alloc_svar(sCounter_1);
+      r05_alloc_svar(sUsings_1);
+      r05_alloc_svar(sMode_1);
+      r05_alloc_insert_pos(n[16]);
+      r05_alloc_close_bracket(n[17]);
+      r05_alloc_close_bracket(n[18]);
+      r05_alloc_open_call(n[19]);
+      r05_alloc_function(r05c_Inc, "Inc");
+      r05_alloc_svar(sCounter_1);
+      r05_alloc_close_call(n[20]);
+      r05_alloc_insert_pos(n[21]);
+      r05_alloc_close_call(n[22]);
+      r05_push_stack(n[22]);
+      r05_push_stack(n[0]);
+      r05_push_stack(n[20]);
+      r05_push_stack(n[19]);
+      r05_link_brackets(n[13], n[18]);
+      r05_link_brackets(n[15], n[17]);
+      r05_link_brackets(n[8], n[12]);
+      r05_link_brackets(n[10], n[11]);
+      r05_link_brackets(n[1], n[7]);
+      r05_push_stack(n[5]);
+      r05_push_stack(n[3]);
+      r05_splice_evar(n[2], eVars_B_b_1, eVars_B_e_1);
+      r05_splice_evar(n[4], eIndex_b_2, eIndex_e_2);
+      r05_splice_evar(n[6], eVars_E_b_1, eVars_E_e_1);
+      r05_splice_evar(n[9], eAllocCommands_b_1, eAllocCommands_e_1);
+      r05_splice_evar(n[14], eCommands_b_1, eCommands_e_1);
+      r05_splice_evar(n[16], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[21], eResult_b_1, eResult_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
+      return R05_SUCCESS;
+    } while (r05_open_evar_advance(&eVars_B_b_1, &eVars_B_e_1, &bb[1], &be[1]));
+  } while ( 0 );
+
+  do {
     struct r05_node *eVars_b_1;
     struct r05_node *eVars_e_1;
     struct r05_node *eAllocCommands_b_1;
@@ -5084,204 +3486,182 @@ static enum r05_fnresult r05c_DoGenResult(struct r05_node *arg_begin, struct r05
     struct r05_node *sMode_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    struct r05_node *sMode_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter ( & TkVariable s.Mode e.Index ) e.Result
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[15] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.Vars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter ( & TkVariable s.Mode e.Index  ) e.Result */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eVars_b_1 = bb[1];
+    eVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_TkVariable, &bb_4, &be_4))
+    if (! r05_function_left(r05c_TkVariable, &bb[4], &be[4]))
       break;
-    eResult_b_1 = bb_0;
-    eResult_e_1 = be_0;
-    if (! r05_svar_left(&sMode_1, &bb_4, &be_4))
+    eResult_b_1 = bb[0];
+    eResult_e_1 = be[0];
+    if (! r05_svar_left(&sMode_1, &bb[4], &be[4]))
       break;
-    eIndex_b_1 = bb_4;
-    eIndex_e_1 = be_4;
+    eIndex_b_1 = bb[4];
+    eIndex_e_1 = be[4];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sMode_2, sMode_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_DoGenResult, "DoGenResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_number( n4, 1UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_name( n11, r05c_CmdInsertVar, "CmdInsertVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_number( n12, 1UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_close_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_call( n15 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n15 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eResult_b_1, eResult_e_1 );
-    res = refalrts::splice_stvar( res, sCounter_1 );
-    refalrts::link_brackets( n9, n14 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    refalrts::link_brackets( n10, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-    res = refalrts::splice_stvar( res, sMode_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n7, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n2, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::link_brackets( n3, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoGenResult, "DoGenResult");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_open_bracket(n[6]);
+    r05_alloc_function(r05c_CmdAllocateElem, "CmdAllocateElem");
+    r05_alloc_function(r05c_ElVariable, "ElVariable");
+    r05_alloc_svar(sMode_1);
+    r05_alloc_insert_pos(n[7]);
+    r05_alloc_close_bracket(n[8]);
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_open_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[10], n[12]);
+    r05_link_brackets(n[4], n[9]);
+    r05_link_brackets(n[6], n[8]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eVars_b_1, eVars_e_1);
+    r05_splice_evar(n[5], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[7], eIndex_b_1, eIndex_e_1);
+    r05_splice_evar(n[11], eCommands_b_1, eCommands_e_1);
+    r05_splice_evar(n[13], eResult_b_1, eResult_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eVars_b_1;
-    struct r05_node *eVars_e_1;
+    struct r05_node *eUnusedVars_b_1;
+    struct r05_node *eUnusedVars_e_1;
     struct r05_node *eAllocCommands_b_1;
     struct r05_node *eAllocCommands_e_1;
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
     struct r05_node *sCounter_1;
-    // ( e.Vars ) ( e.AllocCommands ) ( e.Commands ) s.Counter
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
+    struct r05_node *n[6] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.UnusedVars  ) ( e.AllocCommands  ) ( e.Commands  ) s.Counter */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    eVars_b_1 = bb_1;
-    eVars_e_1 = be_1;
-    eAllocCommands_b_1 = bb_2;
-    eAllocCommands_e_1 = be_2;
-    eCommands_b_1 = bb_3;
-    eCommands_e_1 = be_3;
-    if (! r05_svar_left(&sCounter_1, &bb_0, &be_0))
+    eUnusedVars_b_1 = bb[1];
+    eUnusedVars_e_1 = be[1];
+    eAllocCommands_b_1 = bb[2];
+    eAllocCommands_e_1 = be[2];
+    eCommands_b_1 = bb[3];
+    eCommands_e_1 = be[3];
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_close_bracket( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_open_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n4, n5 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    refalrts::link_brackets( n2, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eAllocCommands_b_1, eAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    refalrts::link_brackets( n0, n1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_link_brackets(n[3], n[5]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eUnusedVars_b_1, eUnusedVars_e_1);
+    r05_splice_evar(n[4], eAllocCommands_b_1, eAllocCommands_e_1);
+    r05_splice_evar(n[4], eCommands_b_1, eCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_DecUsings(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *sMode_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* 1 s.Mode e.Index */
+    if (! r05_number_left(1UL, &bb[0], &be[0]))
+      break;
+    if (! r05_svar_left(&sMode_1, &bb[0], &be[0]))
+      break;
+    /* Unused closed variable e.Index*/
+
+    r05_reset_allocator();
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
+  do {
+    struct r05_node *sUsings_1;
+    struct r05_node *sMode_1;
+    struct r05_node *eIndex_b_1;
+    struct r05_node *eIndex_e_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.Usings s.Mode e.Index */
+    if (! r05_svar_left(&sUsings_1, &bb[0], &be[0]))
+      break;
+    if (! r05_svar_left(&sMode_1, &bb[0], &be[0]))
+      break;
+    eIndex_b_1 = bb[0];
+    eIndex_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_Dec, "Dec");
+    r05_alloc_svar(sUsings_1);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_svar(sMode_1);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_bracket(n[4]);
+    r05_link_brackets(n[0], n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[3], eIndex_b_1, eIndex_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -5303,242 +3683,79 @@ enum r05_fnresult r05c_CmdReturnResult(struct r05_node *, struct r05_node *) {
 }
 
 static enum r05_fnresult r05c_GeneralizeResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
+    struct r05_node *eUnusedVars_b_1;
+    struct r05_node *eUnusedVars_e_1;
+    struct r05_node *eResultCommands_b_1;
+    struct r05_node *eResultCommands_e_1;
+    struct r05_node *sNumRanges_1;
     struct r05_node *ePatternVars_b_1;
     struct r05_node *ePatternVars_e_1;
     struct r05_node *ePatternCommands_b_1;
     struct r05_node *ePatternCommands_e_1;
-    struct r05_node *eResultVars_b_1;
-    struct r05_node *eResultVars_e_1;
-    struct r05_node *eResultAllocCommands_b_1;
-    struct r05_node *eResultAllocCommands_e_1;
-    struct r05_node *eResultCommands_b_1;
-    struct r05_node *eResultCommands_e_1;
-    struct r05_node *ePatternCommands_b_2;
-    struct r05_node *ePatternCommands_e_2;
-    struct r05_node *ePatternCommands_b_3;
-    struct r05_node *ePatternCommands_e_3;
-    // ( e.PatternVars ) ( e.PatternCommands ) ( e.ResultVars ) ( e.ResultAllocCommands ) ( e.ResultCommands )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *sResultCounter_1;
+    struct r05_node *bb[5] = { 0 };
+    struct r05_node *be[5] = { 0 };
+    struct r05_node *n[14] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges ( e.PatternVars  ) ( e.PatternCommands  ) s.ResultCounter ( e.UnusedVars  ) ( e.ResultCommands  ) */
+    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_brackets_right(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
+    eUnusedVars_b_1 = bb[2];
+    eUnusedVars_e_1 = be[2];
+    eResultCommands_b_1 = bb[1];
+    eResultCommands_e_1 = be[1];
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_4 = 0;
-    struct r05_node *be_4 = 0;
-    if (! r05_brackets_left(&bb_4, &be_4, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
-    struct r05_node *bb_5 = 0;
-    struct r05_node *be_5 = 0;
-    if (! r05_brackets_left(&bb_5, &be_5, &bb_0, &be_0))
+    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    ePatternVars_b_1 = bb[3];
+    ePatternVars_e_1 = be[3];
+    ePatternCommands_b_1 = bb[4];
+    ePatternCommands_e_1 = be[4];
+    if (! r05_svar_left(&sResultCounter_1, &bb[0], &be[0]))
       break;
-    ePatternVars_b_1 = bb_1;
-    ePatternVars_e_1 = be_1;
-    ePatternCommands_b_1 = bb_2;
-    ePatternCommands_e_1 = be_2;
-    eResultVars_b_1 = bb_3;
-    eResultVars_e_1 = be_3;
-    eResultAllocCommands_b_1 = bb_4;
-    eResultAllocCommands_e_1 = be_4;
-    eResultCommands_b_1 = bb_5;
-    eResultCommands_e_1 = be_5;
+    if (! r05_empty_seq(bb[0], be[0]))
+      break;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( ePatternCommands_b_2, ePatternCommands_e_2, ePatternCommands_b_1, ePatternCommands_e_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( ePatternCommands_b_3, ePatternCommands_e_3, ePatternCommands_b_2, ePatternCommands_e_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Fetch, "Fetch" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_ReplicateVars, "ReplicateVars" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_open_bracket( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_call( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_name( n9, r05c_ReplicateVars, "ReplicateVars" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_close_bracket( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_open_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_call( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_name( n14, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_name( n15, r05c_RepeatedEVariables, "RepeatedEVariables" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_open_call( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_name( n19, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_name( n20, r05c_ClosedEVariables, "ClosedEVariables" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_close_call( n21 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n22 = 0;
-    if( ! refalrts::alloc_open_call( n22 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n23 = 0;
-    if( ! refalrts::alloc_name( n23, r05c_Seq, "Seq" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n24 = 0;
-    if( ! refalrts::alloc_name( n24, r05c_MakeVarsSets, "MakeVarsSets" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n25 = 0;
-    if( ! refalrts::alloc_open_bracket( n25 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n26 = 0;
-    if( ! refalrts::alloc_name( n26, r05c_FilterCommonVarsAndPatternCommands, "FilterCommonVarsAndPatternCommands" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n27 = 0;
-    if( ! refalrts::alloc_open_bracket( n27 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n28 = 0;
-    if( ! refalrts::alloc_close_bracket( n28 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n29 = 0;
-    if( ! refalrts::alloc_close_bracket( n29 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n30 = 0;
-    if( ! refalrts::alloc_open_bracket( n30 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n31 = 0;
-    if( ! refalrts::alloc_name( n31, r05c_ComposeSentenceCommands, "ComposeSentenceCommands" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n32 = 0;
-    if( ! refalrts::alloc_open_bracket( n32 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n33 = 0;
-    if( ! refalrts::alloc_close_bracket( n33 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n34 = 0;
-    if( ! refalrts::alloc_close_bracket( n34 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n35 = 0;
-    if( ! refalrts::alloc_close_call( n35 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n36 = 0;
-    if( ! refalrts::alloc_close_call( n36 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n36 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n36 );
-    refalrts::push_stack( n35 );
-    refalrts::push_stack( n22 );
-    res = refalrts::splice_elem( res, n35 );
-    refalrts::link_brackets( n30, n34 );
-    res = refalrts::splice_elem( res, n34 );
-    refalrts::link_brackets( n32, n33 );
-    res = refalrts::splice_elem( res, n33 );
-    res = refalrts::splice_evar( res, eResultCommands_b_1, eResultCommands_e_1 );
-    res = refalrts::splice_evar( res, eResultAllocCommands_b_1, eResultAllocCommands_e_1 );
-    res = refalrts::splice_elem( res, n32 );
-    res = refalrts::splice_elem( res, n31 );
-    res = refalrts::splice_elem( res, n30 );
-    refalrts::link_brackets( n25, n29 );
-    res = refalrts::splice_elem( res, n29 );
-    refalrts::link_brackets( n27, n28 );
-    res = refalrts::splice_elem( res, n28 );
-    res = refalrts::splice_evar( res, ePatternCommands_b_3, ePatternCommands_e_3 );
-    res = refalrts::splice_elem( res, n27 );
-    res = refalrts::splice_elem( res, n26 );
-    res = refalrts::splice_elem( res, n25 );
-    res = refalrts::splice_elem( res, n24 );
-    res = refalrts::splice_elem( res, n23 );
-    res = refalrts::splice_elem( res, n22 );
-    refalrts::push_stack( n21 );
-    refalrts::push_stack( n18 );
-    res = refalrts::splice_elem( res, n21 );
-    res = refalrts::splice_evar( res, ePatternCommands_b_2, ePatternCommands_e_2 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    refalrts::link_brackets( n12, n17 );
-    res = refalrts::splice_elem( res, n17 );
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n13 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_evar( res, ePatternCommands_b_1, ePatternCommands_e_1 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    refalrts::link_brackets( n7, n11 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::push_stack( n10 );
-    refalrts::push_stack( n8 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eResultVars_b_1, eResultVars_e_1 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n2, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, ePatternVars_b_1, ePatternVars_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ComposeSentenceCommands, "ComposeSentenceCommands");
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_svar(sResultCounter_1);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_FilterCommonVarsAndPatternCommands, "FilterCommonVarsAndPatternCommands");
+    r05_alloc_open_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_bracket(n[7]);
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_insert_pos(n[9]);
+    r05_alloc_close_bracket(n[10]);
+    r05_alloc_insert_pos(n[11]);
+    r05_alloc_close_call(n[12]);
+    r05_alloc_close_call(n[13]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[8], n[10]);
+    r05_link_brackets(n[5], n[7]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eResultCommands_b_1, eResultCommands_e_1);
+    r05_splice_evar(n[6], ePatternVars_b_1, ePatternVars_e_1);
+    r05_splice_evar(n[9], ePatternCommands_b_1, ePatternCommands_e_1);
+    r05_splice_evar(n[11], eUnusedVars_b_1, eUnusedVars_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -5547,710 +3764,169 @@ static enum r05_fnresult r05c_GeneralizeResult(struct r05_node *arg_begin, struc
   );
 }
 
-static enum r05_fnresult r05c_ReplicateVar(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+static enum r05_fnresult r05c_FilterCommonVarsAndPatternCommands(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *sMode_1;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
-    // ( 1 s.Mode e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    if (! r05_number_left(1UL, &bb_1, &be_1))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_number( n1, 1UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *sUsing_1;
-    struct r05_node *sMode_1;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
-    struct r05_node *sUsing_2;
-    struct r05_node *sMode_2;
+    struct r05_node *ePatternVars_B_b_1;
+    struct r05_node *ePatternVars_B_e_1;
+    struct r05_node *eIndex_b_3;
+    struct r05_node *eIndex_e_3;
     struct r05_node *eIndex_b_2;
     struct r05_node *eIndex_e_2;
-    // ( s.Using s.Mode e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    if (! r05_svar_left(&sUsing_1, &bb_1, &be_1))
-      break;
-    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_stvar( sUsing_2, sUsing_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_stvar( sMode_2, sMode_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_ReplicateVar, "ReplicateVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_call( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_Dec, "Dec" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_open_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_close_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n8, n9 );
-    res = refalrts::splice_elem( res, n9 );
-    res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-    res = refalrts::splice_stvar( res, sMode_2 );
-    res = refalrts::splice_stvar( res, sUsing_2 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n2, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n3 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_stvar( res, sUsing_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_ReplicateVars(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eVars_b_1;
-    struct r05_node *eVars_e_1;
-    // e.Vars
-    eVars_b_1 = bb_0;
-    eVars_e_1 = be_0;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_ReplicateVar, "ReplicateVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_call( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n3 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eVars_b_1, eVars_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_VarSetUnion(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eSet1_B_b_1;
-    struct r05_node *eSet1_B_e_1;
-    struct r05_node *tCommon_1;
-    struct r05_node *eSet1_E_b_1;
-    struct r05_node *eSet1_E_e_1;
-    struct r05_node *eSet2_B_b_1;
-    struct r05_node *eSet2_B_e_1;
-    struct r05_node *eSet2_E_b_1;
-    struct r05_node *eSet2_E_e_1;
-    struct r05_node *tCommon_2;
-    // ( e.Set1_B t.Common e.Set1_E ) ( e.Set2_B t.Common e.Set2_E )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    eSet1_B_b_1 = 0;
-    eSet1_B_e_1 = 0;
-    refalrts::start_e_loop();
-    do {
-      struct r05_node *bb_3 = bb_1;
-      struct r05_node *be_3 = be_1;
-      struct r05_node *bb_4 = bb_2;
-      struct r05_node *be_4 = be_2;
-      if (! r05_tvar_left(&tCommon_1, &bb_3, &be_3))
-        continue;
-      eSet1_E_b_1 = bb_3;
-      eSet1_E_e_1 = be_3;
-      eSet2_B_b_1 = 0;
-      eSet2_B_e_1 = 0;
-      refalrts::start_e_loop();
-      do {
-        struct r05_node *bb_5 = bb_4;
-        struct r05_node *be_5 = be_4;
-        if (! r05_repeated_stvar_left(&tCommon_2, tCommon_1, &bb_5, &be_5))
-          continue;
-        eSet2_E_b_1 = bb_5;
-        eSet2_E_e_1 = be_5;
-
-        refalrts::reset_allocator();
-        struct r05_node *res = arg_begin;
-        struct r05_node *n0 = 0;
-        if( ! refalrts::alloc_open_call( n0 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n1 = 0;
-        if( ! refalrts::alloc_name( n1, r05c_VarSetUnion, "VarSetUnion" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n2 = 0;
-        if( ! refalrts::alloc_open_bracket( n2 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n3 = 0;
-        if( ! refalrts::alloc_close_bracket( n3 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n4 = 0;
-        if( ! refalrts::alloc_open_bracket( n4 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n5 = 0;
-        if( ! refalrts::alloc_close_bracket( n5 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n6 = 0;
-        if( ! refalrts::alloc_close_call( n6 ) )
-          return R05_NO_MEMORY;
-        refalrts::push_stack( n6 );
-        refalrts::push_stack( n0 );
-        res = refalrts::splice_elem( res, n6 );
-        refalrts::link_brackets( n4, n5 );
-        res = refalrts::splice_elem( res, n5 );
-        res = refalrts::splice_evar( res, eSet2_E_b_1, eSet2_E_e_1 );
-        res = refalrts::splice_evar( res, eSet2_B_b_1, eSet2_B_e_1 );
-        res = refalrts::splice_elem( res, n4 );
-        refalrts::link_brackets( n2, n3 );
-        res = refalrts::splice_elem( res, n3 );
-        res = refalrts::splice_evar( res, eSet1_E_b_1, eSet1_E_e_1 );
-        res = refalrts::splice_evar( res, eSet1_B_b_1, eSet1_B_e_1 );
-        res = refalrts::splice_elem( res, n2 );
-        res = refalrts::splice_elem( res, n1 );
-        res = refalrts::splice_elem( res, n0 );
-        res = refalrts::splice_stvar( res, tCommon_1 );
-        r05_use(&res);
-        refalrts::splice_to_freelist( arg_begin, arg_end );
-        return R05_SUCCESS;
-      } while (r05_open_evar_advance(&eSet2_B_b_1, &eSet2_B_e_1, &bb_4, &be_4));
-    } while (r05_open_evar_advance(&eSet1_B_b_1, &eSet1_B_e_1, &bb_1, &be_1));
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eSet1_b_1;
-    struct r05_node *eSet1_e_1;
-    struct r05_node *eSet2_b_1;
-    struct r05_node *eSet2_e_1;
-    // ( e.Set1 ) ( e.Set2 )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    eSet1_b_1 = bb_1;
-    eSet1_e_1 = be_1;
-    eSet2_b_1 = bb_2;
-    eSet2_e_1 = be_2;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_evar( res, eSet2_b_1, eSet2_e_1 );
-    res = refalrts::splice_evar( res, eSet1_b_1, eSet1_e_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_VarSetDifference(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eSet1_B_b_1;
-    struct r05_node *eSet1_B_e_1;
-    struct r05_node *eSet1_E_b_1;
-    struct r05_node *eSet1_E_e_1;
-    struct r05_node *eSet2_B_b_1;
-    struct r05_node *eSet2_B_e_1;
-    struct r05_node *eSet2_E_b_1;
-    struct r05_node *eSet2_E_e_1;
-    struct r05_node *tCommon_1;
-    struct r05_node *tCommon_2;
-    // ( e.Set1_B t.Common e.Set1_E ) ( e.Set2_B t.Common e.Set2_E )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    eSet1_B_b_1 = 0;
-    eSet1_B_e_1 = 0;
-    refalrts::start_e_loop();
-    do {
-      struct r05_node *bb_3 = bb_1;
-      struct r05_node *be_3 = be_1;
-      struct r05_node *bb_4 = bb_2;
-      struct r05_node *be_4 = be_2;
-      if (! r05_tvar_left(&tCommon_1, &bb_3, &be_3))
-        continue;
-      eSet1_E_b_1 = bb_3;
-      eSet1_E_e_1 = be_3;
-      eSet2_B_b_1 = 0;
-      eSet2_B_e_1 = 0;
-      refalrts::start_e_loop();
-      do {
-        struct r05_node *bb_5 = bb_4;
-        struct r05_node *be_5 = be_4;
-        if (! r05_repeated_stvar_left(&tCommon_2, tCommon_1, &bb_5, &be_5))
-          continue;
-        eSet2_E_b_1 = bb_5;
-        eSet2_E_e_1 = be_5;
-
-        refalrts::reset_allocator();
-        struct r05_node *res = arg_begin;
-        struct r05_node *n0 = 0;
-        if( ! refalrts::alloc_open_call( n0 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n1 = 0;
-        if( ! refalrts::alloc_name( n1, r05c_VarSetDifference, "VarSetDifference" ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n2 = 0;
-        if( ! refalrts::alloc_open_bracket( n2 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n3 = 0;
-        if( ! refalrts::alloc_close_bracket( n3 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n4 = 0;
-        if( ! refalrts::alloc_open_bracket( n4 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n5 = 0;
-        if( ! refalrts::alloc_close_bracket( n5 ) )
-          return R05_NO_MEMORY;
-        struct r05_node *n6 = 0;
-        if( ! refalrts::alloc_close_call( n6 ) )
-          return R05_NO_MEMORY;
-        refalrts::push_stack( n6 );
-        refalrts::push_stack( n0 );
-        res = refalrts::splice_elem( res, n6 );
-        refalrts::link_brackets( n4, n5 );
-        res = refalrts::splice_elem( res, n5 );
-        res = refalrts::splice_evar( res, eSet2_E_b_1, eSet2_E_e_1 );
-        res = refalrts::splice_evar( res, eSet2_B_b_1, eSet2_B_e_1 );
-        res = refalrts::splice_elem( res, n4 );
-        refalrts::link_brackets( n2, n3 );
-        res = refalrts::splice_elem( res, n3 );
-        res = refalrts::splice_evar( res, eSet1_E_b_1, eSet1_E_e_1 );
-        res = refalrts::splice_elem( res, n2 );
-        res = refalrts::splice_elem( res, n1 );
-        res = refalrts::splice_elem( res, n0 );
-        res = refalrts::splice_evar( res, eSet1_B_b_1, eSet1_B_e_1 );
-        r05_use(&res);
-        refalrts::splice_to_freelist( arg_begin, arg_end );
-        return R05_SUCCESS;
-      } while (r05_open_evar_advance(&eSet2_B_b_1, &eSet2_B_e_1, &bb_4, &be_4));
-    } while (r05_open_evar_advance(&eSet1_B_b_1, &eSet1_B_e_1, &bb_1, &be_1));
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eSet1_b_1;
-    struct r05_node *eSet1_e_1;
-    // ( e.Set1 ) ( e.Set2 )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    eSet1_b_1 = bb_1;
-    eSet1_e_1 = be_1;
-    // Unused closed variable e.Set2
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_evar( res, eSet1_b_1, eSet1_e_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_ClosedEVariables(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
+    struct r05_node *ePatternVars_E_b_1;
+    struct r05_node *ePatternVars_E_e_1;
+    struct r05_node *ePatternCommands_B_b_1;
+    struct r05_node *ePatternCommands_B_e_1;
+    struct r05_node *ePatternCommands_E_b_1;
+    struct r05_node *ePatternCommands_E_e_1;
     struct r05_node *sNum_1;
-    // ( & CmdClosedE & AlgLeft s.Num 'e e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    if (! r05_function_left(r05c_CmdClosedE, &bb_1, &be_1))
-      break;
-    if (! r05_function_left(r05c_AlgLeft, &bb_1, &be_1))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    if (! r05_svar_left(&sNum_1, &bb_1, &be_1))
-      break;
-    if (! r05_char_left('e', &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_number( n1, 1UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_char( n2, 'e' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *tOther_1;
-    // t.Other
-    if (! r05_tvar_left(&tOther_1, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_RepeatedEVariables(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
-    struct r05_node *sDirection_1;
-    struct r05_node *sNum_1;
-    struct r05_node *sCount_1;
-    // ( & CmdRepeated s.Direction s.Num s.Count 'e e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    if (! r05_function_left(r05c_CmdRepeated, &bb_1, &be_1))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    if (! r05_svar_left(&sDirection_1, &bb_1, &be_1))
-      break;
-    if (! r05_svar_left(&sNum_1, &bb_1, &be_1))
-      break;
-    if (! r05_svar_left(&sCount_1, &bb_1, &be_1))
-      break;
-    if (! r05_char_left('e', &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_number( n1, 1UL ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_char( n2, 'e' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *tOther_1;
-    // t.Other
-    if (! r05_tvar_left(&tOther_1, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
-    struct r05_node *sNum_1;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
     struct r05_node *eUnuseds_B_b_1;
     struct r05_node *eUnuseds_B_e_1;
-    // e.Unuseds_B ( 1 'e e.Index ) e.Unuseds_E ( & CmdClosedE & AlgLeft s.Num 'e e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_right(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *eUnuseds_E_b_1;
+    struct r05_node *eUnuseds_E_e_1;
+    struct r05_node *bb[12] = { 0 };
+    struct r05_node *be[12] = { 0 };
+    struct r05_node *n[13] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.PatternVars_B ( 1 'e' e.Index  ) e.PatternVars_E  ) ( e.PatternCommands_B ( & CmdClosedE & AlgLeft s.Num 'e' e.Index  ) e.PatternCommands_E  ) e.Unuseds_B ( 1 'e' e.Index  ) e.Unuseds_E */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_CmdClosedE, &bb_1, &be_1))
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
       break;
-    if (! r05_function_left(r05c_AlgLeft, &bb_1, &be_1))
-      break;
-    if (! r05_svar_left(&sNum_1, &bb_1, &be_1))
-      break;
-    if (! r05_char_left('e', &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
-    eUnuseds_B_b_1 = 0;
-    eUnuseds_B_e_1 = 0;
-    refalrts::start_e_loop();
+    ePatternVars_B_b_1 = 0;
+    ePatternVars_B_e_1 = 0;
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_2 = bb_0;
-      struct r05_node *be_2 = be_0;
-      struct r05_node *bb_3 = 0;
-      struct r05_node *be_3 = 0;
-      if (! r05_brackets_left(&bb_3, &be_3, &bb_2, &be_2))
+      bb[3] = bb[1];
+      be[3] = be[1];
+      bb[4] = bb[2];
+      be[4] = be[2];
+      bb[5] = bb[0];
+      be[5] = be[0];
+      if (! r05_brackets_left(&bb[6], &be[6], &bb[3], &be[3]))
         continue;
-      if (! r05_number_left(1UL, &bb_3, &be_3))
+      if (! r05_number_left(1UL, &bb[6], &be[6]))
         continue;
-      if (! r05_char_left('e', &bb_3, &be_3))
+      if (! r05_char_left('e', &bb[6], &be[6]))
         continue;
-      if (! r05_repeated_evar_left(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb_3, &be_3))
-        continue;
-      if (! r05_empty_seq(bb_3, be_3))
-        continue;
-      // Unused closed variable e.Unuseds_E
+      eIndex_b_1 = bb[6];
+      eIndex_e_1 = be[6];
+      ePatternVars_E_b_1 = bb[3];
+      ePatternVars_E_e_1 = be[3];
+      ePatternCommands_B_b_1 = 0;
+      ePatternCommands_B_e_1 = 0;
+      r05_start_e_loop();
+      do {
+        bb[7] = bb[4];
+        be[7] = be[4];
+        bb[8] = bb[5];
+        be[8] = be[5];
+        if (! r05_brackets_left(&bb[9], &be[9], &bb[7], &be[7]))
+          continue;
+        if (! r05_function_left(r05c_CmdClosedE, &bb[9], &be[9]))
+          continue;
+        if (! r05_function_left(r05c_AlgLeft, &bb[9], &be[9]))
+          continue;
+        if (! r05_repeated_evar_right(&eIndex_b_2, &eIndex_e_2, eIndex_b_1, eIndex_e_1, &bb[9], &be[9]))
+          continue;
+        if (! r05_char_right('e', &bb[9], &be[9]))
+          continue;
+        ePatternCommands_E_b_1 = bb[7];
+        ePatternCommands_E_e_1 = be[7];
+        if (! r05_svar_left(&sNum_1, &bb[9], &be[9]))
+          continue;
+        if (! r05_empty_seq(bb[9], be[9]))
+          continue;
+        eUnuseds_B_b_1 = 0;
+        eUnuseds_B_e_1 = 0;
+        r05_start_e_loop();
+        do {
+          bb[10] = bb[8];
+          be[10] = be[8];
+          if (! r05_brackets_left(&bb[11], &be[11], &bb[10], &be[10]))
+            continue;
+          if (! r05_number_left(1UL, &bb[11], &be[11]))
+            continue;
+          if (! r05_char_left('e', &bb[11], &be[11]))
+            continue;
+          if (! r05_repeated_evar_left(&eIndex_b_3, &eIndex_e_3, eIndex_b_2, eIndex_e_2, &bb[11], &be[11]))
+            continue;
+          if (! r05_empty_seq(bb[11], be[11]))
+            continue;
+          eUnuseds_E_b_1 = bb[10];
+          eUnuseds_E_e_1 = be[10];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_bracket( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_CmdComment, "CmdComment" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_chars( n2, n3, " Unused closed variable e.", 26) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_close_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      refalrts::link_brackets( n0, n4 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_evar( res, n2, n3 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
-      return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eUnuseds_B_b_1, &eUnuseds_B_e_1, &bb_0, &be_0));
+          r05_reset_allocator();
+          r05_alloc_open_call(n[0]);
+          r05_alloc_function(r05c_FilterCommonVarsAndPatternCommands, "FilterCommonVarsAndPatternCommands");
+          r05_alloc_open_bracket(n[1]);
+          r05_alloc_insert_pos(n[2]);
+          r05_alloc_close_bracket(n[3]);
+          r05_alloc_open_bracket(n[4]);
+          r05_alloc_insert_pos(n[5]);
+          r05_alloc_open_bracket(n[6]);
+          r05_alloc_function(r05c_CmdComment, "CmdComment");
+          r05_alloc_chars(" Unused closed variable e.", 26);
+          r05_alloc_insert_pos(n[7]);
+          r05_alloc_close_bracket(n[8]);
+          r05_alloc_insert_pos(n[9]);
+          r05_alloc_close_bracket(n[10]);
+          r05_alloc_insert_pos(n[11]);
+          r05_alloc_close_call(n[12]);
+          r05_push_stack(n[12]);
+          r05_push_stack(n[0]);
+          r05_link_brackets(n[4], n[10]);
+          r05_link_brackets(n[6], n[8]);
+          r05_link_brackets(n[1], n[3]);
+          r05_splice_evar(n[2], ePatternVars_B_b_1, ePatternVars_B_e_1);
+          r05_splice_evar(n[2], ePatternVars_E_b_1, ePatternVars_E_e_1);
+          r05_splice_evar(n[5], ePatternCommands_B_b_1, ePatternCommands_B_e_1);
+          r05_splice_evar(n[7], eIndex_b_3, eIndex_e_3);
+          r05_splice_evar(n[9], ePatternCommands_E_b_1, ePatternCommands_E_e_1);
+          r05_splice_evar(n[11], eUnuseds_B_b_1, eUnuseds_B_e_1);
+          r05_splice_evar(n[11], eUnuseds_E_b_1, eUnuseds_E_e_1);
+          r05_splice_from_freelist(arg_begin);
+          r05_splice_to_freelist(arg_begin, arg_end);
+          return R05_SUCCESS;
+        } while (r05_open_evar_advance(&eUnuseds_B_b_1, &eUnuseds_B_e_1, &bb[8], &be[8]));
+      } while (r05_open_evar_advance(&ePatternCommands_B_b_1, &ePatternCommands_B_e_1, &bb[4], &be[4]));
+    } while (r05_open_evar_advance(&ePatternVars_B_b_1, &ePatternVars_B_e_1, &bb[1], &be[1]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *tOtherCommand_1;
-    // e.Unuseds t.OtherCommand
-    if (! r05_tvar_right(&tOtherCommand_1, &bb_0, &be_0))
+    struct r05_node *ePatternVars_b_1;
+    struct r05_node *ePatternVars_e_1;
+    struct r05_node *ePatternCommands_b_1;
+    struct r05_node *ePatternCommands_e_1;
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[4] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( e.PatternVars  ) ( e.PatternCommands  ) e.Unuseds */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    // Unused closed variable e.Unuseds
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    ePatternVars_b_1 = bb[1];
+    ePatternVars_e_1 = be[1];
+    ePatternCommands_b_1 = bb[2];
+    ePatternCommands_e_1 = be[2];
+    /* Unused closed variable e.Unuseds*/
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_stvar( res, tOtherCommand_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], ePatternVars_b_1, ePatternVars_e_1);
+    r05_splice_evar(n[3], ePatternCommands_b_1, ePatternCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -6259,7 +3935,102 @@ static enum r05_fnresult r05c_FilterUnusedCmdClosedE(struct r05_node *arg_begin,
   );
 }
 
-enum r05_fnresult r05c_CmdDeclareEVar(struct r05_node *, struct r05_node *) {
+enum r05_fnresult r05c_CmdRangeArray(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+enum r05_fnresult r05c_CmdInitB0(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+enum r05_fnresult r05c_CmdResultArray(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *sNumRanges_1;
+    struct r05_node *sResultCounter_1;
+    struct r05_node *eResultCommands_b_1;
+    struct r05_node *eResultCommands_e_1;
+    struct r05_node *ePatternVars_b_1;
+    struct r05_node *ePatternVars_e_1;
+    struct r05_node *ePatternCommands_b_1;
+    struct r05_node *ePatternCommands_e_1;
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[17] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.NumRanges s.ResultCounter ( e.ResultCommands  ) ( e.PatternVars  ) e.PatternCommands */
+    if (! r05_svar_left(&sNumRanges_1, &bb[0], &be[0]))
+      break;
+    if (! r05_svar_left(&sResultCounter_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    eResultCommands_b_1 = bb[1];
+    eResultCommands_e_1 = be[1];
+    ePatternVars_b_1 = bb[2];
+    ePatternVars_e_1 = be[2];
+    ePatternCommands_b_1 = bb[0];
+    ePatternCommands_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_GenerateResult_OpenELoops, "GenerateResult_OpenELoops");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_Map, "Map");
+    r05_alloc_function(r05c_MakeDeclaration, "MakeDeclaration");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_function(r05c_CmdRangeArray, "CmdRangeArray");
+    r05_alloc_svar(sNumRanges_1);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_open_call(n[6]);
+    r05_alloc_function(r05c_MakeCmdResultCommand, "MakeCmdResultCommand");
+    r05_alloc_svar(sResultCounter_1);
+    r05_alloc_close_call(n[7]);
+    r05_alloc_open_bracket(n[8]);
+    r05_alloc_function(r05c_CmdInitB0, "CmdInitB0");
+    r05_alloc_close_bracket(n[9]);
+    r05_alloc_insert_pos(n[10]);
+    r05_alloc_open_bracket(n[11]);
+    r05_alloc_function(r05c_CmdEmptyResult, "CmdEmptyResult");
+    r05_alloc_close_bracket(n[12]);
+    r05_alloc_insert_pos(n[13]);
+    r05_alloc_open_bracket(n[14]);
+    r05_alloc_function(r05c_CmdReturnResult, "CmdReturnResult");
+    r05_alloc_close_bracket(n[15]);
+    r05_alloc_close_call(n[16]);
+    r05_push_stack(n[16]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[14], n[15]);
+    r05_link_brackets(n[11], n[12]);
+    r05_link_brackets(n[8], n[9]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[6]);
+    r05_link_brackets(n[4], n[5]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[2], ePatternVars_b_1, ePatternVars_e_1);
+    r05_splice_evar(n[10], ePatternCommands_b_1, ePatternCommands_e_1);
+    r05_splice_evar(n[13], eResultCommands_b_1, eResultCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while ( 0 );
+
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
   );
@@ -6272,98 +4043,48 @@ enum r05_fnresult r05c_CmdDeclareVar(struct r05_node *, struct r05_node *) {
 }
 
 static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *sUsings_1;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
-    // ( s.Usings 'e e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
-      break;
-    if (! r05_char_left('e', &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdDeclareEVar, "CmdDeclareEVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_char( n2, 'e' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sUsings_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *sUsings_1;
     struct r05_node *sMode_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    // ( s.Usings s.Mode e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* ( s.Usings s.Mode e.Index  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
+    if (! r05_svar_left(&sUsings_1, &bb[1], &be[1]))
       break;
-    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
+    if (! r05_svar_left(&sMode_1, &bb[1], &be[1]))
       break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
+    eIndex_b_1 = bb[1];
+    eIndex_e_1 = be[1];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdDeclareVar, "CmdDeclareVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_stvar( res, sUsings_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_CmdDeclareVar, "CmdDeclareVar");
+    r05_alloc_svar(sUsings_1);
+    r05_alloc_svar(sMode_1);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_MakeDeclaration_Aux, "MakeDeclaration_Aux");
+    r05_alloc_svar(sUsings_1);
+    r05_alloc_svar(sMode_1);
+    r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+    r05_alloc_close_call(n[4]);
+    r05_push_stack(n[4]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eIndex_b_1, eIndex_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -6372,111 +4093,65 @@ static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct
   );
 }
 
-enum r05_fnresult r05c_CmdCopyEVar(struct r05_node *, struct r05_node *) {
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-enum r05_fnresult r05c_CmdCopyVar(struct r05_node *, struct r05_node *) {
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_MakeCopyVar(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+static enum r05_fnresult r05c_MakeDeclaration_Aux(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *sUsings_1;
-    struct r05_node *eIndex_b_1;
-    struct r05_node *eIndex_e_1;
-    // ( s.Usings 'e e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *sMode_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* 1 s.Mode e.Index */
+    if (! r05_number_left(1UL, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_svar_left(&sMode_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
-      break;
-    if (! r05_char_left('e', &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
+    /* Unused closed variable e.Index*/
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdCopyEVar, "CmdCopyEVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_char( n2, 'e' ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_close_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n3 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_stvar( res, sUsings_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *sUsings_1;
     struct r05_node *sMode_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    // ( s.Usings s.Mode e.Index )
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.Usings s.Mode e.Index */
+    if (! r05_svar_left(&sUsings_1, &bb[0], &be[0]))
       break;
-    if (! r05_empty_seq(bb_0, be_0))
+    if (! r05_svar_left(&sMode_1, &bb[0], &be[0]))
       break;
-    if (! r05_svar_left(&sUsings_1, &bb_1, &be_1))
-      break;
-    if (! r05_svar_left(&sMode_1, &bb_1, &be_1))
-      break;
-    eIndex_b_1 = bb_1;
-    eIndex_e_1 = be_1;
+    eIndex_b_1 = bb[0];
+    eIndex_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_CmdCopyVar, "CmdCopyVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_close_bracket( n2 ) )
-      return R05_NO_MEMORY;
-    refalrts::link_brackets( n0, n2 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-    res = refalrts::splice_stvar( res, sMode_1 );
-    res = refalrts::splice_stvar( res, sUsings_1 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_MakeDeclaration, "MakeDeclaration");
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_open_call(n[2]);
+    r05_alloc_function(r05c_Dec, "Dec");
+    r05_alloc_svar(sUsings_1);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_svar(sMode_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[1], n[5]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[2]);
+    r05_splice_evar(n[4], eIndex_b_1, eIndex_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -6485,444 +4160,46 @@ static enum r05_fnresult r05c_MakeCopyVar(struct r05_node *arg_begin, struct r05
   );
 }
 
-static enum r05_fnresult r05c_MakeVarsSets(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+static enum r05_fnresult r05c_MakeCmdResultCommand(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *ePatternVars_b_1;
-    struct r05_node *ePatternVars_e_1;
-    struct r05_node *eResultVars_b_1;
-    struct r05_node *eResultVars_e_1;
-    struct r05_node *eRepeatedEs_b_1;
-    struct r05_node *eRepeatedEs_e_1;
-    struct r05_node *eClosedEs_b_1;
-    struct r05_node *eClosedEs_e_1;
-    struct r05_node *ePatternVars_b_2;
-    struct r05_node *ePatternVars_e_2;
-    struct r05_node *eResultVars_b_2;
-    struct r05_node *eResultVars_e_2;
-    struct r05_node *eResultVars_b_3;
-    struct r05_node *eResultVars_e_3;
-    // ( e.PatternVars ) ( e.ResultVars ) ( e.RepeatedEs ) e.ClosedEs
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* 0 */
+    if (! r05_number_left(0UL, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
-      break;
-    ePatternVars_b_1 = bb_1;
-    ePatternVars_e_1 = be_1;
-    eResultVars_b_1 = bb_2;
-    eResultVars_e_1 = be_2;
-    eRepeatedEs_b_1 = bb_3;
-    eRepeatedEs_e_1 = be_3;
-    eClosedEs_b_1 = bb_0;
-    eClosedEs_e_1 = be_0;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( ePatternVars_b_2, ePatternVars_e_2, ePatternVars_b_1, ePatternVars_e_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eResultVars_b_2, eResultVars_e_2, eResultVars_b_1, eResultVars_e_1 ) )
-      return R05_NO_MEMORY;
-    if( ! refalrts::copy_evar( eResultVars_b_3, eResultVars_e_3, eResultVars_b_2, eResultVars_e_2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_open_call( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_VarSetUnion, "VarSetUnion" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_open_call( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_name( n11, r05c_VarSetDifference, "VarSetDifference" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_open_bracket( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_close_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_open_bracket( n14 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n17 = 0;
-    if( ! refalrts::alloc_close_bracket( n17 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n18 = 0;
-    if( ! refalrts::alloc_open_call( n18 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n19 = 0;
-    if( ! refalrts::alloc_name( n19, r05c_VarSetDifference, "VarSetDifference" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n20 = 0;
-    if( ! refalrts::alloc_open_bracket( n20 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n21 = 0;
-    if( ! refalrts::alloc_close_bracket( n21 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n22 = 0;
-    if( ! refalrts::alloc_open_bracket( n22 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n23 = 0;
-    if( ! refalrts::alloc_close_bracket( n23 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n24 = 0;
-    if( ! refalrts::alloc_close_call( n24 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n24 );
-    refalrts::push_stack( n18 );
-    res = refalrts::splice_elem( res, n24 );
-    refalrts::link_brackets( n22, n23 );
-    res = refalrts::splice_elem( res, n23 );
-    res = refalrts::splice_evar( res, eResultVars_b_3, eResultVars_e_3 );
-    res = refalrts::splice_evar( res, eRepeatedEs_b_1, eRepeatedEs_e_1 );
-    res = refalrts::splice_elem( res, n22 );
-    refalrts::link_brackets( n20, n21 );
-    res = refalrts::splice_elem( res, n21 );
-    res = refalrts::splice_evar( res, eClosedEs_b_1, eClosedEs_e_1 );
-    res = refalrts::splice_elem( res, n20 );
-    res = refalrts::splice_elem( res, n19 );
-    res = refalrts::splice_elem( res, n18 );
-    refalrts::link_brackets( n9, n17 );
-    res = refalrts::splice_elem( res, n17 );
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n10 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n14, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, ePatternVars_b_2, ePatternVars_e_2 );
-    res = refalrts::splice_elem( res, n14 );
-    refalrts::link_brackets( n12, n13 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eResultVars_b_2, eResultVars_e_2 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n0, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eResultVars_b_1, eResultVars_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, ePatternVars_b_1, ePatternVars_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_FilterCommonVarsAndPatternCommands(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *ePatternCommands_b_1;
-    struct r05_node *ePatternCommands_e_1;
-    struct r05_node *eCommonVars_b_1;
-    struct r05_node *eCommonVars_e_1;
-    struct r05_node *eCopiedVars_b_1;
-    struct r05_node *eCopiedVars_e_1;
-    struct r05_node *eUnusedClosedEs_b_1;
-    struct r05_node *eUnusedClosedEs_e_1;
-    struct r05_node *eUnusedClosedEs_b_2;
-    struct r05_node *eUnusedClosedEs_e_2;
-    // ( e.PatternCommands ) ( e.CommonVars ) ( e.CopiedVars ) e.UnusedClosedEs
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
+    struct r05_node *sCounter_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[2] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* s.Counter */
+    if (! r05_svar_left(&sCounter_1, &bb[0], &be[0]))
       break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
+    if (! r05_empty_seq(bb[0], be[0]))
       break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
-      break;
-    ePatternCommands_b_1 = bb_1;
-    ePatternCommands_e_1 = be_1;
-    eCommonVars_b_1 = bb_2;
-    eCommonVars_e_1 = be_2;
-    eCopiedVars_b_1 = bb_3;
-    eCopiedVars_e_1 = be_3;
-    eUnusedClosedEs_b_1 = bb_0;
-    eUnusedClosedEs_e_1 = be_0;
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    if( ! refalrts::copy_evar( eUnusedClosedEs_b_2, eUnusedClosedEs_e_2, eUnusedClosedEs_b_1, eUnusedClosedEs_e_1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_bracket( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_open_call( n1 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_name( n2, r05c_VarSetDifference, "VarSetDifference" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_open_bracket( n3 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_close_bracket( n4 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_open_bracket( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_close_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_close_call( n7 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_bracket( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_close_bracket( n10 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_open_call( n11 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_name( n12, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_name( n14, r05c_FilterUnusedCmdClosedE, "FilterUnusedCmdClosedE" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n11 );
-    res = refalrts::splice_elem( res, n16 );
-    res = refalrts::splice_evar( res, ePatternCommands_b_1, ePatternCommands_e_1 );
-    refalrts::link_brackets( n13, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_evar( res, eUnusedClosedEs_b_2, eUnusedClosedEs_e_2 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_elem( res, n11 );
-    refalrts::link_brackets( n9, n10 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_evar( res, eCopiedVars_b_1, eCopiedVars_e_1 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n0, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    refalrts::push_stack( n7 );
-    refalrts::push_stack( n1 );
-    res = refalrts::splice_elem( res, n7 );
-    refalrts::link_brackets( n5, n6 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, eUnusedClosedEs_b_1, eUnusedClosedEs_e_1 );
-    res = refalrts::splice_elem( res, n5 );
-    refalrts::link_brackets( n3, n4 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_evar( res, eCommonVars_b_1, eCommonVars_e_1 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
-    struct r05_node *eResultCommands_b_1;
-    struct r05_node *eResultCommands_e_1;
-    struct r05_node *eCommonVars_b_1;
-    struct r05_node *eCommonVars_e_1;
-    struct r05_node *eCopiedVars_b_1;
-    struct r05_node *eCopiedVars_e_1;
-    struct r05_node *ePatternCommands_b_1;
-    struct r05_node *ePatternCommands_e_1;
-    // ( e.ResultCommands ) ( e.CommonVars ) ( e.CopiedVars ) e.PatternCommands
-    struct r05_node *bb_1 = 0;
-    struct r05_node *be_1 = 0;
-    if (! r05_brackets_left(&bb_1, &be_1, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_2 = 0;
-    struct r05_node *be_2 = 0;
-    if (! r05_brackets_left(&bb_2, &be_2, &bb_0, &be_0))
-      break;
-    struct r05_node *bb_3 = 0;
-    struct r05_node *be_3 = 0;
-    if (! r05_brackets_left(&bb_3, &be_3, &bb_0, &be_0))
-      break;
-    eResultCommands_b_1 = bb_1;
-    eResultCommands_e_1 = be_1;
-    eCommonVars_b_1 = bb_2;
-    eCommonVars_e_1 = be_2;
-    eCopiedVars_b_1 = bb_3;
-    eCopiedVars_e_1 = be_3;
-    ePatternCommands_b_1 = bb_0;
-    ePatternCommands_e_1 = be_0;
-
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    struct r05_node *n0 = 0;
-    if( ! refalrts::alloc_open_call( n0 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n1 = 0;
-    if( ! refalrts::alloc_name( n1, r05c_GenerateResult_OpenELoops, "GenerateResult_OpenELoops" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n2 = 0;
-    if( ! refalrts::alloc_open_call( n2 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n3 = 0;
-    if( ! refalrts::alloc_name( n3, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n4 = 0;
-    if( ! refalrts::alloc_name( n4, r05c_MakeDeclaration, "MakeDeclaration" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n5 = 0;
-    if( ! refalrts::alloc_close_call( n5 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n6 = 0;
-    if( ! refalrts::alloc_open_bracket( n6 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n7 = 0;
-    if( ! refalrts::alloc_name( n7, r05c_CmdEmptyResult, "CmdEmptyResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n8 = 0;
-    if( ! refalrts::alloc_close_bracket( n8 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n9 = 0;
-    if( ! refalrts::alloc_open_call( n9 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n10 = 0;
-    if( ! refalrts::alloc_name( n10, r05c_Map, "Map" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n11 = 0;
-    if( ! refalrts::alloc_name( n11, r05c_MakeCopyVar, "MakeCopyVar" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n12 = 0;
-    if( ! refalrts::alloc_close_call( n12 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n13 = 0;
-    if( ! refalrts::alloc_open_bracket( n13 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n14 = 0;
-    if( ! refalrts::alloc_name( n14, r05c_CmdReturnResult, "CmdReturnResult" ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n15 = 0;
-    if( ! refalrts::alloc_close_bracket( n15 ) )
-      return R05_NO_MEMORY;
-    struct r05_node *n16 = 0;
-    if( ! refalrts::alloc_close_call( n16 ) )
-      return R05_NO_MEMORY;
-    refalrts::push_stack( n16 );
-    refalrts::push_stack( n0 );
-    res = refalrts::splice_elem( res, n16 );
-    refalrts::link_brackets( n13, n15 );
-    res = refalrts::splice_elem( res, n15 );
-    res = refalrts::splice_elem( res, n14 );
-    res = refalrts::splice_elem( res, n13 );
-    res = refalrts::splice_evar( res, eResultCommands_b_1, eResultCommands_e_1 );
-    refalrts::push_stack( n12 );
-    refalrts::push_stack( n9 );
-    res = refalrts::splice_elem( res, n12 );
-    res = refalrts::splice_evar( res, eCopiedVars_b_1, eCopiedVars_e_1 );
-    res = refalrts::splice_elem( res, n11 );
-    res = refalrts::splice_elem( res, n10 );
-    res = refalrts::splice_elem( res, n9 );
-    refalrts::link_brackets( n6, n8 );
-    res = refalrts::splice_elem( res, n8 );
-    res = refalrts::splice_elem( res, n7 );
-    res = refalrts::splice_elem( res, n6 );
-    res = refalrts::splice_evar( res, ePatternCommands_b_1, ePatternCommands_e_1 );
-    refalrts::push_stack( n5 );
-    refalrts::push_stack( n2 );
-    res = refalrts::splice_elem( res, n5 );
-    res = refalrts::splice_evar( res, eCommonVars_b_1, eCommonVars_e_1 );
-    res = refalrts::splice_elem( res, n4 );
-    res = refalrts::splice_elem( res, n3 );
-    res = refalrts::splice_elem( res, n2 );
-    res = refalrts::splice_elem( res, n1 );
-    res = refalrts::splice_elem( res, n0 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_function(r05c_CmdResultArray, "CmdResultArray");
+    r05_alloc_svar(sCounter_1);
+    r05_alloc_close_bracket(n[1]);
+    r05_link_brackets(n[0], n[1]);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -6932,12 +4209,8 @@ static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin
 }
 
 static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  refalrts::this_is_generated_function();
+  r05_this_is_generated_function();
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eCommands_B_b_1;
     struct r05_node *eCommands_B_e_1;
     struct r05_node *eCommands_E_b_1;
@@ -6945,123 +4218,83 @@ static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_beg
     struct r05_node *sBracketNum_1;
     struct r05_node *eIndex_b_1;
     struct r05_node *eIndex_e_1;
-    struct r05_node *sBracketNum_2;
-    struct r05_node *eIndex_b_2;
-    struct r05_node *eIndex_e_2;
-    // e.Commands_B ( & CmdOpenedE & AlgLeft s.BracketNum 'e e.Index ) e.Commands_E
+    struct r05_node *bb[3] = { 0 };
+    struct r05_node *be[3] = { 0 };
+    struct r05_node *n[9] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* e.Commands_B ( & CmdOpenedE & AlgLeft s.BracketNum 'e' e.Index  ) e.Commands_E */
     eCommands_B_b_1 = 0;
     eCommands_B_e_1 = 0;
-    refalrts::start_e_loop();
+    r05_start_e_loop();
     do {
-      struct r05_node *bb_1 = bb_0;
-      struct r05_node *be_1 = be_0;
-      struct r05_node *bb_2 = 0;
-      struct r05_node *be_2 = 0;
-      if (! r05_brackets_left(&bb_2, &be_2, &bb_1, &be_1))
+      bb[1] = bb[0];
+      be[1] = be[0];
+      if (! r05_brackets_left(&bb[2], &be[2], &bb[1], &be[1]))
         continue;
-      if (! r05_function_left(r05c_CmdOpenedE, &bb_2, &be_2))
+      if (! r05_function_left(r05c_CmdOpenedE, &bb[2], &be[2]))
         continue;
-      if (! r05_function_left(r05c_AlgLeft, &bb_2, &be_2))
+      if (! r05_function_left(r05c_AlgLeft, &bb[2], &be[2]))
         continue;
-      eCommands_E_b_1 = bb_1;
-      eCommands_E_e_1 = be_1;
-      if (! r05_svar_left(&sBracketNum_1, &bb_2, &be_2))
+      eCommands_E_b_1 = bb[1];
+      eCommands_E_e_1 = be[1];
+      if (! r05_svar_left(&sBracketNum_1, &bb[2], &be[2]))
         continue;
-      if (! r05_char_left('e', &bb_2, &be_2))
+      if (! r05_char_left('e', &bb[2], &be[2]))
         continue;
-      eIndex_b_1 = bb_2;
-      eIndex_e_1 = be_2;
+      eIndex_b_1 = bb[2];
+      eIndex_e_1 = be[2];
 
-      refalrts::reset_allocator();
-      struct r05_node *res = arg_begin;
-      if( ! refalrts::copy_stvar( sBracketNum_2, sBracketNum_1 ) )
-        return R05_NO_MEMORY;
-      if( ! refalrts::copy_evar( eIndex_b_2, eIndex_e_2, eIndex_b_1, eIndex_e_1 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n0 = 0;
-      if( ! refalrts::alloc_open_bracket( n0 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n1 = 0;
-      if( ! refalrts::alloc_name( n1, r05c_CmdOpenedE_Start, "CmdOpenedE_Start" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n2 = 0;
-      if( ! refalrts::alloc_name( n2, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n3 = 0;
-      if( ! refalrts::alloc_char( n3, 'e' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n4 = 0;
-      if( ! refalrts::alloc_close_bracket( n4 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n5 = 0;
-      if( ! refalrts::alloc_open_call( n5 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n6 = 0;
-      if( ! refalrts::alloc_name( n6, r05c_GenerateResult_OpenELoops, "GenerateResult_OpenELoops" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n7 = 0;
-      if( ! refalrts::alloc_close_call( n7 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n8 = 0;
-      if( ! refalrts::alloc_open_bracket( n8 ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n9 = 0;
-      if( ! refalrts::alloc_name( n9, r05c_CmdOpenedE_End, "CmdOpenedE_End" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n10 = 0;
-      if( ! refalrts::alloc_name( n10, r05c_AlgLeft, "AlgLeft" ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n11 = 0;
-      if( ! refalrts::alloc_char( n11, 'e' ) )
-        return R05_NO_MEMORY;
-      struct r05_node *n12 = 0;
-      if( ! refalrts::alloc_close_bracket( n12 ) )
-        return R05_NO_MEMORY;
-      refalrts::link_brackets( n8, n12 );
-      res = refalrts::splice_elem( res, n12 );
-      res = refalrts::splice_evar( res, eIndex_b_2, eIndex_e_2 );
-      res = refalrts::splice_elem( res, n11 );
-      res = refalrts::splice_stvar( res, sBracketNum_2 );
-      res = refalrts::splice_elem( res, n10 );
-      res = refalrts::splice_elem( res, n9 );
-      res = refalrts::splice_elem( res, n8 );
-      refalrts::push_stack( n7 );
-      refalrts::push_stack( n5 );
-      res = refalrts::splice_elem( res, n7 );
-      res = refalrts::splice_evar( res, eCommands_E_b_1, eCommands_E_e_1 );
-      res = refalrts::splice_elem( res, n6 );
-      res = refalrts::splice_elem( res, n5 );
-      refalrts::link_brackets( n0, n4 );
-      res = refalrts::splice_elem( res, n4 );
-      res = refalrts::splice_evar( res, eIndex_b_1, eIndex_e_1 );
-      res = refalrts::splice_elem( res, n3 );
-      res = refalrts::splice_stvar( res, sBracketNum_1 );
-      res = refalrts::splice_elem( res, n2 );
-      res = refalrts::splice_elem( res, n1 );
-      res = refalrts::splice_elem( res, n0 );
-      res = refalrts::splice_evar( res, eCommands_B_b_1, eCommands_B_e_1 );
-      r05_use(&res);
-      refalrts::splice_to_freelist( arg_begin, arg_end );
+      r05_reset_allocator();
+      r05_alloc_insert_pos(n[0]);
+      r05_alloc_open_bracket(n[1]);
+      r05_alloc_function(r05c_CmdOpenedE_Start, "CmdOpenedE_Start");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sBracketNum_1);
+      r05_alloc_char('e');
+      r05_alloc_insert_pos(n[2]);
+      r05_alloc_close_bracket(n[3]);
+      r05_alloc_open_call(n[4]);
+      r05_alloc_function(r05c_GenerateResult_OpenELoops, "GenerateResult_OpenELoops");
+      r05_alloc_insert_pos(n[5]);
+      r05_alloc_close_call(n[6]);
+      r05_alloc_open_bracket(n[7]);
+      r05_alloc_function(r05c_CmdOpenedE_End, "CmdOpenedE_End");
+      r05_alloc_function(r05c_AlgLeft, "AlgLeft");
+      r05_alloc_svar(sBracketNum_1);
+      r05_alloc_char('e');
+      r05_alloc_evar(eIndex_b_1, eIndex_e_1);
+      r05_alloc_close_bracket(n[8]);
+      r05_link_brackets(n[7], n[8]);
+      r05_push_stack(n[6]);
+      r05_push_stack(n[4]);
+      r05_link_brackets(n[1], n[3]);
+      r05_splice_evar(n[0], eCommands_B_b_1, eCommands_B_e_1);
+      r05_splice_evar(n[2], eIndex_b_1, eIndex_e_1);
+      r05_splice_evar(n[5], eCommands_E_b_1, eCommands_E_e_1);
+      r05_splice_from_freelist(arg_begin);
+      r05_splice_to_freelist(arg_begin, arg_end);
       return R05_SUCCESS;
-    } while (r05_open_evar_advance(&eCommands_B_b_1, &eCommands_B_e_1, &bb_0, &be_0));
+    } while (r05_open_evar_advance(&eCommands_B_b_1, &eCommands_B_e_1, &bb[0], &be[0]));
   } while ( 0 );
 
   do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    refalrts::start_sentence();
     struct r05_node *eCommands_b_1;
     struct r05_node *eCommands_e_1;
-    // e.Commands
-    eCommands_b_1 = bb_0;
-    eCommands_e_1 = be_0;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* e.Commands */
+    eCommands_b_1 = bb[0];
+    eCommands_e_1 = be[0];
 
-    refalrts::reset_allocator();
-    struct r05_node *res = arg_begin;
-    res = refalrts::splice_evar( res, eCommands_b_1, eCommands_e_1 );
-    r05_use(&res);
-    refalrts::splice_to_freelist( arg_begin, arg_end );
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_splice_evar(n[0], eCommands_b_1, eCommands_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while ( 0 );
 
@@ -7071,4 +4304,4 @@ static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_beg
 }
 
 
-//End of file
+/* End of file */
