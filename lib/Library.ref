@@ -49,7 +49,7 @@ $ENTRY Mu {
 #define NO_CHECK
 #define CHECK_ZERODIV \
   if (sY->info.number == 0) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
+    r05_builtin_error("divide by zero"); \
   }
 %%
 
