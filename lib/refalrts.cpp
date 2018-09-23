@@ -16,6 +16,7 @@
 #define EXIT_CODE_NO_MEMORY 2
 #define EXIT_CODE_STD_EXCEPTION 4
 #define EXIT_CODE_UNKNOWN_EXCEPTION 5
+#define EXIT_CODE_BUILTIN_ERROR 6
 
 
 /*==============================================================================
@@ -1559,6 +1560,13 @@ void r05_recognition_impossible(void) {
 
 void r05_exit(int retcode) {
   refal_machine_teardown(retcode);
+}
+
+
+void r05_builtin_error(const char *message) {
+  fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
+  vm_make_dump();
+  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
 
