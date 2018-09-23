@@ -15,7 +15,7 @@ namespace refalrts{
 
 namespace allocator {
 
-bool alloc_node(struct r05_node *&node);
+struct r05_node *alloc_node(enum r05_datatag tag);
 
 struct r05_node *free_ptr();
 
@@ -453,9 +453,8 @@ $ENTRY FOpen {
     refalrts::reset_allocator();
     struct r05_node *res = arg_begin;
 
-    struct r05_node *file_ptr = 0;
-    if (! refalrts::allocator::alloc_node(file_ptr))
-      return R05_NO_MEMORY;
+    struct r05_node *file_ptr =
+      refalrts::allocator::alloc_node(R05_DATATAG_FILE);
 
     file_ptr->tag = R05_DATATAG_FILE;
 

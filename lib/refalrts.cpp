@@ -671,7 +671,7 @@ namespace refalrts{
 namespace allocator {
 
 void reset_allocator();
-bool alloc_node(struct r05_node *&node);
+struct r05_node *alloc_node(enum r05_datatag tag);
 struct r05_node *free_ptr();
 void splice_to_freelist(struct r05_node *begin, struct r05_node *end);
 void splice_from_freelist(struct r05_node *pos);
@@ -705,44 +705,9 @@ void refalrts::reset_allocator() {
 
 namespace {
 
-bool copy_node(struct r05_node *&res, struct r05_node *sample) {
-  switch (sample->tag) {
-    case R05_DATATAG_CHAR:
-      return refalrts::alloc_char(res, sample->info.char_);
-
-    case R05_DATATAG_NUMBER:
-      return refalrts::alloc_number(res, sample->info.number);
-
-    case R05_DATATAG_FUNCTION:
-      return refalrts::alloc_name(
-        res, sample->info.function.ptr, sample->info.function.name
-      );
-
-    case R05_DATATAG_OPEN_BRACKET:
-      return refalrts::alloc_open_bracket(res);
-
-    case R05_DATATAG_CLOSE_BRACKET:
-      return refalrts::alloc_close_bracket(res);
-
-    case R05_DATATAG_FILE: {
-      bool allocated = refalrts::allocator::alloc_node(res);
-      if (allocated) {
-        res->tag = R05_DATATAG_FILE;
-        res->info.file = sample->info.file;
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    /*
-      Копируем только объектное выражение -- никаких вызовов функций
-      быть не должно.
-    */
-    default:
-      r05_switch_default_violation(sample->tag);
-      return false;     /* suppress warning */
-  }
+void copy_node(struct r05_node *&res, struct r05_node *sample) {
+  res = refalrts::allocator::alloc_node(sample->tag);
+  res->info = sample->info;
 }
 
 } // unnamed namespace
@@ -766,7 +731,7 @@ void add_copy_tevar_time(clock_t duration);
 
 namespace {
 
-bool copy_nonempty_evar(
+void copy_nonempty_evar(
   struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
@@ -778,9 +743,7 @@ bool copy_nonempty_evar(
   struct r05_node *prev_res_begin = refalrts::allocator::free_ptr()->prev;
 
   while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    if (! copy_node(res, evar_b_sample)) {
-      return false;
-    }
+    copy_node(res, evar_b_sample);
 
     if (is_open_bracket(res)) {
       res->info.link = bracket_stack;
@@ -802,8 +765,6 @@ bool copy_nonempty_evar(
   evar_res_e = res;
 
   refalrts::profiler::add_copy_tevar_time(clock() - start_copy_time);
-
-  return true;
 }
 
 } // unnamed namespace
@@ -815,12 +776,10 @@ bool refalrts::copy_evar(
   if (r05_empty_seq(evar_b_sample, evar_e_sample)) {
     evar_res_b = 0;
     evar_res_e = 0;
-    return true;
   } else {
-    return copy_nonempty_evar(
-      evar_res_b, evar_res_e, evar_b_sample, evar_e_sample
-    );
+    copy_nonempty_evar(evar_res_b, evar_res_e, evar_b_sample, evar_e_sample);
   }
+  return true;
 }
 
 bool refalrts::copy_stvar(
@@ -833,8 +792,9 @@ bool refalrts::copy_stvar(
       stvar_res, end_of_res, stvar_sample, end_of_sample
     );
   } else {
-    return copy_node(stvar_res, stvar_sample);
+    copy_node(stvar_res, stvar_sample);
   }
+  return true;
 }
 
 bool refalrts::alloc_copy_evar(
@@ -843,72 +803,51 @@ bool refalrts::alloc_copy_evar(
 ) {
   if (r05_empty_seq(evar_b_sample, evar_e_sample)) {
     res = 0;
-    return true;
   } else {
     struct r05_node *res_e = 0;
-    return copy_nonempty_evar(
-      res, res_e, evar_b_sample, evar_e_sample
-    );
+    copy_nonempty_evar(res, res_e, evar_b_sample, evar_e_sample);
   }
+  return true;
 }
 
 bool refalrts::alloc_copy_svar_(
   struct r05_node *&svar_res, struct r05_node *svar_sample
 ) {
-  return copy_node(svar_res, svar_sample);
+  copy_node(svar_res, svar_sample);
+  return true;
 }
 
 
 bool refalrts::alloc_char(struct r05_node *&res, char ch) {
-  if (allocator::alloc_node(res)) {
-    res->tag = R05_DATATAG_CHAR;
-    res->info.char_ = ch;
-    return true;
-  } else {
-    return false;
-  }
+  res = allocator::alloc_node(R05_DATATAG_CHAR);
+  res->info.char_ = ch;
+  return true;
 }
 
-bool refalrts::alloc_number(
-  struct r05_node *&res, r05_number num
-) {
-  if (allocator::alloc_node(res)) {
-    res->tag = R05_DATATAG_NUMBER;
-    res->info.number = num;
-    return true;
-  } else {
-    return false;
-  }
+bool refalrts::alloc_number(struct r05_node *&res, r05_number num) {
+  res = allocator::alloc_node(R05_DATATAG_NUMBER);
+  res->info.number = num;
+  return true;
 }
-
-const char *unknown = "@unknown";
 
 bool refalrts::alloc_name(
   struct r05_node *&res, r05_function_ptr fn, const char *name
 ) {
-  if (allocator::alloc_node(res)) {
-    res->tag = R05_DATATAG_FUNCTION;
-    res->info.function.ptr = fn;
-    if (name != 0) {
-      res->info.function.name = name;
-    } else {
-      res->info.function.name = unknown;
-    }
-    return true;
+  res = allocator::alloc_node(R05_DATATAG_FUNCTION);
+  res->info.function.ptr = fn;
+  if (name != 0) {
+    res->info.function.name = name;
   } else {
-    return false;
+    res->info.function.name = "@unknown";
   }
+  return true;
 }
 
 namespace {
 
 bool alloc_some_bracket(struct r05_node *&res, r05_datatag tag) {
-  if (refalrts::allocator::alloc_node(res)) {
-    res->tag = tag;
-    return true;
-  } else {
-    return false;
-  }
+  res = refalrts::allocator::alloc_node(tag);
+  return true;
 }
 
 void link_adjacent(struct r05_node *left, struct r05_node *right) {
@@ -946,22 +885,19 @@ bool refalrts::alloc_chars(
   if (buflen == 0) {
     res_b = 0;
     res_e = 0;
-    return true;
   } else {
     struct r05_node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
     struct r05_node *end_seq = 0;
 
     for (unsigned i = 0; i < buflen; ++ i) {
-      if (! alloc_char(end_seq, buffer[i])) {
-        return false;
-      }
+      alloc_char(end_seq, buffer[i]);
     }
 
     res_b = before_begin_seq->next;
     res_e = end_seq;
-
-    return true;
   }
+
+  return true;
 }
 
 bool refalrts::alloc_string(
@@ -970,22 +906,19 @@ bool refalrts::alloc_string(
   if (*string == '\0') {
     res_b = 0;
     res_e = 0;
-    return true;
   } else {
     struct r05_node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
     struct r05_node *end_seq = 0;
 
     for (const char *p = string; *p != '\0'; ++ p) {
-      if (! alloc_char(end_seq, *p)) {
-        return false;
-      }
+      alloc_char(end_seq, *p);
     }
 
     res_b = before_begin_seq->next;
     res_e = end_seq;
-
-    return true;
   }
+
+  return true;
 }
 
 namespace refalrts {
@@ -1197,12 +1130,12 @@ static void ensure_memory(void) {
   }
 }
 
-bool refalrts::allocator::alloc_node(struct r05_node *&node) {
+struct r05_node *refalrts::allocator::alloc_node(enum r05_datatag tag) {
   ensure_memory();
-  node = g_free_ptr;
+  struct r05_node *node = g_free_ptr;
   g_free_ptr = g_free_ptr->next;
-  node->tag = R05_DATATAG_ILLEGAL;
-  return true;
+  node->tag = tag;
+  return node;
 }
 
 struct r05_node *refalrts::allocator::free_ptr() {
