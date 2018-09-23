@@ -201,8 +201,12 @@ void r05_this_is_generated_function(void);
 void r05_start_sentence(void);
 void r05_start_e_loop(void);
 
+/* Рефал-машина, операционная среда и диагностика */
 
-/* Диагностика */
+void r05_recognition_impossible(void);
+void r05_exit(int retcode);
+
+const char *r05_arg(int no);
 
 #define r05_switch_default_violation(value) \
   r05_switch_default_violation_impl(#value, value, __FILE__, __LINE__)
@@ -240,7 +244,6 @@ extern struct r05_node *splice_stvar(struct r05_node *res, struct r05_node *var)
 extern struct r05_node *splice_evar(
   struct r05_node *res, struct r05_node *first, struct r05_node *last
 );
-// ↑↑↑ DELETE
 
 // Прочие функции
 
@@ -249,6 +252,7 @@ extern void set_return_code(int retcode);
 inline void set_return_code(r05_number retcode) {
   set_return_code(static_cast<int>(retcode));
 }
+// ↑↑↑ DELETE
 
 } //namespace refalrts
 

@@ -933,7 +933,7 @@ bool refalrts::alloc_string(
 // ↑↑↑ DELETE
 
 
-static struct r05_node *s_stack_ptr = NULL;
+static struct r05_node *s_stack_ptr;
 
 void r05_push_stack(struct r05_node *call_bracket) {
   call_bracket->info.link = s_stack_ptr;
@@ -1190,6 +1190,7 @@ void r05_start_sentence(void) {
 }
 
 
+// ↓↓↓ DELETE
 //------------------------------------------------------------------------------
 
 // Прочие операции
@@ -1207,34 +1208,33 @@ extern int g_ret_code;
 void refalrts::set_return_code(int code) {
   refalrts::vm::g_ret_code = code;
 }
+// ↑↑↑ DELETE
 
-//==============================================================================
-// Виртуальная машина
-//==============================================================================
+/*==============================================================================
+   Виртуальная машина
+==============================================================================*/
 
-extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
+
+/* TODO: заменить на static */
+extern struct r05_node s_end_view_field;
+
+static struct r05_node s_begin_view_field = {
+  0, &s_end_view_field, R05_DATATAG_ILLEGAL, { '\0' }
+};
+/*static*/ struct r05_node s_end_view_field = {
+  &s_begin_view_field, 0, R05_DATATAG_ILLEGAL, { '\0' }
+};
+
+/* TODO: раскомментировать при переходе на Си */
+/*
+static struct r05_node *s_stack_ptr = NULL;
+*/
+
+static unsigned long s_step_counter = 0;
 
 namespace refalrts {
 
 namespace vm {
-
-struct r05_node *pop_stack();
-bool empty_stack();
-
-void init_view_field();
-
-void main_loop();
-enum r05_fnresult execute_active(void);
-FILE* dump_stream();
-
-extern struct r05_node g_last_marker;
-
-struct r05_node g_first_marker =
-  { 0, & g_last_marker, R05_DATATAG_ILLEGAL, { '\0' } };
-struct r05_node g_last_marker =
-  { & g_first_marker, 0, R05_DATATAG_ILLEGAL, { '\0' } };
-
-unsigned g_step_counter = 0;
 
 int g_ret_code;
 
@@ -1242,17 +1242,20 @@ int g_ret_code;
 
 } // namespace refalrts
 
-struct r05_node *refalrts::vm::pop_stack() {
+static struct r05_node *pop_stack(void) {
   struct r05_node *res = s_stack_ptr;
   s_stack_ptr = s_stack_ptr->info.link;
   return res;
 }
 
-bool refalrts::vm::empty_stack() {
+static int empty_stack(void) {
   return (s_stack_ptr == 0);
 }
 
-void refalrts::vm::init_view_field() {
+
+extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
+
+static void init_view_field() {
   struct r05_node *open, *close;
 
   r05_reset_allocator();
@@ -1261,74 +1264,56 @@ void refalrts::vm::init_view_field() {
   r05_alloc_close_call(close);
   r05_push_stack(close);
   r05_push_stack(open);
-  r05_splice_from_freelist(g_first_marker.next);
+  r05_splice_from_freelist(s_begin_view_field.next);
 }
 
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-void refalrts::vm::main_loop() {
+static void main_loop() {
   enum r05_fnresult res = R05_SUCCESS;
   while (res == R05_SUCCESS && ! empty_stack()) {
     s_arg_begin = pop_stack();
     assert(! empty_stack());
     s_arg_end = pop_stack();
 
-    res = execute_active();
+#if SHOW_DEBUG
+    if (s_step_counter >= (unsigned) SHOW_DEBUG) {
+      vm_make_dump();
+    }
+#endif  /* SHOW_DEBUG */
+
+    struct r05_node *function = s_arg_begin->next;
+    if (R05_DATATAG_FUNCTION == function->tag) {
+      res = (enum r05_fnresult)(
+        (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
+      );
+    } else {
+      res = R05_RECOGNITION_IMPOSSIBLE;
+    }
     after_step();
 
-    ++ g_step_counter;
+    ++ s_step_counter;
   }
 
   switch (res) {
     case R05_SUCCESS:
-      g_ret_code = 0;
+      refal_machine_teardown(0);
       break;
 
     case R05_RECOGNITION_IMPOSSIBLE:
-      fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
-      g_ret_code = EXIT_CODE_RECOGNITION_IMPOSSIBLE;
-      break;
+      r05_recognition_impossible();
 
     case R05_EXIT:
-      break;
+      r05_exit(refalrts::vm::g_ret_code);
 
     default:
       r05_switch_default_violation(res);
   }
-
-  if (res == R05_RECOGNITION_IMPOSSIBLE) {
-    vm_make_dump();
-  }
-
-  // printf("\n\nTOTAL STEPS %d\n", g_step_counter);
-
-  refal_machine_teardown(g_ret_code);
 }
 
-enum r05_fnresult refalrts::vm::execute_active(void) {
 
-#if SHOW_DEBUG
-
-  if (g_step_counter >= (unsigned) SHOW_DEBUG) {
-    vm_make_dump();
-  }
-
-#endif // SHOW_DEBUG
-
-  struct r05_node *function = s_arg_begin->next;
-  if (R05_DATATAG_FUNCTION == function->tag) {
-    return (enum r05_fnresult)(
-      (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
-    );
-  } else {
-    return R05_RECOGNITION_IMPOSSIBLE;
-  }
-}
-
-namespace {
-
-void print_indent(FILE *output, int level) {
+static void print_indent(FILE *output, int level) {
   enum { cPERIOD = 4 };
   putc('\n', output);
   if (level < 0) {
@@ -1346,9 +1331,8 @@ void print_indent(FILE *output, int level) {
   }
 }
 
-} // unnamed namespace
 
-void refalrts::vm::print_seq(
+static void print_seq(
   FILE *output, struct r05_node *begin, struct r05_node *end
 ) {
   enum {
@@ -1541,13 +1525,11 @@ FILE *refalrts::vm::dump_stream() {
   }
 
   return dump_file;
-
-#else //ifdef DUMP_FILE
-
+#else   /* defined(DUMP_FILE) */
   return stderr;
-
-#endif //ifdef DUMP_FILE
+#endif  /* defined(DUMP_FILE) */
 }
+
 
 static void refal_machine_teardown(int retcode) {
   fflush(stderr);
@@ -1555,14 +1537,39 @@ static void refal_machine_teardown(int retcode) {
   end_profiler();
 
 #ifndef DONT_PRINT_STATISTICS
-  fprintf(stderr, "Step count %d\n", refalrts::vm::g_step_counter);
-#endif // DONT_PRINT_STATISTICS
+  fprintf(stderr, "Step count %d\n", s_step_counter);
+#endif  /* DONT_PRINT_STATISTICS */
 
   free_memory();
   fflush(stdout);
 
   exit(retcode);
 }
+
+
+void r05_recognition_impossible(void) {
+  fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
+  vm_make_dump();
+  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+}
+
+
+void r05_exit(int retcode) {
+  refal_machine_teardown(retcode);
+}
+
+
+static char **s_argv = 0;
+static int s_argc = 0;
+
+const char *r05_arg(int no) {
+  if (no < s_argc) {
+    return s_argv[no];
+  } else {
+    return "";
+  }
+}
+
 
 void r05_switch_default_violation_impl(
   const char *expr, long value, const char *file, int line
@@ -1573,21 +1580,14 @@ void r05_switch_default_violation_impl(
 }
 
 
-//==============================================================================
-
-// Используются в Library.cpp
-
-char **g_argv = 0;
-int g_argc = 0;
-
 int main(int argc, char **argv) {
-  g_argc = argc;
-  g_argv = argv;
+  s_argc = argc;
+  s_argv = argv;
 
   try {
-    refalrts::vm::init_view_field();
+    init_view_field();
     start_profiler();
-    refalrts::vm::main_loop();  /* never returns */
+    main_loop();  /* never returns */
   } catch (std::exception& e) {
     fprintf(stderr, "INTERNAL ERROR: std::exception %s\n", e.what());
     return EXIT_CODE_STD_EXCEPTION;

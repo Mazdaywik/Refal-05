@@ -821,17 +821,6 @@ $ENTRY FClose {
 }
 
 
-%%
-/*
-  Глобальные переменные, хранящие параметры вызова
-  (устанавливаются в refalrts.cpp).
-*/
-
-extern char **g_argv;
-extern int g_argc;
-%%
-
-
 $ENTRY Arg {
 %%
   do {
@@ -855,10 +844,8 @@ $ENTRY Arg {
     struct r05_node *res_begin = 0;
     struct r05_node *res_end = 0;
 
-    if (arg_number < g_argc) {
-      refalrts::alloc_string(res_begin, res_end, g_argv[arg_number]);
-      refalrts::splice_evar(arg_begin, res_begin, res_end);
-    }
+    refalrts::alloc_string(res_begin, res_end, r05_arg(arg_number));
+    refalrts::splice_evar(arg_begin, res_begin, res_end);
 
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
@@ -976,11 +963,7 @@ $ENTRY Exit {
     if (! r05_empty_seq(bb_0, be_0))
       break;
 
-    refalrts::set_return_code(sCode_1->info.number);
-
-    r05_reset_allocator();
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_EXIT;
+    r05_exit((int) sCode_1->info.number);
   } while (0);
 
   return R05_RECOGNITION_IMPOSSIBLE;
