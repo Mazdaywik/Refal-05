@@ -9,7 +9,7 @@
 
 #ifndef SHOW_DEBUG
 #define SHOW_DEBUG 0
-#endif // ifdef SHOW_DEBUG
+#endif  /* ifdef SHOW_DEBUG */
 
 
 #define EXIT_CODE_RECOGNITION_IMPOSSIBLE 1
@@ -36,7 +36,7 @@ void r05_prepare_argument(
 
 
 void r05_move_left(struct r05_node **first, struct r05_node **last) {
-  //assert((*first == 0) == (*last == 0));
+  /* assert((*first == 0) == (*last == 0)); */
   if (*first == 0) assert (*last == 0);
   if (*first != 0) assert (*last != 0);
 
@@ -50,7 +50,7 @@ void r05_move_left(struct r05_node **first, struct r05_node **last) {
 
 
 void r05_move_right(struct r05_node **first, struct r05_node **last) {
-  //assert((*first == 0) == (*last == 0));
+  /* assert((*first == 0) == (*last == 0)); */
   if (*first == 0) assert (*last == 0);
   if (*first != 0) assert (*last != 0);
 
@@ -64,7 +64,7 @@ void r05_move_right(struct r05_node **first, struct r05_node **last) {
 
 
 int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
-  //assert((first == 0) == (last == 0));
+  /* assert((first == 0) == (last == 0)); */
   if (first == 0) assert (last == 0);
   if (first != 0) assert (last != 0);
 
@@ -375,7 +375,7 @@ static int equal_expressions(
   clock_t start_match = clock();
 
   while (
-    // Порядок условий важен
+    /* Порядок условий важен */
     ! r05_empty_seq(first1, last1) && ! r05_empty_seq(first2, last2)
       && equal_nodes(first1, first2)
   ) {
@@ -390,11 +390,11 @@ static int equal_expressions(
 
   add_match_repeated_tvar_time(clock() - start_match);
 
-  // Успешное завершение — если мы достигли конца в обоих выражениях
+  /* Успешное завершение — если мы достигли конца в обоих выражениях */
   if (r05_empty_seq(first1, last1) && r05_empty_seq(first2, last2)) {
     return 1;
   } else {
-    // Любое другое завершение цикла свидетельствует о несовпадении
+    /* Любое другое завершение цикла свидетельствует о несовпадении */
     return 0;
   }
 }
@@ -496,7 +496,7 @@ int r05_repeated_evar_left(
   struct r05_node *copy_last = *last;
 
   while (
-    // порядок условий важен
+    /* порядок условий важен */
     !r05_empty_seq(current, copy_last)
       && !r05_empty_seq(cur_sample, evar_e_sample)
       && equal_nodes(current, cur_sample)
@@ -513,7 +513,7 @@ int r05_repeated_evar_left(
       || ! equal_nodes(current, cur_sample)
   */
   if (r05_empty_seq(cur_sample, evar_e_sample)) {
-    // Это нормальное завершение цикла — вся образцовая переменная проверена
+    /* Это нормальное завершение цикла — вся образцовая переменная проверена */
 
     if (r05_empty_seq(current, copy_last)) {
       *evar_b = *first;
@@ -549,7 +549,7 @@ int r05_repeated_evar_right(
   struct r05_node *copy_first = *first;
 
   while (
-    // порядок перечисления условий важен
+    /* порядок перечисления условий важен */
     !r05_empty_seq(copy_first, current)
       && !r05_empty_seq(evar_b_sample, cur_sample)
       && equal_nodes(current, cur_sample)
@@ -567,7 +567,7 @@ int r05_repeated_evar_right(
   */
 
   if (r05_empty_seq(evar_b_sample, cur_sample)) {
-    // Это нормальное завершение цикла: вся переменная-образец просмотрена
+    /* Это нормальное завершение цикла: вся переменная-образец просмотрена */
 
     if (r05_empty_seq(copy_first, current)) {
       *evar_b = *first;
@@ -738,7 +738,7 @@ static void free_memory() {
     static_cast<unsigned long>(sizeof(struct r05_node)),
     static_cast<unsigned long>(s_memory_use * sizeof(struct r05_node))
   );
-#endif // DONT_PRINT_STATISTICS
+#endif  /* DONT_PRINT_STATISTICS */
 }
 
 
@@ -773,7 +773,7 @@ static struct r05_node *list_splice(
   struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
   if ((res == begin) || r05_empty_seq(begin, end)) {
-    // Цель достигнута сама по себе
+    /* Цель достигнута сама по себе */
     return res;
   } else {
     struct r05_node *prev_res = res->prev;
@@ -1161,14 +1161,14 @@ static void print_profile(void) {
   }
 }
 
-#endif // DONT_PRINT_STATISTICS
+#endif  /* DONT_PRINT_STATISTICS */
 
 static void end_profiler(void) {
   after_step();
 
 #ifndef DONT_PRINT_STATISTICS
   print_profile();
-#endif // DONT_PRINT_STATISTICS
+#endif  /* DONT_PRINT_STATISTICS */
 }
 
 
@@ -1321,7 +1321,7 @@ static void print_indent(FILE *output, int level) {
     return;
   }
   for (int i = 0; i < level; ++i) {
-    // Каждые cPERIOD позиций вместо пробела ставим точку.
+    /* Каждые cPERIOD позиций вместо пробела ставим точку. */
     bool put_marker = ((i % cPERIOD) == (cPERIOD - 1));
 
     const char cSpace =  ' ';
@@ -1489,34 +1489,37 @@ static void print_seq(
   }
 }
 
+
+static FILE* dump_stream(void);
+static void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
+
 static void vm_make_dump(void) {
   using namespace refalrts::vm;
 
-  fprintf(dump_stream(), "\nSTEP NUMBER %u\n", g_step_counter);
+  fprintf(dump_stream(), "\nSTEP NUMBER %u\n", s_step_counter);
   fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
   print_seq(dump_stream(), s_arg_begin, s_arg_end);
   fprintf(dump_stream(), "\nVIEW FIELD:\n");
-  print_seq(dump_stream(), & g_first_marker, & g_last_marker);
+  print_seq(dump_stream(), &s_begin_view_field, &s_end_view_field);
 
 #ifdef DUMP_FREE_LIST
-
   fprintf(dump_stream(), "\nFREE LIST:\n");
   print_seq(dump_stream(), &s_begin_free_list, &s_end_free_list);
-
-#endif //ifdef DUMP_FREE_LIST
+#endif  /* ifdef DUMP_FREE_LIST */
 
   fprintf(dump_stream(),"\nEnd dump\n");
   fflush(dump_stream());
 }
 
-FILE *refalrts::vm::dump_stream() {
-#ifdef DUMP_FILE
-
+static FILE *dump_stream() {
+#if defined(DUMP_FILE)
   static FILE *dump_file = 0;
 
   if (dump_file == 0) {
-    // Необходимо открыть файл.
-    // Если файл не открывается, используем stderr
+    /*
+      Необходимо открыть файл.
+      Если файл не открывается, используем stderr
+    */
     dump_file = fopen(DUMP_FILE, "wt");
 
     if (dump_file == 0) {
