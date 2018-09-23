@@ -365,8 +365,8 @@ $EENUM Success, Fails, True, False;
   \
   sX->info.number = sX->info.number op sY->info.number; \
   \
-  refalrts::splice_to_freelist(arg_begin, func_name); \
-  refalrts::splice_to_freelist(sY, arg_end); \
+  r05_splice_to_freelist(arg_begin, func_name); \
+  r05_splice_to_freelist(sY, arg_end); \
   \
   return R05_SUCCESS;
 
@@ -521,7 +521,7 @@ $ENTRY WriteLine {
       return fnres;
 
     r05_reset_allocator();
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return fnres;
   } while (0);
 
@@ -558,7 +558,7 @@ $ENTRY FWriteLine {
     r05_reset_allocator();
     struct r05_node *res = arg_begin;
     refalrts::splice_stvar(res, sFileHandle_1);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -625,7 +625,7 @@ $ENTRY ReadLine {
       return fn_result;
 
     refalrts::splice_evar(res, str_begin, str_end);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -664,7 +664,7 @@ $ENTRY FReadLine {
 
     res = refalrts::splice_evar(res, str_begin, str_end);
     refalrts::splice_stvar(res, sFileHandle_1);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -766,7 +766,7 @@ $ENTRY FOpen {
     }
 
     refalrts::splice_elem(res, file_ptr);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -799,7 +799,7 @@ $ENTRY FClose {
     }
 
     r05_reset_allocator();
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -847,7 +847,7 @@ $ENTRY Arg {
       refalrts::splice_evar(arg_begin, res_begin, res_end);
     }
 
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -891,7 +891,7 @@ $ENTRY ExistFile {
     }
 
     refalrts::splice_elem(res, ans);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -939,7 +939,7 @@ $ENTRY GetEnv {
       //}
     }
 
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -966,7 +966,7 @@ $ENTRY Exit {
     refalrts::set_return_code(sCode_1->info.number);
 
     r05_reset_allocator();
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_EXIT;
   } while (0);
 
@@ -1001,7 +1001,7 @@ $ENTRY System {
     system(&command[0]);
 
     r05_reset_allocator();
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -1066,7 +1066,7 @@ $ENTRY IntFromStr {
       refalrts::splice_elem(res, success_pos);
     }
 
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -1121,7 +1121,7 @@ $ENTRY StrFromInt {
       refalrts::splice_elem(res, char_pos);
     }
 
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
 
     return R05_SUCCESS;
   } while (0);
@@ -1153,7 +1153,7 @@ $ENTRY Chr {
     struct r05_node *n0 = 0;
     refalrts::alloc_char(n0, result);
     refalrts::splice_elem(res, n0);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
@@ -1184,7 +1184,7 @@ $ENTRY Ord {
     struct r05_node *n0 = 0;
     refalrts::alloc_number(n0, result);
     refalrts::splice_elem(res, n0);
-    refalrts::splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
 
