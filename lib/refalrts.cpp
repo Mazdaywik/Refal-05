@@ -1371,11 +1371,9 @@ bool empty_stack();
 
 bool init_view_field();
 
-enum r05_fnresult main_loop();
+void main_loop();
 enum r05_fnresult execute_active(void);
 FILE* dump_stream();
-
-void free_view_field();
 
 struct r05_node *g_stack_ptr = 0;
 
@@ -1436,9 +1434,9 @@ bool refalrts::vm::init_view_field() {
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-enum r05_fnresult refalrts::vm::main_loop() {
+void refalrts::vm::main_loop() {
   enum r05_fnresult res = R05_SUCCESS;
-  while (! empty_stack()) {
+  while (res == R05_SUCCESS && ! empty_stack()) {
     s_arg_begin = pop_stack();
     assert(! empty_stack());
     s_arg_end = pop_stack();
@@ -1447,34 +1445,37 @@ enum r05_fnresult refalrts::vm::main_loop() {
     refalrts::profiler::after_step();
 
     ++ g_step_counter;
+  }
 
-    if (res != R05_SUCCESS) {
-      switch (res) {
-        case R05_RECOGNITION_IMPOSSIBLE:
-          fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
-          break;
+  switch (res) {
+    case R05_SUCCESS:
+      g_ret_code = 0;
+      break;
 
-        case R05_NO_MEMORY:
-          fprintf(stderr, "\nNO MEMORY\n\n");
-          break;
+    case R05_RECOGNITION_IMPOSSIBLE:
+      fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
+      g_ret_code = EXIT_CODE_RECOGNITION_IMPOSSIBLE;
+      break;
 
-        case R05_EXIT:
-          return res;
+    case R05_NO_MEMORY:
+      fprintf(stderr, "\nNO MEMORY\n\n");
+      g_ret_code = EXIT_CODE_NO_MEMORY;
+      break;
 
-        default:
-          fprintf(stderr, "\nUNKNOWN ERROR (res = %d)\n\n", (int) res);
-          break;
-      }
-      vm_make_dump();
-      return res;
-    } else {
-      continue;
-    }
+    case R05_EXIT:
+      break;
+
+    default:
+      r05_switch_default_violation(res);
+  }
+
+  if (res == R05_RECOGNITION_IMPOSSIBLE || res == R05_NO_MEMORY) {
+    vm_make_dump();
   }
 
   // printf("\n\nTOTAL STEPS %d\n", g_step_counter);
 
-  return res;
+  refal_machine_teardown(g_ret_code);
 }
 
 enum r05_fnresult refalrts::vm::execute_active(void) {
@@ -1720,17 +1721,15 @@ FILE *refalrts::vm::dump_stream() {
 #endif //ifdef DUMP_FILE
 }
 
-void refalrts::vm::free_view_field() {
-#ifndef DONT_PRINT_STATISTICS
-  fprintf(stderr, "Step count %d\n", g_step_counter);
-#endif // DONT_PRINT_STATISTICS
-}
-
 static void refal_machine_teardown(int retcode) {
   fflush(stderr);
   fflush(stdout);
   refalrts::profiler::end_profiler();
-  refalrts::vm::free_view_field();
+
+#ifndef DONT_PRINT_STATISTICS
+  fprintf(stderr, "Step count %d\n", refalrts::vm::g_step_counter);
+#endif // DONT_PRINT_STATISTICS
+
   free_memory();
   fflush(stdout);
 
@@ -1757,13 +1756,10 @@ int main(int argc, char **argv) {
   g_argc = argc;
   g_argv = argv;
 
-  enum r05_fnresult res;
   try {
     refalrts::vm::init_view_field();
     refalrts::profiler::start_profiler();
-    res = refalrts::vm::main_loop();
-    fflush(stderr);
-    fflush(stdout);
+    refalrts::vm::main_loop();  /* never returns */
   } catch (std::exception& e) {
     fprintf(stderr, "INTERNAL ERROR: std::exception %s\n", e.what());
     return EXIT_CODE_STD_EXCEPTION;
@@ -1772,26 +1768,5 @@ int main(int argc, char **argv) {
     return EXIT_CODE_UNKNOWN_EXCEPTION;
   }
 
-  refalrts::profiler::end_profiler();
-  refalrts::vm::free_view_field();
-  free_memory();
-
-  fflush(stdout);
-
-  switch (res) {
-    case R05_SUCCESS:
-      return 0;
-
-    case R05_RECOGNITION_IMPOSSIBLE:
-      return EXIT_CODE_RECOGNITION_IMPOSSIBLE;
-
-    case R05_NO_MEMORY:
-      return EXIT_CODE_NO_MEMORY;
-
-    case R05_EXIT:
-      return refalrts::vm::g_ret_code;
-
-    default:
-      r05_switch_default_violation(res);
-  }
+  return 0;     /* suppress warning */
 }
