@@ -199,7 +199,7 @@ $ENTRY WriteLine {
     if (fnres != R05_SUCCESS)
       return fnres;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return fnres;
   } while (0);
@@ -234,7 +234,7 @@ $ENTRY FWriteLine {
     if (write_result != R05_SUCCESS)
       return write_result;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
     refalrts::splice_stvar(res, sFileHandle_1);
     refalrts::splice_to_freelist(arg_begin, arg_end);
@@ -293,7 +293,7 @@ $ENTRY ReadLine {
     if (! r05_empty_seq(bb_0, be_0))
       break;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
 
     struct r05_node *str_begin, *str_end;
@@ -328,7 +328,7 @@ $ENTRY FReadLine {
     if (! r05_empty_seq(bb_0, be_0))
       break;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
 
     struct r05_node *str_begin, *str_end;
@@ -431,7 +431,7 @@ $ENTRY FOpen {
     if (filename.empty())
       return R05_RECOGNITION_IMPOSSIBLE;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
 
     struct r05_node *file_ptr = r05_alloc_node(R05_DATATAG_FILE);
@@ -477,7 +477,7 @@ $ENTRY FClose {
       /* Ничего не делаем */;
     }
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -514,7 +514,7 @@ $ENTRY Arg {
     if (! r05_empty_seq(bb_0, be_0))
       break;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
 
     int arg_number = sParamNumber_1->info.number;
 
@@ -555,7 +555,7 @@ $ENTRY ExistFile {
     if (fname_res != R05_SUCCESS)
       return fname_res;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
 
     struct r05_node *ans = 0;
@@ -598,7 +598,7 @@ $ENTRY GetEnv {
     if (envname_res != R05_SUCCESS)
       return envname_res;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
 
     const char *envres = getenv(& envname[0]);
 
@@ -644,7 +644,7 @@ $ENTRY Exit {
 
     refalrts::set_return_code(sCode_1->info.number);
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_EXIT;
   } while (0);
@@ -679,7 +679,7 @@ $ENTRY System {
 
     system(&command[0]);
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
   } while (0);
@@ -708,7 +708,7 @@ $ENTRY IntFromStr {
       && (R05_DATATAG_CHAR == eNumber_b_1->tag)
       && isdigit(eNumber_b_1->info.char_);
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
 
     if (! start_is_digit) {
@@ -769,7 +769,7 @@ $ENTRY StrFromInt {
     if (! r05_empty_seq(bb_0, be_0))
       break;
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
 
     struct r05_node *char_pos = 0;
@@ -827,7 +827,7 @@ $ENTRY Chr {
 
     char result = static_cast<char>(sCode_1->info.number);
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
     struct r05_node *n0 = 0;
     refalrts::alloc_char(n0, result);
@@ -858,7 +858,7 @@ $ENTRY Ord {
 
     r05_number result = static_cast<unsigned char>(sChar_1->info.char_);
 
-    refalrts::reset_allocator();
+    r05_reset_allocator();
     struct r05_node *res = arg_begin;
     struct r05_node *n0 = 0;
     refalrts::alloc_number(n0, result);
