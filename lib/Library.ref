@@ -272,9 +272,7 @@ enum r05_fnresult read_from_stream(
   for ( ; ; ) {
     cur_char = getc(input);
     if (EOF == cur_char) {
-      if (! refalrts::alloc_number(cur_char_node, 0UL)) {
-        return R05_NO_MEMORY;
-      }
+      refalrts::alloc_number(cur_char_node, 0UL);
       break;
     } else if ('\n' == cur_char) {
       break;
@@ -284,9 +282,7 @@ enum r05_fnresult read_from_stream(
         памяти узлы располагаются в последовательных адресах, которые будут
         начинаться с before_begin->next.
       */
-      if (! refalrts::alloc_char(cur_char_node, static_cast<char>(cur_char))) {
-        return R05_NO_MEMORY;
-      }
+      refalrts::alloc_char(cur_char_node, static_cast<char>(cur_char));
     }
   }
 
@@ -542,9 +538,7 @@ $ENTRY Arg {
     struct r05_node *res_end = 0;
 
     if (arg_number < g_argc) {
-      if (! refalrts::alloc_string(res_begin, res_end, g_argv[arg_number]))
-        return R05_NO_MEMORY;
-
+      refalrts::alloc_string(res_begin, res_end, g_argv[arg_number]);
       refalrts::splice_evar(arg_begin, res_begin, res_end);
     }
 
@@ -585,14 +579,10 @@ $ENTRY ExistFile {
       // Файл существует
       fclose(f);
 
-      if (! refalrts::alloc_name(ans, r05c_True, "True")) {
-        return R05_NO_MEMORY;
-      }
+      refalrts::alloc_name(ans, r05c_True, "True");
     } else {
       // Файл по-видимому не существует
-      if (! refalrts::alloc_name(ans, r05c_False, "False")) {
-        return R05_NO_MEMORY;
-      }
+      refalrts::alloc_name(ans, r05c_False, "False");
     }
 
     refalrts::splice_elem(res, ans);
@@ -632,17 +622,14 @@ $ENTRY GetEnv {
       struct r05_node *env_begin;
       struct r05_node *env_end;
 
-      if (! refalrts::alloc_string(env_begin, env_end, envres))
-        return R05_NO_MEMORY;
+      refalrts::alloc_string(env_begin, env_end, envres);
 
       refalrts::splice_evar(arg_begin, env_begin, env_end);
 
       //struct r05_node *char_pos;
       //
       //for (const char *env = envres; *env != '\0'; ++ env) {
-      //  if (! refalrts::alloc_char(char_pos, *env))
-      //    return R05_NO_MEMORY;
-      //
+      //  refalrts::alloc_char(char_pos, *env);
       //  refalrts::splice_elem(res, char_pos);
       //}
     }
@@ -742,8 +729,7 @@ $ENTRY IntFromStr {
 
     if (! start_is_digit) {
       struct r05_node *fail_pos = 0;
-      if (! refalrts::alloc_name(fail_pos, r05c_Fails, "Fails"))
-        return R05_NO_MEMORY;
+      refalrts::alloc_name(fail_pos, r05c_Fails, "Fails");
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
       refalrts::splice_elem(res, fail_pos);
@@ -767,11 +753,8 @@ $ENTRY IntFromStr {
       struct r05_node *success_pos = 0;
       struct r05_node *number_pos = 0;
 
-      if (! refalrts::alloc_name(success_pos, r05c_Success, "Success"))
-        return R05_NO_MEMORY;
-
-      if (! refalrts::alloc_number(number_pos, acc))
-        return R05_NO_MEMORY;
+      refalrts::alloc_name(success_pos, r05c_Success, "Success");
+      refalrts::alloc_number(number_pos, acc);
 
       res = refalrts::splice_evar(res, eNumber_b_1, eNumber_e_1);
       res = refalrts::splice_elem(res, number_pos);
@@ -823,18 +806,13 @@ $ENTRY StrFromInt {
 
       struct r05_node *num_begin;
       struct r05_node *num_end;
-      bool allocated = refalrts::alloc_chars(
+      refalrts::alloc_chars(
         num_begin, num_end, cur_digit, unsigned(lim_digit - cur_digit)
       );
 
-      if (! allocated)
-        return R05_NO_MEMORY;
-
       refalrts::splice_evar(res, num_begin, num_end);
     } else {
-      if (! refalrts::alloc_char(char_pos, '0'))
-        return R05_NO_MEMORY;
-
+      refalrts::alloc_char(char_pos, '0');
       refalrts::splice_elem(res, char_pos);
     }
 
@@ -868,8 +846,7 @@ $ENTRY Chr {
     refalrts::reset_allocator();
     struct r05_node *res = arg_begin;
     struct r05_node *n0 = 0;
-    if (! refalrts::alloc_char(n0, result))
-      return R05_NO_MEMORY;
+    refalrts::alloc_char(n0, result);
     refalrts::splice_elem(res, n0);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
@@ -900,8 +877,7 @@ $ENTRY Ord {
     refalrts::reset_allocator();
     struct r05_node *res = arg_begin;
     struct r05_node *n0 = 0;
-    if (! refalrts::alloc_number(n0, result))
-      return R05_NO_MEMORY;
+    refalrts::alloc_number(n0, result);
     refalrts::splice_elem(res, n0);
     refalrts::splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
