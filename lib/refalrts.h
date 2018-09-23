@@ -200,6 +200,13 @@ void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e);
 void r05_alloc_string(const char *string);
 
 
+/* Профилирование */
+
+void r05_this_is_generated_function();
+void r05_start_sentence();
+void r05_start_e_loop();
+
+
 /* Диагностика */
 
 #define r05_switch_default_violation(value) \
@@ -283,13 +290,19 @@ inline void splice_to_freelist(struct r05_node *first, struct r05_node *last) {
 inline void splice_from_freelist(struct r05_node *pos) {
   r05_splice_from_freelist(pos);
 }
-// ↑↑↑ DELETE
 
 // Профилирование
 
-extern void this_is_generated_function();
-extern void start_sentence();
-extern void start_e_loop();
+inline void this_is_generated_function() {
+  r05_this_is_generated_function();
+}
+inline void start_sentence() {
+  r05_start_sentence();
+}
+inline void start_e_loop() {
+  r05_start_e_loop();
+}
+// ↑↑↑ DELETE
 
 // Прочие функции
 

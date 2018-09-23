@@ -46,7 +46,7 @@ $ENTRY GenFnStart {
 }
 
 $ENTRY GenThisIsGeneratedFunction {
-  = ('  refalrts::this_is_generated_function();');
+  = ('  r05_this_is_generated_function();');
 }
 
 $ENTRY GenFnEnd {
@@ -143,7 +143,7 @@ GenCommand {
 
   (e.Indent) (CmdInitB0) =
     (e.Indent)
-    (e.Indent 'refalrts::start_sentence();')
+    (e.Indent 'r05_start_sentence();')
     (e.Indent 'r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);');
 
   (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
@@ -180,7 +180,7 @@ GenCommand {
     (e.Indent '  ')
     (e.Indent <PrintEVar-B 1 'e' e.Index> ' = 0;')
     (e.Indent <PrintEVar-E 1 'e' e.Index> ' = 0;')
-    (e.Indent 'refalrts::start_e_loop();')
+    (e.Indent 'r05_start_e_loop();')
     (e.Indent 'do {');
 
   (e.Indent '  ')
