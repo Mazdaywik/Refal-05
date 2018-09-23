@@ -250,17 +250,6 @@ inline void set_return_code(r05_number retcode) {
   set_return_code(static_cast<int>(retcode));
 }
 
-/*
-  Функция производит печать рефал-выражения в поток file
-  в том же формате, как и при отладочном дампе памяти.
-
-  Переменная file представляет собой стандартный файловый
-  поток FILE* из stdio.h. Сделана она была void* только
-  для того, чтобы не включать сюда лишние заголовочные файлы
-  (пусть даже и стандартные).
-*/
-void debug_print_expr(void *file, struct r05_node *first, struct r05_node *last);
-
 } //namespace refalrts
 
 #endif /* RefalRTS_H_ */

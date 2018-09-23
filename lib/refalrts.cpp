@@ -1199,7 +1199,6 @@ namespace refalrts {
 namespace vm {
 
 extern int g_ret_code;
-extern void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
 
 } // namespace vm
 
@@ -1207,12 +1206,6 @@ extern void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end
 
 void refalrts::set_return_code(int code) {
   refalrts::vm::g_ret_code = code;
-}
-
-void refalrts::debug_print_expr(
-  void *file, struct r05_node *first, struct r05_node *last
-) {
-  refalrts::vm::print_seq(static_cast<FILE*>(file), first, last);
 }
 
 //==============================================================================
