@@ -144,6 +144,15 @@ size_t r05_read_chars(
 );
 
 
+/* Операции построения результата */
+
+void r05_reset_allocator(void);
+
+struct r05_node *r05_alloc_node(enum r05_datatag tag);
+
+struct r05_node *r05_insert_pos(void);
+
+
 /* Диагностика */
 
 #define r05_switch_default_violation(value) \
@@ -161,11 +170,13 @@ void r05_switch_default_violation_impl(
 namespace refalrts {
 
 // ↓↓↓ DELETE
-// ↑↑↑ DELETE
-
 // Операции построения результата
 
-extern void reset_allocator();
+inline void reset_allocator() {
+  r05_reset_allocator();
+}
+// ↑↑↑ DELETE
+
 
 extern bool copy_evar(
   struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,

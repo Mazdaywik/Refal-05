@@ -4,25 +4,10 @@
 #include <vector>
 #include <ctype.h>
 #include <stdlib.h>
-
-//FROM refalrts
-
-//------------------------------------------------------------------------------
-
-// Операции распределителя памяти
-
-namespace refalrts{
-
-namespace allocator {
-
-struct r05_node *alloc_node(enum r05_datatag tag);
-
-struct r05_node *free_ptr();
-
-} // namespace allocator
-
-} // namespace refalrts
 %%
+
+
+*$FROM refalrts
 
 
 *===============================================================================
@@ -264,7 +249,7 @@ $ENTRY FWriteLine {
 enum r05_fnresult read_from_stream(
   FILE *input, struct r05_node *&begin, struct r05_node *&end
 ) {
-  struct r05_node *before_begin = refalrts::allocator::free_ptr()->prev;
+  struct r05_node *before_begin = r05_insert_pos()->prev;
   struct r05_node *cur_char_node = 0;
 
   int cur_char;
@@ -449,8 +434,7 @@ $ENTRY FOpen {
     refalrts::reset_allocator();
     struct r05_node *res = arg_begin;
 
-    struct r05_node *file_ptr =
-      refalrts::allocator::alloc_node(R05_DATATAG_FILE);
+    struct r05_node *file_ptr = r05_alloc_node(R05_DATATAG_FILE);
 
     file_ptr->tag = R05_DATATAG_FILE;
 

@@ -663,50 +663,143 @@ size_t r05_read_chars(
 
 
 /*==============================================================================
-   Операции распределителя памяти
+   Распределитель памяти
 ==============================================================================*/
 
-namespace refalrts{
+/* TODO: заменить на static */
+extern struct r05_node s_end_free_list;
 
-namespace allocator {
+static struct r05_node s_begin_free_list = {
+  0, &s_end_free_list, R05_DATATAG_ILLEGAL, { '\0' }
+};
+/*static*/ struct r05_node s_end_free_list = {
+  &s_begin_free_list, 0, R05_DATATAG_ILLEGAL, { '\0' }
+};
 
-void reset_allocator();
-struct r05_node *alloc_node(enum r05_datatag tag);
-struct r05_node *free_ptr();
-void splice_to_freelist(struct r05_node *begin, struct r05_node *end);
-void splice_from_freelist(struct r05_node *pos);
+static struct r05_node *s_free_ptr = &s_end_free_list;
 
-} // namespace allocator
+static size_t s_memory_use = 0;
 
-} // namespace refalrts
 
-//------------------------------------------------------------------------------
+enum { CHUNK_SIZE = 1000 };
 
-// Средства профилирования
+struct memory_chunk {
+  struct r05_node elems[CHUNK_SIZE];
+  struct memory_chunk *next;
+};
 
-namespace refalrts {
+static struct memory_chunk *s_pool = NULL;
 
-namespace profiler {
 
-extern void start_building_result();
+static void weld(struct r05_node *left, struct r05_node *right) {
+  left->next = right;
+  right->prev = left;
+}
 
-} // namespace profiler
 
-} // namespace refalrts
+static int create_nodes(void) {
+  size_t i;
+  struct memory_chunk *chunk;
+
+#ifdef MEMORY_LIMIT
+  if (s_memory_use >= MEMORY_LIMIT) {
+    return 0;
+  }
+#endif  /* ifdef MEMORY_LIMIT */
+
+  /* TODO: убрать преобразование типов */
+  chunk = (struct memory_chunk*) malloc(sizeof(*chunk));
+
+  if (chunk == 0) {
+    return 0;
+  }
+
+  chunk->next = s_pool;
+  s_pool = chunk;
+
+  for (i = 0; i < CHUNK_SIZE - 1; ++i) {
+    chunk->elems[i].next = &chunk->elems[i + 1];
+    chunk->elems[i + 1].prev = &chunk->elems[i];
+  }
+
+  weld(s_end_free_list.prev, &chunk->elems[0]);
+  weld(&chunk->elems[CHUNK_SIZE - 1], &s_end_free_list);
+
+  s_free_ptr = &chunk->elems[0];
+  s_memory_use += CHUNK_SIZE;
+
+  return 1;
+}
+
+
+static void refal_machine_teardown(int retcode);
+static void vm_make_dump(void);
+
+static void ensure_memory(void) {
+  if ((s_free_ptr == &s_end_free_list) && ! create_nodes()) {
+    fprintf(stderr, "\nNO MEMORY\n\n");
+    vm_make_dump();
+
+    refal_machine_teardown(EXIT_CODE_NO_MEMORY);
+  }
+}
+
+
+static void free_memory() {
+  while (s_pool != 0) {
+    struct memory_chunk *next = s_pool->next;
+    free(s_pool);
+    s_pool = next;
+  }
+
+#ifndef DONT_PRINT_STATISTICS
+  fprintf(
+    stderr,
+    "Memory used %d nodes, %d * %lu = %lu bytes\n",
+    s_memory_use,
+    s_memory_use,
+    static_cast<unsigned long>(sizeof(struct r05_node)),
+    static_cast<unsigned long>(s_memory_use * sizeof(struct r05_node))
+  );
+#endif // DONT_PRINT_STATISTICS
+}
+
+
+/*==============================================================================
+   Операции построения результата
+==============================================================================*/
+
+static void start_building_result();
+
+void r05_reset_allocator(void) {
+  start_building_result();
+  s_free_ptr = s_begin_free_list.next;
+}
+
+
+struct r05_node *r05_alloc_node(enum r05_datatag tag) {
+  ensure_memory();
+  struct r05_node *node = s_free_ptr;
+  s_free_ptr = s_free_ptr->next;
+  node->tag = tag;
+  return node;
+}
+
+
+struct r05_node *r05_insert_pos(void) {
+  ensure_memory();
+  return s_free_ptr;
+}
+
 
 //------------------------------------------------------------------------------
 
 // Операции построения результата
 
-void refalrts::reset_allocator() {
-  profiler::start_building_result();
-  allocator::reset_allocator();
-}
-
 namespace {
 
 void copy_node(struct r05_node *&res, struct r05_node *sample) {
-  res = refalrts::allocator::alloc_node(sample->tag);
+  res = r05_alloc_node(sample->tag);
   res->info = sample->info;
 }
 
@@ -714,12 +807,6 @@ void copy_node(struct r05_node *&res, struct r05_node *sample) {
 
 
 namespace refalrts {
-
-namespace vm {
-
-void make_dump(void);
-
-} // namespace vm
 
 namespace profiler {
 
@@ -740,7 +827,7 @@ void copy_nonempty_evar(
   struct r05_node *res = 0;
   struct r05_node *bracket_stack = 0;
 
-  struct r05_node *prev_res_begin = refalrts::allocator::free_ptr()->prev;
+  struct r05_node *prev_res_begin = s_free_ptr->prev;
 
   while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
     copy_node(res, evar_b_sample);
@@ -819,13 +906,13 @@ bool refalrts::alloc_copy_svar_(
 
 
 bool refalrts::alloc_char(struct r05_node *&res, char ch) {
-  res = allocator::alloc_node(R05_DATATAG_CHAR);
+  res = r05_alloc_node(R05_DATATAG_CHAR);
   res->info.char_ = ch;
   return true;
 }
 
 bool refalrts::alloc_number(struct r05_node *&res, r05_number num) {
-  res = allocator::alloc_node(R05_DATATAG_NUMBER);
+  res = r05_alloc_node(R05_DATATAG_NUMBER);
   res->info.number = num;
   return true;
 }
@@ -833,7 +920,7 @@ bool refalrts::alloc_number(struct r05_node *&res, r05_number num) {
 bool refalrts::alloc_name(
   struct r05_node *&res, r05_function_ptr fn, const char *name
 ) {
-  res = allocator::alloc_node(R05_DATATAG_FUNCTION);
+  res = r05_alloc_node(R05_DATATAG_FUNCTION);
   res->info.function.ptr = fn;
   if (name != 0) {
     res->info.function.name = name;
@@ -846,7 +933,7 @@ bool refalrts::alloc_name(
 namespace {
 
 bool alloc_some_bracket(struct r05_node *&res, r05_datatag tag) {
-  res = refalrts::allocator::alloc_node(tag);
+  res = r05_alloc_node(tag);
   return true;
 }
 
@@ -886,7 +973,7 @@ bool refalrts::alloc_chars(
     res_b = 0;
     res_e = 0;
   } else {
-    struct r05_node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
+    struct r05_node *before_begin_seq = s_free_ptr->prev;
     struct r05_node *end_seq = 0;
 
     for (unsigned i = 0; i < buflen; ++ i) {
@@ -907,7 +994,7 @@ bool refalrts::alloc_string(
     res_b = 0;
     res_e = 0;
   } else {
-    struct r05_node *before_begin_seq = refalrts::allocator::free_ptr()->prev;
+    struct r05_node *before_begin_seq = s_free_ptr->prev;
     struct r05_node *end_seq = 0;
 
     for (const char *p = string; *p != '\0'; ++ p) {
@@ -1005,11 +1092,14 @@ struct r05_node *refalrts::splice_evar(
 }
 
 void refalrts::splice_to_freelist(struct r05_node *begin, struct r05_node *end) {
-  allocator::splice_to_freelist(begin, end);
+  s_free_ptr = s_begin_free_list.next;
+  s_free_ptr = list_splice(s_free_ptr, begin, end);
 }
 
 void refalrts::splice_from_freelist(struct r05_node *pos) {
-  allocator::splice_from_freelist(pos);
+  if (s_free_ptr != s_begin_free_list.next) {
+    list_splice(pos, s_begin_free_list.next, s_free_ptr->prev);
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -1063,169 +1153,6 @@ void refalrts::debug_print_expr(
   void *file, struct r05_node *first, struct r05_node *last
 ) {
   refalrts::vm::print_seq(static_cast<FILE*>(file), first, last);
-}
-
-//==============================================================================
-// Распределитель памяти
-//==============================================================================
-
-namespace refalrts {
-
-namespace allocator {
-
-bool create_nodes();
-
-void free_memory();
-
-extern struct r05_node g_last_marker;
-
-struct r05_node g_first_marker =
-  { 0, & g_last_marker, R05_DATATAG_ILLEGAL, { '\0' } };
-struct r05_node g_last_marker =
-  { & g_first_marker, 0, R05_DATATAG_ILLEGAL, { '\0' } };
-
-struct r05_node *g_free_ptr = & g_last_marker;
-
-namespace pool {
-
-enum { cChunkSize = 1000 };
-typedef struct Chunk {
-  Chunk *next;
-  struct r05_node elems[cChunkSize];
-} Chunk;
-
-typedef Chunk *ChunkPtr;
-
-struct r05_node *alloc_node();
-void free();
-bool grow();
-
-ChunkPtr g_pool = 0;
-unsigned g_avail = 0;
-struct r05_node *g_pnext_node = 0;
-
-} // namespace pool
-
-unsigned g_memory_use = 0;
-
-} // namespace allocator
-
-} // namespace refalrts
-
-inline void refalrts::allocator::reset_allocator() {
-  g_free_ptr = g_first_marker.next;
-}
-
-static void refal_machine_teardown(int retcode);
-
-static void ensure_memory(void) {
-  using namespace refalrts;
-  using namespace allocator;
-
-  if ((g_free_ptr == & g_last_marker) && ! create_nodes()) {
-    fprintf(stderr, "\nNO MEMORY\n\n");
-    vm::make_dump();
-
-    refal_machine_teardown(EXIT_CODE_NO_MEMORY);
-  }
-}
-
-struct r05_node *refalrts::allocator::alloc_node(enum r05_datatag tag) {
-  ensure_memory();
-  struct r05_node *node = g_free_ptr;
-  g_free_ptr = g_free_ptr->next;
-  node->tag = tag;
-  return node;
-}
-
-struct r05_node *refalrts::allocator::free_ptr() {
-  return g_free_ptr;
-}
-
-void refalrts::allocator::splice_to_freelist(
-  struct r05_node *begin, struct r05_node *end
-) {
-  reset_allocator();
-  g_free_ptr = list_splice(g_free_ptr, begin, end);
-}
-
-void refalrts::allocator::splice_from_freelist(struct r05_node *pos) {
-  if (g_free_ptr != g_first_marker.next) {
-    list_splice(pos, g_first_marker.next, g_free_ptr->prev);
-  }
-}
-
-bool refalrts::allocator::create_nodes() {
-  struct r05_node *new_node = refalrts::allocator::pool::alloc_node();
-
-#ifdef MEMORY_LIMIT
-
-  if (g_memory_use >= MEMORY_LIMIT) {
-    return false;
-  }
-
-#endif //ifdef MEMORY_LIMIT
-
-  if (new_node == 0) {
-    return false;
-  } else {
-    struct r05_node *before_free_ptr = g_free_ptr->prev;
-    before_free_ptr->next = new_node;
-    new_node->prev = before_free_ptr;
-
-    g_free_ptr->prev = new_node;
-    new_node->next = g_free_ptr;
-
-    g_free_ptr = new_node;
-    g_free_ptr->tag = R05_DATATAG_ILLEGAL;
-    ++ g_memory_use;
-
-    return true;
-  }
-}
-
-void refalrts::allocator::free_memory() {
-  refalrts::allocator::pool::free();
-#ifndef DONT_PRINT_STATISTICS
-  fprintf(
-    stderr,
-    "Memory used %d nodes, %d * %lu = %lu bytes\n",
-    g_memory_use,
-    g_memory_use,
-    static_cast<unsigned long>(sizeof(struct r05_node)),
-    static_cast<unsigned long>(g_memory_use * sizeof(struct r05_node))
-  );
-#endif // DONT_PRINT_STATISTICS
-}
-
-struct r05_node *refalrts::allocator::pool::alloc_node() {
-  if ((g_avail != 0) || grow()) {
-    -- g_avail;
-    return g_pnext_node++;
-  } else {
-    return 0;
-  }
-}
-
-bool refalrts::allocator::pool::grow() {
-  ChunkPtr p = static_cast<ChunkPtr>(malloc(sizeof(Chunk)));
-  if (p != 0) {
-    p->next = g_pool;
-    g_pool = p;
-    g_avail = cChunkSize;
-    g_pnext_node = p->elems;
-    return true;
-  } else {
-    return false;
-  }
-}
-
-void refalrts::allocator::pool::free() {
-  while (g_pool != 0) {
-    ChunkPtr p = g_pool;
-    g_pool = g_pool->next;
-    ::free(p);
-  }
 }
 
 //==============================================================================
@@ -1360,7 +1287,9 @@ void refalrts::profiler::start_generated_function() {
   g_in_generated = true;
 }
 
-void refalrts::profiler::start_building_result() {
+static void start_building_result() {
+  using namespace refalrts::profiler;
+
   if (g_in_generated) {
     g_start_building_result_time = clock();
     clock_t pattern_match =
@@ -1444,7 +1373,6 @@ bool init_view_field();
 
 enum r05_fnresult main_loop();
 enum r05_fnresult execute_active(void);
-void make_dump(void);
 FILE* dump_stream();
 
 void free_view_field();
@@ -1484,7 +1412,7 @@ bool refalrts::vm::empty_stack() {
 }
 
 bool refalrts::vm::init_view_field() {
-  refalrts::reset_allocator();
+  r05_reset_allocator();
   struct r05_node *res = g_begin_view_field;
   struct r05_node *n0 = 0;
   if (! refalrts::alloc_open_call(n0))
@@ -1537,7 +1465,7 @@ enum r05_fnresult refalrts::vm::main_loop() {
           fprintf(stderr, "\nUNKNOWN ERROR (res = %d)\n\n", (int) res);
           break;
       }
-      make_dump();
+      vm_make_dump();
       return res;
     } else {
       continue;
@@ -1554,7 +1482,7 @@ enum r05_fnresult refalrts::vm::execute_active(void) {
 #if SHOW_DEBUG
 
   if (g_step_counter >= (unsigned) SHOW_DEBUG) {
-    make_dump();
+    vm_make_dump();
   }
 
 #endif // SHOW_DEBUG
@@ -1748,8 +1676,8 @@ void refalrts::vm::print_seq(
   }
 }
 
-void refalrts::vm::make_dump(void) {
-  using refalrts::vm::dump_stream;
+static void vm_make_dump(void) {
+  using namespace refalrts::vm;
 
   fprintf(dump_stream(), "\nSTEP NUMBER %u\n", g_step_counter);
   fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
@@ -1760,11 +1688,7 @@ void refalrts::vm::make_dump(void) {
 #ifdef DUMP_FREE_LIST
 
   fprintf(dump_stream(), "\nFREE LIST:\n");
-  print_seq(
-    dump_stream(),
-    & refalrts::allocator::g_first_marker,
-    & refalrts::allocator::g_last_marker
-  );
+  print_seq(dump_stream(), &s_begin_free_list, &s_end_free_list);
 
 #endif //ifdef DUMP_FREE_LIST
 
@@ -1802,7 +1726,7 @@ void refalrts::vm::free_view_field() {
 
   if (begin != end) {
     end = end->prev;
-    refalrts::allocator::splice_to_freelist(begin, end);
+    s_free_ptr = list_splice(s_free_ptr, begin, end);
   } else {
     /*
       Поле зрения пустое -- его не нужно освобождать.
@@ -1819,7 +1743,7 @@ static void refal_machine_teardown(int retcode) {
   fflush(stdout);
   refalrts::profiler::end_profiler();
   refalrts::vm::free_view_field();
-  refalrts::allocator::free_memory();
+  free_memory();
   fflush(stdout);
 
   exit(retcode);
@@ -1862,7 +1786,7 @@ int main(int argc, char **argv) {
 
   refalrts::profiler::end_profiler();
   refalrts::vm::free_view_field();
-  refalrts::allocator::free_memory();
+  free_memory();
 
   fflush(stdout);
 
