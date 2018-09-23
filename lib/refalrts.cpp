@@ -746,7 +746,7 @@ static void free_memory() {
    Операции построения результата
 ==============================================================================*/
 
-static void start_building_result();
+static void start_building_result(void);
 
 void r05_reset_allocator(void) {
   start_building_result();
@@ -1028,13 +1028,13 @@ static bool s_in_generated;
 static int s_in_e_loop;
 
 
-static void start_profiler() {
+static void start_profiler(void) {
   s_start_program_time = clock();
   s_in_generated = false;
 }
 
 
-static void stop_e_loop() {
+static void stop_e_loop(void) {
   if (s_in_e_loop > 0) {
     s_total_e_loop += (clock() - s_start_e_loop);
     s_in_e_loop = 0;
@@ -1042,7 +1042,7 @@ static void stop_e_loop() {
 }
 
 
-static void start_building_result() {
+static void start_building_result(void) {
   if (s_in_generated) {
     s_start_building_result_time = clock();
     clock_t pattern_match =
@@ -1054,7 +1054,7 @@ static void start_building_result() {
 }
 
 
-static void after_step() {
+static void after_step(void) {
   if (s_in_generated) {
     clock_t building_result = clock() - s_start_building_result_time;
     s_total_building_result_time += building_result;
@@ -1107,7 +1107,7 @@ static int reverse_compare(const void *left_void, const void *right_void) {
   }
 }
 
-static void print_profile() {
+static void print_profile(void) {
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
 
   clock_t full_time = clock() - s_start_program_time;
@@ -1163,7 +1163,7 @@ static void print_profile() {
 
 #endif // DONT_PRINT_STATISTICS
 
-static void end_profiler() {
+static void end_profiler(void) {
   after_step();
 
 #ifndef DONT_PRINT_STATISTICS
@@ -1172,20 +1172,20 @@ static void end_profiler() {
 }
 
 
-void r05_start_e_loop() {
+void r05_start_e_loop(void) {
   if (s_in_e_loop++ == 0) {
     s_start_e_loop = clock();
   }
 }
 
 
-void r05_this_is_generated_function() {
+void r05_this_is_generated_function(void) {
   s_start_pattern_match_time = clock();
   s_in_generated = true;
 }
 
 
-void r05_start_sentence() {
+void r05_start_sentence(void) {
   stop_e_loop();
 }
 

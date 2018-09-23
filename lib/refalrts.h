@@ -197,9 +197,9 @@ void r05_alloc_string(const char *string);
 
 /* Профилирование */
 
-void r05_this_is_generated_function();
-void r05_start_sentence();
-void r05_start_e_loop();
+void r05_this_is_generated_function(void);
+void r05_start_sentence(void);
+void r05_start_e_loop(void);
 
 
 /* Диагностика */
