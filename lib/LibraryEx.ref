@@ -1,5 +1,5 @@
 *$FROM Library
-$EXTERN Open, Get, Putout, Add, Sub, Success, Arg;
+$EXTERN Open, Get, Putout, Close, Add, Sub, Success, Arg;
 
 
 * Расширения библиотеки и функции, реализуемые
@@ -69,7 +69,7 @@ $ENTRY LoadFile {
   e.FileName =
     <Open 'r' <LOAD-SAVE-HANDLE> e.FileName>
     <DoLoadFile <Get <LOAD-SAVE-HANDLE>>>
-    /* <Close <LOAD-SAVE-HANDLE>> */;
+    <Close <LOAD-SAVE-HANDLE>>;
 }
 
 DoLoadFile {
@@ -84,7 +84,7 @@ $ENTRY SaveFile {
   (e.FileName) e.Lines =
     <Open 'w' <LOAD-SAVE-HANDLE> e.FileName>
     <Map WriteBracketLine e.Lines>
-    /* <Close <LOAD-SAVE-HANDLE>> */;
+    <Close <LOAD-SAVE-HANDLE>>;
 }
 
 WriteBracketLine {
