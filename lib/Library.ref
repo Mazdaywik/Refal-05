@@ -701,8 +701,71 @@ $ENTRY Symb {
 * 32 Time
 $EENUM Time;
 
-* 33 Type
-** $EENUM Type;
+
+/**
+  33. <Type e.Expr> == s.Type s.SubType e.Expr
+      Type of first term of e.Expr
+
+      s.Type s.SubType ::=
+          'Lu' — uppercase latin letter
+        | 'Ll' — lowercase latin letter
+        | 'D0' — decimal digit
+        | 'Wi' — identifier (function)
+        | 'N0' — number
+        | 'Pu' — isprint() && isupper()
+        | 'Pl' — isprint() && ! isupper()
+        | 'Ou' — other && isupper()
+        | 'Ol' — other && ! isupper()
+        | 'B0' — brackets
+        | '*0' — empty expression
+*/
+$ENTRY Type {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *first_term = callee->next;
+  char type, subtype;
+
+  if (first_term == arg_end) {
+    type = '*';
+    subtype = '0';
+  } else if (R05_DATATAG_CHAR == first_term->tag) {
+    char ch = first_term->info.char_;
+
+    subtype = isupper(ch) ? 'u' : 'l';
+    if (isalpha(ch)) {
+      type = 'L';
+    } else if (isdigit(ch)) {
+      type = 'D';
+      subtype = '0';
+    } else if (isprint(ch)) {
+      type = 'P';
+    } else {
+      type = 'O';
+    }
+  } else if (R05_DATATAG_FUNCTION == first_term->tag) {
+    type = 'W';
+    subtype = 'i';
+  } else if (R05_DATATAG_NUMBER == first_term->tag) {
+    type = 'N';
+    subtype = '0';
+  } else if (R05_DATATAG_OPEN_BRACKET == first_term->tag) {
+    type = 'B';
+    subtype = '0';
+  } else {
+    r05_switch_default_violation(first_term->tag);
+  }
+
+  arg_begin->tag = R05_DATATAG_CHAR;
+  arg_begin->info.char_ = type;
+  callee->tag = R05_DATATAG_CHAR;
+  callee->info.char_ = subtype;
+
+  r05_splice_to_freelist(arg_end, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 /**
   34. <Upper e.Expr> == e.Expr’
@@ -901,7 +964,7 @@ $ENTRY ListOfBuiltin {
     (30 Sub regular)
     (31 Symb regular)
     (32 Time regular)
-*    (33 Type regular)  /* in LibraryEx */
+    (33 Type regular)
     (34 Upper regular)
     (35 Sysfun regular)
     /* (42 "Imp$$" regular) */
