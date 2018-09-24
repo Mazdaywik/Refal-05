@@ -1,34 +1,23 @@
-#include <exception>
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#include <assert.h>
 
 #include "refalrts.h"
 
 #ifndef SHOW_DEBUG
 #define SHOW_DEBUG 0
-#endif // ifdef SHOW_DEBUG
+#endif  /* ifdef SHOW_DEBUG */
 
 
 #define EXIT_CODE_RECOGNITION_IMPOSSIBLE 1
 #define EXIT_CODE_NO_MEMORY 2
-#define EXIT_CODE_STD_EXCEPTION 4
-#define EXIT_CODE_UNKNOWN_EXCEPTION 5
+#define EXIT_CODE_BUILTIN_ERROR 6
 
 
 /*==============================================================================
    Операции сопоставления с образцом
 ==============================================================================*/
-
-// ↓↓↓ DELETE
-void r05_use(struct r05_node **) {
-  /* Ничего не делаем. Эта функция добавляется, чтобы подавить предупреждение
-  компилятора о том, что переменная не используется */;
-}
-// ↑↑↑ DELETE
-
 
 void r05_prepare_argument(
   struct r05_node **left, struct r05_node **right,
@@ -44,7 +33,7 @@ void r05_prepare_argument(
 
 
 void r05_move_left(struct r05_node **first, struct r05_node **last) {
-  //assert((*first == 0) == (*last == 0));
+  /* assert((*first == 0) == (*last == 0)); */
   if (*first == 0) assert (*last == 0);
   if (*first != 0) assert (*last != 0);
 
@@ -58,7 +47,7 @@ void r05_move_left(struct r05_node **first, struct r05_node **last) {
 
 
 void r05_move_right(struct r05_node **first, struct r05_node **last) {
-  //assert((*first == 0) == (*last == 0));
+  /* assert((*first == 0) == (*last == 0)); */
   if (*first == 0) assert (*last == 0);
   if (*first != 0) assert (*last != 0);
 
@@ -72,7 +61,7 @@ void r05_move_right(struct r05_node **first, struct r05_node **last) {
 
 
 int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
-  //assert((first == 0) == (last == 0));
+  /* assert((first == 0) == (last == 0)); */
   if (first == 0) assert (last == 0);
   if (first != 0) assert (last != 0);
 
@@ -356,9 +345,6 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
       case R05_DATATAG_CLOSE_BRACKET:
         return 1;
 
-      case R05_DATATAG_FILE:
-        return (node1->info.file == node2->info.file);
-
       /*
         Данная функция предназначена только для использования функциями рас-
         познавания образца. Поэтому других узлов мы тут не ожидаем.
@@ -383,7 +369,7 @@ static int equal_expressions(
   clock_t start_match = clock();
 
   while (
-    // Порядок условий важен
+    /* Порядок условий важен */
     ! r05_empty_seq(first1, last1) && ! r05_empty_seq(first2, last2)
       && equal_nodes(first1, first2)
   ) {
@@ -398,11 +384,11 @@ static int equal_expressions(
 
   add_match_repeated_tvar_time(clock() - start_match);
 
-  // Успешное завершение — если мы достигли конца в обоих выражениях
+  /* Успешное завершение — если мы достигли конца в обоих выражениях */
   if (r05_empty_seq(first1, last1) && r05_empty_seq(first2, last2)) {
     return 1;
   } else {
-    // Любое другое завершение цикла свидетельствует о несовпадении
+    /* Любое другое завершение цикла свидетельствует о несовпадении */
     return 0;
   }
 }
@@ -504,7 +490,7 @@ int r05_repeated_evar_left(
   struct r05_node *copy_last = *last;
 
   while (
-    // порядок условий важен
+    /* порядок условий важен */
     !r05_empty_seq(current, copy_last)
       && !r05_empty_seq(cur_sample, evar_e_sample)
       && equal_nodes(current, cur_sample)
@@ -521,7 +507,7 @@ int r05_repeated_evar_left(
       || ! equal_nodes(current, cur_sample)
   */
   if (r05_empty_seq(cur_sample, evar_e_sample)) {
-    // Это нормальное завершение цикла — вся образцовая переменная проверена
+    /* Это нормальное завершение цикла — вся образцовая переменная проверена */
 
     if (r05_empty_seq(current, copy_last)) {
       *evar_b = *first;
@@ -557,7 +543,7 @@ int r05_repeated_evar_right(
   struct r05_node *copy_first = *first;
 
   while (
-    // порядок перечисления условий важен
+    /* порядок перечисления условий важен */
     !r05_empty_seq(copy_first, current)
       && !r05_empty_seq(evar_b_sample, cur_sample)
       && equal_nodes(current, cur_sample)
@@ -575,7 +561,7 @@ int r05_repeated_evar_right(
   */
 
   if (r05_empty_seq(evar_b_sample, cur_sample)) {
-    // Это нормальное завершение цикла: вся переменная-образец просмотрена
+    /* Это нормальное завершение цикла: вся переменная-образец просмотрена */
 
     if (r05_empty_seq(copy_first, current)) {
       *evar_b = *first;
@@ -740,13 +726,13 @@ static void free_memory() {
 #ifndef DONT_PRINT_STATISTICS
   fprintf(
     stderr,
-    "Memory used %d nodes, %d * %lu = %lu bytes\n",
-    s_memory_use,
-    s_memory_use,
-    static_cast<unsigned long>(sizeof(struct r05_node)),
-    static_cast<unsigned long>(s_memory_use * sizeof(struct r05_node))
+    "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
+    (unsigned long int) s_memory_use,
+    (unsigned long int) s_memory_use,
+    (unsigned long int) sizeof(struct r05_node),
+    (unsigned long int) (s_memory_use * sizeof(struct r05_node))
   );
-#endif // DONT_PRINT_STATISTICS
+#endif  /* DONT_PRINT_STATISTICS */
 }
 
 
@@ -754,7 +740,7 @@ static void free_memory() {
    Операции построения результата
 ==============================================================================*/
 
-static void start_building_result();
+static void start_building_result(void);
 
 void r05_reset_allocator(void) {
   start_building_result();
@@ -781,7 +767,7 @@ static struct r05_node *list_splice(
   struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
   if ((res == begin) || r05_empty_seq(begin, end)) {
-    // Цель достигнута сама по себе
+    /* Цель достигнута сама по себе */
     return res;
   } else {
     struct r05_node *prev_res = res->prev;
@@ -797,46 +783,35 @@ static struct r05_node *list_splice(
 }
 
 
-static void copy_node(struct r05_node *&res, struct r05_node *sample) {
-  res = r05_alloc_node(sample->tag);
-  res->info = sample->info;
-}
-
-
 static void add_copy_tevar_time(clock_t duration);
 
 static void copy_nonempty_evar(
-  struct r05_node **evar_res_b, struct r05_node **evar_res_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
   clock_t start_copy_time = clock();
 
-  struct r05_node *res = 0;
   struct r05_node *bracket_stack = 0;
 
-  struct r05_node *prev_res_begin = s_free_ptr->prev;
-
   while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    copy_node(res, evar_b_sample);
+    struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
 
-    if (is_open_bracket(res)) {
-      res->info.link = bracket_stack;
-      bracket_stack = res;
-    } else if (is_close_bracket(res)) {
-      assert(bracket_stack != 0);
-
+    if (is_open_bracket(copy)) {
+      copy->info.link = bracket_stack;
+      bracket_stack = copy;
+    } else if (is_close_bracket(copy)) {
       struct r05_node *open_cobracket = bracket_stack;
+
+      assert(bracket_stack != 0);
       bracket_stack = bracket_stack->info.link;
-      r05_link_brackets(open_cobracket, res);
+      r05_link_brackets(open_cobracket, copy);
+    } else {
+      copy->info = evar_b_sample->info;
     }
 
     r05_move_left(&evar_b_sample, &evar_e_sample);
   }
 
   assert(bracket_stack == 0);
-
-  *evar_res_b = prev_res_begin->next;
-  *evar_res_e = res;
 
   add_copy_tevar_time(clock() - start_copy_time);
 }
@@ -856,62 +831,10 @@ struct r05_function r05_make_function(r05_function_ptr func, const char *name) {
 }
 
 
-// ↓↓↓ DELETE
-bool refalrts::copy_evar(
-  struct r05_node *&evar_res_b, struct r05_node *&evar_res_e,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-) {
-  if (r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    evar_res_b = 0;
-    evar_res_e = 0;
-  } else {
-    copy_nonempty_evar(&evar_res_b, &evar_res_e, evar_b_sample, evar_e_sample);
-  }
-  return true;
-}
-
-bool refalrts::copy_stvar(
-  struct r05_node *&stvar_res, struct r05_node *stvar_sample
-) {
-  if (is_open_bracket(stvar_sample)) {
-    struct r05_node *end_of_sample = stvar_sample->info.link;
-    struct r05_node *end_of_res;
-    return copy_evar(
-      stvar_res, end_of_res, stvar_sample, end_of_sample
-    );
-  } else {
-    copy_node(stvar_res, stvar_sample);
-  }
-  return true;
-}
-
-bool refalrts::alloc_copy_evar(
-  struct r05_node *&res,
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-) {
-  if (r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    res = 0;
-  } else {
-    struct r05_node *res_e = 0;
-    copy_nonempty_evar(&res, &res_e, evar_b_sample, evar_e_sample);
-  }
-  return true;
-}
-
-bool refalrts::alloc_copy_svar_(
-  struct r05_node *&svar_res, struct r05_node *svar_sample
-) {
-  copy_node(svar_res, svar_sample);
-  return true;
-}
-// ↑↑↑ DELETE
-
-
 void r05_alloc_tvar(struct r05_node *sample) {
   if (is_open_bracket(sample)) {
     struct r05_node *end_of_sample = sample->info.link;
-    struct r05_node *res_b, *res_e;
-    copy_nonempty_evar(&res_b, &res_e, sample, end_of_sample);
+    copy_nonempty_evar(sample, end_of_sample);
   } else {
     r05_alloc_svar(sample);
   }
@@ -920,8 +843,7 @@ void r05_alloc_tvar(struct r05_node *sample) {
 
 void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e) {
   if (! r05_empty_seq(sample_b, sample_e)) {
-    struct r05_node *res_b, *res_e;
-    copy_nonempty_evar(&res_b, &res_e, sample_b, sample_e);
+    copy_nonempty_evar(sample_b, sample_e);
   }
 }
 
@@ -933,103 +855,7 @@ void r05_alloc_string(const char *string) {
 }
 
 
-// ↓↓↓ DELETE
-bool refalrts::alloc_char(struct r05_node *&res, char ch) {
-  res = r05_alloc_node(R05_DATATAG_CHAR);
-  res->info.char_ = ch;
-  return true;
-}
-
-bool refalrts::alloc_number(struct r05_node *&res, r05_number num) {
-  res = r05_alloc_node(R05_DATATAG_NUMBER);
-  res->info.number = num;
-  return true;
-}
-
-bool refalrts::alloc_name(
-  struct r05_node *&res, r05_function_ptr fn, const char *name
-) {
-  res = r05_alloc_node(R05_DATATAG_FUNCTION);
-  res->info.function.ptr = fn;
-  if (name != 0) {
-    res->info.function.name = name;
-  } else {
-    res->info.function.name = "@unknown";
-  }
-  return true;
-}
-
-namespace {
-
-bool alloc_some_bracket(struct r05_node *&res, r05_datatag tag) {
-  res = r05_alloc_node(tag);
-  return true;
-}
-
-} // unnamed namespace
-
-bool refalrts::alloc_open_bracket(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_OPEN_BRACKET);
-}
-
-bool refalrts::alloc_close_bracket(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_CLOSE_BRACKET);
-}
-
-bool refalrts::alloc_open_call(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_OPEN_CALL);
-}
-
-bool refalrts::alloc_close_call(struct r05_node *&res) {
-  return alloc_some_bracket(res, R05_DATATAG_CLOSE_CALL);
-}
-
-bool refalrts::alloc_chars(
-  struct r05_node *&res_b, struct r05_node *&res_e,
-  const char buffer[], unsigned buflen
-) {
-  if (buflen == 0) {
-    res_b = 0;
-    res_e = 0;
-  } else {
-    struct r05_node *before_begin_seq = s_free_ptr->prev;
-    struct r05_node *end_seq = 0;
-
-    for (unsigned i = 0; i < buflen; ++ i) {
-      alloc_char(end_seq, buffer[i]);
-    }
-
-    res_b = before_begin_seq->next;
-    res_e = end_seq;
-  }
-
-  return true;
-}
-
-bool refalrts::alloc_string(
-  struct r05_node *&res_b, struct r05_node *&res_e, const char *string
-) {
-  if (*string == '\0') {
-    res_b = 0;
-    res_e = 0;
-  } else {
-    struct r05_node *before_begin_seq = s_free_ptr->prev;
-    struct r05_node *end_seq = 0;
-
-    for (const char *p = string; *p != '\0'; ++ p) {
-      alloc_char(end_seq, *p);
-    }
-
-    res_b = before_begin_seq->next;
-    res_e = end_seq;
-  }
-
-  return true;
-}
-// ↑↑↑ DELETE
-
-
-static struct r05_node *s_stack_ptr = NULL;
+static struct r05_node *s_stack_ptr;
 
 void r05_push_stack(struct r05_node *call_bracket) {
   call_bracket->info.link = s_stack_ptr;
@@ -1041,34 +867,6 @@ void r05_link_brackets(struct r05_node *left, struct r05_node *right) {
   left->info.link = right;
   right->info.link = left;
 }
-
-
-// ↓↓↓ DELETE
-struct r05_node *refalrts::splice_elem(
-  struct r05_node *res, struct r05_node *elem
-) {
-  return list_splice(res, elem, elem);
-}
-
-struct r05_node *refalrts::splice_stvar(
-  struct r05_node *res, struct r05_node *var
-) {
-  struct r05_node *var_end;
-  if (is_open_bracket(var)) {
-    var_end = var->info.link;
-  } else {
-    var_end = var;
-  }
-
-  return list_splice(res, var, var_end);
-}
-
-struct r05_node *refalrts::splice_evar(
-  struct r05_node *res, struct r05_node *begin, struct r05_node *end
-) {
-  return list_splice(res, begin, end);
-}
-// ↑↑↑ DELETE
 
 
 void r05_splice_tvar(struct r05_node *res, struct r05_node *var) {
@@ -1124,13 +922,13 @@ static bool s_in_generated;
 static int s_in_e_loop;
 
 
-static void start_profiler() {
+static void start_profiler(void) {
   s_start_program_time = clock();
   s_in_generated = false;
 }
 
 
-static void stop_e_loop() {
+static void stop_e_loop(void) {
   if (s_in_e_loop > 0) {
     s_total_e_loop += (clock() - s_start_e_loop);
     s_in_e_loop = 0;
@@ -1138,7 +936,7 @@ static void stop_e_loop() {
 }
 
 
-static void start_building_result() {
+static void start_building_result(void) {
   if (s_in_generated) {
     s_start_building_result_time = clock();
     clock_t pattern_match =
@@ -1150,7 +948,7 @@ static void start_building_result() {
 }
 
 
-static void after_step() {
+static void after_step(void) {
   if (s_in_generated) {
     clock_t building_result = clock() - s_start_building_result_time;
     s_total_building_result_time += building_result;
@@ -1191,8 +989,8 @@ struct TimeItem {
 
 static int reverse_compare(const void *left_void, const void *right_void) {
   /* TODO: убрать приведения типов */
-  const TimeItem *left = static_cast<const TimeItem *>(left_void);
-  const TimeItem *right = static_cast<const TimeItem *>(right_void);
+  const TimeItem *left = (const TimeItem *)(left_void);
+  const TimeItem *right = (const TimeItem *)(right_void);
 
   if (left->counter > right->counter) {
     return -1;
@@ -1203,7 +1001,7 @@ static int reverse_compare(const void *left_void, const void *right_void) {
   }
 }
 
-static void print_profile() {
+static void print_profile(void) {
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
 
   clock_t full_time = clock() - s_start_program_time;
@@ -1257,87 +1055,60 @@ static void print_profile() {
   }
 }
 
-#endif // DONT_PRINT_STATISTICS
+#endif  /* DONT_PRINT_STATISTICS */
 
-static void end_profiler() {
+static void end_profiler(void) {
   after_step();
 
 #ifndef DONT_PRINT_STATISTICS
   print_profile();
-#endif // DONT_PRINT_STATISTICS
+#endif  /* DONT_PRINT_STATISTICS */
 }
 
 
-void r05_start_e_loop() {
+void r05_start_e_loop(void) {
   if (s_in_e_loop++ == 0) {
     s_start_e_loop = clock();
   }
 }
 
 
-void r05_this_is_generated_function() {
+void r05_this_is_generated_function(void) {
   s_start_pattern_match_time = clock();
   s_in_generated = true;
 }
 
 
-void r05_start_sentence() {
+void r05_start_sentence(void) {
   stop_e_loop();
 }
 
 
-//------------------------------------------------------------------------------
+/*==============================================================================
+   Виртуальная машина
+==============================================================================*/
 
-// Прочие операции
 
-namespace refalrts {
+/* TODO: заменить на static */
+extern struct r05_node s_end_view_field;
 
-namespace vm {
+static struct r05_node s_begin_view_field = {
+  0, &s_end_view_field, R05_DATATAG_ILLEGAL, { '\0' }
+};
+/*static*/ struct r05_node s_end_view_field = {
+  &s_begin_view_field, 0, R05_DATATAG_ILLEGAL, { '\0' }
+};
 
-extern int g_ret_code;
-extern void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
+/* TODO: раскомментировать при переходе на Си */
+/*
+static struct r05_node *s_stack_ptr = NULL;
+*/
 
-} // namespace vm
-
-} // namespace refalrts
-
-void refalrts::set_return_code(int code) {
-  refalrts::vm::g_ret_code = code;
-}
-
-void refalrts::debug_print_expr(
-  void *file, struct r05_node *first, struct r05_node *last
-) {
-  refalrts::vm::print_seq(static_cast<FILE*>(file), first, last);
-}
-
-//==============================================================================
-// Виртуальная машина
-//==============================================================================
-
-extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
+static unsigned long s_step_counter = 0;
 
 namespace refalrts {
 
 namespace vm {
-
-struct r05_node *pop_stack();
-bool empty_stack();
-
-void init_view_field();
-
-void main_loop();
-enum r05_fnresult execute_active(void);
-FILE* dump_stream();
-
-extern struct r05_node g_last_marker;
-
-struct r05_node g_first_marker =
-  { 0, & g_last_marker, R05_DATATAG_ILLEGAL, { '\0' } };
-struct r05_node g_last_marker =
-  { & g_first_marker, 0, R05_DATATAG_ILLEGAL, { '\0' } };
-
-unsigned g_step_counter = 0;
 
 int g_ret_code;
 
@@ -1345,17 +1116,20 @@ int g_ret_code;
 
 } // namespace refalrts
 
-struct r05_node *refalrts::vm::pop_stack() {
+static struct r05_node *pop_stack(void) {
   struct r05_node *res = s_stack_ptr;
   s_stack_ptr = s_stack_ptr->info.link;
   return res;
 }
 
-bool refalrts::vm::empty_stack() {
+static int empty_stack(void) {
   return (s_stack_ptr == 0);
 }
 
-void refalrts::vm::init_view_field() {
+
+extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
+
+static void init_view_field() {
   struct r05_node *open, *close;
 
   r05_reset_allocator();
@@ -1364,79 +1138,56 @@ void refalrts::vm::init_view_field() {
   r05_alloc_close_call(close);
   r05_push_stack(close);
   r05_push_stack(open);
-  r05_splice_from_freelist(g_first_marker.next);
+  r05_splice_from_freelist(s_begin_view_field.next);
 }
 
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-void refalrts::vm::main_loop() {
+static void main_loop() {
   enum r05_fnresult res = R05_SUCCESS;
   while (res == R05_SUCCESS && ! empty_stack()) {
     s_arg_begin = pop_stack();
     assert(! empty_stack());
     s_arg_end = pop_stack();
 
-    res = execute_active();
+#if SHOW_DEBUG
+    if (s_step_counter >= (unsigned) SHOW_DEBUG) {
+      vm_make_dump();
+    }
+#endif  /* SHOW_DEBUG */
+
+    struct r05_node *function = s_arg_begin->next;
+    if (R05_DATATAG_FUNCTION == function->tag) {
+      res = (enum r05_fnresult)(
+        (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
+      );
+    } else {
+      res = R05_RECOGNITION_IMPOSSIBLE;
+    }
     after_step();
 
-    ++ g_step_counter;
+    ++ s_step_counter;
   }
 
   switch (res) {
     case R05_SUCCESS:
-      g_ret_code = 0;
+      refal_machine_teardown(0);
       break;
 
     case R05_RECOGNITION_IMPOSSIBLE:
-      fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
-      g_ret_code = EXIT_CODE_RECOGNITION_IMPOSSIBLE;
-      break;
-
-    case R05_NO_MEMORY:
-      fprintf(stderr, "\nNO MEMORY\n\n");
-      g_ret_code = EXIT_CODE_NO_MEMORY;
-      break;
+      r05_recognition_impossible();
 
     case R05_EXIT:
-      break;
+      r05_exit(refalrts::vm::g_ret_code);
 
     default:
       r05_switch_default_violation(res);
   }
-
-  if (res == R05_RECOGNITION_IMPOSSIBLE || res == R05_NO_MEMORY) {
-    vm_make_dump();
-  }
-
-  // printf("\n\nTOTAL STEPS %d\n", g_step_counter);
-
-  refal_machine_teardown(g_ret_code);
 }
 
-enum r05_fnresult refalrts::vm::execute_active(void) {
 
-#if SHOW_DEBUG
-
-  if (g_step_counter >= (unsigned) SHOW_DEBUG) {
-    vm_make_dump();
-  }
-
-#endif // SHOW_DEBUG
-
-  struct r05_node *function = s_arg_begin->next;
-  if (R05_DATATAG_FUNCTION == function->tag) {
-    return (enum r05_fnresult)(
-      (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
-    );
-  } else {
-    return R05_RECOGNITION_IMPOSSIBLE;
-  }
-}
-
-namespace {
-
-void print_indent(FILE *output, int level) {
+static void print_indent(FILE *output, int level) {
   enum { cPERIOD = 4 };
   putc('\n', output);
   if (level < 0) {
@@ -1444,7 +1195,7 @@ void print_indent(FILE *output, int level) {
     return;
   }
   for (int i = 0; i < level; ++i) {
-    // Каждые cPERIOD позиций вместо пробела ставим точку.
+    /* Каждые cPERIOD позиций вместо пробела ставим точку. */
     bool put_marker = ((i % cPERIOD) == (cPERIOD - 1));
 
     const char cSpace =  ' ';
@@ -1454,9 +1205,8 @@ void print_indent(FILE *output, int level) {
   }
 }
 
-} // unnamed namespace
 
-void refalrts::vm::print_seq(
+static void print_seq(
   FILE *output, struct r05_node *begin, struct r05_node *end
 ) {
   enum {
@@ -1547,11 +1297,6 @@ void refalrts::vm::print_seq(
             r05_move_left(&begin, &end);
             continue;
 
-          case R05_DATATAG_FILE:
-            fprintf(output, "*%p ", begin->info.file);
-            r05_move_left(&begin, &end);
-            continue;
-
           default:
             r05_switch_default_violation(begin->tag);
         }
@@ -1559,7 +1304,7 @@ void refalrts::vm::print_seq(
       case cStateString:
         switch (begin->tag) {
           case R05_DATATAG_CHAR: {
-            unsigned char ch = static_cast<unsigned char>(begin->info.char_);
+            unsigned char ch = begin->info.char_;
             switch (ch) {
               case '(': case ')':
               case '<': case '>':
@@ -1584,7 +1329,7 @@ void refalrts::vm::print_seq(
 
               default:
                 if (ch < '\x20') {
-                  fprintf(output, "\\x%02x", static_cast<int>(ch));
+                  fprintf(output, "\\x%02x", ch);
                 } else {
                   fprintf(output, "%c", ch);
                 }
@@ -1613,34 +1358,37 @@ void refalrts::vm::print_seq(
   }
 }
 
+
+static FILE* dump_stream(void);
+static void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
+
 static void vm_make_dump(void) {
   using namespace refalrts::vm;
 
-  fprintf(dump_stream(), "\nSTEP NUMBER %u\n", g_step_counter);
+  fprintf(dump_stream(), "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
   print_seq(dump_stream(), s_arg_begin, s_arg_end);
   fprintf(dump_stream(), "\nVIEW FIELD:\n");
-  print_seq(dump_stream(), & g_first_marker, & g_last_marker);
+  print_seq(dump_stream(), &s_begin_view_field, &s_end_view_field);
 
 #ifdef DUMP_FREE_LIST
-
   fprintf(dump_stream(), "\nFREE LIST:\n");
   print_seq(dump_stream(), &s_begin_free_list, &s_end_free_list);
-
-#endif //ifdef DUMP_FREE_LIST
+#endif  /* ifdef DUMP_FREE_LIST */
 
   fprintf(dump_stream(),"\nEnd dump\n");
   fflush(dump_stream());
 }
 
-FILE *refalrts::vm::dump_stream() {
-#ifdef DUMP_FILE
-
+static FILE *dump_stream() {
+#if defined(DUMP_FILE)
   static FILE *dump_file = 0;
 
   if (dump_file == 0) {
-    // Необходимо открыть файл.
-    // Если файл не открывается, используем stderr
+    /*
+      Необходимо открыть файл.
+      Если файл не открывается, используем stderr
+    */
     dump_file = fopen(DUMP_FILE, "wt");
 
     if (dump_file == 0) {
@@ -1649,13 +1397,11 @@ FILE *refalrts::vm::dump_stream() {
   }
 
   return dump_file;
-
-#else //ifdef DUMP_FILE
-
+#else   /* defined(DUMP_FILE) */
   return stderr;
-
-#endif //ifdef DUMP_FILE
+#endif  /* defined(DUMP_FILE) */
 }
+
 
 static void refal_machine_teardown(int retcode) {
   fflush(stderr);
@@ -1663,14 +1409,46 @@ static void refal_machine_teardown(int retcode) {
   end_profiler();
 
 #ifndef DONT_PRINT_STATISTICS
-  fprintf(stderr, "Step count %d\n", refalrts::vm::g_step_counter);
-#endif // DONT_PRINT_STATISTICS
+  fprintf(stderr, "Step count %lu\n", s_step_counter);
+#endif  /* DONT_PRINT_STATISTICS */
 
   free_memory();
   fflush(stdout);
 
   exit(retcode);
 }
+
+
+void r05_recognition_impossible(void) {
+  fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
+  vm_make_dump();
+  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+}
+
+
+void r05_exit(int retcode) {
+  refal_machine_teardown(retcode);
+}
+
+
+void r05_builtin_error(const char *message) {
+  fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
+  vm_make_dump();
+  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+}
+
+
+static char **s_argv = 0;
+static int s_argc = 0;
+
+const char *r05_arg(int no) {
+  if (no < s_argc) {
+    return s_argv[no];
+  } else {
+    return "";
+  }
+}
+
 
 void r05_switch_default_violation_impl(
   const char *expr, long value, const char *file, int line
@@ -1681,28 +1459,13 @@ void r05_switch_default_violation_impl(
 }
 
 
-//==============================================================================
-
-// Используются в Library.cpp
-
-char **g_argv = 0;
-int g_argc = 0;
-
 int main(int argc, char **argv) {
-  g_argc = argc;
-  g_argv = argv;
+  s_argc = argc;
+  s_argv = argv;
 
-  try {
-    refalrts::vm::init_view_field();
-    start_profiler();
-    refalrts::vm::main_loop();  /* never returns */
-  } catch (std::exception& e) {
-    fprintf(stderr, "INTERNAL ERROR: std::exception %s\n", e.what());
-    return EXIT_CODE_STD_EXCEPTION;
-  } catch (...) {
-    fprintf(stderr, "INTERNAL ERROR: unknown exception\n");
-    return EXIT_CODE_UNKNOWN_EXCEPTION;
-  }
+  init_view_field();
+  start_profiler();
+  main_loop();  /* never returns */
 
   return 0;     /* suppress warning */
 }

@@ -2,8 +2,69 @@
 #include "refalrts.h"
 
 
-extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Mu(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Add(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Arg(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Br(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Card(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Chr(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Cp(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dg(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dgall(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Div(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Divmod(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Explode(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_First(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Get(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Implode(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Last(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Lenw(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Lower(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Mod(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Mul(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Numb(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Open(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Ord(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Print(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Prout(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Put(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Putout(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Rp(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Step(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Sub(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Symb(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Time(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Type(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Upper(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Sysfun(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Freeze(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Freezer(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dn(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Up(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Ev_met(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Residue(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetEnv(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_System(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Exit(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Close(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ExistFile(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetCurrentDirectory(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_RemoveFile(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Implode_Ext(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Explode_Ext(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_TimeElapsed(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Compare(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_DeSysfun(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_XMLParse(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Random(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_RandomDigit(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Write(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ListOfBuiltin(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_SizeOf(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetPID(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_int4fab_1(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetPPID(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_True(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_False(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Source(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -82,7 +143,7 @@ enum r05_fnresult r05c_FindFiles(struct r05_node *arg_begin, struct r05_node *ar
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -135,7 +196,7 @@ static enum r05_fnresult r05c_AnalyzeFile_ByFolders(struct r05_node *arg_begin, 
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -169,7 +230,7 @@ static enum r05_fnresult r05c_AnalyzeInFolder(struct r05_node *arg_begin, struct
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eFileName_b_1;
@@ -203,7 +264,7 @@ static enum r05_fnresult r05c_AnalyzeInFolder(struct r05_node *arg_begin, struct
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -253,7 +314,7 @@ static enum r05_fnresult r05c_AnalyzeFile_CheckNotFound(struct r05_node *arg_beg
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eOutput_b_1;
@@ -285,7 +346,7 @@ static enum r05_fnresult r05c_AnalyzeFile_CheckNotFound(struct r05_node *arg_beg
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eFileName_b_1;
@@ -326,7 +387,7 @@ static enum r05_fnresult r05c_AnalyzeFile_CheckNotFound(struct r05_node *arg_beg
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eFileName_b_1;
@@ -354,7 +415,7 @@ static enum r05_fnresult r05c_AnalyzeFile_CheckNotFound(struct r05_node *arg_beg
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -387,7 +448,7 @@ static enum r05_fnresult r05c_ExistFile_T(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -433,7 +494,7 @@ static enum r05_fnresult r05c_AnalyzeFile(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eFileName_b_1;
@@ -472,7 +533,7 @@ static enum r05_fnresult r05c_AnalyzeFile(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eFileName_b_1;
@@ -513,7 +574,7 @@ static enum r05_fnresult r05c_AnalyzeFile(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -560,7 +621,7 @@ static enum r05_fnresult r05c_AnalyzeSource_CheckExist(struct r05_node *arg_begi
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eSourceName_b_1;
@@ -586,7 +647,7 @@ static enum r05_fnresult r05c_AnalyzeSource_CheckExist(struct r05_node *arg_begi
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -619,7 +680,7 @@ static enum r05_fnresult r05c_AnalyzeOutput_CheckExist(struct r05_node *arg_begi
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eOutName_b_1;
@@ -645,7 +706,7 @@ static enum r05_fnresult r05c_AnalyzeOutput_CheckExist(struct r05_node *arg_begi
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -692,7 +753,7 @@ static enum r05_fnresult r05c_AnalyzeBoth_CheckExist(struct r05_node *arg_begin,
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eOutName_b_1;
@@ -723,7 +784,7 @@ static enum r05_fnresult r05c_AnalyzeBoth_CheckExist(struct r05_node *arg_begin,
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eUnitName_b_2;
@@ -775,7 +836,7 @@ static enum r05_fnresult r05c_AnalyzeBoth_CheckExist(struct r05_node *arg_begin,
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)

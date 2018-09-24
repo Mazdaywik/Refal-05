@@ -2,15 +2,70 @@
 #include "refalrts.h"
 
 
-extern enum r05_fnresult r05c_FReadLine(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_FOpen(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_FClose(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_FWriteLine(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Mu(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Add(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Sub(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_IntFromStr(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Arg(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Br(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Card(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Chr(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Cp(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dg(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dgall(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Div(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Divmod(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Explode(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_First(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Get(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Implode(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Last(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Lenw(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Lower(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Mod(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Mul(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Numb(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Open(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Ord(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Print(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Prout(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Put(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Putout(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Rp(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Step(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Sub(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Symb(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Time(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Type(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Upper(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Sysfun(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Freeze(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Freezer(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dn(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Up(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Ev_met(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Residue(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetEnv(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_System(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Exit(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Close(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ExistFile(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetCurrentDirectory(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_RemoveFile(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Implode_Ext(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Explode_Ext(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_TimeElapsed(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Compare(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_DeSysfun(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_XMLParse(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Random(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_RandomDigit(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Write(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ListOfBuiltin(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_SizeOf(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetPID(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_int4fab_1(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GetPPID(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Reduce(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -20,23 +75,33 @@ static enum r05_fnresult r05c_DoMapReduce(struct r05_node *arg_begin, struct r05
 static enum r05_fnresult r05c_MapReduce_AddScanned(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_UnBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_DelAccumulator(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_LOAD_SAVE_HANDLE(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_LoadFile(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_DoLoadFile(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_SaveFile(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_WriteBracketLine(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_FastIntFromStr_Guard(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_FastIntFromStr(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ArgList(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_DoArgList(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_SwDoArgList(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Type(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Trim(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Trim_R(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Seq(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Seq_Aux(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Id(struct r05_node *arg_begin, struct r05_node *arg_end);
+
+enum r05_fnresult r05c_Success(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+enum r05_fnresult r05c_Fails(struct r05_node *, struct r05_node *) {
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
 
 enum r05_fnresult r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
@@ -66,7 +131,7 @@ enum r05_fnresult r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_en
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eArgument_b_1;
@@ -102,7 +167,7 @@ enum r05_fnresult r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_en
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -149,7 +214,7 @@ enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *tFn_1;
@@ -167,7 +232,7 @@ enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -219,7 +284,7 @@ enum r05_fnresult r05c_Reduce(struct r05_node *arg_begin, struct r05_node *arg_e
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *tFn_1;
@@ -243,7 +308,7 @@ enum r05_fnresult r05c_Reduce(struct r05_node *arg_begin, struct r05_node *arg_e
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -279,7 +344,7 @@ enum r05_fnresult r05c_Fetch(struct r05_node *arg_begin, struct r05_node *arg_en
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -323,7 +388,7 @@ enum r05_fnresult r05c_MapReduce(struct r05_node *arg_begin, struct r05_node *ar
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -391,7 +456,7 @@ static enum r05_fnresult r05c_DoMapReduce(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eScanned_b_1;
@@ -422,7 +487,7 @@ static enum r05_fnresult r05c_DoMapReduce(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -464,7 +529,7 @@ static enum r05_fnresult r05c_MapReduce_AddScanned(struct r05_node *arg_begin, s
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -495,7 +560,7 @@ enum r05_fnresult r05c_UnBracket(struct r05_node *arg_begin, struct r05_node *ar
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -525,7 +590,30 @@ enum r05_fnresult r05c_DelAccumulator(struct r05_node *arg_begin, struct r05_nod
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_LOAD_SAVE_HANDLE(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* */
+    if (! r05_empty_seq(bb[0], be[0]))
+      break;
+
+    r05_reset_allocator();
+    r05_alloc_number(20UL);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -539,7 +627,7 @@ enum r05_fnresult r05c_LoadFile(struct r05_node *arg_begin, struct r05_node *arg
     struct r05_node *eFileName_e_1;
     struct r05_node *bb[1] = { 0 };
     struct r05_node *be[1] = { 0 };
-    struct r05_node *n[7] = { 0 };
+    struct r05_node *n[15] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
     /* e.FileName */
@@ -548,27 +636,47 @@ enum r05_fnresult r05c_LoadFile(struct r05_node *arg_begin, struct r05_node *arg
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_DoLoadFile, "DoLoadFile");
-    r05_alloc_open_call(n[1]);
-    r05_alloc_function(r05c_FReadLine, "FReadLine");
-    r05_alloc_open_call(n[2]);
-    r05_alloc_function(r05c_FOpen, "FOpen");
+    r05_alloc_function(r05c_Open, "Open");
     r05_alloc_char('r');
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
+    r05_alloc_close_call(n[2]);
     r05_alloc_insert_pos(n[3]);
     r05_alloc_close_call(n[4]);
-    r05_alloc_close_call(n[5]);
-    r05_alloc_close_call(n[6]);
-    r05_push_stack(n[6]);
-    r05_push_stack(n[0]);
+    r05_alloc_open_call(n[5]);
+    r05_alloc_function(r05c_DoLoadFile, "DoLoadFile");
+    r05_alloc_open_call(n[6]);
+    r05_alloc_function(r05c_Get, "Get");
+    r05_alloc_open_call(n[7]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
+    r05_alloc_close_call(n[8]);
+    r05_alloc_close_call(n[9]);
+    r05_alloc_close_call(n[10]);
+    r05_alloc_open_call(n[11]);
+    r05_alloc_function(r05c_Close, "Close");
+    r05_alloc_open_call(n[12]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
+    r05_alloc_close_call(n[13]);
+    r05_alloc_close_call(n[14]);
+    r05_push_stack(n[14]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[13]);
+    r05_push_stack(n[12]);
+    r05_push_stack(n[10]);
     r05_push_stack(n[5]);
-    r05_push_stack(n[1]);
+    r05_push_stack(n[9]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[7]);
     r05_push_stack(n[4]);
+    r05_push_stack(n[0]);
     r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
     r05_splice_evar(n[3], eFileName_b_1, eFileName_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -578,46 +686,32 @@ enum r05_fnresult r05c_LoadFile(struct r05_node *arg_begin, struct r05_node *arg
 static enum r05_fnresult r05c_DoLoadFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
-    struct r05_node *tFile_1;
     struct r05_node *bb[1] = { 0 };
     struct r05_node *be[1] = { 0 };
-    struct r05_node *n[3] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.File 0 */
-    if (! r05_number_right(0UL, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tFile_1, &bb[0], &be[0]))
+    /* 0 */
+    if (! r05_number_left(0UL, &bb[0], &be[0]))
       break;
     if (! r05_empty_seq(bb[0], be[0]))
       break;
 
     r05_reset_allocator();
-    r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_FClose, "FClose");
-    r05_alloc_insert_pos(n[1]);
-    r05_alloc_close_call(n[2]);
-    r05_push_stack(n[2]);
-    r05_push_stack(n[0]);
-    r05_splice_tvar(n[1], tFile_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
-    struct r05_node *tFile_1;
     struct r05_node *eLine_b_1;
     struct r05_node *eLine_e_1;
     struct r05_node *bb[1] = { 0 };
     struct r05_node *be[1] = { 0 };
-    struct r05_node *n[6] = { 0 };
+    struct r05_node *n[3] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.File e.Line 0 */
+    /* e.Line 0 */
     if (! r05_number_right(0UL, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tFile_1, &bb[0], &be[0]))
       break;
     eLine_b_1 = bb[0];
     eLine_e_1 = be[0];
@@ -626,32 +720,22 @@ static enum r05_fnresult r05c_DoLoadFile(struct r05_node *arg_begin, struct r05_
     r05_alloc_open_bracket(n[0]);
     r05_alloc_insert_pos(n[1]);
     r05_alloc_close_bracket(n[2]);
-    r05_alloc_open_call(n[3]);
-    r05_alloc_function(r05c_FClose, "FClose");
-    r05_alloc_insert_pos(n[4]);
-    r05_alloc_close_call(n[5]);
-    r05_push_stack(n[5]);
-    r05_push_stack(n[3]);
     r05_link_brackets(n[0], n[2]);
     r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
-    r05_splice_tvar(n[4], tFile_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
-    struct r05_node *tFile_1;
     struct r05_node *eLine_b_1;
     struct r05_node *eLine_e_1;
     struct r05_node *bb[1] = { 0 };
     struct r05_node *be[1] = { 0 };
-    struct r05_node *n[8] = { 0 };
+    struct r05_node *n[9] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.File e.Line */
-    if (! r05_tvar_left(&tFile_1, &bb[0], &be[0]))
-      break;
+    /* e.Line */
     eLine_b_1 = bb[0];
     eLine_e_1 = be[0];
 
@@ -662,21 +746,24 @@ static enum r05_fnresult r05c_DoLoadFile(struct r05_node *arg_begin, struct r05_
     r05_alloc_open_call(n[3]);
     r05_alloc_function(r05c_DoLoadFile, "DoLoadFile");
     r05_alloc_open_call(n[4]);
-    r05_alloc_function(r05c_FReadLine, "FReadLine");
-    r05_alloc_insert_pos(n[5]);
+    r05_alloc_function(r05c_Get, "Get");
+    r05_alloc_open_call(n[5]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
     r05_alloc_close_call(n[6]);
     r05_alloc_close_call(n[7]);
-    r05_push_stack(n[7]);
+    r05_alloc_close_call(n[8]);
+    r05_push_stack(n[8]);
     r05_push_stack(n[3]);
-    r05_push_stack(n[6]);
+    r05_push_stack(n[7]);
     r05_push_stack(n[4]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[5]);
     r05_link_brackets(n[0], n[2]);
     r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
-    r05_splice_tvar(n[5], tFile_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -692,7 +779,7 @@ enum r05_fnresult r05c_SaveFile(struct r05_node *arg_begin, struct r05_node *arg
     struct r05_node *eLines_e_1;
     struct r05_node *bb[2] = { 0 };
     struct r05_node *be[2] = { 0 };
-    struct r05_node *n[8] = { 0 };
+    struct r05_node *n[12] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
     /* ( e.FileName  ) e.Lines */
@@ -705,30 +792,40 @@ enum r05_fnresult r05c_SaveFile(struct r05_node *arg_begin, struct r05_node *arg
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_FClose, "FClose");
-    r05_alloc_open_call(n[1]);
-    r05_alloc_function(r05c_Reduce, "Reduce");
-    r05_alloc_function(r05c_WriteBracketLine, "WriteBracketLine");
-    r05_alloc_open_call(n[2]);
-    r05_alloc_function(r05c_FOpen, "FOpen");
+    r05_alloc_function(r05c_Open, "Open");
     r05_alloc_char('w');
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
+    r05_alloc_close_call(n[2]);
     r05_alloc_insert_pos(n[3]);
     r05_alloc_close_call(n[4]);
-    r05_alloc_insert_pos(n[5]);
-    r05_alloc_close_call(n[6]);
+    r05_alloc_open_call(n[5]);
+    r05_alloc_function(r05c_Map, "Map");
+    r05_alloc_function(r05c_WriteBracketLine, "WriteBracketLine");
+    r05_alloc_insert_pos(n[6]);
     r05_alloc_close_call(n[7]);
+    r05_alloc_open_call(n[8]);
+    r05_alloc_function(r05c_Close, "Close");
+    r05_alloc_open_call(n[9]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
+    r05_alloc_close_call(n[10]);
+    r05_alloc_close_call(n[11]);
+    r05_push_stack(n[11]);
+    r05_push_stack(n[8]);
+    r05_push_stack(n[10]);
+    r05_push_stack(n[9]);
     r05_push_stack(n[7]);
-    r05_push_stack(n[0]);
-    r05_push_stack(n[6]);
-    r05_push_stack(n[1]);
+    r05_push_stack(n[5]);
     r05_push_stack(n[4]);
+    r05_push_stack(n[0]);
     r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
     r05_splice_evar(n[3], eFileName_b_1, eFileName_e_1);
-    r05_splice_evar(n[5], eLines_b_1, eLines_e_1);
+    r05_splice_evar(n[6], eLines_b_1, eLines_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -740,35 +837,36 @@ static enum r05_fnresult r05c_WriteBracketLine(struct r05_node *arg_begin, struc
   do {
     struct r05_node *eLine_b_1;
     struct r05_node *eLine_e_1;
-    struct r05_node *tFile_1;
     struct r05_node *bb[2] = { 0 };
     struct r05_node *be[2] = { 0 };
-    struct r05_node *n[3] = { 0 };
+    struct r05_node *n[5] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.File ( e.Line  ) */
-    if (! r05_brackets_right(&bb[1], &be[1], &bb[0], &be[0]))
-      break;
-    eLine_b_1 = bb[1];
-    eLine_e_1 = be[1];
-    if (! r05_tvar_left(&tFile_1, &bb[0], &be[0]))
+    /* ( e.Line  ) */
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
     if (! r05_empty_seq(bb[0], be[0]))
       break;
+    eLine_b_1 = bb[1];
+    eLine_e_1 = be[1];
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_FWriteLine, "FWriteLine");
-    r05_alloc_insert_pos(n[1]);
+    r05_alloc_function(r05c_Putout, "Putout");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_LOAD_SAVE_HANDLE, "LOAD_SAVE_HANDLE");
     r05_alloc_close_call(n[2]);
-    r05_push_stack(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_close_call(n[4]);
+    r05_push_stack(n[4]);
     r05_push_stack(n[0]);
-    r05_splice_tvar(n[1], tFile_1);
-    r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[1]);
+    r05_splice_evar(n[3], eLine_b_1, eLine_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -801,7 +899,7 @@ enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -834,72 +932,7 @@ enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_FastIntFromStr_Guard(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  r05_this_is_generated_function();
-  do {
-    struct r05_node *sNumber_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* & Success s.Number */
-    if (! r05_function_left(r05c_Success, &bb[0], &be[0]))
-      break;
-    if (! r05_svar_left(&sNumber_1, &bb[0], &be[0]))
-      break;
-    if (! r05_empty_seq(bb[0], be[0]))
-      break;
-
-    r05_reset_allocator();
-    r05_alloc_svar(sNumber_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-enum r05_fnresult r05c_FastIntFromStr(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  r05_this_is_generated_function();
-  do {
-    struct r05_node *eDigits_b_1;
-    struct r05_node *eDigits_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[5] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* e.Digits */
-    eDigits_b_1 = bb[0];
-    eDigits_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_FastIntFromStr_Guard, "FastIntFromStr_Guard");
-    r05_alloc_open_call(n[1]);
-    r05_alloc_function(r05c_IntFromStr, "IntFromStr");
-    r05_alloc_insert_pos(n[2]);
-    r05_alloc_close_call(n[3]);
-    r05_alloc_close_call(n[4]);
-    r05_push_stack(n[4]);
-    r05_push_stack(n[0]);
-    r05_push_stack(n[3]);
-    r05_push_stack(n[1]);
-    r05_splice_evar(n[2], eDigits_b_1, eDigits_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -928,7 +961,7 @@ enum r05_fnresult r05c_ArgList(struct r05_node *arg_begin, struct r05_node *arg_
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -971,7 +1004,7 @@ static enum r05_fnresult r05c_DoArgList(struct r05_node *arg_begin, struct r05_n
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -996,7 +1029,7 @@ static enum r05_fnresult r05c_SwDoArgList(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *sNext_1;
@@ -1028,1477 +1061,7 @@ static enum r05_fnresult r05c_SwDoArgList(struct r05_node *arg_begin, struct r05
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-enum r05_fnresult r05c_Type(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  r05_this_is_generated_function();
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'A' e.X */
-    if (! r05_char_left('A', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuA", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'B' e.X */
-    if (! r05_char_left('B', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuB", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'C' e.X */
-    if (! r05_char_left('C', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuC", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'D' e.X */
-    if (! r05_char_left('D', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuD", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'E' e.X */
-    if (! r05_char_left('E', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuE", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'F' e.X */
-    if (! r05_char_left('F', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuF", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'G' e.X */
-    if (! r05_char_left('G', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuG", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'H' e.X */
-    if (! r05_char_left('H', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuH", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'I' e.X */
-    if (! r05_char_left('I', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuI", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'J' e.X */
-    if (! r05_char_left('J', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuJ", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'K' e.X */
-    if (! r05_char_left('K', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuK", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'L' e.X */
-    if (! r05_char_left('L', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuL", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'M' e.X */
-    if (! r05_char_left('M', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuM", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'N' e.X */
-    if (! r05_char_left('N', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuN", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'O' e.X */
-    if (! r05_char_left('O', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuO", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'P' e.X */
-    if (! r05_char_left('P', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuP", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'Q' e.X */
-    if (! r05_char_left('Q', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuQ", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'R' e.X */
-    if (! r05_char_left('R', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuR", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'S' e.X */
-    if (! r05_char_left('S', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuS", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'T' e.X */
-    if (! r05_char_left('T', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuT", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'U' e.X */
-    if (! r05_char_left('U', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuU", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'V' e.X */
-    if (! r05_char_left('V', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuV", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'W' e.X */
-    if (! r05_char_left('W', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuW", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'X' e.X */
-    if (! r05_char_left('X', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuX", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'Y' e.X */
-    if (! r05_char_left('Y', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuY", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'Z' e.X */
-    if (! r05_char_left('Z', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("LuZ", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'a' e.X */
-    if (! r05_char_left('a', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lla", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'b' e.X */
-    if (! r05_char_left('b', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llb", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'c' e.X */
-    if (! r05_char_left('c', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llc", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'd' e.X */
-    if (! r05_char_left('d', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lld", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'e' e.X */
-    if (! r05_char_left('e', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lle", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'f' e.X */
-    if (! r05_char_left('f', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llf", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'g' e.X */
-    if (! r05_char_left('g', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llg", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'h' e.X */
-    if (! r05_char_left('h', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llh", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'i' e.X */
-    if (! r05_char_left('i', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lli", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'j' e.X */
-    if (! r05_char_left('j', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llj", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'k' e.X */
-    if (! r05_char_left('k', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llk", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'l' e.X */
-    if (! r05_char_left('l', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lll", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'm' e.X */
-    if (! r05_char_left('m', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llm", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'n' e.X */
-    if (! r05_char_left('n', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lln", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'o' e.X */
-    if (! r05_char_left('o', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llo", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'p' e.X */
-    if (! r05_char_left('p', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llp", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'q' e.X */
-    if (! r05_char_left('q', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llq", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'r' e.X */
-    if (! r05_char_left('r', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llr", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 's' e.X */
-    if (! r05_char_left('s', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lls", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 't' e.X */
-    if (! r05_char_left('t', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llt", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'u' e.X */
-    if (! r05_char_left('u', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llu", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'v' e.X */
-    if (! r05_char_left('v', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llv", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'w' e.X */
-    if (! r05_char_left('w', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llw", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'x' e.X */
-    if (! r05_char_left('x', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llx", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'y' e.X */
-    if (! r05_char_left('y', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Lly", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* 'z' e.X */
-    if (! r05_char_left('z', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("Llz", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '0' e.X */
-    if (! r05_char_left('0', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D00", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '1' e.X */
-    if (! r05_char_left('1', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D01", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '2' e.X */
-    if (! r05_char_left('2', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D02", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '3' e.X */
-    if (! r05_char_left('3', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D03", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '4' e.X */
-    if (! r05_char_left('4', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D04", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '5' e.X */
-    if (! r05_char_left('5', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D05", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '6' e.X */
-    if (! r05_char_left('6', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D06", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '7' e.X */
-    if (! r05_char_left('7', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D07", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '8' e.X */
-    if (! r05_char_left('8', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D08", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* '9' e.X */
-    if (! r05_char_left('9', &bb[0], &be[0]))
-      break;
-    eX_b_1 = bb[0];
-    eX_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("D09", 3);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* */
-    if (! r05_empty_seq(bb[0], be[0]))
-      break;
-
-    r05_reset_allocator();
-    r05_alloc_chars("*0", 2);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
-
-  do {
-    struct r05_node *eOther_b_1;
-    struct r05_node *eOther_e_1;
-    struct r05_node *bb[1] = { 0 };
-    struct r05_node *be[1] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* e.Other */
-    eOther_b_1 = bb[0];
-    eOther_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_chars("??", 2);
-    r05_alloc_insert_pos(n[0]);
-    r05_splice_evar(n[0], eOther_b_1, eOther_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -2532,7 +1095,7 @@ enum r05_fnresult r05c_Trim(struct r05_node *arg_begin, struct r05_node *arg_end
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2559,7 +1122,7 @@ enum r05_fnresult r05c_Trim(struct r05_node *arg_begin, struct r05_node *arg_end
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2586,7 +1149,7 @@ enum r05_fnresult r05c_Trim(struct r05_node *arg_begin, struct r05_node *arg_end
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2613,7 +1176,7 @@ enum r05_fnresult r05c_Trim(struct r05_node *arg_begin, struct r05_node *arg_end
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2638,7 +1201,7 @@ enum r05_fnresult r05c_Trim(struct r05_node *arg_begin, struct r05_node *arg_end
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -2672,7 +1235,7 @@ static enum r05_fnresult r05c_Trim_R(struct r05_node *arg_begin, struct r05_node
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2699,7 +1262,7 @@ static enum r05_fnresult r05c_Trim_R(struct r05_node *arg_begin, struct r05_node
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2726,7 +1289,7 @@ static enum r05_fnresult r05c_Trim_R(struct r05_node *arg_begin, struct r05_node
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2753,7 +1316,7 @@ static enum r05_fnresult r05c_Trim_R(struct r05_node *arg_begin, struct r05_node
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *eLine_b_1;
@@ -2773,7 +1336,7 @@ static enum r05_fnresult r05c_Trim_R(struct r05_node *arg_begin, struct r05_node
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -2801,7 +1364,7 @@ enum r05_fnresult r05c_Seq(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *tFunc_1;
@@ -2833,7 +1396,7 @@ enum r05_fnresult r05c_Seq(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   do {
     struct r05_node *bb[1] = { 0 };
@@ -2849,7 +1412,7 @@ enum r05_fnresult r05c_Seq(struct r05_node *arg_begin, struct r05_node *arg_end)
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -2903,7 +1466,7 @@ static enum r05_fnresult r05c_Seq_Aux(struct r05_node *arg_begin, struct r05_nod
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
@@ -2930,7 +1493,7 @@ static enum r05_fnresult r05c_Id(struct r05_node *arg_begin, struct r05_node *ar
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
-  } while ( 0 );
+  } while (0);
 
   return (enum r05_fnresult)(
     R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
