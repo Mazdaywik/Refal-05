@@ -65,16 +65,15 @@ extern enum r05_fnresult r05c_GetPID(struct r05_node *arg_begin, struct r05_node
 extern enum r05_fnresult r05c_int4fab_1(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GetPPID(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_MapReduce(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_DelAccumulator(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdComment(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdDeclareVar(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CmdRangeArray(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CmdInitB0(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdSymbol(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Char(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Number(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Name(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdBrackets(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdEmpty(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdVar(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -85,21 +84,22 @@ extern enum r05_fnresult r05c_CmdOpenedE_Start(struct r05_node *arg_begin, struc
 extern enum r05_fnresult r05c_CmdOpenedE_End(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdSave(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdEmptyResult(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CmdResultArray(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdAllocateElem(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_ElString(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdLinkBrackets(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdPushStack(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdInsertVar(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdReturnResult(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Char(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Number(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Name(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_AlgRight(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElSymbol(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_ElString(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElOpenBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElCloseBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElOpenCall(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElCloseCall(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdRangeArray(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdInitB0(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CmdResultArray(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElSavePos(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ElVariable(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -125,7 +125,7 @@ static enum r05_fnresult r05c_BracketsVar_E(struct r05_node *arg_begin, struct r
 static enum r05_fnresult r05c_BracketsVars(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_BracketsVarsPtr(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_SafeComment(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_generator_GenCommand(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_EscapeString(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintVar(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PrintVarPtr(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -152,7 +152,7 @@ static enum r05_fnresult r05c_BeginNative(struct r05_node *arg_begin, struct r05
 static enum r05_fnresult r05c_EndNative(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenNative(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_EnumerateLines(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_generator_EnumerateLines(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_LineDirective(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 enum r05_fnresult r05c_GN_Local(struct r05_node *, struct r05_node *) {
@@ -285,6 +285,7 @@ static enum r05_fnresult r05c_SwGenFnStart(struct r05_node *arg_begin, struct r0
     r05_alloc_insert_pos(n[3]);
     r05_alloc_char('(');
     r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_Mu, "Mu");
     r05_alloc_svar(sFnArguments_1);
     r05_alloc_close_call(n[5]);
     r05_alloc_chars(") {", 3);
@@ -652,7 +653,7 @@ enum r05_fnresult r05c_GenSentence(struct r05_node *arg_begin, struct r05_node *
     r05_alloc_function(r05c_SkipIndentAccum, "SkipIndentAccum");
     r05_alloc_open_call(n[3]);
     r05_alloc_function(r05c_MapReduce, "MapReduce");
-    r05_alloc_function(r05c_GenCommand, "GenCommand");
+    r05_alloc_function(r05c_generator_GenCommand, "generator_GenCommand");
     r05_alloc_open_bracket(n[4]);
     r05_alloc_chars("    ", 4);
     r05_alloc_close_bracket(n[5]);
@@ -978,7 +979,7 @@ static enum r05_fnresult r05c_SafeComment(struct r05_node *arg_begin, struct r05
   );
 }
 
-static enum r05_fnresult r05c_GenCommand(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_generator_GenCommand(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eIndent_b_1;
@@ -4003,7 +4004,7 @@ enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_nod
       r05_alloc_open_call(n[1]);
       r05_alloc_function(r05c_MapReduce, "MapReduce");
       r05_alloc_open_bracket(n[2]);
-      r05_alloc_function(r05c_EnumerateLines, "EnumerateLines");
+      r05_alloc_function(r05c_generator_EnumerateLines, "generator_EnumerateLines");
       r05_alloc_open_bracket(n[3]);
       r05_alloc_insert_pos(n[4]);
       r05_alloc_close_bracket(n[5]);
@@ -4088,7 +4089,7 @@ enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_nod
   );
 }
 
-static enum r05_fnresult r05c_EnumerateLines(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_generator_EnumerateLines(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eSrcName_b_1;

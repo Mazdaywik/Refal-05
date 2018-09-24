@@ -65,8 +65,8 @@ extern enum r05_fnresult r05c_GetPID(struct r05_node *arg_begin, struct r05_node
 extern enum r05_fnresult r05c_int4fab_1(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GetPPID(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkVariable(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseCall(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -122,7 +122,7 @@ extern enum r05_fnresult r05c_CmdInitB0(struct r05_node *arg_begin, struct r05_n
 extern enum r05_fnresult r05c_CmdResultArray(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CmdDeclareVar(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_algorithm_MakeDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_MakeDeclaration_Aux(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_MakeCmdResultCommand(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_GenerateResult_OpenELoops(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -4051,7 +4051,7 @@ static enum r05_fnresult r05c_ComposeSentenceCommands(struct r05_node *arg_begin
     r05_alloc_function(r05c_GenerateResult_OpenELoops, "GenerateResult_OpenELoops");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_MakeDeclaration, "MakeDeclaration");
+    r05_alloc_function(r05c_algorithm_MakeDeclaration, "algorithm_MakeDeclaration");
     r05_alloc_insert_pos(n[2]);
     r05_alloc_close_call(n[3]);
     r05_alloc_open_bracket(n[4]);
@@ -4103,7 +4103,7 @@ enum r05_fnresult r05c_CmdDeclareVar(struct r05_node *, struct r05_node *) {
   );
 }
 
-static enum r05_fnresult r05c_MakeDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_algorithm_MakeDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *sUsings_1;
@@ -4195,7 +4195,7 @@ static enum r05_fnresult r05c_MakeDeclaration_Aux(struct r05_node *arg_begin, st
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_MakeDeclaration, "MakeDeclaration");
+    r05_alloc_function(r05c_algorithm_MakeDeclaration, "algorithm_MakeDeclaration");
     r05_alloc_open_bracket(n[1]);
     r05_alloc_open_call(n[2]);
     r05_alloc_function(r05c_Dec, "Dec");

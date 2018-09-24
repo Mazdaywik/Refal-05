@@ -845,6 +845,7 @@ enum r05_fnresult r05c_Type(struct r05_node *arg_begin, struct r05_node *arg_end
     subtype = '0';
   } else {
     r05_switch_default_violation(first_term->tag);
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
   }
 
   arg_begin->tag = R05_DATATAG_CHAR;
@@ -855,12 +856,12 @@ enum r05_fnresult r05c_Type(struct r05_node *arg_begin, struct r05_node *arg_end
   r05_splice_to_freelist(arg_end, arg_end);
 
   return R05_SUCCESS;
-#line 859 "..\\lib/Library.cpp"
+#line 860 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
 enum r05_fnresult r05c_Upper(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 776 "..\\lib/Library.ref"
+#line 777 "..\\lib/Library.ref"
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
 
@@ -875,7 +876,7 @@ enum r05_fnresult r05c_Upper(struct r05_node *arg_begin, struct r05_node *arg_en
   r05_splice_to_freelist(arg_end, arg_end);
 
   return R05_SUCCESS;
-#line 879 "..\\lib/Library.cpp"
+#line 880 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
@@ -922,7 +923,7 @@ enum r05_fnresult r05c_Residue(struct r05_node *, struct r05_node *) {
 }
 
 enum r05_fnresult r05c_GetEnv(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 822 "..\\lib/Library.ref"
+#line 823 "..\\lib/Library.ref"
   struct r05_node *eEnvName_b, *eEnvName_e;
   char env_name[2001];
   size_t env_name_len;
@@ -954,12 +955,12 @@ enum r05_fnresult r05c_GetEnv(struct r05_node *arg_begin, struct r05_node *arg_e
   r05_splice_to_freelist(arg_begin, arg_end);
 
   return R05_SUCCESS;
-#line 958 "..\\lib/Library.cpp"
+#line 959 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
 enum r05_fnresult r05c_System(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 863 "..\\lib/Library.ref"
+#line 864 "..\\lib/Library.ref"
   struct r05_node *callee = arg_begin->next;
   struct r05_node *eCommand_b, *eCommand_e;
   char command[2001];
@@ -997,12 +998,12 @@ enum r05_fnresult r05c_System(struct r05_node *arg_begin, struct r05_node *arg_e
   r05_splice_to_freelist(callee, arg_end);
 
   return R05_SUCCESS;
-#line 1001 "..\\lib/Library.cpp"
+#line 1002 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
 enum r05_fnresult r05c_Exit(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 909 "..\\lib/Library.ref"
+#line 910 "..\\lib/Library.ref"
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pretcode = callable->next;
   int retcode;
@@ -1020,12 +1021,12 @@ enum r05_fnresult r05c_Exit(struct r05_node *arg_begin, struct r05_node *arg_end
   r05_exit(retcode);
 
   return R05_SUCCESS;   /* suppress warning */
-#line 1024 "..\\lib/Library.cpp"
+#line 1025 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
 enum r05_fnresult r05c_Close(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 935 "..\\lib/Library.ref"
+#line 936 "..\\lib/Library.ref"
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pfile_no = callable->next;
   unsigned int file_no;
@@ -1043,7 +1044,7 @@ enum r05_fnresult r05c_Close(struct r05_node *arg_begin, struct r05_node *arg_en
   r05_splice_to_freelist(arg_begin, arg_end);
 
   return R05_SUCCESS;
-#line 1047 "..\\lib/Library.cpp"
+#line 1048 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
@@ -1060,7 +1061,7 @@ enum r05_fnresult r05c_False(struct r05_node *, struct r05_node *) {
 }
 
 enum r05_fnresult r05c_ExistFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 966 "..\\lib/Library.ref"
+#line 967 "..\\lib/Library.ref"
   struct r05_node *callee = arg_begin->next;
   struct r05_node *eFileName_b, *eFileName_e;
   char filename[FILENAME_MAX + 1];
@@ -1088,6 +1089,10 @@ enum r05_fnresult r05c_ExistFile(struct r05_node *arg_begin, struct r05_node *ar
   if (file != NULL) {
     arg_begin->info.function.ptr = r05c_True;
     arg_begin->info.function.name = "True";
+    if (fclose(file) == EOF) {
+      perror("fclose error");
+      r05_builtin_error("fclose error");
+    }
   } else {
     arg_begin->info.function.ptr = r05c_False;
     arg_begin->info.function.name = "False";
@@ -1096,7 +1101,7 @@ enum r05_fnresult r05c_ExistFile(struct r05_node *arg_begin, struct r05_node *ar
   r05_splice_to_freelist(callee, arg_end);
 
   return R05_SUCCESS;
-#line 1100 "..\\lib/Library.cpp"
+#line 1105 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 
@@ -1131,7 +1136,7 @@ enum r05_fnresult r05c_TimeElapsed(struct r05_node *, struct r05_node *) {
 }
 
 enum r05_fnresult r05c_Compare(struct r05_node *arg_begin, struct r05_node *arg_end) {
-#line 1030 "..\\lib/Library.ref"
+#line 1035 "..\\lib/Library.ref"
   struct r05_node *func_name, *sX, *sY;
 
   func_name = arg_begin->next;
@@ -1159,7 +1164,7 @@ enum r05_fnresult r05c_Compare(struct r05_node *arg_begin, struct r05_node *arg_
   r05_splice_to_freelist(sY, arg_end);
 
   return R05_SUCCESS;
-#line 1163 "..\\lib/Library.cpp"
+#line 1168 "..\\lib/Library.cpp"
   /* return R05_RECOGNITION_IMPOSSIBLE; */
 }
 

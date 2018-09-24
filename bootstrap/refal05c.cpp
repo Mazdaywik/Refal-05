@@ -67,6 +67,8 @@ extern enum r05_fnresult r05c_GetPPID(struct r05_node *arg_begin, struct r05_nod
 extern enum r05_fnresult r05c_ArgList(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_LoadFile(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_DelAccumulator(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_MapReduce(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -74,8 +76,6 @@ extern enum r05_fnresult r05c_ParseCommandLine(struct r05_node *arg_begin, struc
 extern enum r05_fnresult r05c_CmdLineError(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CompileCommand(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_NoCompile(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_FindFiles(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_NotFound(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Output(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -85,21 +85,21 @@ extern enum r05_fnresult r05c_Go(struct r05_node *arg_begin, struct r05_node *ar
 static enum r05_fnresult r05c_Main(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_FindFiles_Compilers(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_FindFiles_Compilers_SwFound(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_PrintNotFound(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ProcessEachSource(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_refal05c_PrintNotFound(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_refal05c_ProcessEachSource(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ProcessEachSource_SwSuccess(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_CheckCompilationResult(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Link(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_IgnoreRetcode(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_QuoteFile(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_refal05c_QuoteFile(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_RenameFiles(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_GetFileName(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_refal05c_GetFileName(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_GetFileName_Aux(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_DoGetFileName(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ScanCollisions(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Renumerate(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_Renumerate_Each(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_RestoreName(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_refal05c_Renumerate_Each(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_refal05c_RestoreName(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 enum r05_fnresult r05c_Go(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
@@ -342,7 +342,7 @@ static enum r05_fnresult r05c_FindFiles_Compilers_SwFound(struct r05_node *arg_b
       r05_reset_allocator();
       r05_alloc_open_call(n[0]);
       r05_alloc_function(r05c_Map, "Map");
-      r05_alloc_function(r05c_PrintNotFound, "PrintNotFound");
+      r05_alloc_function(r05c_refal05c_PrintNotFound, "refal05c_PrintNotFound");
       r05_alloc_open_bracket(n[1]);
       r05_alloc_function(r05c_NotFound, "NotFound");
       r05_alloc_insert_pos(n[2]);
@@ -381,7 +381,7 @@ static enum r05_fnresult r05c_FindFiles_Compilers_SwFound(struct r05_node *arg_b
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_call(n[2]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_ProcessEachSource, "ProcessEachSource");
+    r05_alloc_function(r05c_refal05c_ProcessEachSource, "refal05c_ProcessEachSource");
     r05_alloc_open_call(n[3]);
     r05_alloc_function(r05c_RenameFiles, "RenameFiles");
     r05_alloc_tvar(tCompiler_1);
@@ -407,7 +407,7 @@ static enum r05_fnresult r05c_FindFiles_Compilers_SwFound(struct r05_node *arg_b
   );
 }
 
-static enum r05_fnresult r05c_PrintNotFound(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_refal05c_PrintNotFound(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eFileName_b_1;
@@ -490,7 +490,7 @@ static enum r05_fnresult r05c_PrintNotFound(struct r05_node *arg_begin, struct r
   );
 }
 
-static enum r05_fnresult r05c_ProcessEachSource(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_refal05c_ProcessEachSource(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eOutputName_b_1;
@@ -745,7 +745,7 @@ static enum r05_fnresult r05c_Link(struct r05_node *arg_begin, struct r05_node *
     r05_alloc_insert_pos(n[2]);
     r05_alloc_open_call(n[3]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_QuoteFile, "QuoteFile");
+    r05_alloc_function(r05c_refal05c_QuoteFile, "refal05c_QuoteFile");
     r05_alloc_insert_pos(n[4]);
     r05_alloc_close_call(n[5]);
     r05_alloc_close_call(n[6]);
@@ -809,7 +809,7 @@ static enum r05_fnresult r05c_IgnoreRetcode(struct r05_node *arg_begin, struct r
   );
 }
 
-static enum r05_fnresult r05c_QuoteFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_refal05c_QuoteFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eFileName_b_1;
@@ -892,7 +892,7 @@ static enum r05_fnresult r05c_RenameFiles(struct r05_node *arg_begin, struct r05
     r05_alloc_function(r05c_ScanCollisions, "ScanCollisions");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_GetFileName, "GetFileName");
+    r05_alloc_function(r05c_refal05c_GetFileName, "refal05c_GetFileName");
     r05_alloc_insert_pos(n[2]);
     r05_alloc_close_call(n[3]);
     r05_alloc_close_call(n[4]);
@@ -911,7 +911,7 @@ static enum r05_fnresult r05c_RenameFiles(struct r05_node *arg_begin, struct r05
   );
 }
 
-static enum r05_fnresult r05c_GetFileName(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_refal05c_GetFileName(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eFileName_b_1;
@@ -1547,7 +1547,7 @@ static enum r05_fnresult r05c_ScanCollisions(struct r05_node *arg_begin, struct 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_RestoreName, "RestoreName");
+    r05_alloc_function(r05c_refal05c_RestoreName, "refal05c_RestoreName");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_close_call(n[2]);
     r05_push_stack(n[2]);
@@ -1589,7 +1589,7 @@ static enum r05_fnresult r05c_Renumerate(struct r05_node *arg_begin, struct r05_
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_MapReduce, "MapReduce");
     r05_alloc_open_bracket(n[2]);
-    r05_alloc_function(r05c_Renumerate_Each, "Renumerate_Each");
+    r05_alloc_function(r05c_refal05c_Renumerate_Each, "refal05c_Renumerate_Each");
     r05_alloc_insert_pos(n[3]);
     r05_alloc_close_bracket(n[4]);
     r05_alloc_number(2UL);
@@ -1613,7 +1613,7 @@ static enum r05_fnresult r05c_Renumerate(struct r05_node *arg_begin, struct r05_
   );
 }
 
-static enum r05_fnresult r05c_Renumerate_Each(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_refal05c_Renumerate_Each(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eFileName_b_2;
@@ -1712,7 +1712,7 @@ static enum r05_fnresult r05c_Renumerate_Each(struct r05_node *arg_begin, struct
   );
 }
 
-static enum r05_fnresult r05c_RestoreName(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_refal05c_RestoreName(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eOutputName_b_1;

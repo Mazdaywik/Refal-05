@@ -68,31 +68,31 @@ extern enum r05_fnresult r05c_Fetch(struct r05_node *arg_begin, struct r05_node 
 extern enum r05_fnresult r05c_Seq(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_SaveFile(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Dec(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_LexFolding(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkOpenBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_TkOpen(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_TkClose(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkOpenCall(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseCall(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkEOF(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkDirective(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkName(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkSemicolon(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_TkNative(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EEnum(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Enum(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Entry(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkComma(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkOpenBlock(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkCloseBlock(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_TkVariable(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkReplace(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkChar(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkNumber(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_TkOpen(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_TkClose(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_TkNative(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_TkVariable(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EL_Create(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EL_Destroy(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EL_NoErrors(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -106,35 +106,33 @@ extern enum r05_fnresult r05c_ST_AllFunctions(struct r05_node *arg_begin, struct
 extern enum r05_fnresult r05c_ST_AddDefined(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_AddDeclared(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_AddFunctionCall(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GN_Local(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GenNative(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GN_Entry(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenExtern(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_GN_Local(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenForward(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenEnum(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenFnStart(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenFnEnd_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_GenFnEnd(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_GenNative(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_GenPostprocess(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_GenThisIsGeneratedFunction(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GenFnEnd(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_MakeAlgorithm(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Brackets(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_CallBrackets(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Symbol(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Char(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Number(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Name(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Brackets(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_CallBrackets(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_Pass_Lexer(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_Pass_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_Pass_Final(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_parser_PrepareBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_parser_Pass_Lexer(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_parser_Pass_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_parser_Pass_Final(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Pass_Final_SwNoErrors(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_GenDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_parser_GenDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseElements_DirectiveParsed(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseElements_FunctionParsed(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ScopeClassFromEnumDirective(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -148,19 +146,21 @@ static enum r05_fnresult r05c_Sentences(struct r05_node *arg_begin, struct r05_n
 static enum r05_fnresult r05c_Native(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseFunction_BlockParsed(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_GenFunctionBody(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_MakeAlgorithm_and_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_parser_MakeAlgorithm_and_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseBlock(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseBlock_CloseBlock(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_DoParseBlock(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseSentence(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ParseSentence_ParseResult(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_ParseSentence_Aux(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_DoParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_ParsePattern_ExpectReplace(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_DoParseResult(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_BracketPairName(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struct r05_node *arg_end);
+static enum r05_fnresult r05c_ParseResult_ExpectSemicolon(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
@@ -193,17 +193,17 @@ enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *
     r05_alloc_function(r05c_Seq, "Seq");
     r05_alloc_open_bracket(n[5]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_PrepareBracket, "PrepareBracket");
+    r05_alloc_function(r05c_parser_PrepareBracket, "parser_PrepareBracket");
     r05_alloc_close_bracket(n[6]);
     r05_alloc_open_bracket(n[7]);
-    r05_alloc_function(r05c_Pass_Lexer, "Pass_Lexer");
+    r05_alloc_function(r05c_parser_Pass_Lexer, "parser_Pass_Lexer");
     r05_alloc_open_bracket(n[8]);
     r05_alloc_evar(eSrcName_b_1, eSrcName_e_1);
     r05_alloc_close_bracket(n[9]);
     r05_alloc_close_bracket(n[10]);
-    r05_alloc_function(r05c_Pass_CheckUnresolved, "Pass_CheckUnresolved");
+    r05_alloc_function(r05c_parser_Pass_CheckUnresolved, "parser_Pass_CheckUnresolved");
     r05_alloc_open_bracket(n[11]);
-    r05_alloc_function(r05c_Pass_Final, "Pass_Final");
+    r05_alloc_function(r05c_parser_Pass_Final, "parser_Pass_Final");
     r05_alloc_open_bracket(n[12]);
     r05_alloc_evar(eSrcName_b_1, eSrcName_e_1);
     r05_alloc_close_bracket(n[13]);
@@ -237,7 +237,7 @@ enum r05_fnresult r05c_CompileFile(struct r05_node *arg_begin, struct r05_node *
   );
 }
 
-static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_parser_PrepareBracket(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *tSrcPos_1;
@@ -393,7 +393,7 @@ static enum r05_fnresult r05c_PrepareBracket(struct r05_node *arg_begin, struct 
   );
 }
 
-static enum r05_fnresult r05c_Pass_Lexer(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_parser_Pass_Lexer(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eSrcName_b_1;
@@ -446,7 +446,7 @@ static enum r05_fnresult r05c_Pass_Lexer(struct r05_node *arg_begin, struct r05_
   );
 }
 
-static enum r05_fnresult r05c_Pass_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_parser_Pass_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *tErrorList_1;
@@ -487,7 +487,7 @@ static enum r05_fnresult r05c_Pass_CheckUnresolved(struct r05_node *arg_begin, s
   );
 }
 
-static enum r05_fnresult r05c_Pass_Final(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_parser_Pass_Final(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eSrcName_b_1;
@@ -688,7 +688,7 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
     r05_alloc_insert_pos(n[0]);
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_GenDeclaration, "GenDeclaration");
+    r05_alloc_function(r05c_parser_GenDeclaration, "parser_GenDeclaration");
     r05_alloc_open_call(n[2]);
     r05_alloc_function(r05c_ST_AllFunctions, "ST_AllFunctions");
     r05_alloc_tvar(tSymTable_1);
@@ -1035,7 +1035,7 @@ static enum r05_fnresult r05c_ParseElements(struct r05_node *arg_begin, struct r
   );
 }
 
-static enum r05_fnresult r05c_GenDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_parser_GenDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eName_b_1;
@@ -2306,7 +2306,7 @@ static enum r05_fnresult r05c_GenFunctionBody(struct r05_node *arg_begin, struct
     r05_alloc_close_call(n[4]);
     r05_alloc_open_call(n[5]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_MakeAlgorithm_and_GenSentence, "MakeAlgorithm_and_GenSentence");
+    r05_alloc_function(r05c_parser_MakeAlgorithm_and_GenSentence, "parser_MakeAlgorithm_and_GenSentence");
     r05_alloc_insert_pos(n[6]);
     r05_alloc_close_call(n[7]);
     r05_alloc_open_call(n[8]);
@@ -2332,7 +2332,7 @@ static enum r05_fnresult r05c_GenFunctionBody(struct r05_node *arg_begin, struct
   );
 }
 
-static enum r05_fnresult r05c_MakeAlgorithm_and_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_parser_MakeAlgorithm_and_GenSentence(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *ePattern_b_1;
@@ -2758,7 +2758,7 @@ static enum r05_fnresult r05c_ParseSentence(struct r05_node *arg_begin, struct r
     struct r05_node *eTokens_e_1;
     struct r05_node *bb[2] = { 0 };
     struct r05_node *be[2] = { 0 };
-    struct r05_node *n[19] = { 0 };
+    struct r05_node *n[8] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
     /* t.ErrorList t.SymTable ( e.Sentences  ) e.Tokens */
@@ -2775,166 +2775,24 @@ static enum r05_fnresult r05c_ParseSentence(struct r05_node *arg_begin, struct r
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_Fetch, "Fetch");
-    r05_alloc_open_call(n[1]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
-    r05_alloc_insert_pos(n[2]);
-    r05_alloc_open_bracket(n[3]);
-    r05_alloc_close_bracket(n[4]);
-    r05_alloc_open_bracket(n[5]);
-    r05_alloc_close_bracket(n[6]);
-    r05_alloc_open_bracket(n[7]);
-    r05_alloc_close_bracket(n[8]);
-    r05_alloc_insert_pos(n[9]);
-    r05_alloc_close_call(n[10]);
-    r05_alloc_open_call(n[11]);
-    r05_alloc_function(r05c_Seq, "Seq");
-    r05_alloc_function(r05c_ParseSentence_AfterParsePattern, "ParseSentence_AfterParsePattern");
-    r05_alloc_function(r05c_ParseSentence_ParseResult, "ParseSentence_ParseResult");
-    r05_alloc_open_bracket(n[12]);
-    r05_alloc_function(r05c_ParseSentence_AfterParseResult, "ParseSentence_AfterParseResult");
-    r05_alloc_open_bracket(n[13]);
-    r05_alloc_insert_pos(n[14]);
-    r05_alloc_close_bracket(n[15]);
-    r05_alloc_close_bracket(n[16]);
-    r05_alloc_close_call(n[17]);
-    r05_alloc_close_call(n[18]);
-    r05_push_stack(n[18]);
-    r05_push_stack(n[0]);
-    r05_push_stack(n[17]);
-    r05_push_stack(n[11]);
-    r05_link_brackets(n[12], n[16]);
-    r05_link_brackets(n[13], n[15]);
-    r05_push_stack(n[10]);
-    r05_push_stack(n[1]);
-    r05_link_brackets(n[7], n[8]);
-    r05_link_brackets(n[5], n[6]);
-    r05_link_brackets(n[3], n[4]);
-    r05_splice_tvar(n[2], tErrorList_1);
-    r05_splice_tvar(n[2], tSymTable_1);
-    r05_splice_evar(n[9], eTokens_b_1, eTokens_e_1);
-    r05_splice_evar(n[14], eSentences_b_1, eSentences_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  r05_this_is_generated_function();
-  do {
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *ePattern_b_1;
-    struct r05_node *ePattern_e_1;
-    struct r05_node *eTokens_b_1;
-    struct r05_node *eTokens_e_1;
-    struct r05_node *tSrcPos_1;
-    struct r05_node *bb[3] = { 0 };
-    struct r05_node *be[3] = { 0 };
-    struct r05_node *n[5] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.ErrorList t.SymTable t.VarTable ( e.Pattern  ) ( & TkReplace t.SrcPos  ) e.Tokens */
-    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
-      break;
-    if (! r05_function_left(r05c_TkReplace, &bb[2], &be[2]))
-      break;
-    ePattern_b_1 = bb[1];
-    ePattern_e_1 = be[1];
-    eTokens_b_1 = bb[0];
-    eTokens_e_1 = be[0];
-    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
-      break;
-    if (! r05_empty_seq(bb[2], be[2]))
-      break;
-
-    r05_reset_allocator();
-    r05_alloc_insert_pos(n[0]);
+    r05_alloc_function(r05c_ParseSentence_Aux, "ParseSentence_Aux");
     r05_alloc_open_bracket(n[1]);
     r05_alloc_insert_pos(n[2]);
     r05_alloc_close_bracket(n[3]);
-    r05_alloc_insert_pos(n[4]);
-    r05_link_brackets(n[1], n[3]);
-    r05_splice_tvar(n[0], tErrorList_1);
-    r05_splice_tvar(n[0], tSymTable_1);
-    r05_splice_tvar(n[0], tVarTable_1);
-    r05_splice_evar(n[2], ePattern_b_1, ePattern_e_1);
-    r05_splice_evar(n[4], eTokens_b_1, eTokens_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  do {
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *ePattern_b_1;
-    struct r05_node *ePattern_e_1;
-    struct r05_node *eTokens_b_1;
-    struct r05_node *eTokens_e_1;
-    struct r05_node *sNextResultTerm_1;
-    struct r05_node *tSrcPos_1;
-    struct r05_node *bb[3] = { 0 };
-    struct r05_node *be[3] = { 0 };
-    struct r05_node *n[8] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.ErrorList t.SymTable t.VarTable ( e.Pattern  ) ( s.NextResultTerm t.SrcPos e.Info  ) e.Tokens */
-    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
-      break;
-    ePattern_b_1 = bb[1];
-    ePattern_e_1 = be[1];
-    eTokens_b_1 = bb[0];
-    eTokens_e_1 = be[0];
-    if (! r05_svar_left(&sNextResultTerm_1, &bb[2], &be[2]))
-      break;
-    if (! r05_tvar_left(&tSrcPos_1, &bb[2], &be[2]))
-      break;
-    /* Unused closed variable e.Info*/
-
-    r05_reset_allocator();
-    r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
-    r05_alloc_insert_pos(n[1]);
-    r05_alloc_chars("Incorrect pattern termination", 29);
-    r05_alloc_close_call(n[2]);
-    r05_alloc_insert_pos(n[3]);
-    r05_alloc_open_bracket(n[4]);
+    r05_alloc_open_call(n[4]);
+    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
     r05_alloc_insert_pos(n[5]);
-    r05_alloc_close_bracket(n[6]);
-    r05_alloc_insert_pos(n[7]);
-    r05_link_brackets(n[4], n[6]);
-    r05_push_stack(n[2]);
+    r05_alloc_close_call(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_push_stack(n[7]);
     r05_push_stack(n[0]);
-    r05_splice_tvar(n[1], tErrorList_1);
-    r05_splice_tvar(n[1], tSrcPos_1);
-    r05_splice_tvar(n[3], tSymTable_1);
-    r05_splice_tvar(n[3], tVarTable_1);
-    r05_splice_evar(n[5], ePattern_b_1, ePattern_e_1);
-    r05_splice_evar(n[7], eTokens_b_1, eTokens_e_1);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_evar(n[2], eSentences_b_1, eSentences_e_1);
+    r05_splice_tvar(n[5], tErrorList_1);
+    r05_splice_tvar(n[5], tSymTable_1);
+    r05_splice_evar(n[5], eTokens_b_1, eTokens_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
@@ -2945,117 +2803,43 @@ static enum r05_fnresult r05c_ParseSentence_AfterParsePattern(struct r05_node *a
   );
 }
 
-static enum r05_fnresult r05c_ParseSentence_ParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  r05_this_is_generated_function();
-  do {
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *ePattern_b_1;
-    struct r05_node *ePattern_e_1;
-    struct r05_node *eTokens_b_1;
-    struct r05_node *eTokens_e_1;
-    struct r05_node *bb[2] = { 0 };
-    struct r05_node *be[2] = { 0 };
-    struct r05_node *n[11] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* t.ErrorList t.SymTable t.VarTable ( e.Pattern  ) e.Tokens */
-    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
-      break;
-    ePattern_b_1 = bb[1];
-    ePattern_e_1 = be[1];
-    eTokens_b_1 = bb[0];
-    eTokens_e_1 = be[0];
-
-    r05_reset_allocator();
-    r05_alloc_open_bracket(n[0]);
-    r05_alloc_insert_pos(n[1]);
-    r05_alloc_close_bracket(n[2]);
-    r05_alloc_open_call(n[3]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
-    r05_alloc_insert_pos(n[4]);
-    r05_alloc_open_bracket(n[5]);
-    r05_alloc_close_bracket(n[6]);
-    r05_alloc_open_bracket(n[7]);
-    r05_alloc_close_bracket(n[8]);
-    r05_alloc_insert_pos(n[9]);
-    r05_alloc_close_call(n[10]);
-    r05_push_stack(n[10]);
-    r05_push_stack(n[3]);
-    r05_link_brackets(n[7], n[8]);
-    r05_link_brackets(n[5], n[6]);
-    r05_link_brackets(n[0], n[2]);
-    r05_splice_evar(n[1], ePattern_b_1, ePattern_e_1);
-    r05_splice_tvar(n[4], tErrorList_1);
-    r05_splice_tvar(n[4], tSymTable_1);
-    r05_splice_tvar(n[4], tVarTable_1);
-    r05_splice_evar(n[9], eTokens_b_1, eTokens_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return (enum r05_fnresult)(
-    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
-  );
-}
-
-static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
+static enum r05_fnresult r05c_ParseSentence_Aux(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eSentences_b_1;
     struct r05_node *eSentences_e_1;
     struct r05_node *ePattern_b_1;
     struct r05_node *ePattern_e_1;
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
     struct r05_node *eResult_b_1;
     struct r05_node *eResult_e_1;
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    struct r05_node *tSrcPos_1;
-    struct r05_node *bb[5] = { 0 };
-    struct r05_node *be[5] = { 0 };
+    struct r05_node *bb[4] = { 0 };
+    struct r05_node *be[4] = { 0 };
     struct r05_node *n[13] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* ( e.Sentences  ) ( e.Pattern  ) t.ErrorList t.SymTable t.VarTable ( e.Result  ) ( & TkSemicolon t.SrcPos  ) e.Tokens */
+    /* ( e.Sentences  ) ( e.Pattern  ) ( e.Result  ) t.ErrorList t.SymTable e.Tokens */
     if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
       break;
     if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
       break;
     eSentences_b_1 = bb[1];
     eSentences_e_1 = be[1];
     ePattern_b_1 = bb[2];
     ePattern_e_1 = be[2];
+    eResult_b_1 = bb[3];
+    eResult_e_1 = be[3];
     if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
     if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
       break;
-    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
-      break;
-    if (! r05_function_left(r05c_TkSemicolon, &bb[4], &be[4]))
-      break;
-    eResult_b_1 = bb[3];
-    eResult_e_1 = be[3];
     eTokens_b_1 = bb[0];
     eTokens_e_1 = be[0];
-    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
-      break;
-    if (! r05_empty_seq(bb[4], be[4]))
-      break;
 
     r05_reset_allocator();
     r05_alloc_insert_pos(n[0]);
@@ -3086,164 +2870,51 @@ static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *ar
     return R05_SUCCESS;
   } while (0);
 
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
   do {
-    struct r05_node *eSentences_b_1;
-    struct r05_node *eSentences_e_1;
-    struct r05_node *ePattern_b_1;
-    struct r05_node *ePattern_e_1;
     struct r05_node *tErrorList_1;
     struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *eResult_b_1;
-    struct r05_node *eResult_e_1;
     struct r05_node *eTokens_b_1;
     struct r05_node *eTokens_e_1;
-    struct r05_node *tSrcPos_1;
-    struct r05_node *bb[5] = { 0 };
-    struct r05_node *be[5] = { 0 };
-    struct r05_node *n[16] = { 0 };
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[10] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* ( e.Sentences  ) ( e.Pattern  ) t.ErrorList t.SymTable t.VarTable ( e.Result  ) ( & TkCloseBlock t.SrcPos  ) e.Tokens */
-    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
-      break;
-    eSentences_b_1 = bb[1];
-    eSentences_e_1 = be[1];
-    ePattern_b_1 = bb[2];
-    ePattern_e_1 = be[2];
+    /* t.ErrorList t.SymTable e.Tokens */
     if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
       break;
     if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[4], &be[4], &bb[0], &be[0]))
-      break;
-    if (! r05_function_left(r05c_TkCloseBlock, &bb[4], &be[4]))
-      break;
-    eResult_b_1 = bb[3];
-    eResult_e_1 = be[3];
-    eTokens_b_1 = bb[0];
-    eTokens_e_1 = be[0];
-    if (! r05_tvar_left(&tSrcPos_1, &bb[4], &be[4]))
-      break;
-    if (! r05_empty_seq(bb[4], be[4]))
-      break;
-
-    r05_reset_allocator();
-    r05_alloc_insert_pos(n[0]);
-    r05_alloc_open_bracket(n[1]);
-    r05_alloc_insert_pos(n[2]);
-    r05_alloc_open_bracket(n[3]);
-    r05_alloc_open_bracket(n[4]);
-    r05_alloc_insert_pos(n[5]);
-    r05_alloc_close_bracket(n[6]);
-    r05_alloc_open_bracket(n[7]);
-    r05_alloc_insert_pos(n[8]);
-    r05_alloc_close_bracket(n[9]);
-    r05_alloc_close_bracket(n[10]);
-    r05_alloc_close_bracket(n[11]);
-    r05_alloc_open_bracket(n[12]);
-    r05_alloc_function(r05c_TkCloseBlock, "TkCloseBlock");
-    r05_alloc_insert_pos(n[13]);
-    r05_alloc_close_bracket(n[14]);
-    r05_alloc_insert_pos(n[15]);
-    r05_link_brackets(n[12], n[14]);
-    r05_link_brackets(n[1], n[11]);
-    r05_link_brackets(n[3], n[10]);
-    r05_link_brackets(n[7], n[9]);
-    r05_link_brackets(n[4], n[6]);
-    r05_splice_tvar(n[0], tErrorList_1);
-    r05_splice_tvar(n[0], tSymTable_1);
-    r05_splice_evar(n[2], eSentences_b_1, eSentences_e_1);
-    r05_splice_evar(n[5], ePattern_b_1, ePattern_e_1);
-    r05_splice_evar(n[8], eResult_b_1, eResult_e_1);
-    r05_splice_tvar(n[13], tSrcPos_1);
-    r05_splice_evar(n[15], eTokens_b_1, eTokens_e_1);
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  do {
-    struct r05_node *eSentences_b_1;
-    struct r05_node *eSentences_e_1;
-    struct r05_node *ePattern_b_1;
-    struct r05_node *ePattern_e_1;
-    struct r05_node *tErrorList_1;
-    struct r05_node *tSymTable_1;
-    struct r05_node *tVarTable_1;
-    struct r05_node *eResult_b_1;
-    struct r05_node *eResult_e_1;
-    struct r05_node *tUnexpected_1;
-    struct r05_node *eTokens_b_1;
-    struct r05_node *eTokens_e_1;
-    struct r05_node *bb[4] = { 0 };
-    struct r05_node *be[4] = { 0 };
-    struct r05_node *n[16] = { 0 };
-    r05_start_sentence();
-    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
-    /* ( e.Sentences  ) ( e.Pattern  ) t.ErrorList t.SymTable t.VarTable ( e.Result  ) t.Unexpected e.Tokens */
-    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[2], &be[2], &bb[0], &be[0]))
-      break;
-    eSentences_b_1 = bb[1];
-    eSentences_e_1 = be[1];
-    ePattern_b_1 = bb[2];
-    ePattern_e_1 = be[2];
-    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
-      break;
-    if (! r05_brackets_left(&bb[3], &be[3], &bb[0], &be[0]))
-      break;
-    eResult_b_1 = bb[3];
-    eResult_e_1 = be[3];
-    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
       break;
     eTokens_b_1 = bb[0];
     eTokens_e_1 = be[0];
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
-    r05_alloc_chars("semicolon", 9);
-    r05_alloc_close_call(n[2]);
-    r05_alloc_insert_pos(n[3]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_close_bracket(n[3]);
     r05_alloc_open_bracket(n[4]);
-    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_bracket(n[5]);
     r05_alloc_open_bracket(n[6]);
-    r05_alloc_open_bracket(n[7]);
+    r05_alloc_close_bracket(n[7]);
     r05_alloc_insert_pos(n[8]);
-    r05_alloc_close_bracket(n[9]);
-    r05_alloc_open_bracket(n[10]);
-    r05_alloc_insert_pos(n[11]);
-    r05_alloc_close_bracket(n[12]);
-    r05_alloc_close_bracket(n[13]);
-    r05_alloc_close_bracket(n[14]);
-    r05_alloc_tvar(tUnexpected_1);
-    r05_alloc_insert_pos(n[15]);
-    r05_link_brackets(n[4], n[14]);
-    r05_link_brackets(n[6], n[13]);
-    r05_link_brackets(n[10], n[12]);
-    r05_link_brackets(n[7], n[9]);
-    r05_push_stack(n[2]);
+    r05_alloc_close_call(n[9]);
+    r05_push_stack(n[9]);
     r05_push_stack(n[0]);
+    r05_link_brackets(n[6], n[7]);
+    r05_link_brackets(n[4], n[5]);
+    r05_link_brackets(n[2], n[3]);
     r05_splice_tvar(n[1], tErrorList_1);
-    r05_splice_tvar(n[1], tUnexpected_1);
-    r05_splice_tvar(n[3], tSymTable_1);
-    r05_splice_evar(n[5], eSentences_b_1, eSentences_e_1);
-    r05_splice_evar(n[8], ePattern_b_1, ePattern_e_1);
-    r05_splice_evar(n[11], eResult_b_1, eResult_e_1);
-    r05_splice_evar(n[15], eTokens_b_1, eTokens_e_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_evar(n[8], eTokens_b_1, eTokens_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;
@@ -3254,7 +2925,7 @@ static enum r05_fnresult r05c_ParseSentence_AfterParseResult(struct r05_node *ar
   );
 }
 
-static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
+static enum r05_fnresult r05c_DoParsePattern(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *tErrorList_1;
@@ -3303,7 +2974,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -3381,7 +3052,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -3458,7 +3129,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_call(n[2]);
     r05_alloc_function(r05c_ST_AddFunctionCall, "ST_AddFunctionCall");
@@ -3569,7 +3240,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
       r05_reset_allocator();
       r05_alloc_open_call(n[0]);
-      r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+      r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
       r05_alloc_insert_pos(n[1]);
       r05_alloc_open_bracket(n[2]);
       r05_alloc_insert_pos(n[3]);
@@ -3666,7 +3337,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_open_bracket(n[3]);
@@ -3753,7 +3424,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -3831,7 +3502,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -3932,7 +3603,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -4025,7 +3696,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -4123,7 +3794,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -4211,7 +3882,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParsePattern, "ParsePattern");
+    r05_alloc_function(r05c_DoParsePattern, "DoParsePattern");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -4267,7 +3938,7 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     struct r05_node *eTail_e_1;
     struct r05_node *bb[3] = { 0 };
     struct r05_node *be[3] = { 0 };
-    struct r05_node *n[5] = { 0 };
+    struct r05_node *n[6] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
     /* t.ErrorList t.SymTable t.VarTable (  ) ( e.Pattern  ) e.Tail */
@@ -4289,16 +3960,20 @@ static enum r05_fnresult r05c_ParsePattern(struct r05_node *arg_begin, struct r0
     eTail_e_1 = be[0];
 
     r05_reset_allocator();
-    r05_alloc_insert_pos(n[0]);
-    r05_alloc_open_bracket(n[1]);
-    r05_alloc_insert_pos(n[2]);
-    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_ParsePattern_ExpectReplace, "ParsePattern_ExpectReplace");
     r05_alloc_insert_pos(n[4]);
-    r05_link_brackets(n[1], n[3]);
-    r05_splice_tvar(n[0], tErrorList_1);
-    r05_splice_tvar(n[0], tSymTable_1);
-    r05_splice_tvar(n[0], tVarTable_1);
-    r05_splice_evar(n[2], ePattern_b_1, ePattern_e_1);
+    r05_alloc_close_call(n[5]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], ePattern_b_1, ePattern_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_tvar(n[4], tVarTable_1);
     r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
@@ -4425,7 +4100,161 @@ static enum r05_fnresult r05c_StrFromBracket(struct r05_node *arg_begin, struct 
   );
 }
 
+static enum r05_fnresult r05c_ParsePattern_ExpectReplace(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[3] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable ( & TkReplace t.SrcPos  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkReplace, &bb[1], &be[1]))
+      break;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
+      break;
+    if (! r05_empty_seq(bb[1], be[1]))
+      break;
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_call(n[2]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[1], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
+
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[7] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable t.Unexpected e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
+      break;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_open_call(n[1]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_chars("\"=\"", 3);
+    r05_alloc_close_call(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[5]);
+    r05_alloc_close_call(n[6]);
+    r05_push_stack(n[6]);
+    r05_push_stack(n[0]);
+    r05_push_stack(n[3]);
+    r05_push_stack(n[1]);
+    r05_splice_tvar(n[2], tErrorList_1);
+    r05_splice_tvar(n[2], tUnexpected_1);
+    r05_splice_tvar(n[4], tSymTable_1);
+    r05_splice_tvar(n[4], tVarTable_1);
+    r05_splice_evar(n[5], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
 static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tVarTable_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[8] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.VarTable e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tVarTable_1, &bb[0], &be[0]))
+      break;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_open_bracket(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[4]);
+    r05_alloc_close_bracket(n[5]);
+    r05_alloc_insert_pos(n[6]);
+    r05_alloc_close_call(n[7]);
+    r05_push_stack(n[7]);
+    r05_push_stack(n[0]);
+    r05_link_brackets(n[4], n[5]);
+    r05_link_brackets(n[2], n[3]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tSymTable_1);
+    r05_splice_tvar(n[1], tVarTable_1);
+    r05_splice_evar(n[6], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_DoParseResult(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *tErrorList_1;
@@ -4474,7 +4303,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -4552,7 +4381,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -4629,7 +4458,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_call(n[2]);
     r05_alloc_function(r05c_ST_AddFunctionCall, "ST_AddFunctionCall");
@@ -4740,7 +4569,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
       r05_reset_allocator();
       r05_alloc_open_call(n[0]);
-      r05_alloc_function(r05c_ParseResult, "ParseResult");
+      r05_alloc_function(r05c_DoParseResult, "DoParseResult");
       r05_alloc_insert_pos(n[1]);
       r05_alloc_open_bracket(n[2]);
       r05_alloc_insert_pos(n[3]);
@@ -4837,7 +4666,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -4926,7 +4755,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -5030,7 +4859,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_open_bracket(n[2]);
     r05_alloc_insert_pos(n[3]);
@@ -5111,7 +4940,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -5202,7 +5031,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
-    r05_alloc_function(r05c_ParseResult, "ParseResult");
+    r05_alloc_function(r05c_DoParseResult, "DoParseResult");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_EL_AddErrorAt, "EL_AddErrorAt");
     r05_alloc_insert_pos(n[2]);
@@ -5250,7 +5079,7 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     struct r05_node *eTail_e_1;
     struct r05_node *bb[3] = { 0 };
     struct r05_node *be[3] = { 0 };
-    struct r05_node *n[5] = { 0 };
+    struct r05_node *n[6] = { 0 };
     r05_start_sentence();
     r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
     /* t.ErrorList t.SymTable t.VarTable (  ) ( e.Result  ) e.Tail */
@@ -5272,16 +5101,19 @@ static enum r05_fnresult r05c_ParseResult(struct r05_node *arg_begin, struct r05
     eTail_e_1 = be[0];
 
     r05_reset_allocator();
-    r05_alloc_insert_pos(n[0]);
-    r05_alloc_open_bracket(n[1]);
-    r05_alloc_insert_pos(n[2]);
-    r05_alloc_close_bracket(n[3]);
+    r05_alloc_open_bracket(n[0]);
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_close_bracket(n[2]);
+    r05_alloc_open_call(n[3]);
+    r05_alloc_function(r05c_ParseResult_ExpectSemicolon, "ParseResult_ExpectSemicolon");
     r05_alloc_insert_pos(n[4]);
-    r05_link_brackets(n[1], n[3]);
-    r05_splice_tvar(n[0], tErrorList_1);
-    r05_splice_tvar(n[0], tSymTable_1);
-    r05_splice_tvar(n[0], tVarTable_1);
-    r05_splice_evar(n[2], eResult_b_1, eResult_e_1);
+    r05_alloc_close_call(n[5]);
+    r05_push_stack(n[5]);
+    r05_push_stack(n[3]);
+    r05_link_brackets(n[0], n[2]);
+    r05_splice_evar(n[1], eResult_b_1, eResult_e_1);
+    r05_splice_tvar(n[4], tErrorList_1);
+    r05_splice_tvar(n[4], tSymTable_1);
     r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
@@ -5369,6 +5201,135 @@ static enum r05_fnresult r05c_CloseBracketName(struct r05_node *arg_begin, struc
 
     r05_reset_allocator();
     r05_alloc_function(r05c_TkCloseCall, "TkCloseCall");
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
+
+  return (enum r05_fnresult)(
+    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)
+  );
+}
+
+static enum r05_fnresult r05c_ParseResult_ExpectSemicolon(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05_this_is_generated_function();
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[1] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkSemicolon t.SrcPos  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkSemicolon, &bb[1], &be[1]))
+      break;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
+      break;
+    if (! r05_empty_seq(bb[1], be[1]))
+      break;
+
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_evar(n[0], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
+
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *tSrcPos_1;
+    struct r05_node *bb[2] = { 0 };
+    struct r05_node *be[2] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable ( & TkCloseBlock t.SrcPos  ) e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_brackets_left(&bb[1], &be[1], &bb[0], &be[0]))
+      break;
+    if (! r05_function_left(r05c_TkCloseBlock, &bb[1], &be[1]))
+      break;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+    if (! r05_tvar_left(&tSrcPos_1, &bb[1], &be[1]))
+      break;
+    if (! r05_empty_seq(bb[1], be[1]))
+      break;
+
+    r05_reset_allocator();
+    r05_alloc_insert_pos(n[0]);
+    r05_alloc_open_bracket(n[1]);
+    r05_alloc_function(r05c_TkCloseBlock, "TkCloseBlock");
+    r05_alloc_insert_pos(n[2]);
+    r05_alloc_close_bracket(n[3]);
+    r05_alloc_insert_pos(n[4]);
+    r05_link_brackets(n[1], n[3]);
+    r05_splice_tvar(n[0], tErrorList_1);
+    r05_splice_tvar(n[0], tSymTable_1);
+    r05_splice_tvar(n[2], tSrcPos_1);
+    r05_splice_evar(n[4], eTokens_b_1, eTokens_e_1);
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    return R05_SUCCESS;
+  } while (0);
+
+  do {
+    struct r05_node *tErrorList_1;
+    struct r05_node *tSymTable_1;
+    struct r05_node *tUnexpected_1;
+    struct r05_node *eTokens_b_1;
+    struct r05_node *eTokens_e_1;
+    struct r05_node *bb[1] = { 0 };
+    struct r05_node *be[1] = { 0 };
+    struct r05_node *n[5] = { 0 };
+    r05_start_sentence();
+    r05_prepare_argument(&bb[0], &be[0], arg_begin, arg_end);
+    /* t.ErrorList t.SymTable t.Unexpected e.Tokens */
+    if (! r05_tvar_left(&tErrorList_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tSymTable_1, &bb[0], &be[0]))
+      break;
+    if (! r05_tvar_left(&tUnexpected_1, &bb[0], &be[0]))
+      break;
+    eTokens_b_1 = bb[0];
+    eTokens_e_1 = be[0];
+
+    r05_reset_allocator();
+    r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_EL_AddUnexpected, "EL_AddUnexpected");
+    r05_alloc_insert_pos(n[1]);
+    r05_alloc_chars("semicolon", 9);
+    r05_alloc_close_call(n[2]);
+    r05_alloc_insert_pos(n[3]);
+    r05_alloc_tvar(tUnexpected_1);
+    r05_alloc_insert_pos(n[4]);
+    r05_push_stack(n[2]);
+    r05_push_stack(n[0]);
+    r05_splice_tvar(n[1], tErrorList_1);
+    r05_splice_tvar(n[1], tUnexpected_1);
+    r05_splice_tvar(n[3], tSymTable_1);
+    r05_splice_evar(n[4], eTokens_b_1, eTokens_e_1);
     r05_splice_from_freelist(arg_begin);
     r05_splice_to_freelist(arg_begin, arg_end);
     return R05_SUCCESS;

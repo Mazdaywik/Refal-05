@@ -72,8 +72,8 @@ extern enum r05_fnresult r05c_Output(struct r05_node *arg_begin, struct r05_node
 extern enum r05_fnresult r05c_NotFound(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Current(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_FindFiles(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_AnalyzeFile_ByFolders(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_AnalyzeInFolder(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_findfile_AnalyzeFile_ByFolders(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_findfile_AnalyzeInFolder(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_AnalyzeFile_CheckNotFound(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_ExistFile_T(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_AnalyzeFile(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -129,7 +129,7 @@ enum r05_fnresult r05c_FindFiles(struct r05_node *arg_begin, struct r05_node *ar
     r05_alloc_open_call(n[0]);
     r05_alloc_function(r05c_Map, "Map");
     r05_alloc_open_bracket(n[1]);
-    r05_alloc_function(r05c_AnalyzeFile_ByFolders, "AnalyzeFile_ByFolders");
+    r05_alloc_function(r05c_findfile_AnalyzeFile_ByFolders, "findfile_AnalyzeFile_ByFolders");
     r05_alloc_function(r05c_Current, "Current");
     r05_alloc_insert_pos(n[2]);
     r05_alloc_close_bracket(n[3]);
@@ -150,7 +150,7 @@ enum r05_fnresult r05c_FindFiles(struct r05_node *arg_begin, struct r05_node *ar
   );
 }
 
-static enum r05_fnresult r05c_AnalyzeFile_ByFolders(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_findfile_AnalyzeFile_ByFolders(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eFolders_b_1;
@@ -179,7 +179,7 @@ static enum r05_fnresult r05c_AnalyzeFile_ByFolders(struct r05_node *arg_begin, 
     r05_alloc_open_call(n[4]);
     r05_alloc_function(r05c_Map, "Map");
     r05_alloc_open_bracket(n[5]);
-    r05_alloc_function(r05c_AnalyzeInFolder, "AnalyzeInFolder");
+    r05_alloc_function(r05c_findfile_AnalyzeInFolder, "findfile_AnalyzeInFolder");
     r05_alloc_evar(eFileName_b_1, eFileName_e_1);
     r05_alloc_close_bracket(n[6]);
     r05_alloc_insert_pos(n[7]);
@@ -203,7 +203,7 @@ static enum r05_fnresult r05c_AnalyzeFile_ByFolders(struct r05_node *arg_begin, 
   );
 }
 
-static enum r05_fnresult r05c_AnalyzeInFolder(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_findfile_AnalyzeInFolder(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eFileName_b_1;

@@ -67,10 +67,10 @@ extern enum r05_fnresult r05c_GetPPID(struct r05_node *arg_begin, struct r05_nod
 extern enum r05_fnresult r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_LoadFile(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Inc(struct r05_node *arg_begin, struct r05_node *arg_end);
-extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_Success(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_Fails(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EscapeChar(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_FlatLine(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_lexer_FlatLine(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_LexFolding(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_SkipBOM(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_TkChar(struct r05_node *arg_begin, struct r05_node *arg_end);
@@ -126,7 +126,7 @@ extern enum r05_fnresult r05c_TkClose(struct r05_node *arg_begin, struct r05_nod
 extern enum r05_fnresult r05c_StrFromToken(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_DigitFromChar(struct r05_node *arg_begin, struct r05_node *arg_end);
 
-static enum r05_fnresult r05c_FlatLine(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_lexer_FlatLine(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eLine_b_1;
@@ -181,7 +181,7 @@ enum r05_fnresult r05c_LexFolding(struct r05_node *arg_begin, struct r05_node *a
     r05_alloc_function(r05c_SkipBOM, "SkipBOM");
     r05_alloc_open_call(n[2]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_FlatLine, "FlatLine");
+    r05_alloc_function(r05c_lexer_FlatLine, "lexer_FlatLine");
     r05_alloc_open_call(n[3]);
     r05_alloc_function(r05c_LoadFile, "LoadFile");
     r05_alloc_insert_pos(n[4]);

@@ -122,6 +122,7 @@ enum r05_fnresult r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_en
 
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
+    r05_alloc_function(r05c_Mu, "Mu");
     r05_alloc_svar(sFn_1);
     r05_alloc_insert_pos(n[1]);
     r05_alloc_close_call(n[2]);

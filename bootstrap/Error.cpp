@@ -77,7 +77,7 @@ extern enum r05_fnresult r05c_EL_AddUnexpected(struct r05_node *arg_begin, struc
 extern enum r05_fnresult r05c_EL_NoErrors(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EL_HasErrors(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_EL_Destroy(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_WriteBracketedLine(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_error_WriteBracketedLine(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 static enum r05_fnresult r05c_ErrorList(struct r05_node *, struct r05_node *) {
   return (enum r05_fnresult)(
@@ -491,7 +491,7 @@ enum r05_fnresult r05c_EL_Destroy(struct r05_node *arg_begin, struct r05_node *a
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_WriteBracketedLine, "WriteBracketedLine");
+    r05_alloc_function(r05c_error_WriteBracketedLine, "error_WriteBracketedLine");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_close_call(n[2]);
     r05_alloc_function(r05c_EL_HasErrors, "EL_HasErrors");
@@ -508,7 +508,7 @@ enum r05_fnresult r05c_EL_Destroy(struct r05_node *arg_begin, struct r05_node *a
   );
 }
 
-static enum r05_fnresult r05c_WriteBracketedLine(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_error_WriteBracketedLine(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eLine_b_1;

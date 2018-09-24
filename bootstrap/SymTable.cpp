@@ -71,20 +71,20 @@ extern enum r05_fnresult r05c_GN_Entry(struct r05_node *arg_begin, struct r05_no
 static enum r05_fnresult r05c_SymTable(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_Create(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_LoadBuiltins(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_BuiltinDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_symtable_BuiltinDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_BuiltinDeclaration_SwValid(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_Destroy(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Declared(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_Defined(struct r05_node *arg_begin, struct r05_node *arg_end);
 static enum r05_fnresult r05c_PatchReferences(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_PatchReferences_FilterThis(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_symtable_PatchReferences_FilterThis(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_AddDefined(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_AddDeclared(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_AddFunctionCall(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_CheckUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_AddUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_symtable_AddUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end);
 extern enum r05_fnresult r05c_ST_AllFunctions(struct r05_node *arg_begin, struct r05_node *arg_end);
-static enum r05_fnresult r05c_FunctionFromKnown(struct r05_node *arg_begin, struct r05_node *arg_end);
+extern enum r05_fnresult r05c_symtable_FunctionFromKnown(struct r05_node *arg_begin, struct r05_node *arg_end);
 
 static enum r05_fnresult r05c_SymTable(struct r05_node *, struct r05_node *) {
   return (enum r05_fnresult)(
@@ -142,7 +142,7 @@ static enum r05_fnresult r05c_LoadBuiltins(struct r05_node *arg_begin, struct r0
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_BuiltinDeclaration, "BuiltinDeclaration");
+    r05_alloc_function(r05c_symtable_BuiltinDeclaration, "symtable_BuiltinDeclaration");
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_ListOfBuiltin, "ListOfBuiltin");
     r05_alloc_close_call(n[2]);
@@ -161,7 +161,7 @@ static enum r05_fnresult r05c_LoadBuiltins(struct r05_node *arg_begin, struct r0
   );
 }
 
-static enum r05_fnresult r05c_BuiltinDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_symtable_BuiltinDeclaration(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *sNumber_1;
@@ -337,7 +337,7 @@ static enum r05_fnresult r05c_PatchReferences(struct r05_node *arg_begin, struct
     r05_alloc_open_call(n[1]);
     r05_alloc_function(r05c_Map, "Map");
     r05_alloc_open_bracket(n[2]);
-    r05_alloc_function(r05c_PatchReferences_FilterThis, "PatchReferences_FilterThis");
+    r05_alloc_function(r05c_symtable_PatchReferences_FilterThis, "symtable_PatchReferences_FilterThis");
     r05_alloc_insert_pos(n[3]);
     r05_alloc_close_bracket(n[4]);
     r05_alloc_insert_pos(n[5]);
@@ -359,7 +359,7 @@ static enum r05_fnresult r05c_PatchReferences(struct r05_node *arg_begin, struct
   );
 }
 
-static enum r05_fnresult r05c_PatchReferences_FilterThis(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_symtable_PatchReferences_FilterThis(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eName_b_2;
@@ -1129,7 +1129,7 @@ enum r05_fnresult r05c_ST_CheckUnresolved(struct r05_node *arg_begin, struct r05
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
     r05_alloc_function(r05c_Reduce, "Reduce");
-    r05_alloc_function(r05c_AddUnresolved, "AddUnresolved");
+    r05_alloc_function(r05c_symtable_AddUnresolved, "symtable_AddUnresolved");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_close_call(n[2]);
     r05_alloc_open_bracket(n[3]);
@@ -1156,7 +1156,7 @@ enum r05_fnresult r05c_ST_CheckUnresolved(struct r05_node *arg_begin, struct r05
   );
 }
 
-static enum r05_fnresult r05c_AddUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_symtable_AddUnresolved(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *tErrorList_1;
@@ -1229,7 +1229,7 @@ enum r05_fnresult r05c_ST_AllFunctions(struct r05_node *arg_begin, struct r05_no
     r05_reset_allocator();
     r05_alloc_open_call(n[0]);
     r05_alloc_function(r05c_Map, "Map");
-    r05_alloc_function(r05c_FunctionFromKnown, "FunctionFromKnown");
+    r05_alloc_function(r05c_symtable_FunctionFromKnown, "symtable_FunctionFromKnown");
     r05_alloc_insert_pos(n[1]);
     r05_alloc_close_call(n[2]);
     r05_push_stack(n[2]);
@@ -1245,7 +1245,7 @@ enum r05_fnresult r05c_ST_AllFunctions(struct r05_node *arg_begin, struct r05_no
   );
 }
 
-static enum r05_fnresult r05c_FunctionFromKnown(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum r05_fnresult r05c_symtable_FunctionFromKnown(struct r05_node *arg_begin, struct r05_node *arg_end) {
   r05_this_is_generated_function();
   do {
     struct r05_node *eName_b_1;
