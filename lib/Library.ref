@@ -752,6 +752,7 @@ $ENTRY Type {
     subtype = '0';
   } else {
     r05_switch_default_violation(first_term->tag);
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
   }
 
   arg_begin->tag = R05_DATATAG_CHAR;
