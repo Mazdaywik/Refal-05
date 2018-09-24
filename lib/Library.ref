@@ -885,10 +885,6 @@ enum r05_fnresult write_to_stream(
 %%
 
 
-$ENTRY WriteLine {
-  e.Expr = <Prout e.Expr>;
-}
-
 $ENTRY FWriteLine {
 %%
   do {

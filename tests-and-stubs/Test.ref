@@ -1,5 +1,5 @@
 *$FROM Library
-$EXTERN Add, Sub, WriteLine, Card;
+$EXTERN Add, Sub, Prout, Card;
 
 DoMatchBrackets {
   (e.Brackets-B '!' s.Left s.Right e.Brackets-E)
@@ -18,7 +18,7 @@ DoMatchBrackets {
 
   (e.Brackets-B '!' s.OtherLeft s.OtherRight e.Brackets-E)
   (t.MultiBracket e.Scanned s.Left) (e.Inner) s.OtherRight e.Tail =
-    <WriteLine
+    <Prout
       'Unballansed bracket: expected cobracket for ''' s.Left
       ''', got''' s.OtherRight ''
     >;
@@ -29,10 +29,10 @@ DoMatchBrackets {
     >;
 
   (e.Brackets) '$' (e.Scanned) =
-    <WriteLine 'Brackets ballanced: ' e.Scanned>;
+    <Prout 'Brackets ballanced: ' e.Scanned>;
 
   (e.Brackets) t.MultiBracket (e.Scanned) e.Tail =
-    <WriteLine 'Found unclosed brackets ' t.MultiBracket ( e.Scanned )>;
+    <Prout 'Found unclosed brackets ' t.MultiBracket ( e.Scanned )>;
 }
 
 Brackets { = '!()!{}![]!<>'; }
@@ -46,7 +46,7 @@ MatchBrackets {
 }
 
 Test1 {
-  = <WriteLine
+  = <Prout
     <MatchBrackets
       'Brackets { = (''()'') (''{}'') (''[]'') (''<>''); }'
       'abcd'
@@ -62,7 +62,7 @@ Fib {
 }
 
 Test2 {
-  = <WriteLine <Fib 10>>;
+  = <Prout <Fib 10>>;
 }
 
 Copy3 {
@@ -70,11 +70,11 @@ Copy3 {
 }
 
 Test3 {
-  = <WriteLine> <WriteLine '!' <Copy3 'Saluton'> '!'>;
+  = <Prout> <Prout '!' <Copy3 'Saluton'> '!'>;
 }
 
 Test4 {
-  = <WriteLine '"' <Card> '"'>;
+  = <Prout '"' <Card> '"'>;
 }
 
 $EXTERN Arg;
@@ -95,7 +95,7 @@ Test6 {
 $EXTERN ExistFile;
 
 TestFile {
-  e.FileName = <WriteLine e.FileName ' - ' <ExistFile e.FileName>>;
+  e.FileName = <Prout e.FileName ' - ' <ExistFile e.FileName>>;
 }
 
 Test7 {
@@ -115,16 +115,16 @@ Test9 {
 $EXTERN IntFromStr, StrFromInt;
 
 Test10 {
-  = <WriteLine <IntFromStr <Card>>>;
+  = <Prout <IntFromStr <Card>>>;
 }
 
 Test11 {
-  = <WriteLine '"' <StrFromInt 10> '"'>;
+  = <Prout '"' <StrFromInt 10> '"'>;
 }
 
 ExecuteAll {
   s.Function e.Tail =
-    <WriteLine '###' s.Function '###'>
+    <Prout '###' s.Function '###'>
     <s.Function>
     <ExecuteAll e.Tail>;
 

@@ -1,5 +1,5 @@
 *$FROM Library
-$EXTERN StrFromInt, WriteLine;
+$EXTERN StrFromInt, Prout;
 
 *$FROM Lexer
 $EXTERN TkError, TkUnexpected, StrFromToken;
@@ -63,5 +63,5 @@ $ENTRY EL-Destroy {
 }
 
 WriteBracketedLine {
-  (e.Line) = <WriteLine e.Line>;
+  (e.Line) = <Prout e.Line>;
 }

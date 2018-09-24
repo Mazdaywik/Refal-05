@@ -5,7 +5,7 @@ $EXTERN ArgList, LoadFile, Map, DelAccumulator, MapReduce, Inc;
 $EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
 
 *$FROM Library
-$EXTERN WriteLine, Success, Fails, System, Exit, StrFromInt;
+$EXTERN Prout, Success, Fails, System, Exit, StrFromInt;
 
 *$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
@@ -30,7 +30,7 @@ Main {
 
 FindFiles-Compilers {
   (CmdLineError e.Message) =
-    <WriteLine 'COMMAND LINE ERROR: ' e.Message>;
+    <Prout 'COMMAND LINE ERROR: ' e.Message>;
 
   t.Compiler (e.Folders) e.Files =
     <FindFiles-Compilers-SwFound
@@ -54,7 +54,7 @@ FindFiles-Compilers-SwFound {
 
 PrintNotFound {
   (NotFound e.FileName) =
-    <WriteLine 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
+    <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
 
   (Output e.FileName) = ;
 
@@ -63,10 +63,10 @@ PrintNotFound {
 
 ProcessEachSource {
   (Output e.OutputName) =
-    <WriteLine '+Linking ' e.OutputName> (e.OutputName);
+    <Prout '+Linking ' e.OutputName> (e.OutputName);
 
   (Source (e.Source) e.OutputName) =
-    <WriteLine '*Compiling ' e.Source ':'>
+    <Prout '*Compiling ' e.Source ':'>
     <ProcessEachSource-SwSuccess
       <CompileFile (e.Source) e.OutputName>
     >;
@@ -80,11 +80,11 @@ ProcessEachSource-SwSuccess {
 
 CheckCompilationResult {
   t.Compiler e.Outputs-B Fails e.Outputs-E =
-    <WriteLine '*** COMPILATION FAILED ***'>;
+    <Prout '*** COMPILATION FAILED ***'>;
 
   t.Compiler e.Outputs =
     <Link t.Compiler e.Outputs>
-    <WriteLine '*** Compilation successed ***'>;
+    <Prout '*** Compilation successed ***'>;
 }
 
 Link {
@@ -143,7 +143,7 @@ Lower {
 ScanCollisions {
   e.Files-B (e.FileName 0 (Output e.Output1)) e.Files-M
   (e.FileName 0 (Output e.Output2)) e.Files-E =
-    <WriteLine
+    <Prout
       'COMMAND LINE ERROR: output files ' e.Output1 ' and '
       e.Output2 ' has some filename ' e.FileName
     >

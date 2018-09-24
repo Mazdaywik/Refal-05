@@ -1,8 +1,8 @@
-$EXTERN GetEnv, WriteLine;
+$EXTERN GetEnv, Prout;
 
 $ENTRY Go {
   =
-    <WriteLine '@1' <GetEnv 'Xyzzy'>>
-    <WriteLine '@2' <GetEnv 'path'>>
-    <WriteLine '@3' <GetEnv 'TEMP'>>;
+    <Prout '@1' <GetEnv 'Xyzzy'>>
+    <Prout '@2' <GetEnv 'path'>>
+    <Prout '@3' <GetEnv 'TEMP'>>;
 }
