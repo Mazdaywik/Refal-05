@@ -92,7 +92,7 @@ $ENTRY GenSentence {
     <SkipIndentAccum
       <MapReduce GenCommand ('    ' /* отступ */) e.Algorithm>
     >
-    ('  } while ( 0 );')
+    ('  } while (0);')
     ();
 }
 
