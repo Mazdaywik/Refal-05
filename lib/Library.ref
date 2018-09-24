@@ -470,34 +470,52 @@ $ENTRY Ord {
 */
 %%
 enum output_func_type {
-  PRINT, PROUT,
+  PRINT, PROUT, PUT, PUTOUT,
 };
 
 static enum r05_fnresult output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  FILE *output, enum output_func_type type
+  enum output_func_type type
 );
 %%
 
 $ENTRY Print {
 %%
-  return output_func(arg_begin, arg_end, stdout, PRINT);
+  return output_func(arg_begin, arg_end, PRINT);
 %%
 }
 
 %%
 static enum r05_fnresult output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  FILE *output, enum output_func_type type
+  enum output_func_type type
 ) {
   struct r05_node *callee = arg_begin->next;
-  struct r05_node *p;
+  struct r05_node *p, *before_expr;
+  FILE *output;
+
+  if (type == PRINT || type == PROUT) {
+    before_expr = callee;
+    output = stdout;
+  } else if (type == PUT || type == PUTOUT) {
+    struct r05_node *pfile_no = callee->next;
+
+    if (R05_DATATAG_NUMBER != pfile_no->tag) {
+      r05_recognition_impossible();
+      return R05_RECOGNITION_IMPOSSIBLE;        /* suppress warning */
+    }
+
+    before_expr = pfile_no;
+    output = open_numbered((unsigned int) pfile_no->info.number, "w");
+  } else {
+    r05_switch_default_violation(type);
+  }
 
 #define CHECK_PRINTF(printf_call) \
   ((printf_call) >= 0 ? (void) 0 \
   : r05_builtin_error("Error in call " #printf_call))
 
-  for (p = callee->next; p != arg_end; p = p->next) {
+  for (p = before_expr->next; p != arg_end; p = p->next) {
     switch (p->tag) {
       case R05_DATATAG_CHAR:
         CHECK_PRINTF(fprintf(output, "%c", p->info.char_));
@@ -530,14 +548,18 @@ static enum r05_fnresult output_func(
 
   CHECK_PRINTF(fprintf(output, "\n"));
 
-  if (type == PRINT) {
-    r05_splice_to_freelist(arg_begin, callee);
+#undef CHECK_PRINTF
+
+  if (type == PRINT || type == PUT) {
+    r05_splice_to_freelist(arg_begin, before_expr);
     r05_splice_to_freelist(arg_end, arg_end);
-  } else if (type == PROUT) {
+  } else if (type == PROUT || type == PUTOUT) {
     r05_splice_to_freelist(arg_begin, arg_end);
   } else {
     r05_switch_default_violation(type);
   }
+
+  fflush(output);
 
   return R05_SUCCESS;
 }
@@ -549,16 +571,30 @@ static enum r05_fnresult output_func(
 */
 $ENTRY Prout {
 %%
-  return output_func(arg_begin, arg_end, stdout, PROUT);
+  return output_func(arg_begin, arg_end, PROUT);
 %%
 }
 
 
-* 26 Put
-$EENUM Put;
+/**
+  26. <Put s.FileNo e.Expr> == e.Expr
+*/
+$ENTRY Put {
+%%
+  return output_func(arg_begin, arg_end, PUT);
+%%
+}
 
-* 27 Putout
-$EENUM Putout;
+
+/**
+  27. <Putout s.FileNo e.Expr> == []
+*/
+$ENTRY Putout {
+%%
+  return output_func(arg_begin, arg_end, PUTOUT);
+%%
+}
+
 
 * 28 Rp
 $EENUM Rp;
