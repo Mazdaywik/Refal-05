@@ -813,14 +813,119 @@ $EENUM Ev-met;
 * 50 Residue
 $EENUM Residue;
 
-* 51 GetEnv
-** $EENUM GetEnv;
 
-* 52 System
-** $EENUM System;
+/**
+  51. <GetEnv e.EnvName> == e.EnvValue
+      e.EnvName, e.EnvValue ::= s.CHAR*
+*/
+$ENTRY GetEnv {
+%%
+  struct r05_node *eEnvName_b, *eEnvName_e;
+  char env_name[2001];
+  size_t env_name_len;
+  const char *env_value;
 
-* 53 Exit
-** $EENUM Exit;
+  r05_prepare_argument(&eEnvName_b, &eEnvName_e, arg_begin, arg_end);
+  env_name_len =
+    r05_read_chars(env_name, sizeof(env_name) - 1, &eEnvName_b, &eEnvName_e);
+
+  if (! r05_empty_seq(eEnvName_b, eEnvName_e)) {
+    if (R05_DATATAG_CHAR == eEnvName_b->tag) {
+      r05_builtin_error("very long environment variable name");
+    } else {
+      r05_recognition_impossible();
+    }
+
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  env_name[env_name_len] = '\0';
+  env_value = getenv(env_name);
+  if (! env_value) {
+    env_value = "";
+  }
+
+  r05_reset_allocator();
+  r05_alloc_string(env_value);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
+
+/**
+  52. <System e.Command> == s.RetCode
+      s.RetCode ::= s.NUMBER
+*/
+$ENTRY System {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *eCommand_b, *eCommand_e;
+  char command[2001];
+  size_t command_len;
+  int retcode;
+
+  r05_prepare_argument(&eCommand_b, &eCommand_e, arg_begin, arg_end);
+  command_len =
+    r05_read_chars(command, sizeof(command) - 1, &eCommand_b, &eCommand_e);
+
+  if (! r05_empty_seq(eCommand_b, eCommand_e)) {
+    if (R05_DATATAG_CHAR == eCommand_b->tag) {
+      r05_builtin_error("very long command line");
+    } else {
+      r05_recognition_impossible();
+    }
+
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  command[command_len] = '\0';
+  fflush(NULL);
+  retcode = system(command);
+
+#if defined(WIFEXITED) && defined(WEXITSTATUS)
+  if (WIFEXITED(retcode)) {
+    retcode = WEXITSTATUS(retcode);
+  } else {
+    retcode = -1;
+  }
+#endif  /* defined(WIFEXITED) && defined(WEXITSTATUS) */
+
+  arg_begin->tag = R05_DATATAG_NUMBER;
+  arg_begin->info.number = (r05_number) retcode;
+  r05_splice_to_freelist(callee, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
+
+/**
+  53. <Exit s.RetCode>
+*/
+$ENTRY Exit {
+%%
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *pretcode = callable->next;
+  int retcode;
+
+  if (
+    pretcode == arg_end
+    || R05_DATATAG_NUMBER != pretcode->tag
+    || pretcode->next != arg_end
+  ) {
+    r05_recognition_impossible();
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  retcode = (int) pretcode->info.number;
+  r05_exit(retcode);
+
+  return R05_SUCCESS;   /* suppress warning */
+%%
+}
 
 
 /**
@@ -849,8 +954,54 @@ $ENTRY Close {
 }
 
 
-* 55 ExistFile
-** $EENUM ExistFile;
+/**
+  55. <ExistFile e.FileName>
+        == True
+        == False
+      e.FileName ::= s.CHAR+
+*/
+$EENUM True, False;
+
+$ENTRY ExistFile {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *eFileName_b, *eFileName_e;
+  char filename[FILENAME_MAX + 1];
+  size_t filename_len;
+  FILE *file;
+
+  r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
+  filename_len =
+    r05_read_chars(filename, sizeof(filename) - 1, &eFileName_b, &eFileName_e);
+
+  if (! r05_empty_seq(eFileName_b, eFileName_e)) {
+    if (R05_DATATAG_CHAR == eFileName_b->tag) {
+      r05_builtin_error("very long filename");
+    } else {
+      r05_recognition_impossible();
+    }
+
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  filename[filename_len] = '\0';
+  file = fopen(filename, "r");
+
+  arg_begin->tag = R05_DATATAG_FUNCTION;
+  if (file != NULL) {
+    arg_begin->info.function.ptr = r05c_True;
+    arg_begin->info.function.name = "True";
+  } else {
+    arg_begin->info.function.ptr = r05c_False;
+    arg_begin->info.function.name = "False";
+  }
+
+  r05_splice_to_freelist(callee, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 56 GetCurrentDirectory
 $EENUM GetCurrentDirectory;
@@ -1020,200 +1171,4 @@ $EENUM GetPPID;
 
 * Основные перечисления
 
-$EENUM Success, Fails, True, False;
-
-
-%%
-namespace {
-
-enum r05_fnresult string_from_seq(
-  std::vector<char>& string, struct r05_node *begin, struct r05_node *end
-) {
-  std::vector<char> result;
-
-  enum { cBufLen = 100 };
-  char buffer[cBufLen + 1] = { 0 };
-
-  for ( ; ; ) {
-    unsigned read = r05_read_chars(buffer, cBufLen, &begin, &end);
-
-    if (read == 0) {
-      break;
-    }
-
-    // В текущей версии Open Watcom (и форка Open Watcom V2) есть ошибка
-    // в функции vector::insert, которая возникает в случае,
-    // если во время вставки вектор увеличивает свою ёмкость (capacity).
-    // Для обхода этой ошибки предварительно резервируем место.
-    result.reserve(result.size() + read + 1);
-
-    result.insert(result.end(), buffer, buffer + read);
-  }
-
-  /*
-    Здесь r05_empty_seq(begin, end) || (begin->tag != cDataChar).
-  */
-
-  if (r05_empty_seq(begin, end)) {
-    result.push_back('\0');
-    string.swap(result);
-    return R05_SUCCESS;
-  } else {
-    // здесь begin->tag != cDataChar
-    return R05_RECOGNITION_IMPOSSIBLE;
-  }
-}
-
-} // unnamed namespace
-%%
-
-
-$ENTRY ExistFile {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *eFileName_b_1;
-    struct r05_node *eFileName_e_1;
-    // e.FileName
-    eFileName_b_1 = bb_0;
-    eFileName_e_1 = be_0;
-
-    std::vector<char> fname;
-
-    enum r05_fnresult fname_res =
-      string_from_seq(fname, eFileName_b_1, eFileName_e_1);
-
-    if (fname_res != R05_SUCCESS)
-      return fname_res;
-
-    r05_reset_allocator();
-    struct r05_node *res = arg_begin;
-
-    struct r05_node *ans = 0;
-    if (FILE *f = fopen(&fname[0], "r")) {
-      // Файл существует
-      fclose(f);
-
-      refalrts::alloc_name(ans, r05c_True, "True");
-    } else {
-      // Файл по-видимому не существует
-      refalrts::alloc_name(ans, r05c_False, "False");
-    }
-
-    refalrts::splice_elem(res, ans);
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
-
-$ENTRY GetEnv {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-    struct r05_node *eEnvName_b_1;
-    struct r05_node *eEnvName_e_1;
-    // e.EnvName
-    eEnvName_b_1 = bb_0;
-    eEnvName_e_1 = be_0;
-
-    std::vector<char> envname;
-
-    enum r05_fnresult envname_res =
-      string_from_seq(envname, eEnvName_b_1, eEnvName_e_1);
-
-    if (envname_res != R05_SUCCESS)
-      return envname_res;
-
-    r05_reset_allocator();
-
-    const char *envres = getenv(& envname[0]);
-
-    if (envres != 0) {
-      struct r05_node *env_begin;
-      struct r05_node *env_end;
-
-      refalrts::alloc_string(env_begin, env_end, envres);
-
-      refalrts::splice_evar(arg_begin, env_begin, env_end);
-
-      //struct r05_node *char_pos;
-      //
-      //for (const char *env = envres; *env != '\0'; ++ env) {
-      //  refalrts::alloc_char(char_pos, *env);
-      //  refalrts::splice_elem(res, char_pos);
-      //}
-    }
-
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
-
-$ENTRY Exit {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *sCode_1;
-    // s.Code
-    if (! r05_svar_left(&sCode_1, &bb_0, &be_0))
-      break;
-    if (sCode_1->tag != R05_DATATAG_NUMBER)
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    r05_exit((int) sCode_1->info.number);
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
-
-$ENTRY System {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *eCommand_b_1;
-    struct r05_node *eCommand_e_1;
-    // e.Command
-    eCommand_b_1 = bb_0;
-    eCommand_e_1 = be_0;
-
-    std::vector<char> command;
-
-    enum r05_fnresult read_res =
-      string_from_seq(command, eCommand_b_1, eCommand_e_1);
-
-    if (read_res != R05_SUCCESS)
-      return read_res;
-
-    fflush(stdout);
-    fflush(stderr);
-
-    system(&command[0]);
-
-    r05_reset_allocator();
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
-}
+$EENUM Success, Fails;

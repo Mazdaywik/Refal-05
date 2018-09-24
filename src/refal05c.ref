@@ -89,9 +89,13 @@ CheckCompilationResult {
 
 Link {
   (CompileCommand e.CommandLine) e.Files =
-    <System e.CommandLine <Map QuoteFile e.Files>>;
+    <IgnoreRetcode <System e.CommandLine <Map QuoteFile e.Files>>>;
 
   (NoCompile) e.Files = /* ничего не делаем */;
+}
+
+IgnoreRetcode {
+  e.RetCode = /* пусто */;
 }
 
 QuoteFile {
