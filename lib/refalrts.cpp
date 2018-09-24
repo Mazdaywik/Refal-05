@@ -733,11 +733,11 @@ static void free_memory() {
 #ifndef DONT_PRINT_STATISTICS
   fprintf(
     stderr,
-    "Memory used %d nodes, %d * %lu = %lu bytes\n",
-    s_memory_use,
-    s_memory_use,
-    static_cast<unsigned long>(sizeof(struct r05_node)),
-    static_cast<unsigned long>(s_memory_use * sizeof(struct r05_node))
+    "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
+    (unsigned long int) s_memory_use,
+    (unsigned long int) s_memory_use,
+    (unsigned long int) sizeof(struct r05_node),
+    (unsigned long int) (s_memory_use * sizeof(struct r05_node))
   );
 #endif  /* DONT_PRINT_STATISTICS */
 }
