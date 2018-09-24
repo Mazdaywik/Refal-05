@@ -790,23 +790,22 @@ static void copy_nonempty_evar(
 ) {
   clock_t start_copy_time = clock();
 
-  struct r05_node *res = 0;
   struct r05_node *bracket_stack = 0;
 
   while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    res = r05_alloc_node(evar_b_sample->tag);
+    struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
 
-    if (is_open_bracket(res)) {
-      res->info.link = bracket_stack;
-      bracket_stack = res;
-    } else if (is_close_bracket(res)) {
+    if (is_open_bracket(copy)) {
+      copy->info.link = bracket_stack;
+      bracket_stack = copy;
+    } else if (is_close_bracket(copy)) {
       struct r05_node *open_cobracket = bracket_stack;
 
       assert(bracket_stack != 0);
       bracket_stack = bracket_stack->info.link;
-      r05_link_brackets(open_cobracket, res);
+      r05_link_brackets(open_cobracket, copy);
     } else {
-      res->info = evar_b_sample->info;
+      copy->info = evar_b_sample->info;
     }
 
     r05_move_left(&evar_b_sample, &evar_e_sample);

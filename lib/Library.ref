@@ -126,7 +126,7 @@ static void read_from_stream(FILE *input) {
   int cur_char;
 
   while (cur_char = fgetc(input), cur_char != EOF && cur_char != '\n') {
-    r05_alloc_char(cur_char);
+    r05_alloc_char((char) cur_char);
   }
 
   if (cur_char == EOF) {
@@ -316,7 +316,7 @@ $ENTRY Lower {
 
   while (p != arg_end) {
     if (p->tag == R05_DATATAG_CHAR) {
-      p->info.char_ = tolower(p->info.char_);
+      p->info.char_ = (char) tolower(p->info.char_);
     }
     p = p->next;
   }
@@ -680,7 +680,7 @@ $ENTRY Symb {
   if (number > 0) {
     while (number != 0) {
       -- cur_digit;
-      *cur_digit = (number % 10) + '0';
+      *cur_digit = (char) ((number % 10) + '0');
       number /= 10;
     }
 
@@ -778,7 +778,7 @@ $ENTRY Upper {
 
   while (p != arg_end) {
     if (p->tag == R05_DATATAG_CHAR) {
-      p->info.char_ = toupper(p->info.char_);
+      p->info.char_ = (char) toupper(p->info.char_);
     }
     p = p->next;
   }
