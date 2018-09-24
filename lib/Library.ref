@@ -1,9 +1,8 @@
 %%
-#include <stdio.h>
-#include <string.h>
-#include <vector>
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 %%
 
 
@@ -1018,6 +1017,7 @@ $EENUM Explode_Ext;
 * 60 TimeElapsed
 $EENUM TimeElapsed;
 
+
 /**
   61. <Compare s.X s.Y>
         == '-' | '0' | '+'
@@ -1056,6 +1056,7 @@ $ENTRY Compare {
   return R05_SUCCESS;
 %%
 }
+
 
 * 62 DeSysfun
 $EENUM DeSysfun;
