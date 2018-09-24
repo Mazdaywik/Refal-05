@@ -296,8 +296,30 @@ $EENUM Last;
 * 17 Lenw
 $EENUM Lenw;
 
-* 18 Lower
-$EENUM Lower;
+
+/**
+  18. <Lower e.Expr> == e.Expr’
+
+  В e.Expr’ все буквы приведены к нижнему регистру
+*/
+$ENTRY Lower {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_CHAR) {
+      p->info.char_ = tolower(p->info.char_);
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
 
 
 /**
@@ -678,8 +700,30 @@ $EENUM Time;
 * 33 Type
 ** $EENUM Type;
 
-* 34 Upper
-$EENUM Upper;
+/**
+  34. <Upper e.Expr> == e.Expr’
+
+  В e.Expr’ все буквы приведены к верхнему регистру
+*/
+$ENTRY Upper {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_CHAR) {
+      p->info.char_ = toupper(p->info.char_);
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 35 Sysfun
 $EENUM Sysfun;
