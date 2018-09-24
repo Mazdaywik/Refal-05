@@ -472,8 +472,7 @@ ParseSentence-AfterParseResult {
   (e.Sentences) (e.Pattern)
   t.ErrorList t.SymTable t.VarTable
   (e.Result) (TkCloseBlock t.SrcPos) e.Tokens =
-    <EL-AddErrorAt t.ErrorList t.SrcPos 'Missed semicolon'>
-    t.SymTable
+    t.ErrorList t.SymTable
     (e.Sentences ((e.Pattern) (e.Result)))
     (TkCloseBlock t.SrcPos) e.Tokens;
 
