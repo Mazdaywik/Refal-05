@@ -465,11 +465,30 @@ $ENTRY Open {
 /**
   24. <Print e.Expr> == e.Expr
 */
+%%
+enum output_func_type {
+  PRINT, PROUT,
+};
+
+static enum r05_fnresult output_func(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  FILE *output, enum output_func_type type
+);
+%%
+
 $ENTRY Print {
 %%
+  return output_func(arg_begin, arg_end, stdout, PRINT);
+%%
+}
+
+%%
+static enum r05_fnresult output_func(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  FILE *output, enum output_func_type type
+) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p;
-  FILE *output = stdout;
 
 #define CHECK_PRINTF(printf_call) \
   ((printf_call) >= 0 ? (void) 0 \
@@ -508,15 +527,29 @@ $ENTRY Print {
 
   CHECK_PRINTF(fprintf(output, "\n"));
 
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
+  if (type == PRINT) {
+    r05_splice_to_freelist(arg_begin, callee);
+    r05_splice_to_freelist(arg_end, arg_end);
+  } else if (type == PROUT) {
+    r05_splice_to_freelist(arg_begin, arg_end);
+  } else {
+    r05_switch_default_violation(type);
+  }
 
   return R05_SUCCESS;
+}
+%%
+
+
+/**
+  25. <Prout e.Expr> == []
+*/
+$ENTRY Prout {
+%%
+  return output_func(arg_begin, arg_end, stdout, PROUT);
 %%
 }
 
-* 25 Prout
-$EENUM Prout;
 
 * 26 Put
 $EENUM Put;
@@ -853,29 +886,7 @@ enum r05_fnresult write_to_stream(
 
 
 $ENTRY WriteLine {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *eLine_b_1;
-    struct r05_node *eLine_e_1;
-    eLine_b_1 = bb_0;
-    eLine_e_1 = be_0;
-
-    enum r05_fnresult fnres = write_to_stream(stdout, eLine_b_1, eLine_e_1);
-
-    if (fnres != R05_SUCCESS)
-      return fnres;
-
-    r05_reset_allocator();
-    r05_splice_to_freelist(arg_begin, arg_end);
-    return fnres;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
+  e.Expr = <Prout e.Expr>;
 }
 
 $ENTRY FWriteLine {
