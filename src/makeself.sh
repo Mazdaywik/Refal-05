@@ -1,17 +1,28 @@
-#!/bin/sh
-[ -e refal05c ] || cp ../bin/refal05c refal05c
-[ -e refal05c-s ] || cp ../bin/refal05c refal05c-s
-# Копирование необходимо при компиляции при помощи Cygwin или MSYS,
-# поскольку на платформе Windows невозможно перезаписать исполнимый
-# файл, если соответствующая ему программма выполняется.
-cp refal05c refal05c_
+#!/bin/bash
 (
   MODULES="refal05c Algorithm Error Escape FindFile Generator Lexer
-    ParseCmdLine Parser SymTable
-    Library LibraryEx refalrts"
-  ./refal05c_ +c "g++ -I../lib -orefal05c" +d ../lib $MODULES
+    ParseCmdLine Parser SymTable LibraryEx"
+  MODULES=$(echo $MODULES)
+
+  mkdir -p ../bin
+
+  if [ "$1" == "stable" ]; then
+    refc $MODULES
+    mv *.rsl ../bin
+    EXECUTABLE="refgo ../bin(${MODULES// /+})"
+  else
+    EXECUTABLE="../bin/refal05c"
+  fi
+
+  CPPLINE="g++ -I../lib -orefal05c"
+  echo Y | $EXECUTABLE +c "$CPPLINE" +d ../lib $MODULES Library refalrts
+
+  # Копирование необходимо при компиляции при помощи Cygwin или MSYS,
+  # поскольку на платформе Windows невозможно перезаписать исполнимый
+  # файл, если соответствующая ему программма выполняется.
+  # Поэтому создаём файл в текущей папке и перекладываем в ../bin
+  mv refal05c ../bin
+
+  mkdir -p cfiles
+  mv *.cpp ../lib/Library.cpp cfiles
 )
-mv *.cpp ../bootstrap
-mv ../lib/Library*.cpp ../bootstrap
-cp ../lib/*.cpp ../bootstrap
-cp refal05c ../bin

@@ -1,19 +1,28 @@
 @echo off
 setlocal
   set MODULES=refal05c Algorithm Error Escape FindFile Generator Lexer
-  set MODULES=%MODULES% ParseCmdLine Parser SymTable
-  set MODULES=%MODULES% Library LibraryEx refalrts
+  set MODULES=%MODULES% ParseCmdLine Parser SymTable LibraryEx
+
+  md ..\bin 2>NUL
+
+  if {%1}=={stable} (
+    for %%r in (%MODULES%) do refc %%r
+    move *.rsl ..\bin >NUL
+    set EXECUTABLE=refgo ../bin^(%MODULES: =+%^)
+  ) else (
+    set EXECUTABLE=..\bin\refal05c.exe
+  )
 
   call ..\c-plus-plus.conf.bat
-  if not exist refal05c.exe copy ..\bin\refal05c.exe refal05c.exe
-  if not exist refal05c-s.exe copy ..\bin\refal05c.exe refal05c-s.exe
-  copy refal05c.exe refal05c_.exe >NUL
-  refal05c_ +c "%CPPLINE% -I..\lib" +d ..\lib %MODULES%
+  set CPPLINE=%CPPLINE% -I..\lib
+  echo Y|%EXECUTABLE% +c "%CPPLINE%" +d ..\lib %MODULES% Library refalrts
   if exist a.exe move a.exe refal05c.exe
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
-  move *.cpp ..\bootstrap >NUL
-  move ..\lib\Library*.cpp ..\bootstrap >NUL
-  copy ..\lib\*.cpp ..\bootstrap >NUL
-  copy refal05c.exe ..\bin >NUL
+
+  move refal05c.exe ..\bin >NUL
+
+  md cfiles 2>NUL
+  move *.cpp cfiles >NUL
+  move ..\lib\Library.cpp cfiles >NUL
 endlocal
