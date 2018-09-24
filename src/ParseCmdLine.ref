@@ -11,7 +11,7 @@ $ENTRY ParseCommandLine {
     <DoParseCommandLine (NoCompile) (/* files */) (/* folders */) e.Arguments>;
 }
 
-$EENUM NoCompile, CompileCommand, CmdLineError;
+*$EENUM NoCompile, CompileCommand, CmdLineError
 
 DoParseCommandLine {
   (NoCompile) (e.ScannedFiles) (e.Folders) ('-c') (e.CompileCommand) e.Options =

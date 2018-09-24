@@ -5,12 +5,12 @@ $EXTERN Map, LoadFile, Inc, Success, Fails;
 $EXTERN EscapeChar;
 
 
-FlatLine {
+$ENTRY lexer_FlatLine {
   (e.Line) = e.Line '\n';
 }
 
 $ENTRY LexFolding {
-  e.FileName = <Scan 1 1 <SkipBOM <Map FlatLine <LoadFile e.FileName>>>>;
+  e.FileName = <Scan 1 1 <SkipBOM <Map lexer_FlatLine <LoadFile e.FileName>>>>;
 }
 
 SkipBOM {
@@ -20,23 +20,22 @@ SkipBOM {
   e.Content = e.Content;
 }
 
-$EENUM
-  TkChar,
-  TkCloseCall, TkCloseBlock, TkCloseBracket,
-  TkComma,
-  TkDirective,
-  TkEOF,
-  TkError,
-  TkName,
-  TkNative,
-  TkNumber,
-  TkOpenCall, TkOpenBlock, TkOpenBracket,
-  TkReplace,
-  TkSemicolon,
-  TkUnexpected,
-  TkVariable;
+*$EENUM TkChar
+*$EENUM TkCloseCall, TkCloseBlock, TkCloseBracket
+*$EENUM TkComma
+*$EENUM TkDirective
+*$EENUM TkEOF
+*$EENUM TkError
+*$EENUM TkName
+*$EENUM TkNative
+*$EENUM TkNumber
+*$EENUM TkOpenCall, TkOpenBlock, TkOpenBracket
+*$EENUM TkReplace
+*$EENUM TkSemicolon
+*$EENUM TkUnexpected
+*$EENUM TkVariable
 
-$EENUM EEnum, Entry, Enum, Extern;
+*$EENUM EEnum, Entry, Enum, Extern
 
 Inc2 { s.Num = <Add 2 s.Num>; }
 
@@ -45,7 +44,7 @@ Scan {
   s.Row s.Col '\t' e.Tail = <Scan s.Row <Inc s.Col> e.Tail>;
   s.Row s.Col '\n' e.Tail = <Scan <Inc s.Row> 1 e.Tail>;
 
-  /* гарантируется, что в конце файла есть \n, см. FlatLine */
+  /* гарантируется, что в конце файла есть \n, см. lexer_FlatLine */
   s.Row 1 '*$' e.Pseudo '\n' e.Tail =
     <ScanPseudo s.Row 3 () <Type e.Pseudo '\n'>>
     <Scan <Inc s.Row> 1 e.Tail>;
@@ -339,7 +338,7 @@ StrDirective {
   Extern = 'EXTERN';
 }
 
-$EENUM TkOpen, TkClose;
+*$EENUM TkOpen, TkClose
 
 $ENTRY StrFromToken {
   TkChar s.Char = '\'' <EscapeChar s.Char> '\'';

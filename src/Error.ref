@@ -5,7 +5,7 @@ $EXTERN TkError, TkUnexpected, StrFromToken;
 $EXTERN Map;
 
 
-$ENUM ErrorList;
+*$ENUM ErrorList
 
 $ENTRY EL-Create {
   e.FileName = (ErrorList (e.FileName));
@@ -49,16 +49,16 @@ $ENTRY EL-AddUnexpected {
     >;
 }
 
-$EENUM EL-NoErrors, EL-HasErrors;
+*$EENUM EL-NoErrors, EL-HasErrors
 
 $ENTRY EL-Destroy {
   (ErrorList (e.FileName)) = EL-NoErrors;
 
   (ErrorList (e.FileName) e.Errors) =
-    <Map WriteBracketedLine e.Errors>
+    <Map error_WriteBracketedLine e.Errors>
     EL-HasErrors;
 }
 
-WriteBracketedLine {
+$ENTRY error_WriteBracketedLine {
   (e.Line) = <Prout e.Line>;
 }

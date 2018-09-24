@@ -37,19 +37,19 @@ FindFiles-Compilers {
 
 FindFiles-Compilers-SwFound {
   t.Compiler e.Files-B (NotFound e.FileName) e.Files-E =
-    <Map PrintNotFound (NotFound e.FileName) e.Files-E>;
+    <Map refal05c_PrintNotFound (NotFound e.FileName) e.Files-E>;
 
   t.Compiler e.FoundFiles =
     <CheckCompilationResult
       t.Compiler
       <Map
-        ProcessEachSource
+        refal05c_ProcessEachSource
         <RenameFiles t.Compiler e.FoundFiles>
       >
     >;
 }
 
-PrintNotFound {
+$ENTRY refal05c_PrintNotFound {
   (NotFound e.FileName) =
     <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
 
@@ -58,7 +58,7 @@ PrintNotFound {
   (Source (e.Source) e.Output) = ;
 }
 
-ProcessEachSource {
+$ENTRY refal05c_ProcessEachSource {
   (Output e.OutputName) =
     <Prout '+Linking ' e.OutputName> (e.OutputName);
 
@@ -86,7 +86,7 @@ CheckCompilationResult {
 
 Link {
   (CompileCommand e.CommandLine) e.Files =
-    <IgnoreRetcode <System e.CommandLine <Map QuoteFile e.Files>>>;
+    <IgnoreRetcode <System e.CommandLine <Map refal05c_QuoteFile e.Files>>>;
 
   (NoCompile) e.Files = /* ничего не делаем */;
 }
@@ -95,7 +95,7 @@ IgnoreRetcode {
   e.RetCode = /* пусто */;
 }
 
-QuoteFile {
+$ENTRY refal05c_QuoteFile {
   (e.FileName) = ' "' e.FileName '"';
 }
 
@@ -103,10 +103,10 @@ RenameFiles {
   (NoCompile) e.Files = e.Files;
 
   (CompileCommand e.CommandLine) e.Files
-    = <ScanCollisions <Map GetFileName e.Files>>;
+    = <ScanCollisions <Map refal05c_GetFileName e.Files>>;
 }
 
-GetFileName {
+$ENTRY refal05c_GetFileName {
   (Output e.FileName) =
     (
       <GetFileName-Aux e.FileName> 0 (Output e.FileName)
@@ -165,17 +165,17 @@ ScanCollisions {
       <Renumerate (e.FileName) e.Files-E>
     >;
 
-  e.Files = <Map RestoreName e.Files>;
+  e.Files = <Map refal05c_RestoreName e.Files>;
 }
 
 Renumerate {
   (e.FileName) e.Files =
     <DelAccumulator
-      <MapReduce (Renumerate-Each e.FileName) 2 e.Files>
+      <MapReduce (refal05c_Renumerate-Each e.FileName) 2 e.Files>
     >;
 }
 
-Renumerate-Each {
+$ENTRY refal05c_Renumerate-Each {
   e.FileName s.NextNumber (e.FileName 0 (Source (e.Source) e.Output)) =
     <Inc s.NextNumber>
     (e.FileName s.NextNumber (Source (e.Source) e.Output));
@@ -184,7 +184,7 @@ Renumerate-Each {
     s.NextNumber t.NextFile;
 }
 
-RestoreName {
+$ENTRY refal05c_RestoreName {
   (e.FileName s.Number (Output e.OutputName)) =
     (Output e.OutputName);
 

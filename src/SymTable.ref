@@ -8,17 +8,17 @@ $EXTERN EL-AddErrorAt;
 $EXTERN GN-Entry;
 
 
-$ENUM SymTable;
+*$ENUM SymTable
 
 $ENTRY ST-Create {
   = (SymTable <LoadBuiltins> ());
 }
 
 LoadBuiltins {
-  = <Map BuiltinDeclaration <ListOfBuiltin>>;
+  = <Map symtable_BuiltinDeclaration <ListOfBuiltin>>;
 }
 
-BuiltinDeclaration {
+$ENTRY symtable_BuiltinDeclaration {
   (s.Number s.Name s.Type) =
     <BuiltinDeclaration-SwValid <Explode s.Name>>;
 }
@@ -43,14 +43,14 @@ $ENTRY ST-Destroy {
   t.Reference ::= (t.SrcPos e.Name)
 */
 
-$ENUM Declared, Defined;
+*$ENUM Declared, Defined
 
 PatchReferences {
   (e.References) e.Name =
-    (<Map (PatchReferences-FilterThis e.Name) e.References>);
+    (<Map (symtable_PatchReferences-FilterThis e.Name) e.References>);
 }
 
-PatchReferences-FilterThis {
+$ENTRY symtable_PatchReferences-FilterThis {
   e.Name (t.SrcPos e.Name) = /* пусто */;
 
   e.Name (t.SrcPos e.OtherName) = (t.SrcPos e.OtherName);
@@ -131,11 +131,11 @@ $ENTRY ST-AddFunctionCall {
 */
 $ENTRY ST-CheckUnresolved {
   t.ErrorList (SymTable e.Names (e.References)) =
-    <Reduce AddUnresolved t.ErrorList e.References>
+    <Reduce symtable_AddUnresolved t.ErrorList e.References>
     (SymTable e.Names (e.References));
 }
 
-AddUnresolved {
+$ENTRY symtable_AddUnresolved {
   t.ErrorList (t.SrcPos e.Name) =
     <EL-AddErrorAt
       t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
@@ -147,10 +147,10 @@ AddUnresolved {
     == (s.ScopeClass e.Name)*
 */
 $ENTRY ST-AllFunctions {
-  (SymTable e.Names (e.References)) = <Map FunctionFromKnown e.Names>;
+  (SymTable e.Names (e.References)) = <Map symtable_FunctionFromKnown e.Names>;
 }
 
-FunctionFromKnown {
+$ENTRY symtable_FunctionFromKnown {
   (Declared e.Name) = (GN-Entry e.Name);
   (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
 }

@@ -30,9 +30,9 @@ MakeAlgorithm-Aux {
 *===============================================================================
 
 * Направление распознавания
-$EENUM AlgLeft, AlgRight;
+*$EENUM AlgLeft, AlgRight
 
-$EENUM Brackets, CallBrackets, Symbol, Char, Number, Name;
+*$EENUM Brackets, CallBrackets, Symbol, Char, Number, Name
 
 /*
 Команды распознавания
@@ -55,13 +55,12 @@ $EENUM Brackets, CallBrackets, Symbol, Char, Number, Name;
     (CmdSave s.OldNumber e.NewNumber)
   Комментарий, вносимый в исходный код (CmdComment e.Text)
 */
-$EENUM
-  CmdSymbol, CmdBrackets, CmdEmpty,
-  CmdRepeated, CmdVar, CmdClosedE,
-  CmdOpenedE-Start, CmdOpenedE-End,
-  CmdComment, CmdSave;
+*$EENUM CmdSymbol, CmdBrackets, CmdEmpty
+*$EENUM CmdRepeated, CmdVar, CmdClosedE
+*$EENUM CmdOpenedE-Start, CmdOpenedE-End
+*$EENUM CmdComment, CmdSave
 
-$ENUM CmdOpenedE;
+*$ENUM CmdOpenedE
 
 GenPattern {
   e.Pattern =
@@ -245,19 +244,17 @@ GenResult {
 *  (CmdLinkBrackets s.Left s.Right)
 *  (CmdPushStack s.Number)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
-$EENUM
-  CmdAllocateElem,
-  CmdLinkBrackets,
-  CmdPushStack,
-  CmdInsertVar;
+*$EENUM CmdAllocateElem
+*$EENUM CmdLinkBrackets
+*$EENUM CmdPushStack
+*$EENUM CmdInsertVar
 
 
 * Спецификаторы команд (элементы)
-$EENUM
-  ElSymbol, ElString,
-  ElOpenBracket, ElCloseBracket,
-  ElOpenCall, ElCloseCall,
-  ElSavePos, ElVariable;
+*$EENUM ElSymbol, ElString
+*$EENUM ElOpenBracket, ElCloseBracket
+*$EENUM ElOpenCall, ElCloseCall
+*$EENUM ElSavePos, ElVariable
 
 /*
   Порядок выполнения команд.
@@ -266,7 +263,7 @@ $EENUM
   построение результата (в обратном порядке)
 */
 
-$ENUM TkString;
+*$ENUM TkString
 
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
@@ -426,7 +423,7 @@ DecUsings {
 * копирование повторных.
 *===============================================================================
 
-$EENUM CmdEmptyResult, CmdReturnResult;
+*$EENUM CmdEmptyResult, CmdReturnResult
 
 GeneralizeResult {
   s.NumRanges (e.PatternVars) (e.PatternCommands)
@@ -466,13 +463,13 @@ FilterCommonVarsAndPatternCommands {
     (e.PatternVars) e.PatternCommands;
 }
 
-$EENUM CmdRangeArray, CmdInitB0, CmdResultArray;
+*$EENUM CmdRangeArray, CmdInitB0, CmdResultArray
 
 ComposeSentenceCommands {
   s.NumRanges s.ResultCounter (e.ResultCommands)
   (e.PatternVars) e.PatternCommands =
     <GenerateResult-OpenELoops
-      <Map MakeDeclaration e.PatternVars>
+      <Map algorithm_MakeDeclaration e.PatternVars>
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
       (CmdInitB0)
@@ -483,9 +480,9 @@ ComposeSentenceCommands {
     >;
 }
 
-$EENUM CmdDeclareVar;
+*$EENUM CmdDeclareVar
 
-MakeDeclaration {
+$ENTRY algorithm_MakeDeclaration {
   (s.Usings s.Mode e.Index) =
     (CmdDeclareVar s.Usings s.Mode e.Index)
     <MakeDeclaration-Aux s.Usings s.Mode e.Index>;
@@ -495,7 +492,7 @@ MakeDeclaration-Aux {
   1 s.Mode e.Index = /* это была последняя */;
 
   s.Usings s.Mode e.Index =
-    <MakeDeclaration (<Dec s.Usings> s.Mode e.Index)>;
+    <algorithm_MakeDeclaration (<Dec s.Usings> s.Mode e.Index)>;
 }
 
 MakeCmdResultCommand {

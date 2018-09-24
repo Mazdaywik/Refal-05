@@ -34,15 +34,15 @@ $ENTRY CompileFile {
     <Fetch
       <LexFolding e.SrcName>
       <Seq
-        (Map PrepareBracket)
-        (Pass-Lexer (e.SrcName))
-        Pass-CheckUnresolved
-        (Pass-Final (e.SrcName) (e.OutputName))
+        (Map parser_PrepareBracket)
+        (parser_Pass-Lexer (e.SrcName))
+        parser_Pass-CheckUnresolved
+        (parser_Pass-Final (e.SrcName) (e.OutputName))
       >
     >;
 }
 
-PrepareBracket {
+$ENTRY parser_PrepareBracket {
   (TkOpenBracket t.SrcPos) = (TkOpen t.SrcPos TkOpenBracket);
   (TkCloseBracket t.SrcPos) = (TkClose t.SrcPos TkCloseBracket);
 
@@ -52,7 +52,7 @@ PrepareBracket {
   t.OtherToken = t.OtherToken;
 }
 
-Pass-Lexer {
+$ENTRY parser_Pass-Lexer {
   (e.SrcName) e.LexFolding =
     <ParseElements
       <EL-Create e.SrcName> <ST-Create> (/* generated */)
@@ -60,12 +60,12 @@ Pass-Lexer {
     >;
 }
 
-Pass-CheckUnresolved {
+$ENTRY parser_Pass-CheckUnresolved {
   t.ErrorList t.SymTable e.Lines =
     <ST-CheckUnresolved t.ErrorList t.SymTable> e.Lines;
 }
 
-Pass-Final {
+$ENTRY parser_Pass-Final {
   (e.SrcName) (e.OutputName) t.ErrorList t.SymTable e.Lines =
     <ST-Destroy t.SymTable>
     <Pass-Final-SwNoErrors
@@ -144,7 +144,7 @@ Pass-Final-SwNoErrors {
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
     t.ErrorList t.SymTable
-    <Map GenDeclaration <ST-AllFunctions t.SymTable>>
+    <Map parser_GenDeclaration <ST-AllFunctions t.SymTable>>
     ()
     e.Generated;
 
@@ -182,7 +182,7 @@ ParseElements {
     >;
 }
 
-GenDeclaration {
+$ENTRY parser_GenDeclaration {
   (GN-Entry e.Name) = <GenExtern e.Name>;
   (GN-Local e.Name) = <GenForward e.Name>;
 }
@@ -323,7 +323,7 @@ ParseFunction {
     t.SymTable t.Unexpected e.Tail;
 }
 
-$ENUM Sentences, Native;
+*$ENUM Sentences, Native
 
 ParseFunction-BlockParsed {
   s.ScopeClass (e.Name)
@@ -357,7 +357,7 @@ GenFunctionBody {
 *    <GenFnStart s.ScopeClass e.Name>
 *    <GenThisIsGeneratedFunction>
 *    <Map
-*      MakeAlgorithm-and-GenSentence
+*      parser_MakeAlgorithm-and-GenSentence
 *      e.Sentences (((TkVariable 'e' e.Index)) (e.Result))
 *    >
 *    <GenFnEnd-Success>;
@@ -365,11 +365,11 @@ GenFunctionBody {
   s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
     <GenThisIsGeneratedFunction>
-    <Map MakeAlgorithm-and-GenSentence e.Sentences>
+    <Map parser_MakeAlgorithm-and-GenSentence e.Sentences>
     <GenFnEnd>;
 }
 
-MakeAlgorithm-and-GenSentence {
+$ENTRY parser_MakeAlgorithm-and-GenSentence {
   ((e.Pattern) (e.Result)) =
     <GenSentence
       <MakeAlgorithm (e.Pattern) (e.Result)>
@@ -432,14 +432,14 @@ ParseSentence {
         ( /* просканировано */ ) e.Tokens
       >
       <Seq
-        ParseSentence-AfterParsePattern
-        ParseSentence-ParseResult
-        (ParseSentence-AfterParseResult (e.Sentences))
+        parser_ParseSentence-AfterParsePattern
+        parser_ParseSentence-ParseResult
+        (parser_ParseSentence-AfterParseResult (e.Sentences))
       >
     >;
 }
 
-ParseSentence-AfterParsePattern {
+$ENTRY parser_ParseSentence-AfterParsePattern {
   t.ErrorList t.SymTable t.VarTable
   (e.Pattern) (TkReplace t.SrcPos) e.Tokens =
     t.ErrorList t.SymTable t.VarTable
@@ -454,7 +454,7 @@ ParseSentence-AfterParsePattern {
     (e.Pattern) e.Tokens;
 }
 
-ParseSentence-ParseResult {
+$ENTRY parser_ParseSentence-ParseResult {
   t.ErrorList t.SymTable t.VarTable
   (e.Pattern) e.Tokens =
     (e.Pattern)
@@ -464,7 +464,7 @@ ParseSentence-ParseResult {
     >;
 }
 
-ParseSentence-AfterParseResult {
+$ENTRY parser_ParseSentence-AfterParseResult {
   (e.Sentences) (e.Pattern)
   t.ErrorList t.SymTable t.VarTable
   (e.Result) (TkSemicolon t.SrcPos) e.Tokens =

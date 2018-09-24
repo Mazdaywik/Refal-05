@@ -5,9 +5,9 @@ $EXTERN Map;
 $EXTERN True, False;
 
 
-$EENUM Source, Output, NotFound;
+*$EENUM Source, Output, NotFound
 
-$ENUM Current;
+*$ENUM Current
 
 /**
   <FindFiles (e.Folders) e.Files>
@@ -20,18 +20,18 @@ $ENUM Current;
 */
 $ENTRY FindFiles {
   (e.Folders) e.Files =
-    <Map (AnalyzeFile-ByFolders Current e.Folders) e.Files>;
+    <Map (findfile_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
 }
 
-AnalyzeFile-ByFolders {
+$ENTRY findfile_AnalyzeFile-ByFolders {
   e.Folders (e.FileName) =
     <AnalyzeFile-CheckNotFound
       (e.FileName)
-      <Map (AnalyzeInFolder e.FileName) e.Folders>
+      <Map (findfile_AnalyzeInFolder e.FileName) e.Folders>
     >;
 }
 
-AnalyzeInFolder {
+$ENTRY findfile_AnalyzeInFolder {
   e.FileName Current = <AnalyzeFile e.FileName>;
 
   e.FileName (e.Folder) = <AnalyzeFile e.Folder '/' e.FileName>;

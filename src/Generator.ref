@@ -14,7 +14,7 @@ $EXTERN
 $EXTERN EscapeChar;
 
 
-$EENUM GN-Local, GN-Entry;
+*$EENUM GN-Local, GN-Entry
 
 FuncArguments {
   = 'struct r05_node *arg_begin, struct r05_node *arg_end';
@@ -32,7 +32,7 @@ SwGenFnStart {
   s.MemoryClass s.FnArguments e.Name =
     (
       <TextFromMemoryClass s.MemoryClass>
-      'enum r05_fnresult r05c_' e.Name '(' <s.FnArguments> ') {'
+      'enum r05_fnresult r05c_' e.Name '(' <Mu s.FnArguments> ') {'
     );
 }
 
@@ -86,7 +86,7 @@ $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
     <SkipIndentAccum
-      <MapReduce GenCommand ('    ' /* отступ */) e.Algorithm>
+      <MapReduce generator_GenCommand ('    ' /* отступ */) e.Algorithm>
     >
     ('  } while (0);')
     ();
@@ -130,7 +130,7 @@ SafeComment {
   e.Comment = e.Comment;
 }
 
-GenCommand {
+$ENTRY generator_GenCommand {
   (e.Indent) (CmdComment e.Text) =
     (e.Indent) (e.Indent '/*' <SafeComment e.Text> '*/');
 
@@ -408,7 +408,7 @@ SwInfo {
   ElVariable s.Mode e.Index = <PrintVar 1 s.Mode e.Index>;
 }
 
-$ENUM BeginNative, EndNative;
+*$ENUM BeginNative, EndNative
 
 $ENTRY GenNative {
   s.NativeLineNo e.Code = (BeginNative s.NativeLineNo) e.Code (EndNative);
@@ -418,7 +418,7 @@ $ENTRY GenPostprocess {
   (e.SrcName) (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
     <DelAccumulator
       <MapReduce
-        (EnumerateLines (e.SrcName) (e.OutputName))
+        (generator_EnumerateLines (e.SrcName) (e.OutputName))
         1
         <GenCommonHeaders>
         e.Lines-B (EndNative) e.Lines-E
@@ -432,7 +432,7 @@ $ENTRY GenPostprocess {
     <GenCommonTailer>;
 }
 
-EnumerateLines {
+$ENTRY generator_EnumerateLines {
   (e.SrcName) (e.OutputName) s.LineNo (BeginNative s.NativeLineNo) =
     <Inc s.LineNo>
     <LineDirective s.NativeLineNo e.SrcName>;
