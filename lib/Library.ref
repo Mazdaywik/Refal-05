@@ -461,8 +461,59 @@ $ENTRY Open {
 * 23 Ord
 ** $EENUM Ord;
 
-* 24 Print
-$EENUM Print;
+
+/**
+  24. <Print e.Expr> == e.Expr
+*/
+$ENTRY Print {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p;
+  FILE *output = stdout;
+
+#define CHECK_PRINTF(printf_call) \
+  ((printf_call) >= 0 ? (void) 0 \
+  : r05_builtin_error("Error in call " #printf_call))
+
+  for (p = callee->next; p != arg_end; p = p->next) {
+    switch (p->tag) {
+      case R05_DATATAG_CHAR:
+        CHECK_PRINTF(fprintf(output, "%c", p->info.char_));
+        break;
+
+      case R05_DATATAG_FILE:
+        CHECK_PRINTF(fprintf(output, "*%p", p->info.file));
+        break;
+
+      case R05_DATATAG_FUNCTION:
+        CHECK_PRINTF(fprintf(output, "%s ", p->info.function.name));
+        break;
+
+      case R05_DATATAG_NUMBER:
+        CHECK_PRINTF(fprintf(output, "%lu ", (long unsigned int) p->info.number));
+        break;
+
+      case R05_DATATAG_OPEN_BRACKET:
+        CHECK_PRINTF(fprintf(output, "("));
+        break;
+
+      case R05_DATATAG_CLOSE_BRACKET:
+        CHECK_PRINTF(fprintf(output, ")"));
+        break;
+
+      default:
+        r05_switch_default_violation(p->tag);
+    }
+  }
+
+  CHECK_PRINTF(fprintf(output, "\n"));
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
 
 * 25 Prout
 $EENUM Prout;
