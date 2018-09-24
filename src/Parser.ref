@@ -426,87 +426,47 @@ DoParseBlock {
 
 ParseSentence {
   t.ErrorList t.SymTable (e.Sentences) e.Tokens =
-    <Fetch
-      <ParsePattern
-        t.ErrorList t.SymTable (/* пусто */) ( /* мультискобки */ )
-        ( /* просканировано */ ) e.Tokens
-      >
-      <Seq
-        parser_ParseSentence-AfterParsePattern
-        parser_ParseSentence-ParseResult
-        (parser_ParseSentence-AfterParseResult (e.Sentences))
-      >
+    <ParseSentence-Aux
+      (e.Sentences)
+      <ParsePattern t.ErrorList t.SymTable e.Tokens>
     >;
 }
 
-$ENTRY parser_ParseSentence-AfterParsePattern {
-  t.ErrorList t.SymTable t.VarTable
-  (e.Pattern) (TkReplace t.SrcPos) e.Tokens =
-    t.ErrorList t.SymTable t.VarTable
-    (e.Pattern) e.Tokens;
-
-  t.ErrorList t.SymTable t.VarTable
-  (e.Pattern) (s.NextResultTerm t.SrcPos e.Info) e.Tokens =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos 'Incorrect pattern termination'
-    >
-    t.SymTable t.VarTable
-    (e.Pattern) e.Tokens;
-}
-
-$ENTRY parser_ParseSentence-ParseResult {
-  t.ErrorList t.SymTable t.VarTable
-  (e.Pattern) e.Tokens =
-    (e.Pattern)
-    <ParseResult
-      t.ErrorList t.SymTable t.VarTable
-      ( /* мультискобки */ ) ( /* просканировано */ ) e.Tokens
-    >;
-}
-
-$ENTRY parser_ParseSentence-AfterParseResult {
-  (e.Sentences) (e.Pattern)
-  t.ErrorList t.SymTable t.VarTable
-  (e.Result) (TkSemicolon t.SrcPos) e.Tokens =
+ParseSentence-Aux {
+  (e.Sentences) (e.Pattern) (e.Result)
+  t.ErrorList t.SymTable e.Tokens =
     t.ErrorList t.SymTable
     (e.Sentences ((e.Pattern) (e.Result))) e.Tokens;
-
-  (e.Sentences) (e.Pattern)
-  t.ErrorList t.SymTable t.VarTable
-  (e.Result) (TkCloseBlock t.SrcPos) e.Tokens =
-    t.ErrorList t.SymTable
-    (e.Sentences ((e.Pattern) (e.Result)))
-    (TkCloseBlock t.SrcPos) e.Tokens;
-
-  (e.Sentences) (e.Pattern)
-  t.ErrorList t.SymTable t.VarTable
-  (e.Result) t.Unexpected e.Tokens =
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
-    t.SymTable
-    (e.Sentences ((e.Pattern) (e.Result)))
-    t.Unexpected e.Tokens;
 }
 
 ParsePattern {
+  t.ErrorList t.SymTable e.Tokens =
+    <DoParsePattern
+      t.ErrorList t.SymTable (/* таблица переменных */) (/* мультискобки */)
+      (/* просканировано */) e.Tokens
+    >;
+}
+
+DoParsePattern {
   /* Обработка литералов атомов */
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
   (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
       (e.Scanned (Symbol Char s.Char)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
   (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
       (e.Scanned (Symbol Number s.Number)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBrackets)
   (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
       t.VarTable (e.MultiBrackets)
       (e.Scanned (Symbol Name e.Name)) e.Tail
@@ -518,7 +478,7 @@ ParsePattern {
   (e.Variables-B (s.Mode e.Index) e.Variables-E)
   (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList t.SymTable
       (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket)
@@ -527,7 +487,7 @@ ParsePattern {
 
   t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList t.SymTable ((s.Mode e.Index) e.Variables) (e.MultiBracket)
       (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
     >;
@@ -544,7 +504,7 @@ ParsePattern {
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBracket)
   (e.Scanned) (TkOpen t.SrcPos TkOpenBracket) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList t.SymTable t.VarTable
       (
         e.MultiBracket
@@ -556,7 +516,7 @@ ParsePattern {
   t.ErrorList t.SymTable t.VarTable (e.MultiBracket)
   (e.Scanned)
   (TkOpen t.SrcPos TkOpenCall) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Unexpected call bracket in pattern expression'
       >
@@ -574,7 +534,7 @@ ParsePattern {
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) (TkClose t.CloseSrcPos s.CloseBracket) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       t.ErrorList t.SymTable t.VarTable (e.MultiBracket)
       (e.Scanned (s.BracketsSign e.InnerScanned))
       e.Tail
@@ -586,7 +546,7 @@ ParsePattern {
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) (TkClose t.SrcPos s.OtherCloseBracket) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.InnerSrcPos
         'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
@@ -598,7 +558,7 @@ ParsePattern {
 
   t.ErrorList t.SymTable t.VarTable ()
   (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos
         'Unbalanced bracket "' <StrFromBracket s.CloseBracket> '"'
@@ -613,7 +573,7 @@ ParsePattern {
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) e.Tail =
-    <ParsePattern
+    <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.InnerSrcPos
         'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
@@ -625,8 +585,11 @@ ParsePattern {
 
   t.ErrorList t.SymTable t.VarTable ()
   (e.Pattern) e.Tail =
-    t.ErrorList t.SymTable t.VarTable
-    (e.Pattern)  e.Tail;
+    /* Выбрасываем образец из рекурсивого вызова */
+    (e.Pattern)
+    <ParsePattern-ExpectReplace
+      t.ErrorList t.SymTable t.VarTable e.Tail
+    >;
 }
 
 StrFromBracket {
@@ -636,32 +599,53 @@ StrFromBracket {
   CallBrackets = '<';
 }
 
+ParsePattern-ExpectReplace {
+  t.ErrorList t.SymTable t.VarTable (TkReplace t.SrcPos) e.Tokens =
+    <ParseResult
+      t.ErrorList t.SymTable t.VarTable e.Tokens
+    >;
+
+  t.ErrorList t.SymTable t.VarTable t.Unexpected e.Tokens =
+    <ParseResult
+      <EL-AddUnexpected t.ErrorList t.Unexpected '"="'>
+      t.SymTable t.VarTable t.Unexpected e.Tokens
+    >;
+}
+
+ParseResult {
+  t.ErrorList t.SymTable t.VarTable e.Tokens =
+    <DoParseResult
+      t.ErrorList t.SymTable t.VarTable
+      (/* мультискобки */) (/* просканировано */) e.Tokens
+    >;
+}
+
 /*
-  <ParseResult
+  <DoParseResult
     t.ErrorList t.SymTable t.VarTable
     (e.MultiBracket) (e.Scanned) e.Tail
   >
 */
-ParseResult {
+DoParseResult {
   /* Обработка литералов атомов */
 
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
-    <ParseResult
+    <DoParseResult
       t.ErrorList t.SymTable t.VarTable
       (e.MultiBracket) (e.Scanned (Symbol Char s.Char)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
-    <ParseResult
+    <DoParseResult
       t.ErrorList t.SymTable t.VarTable
       (e.MultiBracket) (e.Scanned (Symbol Number s.Number)) e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
-    <ParseResult
+    <DoParseResult
       t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
       t.VarTable
       (e.MultiBracket) (e.Scanned (Symbol Name e.Name)) e.Tail
@@ -671,14 +655,14 @@ ParseResult {
 
   t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <ParseResult
+    <DoParseResult
       t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket) (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <ParseResult
+    <DoParseResult
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
       >
@@ -698,7 +682,7 @@ ParseResult {
   /* Структурные и угловые скобки обрабатываются одинаково */
   t.ErrorList t.SymTable t.VarTable
   (e.MultiBracket) (e.Scanned) (TkOpen t.SrcPos s.OpenBracket) e.Tail =
-    <ParseResult
+    <DoParseResult
       t.ErrorList t.SymTable t.VarTable
       (
         e.MultiBracket
@@ -719,7 +703,7 @@ ParseResult {
     (s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
-    <ParseResult
+    <DoParseResult
       t.ErrorList t.SymTable t.VarTable
       (e.MultiBracket) (e.Scanned (s.BracketsSign e.InnerScanned))
       e.Tail
@@ -732,7 +716,7 @@ ParseResult {
     (s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) e.Tail =
-    <ParseResult
+    <DoParseResult
       <EL-AddErrorAt
         t.ErrorList t.OpenSrcPos
         'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
@@ -744,7 +728,7 @@ ParseResult {
 
   t.ErrorList t.SymTable t.VarTable
   () (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
-    <ParseResult
+    <DoParseResult
       <EL-AddErrorAt
         t.ErrorList t.SrcPos
         'Unbalanced bracket "' <StrFromBracket s.CloseBracket> '"'
@@ -755,8 +739,9 @@ ParseResult {
 
   t.ErrorList t.SymTable t.VarTable
   () (e.Result) e.Tail =
-    t.ErrorList t.SymTable t.VarTable
-    (e.Result) e.Tail;
+    /* Выбрасываем образец из рекурсивого вызова */
+    (e.Result)
+    <ParseResult-ExpectSemicolon t.ErrorList t.SymTable e.Tail>;
 }
 
 BracketPairName {
@@ -767,4 +752,16 @@ BracketPairName {
 CloseBracketName {
   TkOpenBracket = TkCloseBracket;
   TkOpenCall = TkCloseCall;
+}
+
+ParseResult-ExpectSemicolon {
+  t.ErrorList t.SymTable (TkSemicolon t.SrcPos) e.Tokens =
+    t.ErrorList t.SymTable e.Tokens;
+
+  t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tokens =
+    t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tokens;
+
+  t.ErrorList t.SymTable t.Unexpected e.Tokens =
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
+    t.SymTable t.Unexpected e.Tokens;
 }
