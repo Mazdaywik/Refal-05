@@ -320,54 +320,8 @@ $ENTRY Mul {
 }
 
 
-/**
-  21. <Numb s.NUMBER> == s.CHAR+
-*/
-$ENTRY Numb {
-%%
-  struct r05_node *callable = arg_begin->next;
-  struct r05_node *pnumber = callable->next;
-  r05_number number;
-
-  /*
-    Длина десятичного числа = 0,3 * длина двоичного числа,
-    т.к. lg(2) = 0,3. Хрен с ним, что много. Главное, что не мало.
-  */
-  enum { cMaxNumberLen = 8 * sizeof(r05_number) * 3 / 10 + 2 };
-
-  char buffer[cMaxNumberLen + 1] = { '\0' };
-  char *cur_digit = buffer + cMaxNumberLen;
-
-  if (
-    pnumber == arg_end
-    || R05_DATATAG_NUMBER != pnumber->tag
-    || pnumber->next != arg_end
-  ) {
-    r05_recognition_impossible();
-  }
-
-  number = pnumber->info.number;
-
-  r05_reset_allocator();
-
-  if (number > 0) {
-    while (number != 0) {
-      -- cur_digit;
-      *cur_digit = (number % 10) + '0';
-      number /= 10;
-    }
-
-    r05_alloc_string(cur_digit);
-  } else {
-    r05_alloc_string("0");
-  }
-
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
-%%
-}
+* 21 Numb
+$EENUM Numb;
 
 
 /**
@@ -596,8 +550,55 @@ $ENTRY Sub {
 }
 
 
-* 31 Symb
-$EENUM Symb;
+/**
+  31. <Symb s.NUMBER> == s.CHAR+
+*/
+$ENTRY Symb {
+%%
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *pnumber = callable->next;
+  r05_number number;
+
+  /*
+    Длина десятичного числа = 0,3 * длина двоичного числа,
+    т.к. lg(2) = 0,3. Хрен с ним, что много. Главное, что не мало.
+  */
+  enum { cMaxNumberLen = 8 * sizeof(r05_number) * 3 / 10 + 2 };
+
+  char buffer[cMaxNumberLen + 1] = { '\0' };
+  char *cur_digit = buffer + cMaxNumberLen;
+
+  if (
+    pnumber == arg_end
+    || R05_DATATAG_NUMBER != pnumber->tag
+    || pnumber->next != arg_end
+  ) {
+    r05_recognition_impossible();
+  }
+
+  number = pnumber->info.number;
+
+  r05_reset_allocator();
+
+  if (number > 0) {
+    while (number != 0) {
+      -- cur_digit;
+      *cur_digit = (number % 10) + '0';
+      number /= 10;
+    }
+
+    r05_alloc_string(cur_digit);
+  } else {
+    r05_alloc_string("0");
+  }
+
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 32 Time
 $EENUM Time;
@@ -1296,5 +1297,5 @@ $ENTRY IntFromStr {
 }
 
 $ENTRY StrFromInt {
-  s.Number = <Numb s.Number>;
+  s.Number = <Symb s.Number>;
 }
