@@ -320,8 +320,55 @@ $ENTRY Mul {
 }
 
 
-* 21 Numb
-$EENUM Numb;
+/**
+  21. <Numb s.NUMBER> == s.CHAR+
+*/
+$ENTRY Numb {
+%%
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *pnumber = callable->next;
+  r05_number number;
+
+  /*
+    Длина десятичного числа = 0,3 * длина двоичного числа,
+    т.к. lg(2) = 0,3. Хрен с ним, что много. Главное, что не мало.
+  */
+  enum { cMaxNumberLen = 8 * sizeof(r05_number) * 3 / 10 + 2 };
+
+  char buffer[cMaxNumberLen + 1] = { '\0' };
+  char *cur_digit = buffer + cMaxNumberLen;
+
+  if (
+    pnumber == arg_end
+    || R05_DATATAG_NUMBER != pnumber->tag
+    || pnumber->next != arg_end
+  ) {
+    r05_recognition_impossible();
+  }
+
+  number = pnumber->info.number;
+
+  r05_reset_allocator();
+
+  if (number > 0) {
+    while (number != 0) {
+      -- cur_digit;
+      *cur_digit = (number % 10) + '0';
+      number /= 10;
+    }
+
+    r05_alloc_string(cur_digit);
+  } else {
+    r05_alloc_string("0");
+  }
+
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 22 Open
 $EENUM Open;
@@ -1165,59 +1212,7 @@ $ENTRY IntFromStr {
 }
 
 $ENTRY StrFromInt {
-%%
-  do {
-    struct r05_node *bb_0 = 0;
-    struct r05_node *be_0 = 0;
-    r05_prepare_argument(&bb_0, &be_0, arg_begin, arg_end);
-
-    struct r05_node *sNumber_1;
-    // s.Number
-    if (! r05_svar_left(&sNumber_1, &bb_0, &be_0))
-      break;
-    if (sNumber_1->tag != R05_DATATAG_NUMBER)
-      break;
-    if (! r05_empty_seq(bb_0, be_0))
-      break;
-
-    r05_reset_allocator();
-    struct r05_node *res = arg_begin;
-
-    struct r05_node *char_pos = 0;
-    if (r05_number num = sNumber_1->info.number) {
-      // Длина десятичного числа = 0,3 * длина двоичного числа,
-      // т.к. lg(2) = 0,3. Хрен с ним, что много. Главное, что не мало.
-      enum { cMaxNumberLen = 8 * sizeof(r05_number) * 3 / 10 + 2 };
-
-      char buffer[cMaxNumberLen + 1] = { 0 };
-      char *lim_digit = buffer + cMaxNumberLen;
-      char *cur_digit = lim_digit;
-
-      while (num != 0) {
-        -- cur_digit;
-        *cur_digit = static_cast<char>((num % 10) + '0');
-        num /= 10;
-      }
-
-      struct r05_node *num_begin;
-      struct r05_node *num_end;
-      refalrts::alloc_chars(
-        num_begin, num_end, cur_digit, unsigned(lim_digit - cur_digit)
-      );
-
-      refalrts::splice_evar(res, num_begin, num_end);
-    } else {
-      refalrts::alloc_char(char_pos, '0');
-      refalrts::splice_elem(res, char_pos);
-    }
-
-    r05_splice_to_freelist(arg_begin, arg_end);
-
-    return R05_SUCCESS;
-  } while (0);
-
-  return R05_RECOGNITION_IMPOSSIBLE;
-%%
+  s.Number = <Numb s.Number>;
 }
 
 $ENTRY Ord {
