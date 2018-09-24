@@ -14,27 +14,27 @@ $ENTRY ParseCommandLine {
 *$EENUM NoCompile, CompileCommand, CmdLineError
 
 DoParseCommandLine {
-  (NoCompile) (e.ScannedFiles) (e.Folders) ('-c') (e.CompileCommand) e.Options =
+  (NoCompile) (e.ScannedFiles) (e.Folders) ('+c') (e.CompileCommand) e.Options =
     <DoParseCommandLine
       (CompileCommand e.CompileCommand) (e.ScannedFiles) (e.Folders) e.Options
     >;
 
   (CompileCommand e.Command)
-  (e.ScannedFiles) (e.Folders) ('-c') (e.CompileCommand) e.Options =
+  (e.ScannedFiles) (e.Folders) ('+c') (e.CompileCommand) e.Options =
     (CmdLineError 'Multiple declaration of C++ compiler command line');
 
-  t.Compiler (e.ScannedFiles) (e.Folders) ('-c') =
-    (CmdLineError 'After option \'-c\' expected C++ compiler command line');
+  t.Compiler (e.ScannedFiles) (e.Folders) ('+c') =
+    (CmdLineError 'After option \'+c\' expected C++ compiler command line');
 
-  t.Compiler (e.ScannedFiles) (e.Folders) ('-d') (e.Directory) e.Options =
+  t.Compiler (e.ScannedFiles) (e.Folders) ('+d') (e.Directory) e.Options =
     <DoParseCommandLine
       t.Compiler (e.ScannedFiles) (e.Folders (e.Directory)) e.Options
     >;
 
-  t.Compiler (e.ScannedFiles) (e.Folders) ('-d') =
+  t.Compiler (e.ScannedFiles) (e.Folders) ('+d') =
     (CmdLineError 'After option \'-d\' expected find directory');
 
-  t.Compiler (e.ScannedFiles) (e.Folders) ('--') e.Files =
+  t.Compiler (e.ScannedFiles) (e.Folders) ('++') e.Files =
     <DoParseFileNamesOnly
       t.Compiler (e.ScannedFiles) (e.Folders) e.Files
     >;

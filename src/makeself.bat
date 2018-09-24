@@ -8,7 +8,7 @@ setlocal
   if not exist refal05c.exe copy ..\bin\refal05c.exe refal05c.exe
   if not exist refal05c-s.exe copy ..\bin\refal05c.exe refal05c-s.exe
   copy refal05c.exe refal05c_.exe >NUL
-  refal05c_ -c "%CPPLINE% -I..\lib" -d ..\lib %MODULES%
+  refal05c_ +c "%CPPLINE% -I..\lib" +d ..\lib %MODULES%
   if exist a.exe move a.exe refal05c.exe
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds

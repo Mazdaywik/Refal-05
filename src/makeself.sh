@@ -9,7 +9,7 @@ cp refal05c refal05c_
   MODULES="refal05c Algorithm Error Escape FindFile Generator Lexer
     ParseCmdLine Parser SymTable
     Library LibraryEx refalrts"
-  ./refal05c_ -c "g++ -I../lib -orefal05c" -d ../lib $MODULES
+  ./refal05c_ +c "g++ -I../lib -orefal05c" +d ../lib $MODULES
 )
 mv *.cpp ../bootstrap
 mv ../lib/Library*.cpp ../bootstrap
