@@ -221,8 +221,71 @@ $ENTRY Explode {
 * 13 First
 $EENUM First;
 
-* 14 Get
-$EENUM Get;
+
+/**
+  14. <Get s.FileNo> == s.Char* 0?
+      s.FileNo ::= s.NUMBER
+*/
+%%
+FILE *open_numbered(unsigned int no, const char *mode);
+%%
+
+$ENTRY Get {
+%%
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *pfile_no = callable->next;
+  FILE *stream;
+
+  if (
+    pfile_no == arg_end
+    || R05_DATATAG_NUMBER != pfile_no->tag
+    || pfile_no->next != arg_end
+  ) {
+    r05_recognition_impossible();
+  }
+
+  stream = open_numbered((unsigned int) pfile_no->info.number, "r");
+
+  r05_reset_allocator();
+  read_from_stream(stream);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
+
+%%
+enum { FILE_LIMIT = 40 };
+
+static FILE *s_streams[FILE_LIMIT] = { NULL };
+
+enum { UINT_DIGITS = (sizeof(unsigned int) * 8 + 2) / 3 };
+
+FILE *open_numbered(unsigned int file_no, const char *mode) {
+  file_no %= FILE_LIMIT;
+  if (s_streams[file_no] == NULL) {
+    static const char filename_format[] = "REFAL%u.DAT";
+    char filename[sizeof(filename_format) + UINT_DIGITS];
+
+    sprintf(filename, filename_format, file_no);
+    s_streams[file_no] = fopen(filename, mode);
+
+    if (s_streams[file_no] == NULL) {
+      static const char error_format[] = "Can't open REFAL%u.DAT";
+      char error[sizeof(error_format) + UINT_DIGITS];
+
+      sprintf(error, error_format, file_no);
+      perror(error_format);
+      r05_builtin_error("Can't open file");
+    }
+  }
+
+  return s_streams[file_no];
+}
+%%
+
 
 * 15 Implode
 $EENUM Implode;
