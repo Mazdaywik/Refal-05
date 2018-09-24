@@ -16,7 +16,7 @@ $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
   ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Library
-$EXTERN Success, Fails, StrFromInt;
+$EXTERN Success, Fails;
 
 *$FROM Generator
 $EXTERN GN-Entry, GenExtern, GN-Local, GenForward, GenEnum, GenFnStart,

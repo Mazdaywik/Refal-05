@@ -5,7 +5,7 @@ $EXTERN ArgList, LoadFile, Map, DelAccumulator, MapReduce, Inc;
 $EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
 
 *$FROM Library
-$EXTERN Prout, Success, Fails, System, Exit, StrFromInt;
+$EXTERN Prout, Success, Fails, System, Exit, Symb;
 
 *$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
@@ -200,5 +200,5 @@ RestoreName {
     (Source (e.Source) e.Output);
 
   (e.FileName s.Number (Source (e.Source) e.OutName '.cpp')) =
-    (Source (e.Source) e.OutName '@' <StrFromInt s.Number> '.cpp');
+    (Source (e.Source) e.OutName '@' <Symb s.Number> '.cpp');
 }

@@ -112,14 +112,14 @@ Test9 {
   = <System 'dir /w'>;
 }
 
-$EXTERN IntFromStr, StrFromInt;
+$EXTERN Numb, Symb;
 
 Test10 {
-  = <Prout <IntFromStr <Card>>>;
+  = <Prout <Numb <Card>>>;
 }
 
 Test11 {
-  = <Prout '"' <StrFromInt 10> '"'>;
+  = <Prout '"' <Symb 10> '"'>;
 }
 
 ExecuteAll {

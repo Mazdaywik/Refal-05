@@ -1,8 +1,8 @@
 *$FROM LibraryEx
-$EXTERN Map, LoadFile, Inc, Type, FastIntFromStr;
+$EXTERN Map, LoadFile, Inc, Type;
 
 *$FROM Library
-$EXTERN StrFromInt, Add, Chr, Mul, Fails, Success;
+$EXTERN Symb, Add, Chr, Mul, Fails, Success, Numb;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -330,7 +330,7 @@ ScanNumber {
     <ScanNumber s.Row s.StartCol <Inc s.Col> (e.Number s.Digit) <Type e.Tail>>;
 
   s.Row s.StartCol s.Col (e.Number) s.Type s.SubType e.Tail =
-    (TkNumber (s.Row s.StartCol) <FastIntFromStr e.Number>)
+    (TkNumber (s.Row s.StartCol) <Numb e.Number>)
     <Scan s.Row s.Col e.Tail>;
 }
 
@@ -355,7 +355,7 @@ $ENTRY StrFromToken {
   TkError e.Message = 'LEXER ERROR: ' e.Message;
   TkName e.Name = 'Name ' e.Name;
   TkNative e.Code = '"%%...%%"';
-  TkNumber s.Number = 'Number ' <StrFromInt s.Number>;
+  TkNumber s.Number = 'Number ' <Symb s.Number>;
   TkOpenCall = '"<"';
   TkOpenBlock = '"{"';
   TkOpenBracket = '"("';

@@ -2,7 +2,7 @@
 $EXTERN MapReduce, Dec, Inc, Map, DelAccumulator;
 
 *$FROM Library
-$EXTERN StrFromInt;
+$EXTERN Symb;
 
 *$FROM Algorithm
 $EXTERN
@@ -102,11 +102,11 @@ SkipIndentAccum {
 }
 
 BracketsVar-B {
-  s.BracketNumber = 'bb[' <StrFromInt s.BracketNumber> ']';
+  s.BracketNumber = 'bb[' <Symb s.BracketNumber> ']';
 }
 
 BracketsVar-E {
-  s.BracketNumber = 'be[' <StrFromInt s.BracketNumber> ']';
+  s.BracketNumber = 'be[' <Symb s.BracketNumber> ']';
 }
 
 BracketsVars {
@@ -149,8 +149,8 @@ GenCommand {
 
   (e.Indent) (CmdRangeArray s.Size) =
     (e.Indent)
-    (e.Indent 'struct r05_node *bb[' <StrFromInt s.Size> '] = { 0 };')
-    (e.Indent 'struct r05_node *be[' <StrFromInt s.Size> '] = { 0 };');
+    (e.Indent 'struct r05_node *bb[' <Symb s.Size> '] = { 0 };')
+    (e.Indent 'struct r05_node *be[' <Symb s.Size> '] = { 0 };');
 
   (e.Indent) (CmdInitB0) =
     (e.Indent)
@@ -215,7 +215,7 @@ GenCommand {
 
   (e.Indent) (CmdResultArray s.Size) =
     (e.Indent)
-    (e.Indent 'struct r05_node *n[' <StrFromInt s.Size> '] = { 0 };');
+    (e.Indent 'struct r05_node *n[' <Symb s.Size> '] = { 0 };');
 
   (e.Indent) (CmdAllocateElem e.ElemInfo) =
     (e.Indent)
@@ -258,21 +258,19 @@ EscapeString {
 }
 
 PrintVar {
-  s.Usings s.Mode e.Index = s.Mode e.Index '_' <StrFromInt s.Usings>;
+  s.Usings s.Mode e.Index = s.Mode e.Index '_' <Symb s.Usings>;
 }
 
 PrintVarPtr {
-  s.Usings s.Mode e.Index = '&' s.Mode e.Index '_' <StrFromInt s.Usings>;
+  s.Usings s.Mode e.Index = '&' s.Mode e.Index '_' <Symb s.Usings>;
 }
 
 PrintEVar-B {
-  s.Usings s.Mode e.Index =
-    s.Mode e.Index '_b_' <StrFromInt s.Usings>;
+  s.Usings s.Mode e.Index = s.Mode e.Index '_b_' <Symb s.Usings>;
 }
 
 PrintEVar-E {
-  s.Usings s.Mode e.Index =
-    s.Mode e.Index '_e_' <StrFromInt s.Usings>;
+  s.Usings s.Mode e.Index = s.Mode e.Index '_e_' <Symb s.Usings>;
 }
 
 PrintEVars {
@@ -303,7 +301,7 @@ SymbolFunc {
 
 SymbolTextRep {
   Char s.Char = '\'' <EscapeChar s.Char> '\'';
-  Number s.Number = <StrFromInt s.Number> 'UL';
+  Number s.Number = <Symb s.Number> 'UL';
   Name e.Name = 'r05c_' e.Name;
 }
 
@@ -371,7 +369,7 @@ PrintMatch {
 }
 
 PrintElemVar {
-  s.Number = 'n[' <StrFromInt s.Number> ']';
+  s.Number = 'n[' <Symb s.Number> ']';
 }
 
 PrintAllocateElem {
@@ -400,7 +398,7 @@ SwAllocator {
 SwInfo {
   ElSymbol Name e.Name = 'r05c_' e.Name ', "' e.Name '"';
   ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
-  ElString s.Len e.String = '"' <EscapeString e.String> '", ' <StrFromInt s.Len>;
+  ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
 
   ElOpenBracket s.Pos = <PrintElemVar s.Pos>;
   ElCloseBracket s.Pos = <PrintElemVar s.Pos>;
@@ -452,5 +450,5 @@ EnumerateLines {
 
 LineDirective {
   s.LineNo e.FileName =
-    ('#line ' <StrFromInt <Inc s.LineNo>> ' "' <EscapeString e.FileName> '"');
+    ('#line ' <Symb <Inc s.LineNo>> ' "' <EscapeString e.FileName> '"');
 }

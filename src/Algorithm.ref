@@ -5,7 +5,7 @@ $EXTERN Inc, Map, Dec;
 $EXTERN TkVariable, TkCloseBracket, TkCloseCall;
 
 *$FROM Library
-$EXTERN StrFromInt;
+$EXTERN Symb;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -211,7 +211,7 @@ TextFromPattern {
     ' \'' <TextFromPattern-Char (Symbol Char s.Char) e.Tail>;
 
   (Symbol Number s.Number) e.Tail =
-    ' ' <StrFromInt s.Number> <TextFromPattern e.Tail>;
+    ' ' <Symb s.Number> <TextFromPattern e.Tail>;
 
   (Symbol Name e.Name) e.Tail =
     ' & ' e.Name <TextFromPattern e.Tail>;

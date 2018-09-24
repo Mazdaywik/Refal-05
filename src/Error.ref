@@ -1,5 +1,5 @@
 *$FROM Library
-$EXTERN StrFromInt, Prout;
+$EXTERN Symb, Prout;
 
 *$FROM Lexer
 $EXTERN TkError, TkUnexpected, StrFromToken;
@@ -29,7 +29,7 @@ $ENTRY EL-AddErrorAt {
 }
 
 StrFromSrcPos {
-  (s.Line s.Col) = <StrFromInt s.Line> ':' <StrFromInt s.Col>;
+  (s.Line s.Col) = <Symb s.Line> ':' <Symb s.Col>;
 }
 
 $ENTRY EL-AddUnexpected {

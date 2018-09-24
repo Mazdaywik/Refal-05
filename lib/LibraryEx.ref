@@ -1,6 +1,5 @@
 *$FROM Library
-$EXTERN Open, Get, FOpen, FClose, FWriteLine, Add, Sub, Success, IntFromStr,
-  Arg;
+$EXTERN Open, Get, FOpen, FClose, FWriteLine, Add, Sub, Success, Arg;
 
 
 * Расширения библиотеки и функции, реализуемые
@@ -101,17 +100,6 @@ $ENTRY Inc {
 
 $ENTRY Dec {
   s.Num = <Sub s.Num 1>;
-}
-
-FastIntFromStr-Guard {
-  Success s.Number = s.Number;
-}
-
-$ENTRY FastIntFromStr {
-  e.Digits =
-    <FastIntFromStr-Guard
-      <IntFromStr e.Digits>
-    >;
 }
 
 $ENTRY ArgList {
