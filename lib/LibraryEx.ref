@@ -1,5 +1,9 @@
 *$FROM Library
-$EXTERN Open, Get, Putout, Close, Add, Sub, Success, Arg;
+$EXTERN Open, Get, Putout, Close, Add, Sub, Arg;
+
+
+* Основные перечисления
+$EENUM Success, Fails;
 
 
 * Расширения библиотеки и функции, реализуемые
