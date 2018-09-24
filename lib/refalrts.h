@@ -18,7 +18,9 @@ enum r05_fnresult {
 enum r05_datatag {
   R05_DATATAG_ILLEGAL = 0,
   R05_DATATAG_CHAR,
+// ↓↓↓ DELETE
   R05_DATATAG_FILE,
+// ↑↑↑ DELETE
   R05_DATATAG_FUNCTION,
   R05_DATATAG_NUMBER,
 

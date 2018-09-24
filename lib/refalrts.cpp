@@ -349,9 +349,6 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
       case R05_DATATAG_CLOSE_BRACKET:
         return 1;
 
-      case R05_DATATAG_FILE:
-        return (node1->info.file == node2->info.file);
-
       /*
         Данная функция предназначена только для использования функциями рас-
         познавания образца. Поэтому других узлов мы тут не ожидаем.
@@ -1421,11 +1418,6 @@ static void print_seq(
           case R05_DATATAG_CLOSE_CALL:
             --indent;
             fprintf(output, ">");
-            r05_move_left(&begin, &end);
-            continue;
-
-          case R05_DATATAG_FILE:
-            fprintf(output, "*%p ", begin->info.file);
             r05_move_left(&begin, &end);
             continue;
 

@@ -562,10 +562,6 @@ static enum r05_fnresult output_func(
         CHECK_PRINTF(fprintf(output, "%c", p->info.char_));
         break;
 
-      case R05_DATATAG_FILE:
-        CHECK_PRINTF(fprintf(output, "*%p", p->info.file));
-        break;
-
       case R05_DATATAG_FUNCTION:
         CHECK_PRINTF(fprintf(output, "%s ", p->info.function.name));
         break;
