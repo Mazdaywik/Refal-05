@@ -860,77 +860,6 @@ void r05_alloc_string(const char *string) {
 }
 
 
-// ↓↓↓ DELETE
-bool refalrts::alloc_char(struct r05_node *&res, char ch) {
-  res = r05_alloc_node(R05_DATATAG_CHAR);
-  res->info.char_ = ch;
-  return true;
-}
-
-bool refalrts::alloc_number(struct r05_node *&res, r05_number num) {
-  res = r05_alloc_node(R05_DATATAG_NUMBER);
-  res->info.number = num;
-  return true;
-}
-
-bool refalrts::alloc_name(
-  struct r05_node *&res, r05_function_ptr fn, const char *name
-) {
-  res = r05_alloc_node(R05_DATATAG_FUNCTION);
-  res->info.function.ptr = fn;
-  if (name != 0) {
-    res->info.function.name = name;
-  } else {
-    res->info.function.name = "@unknown";
-  }
-  return true;
-}
-
-bool refalrts::alloc_chars(
-  struct r05_node *&res_b, struct r05_node *&res_e,
-  const char buffer[], unsigned buflen
-) {
-  if (buflen == 0) {
-    res_b = 0;
-    res_e = 0;
-  } else {
-    struct r05_node *before_begin_seq = s_free_ptr->prev;
-    struct r05_node *end_seq = 0;
-
-    for (unsigned i = 0; i < buflen; ++ i) {
-      alloc_char(end_seq, buffer[i]);
-    }
-
-    res_b = before_begin_seq->next;
-    res_e = end_seq;
-  }
-
-  return true;
-}
-
-bool refalrts::alloc_string(
-  struct r05_node *&res_b, struct r05_node *&res_e, const char *string
-) {
-  if (*string == '\0') {
-    res_b = 0;
-    res_e = 0;
-  } else {
-    struct r05_node *before_begin_seq = s_free_ptr->prev;
-    struct r05_node *end_seq = 0;
-
-    for (const char *p = string; *p != '\0'; ++ p) {
-      alloc_char(end_seq, *p);
-    }
-
-    res_b = before_begin_seq->next;
-    res_e = end_seq;
-  }
-
-  return true;
-}
-// ↑↑↑ DELETE
-
-
 static struct r05_node *s_stack_ptr;
 
 void r05_push_stack(struct r05_node *call_bracket) {
@@ -943,34 +872,6 @@ void r05_link_brackets(struct r05_node *left, struct r05_node *right) {
   left->info.link = right;
   right->info.link = left;
 }
-
-
-// ↓↓↓ DELETE
-struct r05_node *refalrts::splice_elem(
-  struct r05_node *res, struct r05_node *elem
-) {
-  return list_splice(res, elem, elem);
-}
-
-struct r05_node *refalrts::splice_stvar(
-  struct r05_node *res, struct r05_node *var
-) {
-  struct r05_node *var_end;
-  if (is_open_bracket(var)) {
-    var_end = var->info.link;
-  } else {
-    var_end = var;
-  }
-
-  return list_splice(res, var, var_end);
-}
-
-struct r05_node *refalrts::splice_evar(
-  struct r05_node *res, struct r05_node *begin, struct r05_node *end
-) {
-  return list_splice(res, begin, end);
-}
-// ↑↑↑ DELETE
 
 
 void r05_splice_tvar(struct r05_node *res, struct r05_node *var) {
@@ -1187,26 +1088,6 @@ void r05_start_sentence(void) {
   stop_e_loop();
 }
 
-
-// ↓↓↓ DELETE
-//------------------------------------------------------------------------------
-
-// Прочие операции
-
-namespace refalrts {
-
-namespace vm {
-
-extern int g_ret_code;
-
-} // namespace vm
-
-} // namespace refalrts
-
-void refalrts::set_return_code(int code) {
-  refalrts::vm::g_ret_code = code;
-}
-// ↑↑↑ DELETE
 
 /*==============================================================================
    Виртуальная машина
