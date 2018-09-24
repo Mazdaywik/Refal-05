@@ -19,13 +19,14 @@ LoadBuiltins {
 }
 
 $ENTRY symtable_BuiltinDeclaration {
-  (s.Number s.Name s.Type) =
-    <BuiltinDeclaration-SwValid <Explode s.Name>>;
+  (s.Number s.Name s.Type) = <Normalize <Explode s.Name>>;
 }
 
-BuiltinDeclaration-SwValid {
+Normalize {
   /* пусто */ = /* пропускаем */;
   e.Name '$' = /* пропускаем */;
+
+  e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
 
   e.Name = (Declared e.Name);
 }
