@@ -990,6 +990,10 @@ $ENTRY ExistFile {
   if (file != NULL) {
     arg_begin->info.function.ptr = r05c_True;
     arg_begin->info.function.name = "True";
+    if (fclose(file) == EOF) {
+      perror("fclose error");
+      r05_builtin_error("fclose error");
+    }
   } else {
     arg_begin->info.function.ptr = r05c_False;
     arg_begin->info.function.name = "False";
