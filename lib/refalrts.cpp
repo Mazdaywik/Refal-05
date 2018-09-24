@@ -1,9 +1,7 @@
-#include <exception>
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#include <assert.h>
 
 #include "refalrts.h"
 
@@ -14,8 +12,6 @@
 
 #define EXIT_CODE_RECOGNITION_IMPOSSIBLE 1
 #define EXIT_CODE_NO_MEMORY 2
-#define EXIT_CODE_STD_EXCEPTION 4
-#define EXIT_CODE_UNKNOWN_EXCEPTION 5
 #define EXIT_CODE_BUILTIN_ERROR 6
 
 
@@ -994,8 +990,8 @@ struct TimeItem {
 
 static int reverse_compare(const void *left_void, const void *right_void) {
   /* TODO: убрать приведения типов */
-  const TimeItem *left = static_cast<const TimeItem *>(left_void);
-  const TimeItem *right = static_cast<const TimeItem *>(right_void);
+  const TimeItem *left = (const TimeItem *)(left_void);
+  const TimeItem *right = (const TimeItem *)(right_void);
 
   if (left->counter > right->counter) {
     return -1;
@@ -1309,7 +1305,7 @@ static void print_seq(
       case cStateString:
         switch (begin->tag) {
           case R05_DATATAG_CHAR: {
-            unsigned char ch = static_cast<unsigned char>(begin->info.char_);
+            unsigned char ch = begin->info.char_;
             switch (ch) {
               case '(': case ')':
               case '<': case '>':
@@ -1334,7 +1330,7 @@ static void print_seq(
 
               default:
                 if (ch < '\x20') {
-                  fprintf(output, "\\x%02x", static_cast<int>(ch));
+                  fprintf(output, "\\x%02x", ch);
                 } else {
                   fprintf(output, "%c", ch);
                 }
@@ -1468,17 +1464,9 @@ int main(int argc, char **argv) {
   s_argc = argc;
   s_argv = argv;
 
-  try {
-    init_view_field();
-    start_profiler();
-    main_loop();  /* never returns */
-  } catch (std::exception& e) {
-    fprintf(stderr, "INTERNAL ERROR: std::exception %s\n", e.what());
-    return EXIT_CODE_STD_EXCEPTION;
-  } catch (...) {
-    fprintf(stderr, "INTERNAL ERROR: unknown exception\n");
-    return EXIT_CODE_UNKNOWN_EXCEPTION;
-  }
+  init_view_field();
+  start_profiler();
+  main_loop();  /* never returns */
 
   return 0;     /* suppress warning */
 }
