@@ -320,8 +320,35 @@ $ENTRY Mul {
 }
 
 
-* 21 Numb
-$EENUM Numb;
+/**
+  21. <Numb s.Digit* e.Skipped> == s.NUMBER
+      s.Digit ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+      Если аргумент не начинается с последовательности цифр,
+      функция возвращает 0.
+*/
+$ENTRY Numb {
+%%
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p;
+  r05_number result = 0;
+
+  for (
+    p = callee->next;
+    p != arg_end && R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_);
+    p = p->next
+  ) {
+    result = 10 * result + (p->info.char_ - '0');
+  }
+
+  arg_begin->tag = R05_DATATAG_NUMBER;
+  arg_begin->info.number = result;
+
+  r05_splice_to_freelist(callee, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
 
 
 /**
