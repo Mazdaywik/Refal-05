@@ -2,7 +2,7 @@
 $EXTERN Map;
 
 *$FROM Library
-$EXTERN ExistFile, True, False;
+$EXTERN True, False;
 
 
 $EENUM Source, Output, NotFound;

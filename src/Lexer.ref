@@ -1,8 +1,5 @@
 *$FROM LibraryEx
-$EXTERN Map, LoadFile, Inc, Type;
-
-*$FROM Library
-$EXTERN Symb, Add, Chr, Mul, Fails, Success, Numb;
+$EXTERN Map, LoadFile, Inc, Success, Fails;
 
 *$FROM Escape
 $EXTERN EscapeChar;

@@ -7,9 +7,6 @@ $EXTERN EL-AddErrorAt;
 *$FROM Generator
 $EXTERN GN-Entry;
 
-*$FROM Library
-$EXTERN ListOfBuiltin, Explode;
-
 
 $ENUM SymTable;
 

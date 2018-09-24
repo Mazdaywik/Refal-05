@@ -1,11 +1,8 @@
 *$FROM LibraryEx
-$EXTERN Inc, Map, Dec;
+$EXTERN Inc, Dec, Map;
 
 *$FROM Lexer
 $EXTERN TkVariable, TkCloseBracket, TkCloseCall;
-
-*$FROM Library
-$EXTERN Symb;
 
 *$FROM Escape
 $EXTERN EscapeChar;

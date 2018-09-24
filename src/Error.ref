@@ -1,6 +1,3 @@
-*$FROM Library
-$EXTERN Symb, Prout;
-
 *$FROM Lexer
 $EXTERN TkError, TkUnexpected, StrFromToken;
 

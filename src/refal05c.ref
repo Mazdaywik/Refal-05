@@ -1,11 +1,8 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map, DelAccumulator, MapReduce, Inc;
+$EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapReduce, Inc;
 
 *$FROM ParseCmdLine
 $EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
-
-*$FROM Library
-$EXTERN Prout, Success, Fails, System, Exit, Symb, Lower;
 
 *$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;

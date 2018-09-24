@@ -1,11 +1,11 @@
 *$FROM LibraryEx
-$EXTERN Fetch, Seq, Map, SaveFile, Inc, Dec;
+$EXTERN Fetch, Seq, Map, SaveFile, Success, Fails;
 
 *$FROM Lexer
-$EXTERN LexFolding, TkOpenBracket, TkCloseBracket,
-  TkOpenCall, TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon,
-  EEnum, Enum, Extern, Entry, TkComma, TkOpenBlock, TkCloseBlock,
-  TkVariable, TkReplace, TkChar, TkNumber, TkOpen, TkClose, TkNative;
+$EXTERN LexFolding, TkOpenBracket, TkOpen, TkCloseBracket, TkClose, TkOpenCall,
+  TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon, TkNative, EEnum, Enum,
+  Entry, Extern, TkComma, TkOpenBlock, TkCloseBlock, TkReplace, TkChar,
+  TkNumber, TkVariable;
 
 *$FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
@@ -15,16 +15,13 @@ $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
 $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
   ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall;
 
-*$FROM Library
-$EXTERN Success, Fails;
-
 *$FROM Generator
-$EXTERN GN-Entry, GenExtern, GN-Local, GenForward, GenEnum, GenFnStart,
-  GenSentence, GenFnEnd-Success, GenFnEnd, GenNative, GenPostprocess,
-  GenThisIsGeneratedFunction;
+$EXTERN GenPostprocess, GN-Local, GenNative, GN-Entry, GenExtern, GenForward,
+  GenEnum, GenFnStart, GenFnEnd-Success, GenThisIsGeneratedFunction, GenFnEnd,
+  GenSentence;
 
 *$FROM Algorithm
-$EXTERN MakeAlgorithm, Brackets, CallBrackets, Symbol, Char, Number, Name;
+$EXTERN MakeAlgorithm, Symbol, Char, Number, Name, Brackets, CallBrackets;
 
 
 /**

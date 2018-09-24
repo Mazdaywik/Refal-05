@@ -1,18 +1,14 @@
 *$FROM LibraryEx
-$EXTERN MapReduce, Dec, Inc, Map, DelAccumulator;
-
-*$FROM Library
-$EXTERN Symb;
+$EXTERN MapReduce, Map, Dec, DelAccumulator, Inc;
 
 *$FROM Algorithm
 $EXTERN
-  CmdComment, CmdDeclareVar, CmdSymbol, Char, Number, Name,
-  CmdBrackets, CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft,
-  CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
-  CmdAllocateElem, ElString, CmdLinkBrackets, CmdPushStack,
-  CmdInsertVar, CmdReturnResult, AlgRight,
-  ElSymbol, ElOpenBracket, ElCloseBracket, ElOpenCall, ElCloseCall,
-  CmdRangeArray, CmdInitB0, CmdResultArray, ElSavePos, ElVariable;
+  CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdSymbol, CmdBrackets,
+  CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft, CmdOpenedE-Start,
+  CmdOpenedE-End, CmdSave, CmdEmptyResult, CmdResultArray, CmdAllocateElem,
+  CmdLinkBrackets, CmdPushStack, CmdInsertVar, CmdReturnResult, Char, Number,
+  Name, AlgRight, ElSymbol, ElString, ElOpenBracket, ElCloseBracket, ElOpenCall,
+  ElCloseCall, ElSavePos, ElVariable;
 
 *$FROM Escape
 $EXTERN EscapeChar;

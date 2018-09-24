@@ -1,5 +1,6 @@
-*$FROM Library
-$EXTERN Add, Sub, Prout, Card;
+*$FROM LibraryEx
+$EXTERN SaveFile, LoadFile, ArgList;
+
 
 DoMatchBrackets {
   (e.Brackets-B '!' s.Left s.Right e.Brackets-E)
@@ -77,22 +78,15 @@ Test4 {
   = <Prout '"' <Card> '"'>;
 }
 
-$EXTERN Arg;
-$EXTERN LoadFile, SaveFile;
-
 $ENUM FailDown;
 
 Test5 {
   = <SaveFile ('copy') <LoadFile 'Test.ref'>>;
 }
 
-$EXTERN ArgList;
-
 Test6 {
   = <SaveFile ('_arguments') <ArgList>>;
 }
-
-$EXTERN ExistFile;
 
 TestFile {
   e.FileName = <Prout e.FileName ' - ' <ExistFile e.FileName>>;
@@ -102,8 +96,6 @@ Test7 {
   = <TestFile 'Test.ref'> <TestFile 'FooBar.txt'>;
 }
 
-$EXTERN Exit, System;
-
 Test8 {
   = <Exit 3>;
 }
@@ -111,8 +103,6 @@ Test8 {
 Test9 {
   = <System 'dir /w'>;
 }
-
-$EXTERN Numb, Symb;
 
 Test10 {
   = <Prout <Numb <Card>>>;
