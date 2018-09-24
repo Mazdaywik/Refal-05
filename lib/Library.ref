@@ -227,7 +227,7 @@ $EENUM First;
       s.FileNo ::= s.NUMBER
 */
 %%
-FILE *open_numbered(unsigned int no, const char *mode);
+FILE *open_numbered(unsigned int no, const char mode);
 %%
 
 $ENTRY Get {
@@ -244,7 +244,7 @@ $ENTRY Get {
     r05_recognition_impossible();
   }
 
-  stream = open_numbered((unsigned int) pfile_no->info.number, "r");
+  stream = open_numbered((unsigned int) pfile_no->info.number, 'r');
 
   r05_reset_allocator();
   read_from_stream(stream);
@@ -263,20 +263,28 @@ static FILE *s_streams[FILE_LIMIT] = { NULL };
 
 enum { UINT_DIGITS = (sizeof(unsigned int) * 8 + 2) / 3 };
 
-FILE *open_numbered(unsigned int file_no, const char *mode) {
+FILE *open_numbered(unsigned int file_no, const char mode) {
+  char mode_str[] = { mode, '\0' };
+
   file_no %= FILE_LIMIT;
+  if (file_no == 0 && mode == 'r') {
+    return stdin;
+  } else if (file_no == 0 && mode == 'w') {
+    return stderr;
+  }
+
   if (s_streams[file_no] == NULL) {
     static const char filename_format[] = "REFAL%u.DAT";
     char filename[sizeof(filename_format) + UINT_DIGITS];
 
     sprintf(filename, filename_format, file_no);
-    s_streams[file_no] = fopen(filename, mode);
+    s_streams[file_no] = fopen(filename, mode_str);
 
     if (s_streams[file_no] == NULL) {
-      static const char error_format[] = "Can't open REFAL%u.DAT";
+      static const char error_format[] = "Can't open REFAL%u.DAT as \"%c\"";
       char error[sizeof(error_format) + UINT_DIGITS];
 
-      sprintf(error, error_format, file_no);
+      sprintf(error, error_format, file_no, mode);
       perror(error_format);
       r05_builtin_error("Can't open file");
     }
@@ -539,7 +547,7 @@ static enum r05_fnresult output_func(
     }
 
     before_expr = pfile_no;
-    output = open_numbered((unsigned int) pfile_no->info.number, "w");
+    output = open_numbered((unsigned int) pfile_no->info.number, 'w');
   } else {
     r05_switch_default_violation(type);
   }
