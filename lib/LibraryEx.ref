@@ -1,5 +1,5 @@
 *$FROM Library
-$EXTERN FReadLine, FOpen, FClose, FWriteLine, Add, Sub, Success, IntFromStr,
+$EXTERN Open, Get, FOpen, FClose, FWriteLine, Add, Sub, Success, IntFromStr,
   Arg;
 
 
@@ -64,23 +64,20 @@ $ENTRY DelAccumulator {
   t.Acc e.Tail = e.Tail;
 }
 
+LOAD-SAVE-HANDLE { = 20; }
+
 $ENTRY LoadFile {
   e.FileName =
-    <DoLoadFile
-      <FReadLine <FOpen 'r' e.FileName>>
-    >;
+    <Open 'r' <LOAD-SAVE-HANDLE> e.FileName>
+    <DoLoadFile <Get <LOAD-SAVE-HANDLE>>>;
 }
 
 DoLoadFile {
-  t.File 0 = <FClose t.File>;
+  /* пусто */ 0 = /* <Close <LOAD-SAVE-HANDLE>> */;
 
-  t.File e.Line 0 = (e.Line) <FClose t.File>;
+  e.Line 0 = (e.Line) /* <Close <LOAD-SAVE-HANDLE>> */;
 
-  t.File e.Line =
-    (e.Line)
-    <DoLoadFile
-      <FReadLine t.File>
-    >;
+  e.Line = (e.Line) <DoLoadFile <Get <LOAD-SAVE-HANDLE>>>;
 }
 
 $ENTRY SaveFile {
