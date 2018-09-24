@@ -1,5 +1,5 @@
-//FROM Library
-$EXTERN Add, Sub, WriteLine, ReadLine;
+*$FROM Library
+$EXTERN Add, Sub, WriteLine, Card;
 
 DoMatchBrackets {
   (e.Brackets-B '!' s.Left s.Right e.Brackets-E)
@@ -74,10 +74,10 @@ Test3 {
 }
 
 Test4 {
-  = <WriteLine '"' <ReadLine> '"'>;
+  = <WriteLine '"' <Card> '"'>;
 }
 
-$EXTERN FReadLine, FOpen, Arg;
+$EXTERN Arg;
 $EXTERN LoadFile, SaveFile;
 
 $ENUM FailDown;
@@ -115,7 +115,7 @@ Test9 {
 $EXTERN IntFromStr, StrFromInt;
 
 Test10 {
-  = <WriteLine <IntFromStr <ReadLine>>>;
+  = <WriteLine <IntFromStr <Card>>>;
 }
 
 Test11 {
