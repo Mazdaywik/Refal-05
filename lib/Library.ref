@@ -370,8 +370,93 @@ $ENTRY Numb {
 }
 
 
-* 22 Open
-$EENUM Open;
+/**
+  22. <Open s.Mode s.FileNo e.FileName> == []
+      s.Mode ::=
+          'r' | 'w' | 'a'
+        |  r  |  w  |  a
+        |  rb |  wb |  ab
+*/
+$EENUM r, w, a, rb, wb, ab;
+
+$ENTRY Open {
+%%
+  struct r05_node *eFileName_b, *eFileName_e, *sMode, *sFileNo;
+  unsigned int file_no;
+  char mode_str[2] = { '.', '\0' };
+  const char *mode = mode_str;
+  char filename[FILENAME_MAX + 1] = { '\0' };
+  size_t filename_len;
+
+  r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
+
+  if (
+    ! r05_svar_left(&sMode, &eFileName_b, &eFileName_e)
+    || (R05_DATATAG_CHAR != sMode->tag && R05_DATATAG_FUNCTION != sMode->tag)
+    || ! r05_svar_left(&sFileNo, &eFileName_b, &eFileName_e)
+    || R05_DATATAG_NUMBER != sFileNo->tag
+  ) {
+    r05_recognition_impossible();
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  filename_len =
+    r05_read_chars(filename, FILENAME_MAX, &eFileName_b, &eFileName_e);
+
+  if (filename_len == 0) {
+    r05_recognition_impossible();
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  filename[filename_len] = '\0';
+
+  if (R05_DATATAG_CHAR == sMode->tag) {
+    char mode = sMode->info.char_;
+    if (mode != 'r' && mode != 'w' && mode != 'a') {
+      r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'");
+      return R05_RECOGNITION_IMPOSSIBLE;        /* suppress warning */
+    }
+    mode_str[0] = mode;
+  } else {
+    mode = sMode->info.function.name;
+  }
+
+  if (! r05_empty_seq(eFileName_b, eFileName_e)) {
+    static const char error_format[] =
+      "Very long file name, maximum available is %u";
+    char error[sizeof(error_format) + UINT_DIGITS];
+
+    sprintf(error, error_format, (unsigned int) FILENAME_MAX);
+    r05_builtin_error(error);
+  }
+
+  file_no = sFileNo->info.number % FILE_LIMIT;
+
+  if (s_streams[file_no] != NULL && fclose(s_streams[file_no]) == EOF) {
+    perror("fclose()");
+    r05_builtin_error("Can't close stream");
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  s_streams[file_no] = fopen(filename, mode);
+  if (s_streams[file_no] == NULL) {
+    char mode_buffer[100] = { '\0' };
+    static const char error_format[] = "Can't open %s for \"%s\"";
+    char error[sizeof(error_format) + FILENAME_MAX + sizeof(mode_buffer)];
+
+    strncpy(mode_buffer, mode, sizeof(mode_buffer) - 1);
+    sprintf(error, error_format, filename, mode_buffer);
+    perror(error);
+    r05_builtin_error(error);
+    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+  }
+
+  r05_splice_to_freelist(arg_begin, arg_end);
+
+  return R05_SUCCESS;
+%%
+}
+
 
 * 23 Ord
 ** $EENUM Ord;
