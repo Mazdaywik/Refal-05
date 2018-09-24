@@ -1497,7 +1497,7 @@ static void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end
 static void vm_make_dump(void) {
   using namespace refalrts::vm;
 
-  fprintf(dump_stream(), "\nSTEP NUMBER %u\n", s_step_counter);
+  fprintf(dump_stream(), "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
   print_seq(dump_stream(), s_arg_begin, s_arg_end);
   fprintf(dump_stream(), "\nVIEW FIELD:\n");
@@ -1541,7 +1541,7 @@ static void refal_machine_teardown(int retcode) {
   end_profiler();
 
 #ifndef DONT_PRINT_STATISTICS
-  fprintf(stderr, "Step count %d\n", s_step_counter);
+  fprintf(stderr, "Step count %lu\n", s_step_counter);
 #endif  /* DONT_PRINT_STATISTICS */
 
   free_memory();
