@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN MapReduce, Map, Dec, DelAccumulator, Inc;
+$EXTERN MapAccum, Map, Dec, DelAccumulator, Inc;
 
 *$FROM Algorithm
 $EXTERN
@@ -75,7 +75,7 @@ $ENTRY GenSentence {
   e.Algorithm =
     ('  do {')
     <SkipIndentAccum
-      <MapReduce generator_GenCommand ('    ' /* отступ */) e.Algorithm>
+      <MapAccum generator_GenCommand ('    ' /* отступ */) e.Algorithm>
     >
     ('  } while (0);')
     ();
@@ -405,7 +405,7 @@ $ENTRY GenNative {
 $ENTRY GenPostprocess {
   (e.SrcName) (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
     <DelAccumulator
-      <MapReduce
+      <MapAccum
         (generator_EnumerateLines (e.SrcName) (e.OutputName))
         1
         <GenCommonHeaders>

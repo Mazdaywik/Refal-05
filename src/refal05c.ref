@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapReduce, Inc;
+$EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapAccum, Inc;
 
 *$FROM ParseCmdLine
 $EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
@@ -171,7 +171,7 @@ ScanCollisions {
 Renumerate {
   (e.FileName) e.Files =
     <DelAccumulator
-      <MapReduce (refal05c_Renumerate-Each e.FileName) 2 e.Files>
+      <MapAccum (refal05c_Renumerate-Each e.FileName) 2 e.Files>
     >;
 }
 
