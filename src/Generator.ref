@@ -45,30 +45,31 @@ $ENTRY GenThisIsGeneratedFunction {
   = ('  r05_this_is_generated_function();');
 }
 
-$ENTRY GenFnEnd {
+$ENTRY GenFail {
   =
     ('  return (enum r05_fnresult)(')
     ('    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)')
     ('  );')
-    ('}') ();
 }
 
-$ENTRY GenFnEnd-Success {
-  = ('  /* return R05_RECOGNITION_IMPOSSIBLE; */') ('}') ();
+$ENTRY GenFnEnd {
+  s.MemoryClass e.Name =
+    ('}')
+    ();
 }
 
 $ENTRY GenEnum {
   s.ScopeClass e.Name =
-    <SwGenFnStart s.ScopeClass NakedArguments e.Name> <GenFnEnd>;
+    <SwGenFnStart s.ScopeClass NakedArguments e.Name>
+    <GenFail>
+    <GenFnEnd s.ScopeClass e.Name>;
 }
 
-$ENTRY GenExtern {
-  e.Name =
+$ENTRY GenDeclaration {
+  (GN-Entry e.Name) =
     ('extern enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ');');
-}
 
-$ENTRY GenForward {
-  e.Name =
+  (GN-Local e.Name) =
     ('static enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ');');
 }
 

@@ -16,9 +16,8 @@ $EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
   ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Generator
-$EXTERN GenPostprocess, GN-Local, GenNative, GN-Entry, GenExtern, GenForward,
-  GenEnum, GenFnStart, GenFnEnd-Success, GenThisIsGeneratedFunction, GenFnEnd,
-  GenSentence;
+$EXTERN GenPostprocess, GenDeclaration, GN-Local, GenNative, GN-Entry, GenEnum,
+  GenFnStart, GenFnEnd, GenThisIsGeneratedFunction, GenFail, GenSentence;
 
 *$FROM Algorithm
 $EXTERN MakeAlgorithm, Symbol, Char, Number, Name, Brackets, CallBrackets;
@@ -144,7 +143,7 @@ Pass-Final-SwNoErrors {
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
     t.ErrorList t.SymTable
-    <Map parser_GenDeclaration <ST-AllFunctions t.SymTable>>
+    <Map GenDeclaration <ST-AllFunctions t.SymTable>>
     ()
     e.Generated;
 
@@ -180,11 +179,6 @@ ParseElements {
       <EL-AddUnexpected t.ErrorList t.Unexpected 'directive or name'>
       t.SymTable (e.Generated) e.Tail
     >;
-}
-
-$ENTRY parser_GenDeclaration {
-  (GN-Entry e.Name) = <GenExtern e.Name>;
-  (GN-Local e.Name) = <GenForward e.Name>;
 }
 
 ParseElements-DirectiveParsed {
@@ -336,7 +330,7 @@ ParseFunction-BlockParsed {
     (
       <GenFnStart s.ScopeClass e.Name>
       <GenNative s.LineNo e.Code>
-      <GenFnEnd-Success>
+      <GenFnEnd s.ScopeClass e.Name>
     )
     t.ErrorList t.SymTable e.Tail;
 }
@@ -360,13 +354,14 @@ GenFunctionBody {
 *      parser_MakeAlgorithm-and-GenSentence
 *      e.Sentences (((TkVariable 'e' e.Index)) (e.Result))
 *    >
-*    <GenFnEnd-Success>;
+*    <GenFnEnd s.ScopeClass e.Name>;
 
   s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
     <GenThisIsGeneratedFunction>
     <Map parser_MakeAlgorithm-and-GenSentence e.Sentences>
-    <GenFnEnd>;
+    <GenFail>
+    <GenFnEnd s.ScopeClass e.Name>;
 }
 
 $ENTRY parser_MakeAlgorithm-and-GenSentence {
