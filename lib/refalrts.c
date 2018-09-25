@@ -758,10 +758,7 @@ struct r05_node *r05_insert_pos(void) {
 static struct r05_node *list_splice(
   struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
-  if ((res == begin) || r05_empty_seq(begin, end)) {
-    /* Цель достигнута сама по себе */
-    return res;
-  } else {
+  if ((res != begin) && ! r05_empty_seq(begin, end)) {
     struct r05_node *prev_res = res->prev;
     struct r05_node *prev_begin = begin->prev;
     struct r05_node *next_end = end->next;
@@ -769,6 +766,9 @@ static struct r05_node *list_splice(
     weld(prev_res, begin);
     weld(end, res);
     weld(prev_begin, next_end);
+  } else {
+    /* Цель достигнута сама по себе */
+    return res;
   }
 
   return begin;
@@ -1085,7 +1085,7 @@ void r05_start_sentence(void) {
 
 
 /*==============================================================================
-   Виртуальная машина
+   Рефал-машина
 ==============================================================================*/
 
 
@@ -1330,6 +1330,7 @@ static void print_seq(
 
 
 static FILE* dump_stream(void);
+
 static void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
 
 static void vm_make_dump(void) {
