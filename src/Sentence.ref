@@ -5,12 +5,12 @@ $EXTERN Inc, Dec, Map;
 $EXTERN EscapeChar;
 
 
-$ENTRY MakeAlgorithm {
+$ENTRY CompileSentence {
   (e.Pattern) (e.Result) =
-    <MakeAlgorithm-Aux <GenPattern e.Pattern> e.Result>;
+    <CompileSentence-Aux <GenPattern e.Pattern> e.Result>;
 }
 
-MakeAlgorithm-Aux {
+CompileSentence-Aux {
   s.NumRanges (e.PatternVars) (e.PatternCommands) e.Result =
     <GeneralizeResult
       s.NumRanges (e.PatternVars) (e.PatternCommands)

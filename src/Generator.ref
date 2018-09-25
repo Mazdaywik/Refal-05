@@ -1,7 +1,7 @@
 *$FROM LibraryEx
 $EXTERN MapAccum, Map, Dec, DelAccumulator, Inc;
 
-*$FROM Algorithm
+*$FROM Sentence
 $EXTERN
   CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdSymbol, CmdBrackets,
   CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft, CmdOpenedE-Start,
@@ -72,10 +72,10 @@ GenCommonTailer {
 }
 
 $ENTRY GenSentence {
-  e.Algorithm =
+  e.SentenceCommands =
     ('  do {')
     <SkipIndentAccum
-      <MapAccum generator_GenCommand ('    ' /* отступ */) e.Algorithm>
+      <MapAccum generator_GenCommand ('    ' /* отступ */) e.SentenceCommands>
     >
     ('  } while (0);')
     ();

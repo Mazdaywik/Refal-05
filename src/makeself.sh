@@ -1,7 +1,7 @@
 #!/bin/bash
 (
-  MODULES="refal05c Algorithm Error Escape FindFile Generator Lexer
-    ParseCmdLine Parser SymTable LibraryEx"
+  MODULES="refal05c Error Escape FindFile Generator Lexer ParseCmdLine Parser
+    Sentence SymTable LibraryEx"
   MODULES=$(echo $MODULES)
 
   mkdir -p ../bin

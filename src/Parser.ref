@@ -18,8 +18,8 @@ $EXTERN ST-Create, ST-AddUnresolveds, ST-AllFunctions, ST-AddDefined,
 $EXTERN GenPostprocess, GenDeclaration, GN-Local, GenNative, GN-Entry, GenEnum,
   GenFnStart, GenFnEnd, GenThisIsGeneratedFunction, GenFail, GenSentence;
 
-*$FROM Algorithm
-$EXTERN MakeAlgorithm, Symbol, Char, Number, Name, Variable, Brackets,
+*$FROM Sentence
+$EXTERN CompileSentence, Symbol, Char, Number, Name, Variable, Brackets,
   CallBrackets;
 
 
@@ -322,7 +322,7 @@ GenFunctionBody {
 *    <GenFnStart s.ScopeClass e.Name>
 *    <GenThisIsGeneratedFunction>
 *    <Map
-*      parser_MakeAlgorithm-and-GenSentence
+*      parser_Compile-and-GenSentence
 *      e.Sentences (((TkVariable 'e' e.Index)) (e.Result))
 *    >
 *    <GenFnEnd s.ScopeClass e.Name>;
@@ -330,15 +330,15 @@ GenFunctionBody {
   s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>
     <GenThisIsGeneratedFunction>
-    <Map parser_MakeAlgorithm-and-GenSentence e.Sentences>
+    <Map parser_Compile-and-GenSentence e.Sentences>
     <GenFail>
     <GenFnEnd s.ScopeClass e.Name>;
 }
 
-$ENTRY parser_MakeAlgorithm-and-GenSentence {
+$ENTRY parser_Compile-and-GenSentence {
   ((e.Pattern) (e.Result)) =
     <GenSentence
-      <MakeAlgorithm (e.Pattern) (e.Result)>
+      <CompileSentence (e.Pattern) (e.Result)>
     >;
 }
 
