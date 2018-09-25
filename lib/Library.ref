@@ -849,12 +849,11 @@ $ENTRY GetEnv {
 
 
 /**
-  52. <System e.Command> == s.RetCode
-      s.RetCode ::= s.NUMBER
+  52. <System e.Command> == e.RetCode
+      e.RetCode ::= '-'? s.NUMBER
 */
 $ENTRY System {
 %%
-  struct r05_node *callee = arg_begin->next;
   struct r05_node *eCommand_b, *eCommand_e;
   char command[2001];
   size_t command_len;
@@ -888,21 +887,46 @@ $ENTRY System {
   }
 #endif  /* defined(WIFEXITED) && defined(WEXITSTATUS) */
 
-  arg_begin->tag = R05_DATATAG_NUMBER;
-  arg_begin->info.number = (r05_number) retcode;
-  r05_splice_to_freelist(callee, arg_end);
+  r05_reset_allocator();
+  if (retcode < 0) {
+    r05_alloc_char('-');
+    retcode = -retcode;
+  }
+  r05_alloc_number((r05_number) retcode);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
 %%
 }
 
 
 /**
-  53. <Exit s.RetCode>
+  53. <Exit e.RetCode>
 */
 $ENTRY Exit {
 %%
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pretcode = callable->next;
   int retcode;
+  signed sign = +1;
+
+  if (pretcode == arg_end) {
+    r05_recognition_impossible();
+#ifndef R05_NORETURN_DEFINED
+    return;
+#endif
+  }
+
+  if (R05_DATATAG_CHAR == pretcode->tag) {
+    if ('-' == pretcode->info.char_) {
+      sign = -1;
+      pretcode = pretcode->next;
+    } else {
+      r05_recognition_impossible();
+  #ifndef R05_NORETURN_DEFINED
+      return;
+  #endif
+    }
+  }
 
   if (
     pretcode == arg_end
@@ -915,7 +939,7 @@ $ENTRY Exit {
 #endif
   }
 
-  retcode = (int) pretcode->info.number;
+  retcode = sign * (int) pretcode->info.number;
   r05_exit(retcode);
 %%
 }
