@@ -24,16 +24,16 @@ $ENTRY Mu {
   \
   sX = func_name->next; \
   if (sX->tag != R05_DATATAG_NUMBER) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
+    r05_recognition_impossible(); \
   } \
   \
   sY = sX->next; \
   if (sY->tag != R05_DATATAG_NUMBER) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
+    r05_recognition_impossible(); \
   } \
   \
   if (sY->next != arg_end) { \
-    return R05_RECOGNITION_IMPOSSIBLE; \
+    r05_recognition_impossible(); \
   } \
   \
   check \
@@ -41,9 +41,7 @@ $ENTRY Mu {
   sX->info.number = sX->info.number op sY->info.number; \
   \
   r05_splice_to_freelist(arg_begin, func_name); \
-  r05_splice_to_freelist(sY, arg_end); \
-  \
-  return R05_SUCCESS;
+  r05_splice_to_freelist(sY, arg_end);
 
 #define NO_CHECK
 #define CHECK_ZERODIV \
@@ -77,7 +75,7 @@ $ENTRY Arg {
     || R05_DATATAG_NUMBER != parg_no->tag
     || parg_no->next != arg_end
   ) {
-    return R05_RECOGNITION_IMPOSSIBLE;
+    r05_recognition_impossible();
   }
 
   arg_no = (int) parg_no->info.number;
@@ -86,8 +84,6 @@ $ENTRY Arg {
   r05_alloc_string(r05_arg(arg_no));
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -115,8 +111,6 @@ $ENTRY Card {
   read_from_stream(stdin);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -156,8 +150,6 @@ $ENTRY Chr {
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -204,15 +196,13 @@ $ENTRY Explode {
      || R05_DATATAG_FUNCTION != ident->tag
      || ident->next != arg_end
   ) {
-    return R05_RECOGNITION_IMPOSSIBLE;
+    r05_recognition_impossible();
   }
 
   r05_reset_allocator();
   r05_alloc_string(ident->info.function->name);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -249,8 +239,6 @@ $ENTRY Get {
   read_from_stream(stream);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -328,8 +316,6 @@ $ENTRY Lower {
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -379,8 +365,6 @@ $ENTRY Numb {
   arg_begin->info.number = result;
 
   r05_splice_to_freelist(callee, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -417,7 +401,7 @@ $ENTRY Open {
   ) {
     r05_recognition_impossible();
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -427,7 +411,7 @@ $ENTRY Open {
   if (filename_len == 0) {
     r05_recognition_impossible();
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -438,7 +422,7 @@ $ENTRY Open {
     if (mode != 'r' && mode != 'w' && mode != 'a') {
       r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'");
 #ifndef R05_NORETURN_DEFINED
-      return R05_RECOGNITION_IMPOSSIBLE;
+      return;
 #endif
     }
     mode_str[0] = mode;
@@ -470,13 +454,11 @@ $ENTRY Open {
     perror(error);
     r05_builtin_error(error);
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -512,8 +494,6 @@ $ENTRY Ord {
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -526,7 +506,7 @@ enum output_func_type {
   PRINT, PROUT, PUT, PUTOUT,
 };
 
-static enum r05_fnresult output_func(
+static void output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   enum output_func_type type
 );
@@ -534,12 +514,12 @@ static enum r05_fnresult output_func(
 
 $ENTRY Print {
 %%
-  return output_func(arg_begin, arg_end, PRINT);
+  output_func(arg_begin, arg_end, PRINT);
 %%
 }
 
 %%
-static enum r05_fnresult output_func(
+static void output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   enum output_func_type type
 ) {
@@ -556,7 +536,7 @@ static enum r05_fnresult output_func(
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
       r05_recognition_impossible();
 #ifndef R05_NORETURN_DEFINED
-      return R05_RECOGNITION_IMPOSSIBLE;
+      return;
 #endif
     }
 
@@ -565,7 +545,7 @@ static enum r05_fnresult output_func(
   } else {
     r05_switch_default_violation(type);
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -612,8 +592,6 @@ static enum r05_fnresult output_func(
   } else {
     r05_switch_default_violation(type);
   }
-
-  return R05_SUCCESS;
 }
 %%
 
@@ -623,7 +601,7 @@ static enum r05_fnresult output_func(
 */
 $ENTRY Prout {
 %%
-  return output_func(arg_begin, arg_end, PROUT);
+  output_func(arg_begin, arg_end, PROUT);
 %%
 }
 
@@ -633,7 +611,7 @@ $ENTRY Prout {
 */
 $ENTRY Put {
 %%
-  return output_func(arg_begin, arg_end, PUT);
+  output_func(arg_begin, arg_end, PUT);
 %%
 }
 
@@ -643,7 +621,7 @@ $ENTRY Put {
 */
 $ENTRY Putout {
 %%
-  return output_func(arg_begin, arg_end, PUTOUT);
+  output_func(arg_begin, arg_end, PUTOUT);
 %%
 }
 
@@ -709,8 +687,6 @@ $ENTRY Symb {
 
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -775,7 +751,7 @@ $ENTRY Type {
   } else {
     r05_switch_default_violation(first_term->tag);
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -785,8 +761,6 @@ $ENTRY Type {
   callee->info.char_ = subtype;
 
   r05_splice_to_freelist(arg_end, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -810,8 +784,6 @@ $ENTRY Upper {
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -861,7 +833,7 @@ $ENTRY GetEnv {
     }
 
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -875,8 +847,6 @@ $ENTRY GetEnv {
   r05_alloc_string(env_value);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -905,7 +875,7 @@ $ENTRY System {
     }
 
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -924,8 +894,6 @@ $ENTRY System {
   arg_begin->tag = R05_DATATAG_NUMBER;
   arg_begin->info.number = (r05_number) retcode;
   r05_splice_to_freelist(callee, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -946,16 +914,12 @@ $ENTRY Exit {
   ) {
     r05_recognition_impossible();
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
   retcode = (int) pretcode->info.number;
   r05_exit(retcode);
-
-#ifndef R05_NORETURN_DEFINED
-  return R05_SUCCESS;
-#endif
 %%
 }
 
@@ -980,8 +944,6 @@ $ENTRY Close {
   file_no = (unsigned int) pfile_no->info.number % FILE_LIMIT;
   ensure_close_stream(file_no);
   r05_splice_to_freelist(arg_begin, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -1014,7 +976,7 @@ $ENTRY ExistFile {
     }
 
 #ifndef R05_NORETURN_DEFINED
-    return R05_RECOGNITION_IMPOSSIBLE;
+    return;
 #endif
   }
 
@@ -1033,8 +995,6 @@ $ENTRY ExistFile {
   }
 
   r05_splice_to_freelist(callee, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 
@@ -1069,16 +1029,16 @@ $ENTRY Compare {
   func_name = arg_begin->next;
   sX = func_name->next;
   if (sX->tag != R05_DATATAG_NUMBER) {
-    return R05_RECOGNITION_IMPOSSIBLE;
+    r05_recognition_impossible();
   }
 
   sY = sX->next;
   if (sY->tag != R05_DATATAG_NUMBER) {
-    return R05_RECOGNITION_IMPOSSIBLE;
+    r05_recognition_impossible();
   }
 
   if (sY->next != arg_end) {
-    return R05_RECOGNITION_IMPOSSIBLE;
+    r05_recognition_impossible();
   }
 
   if (sX->info.number < sY->info.number) {
@@ -1092,8 +1052,6 @@ $ENTRY Compare {
 
   r05_splice_to_freelist(arg_begin, func_name);
   r05_splice_to_freelist(sY, arg_end);
-
-  return R05_SUCCESS;
 %%
 }
 

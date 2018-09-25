@@ -886,12 +886,10 @@ void r05_splice_from_freelist(struct r05_node *pos) {
 }
 
 
-enum r05_fnresult r05_enum_function_code(
-  struct r05_node *arg_begin, struct r05_node *arg_end
-) {
-  (void) arg_begin;
-  (void) arg_end;
-  return R05_RECOGNITION_IMPOSSIBLE;
+void r05_enum_function_code(struct r05_node *begin, struct r05_node *end) {
+  (void) begin;
+  (void) end;
+  r05_recognition_impossible();
 }
 
 
@@ -1133,9 +1131,8 @@ static void init_view_field(void) {
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-R05_NORETURN static void main_loop(void) {
-  enum r05_fnresult res = R05_SUCCESS;
-  while (res == R05_SUCCESS && ! empty_stack()) {
+static void main_loop(void) {
+  while (! empty_stack()) {
     struct r05_node *function;
 
     s_arg_begin = pop_stack();
@@ -1150,25 +1147,13 @@ R05_NORETURN static void main_loop(void) {
 
     function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      res = (function->info.function->ptr)(s_arg_begin, s_arg_end);
+      (function->info.function->ptr)(s_arg_begin, s_arg_end);
     } else {
-      res = R05_RECOGNITION_IMPOSSIBLE;
+      r05_recognition_impossible();
     }
     after_step();
 
     ++ s_step_counter;
-  }
-
-  switch (res) {
-    case R05_SUCCESS:
-      refal_machine_teardown(0);
-      break;
-
-    case R05_RECOGNITION_IMPOSSIBLE:
-      r05_recognition_impossible();
-
-    default:
-      r05_switch_default_violation(res);
   }
 }
 
@@ -1402,7 +1387,7 @@ R05_NORETURN static void refal_machine_teardown(int retcode) {
 }
 
 
-void r05_recognition_impossible(void) {
+R05_NORETURN void r05_recognition_impossible(void) {
   fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
   vm_make_dump();
   refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
@@ -1448,7 +1433,8 @@ int main(int argc, char **argv) {
 
   init_view_field();
   start_profiler();
-  main_loop();  /* never returns */
+  main_loop();
+  refal_machine_teardown(0);
 
 #ifndef R05_NORETURN_DEFINED
   return 0;

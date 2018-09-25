@@ -29,11 +29,6 @@ extern "C" {
 #endif
 
 
-enum r05_fnresult {
-  R05_SUCCESS = 0,
-  R05_RECOGNITION_IMPOSSIBLE = 1,
-};
-
 enum r05_datatag {
   R05_DATATAG_ILLEGAL = 0,
   R05_DATATAG_CHAR,
@@ -48,9 +43,7 @@ enum r05_datatag {
 
 struct r05_node;
 
-typedef enum r05_fnresult (*r05_function_ptr) (
-  struct r05_node *begin, struct r05_node *end
-);
+typedef void (*r05_function_ptr) (struct r05_node *begin, struct r05_node *end);
 
 struct r05_function {
   r05_function_ptr ptr;
@@ -212,9 +205,7 @@ void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e);
 void r05_alloc_string(const char *string);
 
 
-enum r05_fnresult r05_enum_function_code(
-  struct r05_node *arg_begin, struct r05_node *arg_end
-);
+void r05_enum_function_code(struct r05_node *begin, struct r05_node *end);
 
 
 /* Профилирование */
@@ -225,7 +216,7 @@ void r05_start_e_loop(void);
 
 /* Рефал-машина, операционная среда и диагностика */
 
-void r05_recognition_impossible(void);
+R05_NORETURN void r05_recognition_impossible(void);
 R05_NORETURN void r05_exit(int retcode);
 R05_NORETURN void r05_builtin_error(const char *message);
 

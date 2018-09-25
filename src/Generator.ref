@@ -23,7 +23,7 @@ TextFromMemoryClass {
 $ENTRY GenFnStart {
   s.MemoryClass e.Name =
     (
-      'static enum r05_fnresult r05c_' e.Name
+      'static void r05c_' e.Name
       '(struct r05_node *arg_begin, struct r05_node *arg_end) {'
     );
 }
@@ -33,7 +33,7 @@ $ENTRY GenThisIsGeneratedFunction {
 }
 
 $ENTRY GenFail {
-  = ('  return R05_RECOGNITION_IMPOSSIBLE;')
+  = ('  r05_recognition_impossible();')
 }
 
 $ENTRY GenFnEnd {
@@ -235,7 +235,7 @@ $ENTRY generator_GenCommand {
     (e.Indent)
     (e.Indent 'r05_splice_from_freelist(arg_begin);')
     (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end);')
-    (e.Indent 'return R05_SUCCESS;');
+    (e.Indent 'return;');
 }
 
 EscapeString {
