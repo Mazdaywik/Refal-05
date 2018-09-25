@@ -219,6 +219,7 @@ void r05_start_e_loop(void);
 R05_NORETURN void r05_recognition_impossible(void);
 R05_NORETURN void r05_exit(int retcode);
 R05_NORETURN void r05_builtin_error(const char *message);
+R05_NORETURN void r05_builtin_error_errno(const char *message);
 
 const char *r05_arg(int no);
 

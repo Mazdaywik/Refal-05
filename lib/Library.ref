@@ -277,8 +277,7 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
       char error[sizeof(error_format) + UINT_DIGITS];
 
       sprintf(error, error_format, file_no, mode);
-      perror(error_format);
-      r05_builtin_error("Can't open file");
+      r05_builtin_error_errno(error);
     }
   }
 
@@ -451,8 +450,7 @@ $ENTRY Open {
 
     strncpy(mode_buffer, mode, sizeof(mode_buffer) - 1);
     sprintf(error, error_format, filename, mode_buffer);
-    perror(error);
-    r05_builtin_error(error);
+    r05_builtin_error_errno(error);
 #ifndef R05_NORETURN_DEFINED
     return;
 #endif
@@ -465,8 +463,7 @@ $ENTRY Open {
 %%
 static void ensure_close_stream(unsigned int file_no) {
   if (s_streams[file_no] != NULL && fclose(s_streams[file_no]) == EOF) {
-    perror("fclose()");
-    r05_builtin_error("Can't close stream");
+    r05_builtin_error_errno("Can't close stream");
   }
 
   s_streams[file_no] = NULL;
@@ -551,7 +548,7 @@ static void output_func(
 
 #define CHECK_PRINTF(printf_call) \
   ((printf_call) >= 0 ? (void) 0 \
-  : r05_builtin_error("Error in call " #printf_call))
+  : r05_builtin_error_errno("Error in call " #printf_call))
 
   for (p = before_expr->next; p != arg_end; p = p->next) {
     switch (p->tag) {
@@ -987,8 +984,7 @@ $ENTRY ExistFile {
   if (file != NULL) {
     arg_begin->info.function = &r05f_True;
     if (fclose(file) == EOF) {
-      perror("fclose error");
-      r05_builtin_error("fclose error");
+      r05_builtin_error_errno("fclose error");
     }
   } else {
     arg_begin->info.function = &r05f_False;

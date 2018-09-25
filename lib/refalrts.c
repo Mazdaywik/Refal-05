@@ -1,6 +1,8 @@
 #include <assert.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "refalrts.h"
@@ -1402,6 +1404,16 @@ R05_NORETURN void r05_exit(int retcode) {
 
 R05_NORETURN void r05_builtin_error(const char *message) {
   fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
+  vm_make_dump();
+  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+}
+
+
+R05_NORETURN void r05_builtin_error_errno(const char *message) {
+  fprintf(
+    stderr, "\nBUILTIN FUNCTION ERROR: %s\n(errno = %d: %s)\n\n",
+    message, errno, strerror(errno)
+  );
   vm_make_dump();
   refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
