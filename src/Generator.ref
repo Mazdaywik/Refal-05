@@ -52,6 +52,8 @@ $ENTRY GenFnEnd {
 $ENTRY GenEnum {
   s.ScopeClass e.Name =
     <GenFnStart s.ScopeClass e.Name>
+    ('(void) arg_begin;')
+    ('(void) arg_end;')
     <GenFail>
     <GenFnEnd s.ScopeClass e.Name>;
 }

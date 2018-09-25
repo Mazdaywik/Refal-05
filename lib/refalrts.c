@@ -363,10 +363,10 @@ static int equal_expressions(
   struct r05_node *first1, struct r05_node *last1,
   struct r05_node *first2, struct r05_node *last2
 ) {
+  clock_t start_match = clock();
+
   assert((first1 == 0) == (last1 == 0));
   assert((first2 == 0) == (last2 == 0));
-
-  clock_t start_match = clock();
 
   while (
     /* Порядок условий важен */
@@ -398,10 +398,10 @@ int r05_repeated_stvar_left(
   struct r05_node **stvar, struct r05_node *stvar_sample,
   struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
-
   struct r05_node *left_term = 0;
   struct r05_node *copy_last = *last;
+
+  assert((*first == 0) == (*last == 0));
 
   if (! is_open_bracket(stvar_sample) && r05_svar_left(stvar, first, last)) {
     return equal_nodes(*stvar, stvar_sample);
@@ -421,12 +421,7 @@ int r05_repeated_stvar_left(
       stvar_sample_e = stvar_sample;
     }
 
-    int equal = equal_expressions(
-      left_term, left_term_e,
-      stvar_sample, stvar_sample_e
-    );
-
-    if (equal) {
+    if (equal_expressions(left_term, left_term_e, stvar_sample, stvar_sample_e)) {
       *stvar = left_term;
 
       return 1;
@@ -442,10 +437,10 @@ int r05_repeated_stvar_right(
   struct r05_node **stvar, struct r05_node *stvar_sample,
   struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
-
   struct r05_node *right_term = 0;
   struct r05_node *old_last = *last;
+
+  assert((*first == 0) == (*last == 0));
 
   if (! is_open_bracket(stvar_sample) && r05_svar_right(stvar, first, last)) {
     return equal_nodes(*stvar, stvar_sample);
@@ -459,12 +454,7 @@ int r05_repeated_stvar_right(
       stvar_sample_e = stvar_sample;
     }
 
-    int equal = equal_expressions(
-      right_term, right_term_e,
-      stvar_sample, stvar_sample_e
-    );
-
-    if (equal) {
+    if (equal_expressions(right_term, right_term_e, stvar_sample, stvar_sample_e)) {
       *stvar = right_term;
 
       return 1;
@@ -590,9 +580,9 @@ int r05_open_evar_advance(
   struct r05_node **evar_b, struct r05_node **evar_e,
   struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
-
   struct r05_node *prev_first = 0;
+
+  assert((*first == 0) == (*last == 0));
 
   if (r05_tvar_left(&prev_first, first, last)) {
     if (! *evar_b) {
@@ -749,8 +739,10 @@ void r05_reset_allocator(void) {
 
 
 struct r05_node *r05_alloc_node(enum r05_datatag tag) {
+  struct r05_node *node;
+
   ensure_memory();
-  struct r05_node *node = s_free_ptr;
+  node = s_free_ptr;
   s_free_ptr = s_free_ptr->next;
   node->tag = tag;
   return node;
@@ -938,9 +930,10 @@ static void stop_e_loop(void) {
 
 static void start_building_result(void) {
   if (s_in_generated) {
+    clock_t pattern_match;
+
     s_start_building_result_time = clock();
-    clock_t pattern_match =
-      s_start_building_result_time - s_start_pattern_match_time;
+    pattern_match = s_start_building_result_time - s_start_pattern_match_time;
     s_total_pattern_match_time += pattern_match;
 
     stop_e_loop();
@@ -1138,6 +1131,8 @@ static struct r05_node *s_arg_end;
 static void main_loop() {
   enum r05_fnresult res = R05_SUCCESS;
   while (res == R05_SUCCESS && ! empty_stack()) {
+    struct r05_node *function;
+
     s_arg_begin = pop_stack();
     assert(! empty_stack());
     s_arg_end = pop_stack();
@@ -1148,7 +1143,7 @@ static void main_loop() {
     }
 #endif  /* SHOW_DEBUG */
 
-    struct r05_node *function = s_arg_begin->next;
+    function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
       res = (enum r05_fnresult)(
         (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
@@ -1177,12 +1172,15 @@ static void main_loop() {
 
 static void print_indent(FILE *output, int level) {
   enum { cPERIOD = 4 };
+  int i;
+
   putc('\n', output);
   if (level < 0) {
     putc('!', output);
     return;
   }
-  for (int i = 0; i < level; ++i) {
+
+  for (i = 0; i < level; ++i) {
     /* Каждые cPERIOD позиций вместо пробела ставим точку. */
     int put_marker = ((i % cPERIOD) == (cPERIOD - 1));
 
