@@ -97,17 +97,13 @@ Pass-Final-SwNoErrors {
 
   Pattern = PatternTerm* .
 
-  PatternTerm = CommonTerm |
-    '(' Patter ')' | '[' Pattern ']' | RedefinitionVariable .
-
-  RedefinitionVariable = Variable '^' .
+  PatternTerm = CommonTerm | '(' Pattern ')' | .
 
   CommonTerm = Char | Number | Name | Variable .
 
   Result = ResultTerm* .
 
-  ResultTerm = CommonTerm |
-    '(' Result ')' | '[' Result ']' | '<' Result '>' | Block .
+  ResultTerm = CommonTerm | '(' Result ')' | '<' Result '>' .
 
   Стратегия обработки ошибок. Выделяем только одну функцию, проглатывающую
   неожиданные лексемы. Остальные функции при обнаружении неожиданной лексемы
