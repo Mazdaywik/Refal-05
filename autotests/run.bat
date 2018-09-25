@@ -26,7 +26,7 @@ setlocal
   set CPP=%~n1.cpp
   set EXE=%~n1.exe
 
-  ..\src\refal05c %1 2> __error.txt
+  ..\bin\refal05c %1 2> __error.txt
   if errorlevel 1 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit
@@ -65,7 +65,7 @@ setlocal
   set REF=%1
   set CPP=%~n1.cpp
 
-  ..\src\refal05c %1 2> __error.txt
+  ..\bin\refal05c %1 2> __error.txt
   if errorlevel 1 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit

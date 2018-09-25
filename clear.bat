@@ -1,1 +1,1 @@
-erase /s *.exe
+rd /s /q bin src\cfiles

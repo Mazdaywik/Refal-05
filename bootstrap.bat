@@ -1,4 +1,4 @@
-cd ..\src
+cd src
 call makeself.bat stable
 call makeself.bat
 cd ..\autotests
