@@ -2,18 +2,18 @@
 ## компилятора C++
 
 ## Компилятор GNU C++
-# CPPLINE='gсс -Wall -g'
+# CLINE='gсс -Wall -g'
 
 ## Компилятор Clang:
-# CPPLINE='clang -Wall -g'
+# CLINE='clang -Wall -g'
 
 ## Если ваш компилятор C++ отсутствует в списке ниже, впишите его сами:
 # PATH=$PATH:…
-# CPPLINE=…
+# CLINE=…
 
 echo>/dev/null
 
 ## По умолчанию используем GNU C++:
-if [ -z "$CPPLINE" ]; then
-  CPPLINE='gcc -Wall -g'
+if [ -z "$CLINE" ]; then
+  CLINE='gcc -Wall -g'
 fi

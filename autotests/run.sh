@@ -3,7 +3,7 @@
 run_test_aux() {
   echo Passing $1...
   REF=$1
-  CPP=${REF%%.ref}.c
+  CFILE=${REF%%.ref}.c
   EXE=${REF%%.ref}
 
   ../bin/refal05c $REF 2>__error.txt
@@ -12,13 +12,13 @@ run_test_aux() {
     exit
   fi
   rm __error.txt
-  if [ ! -e $CPP ]; then
+  if [ ! -e $CFILE ]; then
     echo COMPILATION FAILED
     exit
   fi
 
-  $CPPLINE -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
-    -o$EXE $CPP ../lib/refalrts.c
+  $CLINE -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
+    -o$EXE $CFILE ../lib/refalrts.c
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit
@@ -30,7 +30,7 @@ run_test_aux() {
     exit
   fi
 
-  rm $CPP $EXE
+  rm $CFILE $EXE
   [ -e dump.txt ] && rm dump.txt
 
   echo
@@ -39,7 +39,7 @@ run_test_aux() {
 run_test_aux.BAD-SYNTAX() {
   echo Passing $1...
   REF=$1
-  CPP=${REF%%.ref}.c
+  CFILE=${REF%%.ref}.c
   EXE=${REF%%.ref}
 
   ../bin/refal05c $REF 2>__error.txt
@@ -48,9 +48,9 @@ run_test_aux.BAD-SYNTAX() {
     exit
   fi
   rm __error.txt
-  if [ -e $CPP ]; then
+  if [ -e $CFILE ]; then
     echo COMPILATION SUCCESSED, BUT EXPECTED SYNTAX ERROR
-    rm $CPP
+    rm $CFILE
     exit
   fi
 

@@ -23,7 +23,7 @@ goto :EOF
 setlocal
   echo Passing %1...
   set REF=%1
-  set CPP=%~n1.c
+  set CFILE=%~n1.c
   set EXE=%~n1.exe
 
   ..\bin\refal05c %1 2> __error.txt
@@ -32,13 +32,13 @@ setlocal
     exit
   )
   erase __error.txt
-  if not exist %CPP% (
+  if not exist %CFILE% (
     echo COMPILATION FAILED
     exit
   )
 
-  %CPPLINE% -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS ^
-    %CPP% ../lib/refalrts.c
+  %CLINE% -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS ^
+    %CFILE% ../lib/refalrts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit
@@ -51,7 +51,7 @@ setlocal
     exit
   )
 
-  erase %CPP% %EXE%
+  erase %CFILE% %EXE%
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
   if exist dump.txt erase dump.txt
@@ -63,7 +63,7 @@ goto :EOF
 setlocal
   echo Passing %1 (syntax error recovering)...
   set REF=%1
-  set CPP=%~n1.c
+  set CFILE=%~n1.c
 
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 1 (
@@ -71,9 +71,9 @@ setlocal
     exit
   )
   erase __error.txt
-  if exist %CPP% (
+  if exist %CFILE% (
     echo COMPILATION SUCCESSED, BUT EXPECTED SYNTAX ERROR
-    erase %CPP%
+    erase %CFILE%
     exit
   )
   echo Ok! Compiler didn't crash on invalid syntax
