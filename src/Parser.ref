@@ -307,25 +307,20 @@ ParseFunction-BlockParsed {
 }
 
 GenFunctionBody {
-*  Компилятор BCC не настолько умён, чтобы здесь _не_ выдавать
-*  предупреждения. Другие компиляторы лишний return терпят.
-*
-*  Раскомментировать, когда существенно изменится подход к кодогенерации.
-*
-*  /*
-*    если последнее предложение имеет вид
-*    e.X = ...;, в конце не генерится возврат
-*    return RecognitionImpossible;
-*  */
-*  s.ScopeClass (e.Name)
-*  e.Sentences (((TkVariable 'e' e.Index)) (e.Result)) =
-*    <GenFnStart s.ScopeClass e.Name>
-*    <GenThisIsGeneratedFunction>
-*    <Map
-*      parser_Compile-and-GenSentence
-*      e.Sentences (((TkVariable 'e' e.Index)) (e.Result))
-*    >
-*    <GenFnEnd s.ScopeClass e.Name>;
+  /*
+    если последнее предложение имеет вид
+    e.X = ...;, в конце не генерится вызов
+    r05_recognition_impossible()
+  */
+  s.ScopeClass (e.Name)
+  e.Sentences (((Variable 'e' e.Index)) (e.Result)) =
+    <GenFnStart s.ScopeClass e.Name>
+    <GenThisIsGeneratedFunction>
+    <Map
+      parser_Compile-and-GenSentence
+      e.Sentences (((Variable 'e' e.Index)) (e.Result))
+    >
+    <GenFnEnd s.ScopeClass e.Name>;
 
   s.ScopeClass (e.Name) e.Sentences =
     <GenFnStart s.ScopeClass e.Name>

@@ -33,7 +33,7 @@ $ENTRY GenThisIsGeneratedFunction {
 }
 
 $ENTRY GenFail {
-  = ('  r05_recognition_impossible();')
+  = () ('  r05_recognition_impossible();')
 }
 
 $ENTRY GenFnEnd {
@@ -73,12 +73,12 @@ GenCommonTailer {
 
 $ENTRY GenSentence {
   e.SentenceCommands =
+    ()
     ('  do {')
     <SkipIndentAccum
       <MapAccum generator_GenCommand ('    ' /* отступ */) e.SentenceCommands>
     >
-    ('  } while (0);')
-    ();
+    ('  } while (0);');
 }
 
 SkipIndentAccum {
