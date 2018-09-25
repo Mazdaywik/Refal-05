@@ -623,13 +623,12 @@ size_t r05_read_chars(
    Распределитель памяти
 ==============================================================================*/
 
-/* TODO: заменить на static */
-extern struct r05_node s_end_free_list;
+static struct r05_node s_end_free_list;
 
 static struct r05_node s_begin_free_list = {
   0, &s_end_free_list, R05_DATATAG_ILLEGAL, { '\0' }
 };
-/*static*/ struct r05_node s_end_free_list = {
+static struct r05_node s_end_free_list = {
   &s_begin_free_list, 0, R05_DATATAG_ILLEGAL, { '\0' }
 };
 
@@ -666,8 +665,7 @@ static int create_nodes(void) {
   }
 #endif  /* ifdef MEMORY_LIMIT */
 
-  /* TODO: убрать преобразование типов */
-  chunk = (struct memory_chunk*) malloc(sizeof(*chunk));
+  chunk = malloc(sizeof(*chunk));
 
   if (chunk == 0) {
     return 0;
@@ -978,15 +976,14 @@ static void add_match_repeated_evar_time(clock_t duration) {
 }
 
 #ifndef DONT_PRINT_STATISTICS
-struct TimeItem {
+struct time_item {
   const char *name;
   clock_t counter;
 };
 
 static int reverse_compare(const void *left_void, const void *right_void) {
-  /* TODO: убрать приведения типов */
-  const struct TimeItem *left = (const struct TimeItem *)(left_void);
-  const struct TimeItem *right = (const struct TimeItem *)(right_void);
+  const struct time_item *left = left_void;
+  const struct time_item *right = right_void;
 
   if (left->counter > right->counter) {
     return -1;
@@ -1006,7 +1003,7 @@ static void print_profile(void) {
   clock_t eloop_time;
 
   enum { nItems = 11 };
-  struct TimeItem items[nItems];
+  struct time_item items[nItems];
 
   size_t i;
 
@@ -1092,20 +1089,16 @@ void r05_start_sentence(void) {
 ==============================================================================*/
 
 
-/* TODO: заменить на static */
-extern struct r05_node s_end_view_field;
+static struct r05_node s_end_view_field;
 
 static struct r05_node s_begin_view_field = {
   0, &s_end_view_field, R05_DATATAG_ILLEGAL, { '\0' }
 };
-/*static*/ struct r05_node s_end_view_field = {
+static struct r05_node s_end_view_field = {
   &s_begin_view_field, 0, R05_DATATAG_ILLEGAL, { '\0' }
 };
 
-/* TODO: раскомментировать при переходе на Си */
-/*
 static struct r05_node *s_stack_ptr = NULL;
-*/
 
 static unsigned long s_step_counter = 0;
 
