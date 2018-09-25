@@ -9,6 +9,26 @@ extern "C" {
 #endif  /* __cplusplus */
 
 
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#  define R05_NORETURN _Noreturn
+#  define R05_NORETURN_DEFINED
+#elif defined(__cplusplus) && __cplusplus >= 201103L
+#  define R05_NORETURN [[noreturn]]
+#  define R05_NORETURN_DEFINED
+#elif defined(_MSC_VER) && _MSC_VER >= 1800
+#  define R05_NORETURN __declspec(noreturn)
+#  define R05_NORETURN_DEFINED
+#elif defined(__GNUC__)
+#  define R05_NORETURN __attribute__((noreturn))
+#  define R05_NORETURN_DEFINED
+#elif defined(__clang__)
+#  define R05_NORETURN __attribute__((noreturn))
+#  define R05_NORETURN_DEFINED
+#else
+#  define R05_NORETURN
+#endif
+
+
 enum r05_fnresult {
   R05_SUCCESS = 0,
   R05_RECOGNITION_IMPOSSIBLE = 1,
@@ -206,15 +226,15 @@ void r05_start_e_loop(void);
 /* Рефал-машина, операционная среда и диагностика */
 
 void r05_recognition_impossible(void);
-void r05_exit(int retcode);
-void r05_builtin_error(const char *message);
+R05_NORETURN void r05_exit(int retcode);
+R05_NORETURN void r05_builtin_error(const char *message);
 
 const char *r05_arg(int no);
 
 #define r05_switch_default_violation(value) \
   r05_switch_default_violation_impl(#value, value, __FILE__, __LINE__)
 
-void r05_switch_default_violation_impl(
+R05_NORETURN void r05_switch_default_violation_impl(
   const char *expr, long value, const char *file, int line
 );
 

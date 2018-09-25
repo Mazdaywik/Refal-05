@@ -351,7 +351,9 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
       */
       default:
         r05_switch_default_violation(node1->tag);
-        return 0;       /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+        return 0;
+#endif
     }
   }
 }
@@ -691,7 +693,7 @@ static int create_nodes(void) {
 }
 
 
-static void refal_machine_teardown(int retcode);
+R05_NORETURN static void refal_machine_teardown(int retcode);
 static void vm_make_dump(void);
 
 static void ensure_memory(void) {
@@ -1131,7 +1133,7 @@ static void init_view_field(void) {
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-static void main_loop(void) {
+R05_NORETURN static void main_loop(void) {
   enum r05_fnresult res = R05_SUCCESS;
   while (res == R05_SUCCESS && ! empty_stack()) {
     struct r05_node *function;
@@ -1384,7 +1386,7 @@ static FILE *dump_stream() {
 }
 
 
-static void refal_machine_teardown(int retcode) {
+R05_NORETURN static void refal_machine_teardown(int retcode) {
   fflush(stderr);
   fflush(stdout);
   end_profiler();
@@ -1407,12 +1409,12 @@ void r05_recognition_impossible(void) {
 }
 
 
-void r05_exit(int retcode) {
+R05_NORETURN void r05_exit(int retcode) {
   refal_machine_teardown(retcode);
 }
 
 
-void r05_builtin_error(const char *message) {
+R05_NORETURN void r05_builtin_error(const char *message) {
   fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
   vm_make_dump();
   refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
@@ -1431,7 +1433,7 @@ const char *r05_arg(int no) {
 }
 
 
-void r05_switch_default_violation_impl(
+R05_NORETURN void r05_switch_default_violation_impl(
   const char *expr, long value, const char *file, int line
 ) {
   fprintf(stderr, "%s:%d:SWITCH DEFAULT VIOLATION\n", file, line);
@@ -1448,5 +1450,7 @@ int main(int argc, char **argv) {
   start_profiler();
   main_loop();  /* never returns */
 
-  return 0;     /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+  return 0;
+#endif
 }

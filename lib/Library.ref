@@ -416,7 +416,9 @@ $ENTRY Open {
     || R05_DATATAG_NUMBER != sFileNo->tag
   ) {
     r05_recognition_impossible();
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   filename_len =
@@ -424,7 +426,9 @@ $ENTRY Open {
 
   if (filename_len == 0) {
     r05_recognition_impossible();
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   filename[filename_len] = '\0';
@@ -433,7 +437,9 @@ $ENTRY Open {
     char mode = sMode->info.char_;
     if (mode != 'r' && mode != 'w' && mode != 'a') {
       r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'");
-      return R05_RECOGNITION_IMPOSSIBLE;        /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+      return R05_RECOGNITION_IMPOSSIBLE;
+#endif
     }
     mode_str[0] = mode;
   } else {
@@ -463,7 +469,9 @@ $ENTRY Open {
     sprintf(error, error_format, filename, mode_buffer);
     perror(error);
     r05_builtin_error(error);
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -547,14 +555,18 @@ static enum r05_fnresult output_func(
 
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
       r05_recognition_impossible();
-      return R05_RECOGNITION_IMPOSSIBLE;        /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+      return R05_RECOGNITION_IMPOSSIBLE;
+#endif
     }
 
     before_expr = pfile_no;
     output = open_numbered((unsigned int) pfile_no->info.number, 'w');
   } else {
     r05_switch_default_violation(type);
-    return R05_RECOGNITION_IMPOSSIBLE;          /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
 #define CHECK_PRINTF(printf_call) \
@@ -762,7 +774,9 @@ $ENTRY Type {
     subtype = '0';
   } else {
     r05_switch_default_violation(first_term->tag);
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   arg_begin->tag = R05_DATATAG_CHAR;
@@ -846,7 +860,9 @@ $ENTRY GetEnv {
       r05_recognition_impossible();
     }
 
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   env_name[env_name_len] = '\0';
@@ -888,7 +904,9 @@ $ENTRY System {
       r05_recognition_impossible();
     }
 
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   command[command_len] = '\0';
@@ -927,13 +945,17 @@ $ENTRY Exit {
     || pretcode->next != arg_end
   ) {
     r05_recognition_impossible();
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   retcode = (int) pretcode->info.number;
   r05_exit(retcode);
 
-  return R05_SUCCESS;   /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+  return R05_SUCCESS;
+#endif
 %%
 }
 
@@ -991,7 +1013,9 @@ $ENTRY ExistFile {
       r05_recognition_impossible();
     }
 
-    return R05_RECOGNITION_IMPOSSIBLE;  /* suppress warning */
+#ifndef R05_NORETURN_DEFINED
+    return R05_RECOGNITION_IMPOSSIBLE;
+#endif
   }
 
   filename[filename_len] = '\0';
