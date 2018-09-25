@@ -549,6 +549,7 @@ static enum r05_fnresult output_func(
     output = open_numbered((unsigned int) pfile_no->info.number, 'w');
   } else {
     r05_switch_default_violation(type);
+    return R05_RECOGNITION_IMPOSSIBLE;          /* suppress warning */
   }
 
 #define CHECK_PRINTF(printf_call) \
