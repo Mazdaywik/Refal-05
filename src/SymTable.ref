@@ -43,14 +43,10 @@ Normalize {
 *$ENUM Declared, Defined
 
 PatchReferences {
-  (e.References) e.Name =
-    (<Map (symtable_PatchReferences-FilterThis e.Name) e.References>);
-}
+  e.References-B (t.SrcPos e.Name) e.References-E (e.Name) =
+    e.References-B <PatchReferences e.References-E (e.Name)>;
 
-$ENTRY symtable_PatchReferences-FilterThis {
-  e.Name (t.SrcPos e.Name) = /* пусто */;
-
-  e.Name (t.SrcPos e.OtherName) = (t.SrcPos e.OtherName);
+  e.References (e.Name) = e.References;
 }
 
 /**
@@ -74,7 +70,7 @@ $ENTRY ST-AddDefined {
     t.ErrorList
     (SymTable
       e.Names-B (Defined s.ScopeClass e.Name) e.Names-E
-      <PatchReferences (e.References) e.Name>
+      (<PatchReferences e.References (e.Name)>)
     );
 
   t.ErrorList
@@ -82,7 +78,7 @@ $ENTRY ST-AddDefined {
     t.ErrorList
     (SymTable
       e.Names (Defined s.ScopeClass e.Name)
-      <PatchReferences (e.References) e.Name>
+      (<PatchReferences e.References (e.Name)>)
     );
 }
 
@@ -102,7 +98,9 @@ $ENTRY ST-AddDeclared {
     (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References));
 
   (SymTable e.Names (e.References)) e.Name =
-    (SymTable e.Names (Declared e.Name) <PatchReferences (e.References) e.Name>);
+    (SymTable
+      e.Names (Declared e.Name) (<PatchReferences e.References (e.Name)>)
+    );
 }
 
 /**
