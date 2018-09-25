@@ -695,7 +695,6 @@ static int create_nodes(void) {
 }
 
 
-R05_NORETURN static void refal_machine_teardown(int retcode);
 static void vm_make_dump(void);
 
 static void ensure_memory(void) {
@@ -703,7 +702,7 @@ static void ensure_memory(void) {
     fprintf(stderr, "\nNO MEMORY\n\n");
     vm_make_dump();
 
-    refal_machine_teardown(EXIT_CODE_NO_MEMORY);
+    r05_exit(EXIT_CODE_NO_MEMORY);
   }
 }
 
@@ -1374,7 +1373,7 @@ static FILE *dump_stream() {
 }
 
 
-R05_NORETURN static void refal_machine_teardown(int retcode) {
+R05_NORETURN void r05_exit(int retcode) {
   fflush(stderr);
   fflush(stdout);
   end_profiler();
@@ -1393,19 +1392,14 @@ R05_NORETURN static void refal_machine_teardown(int retcode) {
 R05_NORETURN void r05_recognition_impossible(void) {
   fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
   vm_make_dump();
-  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
-}
-
-
-R05_NORETURN void r05_exit(int retcode) {
-  refal_machine_teardown(retcode);
+  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
 
 R05_NORETURN void r05_builtin_error(const char *message) {
   fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
   vm_make_dump();
-  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
 
@@ -1415,7 +1409,7 @@ R05_NORETURN void r05_builtin_error_errno(const char *message) {
     message, errno, strerror(errno)
   );
   vm_make_dump();
-  refal_machine_teardown(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
 
@@ -1447,7 +1441,7 @@ int main(int argc, char **argv) {
   init_view_field();
   start_profiler();
   main_loop();
-  refal_machine_teardown(0);
+  r05_exit(0);
 
 #ifndef R05_NORETURN_DEFINED
   return 0;
