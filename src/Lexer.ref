@@ -21,7 +21,8 @@ SkipBOM {
 }
 
 *$EENUM TkChar
-*$EENUM TkCloseCall, TkCloseBlock, TkCloseBracket
+*$EENUM TkClose
+*$EENUM TkCloseBlock
 *$EENUM TkComma
 *$EENUM TkDirective
 *$EENUM TkEOF
@@ -29,13 +30,14 @@ SkipBOM {
 *$EENUM TkName
 *$EENUM TkNative
 *$EENUM TkNumber
-*$EENUM TkOpenCall, TkOpenBlock, TkOpenBracket
+*$EENUM TkOpen
+*$EENUM TkOpenBlock
 *$EENUM TkReplace
 *$EENUM TkSemicolon
 *$EENUM TkUnexpected
 *$EENUM TkVariable
 
-*$EENUM EEnum, Entry, Enum, Extern
+*$EENUM EEnum, Entry, Enum, Extern, Bracket, CallBracket
 
 Inc2 { s.Num = <Add 2 s.Num>; }
 
@@ -65,7 +67,7 @@ Scan {
   s.Row s.Col 't.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 't' () <Type e.Tail>>;
 
   s.Row s.Col s.Next e.Tail =
-    <Scan-ByPunctuation s.Row s.Col <Punctuation s.Next> e.Tail>;
+    <Scan-ByPunctuation s.Row s.Col (<Punctuation s.Next>) e.Tail>;
 
   s.Row s.Col /* пусто */ = (TkEOF (s.Row s.Col));
 }
@@ -261,13 +263,13 @@ ScanVariable {
 
 Punctuation {
   /* упорядочены по ASCII-кодам */
-  '(' = Success TkOpenBracket;
-  ')' = Success TkCloseBracket;
+  '(' = Success TkOpen Bracket;
+  ')' = Success TkClose Bracket;
   ',' = Success TkComma;
   ';' = Success TkSemicolon;
-  '<' = Success TkOpenCall;
+  '<' = Success TkOpen CallBracket;
   '=' = Success TkReplace;
-  '>' = Success TkCloseCall;
+  '>' = Success TkClose CallBracket;
   '{' = Success TkOpenBlock;
   '}' = Success TkCloseBlock;
 
@@ -275,10 +277,11 @@ Punctuation {
 }
 
 Scan-ByPunctuation {
-  s.Row s.Col Success s.Token e.Tail =
-    (s.Token (s.Row s.Col)) <Scan s.Row <Inc s.Col> e.Tail>;
+  s.Row s.Col (Success s.Token e.Info) e.Tail =
+    (s.Token (s.Row s.Col) e.Info) <Scan s.Row <Inc s.Col> e.Tail>;
 
-  s.Row s.Col Fails e.Tail = <Scan-ByType s.Row s.Col <Type e.Tail>>;
+  s.Row s.Col (Fails s.Other) e.Tail =
+    <Scan-ByType s.Row s.Col <Type s.Other e.Tail>>;
 }
 
 Scan-ByType {
@@ -338,13 +341,11 @@ StrDirective {
   Extern = 'EXTERN';
 }
 
-*$EENUM TkOpen, TkClose
-
 $ENTRY StrFromToken {
   TkChar s.Char = '\'' <EscapeChar s.Char> '\'';
-  TkCloseCall = '">"';
+  TkClose Bracket = '")"';
+  TkClose CallBracket = '">"';
   TkCloseBlock = '"}"';
-  TkCloseBracket = '")"';
   TkComma = '","';
   TkDirective s.Directive = '"$' <StrDirective s.Directive> '"';
   TkEOF = 'end of file';
@@ -352,16 +353,13 @@ $ENTRY StrFromToken {
   TkName e.Name = 'Name ' e.Name;
   TkNative e.Code = '"%%...%%"';
   TkNumber s.Number = 'Number ' <Symb s.Number>;
-  TkOpenCall = '"<"';
+  TkOpen Bracket = '"("';
+  TkOpen CallBracket = '"<"';
   TkOpenBlock = '"{"';
-  TkOpenBracket = '"("';
   TkReplace = '"="';
   TkSemicolon = '";"';
   TkUnexpected e.Unexpected = 'Unexpected characters <' e.Unexpected '>';
   TkVariable s.Mode e.Index = s.Mode '.' e.Index;
-
-  TkOpen s.OpenBracket = <StrFromToken s.OpenBracket>;
-  TkClose s.CloseBracket = <StrFromToken s.CloseBracket>;
 }
 
 DigitFromChar {

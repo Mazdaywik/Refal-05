@@ -1,9 +1,6 @@
 *$FROM LibraryEx
 $EXTERN Inc, Dec, Map;
 
-*$FROM Lexer
-$EXTERN TkVariable, TkCloseBracket, TkCloseCall;
-
 *$FROM Escape
 $EXTERN EscapeChar;
 
@@ -32,7 +29,7 @@ MakeAlgorithm-Aux {
 * Направление распознавания
 *$EENUM AlgLeft, AlgRight
 
-*$EENUM Brackets, CallBrackets, Symbol, Char, Number, Name
+*$EENUM Brackets, CallBrackets, Symbol, Char, Number, Name, Variable
 
 /*
 Команды распознавания
@@ -119,7 +116,7 @@ DoGenPattern {
     >;
 
   /* Распознавание переменных */
-  s.NumRanges e.Ranges-B (s.Num (TkVariable s.Mode e.Index) e.Range) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Variable s.Mode e.Index) e.Range) e.Ranges-E
   (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -127,7 +124,7 @@ DoGenPattern {
       (e.Commands (CmdRepeated AlgLeft s.Num <Inc s.Count> s.Mode e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkVariable s.Mode e.Index)) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num e.Range (Variable s.Mode e.Index)) e.Ranges-E
   (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -136,7 +133,7 @@ DoGenPattern {
     >;
 
   /* Диапазон с закрытой переменной */
-  s.NumRanges e.Ranges-B (s.Num (TkVariable 'e' e.Index)) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Variable 'e' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B e.Ranges-E
@@ -144,35 +141,35 @@ DoGenPattern {
       (e.Commands (CmdClosedE AlgLeft s.Num 'e' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (TkVariable 's' e.Index) e.Range) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Variable 's' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
       (e.Vars (1 's' e.Index)) (e.Commands (CmdVar AlgLeft s.Num 's' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (TkVariable 't' e.Index) e.Range) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Variable 't' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
       (e.Vars (1 't' e.Index)) (e.Commands (CmdVar AlgLeft s.Num 't' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkVariable 's' e.Index)) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num e.Range (Variable 's' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
       (e.Vars (1 's' e.Index)) (e.Commands (CmdVar AlgRight s.Num 's' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num e.Range (TkVariable 't' e.Index)) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num e.Range (Variable 't' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
       (e.Vars (1 't' e.Index)) (e.Commands (CmdVar AlgRight s.Num 't' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (TkVariable 'e' e.Index) e.Range) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Variable 'e' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       <SaveRanges
@@ -212,7 +209,7 @@ TextFromPattern {
   (Symbol Name e.Name) e.Tail =
     ' & ' e.Name <TextFromPattern e.Tail>;
 
-  (TkVariable s.Mode e.Index) e.Tail =
+  (Variable s.Mode e.Index) e.Tail =
     ' ' s.Mode '.' e.Index <TextFromPattern e.Tail>;
 
   = ' ';
@@ -263,7 +260,7 @@ GenResult {
   построение результата (в обратном порядке)
 */
 
-*$ENUM TkString
+*$ENUM TkString, TkCloseBracket, TkCloseCall
 
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
@@ -361,7 +358,7 @@ DoGenResult {
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkVariable 's' e.Index) e.Result =
+  s.Counter (Variable 's' e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
@@ -372,7 +369,7 @@ DoGenResult {
   /* Переменная есть в образце — переносим, позиция подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
   (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos)) (e.Commands)
-  s.Counter (TkVariable s.Mode e.Index) e.Result =
+  s.Counter (Variable s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
@@ -386,7 +383,7 @@ DoGenResult {
 
   /* Переменная есть в образце — переносим, позиция не подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
-  s.Counter (TkVariable s.Mode e.Index) e.Result =
+  s.Counter (Variable s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.Counter))
@@ -400,7 +397,7 @@ DoGenResult {
 
   /* Переменной нет в образце — копируем */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (TkVariable s.Mode e.Index) e.Result =
+  s.Counter (Variable s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))

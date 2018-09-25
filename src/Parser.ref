@@ -2,10 +2,9 @@
 $EXTERN Fetch, Seq, Map, SaveFile, Success, Fails;
 
 *$FROM Lexer
-$EXTERN LexFolding, TkOpenBracket, TkOpen, TkCloseBracket, TkClose, TkOpenCall,
-  TkCloseCall, TkEOF, TkDirective, TkName, TkSemicolon, TkNative, EEnum, Enum,
-  Entry, Extern, TkComma, TkOpenBlock, TkCloseBlock, TkReplace, TkChar,
-  TkNumber, TkVariable;
+$EXTERN LexFolding, TkEOF, TkDirective, TkName, TkSemicolon, TkNative, EEnum,
+  Enum, Entry, Extern, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
+  TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace;
 
 *$FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
@@ -20,7 +19,8 @@ $EXTERN GenPostprocess, GenDeclaration, GN-Local, GenNative, GN-Entry, GenEnum,
   GenFnStart, GenFnEnd, GenThisIsGeneratedFunction, GenFail, GenSentence;
 
 *$FROM Algorithm
-$EXTERN MakeAlgorithm, Symbol, Char, Number, Name, Brackets, CallBrackets;
+$EXTERN MakeAlgorithm, Symbol, Char, Number, Name, Variable, Brackets,
+  CallBrackets;
 
 
 /**
@@ -33,22 +33,11 @@ $ENTRY CompileFile {
     <Fetch
       <LexFolding e.SrcName>
       <Seq
-        (Map parser_PrepareBracket)
         (parser_Pass-Lexer (e.SrcName))
         parser_Pass-CheckUnresolved
         (parser_Pass-Final (e.SrcName) (e.OutputName))
       >
     >;
-}
-
-$ENTRY parser_PrepareBracket {
-  (TkOpenBracket t.SrcPos) = (TkOpen t.SrcPos TkOpenBracket);
-  (TkCloseBracket t.SrcPos) = (TkClose t.SrcPos TkCloseBracket);
-
-  (TkOpenCall t.SrcPos) = (TkOpen t.SrcPos TkOpenCall);
-  (TkCloseCall t.SrcPos) = (TkClose t.SrcPos TkCloseCall);
-
-  t.OtherToken = t.OtherToken;
 }
 
 $ENTRY parser_Pass-Lexer {
@@ -477,14 +466,14 @@ DoParsePattern {
       t.ErrorList t.SymTable
       (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket)
-      (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
+      (e.Scanned (Variable s.Mode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <DoParsePattern
       t.ErrorList t.SymTable ((s.Mode e.Index) e.Variables) (e.MultiBracket)
-      (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
+      (e.Scanned (Variable s.Mode e.Index)) e.Tail
     >;
 
   /*
@@ -498,19 +487,18 @@ DoParsePattern {
   */
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBracket)
-  (e.Scanned) (TkOpen t.SrcPos TkOpenBracket) e.Tail =
+  (e.Scanned) (TkOpen t.SrcPos Bracket) e.Tail =
     <DoParsePattern
       t.ErrorList t.SymTable t.VarTable
       (
         e.MultiBracket
-        (Brackets t.SrcPos TkCloseBracket e.Scanned)
+        (Brackets t.SrcPos Bracket e.Scanned)
       )
       () e.Tail
     >;
 
   t.ErrorList t.SymTable t.VarTable (e.MultiBracket)
-  (e.Scanned)
-  (TkOpen t.SrcPos TkOpenCall) e.Tail =
+  (e.Scanned) (TkOpen t.SrcPos CallBracket) e.Tail =
     <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Unexpected call bracket in pattern expression'
@@ -518,7 +506,7 @@ DoParsePattern {
       t.SymTable t.VarTable
       (
         e.MultiBracket
-        (Brackets t.SrcPos TkCloseCall e.Scanned)
+        (Brackets t.SrcPos CallBracket e.Scanned)
       )
       () e.Tail
     >;
@@ -588,8 +576,8 @@ DoParsePattern {
 }
 
 StrFromBracket {
-  TkOpenBracket = '('; TkCloseBracket = ')';
-  TkOpenCall = '<'; TkCloseCall = '>';
+  Bracket = ')';
+  CallBracket = '>';
   Brackets = '(';
   CallBrackets = '<';
 }
@@ -652,7 +640,7 @@ DoParseResult {
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <DoParseResult
       t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
-      (e.MultiBracket) (e.Scanned (TkVariable s.Mode e.Index)) e.Tail
+      (e.MultiBracket) (e.Scanned (Variable s.Mode e.Index)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Variables)
@@ -684,7 +672,7 @@ DoParseResult {
         (
           <BracketPairName s.OpenBracket>
           t.SrcPos
-          <CloseBracketName s.OpenBracket>
+          s.OpenBracket
           e.Scanned
         )
       )
@@ -740,13 +728,8 @@ DoParseResult {
 }
 
 BracketPairName {
-  TkOpenBracket = Brackets;
-  TkOpenCall = CallBrackets;
-}
-
-CloseBracketName {
-  TkOpenBracket = TkCloseBracket;
-  TkOpenCall = TkCloseCall;
+  Bracket = Brackets;
+  CallBracket = CallBrackets;
 }
 
 ParseResult-ExpectSemicolon {
