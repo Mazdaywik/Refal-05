@@ -120,7 +120,7 @@ $ENTRY refal05c_GetFileName {
 }
 
 GetFileName-Aux {
-  e.FileName '.cpp' = <DoGetFileName e.FileName>;
+  e.FileName '.c' = <DoGetFileName e.FileName>;
 }
 
 DoGetFileName {
@@ -191,6 +191,6 @@ $ENTRY refal05c_RestoreName {
   (e.FileName 0 (Source (e.Source) e.Output)) =
     (Source (e.Source) e.Output);
 
-  (e.FileName s.Number (Source (e.Source) e.OutName '.cpp')) =
-    (Source (e.Source) e.OutName '@' <Symb s.Number> '.cpp');
+  (e.FileName s.Number (Source (e.Source) e.OutName '.c')) =
+    (Source (e.Source) e.OutName '@' <Symb s.Number> '.c');
 }

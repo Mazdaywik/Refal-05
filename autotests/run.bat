@@ -23,7 +23,7 @@ goto :EOF
 setlocal
   echo Passing %1...
   set REF=%1
-  set CPP=%~n1.cpp
+  set CPP=%~n1.c
   set EXE=%~n1.exe
 
   ..\bin\refal05c %1 2> __error.txt
@@ -38,7 +38,7 @@ setlocal
   )
 
   %CPPLINE% -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS ^
-    %CPP% ../lib/refalrts.cpp
+    %CPP% ../lib/refalrts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit
@@ -63,7 +63,7 @@ goto :EOF
 setlocal
   echo Passing %1 (syntax error recovering)...
   set REF=%1
-  set CPP=%~n1.cpp
+  set CPP=%~n1.c
 
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 1 (

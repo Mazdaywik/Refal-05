@@ -16,7 +16,7 @@ rem Если вы используете компилятор Borland C++ Compil
 rem Если вы используете компилятор MinGW (MinGW builds), установите в строке ниже
 rem правильный путь до каталога bin дистрибутива MinGW.
 :: set PATH=%PATH%;C:\Program Files\MinGW\bin
-:: set CPPLINE=g++ -Wall -g
+:: set CPPLINE=gcc -Wall -g
 
 rem Если вы используете компилятор Watcom, проверьте, что установлен правильный
 rem путь к файлу owsetenv.bat
@@ -30,7 +30,7 @@ rem Примечание. Разрядность (32 или 64) дистрибу
 rem одинаковой.
 :: set PATH=%PATH%;C:\Program Files\MinGW\bin
 :: set PATH=%PATH%;C:\Program Files\LLVM\bin
-:: set CPPLINE=clang++ -Wall -g
+:: set CPPLINE=clang -Wall -g
 
 if not "%CPPLINE%" == "" goto END
 echo C++ compiler is not selected, please edit file c-plus-plus.conf.bat

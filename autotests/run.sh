@@ -3,7 +3,7 @@
 run_test_aux() {
   echo Passing $1...
   REF=$1
-  CPP=${REF%%.ref}.cpp
+  CPP=${REF%%.ref}.c
   EXE=${REF%%.ref}
 
   ../bin/refal05c $REF 2>__error.txt
@@ -18,7 +18,7 @@ run_test_aux() {
   fi
 
   g++ -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
-    -o$EXE $CPP ../lib/refalrts.cpp
+    -o$EXE $CPP ../lib/refalrts.c
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit
@@ -39,7 +39,7 @@ run_test_aux() {
 run_test_aux.BAD-SYNTAX() {
   echo Passing $1...
   REF=$1
-  CPP=${REF%%.ref}.cpp
+  CPP=${REF%%.ref}.c
   EXE=${REF%%.ref}
 
   ../bin/refal05c $REF 2>__error.txt

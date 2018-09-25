@@ -24,5 +24,5 @@
   mv refal05c ../bin
 
   mkdir -p cfiles
-  mv *.cpp ../lib/Library.cpp cfiles
+  mv *.c ../lib/Library.c cfiles
 )

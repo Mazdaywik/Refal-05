@@ -23,6 +23,6 @@ setlocal
   move refal05c.exe ..\bin >NUL
 
   md cfiles 2>NUL
-  move *.cpp cfiles >NUL
-  move ..\lib\Library.cpp cfiles >NUL
+  move *.c cfiles >NUL
+  move ..\lib\Library.c cfiles >NUL
 endlocal
