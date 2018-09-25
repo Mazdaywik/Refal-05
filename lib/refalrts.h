@@ -46,7 +46,7 @@ struct r05_node {
   union {
     char char_;
     void *file;
-    struct r05_function function;
+    struct r05_function *function;
     r05_number number;
     struct r05_node *link;
   } info;
@@ -66,10 +66,10 @@ void r05_move_right(struct r05_node **begin, struct r05_node **end);
 int r05_empty_seq(struct r05_node *begin, struct r05_node *end);
 
 int r05_function_left(
-  r05_function_ptr func, struct r05_node **first, struct r05_node **last
+  struct r05_function *func, struct r05_node **first, struct r05_node **last
 );
 int r05_function_right(
-  r05_function_ptr func, struct r05_node **first, struct r05_node **last
+  struct r05_function *func, struct r05_node **first, struct r05_node **last
 );
 
 int r05_char_left(char ch, struct r05_node **first, struct r05_node **last);
@@ -167,11 +167,8 @@ void r05_alloc_chars(const char buffer[], size_t len);
 #define r05_alloc_number(num) \
   (r05_alloc_node(R05_DATATAG_NUMBER)->info.number = (num))
 
-#define r05_alloc_function(func, name) \
-  (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function =\
-     r05_make_function(func, name))
-
-struct r05_function r05_make_function(r05_function_ptr func, const char *name);
+#define r05_alloc_function(func) \
+  (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function = func)
 
 #define r05_alloc_open_bracket(pos) \
   ((pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET))
@@ -193,6 +190,11 @@ struct r05_function r05_make_function(r05_function_ptr func, const char *name);
 void r05_alloc_tvar(struct r05_node *sample);
 void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e);
 void r05_alloc_string(const char *string);
+
+
+enum r05_fnresult r05_enum_function_code(
+  struct r05_node *arg_begin, struct r05_node *arg_end
+);
 
 
 /* Профилирование */

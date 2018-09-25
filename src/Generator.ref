@@ -16,10 +16,6 @@ $EXTERN EscapeChar;
 
 *$EENUM GN-Local, GN-Entry
 
-FuncArguments {
-  = 'struct r05_node *arg_begin, struct r05_node *arg_end';
-}
-
 TextFromMemoryClass {
   GN-Local = 'static '; GN-Entry = ;
 }
@@ -27,8 +23,8 @@ TextFromMemoryClass {
 $ENTRY GenFnStart {
   s.MemoryClass e.Name =
     (
-      <TextFromMemoryClass s.MemoryClass>
-      'enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ') {'
+      'static enum r05_fnresult r05c_' e.Name
+      '(struct r05_node *arg_begin, struct r05_node *arg_end) {'
     );
 }
 
@@ -37,33 +33,32 @@ $ENTRY GenThisIsGeneratedFunction {
 }
 
 $ENTRY GenFail {
-  =
-    ('  return (enum r05_fnresult)(')
-    ('    R05_RECOGNITION_IMPOSSIBLE | (__LINE__ << 8)')
-    ('  );')
+  = ('  return R05_RECOGNITION_IMPOSSIBLE;')
 }
 
 $ENTRY GenFnEnd {
   s.MemoryClass e.Name =
     ('}')
+    (
+      <TextFromMemoryClass s.MemoryClass>
+      'struct r05_function r05f_' e.Name ' = { r05c_' e.Name ', "' e.Name '" };'
+    )
     ();
 }
 
 $ENTRY GenEnum {
   s.ScopeClass e.Name =
-    <GenFnStart s.ScopeClass e.Name>
-    ('(void) arg_begin;')
-    ('(void) arg_end;')
-    <GenFail>
-    <GenFnEnd s.ScopeClass e.Name>;
+    (
+      <TextFromMemoryClass s.ScopeClass>
+      'struct r05_function r05f_' e.Name ' = '
+      '{ r05_enum_function_code, "' e.Name '" };'
+    )
+    ();
 }
 
 $ENTRY GenDeclaration {
-  (GN-Entry e.Name) =
-    ('extern enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ');');
-
-  (GN-Local e.Name) =
-    ('static enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ');');
+  (GN-Entry e.Name) = ('extern struct r05_function r05f_' e.Name ';');
+  (GN-Local e.Name) = ('static struct r05_function r05f_' e.Name ';');
 }
 
 GenCommonHeaders {
@@ -292,7 +287,7 @@ SymbolFunc {
 SymbolTextRep {
   Char s.Char = '\'' <EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
-  Name e.Name = 'r05c_' e.Name;
+  Name e.Name = '&r05f_' e.Name;
 }
 
 PrintMatchBrackets {
@@ -386,7 +381,6 @@ SwAllocator {
 }
 
 SwInfo {
-  ElSymbol Name e.Name = 'r05c_' e.Name ', "' e.Name '"';
   ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
   ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
 

@@ -70,7 +70,7 @@ int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
 
 
 int r05_function_left(
-  r05_function_ptr fn, struct r05_node **first, struct r05_node **last
+  struct r05_function *fn, struct r05_node **first, struct r05_node **last
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -78,7 +78,7 @@ int r05_function_left(
     return 0;
   } else if ((*first)->tag != R05_DATATAG_FUNCTION) {
     return 0;
-  } else if ((*first)->info.function.ptr != fn) {
+  } else if ((*first)->info.function != fn) {
     return 0;
   } else {
     r05_move_left(first, last);
@@ -88,7 +88,7 @@ int r05_function_left(
 
 
 int r05_function_right(
-  r05_function_ptr fn, struct r05_node **first, struct r05_node **last
+  struct r05_function *fn, struct r05_node **first, struct r05_node **last
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -96,7 +96,7 @@ int r05_function_right(
     return 0;
   } else if (R05_DATATAG_FUNCTION != (*last)->tag) {
     return 0;
-  } else if ((*last)->info.function.ptr != fn) {
+  } else if ((*last)->info.function != fn) {
     return 0;
   } else {
     r05_move_right(first, last);
@@ -335,7 +335,7 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
         return (node1->info.number == node2->info.number);
 
       case R05_DATATAG_FUNCTION:
-        return (node1->info.function.ptr == node2->info.function.ptr);
+        return (node1->info.function == node2->info.function);
 
       /*
         Сведения о связях между скобками нужны для других целей, здесь
@@ -817,14 +817,6 @@ void r05_alloc_chars(const char buffer[], size_t len) {
 }
 
 
-struct r05_function r05_make_function(r05_function_ptr func, const char *name) {
-  struct r05_function res;
-  res.ptr = func;
-  res.name = name;
-  return res;
-}
-
-
 void r05_alloc_tvar(struct r05_node *sample) {
   if (is_open_bracket(sample)) {
     struct r05_node *end_of_sample = sample->info.link;
@@ -891,6 +883,15 @@ void r05_splice_from_freelist(struct r05_node *pos) {
   if (s_free_ptr != s_begin_free_list.next) {
     list_splice(pos, s_begin_free_list.next, s_free_ptr->prev);
   }
+}
+
+
+enum r05_fnresult r05_enum_function_code(
+  struct r05_node *arg_begin, struct r05_node *arg_end
+) {
+  (void) arg_begin;
+  (void) arg_end;
+  return R05_RECOGNITION_IMPOSSIBLE;
 }
 
 
@@ -1120,14 +1121,14 @@ static int empty_stack(void) {
 }
 
 
-extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
+extern struct r05_function r05f_Go;
 
 static void init_view_field(void) {
   struct r05_node *open, *close;
 
   r05_reset_allocator();
   r05_alloc_open_call(open);
-  r05_alloc_function(r05c_Go, "Go");
+  r05_alloc_function(&r05f_Go);
   r05_alloc_close_call(close);
   r05_push_stack(close);
   r05_push_stack(open);
@@ -1154,9 +1155,7 @@ static void main_loop(void) {
 
     function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      res = (enum r05_fnresult)(
-        (function->info.function.ptr)(s_arg_begin, s_arg_end) & 0xFFU
-      );
+      res = (function->info.function->ptr)(s_arg_begin, s_arg_end);
     } else {
       res = R05_RECOGNITION_IMPOSSIBLE;
     }
@@ -1250,11 +1249,7 @@ static void print_seq(
             continue;
 
           case R05_DATATAG_FUNCTION:
-            if (begin->info.function.name[0] != 0) {
-              fprintf(output, "&%s ", begin->info.function.name);
-            } else {
-              fprintf(output, "&%p ", begin->info.function.ptr);
-            }
+            fprintf(output, "&%s ", begin->info.function->name);
             r05_move_left(&begin, &end);
             continue;
 

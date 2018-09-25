@@ -208,7 +208,7 @@ $ENTRY Explode {
   }
 
   r05_reset_allocator();
-  r05_alloc_string(ident->info.function.name);
+  r05_alloc_string(ident->info.function->name);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 
@@ -437,7 +437,7 @@ $ENTRY Open {
     }
     mode_str[0] = mode;
   } else {
-    mode = sMode->info.function.name;
+    mode = sMode->info.function->name;
   }
 
   if (! r05_empty_seq(eFileName_b, eFileName_e)) {
@@ -568,7 +568,7 @@ static enum r05_fnresult output_func(
         break;
 
       case R05_DATATAG_FUNCTION:
-        CHECK_PRINTF(fprintf(output, "%s ", p->info.function.name));
+        CHECK_PRINTF(fprintf(output, "%s ", p->info.function->name));
         break;
 
       case R05_DATATAG_NUMBER:
@@ -999,15 +999,13 @@ $ENTRY ExistFile {
 
   arg_begin->tag = R05_DATATAG_FUNCTION;
   if (file != NULL) {
-    arg_begin->info.function.ptr = r05c_True;
-    arg_begin->info.function.name = "True";
+    arg_begin->info.function = &r05f_True;
     if (fclose(file) == EOF) {
       perror("fclose error");
       r05_builtin_error("fclose error");
     }
   } else {
-    arg_begin->info.function.ptr = r05c_False;
-    arg_begin->info.function.name = "False";
+    arg_begin->info.function = &r05f_False;
   }
 
   r05_splice_to_freelist(callee, arg_end);
