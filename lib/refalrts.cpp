@@ -605,9 +605,9 @@ int r05_open_evar_advance(
       *evar_e = prev_first;
     }
 
-    return true;
+    return 1;
   } else {
-    return false;
+    return 0;
   }
 }
 
@@ -918,13 +918,13 @@ static clock_t s_total_match_repeated_tvar_time_outside_e;
 static clock_t s_total_match_repeated_evar_time_outside_e;
 
 
-static bool s_in_generated;
+static int s_in_generated;
 static int s_in_e_loop;
 
 
 static void start_profiler(void) {
   s_start_program_time = clock();
-  s_in_generated = false;
+  s_in_generated = 0;
 }
 
 
@@ -956,7 +956,7 @@ static void after_step(void) {
 
   assert(s_in_e_loop == 0);
 
-  s_in_generated = false;
+  s_in_generated = 0;
   s_in_e_loop = 0;
 }
 
@@ -989,8 +989,8 @@ struct TimeItem {
 
 static int reverse_compare(const void *left_void, const void *right_void) {
   /* TODO: убрать приведения типов */
-  const TimeItem *left = (const TimeItem *)(left_void);
-  const TimeItem *right = (const TimeItem *)(right_void);
+  const struct TimeItem *left = (const struct TimeItem *)(left_void);
+  const struct TimeItem *right = (const struct TimeItem *)(right_void);
 
   if (left->counter > right->counter) {
     return -1;
@@ -1012,7 +1012,7 @@ static void print_profile(void) {
 
   size_t i;
 
-  TimeItem items[] = {
+  struct TimeItem items[] = {
     { "\nTotal program time", full_time },
     { "Builtin time", full_time - refal_time },
     { "(Total refal time)", refal_time },
@@ -1075,7 +1075,7 @@ void r05_start_e_loop(void) {
 
 void r05_this_is_generated_function(void) {
   s_start_pattern_match_time = clock();
-  s_in_generated = true;
+  s_in_generated = 1;
 }
 
 
@@ -1184,7 +1184,7 @@ static void print_indent(FILE *output, int level) {
   }
   for (int i = 0; i < level; ++i) {
     /* Каждые cPERIOD позиций вместо пробела ставим точку. */
-    bool put_marker = ((i % cPERIOD) == (cPERIOD - 1));
+    int put_marker = ((i % cPERIOD) == (cPERIOD - 1));
 
     const char cSpace =  ' ';
     const char cMarker = '.';
@@ -1204,17 +1204,17 @@ static void print_seq(
   } state = cStateView;
 
   int indent = 0;
-  bool after_bracket = false;
-  bool reset_after_bracket = true;
+  int after_bracket = 0;
+  int reset_after_bracket = 1;
 
   while ((state != cStateFinish) && ! r05_empty_seq(begin, end)) {
     if (reset_after_bracket) {
-      after_bracket = false;
-      reset_after_bracket = false;
+      after_bracket = 0;
+      reset_after_bracket = 0;
     }
 
     if (after_bracket) {
-      reset_after_bracket = true;
+      reset_after_bracket = 1;
     }
 
     switch (state) {
@@ -1256,8 +1256,8 @@ static void print_seq(
               print_indent(output, indent);
             }
             ++indent;
-            after_bracket = true;
-            reset_after_bracket = false;
+            after_bracket = 1;
+            reset_after_bracket = 0;
             fprintf(output, "(");
             r05_move_left(&begin, &end);
             continue;
@@ -1273,8 +1273,8 @@ static void print_seq(
               print_indent(output, indent);
             }
             ++indent;
-            after_bracket = true;
-            reset_after_bracket = false;
+            after_bracket = 1;
+            reset_after_bracket = 0;
             fprintf(output, "<");
             r05_move_left(&begin, &end);
             continue;

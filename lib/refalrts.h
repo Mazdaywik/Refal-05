@@ -26,7 +26,9 @@ enum r05_datatag {
   R05_DATATAG_CLOSE_CALL,
 };
 
-typedef r05_fnresult (*r05_function_ptr) (
+struct r05_node;
+
+typedef enum r05_fnresult (*r05_function_ptr) (
   struct r05_node *begin, struct r05_node *end
 );
 

@@ -20,25 +20,16 @@ FuncArguments {
   = 'struct r05_node *arg_begin, struct r05_node *arg_end';
 }
 
-NakedArguments {
-  = 'struct r05_node *, struct r05_node *';
-}
-
 TextFromMemoryClass {
   GN-Local = 'static '; GN-Entry = ;
 }
 
-SwGenFnStart {
-  s.MemoryClass s.FnArguments e.Name =
-    (
-      <TextFromMemoryClass s.MemoryClass>
-      'enum r05_fnresult r05c_' e.Name '(' <Mu s.FnArguments> ') {'
-    );
-}
-
 $ENTRY GenFnStart {
   s.MemoryClass e.Name =
-    <SwGenFnStart s.MemoryClass FuncArguments e.Name>;
+    (
+      <TextFromMemoryClass s.MemoryClass>
+      'enum r05_fnresult r05c_' e.Name '(' <FuncArguments> ') {'
+    );
 }
 
 $ENTRY GenThisIsGeneratedFunction {
@@ -60,7 +51,7 @@ $ENTRY GenFnEnd {
 
 $ENTRY GenEnum {
   s.ScopeClass e.Name =
-    <SwGenFnStart s.ScopeClass NakedArguments e.Name>
+    <GenFnStart s.ScopeClass e.Name>
     <GenFail>
     <GenFnEnd s.ScopeClass e.Name>;
 }
