@@ -706,7 +706,7 @@ static void ensure_memory(void) {
 }
 
 
-static void free_memory() {
+static void free_memory(void) {
   while (s_pool != 0) {
     struct memory_chunk *next = s_pool->next;
     free(s_pool);
@@ -818,7 +818,9 @@ void r05_alloc_chars(const char buffer[], size_t len) {
 
 
 struct r05_function r05_make_function(r05_function_ptr func, const char *name) {
-  struct r05_function res = { func, name };
+  struct r05_function res;
+  res.ptr = func;
+  res.name = name;
   return res;
 }
 
@@ -997,41 +999,48 @@ static int reverse_compare(const void *left_void, const void *right_void) {
 static void print_profile(void) {
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
 
-  clock_t full_time = clock() - s_start_program_time;
-  clock_t refal_time =
-    s_total_pattern_match_time + s_total_building_result_time;
-  clock_t eloop_time = s_total_e_loop
-    - (s_total_match_repeated_tvar_time + s_total_match_repeated_evar_time);
+  clock_t full_time;
+  clock_t refal_time;
+  clock_t repeated_time;
+  clock_t eloop_time;
+
+  enum { nItems = 11 };
+  struct TimeItem items[nItems];
 
   size_t i;
 
-  struct TimeItem items[] = {
-    { "\nTotal program time", full_time },
-    { "Builtin time", full_time - refal_time },
-    { "(Total refal time)", refal_time },
-    { "Linear pattern time", s_total_pattern_match_time },
-    { "Linear result time", s_total_building_result_time },
-    { "Open e-loop time (clear)", eloop_time },
-    {
-      "Repeated e-var match time (inside e-loops)",
-      s_total_match_repeated_evar_time
-    },
-    {
-      "Repeated e-var match time (outside e-loops)",
-      s_total_match_repeated_tvar_time_outside_e
-    },
-    {
-      "Repeated t-var match time (inside e-loops)",
-      s_total_match_repeated_tvar_time
-    },
-    {
-      "Repeated t-var match time (outside e-loops)",
-      s_total_match_repeated_tvar_time_outside_e
-    },
-    { "t- and e-var copy time", s_total_copy_tevar_time }
-  };
+  full_time = clock() - s_start_program_time;
+  refal_time = s_total_pattern_match_time + s_total_building_result_time;
+  repeated_time =
+    s_total_match_repeated_tvar_time + s_total_match_repeated_evar_time;
+  eloop_time = s_total_e_loop - repeated_time;
 
-  enum { nItems = sizeof(items) / sizeof(items[0]) };
+  /*
+    Ложное предупреждение BCC 5.5:
+    компилятор не допускает инициализацию структур и массивов переменными.
+  */
+  items[0].name = "\nTotal program time";
+  items[0].counter = full_time;
+  items[1].name = "Builtin time";
+  items[1].counter = full_time - refal_time;
+  items[2].name = "(Total refal time)";
+  items[2].counter = refal_time;
+  items[3].name = "Linear pattern time";
+  items[3].counter = s_total_pattern_match_time;
+  items[4].name = "Linear result time";
+  items[4].counter = s_total_building_result_time;
+  items[5].name = "Open e-loop time (clear)";
+  items[5].counter = eloop_time;
+  items[6].name = "Repeated e-var match time (inside e-loops)";
+  items[6].counter = s_total_match_repeated_evar_time;
+  items[7].name = "Repeated e-var match time (outside e-loops)";
+  items[7].counter = s_total_match_repeated_tvar_time_outside_e;
+  items[8].name = "Repeated t-var match time (inside e-loops)";
+  items[8].counter = s_total_match_repeated_tvar_time;
+  items[9].name = "Repeated t-var match time (outside e-loops)";
+  items[9].counter = s_total_match_repeated_tvar_time_outside_e;
+  items[10].name = "t- and e-var copy time";
+  items[10].counter = s_total_copy_tevar_time;
 
   qsort(items, nItems, sizeof(items[0]), reverse_compare);
 
@@ -1113,7 +1122,7 @@ static int empty_stack(void) {
 
 extern enum r05_fnresult r05c_Go(struct r05_node *begin, struct r05_node *end);
 
-static void init_view_field() {
+static void init_view_field(void) {
   struct r05_node *open, *close;
 
   r05_reset_allocator();
@@ -1128,7 +1137,7 @@ static void init_view_field() {
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-static void main_loop() {
+static void main_loop(void) {
   enum r05_fnresult res = R05_SUCCESS;
   while (res == R05_SUCCESS && ! empty_stack()) {
     struct r05_node *function;

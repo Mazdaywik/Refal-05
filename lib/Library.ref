@@ -263,8 +263,13 @@ static FILE *s_streams[FILE_LIMIT] = { NULL };
 enum { UINT_DIGITS = (sizeof(unsigned int) * 8 + 2) / 3 };
 
 FILE *open_numbered(unsigned int file_no, const char mode) {
-  char mode_str[] = { mode, '\0' };
+  char mode_str[2] = "*";
 
+  /*
+    Ложное предупреждение BCC 5.5:
+    компилятор не допускает инициализацию структур и массивов переменными.
+  */
+  mode_str[0] = mode;
   file_no %= FILE_LIMIT;
   if (file_no == 0 && mode == 'r') {
     return stdin;
@@ -731,7 +736,11 @@ $ENTRY Type {
   } else if (R05_DATATAG_CHAR == first_term->tag) {
     char ch = first_term->info.char_;
 
-    subtype = isupper(ch) ? 'u' : 'l';
+    if (isupper(ch)) {
+      subtype = 'u';
+    } else {
+      subtype = 'l';
+    }
     if (isalpha(ch)) {
       type = 'L';
     } else if (isdigit(ch)) {
@@ -1050,10 +1059,13 @@ $ENTRY Compare {
     return R05_RECOGNITION_IMPOSSIBLE;
   }
 
-  sX->info.char_ =
-    sX->info.number < sY->info.number ? '-' :
-    sX->info.number > sY->info.number ? '+' :
-    '0';
+  if (sX->info.number < sY->info.number) {
+    sX->info.char_ = '-';
+  } else if (sX->info.number > sY->info.number) {
+    sX->info.char_ = '+';
+  } else {
+    sX->info.char_ = '0';
+  }
   sX->tag = R05_DATATAG_CHAR;
 
   r05_splice_to_freelist(arg_begin, func_name);
