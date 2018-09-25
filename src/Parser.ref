@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN Fetch, Seq, Map, SaveFile, Success, Fails;
+$EXTERN Map, SaveFile, Success, Fails;
 
 *$FROM Lexer
 $EXTERN LexFolding, TkEOF, TkDirective, TkName, TkSemicolon, TkNative, EEnum,
@@ -30,38 +30,25 @@ $EXTERN MakeAlgorithm, Symbol, Char, Number, Name, Variable, Brackets,
 */
 $ENTRY CompileFile {
   (e.SrcName) e.OutputName =
-    <Fetch
-      <LexFolding e.SrcName>
-      <Seq
-        (parser_Pass-Lexer (e.SrcName))
-        parser_Pass-CheckUnresolved
-        (parser_Pass-Final (e.SrcName) (e.OutputName))
+    <CompileFile-Aux
+      (e.SrcName) (e.OutputName)
+      <ParseElements
+        <EL-Create e.SrcName> <ST-Create>
+        (/* строчки сгенерированного кода */)
+        <LexFolding e.SrcName>
       >
-    >;
+    >
 }
 
-$ENTRY parser_Pass-Lexer {
-  (e.SrcName) e.LexFolding =
-    <ParseElements
-      <EL-Create e.SrcName> <ST-Create> (/* generated */)
-      e.LexFolding
-    >;
-}
-
-$ENTRY parser_Pass-CheckUnresolved {
-  t.ErrorList t.SymTable e.Lines =
-    <ST-AddUnresolveds t.ErrorList t.SymTable> e.Lines;
-}
-
-$ENTRY parser_Pass-Final {
+CompileFile-Aux {
   (e.SrcName) (e.OutputName) t.ErrorList e.Lines =
-    <Pass-Final-SwNoErrors
+    <CompileFile-Aux-SwNoErrors
       (e.SrcName) (e.OutputName) e.Lines
       <EL-Destroy t.ErrorList>
     >;
 }
 
-Pass-Final-SwNoErrors {
+CompileFile-Aux-SwNoErrors {
   (e.SrcName) (e.OutputName) e.Lines EL-NoErrors =
     <SaveFile
       (e.OutputName)
@@ -126,7 +113,7 @@ Pass-Final-SwNoErrors {
 
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
-    t.ErrorList t.SymTable
+    <ST-AddUnresolveds t.ErrorList t.SymTable>
     <Map GenDeclaration <ST-AllFunctions t.SymTable>>
     ()
     e.Generated;
