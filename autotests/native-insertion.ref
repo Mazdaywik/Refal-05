@@ -23,7 +23,5 @@ Native {
   arg_end->info.char_ = '>';
 
   ++global;
-
-  return R05_SUCCESS;
 %%
 }
