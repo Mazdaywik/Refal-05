@@ -399,9 +399,6 @@ $ENTRY Open {
     || R05_DATATAG_NUMBER != sFileNo->tag
   ) {
     r05_recognition_impossible();
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   filename_len =
@@ -409,9 +406,6 @@ $ENTRY Open {
 
   if (filename_len == 0) {
     r05_recognition_impossible();
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   filename[filename_len] = '\0';
@@ -420,9 +414,6 @@ $ENTRY Open {
     char mode = sMode->info.char_;
     if (mode != 'r' && mode != 'w' && mode != 'a') {
       r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'");
-#ifndef R05_NORETURN_DEFINED
-      return;
-#endif
     }
     mode_str[0] = mode;
   } else {
@@ -451,9 +442,6 @@ $ENTRY Open {
     strncpy(mode_buffer, mode, sizeof(mode_buffer) - 1);
     sprintf(error, error_format, filename, mode_buffer);
     r05_builtin_error_errno(error);
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -532,18 +520,12 @@ static void output_func(
 
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
       r05_recognition_impossible();
-#ifndef R05_NORETURN_DEFINED
-      return;
-#endif
     }
 
     before_expr = pfile_no;
     output = open_numbered((unsigned int) pfile_no->info.number, 'w');
   } else {
     r05_switch_default_violation(type);
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
 #define CHECK_PRINTF(printf_call) \
@@ -828,10 +810,6 @@ $ENTRY GetEnv {
     } else {
       r05_recognition_impossible();
     }
-
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   env_name[env_name_len] = '\0';
@@ -869,10 +847,6 @@ $ENTRY System {
     } else {
       r05_recognition_impossible();
     }
-
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   command[command_len] = '\0';
@@ -911,9 +885,6 @@ $ENTRY Exit {
 
   if (pretcode == arg_end) {
     r05_recognition_impossible();
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   if (R05_DATATAG_CHAR == pretcode->tag) {
@@ -922,9 +893,6 @@ $ENTRY Exit {
       pretcode = pretcode->next;
     } else {
       r05_recognition_impossible();
-  #ifndef R05_NORETURN_DEFINED
-      return;
-  #endif
     }
   }
 
@@ -934,9 +902,6 @@ $ENTRY Exit {
     || pretcode->next != arg_end
   ) {
     r05_recognition_impossible();
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   retcode = sign * (int) pretcode->info.number;
@@ -995,10 +960,6 @@ $ENTRY ExistFile {
     } else {
       r05_recognition_impossible();
     }
-
-#ifndef R05_NORETURN_DEFINED
-    return;
-#endif
   }
 
   filename[filename_len] = '\0';
