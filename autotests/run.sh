@@ -17,7 +17,7 @@ run_test_aux() {
     exit
   fi
 
-  g++ -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
+  $CPPLINE -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
     -o$EXE $CPP ../lib/refalrts.c
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
@@ -63,6 +63,8 @@ run_test() {
   SUFFIX=`echo ${REF%%.ref} | sed 's/[^.]*\(\.[^.]*\)*/\1/'`
   run_test_aux$SUFFIX $1
 }
+
+source ../c-plus-plus.conf.sh
 
 if [ -z "$1" ]; then
   for s in *.ref; do
