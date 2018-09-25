@@ -1106,15 +1106,6 @@ static struct r05_node *s_stack_ptr = NULL;
 
 static unsigned long s_step_counter = 0;
 
-namespace refalrts {
-
-namespace vm {
-
-int g_ret_code;
-
-} // namespace vm
-
-} // namespace refalrts
 
 static struct r05_node *pop_stack(void) {
   struct r05_node *res = s_stack_ptr;
@@ -1177,9 +1168,6 @@ static void main_loop() {
 
     case R05_RECOGNITION_IMPOSSIBLE:
       r05_recognition_impossible();
-
-    case R05_EXIT:
-      r05_exit(refalrts::vm::g_ret_code);
 
     default:
       r05_switch_default_violation(res);
@@ -1363,8 +1351,6 @@ static FILE* dump_stream(void);
 static void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
 
 static void vm_make_dump(void) {
-  using namespace refalrts::vm;
-
   fprintf(dump_stream(), "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
   print_seq(dump_stream(), s_arg_begin, s_arg_end);

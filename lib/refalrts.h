@@ -12,15 +12,11 @@ extern "C" {
 enum r05_fnresult {
   R05_SUCCESS = 0,
   R05_RECOGNITION_IMPOSSIBLE = 1,
-  R05_EXIT = 3,
 };
 
 enum r05_datatag {
   R05_DATATAG_ILLEGAL = 0,
   R05_DATATAG_CHAR,
-// ↓↓↓ DELETE
-  R05_DATATAG_FILE,
-// ↑↑↑ DELETE
   R05_DATATAG_FUNCTION,
   R05_DATATAG_NUMBER,
 
@@ -223,40 +219,5 @@ void r05_switch_default_violation_impl(
 }  /* extern "C" */
 #endif /* __cplusplus */
 
-namespace refalrts {
-
-// ↓↓↓ DELETE
-// Операции построения результата
-
-extern bool alloc_char(struct r05_node *&res, char ch);
-extern bool alloc_number(struct r05_node *&res, r05_number num);
-extern bool alloc_name(
-  struct r05_node *&res, r05_function_ptr func, const char *name = 0
-);
-
-extern bool alloc_chars(
-  struct r05_node *&res_b, struct r05_node *&res_e,
-  const char buffer[], unsigned buflen
-);
-extern bool alloc_string(
-  struct r05_node *&res_b, struct r05_node *&res_e, const char *string
-);
-
-extern struct r05_node *splice_elem(struct r05_node *res, struct r05_node *elem);
-extern struct r05_node *splice_stvar(struct r05_node *res, struct r05_node *var);
-extern struct r05_node *splice_evar(
-  struct r05_node *res, struct r05_node *first, struct r05_node *last
-);
-
-// Прочие функции
-
-extern void set_return_code(int retcode);
-
-inline void set_return_code(r05_number retcode) {
-  set_return_code(static_cast<int>(retcode));
-}
-// ↑↑↑ DELETE
-
-} //namespace refalrts
 
 #endif /* RefalRTS_H_ */
