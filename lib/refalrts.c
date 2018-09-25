@@ -639,7 +639,7 @@ static struct r05_node *s_free_ptr = &s_end_free_list;
 static size_t s_memory_use = 0;
 
 
-enum { CHUNK_SIZE = 1000 };
+enum { CHUNK_SIZE = 251 };
 
 struct memory_chunk {
   struct r05_node elems[CHUNK_SIZE];
