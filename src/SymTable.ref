@@ -31,10 +31,6 @@ Normalize {
   e.Name = (Declared e.Name);
 }
 
-$ENTRY ST-Destroy {
-  (SymTable e.Names (e.References)) = ;
-}
-
 /*
   Внутренний формат
   t.SymTable ::= (SymTable t.Name* (t.Reference*))
@@ -127,13 +123,12 @@ $ENTRY ST-AddFunctionCall {
 }
 
 /**
-  <ST-CheckUnresolved t.ErrorList t.SymTable>
-    == t.ErrorList t.SymTable
+  <ST-AddUnresolveds t.ErrorList t.SymTable>
+    == t.ErrorList
 */
-$ENTRY ST-CheckUnresolved {
+$ENTRY ST-AddUnresolveds {
   t.ErrorList (SymTable e.Names (e.References)) =
-    <Reduce symtable_AddUnresolved t.ErrorList e.References>
-    (SymTable e.Names (e.References));
+    <Reduce symtable_AddUnresolved t.ErrorList e.References>;
 }
 
 $ENTRY symtable_AddUnresolved {

@@ -11,8 +11,8 @@ $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
   EL-AddErrorAt;
 
 *$FROM SymTable
-$EXTERN ST-Create, ST-CheckUnresolved, ST-Destroy, ST-AllFunctions,
-  ST-AddDefined, ST-AddDeclared, ST-AddFunctionCall;
+$EXTERN ST-Create, ST-AddUnresolveds, ST-AllFunctions, ST-AddDefined,
+  ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Generator
 $EXTERN GenPostprocess, GenDeclaration, GN-Local, GenNative, GN-Entry, GenEnum,
@@ -50,12 +50,11 @@ $ENTRY parser_Pass-Lexer {
 
 $ENTRY parser_Pass-CheckUnresolved {
   t.ErrorList t.SymTable e.Lines =
-    <ST-CheckUnresolved t.ErrorList t.SymTable> e.Lines;
+    <ST-AddUnresolveds t.ErrorList t.SymTable> e.Lines;
 }
 
 $ENTRY parser_Pass-Final {
-  (e.SrcName) (e.OutputName) t.ErrorList t.SymTable e.Lines =
-    <ST-Destroy t.SymTable>
+  (e.SrcName) (e.OutputName) t.ErrorList e.Lines =
     <Pass-Final-SwNoErrors
       (e.SrcName) (e.OutputName) e.Lines
       <EL-Destroy t.ErrorList>
