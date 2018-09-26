@@ -175,11 +175,11 @@ $ENTRY Div {
 
 
 /**
-  11. <Divmod s.NUMBER s.NUMBER> == s.Div s.Mod
+  11. <Divmod s.NUMBER s.NUMBER> == (s.Div) s.Mod
       s.Div, s.Mod ::= s.NUMBER
 */
 $ENTRY Divmod {
-  s.X s.Y = <Div s.X s.Y> <Mod s.X s.Y>;
+  s.X s.Y = (<Div s.X s.Y>) <Mod s.X s.Y>;
 }
 
 
