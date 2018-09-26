@@ -46,6 +46,9 @@ Scan {
   s.Row s.Col '\t' e.Tail = <Scan s.Row <Inc s.Col> e.Tail>;
   s.Row s.Col '\n' e.Tail = <Scan <Inc s.Row> 1 e.Tail>;
 
+  /* игнорируем символы возврата каретки */
+  s.Row s.Col '\r' e.Tail = <Scan s.Row s.Col e.Tail>;
+
   /* гарантируется, что в конце файла есть \n, см. lexer_FlatLine */
   s.Row 1 '*$' e.Pseudo '\n' e.Tail =
     <ScanPseudo s.Row 3 () <Type e.Pseudo '\n'>>
