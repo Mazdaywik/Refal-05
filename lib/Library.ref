@@ -423,12 +423,9 @@ $ENTRY Ord {
 }
 
 
-/**
-  24. <Print e.Expr> == e.Expr
-*/
 %%
 enum output_func_type {
-  PRINT, PROUT, PUT, PUTOUT,
+  PROUT, PUTOUT,
 };
 
 static void output_func(
@@ -436,12 +433,6 @@ static void output_func(
   enum output_func_type type
 );
 %%
-
-$ENTRY Print {
-%%
-  output_func(arg_begin, arg_end, PRINT);
-%%
-}
 
 %%
 static void output_func(
@@ -452,10 +443,10 @@ static void output_func(
   struct r05_node *p, *before_expr;
   FILE *output;
 
-  if (type == PRINT || type == PROUT) {
+  if (type == PROUT) {
     before_expr = callee;
     output = stdout;
-  } else if (type == PUT || type == PUTOUT) {
+  } else if (type == PUTOUT) {
     struct r05_node *pfile_no = callee->next;
 
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
@@ -503,14 +494,7 @@ static void output_func(
 
 #undef CHECK_PRINTF
 
-  if (type == PRINT || type == PUT) {
-    r05_splice_to_freelist(arg_begin, before_expr);
-    r05_splice_to_freelist(arg_end, arg_end);
-  } else if (type == PROUT || type == PUTOUT) {
-    r05_splice_to_freelist(arg_begin, arg_end);
-  } else {
-    r05_switch_default_violation(type);
-  }
+  r05_splice_to_freelist(arg_begin, arg_end);
 }
 %%
 
@@ -521,16 +505,6 @@ static void output_func(
 $ENTRY Prout {
 %%
   output_func(arg_begin, arg_end, PROUT);
-%%
-}
-
-
-/**
-  26. <Put s.FileNo e.Expr> == e.Expr
-*/
-$ENTRY Put {
-%%
-  output_func(arg_begin, arg_end, PUT);
 %%
 }
 
@@ -954,9 +928,9 @@ $ENTRY ListOfBuiltin {
     (21 Numb regular)
     (22 Open regular)
     (23 Ord regular)
-    (24 Print regular)
+*    (24 Print regular)
     (25 Prout regular)
-    (26 Put regular)
+*    (26 Put regular)
     (27 Putout regular)
 *    (28 Rp regular)
 *    (29 Step regular)
