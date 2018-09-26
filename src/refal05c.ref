@@ -16,29 +16,14 @@ Main {
   (e.ProgName) ('@' e.Config) =
     <Main (e.ProgName) <LoadFile e.Config>>;
 
-  (e.ProgName) e.Arguments =
-    <FindFiles-Compilers
-      <ParseCommandLine e.Arguments>
+  (e.ProgName) e.Files =
+    <FindFiles-SwFound
+      <FindFiles (<LoadPath>) e.Files>
     >;
 }
 
-/**
-  <ParseCommandLine e.Arguments>
-    == t.Compiler (e.Folders) t.FoundedFile*
-
-  t.FoundedFile -- см. в FindFile
-  t.Compiler ::= (NoCompile) | (CompileCommand e.Command)
-*/
-$ENTRY ParseCommandLine {
-  e.Arguments =
-    <SwCompileCommand <GetEnv 'R05CCOMP'>>
-    (<ParsePath <GetEnv 'R05PATH'>>)
-    e.Arguments;
-}
-
-SwCompileCommand {
-  /* пусто */ = (NoCompile);
-  e.Command = (CompileCommand e.Command);
+LoadPath {
+  = <ParsePath <GetEnv 'R05PATH'>>
 }
 
 ParsePath {
@@ -51,22 +36,12 @@ ParseFolder {
   e.Folder = (e.Folder);
 }
 
-*$ENUM NoCompile, CompileCommand
-
-FindFiles-Compilers {
-  t.Compiler (e.Folders) e.Files =
-    <FindFiles-Compilers-SwFound
-      t.Compiler <FindFiles (e.Folders) e.Files>
-    >;
-}
-
-FindFiles-Compilers-SwFound {
-  t.Compiler e.Files-B (NotFound e.FileName) e.Files-E =
+FindFiles-SwFound {
+  e.Files-B (NotFound e.FileName) e.Files-E =
     <Map refal05c_PrintNotFound (NotFound e.FileName) e.Files-E>;
 
-  t.Compiler e.FoundFiles =
+  e.FoundFiles =
     <CheckCompilationResult
-      t.Compiler
       <Map refal05c_ProcessEachSource e.FoundFiles>
     >;
 }
@@ -98,19 +73,19 @@ ProcessEachSource-SwSuccess {
 }
 
 CheckCompilationResult {
-  t.Compiler e.Outputs-B Fails e.Outputs-E =
+  e.Outputs-B Fails e.Outputs-E =
     <Prout '*** COMPILATION FAILED ***'>;
 
-  t.Compiler e.Outputs =
-    <Link t.Compiler e.Outputs>
+  e.Outputs =
+    <Link (<GetEnv 'R05CCOMP'>) e.Outputs>
     <Prout '*** Compilation successed ***'>;
 }
 
 Link {
-  (CompileCommand e.CommandLine) e.Files =
-    <IgnoreRetcode <System e.CommandLine <Map refal05c_QuoteFile e.Files>>>;
+  (/* не установлена R05CCOMP */) e.Files = /* ничего не делаем */;
 
-  (NoCompile) e.Files = /* ничего не делаем */;
+  (e.CommandLine) e.Files =
+    <IgnoreRetcode <System e.CommandLine <Map refal05c_QuoteFile e.Files>>>;
 }
 
 IgnoreRetcode {
