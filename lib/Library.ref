@@ -556,13 +556,15 @@ $ENTRY Sub {
 
 
 /**
-  31. <Symb s.NUMBER> == s.CHAR+
+  31. <Symb e.Sign s.NUMBER> == e.Sign s.CHAR+
+      e.Sign ::= '+' | '-' | пусто
 */
 $ENTRY Symb {
 %%
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pnumber = callable->next;
   r05_number number;
+  char sign = '\0';
 
   /*
     Длина десятичного числа = 0,3 * длина двоичного числа,
@@ -572,6 +574,16 @@ $ENTRY Symb {
 
   char buffer[cMaxNumberLen + 1] = { '\0' };
   char *cur_digit = buffer + cMaxNumberLen;
+
+  if (R05_DATATAG_CHAR == pnumber->tag) {
+    sign = pnumber->info.char_;
+
+    if (sign != '+' && sign != '-') {
+      r05_recognition_impossible();
+    }
+
+    pnumber = pnumber->next;
+  }
 
   if (
     pnumber == arg_end
@@ -584,6 +596,10 @@ $ENTRY Symb {
   number = pnumber->info.number;
 
   r05_reset_allocator();
+
+  if (sign != '\0') {
+    r05_alloc_char(sign);
+  }
 
   if (number > 0) {
     while (number != 0) {
