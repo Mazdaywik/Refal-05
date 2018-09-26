@@ -42,10 +42,7 @@ FindFiles-Compilers-SwFound {
   t.Compiler e.FoundFiles =
     <CheckCompilationResult
       t.Compiler
-      <Map
-        refal05c_ProcessEachSource
-        <RenameFiles t.Compiler e.FoundFiles>
-      >
+      <Map refal05c_ProcessEachSource e.FoundFiles>
     >;
 }
 
@@ -97,100 +94,4 @@ IgnoreRetcode {
 
 $ENTRY refal05c_QuoteFile {
   (e.FileName) = ' "' e.FileName '"';
-}
-
-RenameFiles {
-  (NoCompile) e.Files = e.Files;
-
-  (CompileCommand e.CommandLine) e.Files
-    = <ScanCollisions <Map refal05c_GetFileName e.Files>>;
-}
-
-$ENTRY refal05c_GetFileName {
-  (Output e.FileName) =
-    (
-      <GetFileName-Aux e.FileName> 0 (Output e.FileName)
-    );
-
-  (Source (e.Source) e.Output) =
-    (
-      <GetFileName-Aux e.Output> 0
-      (Source (e.Source) e.Output)
-    );
-}
-
-GetFileName-Aux {
-  e.FileName '.c' = <DoGetFileName e.FileName>;
-}
-
-DoGetFileName {
-  e.FileName '/' = ;
-  e.FileName '\\' = ;
-  e.FileName s.Last =
-    <DoGetFileName e.FileName>
-    <Lower s.Last>;
-  = ;
-}
-
-ScanCollisions {
-  e.Files-B (e.FileName 0 (Output e.Output1)) e.Files-M
-  (e.FileName 0 (Output e.Output2)) e.Files-E =
-    <Prout
-      'COMMAND LINE ERROR: output files ' e.Output1 ' and '
-      e.Output2 ' has some filename ' e.FileName
-    >
-    <Exit 1>;
-
-  e.Files-B (e.FileName 0 t.Location) e.Files-M
-  (e.FileName 0 (Output e.Output)) e.Files-E =
-    <ScanCollisions
-      e.Files-B (e.FileName 1 t.Location) e.Files-M
-      (e.FileName 0 (Output e.Output))
-      <Renumerate (e.FileName) e.Files-E>
-    >;
-
-  e.Files-B (e.FileName 0 (Output e.Output)) e.Files-M
-  (e.FileName 0 t.Location) e.Files-E =
-    <ScanCollisions
-      e.Files-B (e.FileName 0 (Output e.Output)) e.Files-M
-      (e.FileName 1 t.Location)
-      <Renumerate (e.FileName) e.Files-E>
-    >;
-
-  e.Files-B (e.FileName 0 t.Location1) e.Files-M
-  (e.FileName 0 t.Location2) e.Files-E =
-    <ScanCollisions
-      e.Files-B (e.FileName 0 t.Location1)
-      e.Files-M (e.FileName 1 t.Location2)
-      <Renumerate (e.FileName) e.Files-E>
-    >;
-
-  e.Files = <Map refal05c_RestoreName e.Files>;
-}
-
-Renumerate {
-  (e.FileName) e.Files =
-    <DelAccumulator
-      <MapAccum (refal05c_Renumerate-Each e.FileName) 2 e.Files>
-    >;
-}
-
-$ENTRY refal05c_Renumerate-Each {
-  e.FileName s.NextNumber (e.FileName 0 (Source (e.Source) e.Output)) =
-    <Inc s.NextNumber>
-    (e.FileName s.NextNumber (Source (e.Source) e.Output));
-
-  e.FileName s.NextNumber t.NextFile =
-    s.NextNumber t.NextFile;
-}
-
-$ENTRY refal05c_RestoreName {
-  (e.FileName s.Number (Output e.OutputName)) =
-    (Output e.OutputName);
-
-  (e.FileName 0 (Source (e.Source) e.Output)) =
-    (Source (e.Source) e.Output);
-
-  (e.FileName s.Number (Source (e.Source) e.OutName '.c')) =
-    (Source (e.Source) e.OutName '@' <Symb s.Number> '.c');
 }
