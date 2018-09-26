@@ -74,18 +74,19 @@ ProcessEachSource-SwSuccess {
 
 CheckCompilationResult {
   e.Outputs-B Fails e.Outputs-E =
-    <Prout '*** COMPILATION FAILED ***'>;
+    <Prout '*** COMPILATION FAILED ***'>
+    <Exit 1>;
 
   e.Outputs =
-    <Link (<GetEnv 'R05CCOMP'>) e.Outputs>
-    <Prout '*** Compilation successed ***'>;
+    <Link (<GetEnv 'R05CCOMP'>) e.Outputs>;
 }
 
 Link {
-  (/* не установлена R05CCOMP */) e.Files = /* ничего не делаем */;
+  (/* не установлена R05CCOMP */) e.Files =
+    <Prout '*** Compilation successed ***'>;
 
   (e.CommandLine) e.Files =
-    <IgnoreRetcode
+    <CheckRetcode
       <System
         e.CommandLine
         <Map refal05c_IncludeFlag <LoadPath>>
@@ -93,8 +94,15 @@ Link {
     >;
 }
 
-IgnoreRetcode {
-  e.RetCode = /* пусто */;
+CheckRetcode {
+  0 = <Prout '*** Compilation successed ***'>;
+
+  e.RetCode =
+    <Prout
+      '*** COMPILATION FAILED '
+      '(C COMPILER FAILED, RETCODE: ' <Symb e.RetCode>')***'
+    >
+    <Exit e.RetCode>;
 }
 
 $ENTRY refal05c_IncludeFlag {
