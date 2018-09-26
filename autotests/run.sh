@@ -8,6 +8,7 @@ run_test_aux() {
 
   CLINE=$R05CCOMP
   R05CCOMP=
+  R05PATH=
 
   ../bin/refal05c $REF 2>__error.txt
   if [ $? -gt 0 ]; then

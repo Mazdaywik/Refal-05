@@ -28,6 +28,7 @@ setlocal
 
   set CLINE=%R05CCOMP%
   set R05CCOMP=
+  set R05PATH=
 
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 1 (

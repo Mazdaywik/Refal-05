@@ -9,7 +9,8 @@
 $ENTRY ParseCommandLine {
   e.Arguments =
     <SwCompileCommand <GetEnv 'R05CCOMP'>>
-    <DoParseCommandLine (/* files */) (/* folders */) e.Arguments>;
+    (<ParsePath <GetEnv 'R05PATH'>>)
+    <DoParseCommandLine (/* files */) e.Arguments>;
 }
 
 SwCompileCommand {
@@ -17,37 +18,39 @@ SwCompileCommand {
   e.Command = (CompileCommand e.Command);
 }
 
+ParsePath {
+  e.Folder ';' e.Path = <ParseFolder e.Folder> <ParsePath e.Path>;
+  e.Folder = <ParseFolder e.Folder>;
+}
+
+ParseFolder {
+  /* пусто */ = /* пусто */;
+  e.Folder = (e.Folder);
+}
+
 *$EENUM NoCompile, CompileCommand, CmdLineError
 
 DoParseCommandLine {
-  (e.ScannedFiles) (e.Folders) ('+d') (e.Directory) e.Options =
-    <DoParseCommandLine
-      (e.ScannedFiles) (e.Folders (e.Directory)) e.Options
-    >;
-
-  (e.ScannedFiles) (e.Folders) ('+d') =
-    (CmdLineError 'After option \'-d\' expected find directory');
-
-  (e.ScannedFiles) (e.Folders) ('++') e.Files =
+  (e.ScannedFiles) ('++') e.Files =
     <DoParseFileNamesOnly
-      (e.ScannedFiles) (e.Folders) e.Files
+      (e.ScannedFiles) e.Files
     >;
 
-  (e.ScannedFiles) (e.Folders) (e.NextFileName) e.Options =
+  (e.ScannedFiles) (e.NextFileName) e.Options =
     <DoParseCommandLine
-      (e.ScannedFiles (e.NextFileName)) (e.Folders) e.Options
+      (e.ScannedFiles (e.NextFileName)) e.Options
     >;
 
-  (e.ScannedFiles) (e.Folders) =
-    (e.Folders) e.ScannedFiles;
+  (e.ScannedFiles) =
+    e.ScannedFiles;
 }
 
 DoParseFileNamesOnly {
-  (e.ScannedFiles) (e.Folders) (e.NextFileName) e.Files =
+  (e.ScannedFiles) (e.NextFileName) e.Files =
     <DoParseFileNamesOnly
       (e.ScannedFiles (e.NextFileName)) e.Files
     >;
 
-  (e.ScannedFiles) (e.Folders) =
-    (e.Folders) e.ScannedFiles;
+  (e.ScannedFiles) =
+    e.ScannedFiles;
 }
