@@ -88,10 +88,6 @@ $ENTRY Arg {
 }
 
 
-* 4 Br
-$EENUM Br;
-
-
 /**
    5. <Card> == s.CHAR* 0?
 */
@@ -154,16 +150,6 @@ $ENTRY Chr {
 }
 
 
-* 7 Cp
-$EENUM Cp;
-
-* 8 Dg
-$EENUM Dg;
-
-* 9 Dgall
-$EENUM Dgall;
-
-
 /**
   10. <Div s.NUMBER s.NUMBER> == s.NUMBER
 */
@@ -205,10 +191,6 @@ $ENTRY Explode {
   r05_splice_to_freelist(arg_begin, arg_end);
 %%
 }
-
-
-* 13 First
-$EENUM First;
 
 
 /**
@@ -284,16 +266,6 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
   return s_streams[file_no];
 }
 %%
-
-
-* 15 Implode
-$EENUM Implode;
-
-* 16 Last
-$EENUM Last;
-
-* 17 Lenw
-$EENUM Lenw;
 
 
 /**
@@ -605,13 +577,6 @@ $ENTRY Putout {
 }
 
 
-* 28 Rp
-$EENUM Rp;
-
-* 29 Step
-$EENUM Step;
-
-
 /**
   30. <Sub s.NUMBER s.NUMBER> == s.NUMBER
 */
@@ -668,10 +633,6 @@ $ENTRY Symb {
   r05_splice_to_freelist(arg_begin, arg_end);
 %%
 }
-
-
-* 32 Time
-$EENUM Time;
 
 
 /**
@@ -765,28 +726,6 @@ $ENTRY Upper {
   r05_splice_to_freelist(arg_end, arg_end);
 %%
 }
-
-
-* 35 Sysfun
-$EENUM Sysfun;
-
-* 45 Freeze
-$EENUM Freeze;
-
-* 46 Freezer
-$EENUM Freezer;
-
-* 47 Dn
-$EENUM Dn;
-
-* 48 Up
-$EENUM Up;
-
-* 49 Ev-met
-$EENUM Ev-met;
-
-* 50 Residue
-$EENUM Residue;
 
 
 /**
@@ -980,22 +919,6 @@ $ENTRY ExistFile {
 }
 
 
-* 56 GetCurrentDirectory
-$EENUM GetCurrentDirectory;
-
-* 57 RemoveFile
-$EENUM RemoveFile;
-
-* 58 Implode_Ext
-$EENUM Implode_Ext;
-
-* 59 Explode_Ext
-$EENUM Explode_Ext;
-
-* 60 TimeElapsed
-$EENUM TimeElapsed;
-
-
 /**
   61. <Compare s.X s.Y>
         == '-' | '0' | '+'
@@ -1037,22 +960,6 @@ $ENTRY Compare {
 }
 
 
-* 62 DeSysfun
-$EENUM DeSysfun;
-
-* 63 XMLParse
-$EENUM XMLParse;
-
-* 64 Random
-$EENUM Random;
-
-* 65 RandomDigit
-$EENUM RandomDigit;
-
-* 66 Write
-$EENUM Write;
-
-
 /**
   67. <ListOfBuiltin> == (s.No s.Name s.Type)*
 
@@ -1066,20 +973,20 @@ $ENTRY ListOfBuiltin {
   = (1 Mu special)
     (2 Add regular)
     (3 Arg regular)
-    (4 Br regular)
+*    (4 Br regular)
     (5 Card regular)
     (6 Chr regular)
-    (7 Cp regular)
-    (8 Dg regular)
-    (9 Dgall regular)
+*    (7 Cp regular)
+*    (8 Dg regular)
+*    (9 Dgall regular)
     (10 Div regular)
     (11 Divmod regular)
     (12 Explode regular)
-    (13 First regular)
+*    (13 First regular)
     (14 Get regular)
-    (15 Implode regular)
-    (16 Last regular)
-    (17 Lenw regular)
+*    (15 Implode regular)
+*    (16 Last regular)
+*    (17 Lenw regular)
     (18 Lower regular)
     (19 Mod regular)
     (20 Mul regular)
@@ -1090,55 +997,42 @@ $ENTRY ListOfBuiltin {
     (25 Prout regular)
     (26 Put regular)
     (27 Putout regular)
-    (28 Rp regular)
-    (29 Step regular)
+*    (28 Rp regular)
+*    (29 Step regular)
     (30 Sub regular)
     (31 Symb regular)
-    (32 Time regular)
+*    (32 Time regular)
     (33 Type regular)
     (34 Upper regular)
-    (35 Sysfun regular)
+*    (35 Sysfun regular)
     /* (42 "Imp$$" regular) */
     /* (43 "Stop$$" regular) */
     /* (44 "" regular) */
-    (45 Freeze regular)
-    (46 Freezer regular)
-    (47 Dn regular)
-    (48 Up special)
-    (49 Ev-met special)
-    (50 Residue special)
+*    (45 Freeze regular)
+*    (46 Freezer regular)
+*    (47 Dn regular)
+*    (48 Up special)
+*    (49 Ev-met special)
+*    (50 Residue special)
     (51 GetEnv regular)
     (52 System regular)
     (53 Exit regular)
     (54 Close regular)
     (55 ExistFile regular)
-    (56 GetCurrentDirectory regular)
-    (57 RemoveFile regular)
-    (58 Implode_Ext regular)
-    (59 Explode_Ext regular)
-    (60 TimeElapsed regular)
+*    (56 GetCurrentDirectory regular)
+*    (57 RemoveFile regular)
+*    (58 Implode_Ext regular)
+*    (59 Explode_Ext regular)
+*    (60 TimeElapsed regular)
     (61 Compare regular)
-    (62 DeSysfun regular)
-    (63 XMLParse regular)
-    (64 Random regular)
-    (65 RandomDigit regular)
-    (66 Write regular)
+*    (62 DeSysfun regular)
+*    (63 XMLParse regular)
+*    (64 Random regular)
+*    (65 RandomDigit regular)
+*    (66 Write regular)
     (67 ListOfBuiltin regular)
-    (68 SizeOf regular)
-    (69 GetPID regular)
-    (70 int4fab_1 regular)
-    (71 GetPPID regular);
+*    (68 SizeOf regular)
+*    (69 GetPID regular)
+*    (70 int4fab_1 regular)
+*    (71 GetPPID regular)
 }
-
-
-* 68 SizeOf
-$EENUM SizeOf;
-
-* 69 GetPID
-$EENUM GetPID;
-
-* 70 int4fab_1
-$EENUM int4fab_1;
-
-* 71 GetPPID
-$EENUM GetPPID;
