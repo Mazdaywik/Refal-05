@@ -31,7 +31,7 @@ setlocal
   set R05PATH=
 
   ..\bin\refal05c %1 2> __error.txt
-  if errorlevel 1 (
+  if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit
   )
@@ -50,7 +50,7 @@ setlocal
   if exist a.exe move a.exe %EXE%
 
   %EXE%
-  if errorlevel 1 (
+  if errorlevel 200 (
     echo TEST FAILED, SEE dump.txt
     exit
   )
@@ -70,7 +70,7 @@ setlocal
   set CFILE=%~n1.c
 
   ..\bin\refal05c %1 2> __error.txt
-  if errorlevel 1 (
+  if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit
   )

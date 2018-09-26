@@ -7,11 +7,9 @@ run_test_aux() {
   EXE=${REF%%.ref}
 
   CLINE=$R05CCOMP
-  R05CCOMP=
-  R05PATH=
 
-  ../bin/refal05c $REF 2>__error.txt
-  if [ $? -gt 0 ]; then
+  R05CCOMP= R05PATH= ../bin/refal05c $REF 2>__error.txt
+  if [ $? -ge 200 ]; then
     echo COMPILER ON $REF FAILS, SEE __error.txt
     exit
   fi
@@ -29,7 +27,7 @@ run_test_aux() {
   fi
 
   ./$EXE
-  if [ $? -gt 0 ]; then
+  if [ $? -ge 200 ]; then
     echo TEST FAILED, SEE dump.txt
     exit
   fi
@@ -47,7 +45,7 @@ run_test_aux.BAD-SYNTAX() {
   EXE=${REF%%.ref}
 
   ../bin/refal05c $REF 2>__error.txt
-  if [ $? -gt 0 ]; then
+  if [ $? -ge 200 ]; then
     echo COMPILER ON $REF FAILS, SEE __error.txt
     exit
   fi

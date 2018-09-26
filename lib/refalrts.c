@@ -12,9 +12,9 @@
 #endif  /* ifdef SHOW_DEBUG */
 
 
-#define EXIT_CODE_RECOGNITION_IMPOSSIBLE 1
-#define EXIT_CODE_NO_MEMORY 2
-#define EXIT_CODE_BUILTIN_ERROR 6
+#define EXIT_CODE_RECOGNITION_IMPOSSIBLE 201
+#define EXIT_CODE_NO_MEMORY 202
+#define EXIT_CODE_BUILTIN_ERROR 203
 
 
 /*==============================================================================

@@ -15,8 +15,8 @@
   fi
 
   source ../c-plus-plus.conf.sh
-  R05CCOMP="$R05CCOMP -orefal05c"
-  R05PATH=../lib
+  export R05CCOMP="$R05CCOMP -orefal05c"
+  export R05PATH=../lib
   echo Y | $EXECUTABLE $MODULES Library refalrts
 
   # Копирование необходимо при компиляции при помощи Cygwin или MSYS,
