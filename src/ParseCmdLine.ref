@@ -1,7 +1,6 @@
 /**
   <ParseCommandLine e.Arguments>
     == t.Compiler (e.Folders) t.FoundedFile*
-    == (CmdLineError e.Message)
 
   t.FoundedFile -- см. в FindFile
   t.Compiler ::= (NoCompile) | (CompileCommand e.Command)
@@ -10,7 +9,7 @@ $ENTRY ParseCommandLine {
   e.Arguments =
     <SwCompileCommand <GetEnv 'R05CCOMP'>>
     (<ParsePath <GetEnv 'R05PATH'>>)
-    <DoParseCommandLine (/* files */) e.Arguments>;
+    <DoParseCommandLine e.Arguments>;
 }
 
 SwCompileCommand {
@@ -28,29 +27,10 @@ ParseFolder {
   e.Folder = (e.Folder);
 }
 
-*$EENUM NoCompile, CompileCommand, CmdLineError
+*$EENUM NoCompile, CompileCommand
 
 DoParseCommandLine {
-  (e.ScannedFiles) ('++') e.Files =
-    <DoParseFileNamesOnly
-      (e.ScannedFiles) e.Files
-    >;
+  e.Files-B ('++') e.Files-E = e.Files-B e.Files-E;
 
-  (e.ScannedFiles) (e.NextFileName) e.Options =
-    <DoParseCommandLine
-      (e.ScannedFiles (e.NextFileName)) e.Options
-    >;
-
-  (e.ScannedFiles) =
-    e.ScannedFiles;
-}
-
-DoParseFileNamesOnly {
-  (e.ScannedFiles) (e.NextFileName) e.Files =
-    <DoParseFileNamesOnly
-      (e.ScannedFiles (e.NextFileName)) e.Files
-    >;
-
-  (e.ScannedFiles) =
-    e.ScannedFiles;
+  e.Files = e.Files;
 }

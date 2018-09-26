@@ -2,7 +2,7 @@
 $EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapAccum, Inc;
 
 *$FROM ParseCmdLine
-$EXTERN ParseCommandLine, CmdLineError, CompileCommand, NoCompile;
+$EXTERN ParseCommandLine, CompileCommand, NoCompile;
 
 *$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
@@ -26,9 +26,6 @@ Main {
 }
 
 FindFiles-Compilers {
-  (CmdLineError e.Message) =
-    <Prout 'COMMAND LINE ERROR: ' e.Message>;
-
   t.Compiler (e.Folders) e.Files =
     <FindFiles-Compilers-SwFound
       t.Compiler <FindFiles (e.Folders) e.Files>
