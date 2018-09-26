@@ -161,15 +161,6 @@ $ENTRY Div {
 
 
 /**
-  11. <Divmod s.NUMBER s.NUMBER> == (s.Div) s.Mod
-      s.Div, s.Mod ::= s.NUMBER
-*/
-$ENTRY Divmod {
-  s.X s.Y = (<Div s.X s.Y>) <Mod s.X s.Y>;
-}
-
-
-/**
   12. <Explode s.FUNCTION> == s.CHAR+
 */
 $ENTRY Explode {
@@ -266,29 +257,6 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
   return s_streams[file_no];
 }
 %%
-
-
-/**
-  18. <Lower e.Expr> == e.Expr’
-
-  В e.Expr’ все буквы приведены к нижнему регистру
-*/
-$ENTRY Lower {
-%%
-  struct r05_node *callee = arg_begin->next;
-  struct r05_node *p = callee->next;
-
-  while (p != arg_end) {
-    if (p->tag == R05_DATATAG_CHAR) {
-      p->info.char_ = (char) tolower(p->info.char_);
-    }
-    p = p->next;
-  }
-
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
-%%
-}
 
 
 /**
@@ -706,29 +674,6 @@ $ENTRY Type {
 
 
 /**
-  34. <Upper e.Expr> == e.Expr’
-
-  В e.Expr’ все буквы приведены к верхнему регистру
-*/
-$ENTRY Upper {
-%%
-  struct r05_node *callee = arg_begin->next;
-  struct r05_node *p = callee->next;
-
-  while (p != arg_end) {
-    if (p->tag == R05_DATATAG_CHAR) {
-      p->info.char_ = (char) toupper(p->info.char_);
-    }
-    p = p->next;
-  }
-
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
-%%
-}
-
-
-/**
   51. <GetEnv e.EnvName> == e.EnvValue
       e.EnvName, e.EnvValue ::= s.CHAR*
 */
@@ -980,14 +925,14 @@ $ENTRY ListOfBuiltin {
 *    (8 Dg regular)
 *    (9 Dgall regular)
     (10 Div regular)
-    (11 Divmod regular)
+*    (11 Divmod regular)
     (12 Explode regular)
 *    (13 First regular)
     (14 Get regular)
 *    (15 Implode regular)
 *    (16 Last regular)
 *    (17 Lenw regular)
-    (18 Lower regular)
+*    (18 Lower regular)
     (19 Mod regular)
     (20 Mul regular)
     (21 Numb regular)
@@ -1003,7 +948,7 @@ $ENTRY ListOfBuiltin {
     (31 Symb regular)
 *    (32 Time regular)
     (33 Type regular)
-    (34 Upper regular)
+*    (34 Upper regular)
 *    (35 Sysfun regular)
     /* (42 "Imp$$" regular) */
     /* (43 "Stop$$" regular) */
