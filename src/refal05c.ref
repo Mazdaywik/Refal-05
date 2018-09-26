@@ -85,11 +85,20 @@ Link {
   (/* не установлена R05CCOMP */) e.Files = /* ничего не делаем */;
 
   (e.CommandLine) e.Files =
-    <IgnoreRetcode <System e.CommandLine <Map refal05c_QuoteFile e.Files>>>;
+    <IgnoreRetcode
+      <System
+        e.CommandLine
+        <Map refal05c_IncludeFlag <LoadPath>>
+        <Map refal05c_QuoteFile e.Files>>
+    >;
 }
 
 IgnoreRetcode {
   e.RetCode = /* пусто */;
+}
+
+$ENTRY refal05c_IncludeFlag {
+  (e.PathEntry) = ' -I"' e.PathEntry '"';
 }
 
 $ENTRY refal05c_QuoteFile {

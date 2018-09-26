@@ -15,7 +15,7 @@
   fi
 
   source ../c-plus-plus.conf.sh
-  R05CCOMP="$R05CCOMP -I../lib -orefal05c"
+  R05CCOMP="$R05CCOMP -orefal05c"
   R05PATH=../lib
   echo Y | $EXECUTABLE $MODULES Library refalrts
 
