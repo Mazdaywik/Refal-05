@@ -2,18 +2,18 @@
 ## компилятора C++
 
 ## Компилятор GNU C++
-# CLINE='gсс -Wall -g'
+# R05CCOMP='gсс -Wall -g'
 
 ## Компилятор Clang:
-# CLINE='clang -Wall -g'
+# R05CCOMP='clang -Wall -g'
 
 ## Если ваш компилятор C++ отсутствует в списке ниже, впишите его сами:
 # PATH=$PATH:…
-# CLINE=…
+# R05CCOMP=…
 
 echo>/dev/null
 
 ## По умолчанию используем GNU C++:
-if [ -z "$CLINE" ]; then
-  CLINE='gcc -Wall -g'
+if [ -z "$R05CCOMP" ]; then
+  R05CCOMP='gcc -Wall -g'
 fi

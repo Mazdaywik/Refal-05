@@ -7,21 +7,21 @@ rem ниже. Убедитесь, что в ней задан правильны
 :: call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86
 :: call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86_amd64
 rem Не забудьте раскомментировать и эту строку
-:: set CLINE=cl /EHcs /W3 /wd4996
+:: set R05CCOMP=cl /EHcs /W3 /wd4996
 
 rem Если вы используете компилятор Borland C++ Compiler 5.5
 :: set PATH=%PATH%;C:\Borland\BCC55\bin
-:: set CLINE=bcc32 -IC:\Borland\BCC55\Include -LC:\Borland\BCC55\Lib -w
+:: set R05CCOMP=bcc32 -IC:\Borland\BCC55\Include -LC:\Borland\BCC55\Lib -w
 
 rem Если вы используете компилятор MinGW (MinGW builds), установите в строке ниже
 rem правильный путь до каталога bin дистрибутива MinGW.
 :: set PATH=%PATH%;C:\Program Files\MinGW\bin
-:: set CLINE=gcc -Wall -g
+:: set R05CCOMP=gcc -Wall -g
 
 rem Если вы используете компилятор Watcom, проверьте, что установлен правильный
 rem путь к файлу owsetenv.bat
 :: call C:\WATCOM\owsetenv.bat
-:: set CLINE=cl -nologo -W3 -passwopts:-wcd=13
+:: set R05CCOMP=cl -nologo -W3 -passwopts:-wcd=13
 
 rem Если вы используете компилятор Clang, раскомментируйте все три строчки ниже
 rem и установите в первых двух строчках правильный путь к каталогам bin
@@ -30,9 +30,9 @@ rem Примечание. Разрядность (32 или 64) дистрибу
 rem одинаковой.
 :: set PATH=%PATH%;C:\Program Files\MinGW\bin
 :: set PATH=%PATH%;C:\Program Files\LLVM\bin
-:: set CLINE=clang -Wall -g
+:: set R05CCOMP=clang -Wall -g
 
-if not "%CLINE%" == "" goto END
+if not "%R05CCOMP%" == "" goto END
 echo C++ compiler is not selected, please edit file c-plus-plus.conf.bat
 exit 1
 :END

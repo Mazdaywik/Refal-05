@@ -8,53 +8,46 @@
 */
 $ENTRY ParseCommandLine {
   e.Arguments =
-    <DoParseCommandLine (NoCompile) (/* files */) (/* folders */) e.Arguments>;
+    <SwCompileCommand <GetEnv 'R05CCOMP'>>
+    <DoParseCommandLine (/* files */) (/* folders */) e.Arguments>;
+}
+
+SwCompileCommand {
+  /* пусто */ = (NoCompile);
+  e.Command = (CompileCommand e.Command);
 }
 
 *$EENUM NoCompile, CompileCommand, CmdLineError
 
 DoParseCommandLine {
-  (NoCompile) (e.ScannedFiles) (e.Folders) ('+c') (e.CompileCommand) e.Options =
+  (e.ScannedFiles) (e.Folders) ('+d') (e.Directory) e.Options =
     <DoParseCommandLine
-      (CompileCommand e.CompileCommand) (e.ScannedFiles) (e.Folders) e.Options
+      (e.ScannedFiles) (e.Folders (e.Directory)) e.Options
     >;
 
-  (CompileCommand e.Command)
-  (e.ScannedFiles) (e.Folders) ('+c') (e.CompileCommand) e.Options =
-    (CmdLineError 'Multiple declaration of C++ compiler command line');
-
-  t.Compiler (e.ScannedFiles) (e.Folders) ('+c') =
-    (CmdLineError 'After option \'+c\' expected C++ compiler command line');
-
-  t.Compiler (e.ScannedFiles) (e.Folders) ('+d') (e.Directory) e.Options =
-    <DoParseCommandLine
-      t.Compiler (e.ScannedFiles) (e.Folders (e.Directory)) e.Options
-    >;
-
-  t.Compiler (e.ScannedFiles) (e.Folders) ('+d') =
+  (e.ScannedFiles) (e.Folders) ('+d') =
     (CmdLineError 'After option \'-d\' expected find directory');
 
-  t.Compiler (e.ScannedFiles) (e.Folders) ('++') e.Files =
+  (e.ScannedFiles) (e.Folders) ('++') e.Files =
     <DoParseFileNamesOnly
-      t.Compiler (e.ScannedFiles) (e.Folders) e.Files
+      (e.ScannedFiles) (e.Folders) e.Files
     >;
 
-  t.Compiler (e.ScannedFiles) (e.Folders) (e.NextFileName) e.Options =
+  (e.ScannedFiles) (e.Folders) (e.NextFileName) e.Options =
     <DoParseCommandLine
-      t.Compiler (e.ScannedFiles (e.NextFileName)) (e.Folders) e.Options
+      (e.ScannedFiles (e.NextFileName)) (e.Folders) e.Options
     >;
 
-  t.Compiler (e.ScannedFiles) (e.Folders) =
-    t.Compiler (e.Folders) e.ScannedFiles;
+  (e.ScannedFiles) (e.Folders) =
+    (e.Folders) e.ScannedFiles;
 }
 
 DoParseFileNamesOnly {
-  t.Compiler (e.ScannedFiles) (e.Folders) (e.NextFileName) e.Files =
+  (e.ScannedFiles) (e.Folders) (e.NextFileName) e.Files =
     <DoParseFileNamesOnly
-      t.Compiler
       (e.ScannedFiles (e.NextFileName)) e.Files
     >;
 
-  t.Compiler (e.ScannedFiles) (e.Folders) =
-    t.Compiler (e.Folders) e.ScannedFiles;
+  (e.ScannedFiles) (e.Folders) =
+    (e.Folders) e.ScannedFiles;
 }

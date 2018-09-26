@@ -6,6 +6,9 @@ run_test_aux() {
   CFILE=${REF%%.ref}.c
   EXE=${REF%%.ref}
 
+  CLINE=$R05CCOMP
+  R05CCOMP=
+
   ../bin/refal05c $REF 2>__error.txt
   if [ $? -gt 0 ]; then
     echo COMPILER ON $REF FAILS, SEE __error.txt

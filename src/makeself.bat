@@ -14,8 +14,8 @@ setlocal
   )
 
   call ..\c-plus-plus.conf.bat
-  set CLINE=%CLINE% -I..\lib
-  echo Y|%EXECUTABLE% +c "%CLINE%" +d ..\lib %MODULES% Library refalrts
+  set R05CCOMP=%R05CCOMP% -I..\lib
+  echo Y|%EXECUTABLE% +d ..\lib %MODULES% Library refalrts
   if exist a.exe move a.exe refal05c.exe
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds

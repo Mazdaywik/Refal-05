@@ -26,6 +26,9 @@ setlocal
   set CFILE=%~n1.c
   set EXE=%~n1.exe
 
+  set CLINE=%R05CCOMP%
+  set R05CCOMP=
+
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 1 (
     echo COMPILER ON %1 FAILS, SEE __error.txt

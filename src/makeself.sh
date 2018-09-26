@@ -15,8 +15,8 @@
   fi
 
   source ../c-plus-plus.conf.sh
-  CLINE="$CLINE -I../lib -orefal05c"
-  echo Y | $EXECUTABLE +c "$CLINE" +d ../lib $MODULES Library refalrts
+  R05CCOMP="$R05CCOMP -I../lib -orefal05c"
+  echo Y | $EXECUTABLE +d ../lib $MODULES Library refalrts
 
   # Копирование необходимо при компиляции при помощи Cygwin или MSYS,
   # поскольку на платформе Windows невозможно перезаписать исполнимый
