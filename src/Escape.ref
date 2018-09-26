@@ -1,8 +1,3 @@
-OctDigit {
-  0 = '0'; 1 = '1'; 2 = '2'; 3 = '3';
-  4 = '4'; 5 = '5'; 6 = '6'; 7 = '7';
-}
-
 $ENTRY EscapeChar {
   '\n' = '\\n';
   '\t' = '\\t';
@@ -26,7 +21,7 @@ EscapeChar-SwCompare {
 
   s.Other s.Compare1 s.Compare2 s.Code =
     '\\'
-    <OctDigit <Div s.Code 64>>
-    <OctDigit <Mod <Div s.Code 8> 8>>
-    <OctDigit <Mod s.Code 8>>;
+    <Symb <Div s.Code 64>>
+    <Symb <Mod <Div s.Code 8> 8>>
+    <Symb <Mod s.Code 8>>;
 }
