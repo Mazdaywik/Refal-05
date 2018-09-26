@@ -9,7 +9,7 @@ $ENTRY ParseCommandLine {
   e.Arguments =
     <SwCompileCommand <GetEnv 'R05CCOMP'>>
     (<ParsePath <GetEnv 'R05PATH'>>)
-    <DoParseCommandLine e.Arguments>;
+    e.Arguments;
 }
 
 SwCompileCommand {
@@ -28,9 +28,3 @@ ParseFolder {
 }
 
 *$EENUM NoCompile, CompileCommand
-
-DoParseCommandLine {
-  e.Files-B ('++') e.Files-E = e.Files-B e.Files-E;
-
-  e.Files = e.Files;
-}
