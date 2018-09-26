@@ -1,9 +1,6 @@
 *$FROM LibraryEx
 $EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapAccum, Inc;
 
-*$FROM ParseCmdLine
-$EXTERN ParseCommandLine, CompileCommand, NoCompile;
-
 *$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
 
@@ -24,6 +21,37 @@ Main {
       <ParseCommandLine e.Arguments>
     >;
 }
+
+/**
+  <ParseCommandLine e.Arguments>
+    == t.Compiler (e.Folders) t.FoundedFile*
+
+  t.FoundedFile -- см. в FindFile
+  t.Compiler ::= (NoCompile) | (CompileCommand e.Command)
+*/
+$ENTRY ParseCommandLine {
+  e.Arguments =
+    <SwCompileCommand <GetEnv 'R05CCOMP'>>
+    (<ParsePath <GetEnv 'R05PATH'>>)
+    e.Arguments;
+}
+
+SwCompileCommand {
+  /* пусто */ = (NoCompile);
+  e.Command = (CompileCommand e.Command);
+}
+
+ParsePath {
+  e.Folder ';' e.Path = <ParseFolder e.Folder> <ParsePath e.Path>;
+  e.Folder = <ParseFolder e.Folder>;
+}
+
+ParseFolder {
+  /* пусто */ = /* пусто */;
+  e.Folder = (e.Folder);
+}
+
+*$ENUM NoCompile, CompileCommand
 
 FindFiles-Compilers {
   t.Compiler (e.Folders) e.Files =

@@ -1,6 +1,6 @@
 @echo off
 setlocal
-  set MODULES=refal05c Error Escape FindFile Generator Lexer ParseCmdLine
+  set MODULES=refal05c Error Escape FindFile Generator Lexer
   set MODULES=%MODULES% Parser Sentence SymTable LibraryEx
 
   md ..\bin 2>NUL
