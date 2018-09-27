@@ -14,7 +14,7 @@ setlocal
   )
 
   call ..\c-plus-plus.conf.bat
-  set R05CCOMP=%R05CCOMP% -DR05_SHOW_STAT
+  set R05CFLAGS=-DR05_SHOW_STAT
   set R05PATH=..\lib
   echo Y|%EXECUTABLE% %MODULES% Library refalrts
   if exist a.exe move a.exe refal05c.exe
