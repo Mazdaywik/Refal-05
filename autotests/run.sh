@@ -19,8 +19,7 @@ run_test_aux() {
     exit
   fi
 
-  $CLINE -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS \
-    -o$EXE $CFILE ../lib/refalrts.c
+  $CLINE -I../lib -DDUMP_FILE=\"dump.txt\" -o$EXE $CFILE ../lib/refalrts.c
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit

@@ -7,9 +7,9 @@
 
 #include "refalrts.h"
 
-#ifndef SHOW_DEBUG
-#define SHOW_DEBUG 0
-#endif  /* ifdef SHOW_DEBUG */
+#ifndef R05_SHOW_DEBUG
+#define R05_SHOW_DEBUG 0
+#endif  /* ifdef R05_SHOW_DEBUG */
 
 
 #define EXIT_CODE_RECOGNITION_IMPOSSIBLE 201
@@ -663,11 +663,11 @@ static int create_nodes(void) {
   size_t i;
   struct memory_chunk *chunk;
 
-#ifdef MEMORY_LIMIT
-  if (s_memory_use >= MEMORY_LIMIT) {
+#ifdef R05_MEMORY_LIMIT
+  if (s_memory_use >= R05_MEMORY_LIMIT) {
     return 0;
   }
-#endif  /* ifdef MEMORY_LIMIT */
+#endif  /* ifdef R05_MEMORY_LIMIT */
 
   chunk = malloc(sizeof(*chunk));
 
@@ -714,7 +714,7 @@ static void free_memory(void) {
     s_pool = next;
   }
 
-#ifndef DONT_PRINT_STATISTICS
+#ifdef R05_SHOW_STAT
   fprintf(
     stderr,
     "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
@@ -723,7 +723,7 @@ static void free_memory(void) {
     (unsigned long int) sizeof(struct r05_node),
     (unsigned long int) (s_memory_use * sizeof(struct r05_node))
   );
-#endif  /* DONT_PRINT_STATISTICS */
+#endif  /* R05_SHOW_STAT */
 }
 
 
@@ -976,7 +976,7 @@ static void add_match_repeated_evar_time(clock_t duration) {
   }
 }
 
-#ifndef DONT_PRINT_STATISTICS
+#ifdef R05_SHOW_STAT
 struct time_item {
   const char *name;
   clock_t counter;
@@ -1056,14 +1056,14 @@ static void print_profile(void) {
   }
 }
 
-#endif  /* DONT_PRINT_STATISTICS */
+#endif  /* R05_SHOW_STAT */
 
 static void end_profiler(void) {
   after_step();
 
-#ifndef DONT_PRINT_STATISTICS
+#ifdef R05_SHOW_STAT
   print_profile();
-#endif  /* DONT_PRINT_STATISTICS */
+#endif  /* R05_SHOW_STAT */
 }
 
 
@@ -1140,11 +1140,11 @@ static void main_loop(void) {
     assert(! empty_stack());
     s_arg_end = pop_stack();
 
-#if SHOW_DEBUG
-    if (s_step_counter >= (unsigned) SHOW_DEBUG) {
+#if R05_SHOW_DEBUG
+    if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
       vm_make_dump();
     }
-#endif  /* SHOW_DEBUG */
+#endif  /* R05_SHOW_DEBUG */
 
     function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
@@ -1341,10 +1341,10 @@ static void vm_make_dump(void) {
   fprintf(dump_stream(), "\nVIEW FIELD:\n");
   print_seq(dump_stream(), &s_begin_view_field, &s_end_view_field);
 
-#ifdef DUMP_FREE_LIST
+#ifdef R05_DUMP_FREE_LIST
   fprintf(dump_stream(), "\nFREE LIST:\n");
   print_seq(dump_stream(), &s_begin_free_list, &s_end_free_list);
-#endif  /* ifdef DUMP_FREE_LIST */
+#endif  /* ifdef R05_DUMP_FREE_LIST */
 
   fprintf(dump_stream(),"\nEnd dump\n");
   fflush(dump_stream());
@@ -1378,9 +1378,9 @@ R05_NORETURN void r05_exit(int retcode) {
   fflush(stdout);
   end_profiler();
 
-#ifndef DONT_PRINT_STATISTICS
+#ifdef R05_SHOW_STAT
   fprintf(stderr, "Step count %lu\n", s_step_counter);
-#endif  /* DONT_PRINT_STATISTICS */
+#endif  /* R05_SHOW_STAT */
 
   free_memory();
   fflush(stdout);

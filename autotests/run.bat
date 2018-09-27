@@ -41,8 +41,7 @@ setlocal
     exit
   )
 
-  %CLINE% -I../lib -DDUMP_FILE=\"dump.txt\" -DDONT_PRINT_STATISTICS ^
-    %CFILE% ../lib/refalrts.c
+  %CLINE% -I../lib -DDUMP_FILE=\"dump.txt\" %CFILE% ../lib/refalrts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit
