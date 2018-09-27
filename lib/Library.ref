@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef R05_POSIX
+#include <sys/wait.h>
+#endif  /* R05_POSIX */
 %%
 
 
