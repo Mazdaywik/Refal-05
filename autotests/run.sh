@@ -19,13 +19,13 @@ run_test_aux() {
     exit
   fi
 
-  $CLINE -I../lib -DDUMP_FILE=\"dump.txt\" -o$EXE $CFILE ../lib/refalrts.c
+  $CLINE -I../lib -o$EXE $CFILE ../lib/refalrts.c
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit
   fi
 
-  ./$EXE
+  ./$EXE 2> dump.txt
   if [ $? -ge 200 ]; then
     echo TEST FAILED, SEE dump.txt
     exit

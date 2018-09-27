@@ -1159,13 +1159,14 @@ static void main_loop(void) {
 }
 
 
-static void print_indent(FILE *output, int level) {
+static void print_indent(int level) {
   enum { cPERIOD = 4 };
   int i;
 
-  putc('\n', output);
+  putc('\n', stderr);
+
   if (level < 0) {
-    putc('!', output);
+    putc('!', stderr);
     return;
   }
 
@@ -1176,14 +1177,12 @@ static void print_indent(FILE *output, int level) {
     const char cSpace =  ' ';
     const char cMarker = '.';
 
-    putc((put_marker ? cMarker : cSpace), output);
+    putc((put_marker ? cMarker : cSpace), stderr);
   }
 }
 
 
-static void print_seq(
-  FILE *output, struct r05_node *begin, struct r05_node *end
-) {
+static void print_seq(struct r05_node *begin, struct r05_node *end) {
   enum {
     cStateView = 100,
     cStateString,
@@ -1209,62 +1208,62 @@ static void print_seq(
         switch (begin->tag) {
           case R05_DATATAG_ILLEGAL:
             if (0 == begin->prev) {
-              fprintf(output, "[FIRST] ");
+              fprintf(stderr, "[FIRST] ");
             } else if (0 == begin->next) {
-              fprintf(output, "\n[LAST]");
+              fprintf(stderr, "\n[LAST]");
               state = cStateFinish;
             } else {
-              fprintf(output, "\n[NONE]");
+              fprintf(stderr, "\n[NONE]");
             }
             r05_move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_CHAR:
             state = cStateString;
-            fprintf(output, "\'");
+            fprintf(stderr, "\'");
             continue;
 
           case R05_DATATAG_NUMBER:
-            fprintf(output, "%ld ", begin->info.number);
+            fprintf(stderr, "%ld ", begin->info.number);
             r05_move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_FUNCTION:
-            fprintf(output, "&%s ", begin->info.function->name);
+            fprintf(stderr, "&%s ", begin->info.function->name);
             r05_move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_OPEN_BRACKET:
             if (! after_bracket) {
-              print_indent(output, indent);
+              print_indent(indent);
             }
             ++indent;
             after_bracket = 1;
             reset_after_bracket = 0;
-            fprintf(output, "(");
+            fprintf(stderr, "(");
             r05_move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_CLOSE_BRACKET:
             --indent;
-            fprintf(output, ")");
+            fprintf(stderr, ")");
             r05_move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_OPEN_CALL:
             if (! after_bracket) {
-              print_indent(output, indent);
+              print_indent(indent);
             }
             ++indent;
             after_bracket = 1;
             reset_after_bracket = 0;
-            fprintf(output, "<");
+            fprintf(stderr, "<");
             r05_move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_CLOSE_CALL:
             --indent;
-            fprintf(output, ">");
+            fprintf(stderr, ">");
             r05_move_left(&begin, &end);
             continue;
 
@@ -1279,30 +1278,30 @@ static void print_seq(
             switch (ch) {
               case '(': case ')':
               case '<': case '>':
-                fprintf(output, "\\%c", ch);
+                fprintf(stderr, "\\%c", ch);
                 break;
 
               case '\n':
-                fprintf(output, "\\n");
+                fprintf(stderr, "\\n");
                 break;
 
               case '\t':
-                fprintf(output, "\\t");
+                fprintf(stderr, "\\t");
                 break;
 
               case '\\':
-                fprintf(output, "\\\\");
+                fprintf(stderr, "\\\\");
                 break;
 
               case '\'':
-                fprintf(output, "\\\'");
+                fprintf(stderr, "\\\'");
                 break;
 
               default:
                 if (ch < '\x20') {
-                  fprintf(output, "\\x%02x", ch);
+                  fprintf(stderr, "\\x%02x", ch);
                 } else {
-                  fprintf(output, "%c", ch);
+                  fprintf(stderr, "%c", ch);
                 }
                 break;
               }
@@ -1312,7 +1311,7 @@ static void print_seq(
 
           default:
             state = cStateView;
-            fprintf(output, "\' ");
+            fprintf(stderr, "\' ");
             continue;
         }
 
@@ -1325,51 +1324,27 @@ static void print_seq(
   }
 
   if (cStateString == state) {
-    fprintf(output, "\'");
+    fprintf(stderr, "\'");
   }
 }
 
 
-static FILE* dump_stream(void);
-
-static void print_seq(FILE *output, struct r05_node *begin, struct r05_node *end);
+static void print_seq(struct r05_node *begin, struct r05_node *end);
 
 static void vm_make_dump(void) {
-  fprintf(dump_stream(), "\nSTEP NUMBER %lu\n", s_step_counter);
-  fprintf(dump_stream(), "\nERROR EXPRESSION:\n");
-  print_seq(dump_stream(), s_arg_begin, s_arg_end);
-  fprintf(dump_stream(), "\nVIEW FIELD:\n");
-  print_seq(dump_stream(), &s_begin_view_field, &s_end_view_field);
+  fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
+  fprintf(stderr, "\nERROR EXPRESSION:\n");
+  print_seq(s_arg_begin, s_arg_end);
+  fprintf(stderr, "\nVIEW FIELD:\n");
+  print_seq(&s_begin_view_field, &s_end_view_field);
 
 #ifdef R05_DUMP_FREE_LIST
-  fprintf(dump_stream(), "\nFREE LIST:\n");
-  print_seq(dump_stream(), &s_begin_free_list, &s_end_free_list);
+  fprintf(stderr, "\nFREE LIST:\n");
+  print_seq(&s_begin_free_list, &s_end_free_list);
 #endif  /* ifdef R05_DUMP_FREE_LIST */
 
-  fprintf(dump_stream(),"\nEnd dump\n");
-  fflush(dump_stream());
-}
-
-static FILE *dump_stream() {
-#if defined(DUMP_FILE)
-  static FILE *dump_file = 0;
-
-  if (dump_file == 0) {
-    /*
-      Необходимо открыть файл.
-      Если файл не открывается, используем stderr
-    */
-    dump_file = fopen(DUMP_FILE, "wt");
-
-    if (dump_file == 0) {
-      dump_file = stderr;
-    }
-  }
-
-  return dump_file;
-#else   /* defined(DUMP_FILE) */
-  return stderr;
-#endif  /* defined(DUMP_FILE) */
+  fprintf(stderr,"\nEnd dump\n");
+  fflush(stderr);
 }
 
 

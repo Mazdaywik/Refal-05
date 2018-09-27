@@ -41,14 +41,14 @@ setlocal
     exit
   )
 
-  %CLINE% -I../lib -DDUMP_FILE=\"dump.txt\" %CFILE% ../lib/refalrts.c
+  %CLINE% -I../lib %CFILE% ../lib/refalrts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit
   )
   if exist a.exe move a.exe %EXE%
 
-  %EXE%
+  %EXE% 2> dump.txt
   if errorlevel 200 (
     echo TEST FAILED, SEE dump.txt
     exit
