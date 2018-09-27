@@ -3,12 +3,12 @@ $EXTERN MapAccum, Map, Dec, DelAccumulator, Inc;
 
 *$FROM Sentence
 $EXTERN
-  CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdSymbol, CmdBrackets,
-  CmdEmpty, CmdVar, CmdRepeated, CmdClosedE, AlgLeft, CmdOpenedE-Start,
-  CmdOpenedE-End, CmdSave, CmdEmptyResult, CmdResultArray, CmdAllocateElem,
-  CmdLinkBrackets, CmdPushStack, CmdInsertVar, CmdReturnResult, Char, Number,
-  Name, AlgRight, ElSymbol, ElString, ElOpenBracket, ElCloseBracket, ElOpenCall,
-  ElCloseCall, ElSavePos, ElVariable;
+  CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdMatch, CmdEmpty,
+  CmdClosedE, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
+  CmdResultArray, CmdAllocateElem, CmdLinkBrackets, CmdPushStack, CmdInsertVar,
+  CmdReturnResult, Symbol, Brackets, Repeated, Variable, Char, Number, Name,
+  AlgLeft, AlgRight, ElSymbol, ElString, ElOpenBracket, ElCloseBracket,
+  ElOpenCall, ElCloseCall, ElSavePos, ElVariable;
 
 *$FROM Escape
 $EXTERN EscapeChar;
@@ -142,27 +142,22 @@ $ENTRY generator_GenCommand {
     (e.Indent 'r05_start_sentence();')
     (e.Indent 'r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);');
 
-  (e.Indent) (CmdSymbol s.Direction s.BracketNumber s.Type e.Value) =
+  (e.Indent) (CmdMatch s.Direction s.BracketNumber s.Type e.Value) =
     (e.Indent)
-    <PrintMatchSymbol (e.Indent) s.Direction s.BracketNumber s.Type e.Value>;
+    (e.Indent
+      'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
+      '(' <MatchRep s.Type e.Value> ', ' <BracketsVarsPtr s.BracketNumber> '))'
+    )
+    (e.Indent '  ' <BreakerFromIndent e.Indent>);
 
-  (e.Indent) (CmdBrackets s.Direction s.BracketNumber s.InnerBrackets) =
+  (e.Indent) (CmdEmpty s.BracketNumber) =
     (e.Indent)
-    <PrintMatchBrackets (e.Indent) s.Direction s.BracketNumber s.InnerBrackets>;
+    (e.Indent
+      'if (! r05_empty_seq(' <BracketsVars s.BracketNumber> '))'
+    )
+    (e.Indent '  ' <BreakerFromIndent e.Indent>);
 
-  (e.Indent) (CmdEmpty s.Direction s.BracketNumber) =
-    (e.Indent)
-    <PrintMatchEmpty (e.Indent) s.BracketNumber>;
-
-  (e.Indent) (CmdVar s.Direction s.BracketNumber s.Mode e.Info) =
-    (e.Indent)
-    <PrintMatchSTVar (e.Indent) s.Direction s.BracketNumber s.Mode e.Info>;
-
-  (e.Indent) (CmdRepeated s.Direction s.BracketNumber e.VarInfo) =
-    (e.Indent)
-    <PrintMatchRepeated (e.Indent) s.Direction s.BracketNumber e.VarInfo>;
-
-  (e.Indent) (CmdClosedE AlgLeft s.BracketNumber 'e' e.Index) =
+  (e.Indent) (CmdClosedE s.BracketNumber 'e' e.Index) =
     (e.Indent)
     (e.Indent
       <PrintEVar-B 1 'e' e.Index> ' = ' <BracketsVar-B s.BracketNumber> ';'
@@ -172,7 +167,7 @@ $ENTRY generator_GenCommand {
     );
 
   (e.Indent)
-  (CmdOpenedE-Start AlgLeft s.BracketNumber 'e' e.Index) =
+  (CmdOpenedE-Start s.BracketNumber 'e' e.Index) =
     (e.Indent '  ')
     (e.Indent <PrintEVar-B 1 'e' e.Index> ' = 0;')
     (e.Indent <PrintEVar-E 1 'e' e.Index> ' = 0;')
@@ -180,7 +175,7 @@ $ENTRY generator_GenCommand {
     (e.Indent 'do {');
 
   (e.Indent '  ')
-  (CmdOpenedE-End AlgLeft s.BracketNumber 'e' e.Index) =
+  (CmdOpenedE-End s.BracketNumber 'e' e.Index) =
     (e.Indent)
     (e.Indent
       '} while (r05_open_evar_advance('
@@ -270,12 +265,29 @@ PrintEVarsPtr {
     '&' <PrintEVar-E s.Usings s.Mode e.Index>;
 }
 
-PrintMatchSymbol {
-  (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      (<SymbolFunc s.Type>) <SymbolTextRep s.Type e.Value>
-    >;
+MatchFunc {
+  Symbol s.Type e.Value = <SymbolFunc s.Type>;
+  Brackets s.InnerNum = 'brackets';
+  Repeated s.Usings 'e' e.Index = 'repeated_evar';
+  Repeated s.Usings s.Mode e.Index = 'repeated_stvar';
+  Variable 's' e.Index = 'svar';
+  Variable 't' e.Index = 'tvar';
+}
+
+MatchRep {
+  Symbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
+
+  Brackets s.InnerNum = <BracketsVarsPtr s.InnerNum>;
+
+  Repeated s.Usings 'e' e.Index =
+    <PrintEVarsPtr s.Usings 'e' e.Index> ', '
+    <PrintEVars <Dec s.Usings> 'e' e.Index>;
+
+  Repeated s.Usings s.Mode e.Index =
+    <PrintVarPtr s.Usings s.Mode e.Index> ', '
+    <PrintVar <Dec s.Usings> s.Mode e.Index>;
+
+  Variable s.Mode e.Index = <PrintVarPtr 1 s.Mode e.Index>;
 }
 
 SymbolFunc {
@@ -290,67 +302,14 @@ SymbolTextRep {
   Name e.Name = '&r05f_' e.Name;
 }
 
-PrintMatchBrackets {
-  (e.Indent) s.Direction s.BracketNumber s.InnerNum =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('brackets')
-      <BracketsVarsPtr s.InnerNum>
-    >;
-}
-
 BreakerFromIndent {
   '    ' = 'break;';
 
   e.OtherIndent = 'continue;';
 }
 
-PrintMatchEmpty {
-  (e.Indent) s.BracketNumber =
-    (e.Indent
-      'if (! r05_empty_seq(' <BracketsVars s.BracketNumber> '))'
-    )
-    (e.Indent '  ' <BreakerFromIndent e.Indent>);
-}
-
 StrFromDirection {
   AlgLeft = 'left'; AlgRight = 'right';
-}
-
-VarMatchFunction { 's' = 'svar'; 't' = 'tvar'; }
-
-PrintMatchSTVar {
-  (e.Indent) s.Direction s.BracketNumber s.Mode e.Index =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      (<VarMatchFunction s.Mode>) <PrintVarPtr 1 s.Mode e.Index>
-    >;
-}
-
-PrintMatchRepeated {
-  (e.Indent) s.Direction s.BracketNumber s.Usings 'e' e.Index =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('repeated_evar')
-      <PrintEVarsPtr s.Usings 'e' e.Index> ', '
-      <PrintEVars <Dec s.Usings> 'e' e.Index>
-    >;
-
-  (e.Indent) s.Direction s.BracketNumber s.Usings s.Mode e.Index =
-    <PrintMatch
-      (e.Indent) s.Direction s.BracketNumber
-      ('repeated_stvar') <PrintVarPtr s.Usings s.Mode e.Index>
-      ', ' <PrintVar <Dec s.Usings> s.Mode e.Index>
-    >;
-}
-
-PrintMatch {
-  (e.Indent) s.Direction s.BracketNumber (e.Function) e.TextRep =
-    (e.Indent
-      'if (! r05_' e.Function '_' <StrFromDirection s.Direction>
-      '(' e.TextRep ', ' <BracketsVarsPtr s.BracketNumber> '))'
-    )
-    (e.Indent '  ' <BreakerFromIndent e.Indent>);
 }
 
 PrintElemVar {
