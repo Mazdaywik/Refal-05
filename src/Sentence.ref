@@ -12,7 +12,7 @@ $ENTRY CompileSentence {
 
 CompileSentence-Aux {
   s.NumRanges (e.PatternVars) (e.PatternCommands) e.Result =
-    <GeneralizeResult
+    <ComposeSentenceCommands
       s.NumRanges (e.PatternVars) (e.PatternCommands)
       <GenResult (e.PatternVars) e.Result>
     >;
@@ -345,7 +345,7 @@ DoGenResult {
 
   /*
     Закрывающие скобки надо обрабатывать особым образом.
-    Круглые скобки и АТД -- слинковать, угловые -- добавить в стек.
+    Круглые скобки и АТД — слинковать, угловые — добавить в стек.
   */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
   (TkCloseBracket s.OpenCounter) e.Result =
@@ -431,17 +431,13 @@ DecUsings {
   s.Usings s.Mode e.Index = (<Dec s.Usings> s.Mode e.Index);
 }
 
-*===============================================================================
-* Обобщение информации -- уничтожение ненужных переменных,
-* копирование повторных.
-*===============================================================================
 
 *$EENUM CmdEmptyResult, CmdReturnResult
 
-GeneralizeResult {
+ComposeSentenceCommands {
   s.NumRanges (e.PatternVars) (e.PatternCommands)
   s.ResultCounter (e.UnusedVars) (e.ResultCommands) =
-    <ComposeSentenceCommands
+    <ComposeSentenceCommands-Aux
       s.NumRanges s.ResultCounter (e.ResultCommands)
       <FilterCommonVarsAndPatternCommands
         (e.PatternVars) (e.PatternCommands) e.UnusedVars
@@ -461,7 +457,7 @@ FilterCommonVarsAndPatternCommands {
     (CmdClosedE s.Num 'e' e.Index)
     e.PatternCommands-E
   )
-  e.Unuseds-B (1 'e' e.Index) e.Unuseds-E =
+  (1 'e' e.Index) e.Unuseds =
     <FilterCommonVarsAndPatternCommands
       (e.PatternVars-B e.PatternVars-E)
       (
@@ -469,16 +465,21 @@ FilterCommonVarsAndPatternCommands {
         (CmdComment ' Unused closed variable e.' e.Index)
         e.PatternCommands-E
       )
-      e.Unuseds-B e.Unuseds-E
+      e.Unuseds
     >;
 
-  (e.PatternVars) (e.PatternCommands) e.Unuseds =
+  (e.PatternVars) (e.PatternCommands) t.OtherUnused e.Unuseds =
+    <FilterCommonVarsAndPatternCommands
+      (e.PatternVars) (e.PatternCommands) e.Unuseds
+    >;
+
+  (e.PatternVars) (e.PatternCommands) /* пусто */ =
     (e.PatternVars) e.PatternCommands;
 }
 
 *$EENUM CmdRangeArray, CmdInitB0, CmdResultArray
 
-ComposeSentenceCommands {
+ComposeSentenceCommands-Aux {
   s.NumRanges s.ResultCounter (e.ResultCommands)
   (e.PatternVars) e.PatternCommands =
     <GenerateResult-OpenELoops
