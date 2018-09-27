@@ -25,14 +25,14 @@ run_test_aux() {
     exit
   fi
 
-  ./$EXE 2> dump.txt
+  ./$EXE 2> __dump.txt
   if [ $? -ge 200 ]; then
-    echo TEST FAILED, SEE dump.txt
+    echo TEST FAILED, SEE __dump.txt
     exit
   fi
 
   rm $CFILE $EXE
-  [ -e dump.txt ] && rm dump.txt
+  [ -e __dump.txt ] && rm __dump.txt
 
   echo
 }

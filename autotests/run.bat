@@ -48,16 +48,16 @@ setlocal
   )
   if exist a.exe move a.exe %EXE%
 
-  %EXE% 2> dump.txt
+  %EXE% 2> __dump.txt
   if errorlevel 200 (
-    echo TEST FAILED, SEE dump.txt
+    echo TEST FAILED, SEE __dump.txt
     exit
   )
 
   erase %CFILE% %EXE%
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
-  if exist dump.txt erase dump.txt
+  if exist __dump.txt erase __dump.txt
   echo.
 endlocal
 goto :EOF
