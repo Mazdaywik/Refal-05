@@ -100,14 +100,8 @@ BracketsVars {
 }
 
 BracketsVarsPtr {
-  s.BracketNumber =
-    '&' <BracketsVar-B s.BracketNumber> ', &' <BracketsVar-E s.BracketNumber>;
+  s.BracketNumber = 'bb+' <Symb s.BracketNumber> ', be+' <Symb s.BracketNumber>;
 }
-
-/*
-  Величина отступа также определяет режим работы. Отступ в 4 пробела --
-  вне цикла по открытой e-переменной, отступ больше -- внутри оного цикла.
-*/
 
 SafeComment {
   e.Comment-B '/*' e.Comment-E =
@@ -148,14 +142,14 @@ $ENTRY generator_GenCommand {
       'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
       '(' <MatchRep s.Type e.Value> ', ' <BracketsVarsPtr s.BracketNumber> '))'
     )
-    (e.Indent '  ' <BreakerFromIndent e.Indent>);
+    (e.Indent '  continue;');
 
   (e.Indent) (CmdEmpty s.BracketNumber) =
     (e.Indent)
     (e.Indent
       'if (! r05_empty_seq(' <BracketsVars s.BracketNumber> '))'
     )
-    (e.Indent '  ' <BreakerFromIndent e.Indent>);
+    (e.Indent '  continue;');
 
   (e.Indent) (CmdClosedE s.BracketNumber 'e' e.Index) =
     (e.Indent)
@@ -302,18 +296,16 @@ SymbolTextRep {
   Name e.Name = '&r05f_' e.Name;
 }
 
-BreakerFromIndent {
-  '    ' = 'break;';
-
-  e.OtherIndent = 'continue;';
-}
-
 StrFromDirection {
   AlgLeft = 'left'; AlgRight = 'right';
 }
 
 PrintElemVar {
   s.Number = 'n[' <Symb s.Number> ']';
+}
+
+PrintElemVarPtr {
+  s.Number = 'n+' <Symb s.Number>;
 }
 
 PrintAllocateElem {
@@ -343,13 +335,13 @@ SwInfo {
   ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
   ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
 
-  ElOpenBracket s.Pos = <PrintElemVar s.Pos>;
-  ElCloseBracket s.Pos = <PrintElemVar s.Pos>;
+  ElOpenBracket s.Pos = <PrintElemVarPtr s.Pos>;
+  ElCloseBracket s.Pos = <PrintElemVarPtr s.Pos>;
 
-  ElOpenCall s.Pos = <PrintElemVar s.Pos>;
-  ElCloseCall s.Pos = <PrintElemVar s.Pos>;
+  ElOpenCall s.Pos = <PrintElemVarPtr s.Pos>;
+  ElCloseCall s.Pos = <PrintElemVarPtr s.Pos>;
 
-  ElSavePos s.Pos = <PrintElemVar s.Pos>;
+  ElSavePos s.Pos = <PrintElemVarPtr s.Pos>;
 
   ElVariable 'e' e.Index = <PrintEVars 1 'e' e.Index>;
   ElVariable s.Mode e.Index = <PrintVar 1 s.Mode e.Index>;

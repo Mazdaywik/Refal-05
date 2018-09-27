@@ -184,18 +184,18 @@ void r05_alloc_chars(const char buffer[], size_t len);
   (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function = func)
 
 #define r05_alloc_open_bracket(pos) \
-  ((pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET))
+  (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET))
 
 #define r05_alloc_close_bracket(pos) \
-  ((pos) = r05_alloc_node(R05_DATATAG_CLOSE_BRACKET))
+  (*(pos) = r05_alloc_node(R05_DATATAG_CLOSE_BRACKET))
 
 #define r05_alloc_open_call(pos) \
-  ((pos) = r05_alloc_node(R05_DATATAG_OPEN_CALL))
+  (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_CALL))
 
 #define r05_alloc_close_call(pos) \
-  ((pos) = r05_alloc_node(R05_DATATAG_CLOSE_CALL))
+  (*(pos) = r05_alloc_node(R05_DATATAG_CLOSE_CALL))
 
-#define r05_alloc_insert_pos(pos) ((pos) = r05_insert_pos());
+#define r05_alloc_insert_pos(pos) (*(pos) = r05_insert_pos());
 
 #define r05_alloc_svar(sample) \
   (r05_alloc_node((sample)->tag)->info = (sample)->info);
