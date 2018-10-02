@@ -1229,7 +1229,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             continue;
 
           case R05_DATATAG_FUNCTION:
-            fprintf(stderr, "&%s ", begin->info.function->name);
+            fprintf(stderr, "%s ", begin->info.function->name);
             r05_move_left(&begin, &end);
             continue;
 
