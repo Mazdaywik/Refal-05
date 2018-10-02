@@ -15,7 +15,7 @@
   fi
 
   source ../c-plus-plus.conf.sh
-  export R05CFLAGS="-orefal05c -DR05_SHOW_STAT -DR05_POSIX"
+  export R05CFLAGS="-orefal05c -DR05_SHOW_STAT"
   export R05PATH=../lib
   echo Y | $EXECUTABLE $MODULES Library refal05rts
 
