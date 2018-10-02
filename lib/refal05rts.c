@@ -1329,8 +1329,6 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 }
 
 
-static void print_seq(struct r05_node *begin, struct r05_node *end);
-
 static void make_dump(void) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(stderr, "\nERROR EXPRESSION:\n");
