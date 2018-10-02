@@ -63,7 +63,7 @@ $ENTRY GenDeclaration {
 
 GenCommonHeaders {
   = ('/* Automatically generated file. Don\'t edit! */')
-  ('#include "refalrts.h"')
+  ('#include "refal05rts.h"')
   () ();
 }
 

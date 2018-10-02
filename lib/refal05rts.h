@@ -1,5 +1,5 @@
-#ifndef RefalRTS_H_
-#define RefalRTS_H_
+#ifndef Refal05RTS_H_
+#define Refal05RTS_H_
 
 #include <stddef.h>
 
@@ -236,4 +236,4 @@ R05_NORETURN void r05_switch_default_violation_impl(
 #endif /* __cplusplus */
 
 
-#endif /* RefalRTS_H_ */
+#endif /* Refal05RTS_H_ */

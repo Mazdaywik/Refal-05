@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "refalrts.h"
+#include "refal05rts.h"
 
 #ifndef R05_SHOW_DEBUG
 #define R05_SHOW_DEBUG 0
