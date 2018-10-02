@@ -695,12 +695,12 @@ static int create_nodes(void) {
 }
 
 
-static void vm_make_dump(void);
+static void make_dump(void);
 
 static void ensure_memory(void) {
   if ((s_free_ptr == &s_end_free_list) && ! create_nodes()) {
     fprintf(stderr, "\nNO MEMORY\n\n");
-    vm_make_dump();
+    make_dump();
 
     r05_exit(EXIT_CODE_NO_MEMORY);
   }
@@ -1142,7 +1142,7 @@ static void main_loop(void) {
 
 #if R05_SHOW_DEBUG
     if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
-      vm_make_dump();
+      make_dump();
     }
 #endif  /* R05_SHOW_DEBUG */
 
@@ -1331,7 +1331,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
 static void print_seq(struct r05_node *begin, struct r05_node *end);
 
-static void vm_make_dump(void) {
+static void make_dump(void) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(stderr, "\nERROR EXPRESSION:\n");
   print_seq(s_arg_begin, s_arg_end);
@@ -1366,14 +1366,14 @@ R05_NORETURN void r05_exit(int retcode) {
 
 R05_NORETURN void r05_recognition_impossible(void) {
   fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
-  vm_make_dump();
+  make_dump();
   r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
 
 R05_NORETURN void r05_builtin_error(const char *message) {
   fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
-  vm_make_dump();
+  make_dump();
   r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
@@ -1383,7 +1383,7 @@ R05_NORETURN void r05_builtin_error_errno(const char *message) {
     stderr, "\nBUILTIN FUNCTION ERROR: %s\n(errno = %d: %s)\n\n",
     message, errno, strerror(errno)
   );
-  vm_make_dump();
+  make_dump();
   r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
 }
 
