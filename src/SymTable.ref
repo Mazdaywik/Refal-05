@@ -28,19 +28,20 @@ Normalize {
 
   e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
 
-  e.Name = (Declared e.Name);
+  e.Name = (Declared Unused e.Name);
 }
 
 /*
   Внутренний формат
   t.SymTable ::= (SymTable t.Name* (t.Reference*))
   t.Name ::=
-      (Declared e.Name)
+      (Declared s.Used e.Name)
     | (Defined s.ScopeClass e.Name)
   t.Reference ::= (t.SrcPos e.Name)
+  s.Used ::= Used | Unused
 */
 
-*$ENUM Declared, Defined
+*$ENUM Declared, Defined, Used, Unused
 
 PatchReferences {
   e.References-B (t.SrcPos e.Name) e.References-E (e.Name) =
@@ -65,7 +66,7 @@ $ENTRY ST-AddDefined {
     );
 
   t.ErrorList
-  (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References))
+  (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References))
   s.ScopeClass t.SrcPos e.Name =
     t.ErrorList
     (SymTable
@@ -90,26 +91,31 @@ $ENTRY ST-AddDeclared {
     Можно повторно объявить имя не зависимо от того, было ли оно до этого
     объявлено или определено.
   */
-  (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References)) e.Name =
-    (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References));
+  (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References))
+  e.Name =
+    (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References));
 
   (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References))
   e.Name =
     (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References));
 
-  (SymTable e.Names (e.References)) e.Name =
+  (SymTable e.Names (e.References-B (t.SrcPos e.Name) e.References-E)) e.Name =
     (SymTable
-      e.Names (Declared e.Name) (<PatchReferences e.References (e.Name)>)
+      e.Names (Declared Used e.Name)
+      (e.References-B <PatchReferences e.References-E (e.Name)>)
     );
+
+  (SymTable e.Names (e.References)) e.Name =
+    (SymTable e.Names (Declared Unused e.Name) (e.References));
 }
 
 /**
   <ST-AddFunctionCall t.SymTable t.SrcPos e.Name> == t.SymTable
 */
 $ENTRY ST-AddFunctionCall {
-  (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References))
+  (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References))
   t.SrcPos e.Name =
-    (SymTable e.Names-B (Declared e.Name) e.Names-E (e.References));
+    (SymTable e.Names-B (Declared Used e.Name) e.Names-E (e.References));
 
   (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References))
   t.SrcPos e.Name =
@@ -145,6 +151,7 @@ $ENTRY ST-AllFunctions {
 }
 
 $ENTRY symtable_FunctionFromKnown {
-  (Declared e.Name) = (GN-Entry e.Name);
+  (Declared Used e.Name) = (GN-Entry e.Name);
+  (Declared Unused e.Name) = /* пропускаем */;
   (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
 }
