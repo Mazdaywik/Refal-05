@@ -11,11 +11,6 @@ $ENTRY EL-Create {
   e.FileName = (ErrorList (e.FileName));
 }
 
-$ENTRY EL-AddError {
-  (ErrorList (e.FileName) e.Errors) e.Message =
-    (ErrorList (e.FileName) e.Errors ('  ERROR: ' e.Message));
-}
-
 $ENTRY EL-AddErrorAt {
   (ErrorList (e.FileName) e.Errors) t.SrcPos e.Message =
     (ErrorList
