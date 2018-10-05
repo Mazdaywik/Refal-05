@@ -27,9 +27,12 @@ SkipBOM {
 *$EENUM TkClose
 *$EENUM TkCloseBlock
 *$EENUM TkComma
-*$EENUM TkDirective
+*$EENUM TkEEnum
 *$EENUM TkEOF
+*$EENUM TkEntry
+*$EENUM TkEnum
 *$EENUM TkError
+*$EENUM TkExtern
 *$EENUM TkName
 *$EENUM TkNative
 *$EENUM TkNumber
@@ -40,7 +43,7 @@ SkipBOM {
 *$EENUM TkUnexpected
 *$EENUM TkVariable
 
-*$EENUM EEnum, Entry, Enum, Extern, Bracket, CallBracket
+*$EENUM Bracket, CallBracket
 
 Inc2 { s.Num = <Add 2 s.Num>; }
 
@@ -88,8 +91,7 @@ ScanPseudo {
 
 ScanPseudo-SwDirective {
   s.Row s.Col (Success s.Directive) e.Tail =
-    (TkDirective (s.Row 2) s.Directive)
-    <ScanPseudo-AddSemicolon <Scan s.Row s.Col e.Tail>>;
+    (s.Directive (s.Row 2)) <ScanPseudo-AddSemicolon <Scan s.Row s.Col e.Tail>>;
 
   s.Row s.Col (Fails e.Directive) e.Tail =
     /* ничего не генерируем, это обычный комментарий */;
@@ -156,15 +158,15 @@ MakeDirective {
 }
 
 Directive {
-  'ENUM' = Success Enum;
-  'EENUM' = Success EEnum;
-  'ENTRY' = Success Entry;
-  'EXTERN' = Success Extern;
+  'ENUM' = Success TkEnum;
+  'EENUM' = Success TkEEnum;
+  'ENTRY' = Success TkEntry;
+  'EXTERN' = Success TkExtern;
   e.Other = Fails e.Other;
 }
 
 MakeDirective-SwValid {
-  s.Row s.Col Success s.Directive = (TkDirective (s.Row s.Col) s.Directive);
+  s.Row s.Col Success s.Directive = (s.Directive (s.Row s.Col));
 
   s.Row s.Col Fails e.Other =
     (TkError (s.Row s.Col) 'Unknown directive $' e.Other);
@@ -337,22 +339,18 @@ ScanNumber {
 }
 
 
-StrDirective {
-  EEnum = 'EENUM';
-  Entry = 'ENTRY';
-  Enum = 'ENUM';
-  Extern = 'EXTERN';
-}
-
 $ENTRY StrFromToken {
   TkChar s.Char = '\'' <EscapeChar s.Char> '\'';
   TkClose Bracket = '")"';
   TkClose CallBracket = '">"';
   TkCloseBlock = '"}"';
   TkComma = '","';
-  TkDirective s.Directive = '"$' <StrDirective s.Directive> '"';
+  TkEEnum = 'EENUM';
   TkEOF = 'end of file';
+  TkEntry = 'ENTRY';
+  TkEnum = 'ENUM';
   TkError e.Message = 'LEXER ERROR: ' e.Message;
+  TkExtern = 'EXTERN';
   TkName e.Name = 'Name ' e.Name;
   TkNative e.Code = '"%%...%%"';
   TkNumber s.Number = 'Number ' <Symb s.Number>;

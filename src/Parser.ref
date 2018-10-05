@@ -2,8 +2,8 @@
 $EXTERN Map, SaveFile, Success, Fails;
 
 *$FROM Lexer
-$EXTERN LexFolding, TkEOF, TkDirective, TkName, TkSemicolon, TkNative, EEnum,
-  Enum, Entry, Extern, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
+$EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
+  TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
   TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace;
 
 *$FROM Error
@@ -119,16 +119,51 @@ ParseElements {
     e.Generated;
 
   t.ErrorList t.SymTable (e.Generated)
-  (TkDirective t.SrcPos s.Directive) e.Tail =
-    <ParseElements-DirectiveParsed
+  (TkExtern t.SrcPos) e.Tail =
+    <ParseElements-ElementParsed
       (e.Generated)
-      <ParseElement-SwDirective
-        t.ErrorList t.SymTable s.Directive e.Tail
+      (/* ничего не генерируем */)
+      <ParseNameList-Extern t.ErrorList t.SymTable e.Tail>
+    >;
+
+  t.ErrorList t.SymTable (e.Generated)
+  (TkEnum t.SrcPos) e.Tail =
+    <ParseElements-ElementParsed
+      (e.Generated)
+      <ParseNameList-Enum
+        (/* generated */) t.ErrorList t.SymTable GN-Local e.Tail
       >
     >;
 
+  t.ErrorList t.SymTable (e.Generated)
+  (TkEEnum t.SrcPos) e.Tail =
+    <ParseElements-ElementParsed
+      (e.Generated)
+      <ParseNameList-Enum
+        (/* generated */) t.ErrorList t.SymTable GN-Entry e.Tail
+      >
+    >;
+
+  t.ErrorList t.SymTable (e.Generated)
+  (TkEntry t.EntrySrcPos) (TkName t.NameSrcPos e.Name) e.Tail =
+    <ParseElements-ElementParsed
+      (e.Generated)
+      <ParseFunction
+        GN-Entry (e.Name)
+        <ST-AddDefined t.ErrorList t.SymTable GN-Entry t.NameSrcPos e.Name>
+        e.Tail
+      >
+    >;
+
+  t.ErrorList t.SymTable (e.Generated)
+  (TkEntry t.EntrySrcPos) t.Unexpected e.Tail =
+    <ParseElements
+      <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
+      t.SymTable (e.Generated) t.Unexpected e.Tail
+    >;
+
   t.ErrorList t.SymTable (e.Generated) (TkName t.SrcPos e.Name) e.Tail =
-    <ParseElements-FunctionParsed
+    <ParseElements-ElementParsed
       (e.Generated)
       <ParseFunction
         GN-Local (e.Name)
@@ -152,48 +187,10 @@ ParseElements {
     >;
 }
 
-ParseElements-DirectiveParsed {
+ParseElements-ElementParsed {
   (e.Generated) (e.NewGenerated) t.ErrorList t.SymTable e.Tail =
     <ParseElements
       t.ErrorList t.SymTable (e.Generated e.NewGenerated) e.Tail
-    >;
-}
-
-ParseElements-FunctionParsed {
-  (e.Generated) (e.NewGenerated) t.ErrorList t.SymTable e.Tail =
-    <ParseElements
-      t.ErrorList t.SymTable (e.Generated e.NewGenerated) e.Tail
-    >;
-}
-
-ScopeClassFromEnumDirective {
-  EEnum = GN-Entry;
-  Enum  = GN-Local;
-}
-
-ParseElement-SwDirective {
-  t.ErrorList t.SymTable Entry (TkName t.SrcPos e.Name) e.Tail =
-    <ParseFunction
-      GN-Entry (e.Name)
-      <ST-AddDefined t.ErrorList t.SymTable GN-Entry t.SrcPos e.Name>
-      e.Tail
-    >;
-
-  t.ErrorList t.SymTable Entry t.Unexpected e.Tail =
-    (/* ничего не генерируем */)
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
-    t.SymTable t.Unexpected e.Tail;
-
-  t.ErrorList t.SymTable Extern e.Tail =
-    (/* ничего не генерируем */)
-    <ParseNameList-Extern t.ErrorList t.SymTable e.Tail>;
-
-  t.ErrorList t.SymTable s.Directive e.Tail =
-    <ParseNameList-Enum
-      (/* generated */)
-      t.ErrorList t.SymTable
-      <ScopeClassFromEnumDirective s.Directive>
-      e.Tail
     >;
 }
 
