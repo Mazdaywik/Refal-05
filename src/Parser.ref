@@ -26,10 +26,12 @@ $EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
 $ENTRY R05-Parse {
   e.SourceFile =
     <R05-Parse-Aux
-      <ParseElements
-        <EL-Create> <ST-Create>
-        (/* строчки сгенерированного кода */)
-        <LexFolding e.SourceFile>
+      <SemanticCheck
+        <ParseElements
+          <EL-Create> <ST-Create>
+          (/* строчки сгенерированного кода */)
+          <LexFolding e.SourceFile>
+        >
       >
     >
 }
@@ -102,7 +104,7 @@ $ENTRY parser_MakeExtern {
 
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
-    <ST-AddUnresolveds t.ErrorList t.SymTable>
+    t.ErrorList t.SymTable
     <Map parser_MakeExtern <ST-AllExterns t.SymTable>>
     e.Generated;
 
@@ -655,4 +657,10 @@ DoParseResult {
 BracketPairName {
   Bracket = Brackets;
   CallBracket = CallBrackets;
+}
+
+
+SemanticCheck {
+  t.ErrorList t.SymTable e.Tree =
+    <ST-AddUnresolveds t.ErrorList t.SymTable> e.Tree;
 }
