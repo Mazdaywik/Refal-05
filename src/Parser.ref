@@ -55,7 +55,7 @@ CompileFile-Aux-SwNoErrors {
   (e.SrcName) (e.OutputName) e.Lines EL-NoErrors =
     <SaveFile
       (e.OutputName)
-      <GenPostprocess (e.SrcName) (e.OutputName) e.Lines>
+      <GenPostprocess (e.OutputName) e.Lines>
     >
     Success e.OutputName;
 
@@ -178,9 +178,9 @@ ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
     <ParseElements t.ErrorList t.SymTable (e.Generated) e.Tail>;
 
-  t.ErrorList t.SymTable (e.Generated) (TkNative (s.Row s.Col) e.Code) e.Tail =
+  t.ErrorList t.SymTable (e.Generated) (TkNative t.SrcPos e.Code) e.Tail =
     <ParseElements
-      t.ErrorList t.SymTable (e.Generated <GenNative s.Row e.Code>) e.Tail
+      t.ErrorList t.SymTable (e.Generated <GenNative e.Code>) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Generated) t.Unexpected e.Tail =
@@ -295,10 +295,10 @@ ParseFunction-BlockParsed {
     t.ErrorList t.SymTable e.Tail;
 
   s.ScopeClass (e.Name)
-  (Native s.LineNo e.Code) t.ErrorList t.SymTable e.Tail =
+  (Native e.Code) t.ErrorList t.SymTable e.Tail =
     (
       <GenFnStart s.ScopeClass e.Name>
-      <GenNative s.LineNo e.Code>
+      <GenNative e.Code>
       <GenFnEnd s.ScopeClass e.Name>
     )
     t.ErrorList t.SymTable e.Tail;
@@ -344,8 +344,8 @@ $ENTRY parser_Compile-and-GenSentence {
   Открывающая скобка должна отсутствовать во входном потоке.
 */
 ParseBlock {
-  t.ErrorList t.SymTable (TkNative (s.Row s.Col) e.Code) e.Tail =
-    (Native s.Row e.Code)
+  t.ErrorList t.SymTable (TkNative t.SrcPos e.Code) e.Tail =
+    (Native e.Code)
     <ParseBlock-CloseBlock t.ErrorList t.SymTable e.Tail>;
 
   t.ErrorList t.SymTable e.Tokens =

@@ -13,7 +13,21 @@ $ENTRY lexer_FlatLine {
 }
 
 $ENTRY LexFolding {
-  e.FileName = <Scan 1 1 <SkipBOM <Map lexer_FlatLine <LoadFile e.FileName>>>>;
+  e.FileName =
+    <PrepareTkNative (e.FileName) <Scan 1 1 <LoadText e.FileName>>>;
+}
+
+PrepareTkNative {
+  (e.FileName) e.Tokens-B (TkNative (s.Row s.Col) e.Code) e.Tokens-E =
+    e.Tokens-B
+    (TkNative (s.Row s.Col) (e.FileName s.Row) e.Code)
+    <PrepareTkNative (e.FileName) e.Tokens-E>;
+
+  (e.FileName) e.Tokens = e.Tokens;
+}
+
+LoadText {
+  e.FileName = <SkipBOM <Map lexer_FlatLine <LoadFile e.FileName>>>;
 }
 
 SkipBOM {
@@ -352,7 +366,8 @@ $ENTRY StrFromToken {
   TkError e.Message = 'LEXER ERROR: ' e.Message;
   TkExtern = 'EXTERN';
   TkName e.Name = 'Name ' e.Name;
-  TkNative e.Code = '"%%...%%"';
+  TkNative (e.SrcFile s.Line) e.Code =
+    '"%%...%%" at ' <Symb s.Line> ', "' e.SrcFile '"';
   TkNumber s.Number = 'Number ' <Symb s.Number>;
   TkOpen Bracket = '"("';
   TkOpen CallBracket = '"<"';

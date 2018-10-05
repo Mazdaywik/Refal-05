@@ -376,14 +376,14 @@ SwInfo {
 *$ENUM BeginNative, EndNative
 
 $ENTRY GenNative {
-  s.NativeLineNo e.Code = (BeginNative s.NativeLineNo) e.Code (EndNative);
+  (e.SrcName s.Line) e.Code = (BeginNative e.SrcName s.Line) e.Code (EndNative);
 }
 
 $ENTRY GenPostprocess {
-  (e.SrcName) (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
+  (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
     <DelAccumulator
       <MapAccum
-        (generator_EnumerateLines (e.SrcName) (e.OutputName))
+        (generator_EnumerateLines (e.OutputName))
         1
         <GenCommonHeaders>
         e.Lines-B (EndNative) e.Lines-E
@@ -391,22 +391,22 @@ $ENTRY GenPostprocess {
       >
     >;
 
-  (e.SrcName) (e.OutputName) e.Lines =
+  (e.OutputName) e.Lines =
     <GenCommonHeaders>
     e.Lines
     <GenCommonTailer>;
 }
 
 $ENTRY generator_EnumerateLines {
-  (e.SrcName) (e.OutputName) s.LineNo (BeginNative s.NativeLineNo) =
+  (e.OutputName) s.LineNo (BeginNative e.SrcName s.NativeLineNo) =
     <Inc s.LineNo>
     <LineDirective s.NativeLineNo e.SrcName>;
 
-  (e.SrcName) (e.OutputName) s.LineNo (EndNative) =
+  (e.OutputName) s.LineNo (EndNative) =
     <Inc s.LineNo>
     <LineDirective s.LineNo e.OutputName>;
 
-  (e.SrcName) (e.OutputName) s.LineNo (e.Line) = <Inc s.LineNo> (e.Line);
+  (e.OutputName) s.LineNo (e.Line) = <Inc s.LineNo> (e.Line);
 }
 
 LineDirective {
