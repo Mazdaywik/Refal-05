@@ -44,8 +44,45 @@ R05-Parse-Aux {
 R05-Parse-SwErrors {
   (/* no errors */) e.Tree = Success e.Tree;
 
-  (e.Errors) e.Tree = Fails e.Errors;
+  (e.Errors) e.Tree = Fails <SortErrors e.Errors>;
 }
+
+SortErrors {
+  e.Errors = <DoSortErrors (/* sorted */) e.Errors>;
+}
+
+DoSortErrors {
+  (e.Sorted) /* unsorted */ = e.Sorted;
+
+  (e.Sorted) t.Next e.Unsorted =
+    <DoSortErrors
+      (<SortErrors-Insert e.Sorted t.Next>)
+      e.Unsorted
+    >;
+}
+
+SortErrors-Insert {
+  /* пусто */ t.Next = t.Next;
+
+  e.Sorted t.Great t.Next =
+    <SortErrors-Insert-Compare
+      e.Sorted t.Great t.Next <CompareError t.Great t.Next>
+    >;
+}
+
+SortErrors-Insert-Compare {
+  e.Sorted t.Great t.Next '+' = <SortErrors-Insert e.Sorted t.Next> t.Great;
+  e.Sorted t.Great t.Next s.Other = e.Sorted t.Great t.Next;
+}
+
+CompareError {
+  ((s.Row s.Col1) e.Message1) ((s.Row s.Col2) e.Message2) =
+    <Compare s.Col1 s.Col2>;
+
+  ((s.Row1 s.Col1) e.Message1) ((s.Row2 s.Col2) e.Message2) =
+    <Compare s.Row1 s.Row2>;
+}
+
 
 /*
   Трансляция осуществляется обычным методом рекурсивного спуска.
