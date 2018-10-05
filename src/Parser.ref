@@ -1,21 +1,17 @@
-*$FROM LibraryEx
-$EXTERN Map, Success, Fails;
+*$FROM Error
+$EXTERN EL-Create, EL-Destroy, EL-AddUnexpected, EL-AddErrorAt;
+
+*$FROM SymTable
+$EXTERN ST-Create, ST-AddUnresolveds, ST-AllExterns, ST-AddDefined,
+  ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Lexer
 $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
   TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
   TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace;
 
-*$FROM Error
-$EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
-  EL-AddErrorAt;
-
-*$FROM SymTable
-$EXTERN ST-Create, ST-AddUnresolveds, ST-AllExterns, ST-AddDefined,
-  ST-AddDeclared, ST-AddFunctionCall;
-
-*$FROM Generator
-$EXTERN R05-Generate;
+*$FROM LibraryEx
+$EXTERN Success, Fails, Map;
 
 *$FROM R05-AST
 $EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
@@ -23,37 +19,30 @@ $EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
 
 
 /**
-  <CompileFile (e.SrcName) e.OutputName>
-    == Success e.OutputName
-    == Fails
+  <R05-Parse e.SourceFile>
+    == Success e.Tree
+    == Fails e.Errors
 */
-$ENTRY CompileFile {
-  (e.SrcName) e.OutputName =
-    <CompileFile-Aux
-      (e.SrcName) (e.OutputName)
+$ENTRY R05-Parse {
+  e.SourceFile =
+    <R05-Parse-Aux
       <ParseElements
-        <EL-Create e.SrcName> <ST-Create>
+        <EL-Create> <ST-Create>
         (/* строчки сгенерированного кода */)
-        <LexFolding e.SrcName>
+        <LexFolding e.SourceFile>
       >
     >
 }
 
-CompileFile-Aux {
-  (e.SrcName) (e.OutputName) t.ErrorList e.Tree =
-    <CompileFile-Aux-SwNoErrors
-      (e.SrcName) (e.OutputName) e.Tree
-      <EL-Destroy t.ErrorList>
-    >;
+R05-Parse-Aux {
+  t.ErrorList e.Tree =
+    <R05-Parse-SwErrors (<EL-Destroy t.ErrorList>) e.Tree>;
 }
 
-CompileFile-Aux-SwNoErrors {
-  (e.SrcName) (e.OutputName) e.Tree EL-NoErrors =
-    <R05-Generate (e.OutputName) e.Tree>
-    Success e.OutputName;
+R05-Parse-SwErrors {
+  (/* no errors */) e.Tree = Success e.Tree;
 
-  (e.SrcName) (e.OutputName) e.Tree EL-HasErrors =
-    Fails;
+  (e.Errors) e.Tree = Fails e.Errors;
 }
 
 /*

@@ -5,7 +5,10 @@ $EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapAccum, Inc;
 $EXTERN FindFiles, NotFound, Output, Source;
 
 *$FROM Parser
-$EXTERN CompileFile;
+$EXTERN R05-Parse;
+
+*$FROM Generator
+$EXTERN R05-Generate;
 
 
 $ENTRY Go {
@@ -61,16 +64,30 @@ $ENTRY refal05c_ProcessEachSource {
 
   (Source (e.Source) e.OutputName) =
     <Prout '*Compiling ' e.Source ':'>
-    <ProcessEachSource-SwSuccess
-      <CompileFile (e.Source) e.OutputName>
-    >;
+    <CompileSource-SwSuccessedParse
+      (e.Source) (e.OutputName) <R05-Parse e.Source>
+    >
 }
 
-ProcessEachSource-SwSuccess {
-  Success e.OutputName = (e.OutputName);
+CompileSource-SwSuccessedParse {
+  (e.SrcName) (e.OutputName) Success e.Tree =
+    <R05-Generate (e.OutputName) e.Tree>
+    (e.OutputName);
 
-  Fails = Fails;
+  (e.SrcName) (e.OutputName) Fails e.Errors =
+    <Map (refal05c_WriteError e.SrcName) e.Errors>
+    Fails;
 }
+
+$ENTRY refal05c_WriteError {
+  e.FileName (t.SrcPos e.Message) =
+    <Prout e.FileName ':' <StrFromSrcPos t.SrcPos> ':ERROR: ' e.Message>;
+}
+
+StrFromSrcPos {
+  (s.Line s.Col) = <Symb s.Line> ':' <Symb s.Col>;
+}
+
 
 CheckCompilationResult {
   e.Outputs-B Fails e.Outputs-E =

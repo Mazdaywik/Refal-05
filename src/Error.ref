@@ -8,16 +8,12 @@ $EXTERN Map;
 *$ENUM ErrorList
 
 $ENTRY EL-Create {
-  e.FileName = (ErrorList (e.FileName));
+  = (ErrorList);
 }
 
 $ENTRY EL-AddErrorAt {
-  (ErrorList (e.FileName) e.Errors) t.SrcPos e.Message =
-    (ErrorList (e.FileName) e.Errors (t.SrcPos e.Message));
-}
-
-StrFromSrcPos {
-  (s.Line s.Col) = <Symb s.Line> ':' <Symb s.Col>;
+  (ErrorList e.Errors) t.SrcPos e.Message =
+    (ErrorList e.Errors (t.SrcPos e.Message));
 }
 
 $ENTRY EL-AddUnexpected {
@@ -40,17 +36,6 @@ $ENTRY EL-AddUnexpected {
     >;
 }
 
-*$EENUM EL-NoErrors, EL-HasErrors
-
 $ENTRY EL-Destroy {
-  (ErrorList (e.FileName)) = EL-NoErrors;
-
-  (ErrorList (e.FileName) e.Errors) =
-    <Map (error_WriteError e.FileName) e.Errors>
-    EL-HasErrors;
-}
-
-$ENTRY error_WriteError {
-  e.FileName (t.SrcPos e.Message) =
-    <Prout e.FileName ':' <StrFromSrcPos t.SrcPos> ':ERROR: ' e.Message>;
+  (ErrorList e.Errors) = e.Errors;
 }
