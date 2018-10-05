@@ -20,8 +20,12 @@ EscapeChar-SwCompare {
   s.Other '-' '-' s.Code = s.Other;
 
   s.Other s.Compare1 s.Compare2 s.Code =
-    '\\'
-    <Symb <Div s.Code 64>>
-    <Symb <Mod <Div s.Code 8> 8>>
-    <Symb <Mod s.Code 8>>;
+    '\\x' <Hex <Div s.Code 16>> <Hex <Mod s.Code 16>>;
+}
+
+Hex {
+  0 = '0'; 1 = '1'; 2 = '2'; 3 = '3'; 4 = '4';
+  5 = '5'; 6 = '6'; 7 = '7'; 8 = '8'; 9 = '9';
+
+  10 = 'A'; 11 = 'B'; 12 = 'C'; 13 = 'D'; 14 = 'E'; 15 = 'F';
 }
