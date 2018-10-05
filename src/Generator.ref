@@ -31,7 +31,16 @@ R05-Generate-Aux {
     <SaveFile
       (e.OutputFile)
       <GenPostprocess
-        (e.OutputFile) e.Declarations () e.Definitions
+        (e.OutputFile)
+        ('/* Automatically generated file. Don\'t edit! */')
+        ('#include "refal05rts.h"')
+        ()
+        ()
+        e.Declarations
+        ()
+        e.Definitions
+        ()
+        ('/* End of file */')
       >
     >;
 }
@@ -50,34 +59,8 @@ $ENTRY generator_GenTreeItem {
 }
 
 
-TextFromMemoryClass {
+TextFromScopeClass {
   Local = 'static '; Entry = ;
-}
-
-GenFnStart {
-  s.MemoryClass e.Name =
-    (
-      'static void r05c_' e.Name
-      '(struct r05_node *arg_begin, struct r05_node *arg_end) {'
-    );
-}
-
-GenThisIsGeneratedFunction {
-  = ('  r05_this_is_generated_function();');
-}
-
-GenFail {
-  = () ('  r05_recognition_impossible();')
-}
-
-GenFnEnd {
-  s.MemoryClass e.Name =
-    ('}')
-    (
-      <TextFromMemoryClass s.MemoryClass>
-      'struct r05_function r05f_' e.Name ' = { r05c_' e.Name ', "' e.Name '" };'
-    )
-    ();
 }
 
 GenDeclaration {
@@ -85,51 +68,49 @@ GenDeclaration {
   Local e.Name = ('static struct r05_function r05f_' e.Name ';');
 }
 
-GenCommonHeaders {
-  = ('/* Automatically generated file. Don\'t edit! */')
-  ('#include "refal05rts.h"')
-  () ();
-}
-
-GenCommonTailer {
-  = () ('/* End of file */');
-}
-
 GenFunction {
   s.ScopeClass (e.Name) Sentences /* пусто */ =
     (
-      <TextFromMemoryClass s.ScopeClass>
+      <TextFromScopeClass s.ScopeClass>
       'struct r05_function r05f_' e.Name ' = '
       '{ r05_enum_function_code, "' e.Name '" };'
     )
     ();
 
+  s.ScopeClass (e.Name) e.Body =
+    (
+      'static void r05c_' e.Name
+      '(struct r05_node *arg_begin, struct r05_node *arg_end) {'
+    )
+    <GenFunctionBody e.Body>
+    ('}')
+    (
+      <TextFromScopeClass s.ScopeClass>
+      'struct r05_function r05f_' e.Name ' = { r05c_' e.Name ', "' e.Name '" };'
+    )
+    ();
+}
+
+GenFunctionBody {
+  Sentences e.Sentences =
+    ('  r05_this_is_generated_function();')
+    <Map generator_GenSentence <AddFailCommand e.Sentences>>;
+
+  Native e.Native = <GenNative e.Native>;
+}
+
+*$ENUM ReturnRecognitionImpossible
+
+AddFailCommand {
   /*
     если последнее предложение имеет вид
     e.X = ...;, в конце не генерится вызов
     r05_recognition_impossible()
   */
-  s.ScopeClass (e.Name)
-  Sentences e.Sentences (((Variable 'e' e.Index)) (e.Result)) =
-    <GenFnStart s.ScopeClass e.Name>
-    <GenThisIsGeneratedFunction>
-    <Map
-      generator_GenSentence
-      e.Sentences (((Variable 'e' e.Index)) (e.Result))
-    >
-    <GenFnEnd s.ScopeClass e.Name>;
+  e.Sentences (((Variable 'e' e.Index)) (e.Result)) =
+    e.Sentences (((Variable 'e' e.Index)) (e.Result));
 
-  s.ScopeClass (e.Name) Sentences e.Sentences =
-    <GenFnStart s.ScopeClass e.Name>
-    <GenThisIsGeneratedFunction>
-    <Map generator_GenSentence e.Sentences>
-    <GenFail>
-    <GenFnEnd s.ScopeClass e.Name>;
-
-  s.ScopeClass (e.Name) Native e.Native =
-    <GenFnStart s.ScopeClass e.Name>
-    <GenNative e.Native>
-    <GenFnEnd s.ScopeClass e.Name>;
+  e.Sentences = e.Sentences ReturnRecognitionImpossible;
 }
 
 $ENTRY generator_GenSentence {
@@ -144,6 +125,10 @@ $ENTRY generator_GenSentence {
       >
     >
     ('  } while (0);');
+
+  ReturnRecognitionImpossible =
+    ()
+    ('  r05_recognition_impossible();');
 }
 
 SkipIndentAccum {
@@ -452,16 +437,11 @@ GenPostprocess {
       <MapAccum
         (generator_EnumerateLines (e.OutputName))
         1
-        <GenCommonHeaders>
         e.Lines-B (EndNative) e.Lines-E
-        <GenCommonTailer>
       >
     >;
 
-  (e.OutputName) e.Lines =
-    <GenCommonHeaders>
-    e.Lines
-    <GenCommonTailer>;
+  (e.OutputName) e.Lines = e.Lines;
 }
 
 $ENTRY generator_EnumerateLines {
