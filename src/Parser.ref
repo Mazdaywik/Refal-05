@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN Map, SaveFile, Success, Fails;
+$EXTERN Map, Success, Fails;
 
 *$FROM Lexer
 $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
@@ -11,14 +11,14 @@ $EXTERN EL-Create, EL-Destroy, EL-NoErrors, EL-HasErrors, EL-AddUnexpected,
   EL-AddErrorAt;
 
 *$FROM SymTable
-$EXTERN ST-Create, ST-AddUnresolveds, ST-AllFunctions, ST-AddDefined,
+$EXTERN ST-Create, ST-AddUnresolveds, ST-AllExterns, ST-AddDefined,
   ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Generator
-$EXTERN GenPostprocess, GenDeclaration, GenNative, GenFunction;
+$EXTERN R05-Generate;
 
 *$FROM R05-AST
-$EXTERN Extern, Function, Native, Entry, Local, Sentences, Symbol, Char, Number,
+$EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
   Name, Variable, Brackets, CallBrackets;
 
 
@@ -40,22 +40,19 @@ $ENTRY CompileFile {
 }
 
 CompileFile-Aux {
-  (e.SrcName) (e.OutputName) t.ErrorList e.Lines =
+  (e.SrcName) (e.OutputName) t.ErrorList e.Tree =
     <CompileFile-Aux-SwNoErrors
-      (e.SrcName) (e.OutputName) e.Lines
+      (e.SrcName) (e.OutputName) e.Tree
       <EL-Destroy t.ErrorList>
     >;
 }
 
 CompileFile-Aux-SwNoErrors {
-  (e.SrcName) (e.OutputName) e.Lines EL-NoErrors =
-    <SaveFile
-      (e.OutputName)
-      <GenPostprocess (e.OutputName) e.Lines>
-    >
+  (e.SrcName) (e.OutputName) e.Tree EL-NoErrors =
+    <R05-Generate (e.OutputName) e.Tree>
     Success e.OutputName;
 
-  (e.SrcName) (e.OutputName) e.Lines EL-HasErrors =
+  (e.SrcName) (e.OutputName) e.Tree EL-HasErrors =
     Fails;
 }
 
@@ -110,11 +107,14 @@ CompileFile-Aux-SwNoErrors {
     Function .
 */
 
+$ENTRY parser_MakeExtern {
+  (e.Name) = (Extern e.Name);
+}
+
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
     <ST-AddUnresolveds t.ErrorList t.SymTable>
-    <Map GenDeclaration <ST-AllFunctions t.SymTable>>
-    ()
+    <Map parser_MakeExtern <ST-AllExterns t.SymTable>>
     e.Generated;
 
   t.ErrorList t.SymTable (e.Generated)
@@ -176,7 +176,7 @@ ParseElements {
 
   t.ErrorList t.SymTable (e.Generated) (TkNative t.SrcPos e.Native) e.Tail =
     <ParseElements
-      t.ErrorList t.SymTable (e.Generated <GenNative e.Native>) e.Tail
+      t.ErrorList t.SymTable (e.Generated (Native e.Native)) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Generated) t.Unexpected e.Tail =
@@ -202,7 +202,7 @@ ParseNameList-Enum {
   t.ErrorList t.SymTable s.ScopeClass
   (TkName t.SrcPos e.Name) e.Tail =
     <ParseNameList-Tail-Enum
-      (e.Generated <GenFunction s.ScopeClass (e.Name) Sentences /* пусто */>)
+      (e.Generated (Function s.ScopeClass (e.Name) Sentences /* пусто */))
       <ST-AddDefined t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
       s.ScopeClass
       e.Tail
@@ -286,7 +286,7 @@ ParseFunction {
 
 ParseFunction-BlockParsed {
   s.ScopeClass (e.Name) (e.Body) t.ErrorList t.SymTable e.Tail =
-    (<GenFunction s.ScopeClass (e.Name) e.Body>)
+    ((Function s.ScopeClass (e.Name) e.Body))
     t.ErrorList t.SymTable e.Tail;
 }
 

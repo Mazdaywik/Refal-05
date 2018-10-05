@@ -143,15 +143,14 @@ $ENTRY symtable_AddUnresolved {
 }
 
 /**
-  <ST-AllFunctions t.SymTable>
-    == (s.ScopeClass e.Name)*
+  <ST-AllExterns t.SymTable> == (e.Name)*
 */
-$ENTRY ST-AllFunctions {
-  (SymTable e.Names (e.References)) = <Map symtable_FunctionFromKnown e.Names>;
+$ENTRY ST-AllExterns {
+  (SymTable e.Names (e.References)) = <Map symtable_UsedExterns e.Names>;
 }
 
-$ENTRY symtable_FunctionFromKnown {
-  (Declared Used e.Name) = (Entry e.Name);
+$ENTRY symtable_UsedExterns {
+  (Declared Used e.Name) = (e.Name);
   (Declared Unused e.Name) = /* пропускаем */;
-  (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
+  (Defined s.ScopeClass e.Name) = /* пропускаем */;
 }

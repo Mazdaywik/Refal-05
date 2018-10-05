@@ -1,9 +1,9 @@
 *$FROM R05-AST
-$EXTERN Local, Entry, Sentences, Native,
-  Symbol, Brackets, Variable, Char, Number, Name;
+$EXTERN Extern, Entry, Function, Native, Local, Sentences, Variable, Symbol,
+  Brackets, Char, Number, Name;
 
 *$FROM LibraryEx
-$EXTERN MapAccum, Map, Dec, DelAccumulator, Inc;
+$EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
 
 *$FROM Sentence
 $EXTERN CompileSentence,
@@ -13,6 +13,41 @@ $EXTERN CompileSentence,
   CmdReturnResult, Repeated,
   AlgLeft, AlgRight, ElSymbol, ElString, ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall, ElSavePos, ElVariable;
+
+
+/**
+  <R05-Generate (e.OutputFile) e.Tree> == пусто
+*/
+$ENTRY R05-Generate {
+  (e.OutputFile) e.Tree =
+    <R05-Generate-Aux
+      (e.OutputFile)
+      <MapAccum generator_GenTreeItem (/* declarations */) e.Tree>
+    >;
+}
+
+R05-Generate-Aux {
+  (e.OutputFile) (e.Declarations) e.Definitions =
+    <SaveFile
+      (e.OutputFile)
+      <GenPostprocess
+        (e.OutputFile) e.Declarations () e.Definitions
+      >
+    >;
+}
+
+$ENTRY generator_GenTreeItem {
+  (e.Declarations) (Extern e.Name) =
+    (e.Declarations <GenDeclaration Entry e.Name>)
+    /* пусто */;
+
+  (e.Declarations) (Function s.ScopeClass (e.Name) e.Body) =
+    (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
+    <GenFunction s.ScopeClass (e.Name) e.Body>;
+
+  (e.Declarations) (Native e.Native) =
+    (e.Declarations) <GenNative e.Native>;
+}
 
 
 TextFromMemoryClass {
@@ -45,9 +80,9 @@ GenFnEnd {
     ();
 }
 
-$ENTRY GenDeclaration {
-  (Entry e.Name) = ('extern struct r05_function r05f_' e.Name ';');
-  (Local e.Name) = ('static struct r05_function r05f_' e.Name ';');
+GenDeclaration {
+  Entry e.Name = ('extern struct r05_function r05f_' e.Name ';');
+  Local e.Name = ('static struct r05_function r05f_' e.Name ';');
 }
 
 GenCommonHeaders {
@@ -60,7 +95,7 @@ GenCommonTailer {
   = () ('/* End of file */');
 }
 
-$ENTRY GenFunction {
+GenFunction {
   s.ScopeClass (e.Name) Sentences /* пусто */ =
     (
       <TextFromMemoryClass s.ScopeClass>
@@ -407,11 +442,11 @@ SwInfo {
 
 *$ENUM BeginNative, EndNative
 
-$ENTRY GenNative {
+GenNative {
   (e.SrcName s.Line) e.Code = (BeginNative e.SrcName s.Line) e.Code (EndNative);
 }
 
-$ENTRY GenPostprocess {
+GenPostprocess {
   (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
     <DelAccumulator
       <MapAccum
