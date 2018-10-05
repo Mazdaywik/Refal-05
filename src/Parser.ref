@@ -331,11 +331,7 @@ DoParseBlock {
     (TkEOF t.SrcPos) e.Tail;
 
   t.ErrorList t.SymTable (e.Sentences) e.Tokens =
-    <DoParseBlock
-      <ParseSentence
-        t.ErrorList t.SymTable (e.Sentences) e.Tokens
-      >
-    >;
+    <ParseSentence t.ErrorList t.SymTable (e.Sentences) e.Tokens>;
 }
 
 ParseSentence {
@@ -348,9 +344,21 @@ ParseSentence {
 
 ParseSentence-Aux {
   (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList t.SymTable e.Tokens =
-    t.ErrorList t.SymTable
-    (e.Sentences ((e.Pattern) (e.Result))) e.Tokens;
+  t.ErrorList t.SymTable (TkSemicolon t.SrcPos) e.Tokens =
+    <DoParseBlock
+      t.ErrorList t.SymTable (e.Sentences ((e.Pattern) (e.Result))) e.Tokens
+    >;
+
+  (e.Sentences) (e.Pattern) (e.Result)
+  t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tokens =
+    (Sentences e.Sentences ((e.Pattern) (e.Result)))
+    t.ErrorList t.SymTable e.Tokens;
+
+  (e.Sentences) (e.Pattern) (e.Result)
+  t.ErrorList t.SymTable t.Unexpected e.Tokens =
+    (Sentences e.Sentences ((e.Pattern) (e.Result)))
+    <EL-AddUnexpected t.ErrorList t.Unexpected '"=" or ";"'>
+    t.SymTable t.Unexpected e.Tokens;
 }
 
 ParsePattern {
@@ -652,24 +660,10 @@ DoParseResult {
 
   t.ErrorList t.SymTable (e.Variables)
   () (e.Result) e.Tail =
-    /* Выбрасываем образец из рекурсивого вызова */
-    (e.Result)
-    <ParseResult-ExpectSemicolon t.ErrorList t.SymTable e.Tail>;
+    (e.Result) t.ErrorList t.SymTable e.Tail;
 }
 
 BracketPairName {
   Bracket = Brackets;
   CallBracket = CallBrackets;
-}
-
-ParseResult-ExpectSemicolon {
-  t.ErrorList t.SymTable (TkSemicolon t.SrcPos) e.Tokens =
-    t.ErrorList t.SymTable e.Tokens;
-
-  t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tokens =
-    t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tokens;
-
-  t.ErrorList t.SymTable t.Unexpected e.Tokens =
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
-    t.SymTable t.Unexpected e.Tokens;
 }
