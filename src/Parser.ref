@@ -90,14 +90,13 @@ CompareError {
   TranslationUnit = Element* .
 
   Element =
-    '$ENUM' NameList-Enum |
-    '$EENUM' NameList-Enum |
-    '$EXTERN' NameList-Extern |
+    '$ENUM' NameList |
+    '$EENUM' NameList |
+    '$EXTERN' NameList |
     '$ENTRY' Function |
     Function .
 
-  NameList-Enum = Name ',' NameList-Enum | Name ';' .
-  NameList-Extern = Name ',' NameList-Extern | Name ';' .
+  NameList = Name ',' NameList | Name ';' .
 
   Function = Name Block .
 
@@ -128,9 +127,9 @@ CompareError {
 
 /*
   Element =
-    '$ENUM' NameList-Enum |
-    '$EENUM' NameList-Enum |
-    '$EXTERN' NameList-Extern |
+    '$ENUM' NameList |
+    '$EENUM' NameList |
+    '$EXTERN' NameList |
     '$ENTRY' Function |
     Function .
 */
@@ -149,16 +148,19 @@ ParseElements {
   (TkExtern t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      (/* ничего не генерируем */)
-      <ParseNameList-Extern t.ErrorList t.SymTable e.Tail>
+      <ParseNameList
+        (/* generated */) t.ErrorList t.SymTable
+        AddDeclaredWrapper MakeExtern Entry e.Tail
+      >
     >;
 
   t.ErrorList t.SymTable (e.Generated)
   (TkEnum t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList-Enum
-        (/* generated */) t.ErrorList t.SymTable Local e.Tail
+      <ParseNameList
+        (/* generated */) t.ErrorList t.SymTable
+        ST-AddDefined MakeEnum Local e.Tail
       >
     >;
 
@@ -166,8 +168,9 @@ ParseElements {
   (TkEEnum t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList-Enum
-        (/* generated */) t.ErrorList t.SymTable Entry e.Tail
+      <ParseNameList
+        (/* generated */) t.ErrorList t.SymTable
+        ST-AddDefined MakeEnum Entry e.Tail
       >
     >;
 
@@ -214,6 +217,19 @@ ParseElements {
     >;
 }
 
+MakeExtern {
+  s.ScopeClass e.Name = /* (Extern e.Name) */;
+}
+
+AddDeclaredWrapper {
+  t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name =
+    t.ErrorList <ST-AddDeclared t.SymTable e.Name>;
+}
+
+MakeEnum {
+  s.ScopeClass e.Name = (Function s.ScopeClass (e.Name) Sentences /* пусто */);
+}
+
 ParseElements-ElementParsed {
   (e.Generated) (e.NewGenerated) t.ErrorList t.SymTable e.Tail =
     <ParseElements
@@ -222,73 +238,40 @@ ParseElements-ElementParsed {
 }
 
 /*
-  NameList-Enum = Name ',' NameList-Enum | Name ';' .
+  NameList = Name ',' NameList | Name ';' .
 */
 
-ParseNameList-Enum {
-  (e.Generated)
-  t.ErrorList t.SymTable s.ScopeClass
-  (TkName t.SrcPos e.Name) e.Tail =
-    <ParseNameList-Tail-Enum
-      (e.Generated (Function s.ScopeClass (e.Name) Sentences /* пусто */))
-      <ST-AddDefined t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
-      s.ScopeClass
-      e.Tail
+ParseNameList {
+  (e.Generated) t.ErrorList t.SymTable
+  s.FnRegister s.FnMake s.ScopeClass (TkName t.SrcPos e.Name) e.Tail =
+    <ParseNameList-Tail
+      (e.Generated <Mu s.FnMake s.ScopeClass e.Name>)
+      <Mu s.FnRegister t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
+      s.FnRegister s.FnMake s.ScopeClass e.Tail
     >;
 
-  (e.Generated)
-  t.ErrorList t.SymTable s.ScopeClass
-  t.Unexpected e.Tail =
+  (e.Generated) t.ErrorList t.SymTable
+  s.FnRegister s.FnMake s.ScopeClass t.Unexpected e.Tail =
     (e.Generated)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
     t.SymTable t.Unexpected e.Tail;
 }
 
-ParseNameList-Tail-Enum {
-  (e.Generated)
-  t.ErrorList t.SymTable s.ScopeClass
-  (TkComma t.SrcPos) e.Tail =
-    <ParseNameList-Enum
-      (e.Generated)
-      t.ErrorList t.SymTable s.ScopeClass e.Tail
+ParseNameList-Tail {
+  (e.Generated) t.ErrorList t.SymTable
+  s.FnRegister s.FnMake s.ScopeClass (TkComma t.SrcPos) e.Tail =
+    <ParseNameList
+      (e.Generated) t.ErrorList t.SymTable
+      s.FnRegister s.FnMake s.ScopeClass e.Tail
     >;
 
-  (e.Generated)
-  t.ErrorList t.SymTable s.ScopeClass
-  (TkSemicolon t.SrcPos) e.Tail =
+  (e.Generated) t.ErrorList t.SymTable
+  s.FnRegister s.FnMake s.ScopeClass (TkSemicolon t.SrcPos) e.Tail =
     (e.Generated) t.ErrorList t.SymTable e.Tail;
 
-  (e.Generated)
-  t.ErrorList t.SymTable s.ScopeClass
-  t.Unexpected e.Tail =
+  (e.Generated) t.ErrorList t.SymTable
+  s.FnRegister s.FnMake s.ScopeClass t.Unexpected e.Tail =
     (e.Generated)
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
-    t.SymTable t.Unexpected e.Tail;
-}
-
-/*
-  NameList-Extern = Name ',' NameList-Extern | Name ';' .
-*/
-
-ParseNameList-Extern {
-  t.ErrorList t.SymTable (TkName t.SrcPos e.Name) e.Tail =
-    <ParseNameList-Tail-Extern
-      t.ErrorList <ST-AddDeclared t.SymTable e.Name> e.Tail
-    >;
-
-  t.ErrorList t.SymTable t.Unexpected e.Tail =
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
-    t.SymTable t.Unexpected e.Tail;
-}
-
-ParseNameList-Tail-Extern {
-  t.ErrorList t.SymTable (TkComma t.SrcPos) e.Tail =
-    <ParseNameList-Extern t.ErrorList t.SymTable e.Tail>;
-
-  t.ErrorList t.SymTable (TkSemicolon t.SrcPos) e.Tail =
-    t.ErrorList t.SymTable e.Tail;
-
-  t.ErrorList t.SymTable t.Unexpected e.Tail =
     <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
     t.SymTable t.Unexpected e.Tail;
 }
