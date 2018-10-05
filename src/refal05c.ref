@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map, Success, Fails, DelAccumulator, MapAccum, Inc;
+$EXTERN ArgList, LoadFile, Map, Success, Fails;
 
 *$FROM FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
