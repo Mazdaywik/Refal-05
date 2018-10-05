@@ -20,7 +20,7 @@ $EXTERN EscapeChar;
 
 /**
   e.Body ::= Sentences t.Sentence* | Native e.Native
-  e.Native ::= (s.Line e.SourceName) (s.CHAR*)*
+  e.Native ::= (e.SourceName s.Line) (s.CHAR*)*
   s.Line ::= s.NUMBER
   e.SourceName ::= s.CHAR+
 */

@@ -1,11 +1,12 @@
 *$FROM R05-AST
-$EXTERN Local, Entry, Symbol, Brackets, Variable, Char, Number, Name;
+$EXTERN Local, Entry, Sentences, Native,
+  Symbol, Brackets, Variable, Char, Number, Name;
 
 *$FROM LibraryEx
 $EXTERN MapAccum, Map, Dec, DelAccumulator, Inc;
 
 *$FROM Sentence
-$EXTERN
+$EXTERN CompileSentence,
   CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdMatch, CmdEmpty,
   CmdClosedE, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
   CmdResultArray, CmdAllocateElem, CmdLinkBrackets, CmdPushStack, CmdInsertVar,
@@ -18,7 +19,7 @@ TextFromMemoryClass {
   Local = 'static '; Entry = ;
 }
 
-$ENTRY GenFnStart {
+GenFnStart {
   s.MemoryClass e.Name =
     (
       'static void r05c_' e.Name
@@ -26,30 +27,20 @@ $ENTRY GenFnStart {
     );
 }
 
-$ENTRY GenThisIsGeneratedFunction {
+GenThisIsGeneratedFunction {
   = ('  r05_this_is_generated_function();');
 }
 
-$ENTRY GenFail {
+GenFail {
   = () ('  r05_recognition_impossible();')
 }
 
-$ENTRY GenFnEnd {
+GenFnEnd {
   s.MemoryClass e.Name =
     ('}')
     (
       <TextFromMemoryClass s.MemoryClass>
       'struct r05_function r05f_' e.Name ' = { r05c_' e.Name ', "' e.Name '" };'
-    )
-    ();
-}
-
-$ENTRY GenEnum {
-  s.ScopeClass e.Name =
-    (
-      <TextFromMemoryClass s.ScopeClass>
-      'struct r05_function r05f_' e.Name ' = '
-      '{ r05_enum_function_code, "' e.Name '" };'
     )
     ();
 }
@@ -69,12 +60,53 @@ GenCommonTailer {
   = () ('/* End of file */');
 }
 
-$ENTRY GenSentence {
-  e.SentenceCommands =
+$ENTRY GenFunction {
+  s.ScopeClass (e.Name) Sentences /* пусто */ =
+    (
+      <TextFromMemoryClass s.ScopeClass>
+      'struct r05_function r05f_' e.Name ' = '
+      '{ r05_enum_function_code, "' e.Name '" };'
+    )
+    ();
+
+  /*
+    если последнее предложение имеет вид
+    e.X = ...;, в конце не генерится вызов
+    r05_recognition_impossible()
+  */
+  s.ScopeClass (e.Name)
+  Sentences e.Sentences (((Variable 'e' e.Index)) (e.Result)) =
+    <GenFnStart s.ScopeClass e.Name>
+    <GenThisIsGeneratedFunction>
+    <Map
+      generator_GenSentence
+      e.Sentences (((Variable 'e' e.Index)) (e.Result))
+    >
+    <GenFnEnd s.ScopeClass e.Name>;
+
+  s.ScopeClass (e.Name) Sentences e.Sentences =
+    <GenFnStart s.ScopeClass e.Name>
+    <GenThisIsGeneratedFunction>
+    <Map generator_GenSentence e.Sentences>
+    <GenFail>
+    <GenFnEnd s.ScopeClass e.Name>;
+
+  s.ScopeClass (e.Name) Native e.Native =
+    <GenFnStart s.ScopeClass e.Name>
+    <GenNative e.Native>
+    <GenFnEnd s.ScopeClass e.Name>;
+}
+
+$ENTRY generator_GenSentence {
+  ((e.Pattern) (e.Result)) =
     ()
     ('  do {')
     <SkipIndentAccum
-      <MapAccum generator_GenCommand ('    ' /* отступ */) e.SentenceCommands>
+      <MapAccum
+        generator_GenCommand
+        ('    ' /* отступ */)
+        <CompileSentence (e.Pattern) (e.Result)>
+      >
     >
     ('  } while (0);');
 }

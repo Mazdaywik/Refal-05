@@ -15,11 +15,7 @@ $EXTERN ST-Create, ST-AddUnresolveds, ST-AllFunctions, ST-AddDefined,
   ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Generator
-$EXTERN GenPostprocess, GenDeclaration, GenNative, GenEnum,
-  GenFnStart, GenFnEnd, GenThisIsGeneratedFunction, GenFail, GenSentence;
-
-*$FROM Sentence
-$EXTERN CompileSentence;
+$EXTERN GenPostprocess, GenDeclaration, GenNative, GenFunction;
 
 *$FROM R05-AST
 $EXTERN Extern, Function, Native, Entry, Local, Sentences, Symbol, Char, Number,
@@ -178,9 +174,9 @@ ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
     <ParseElements t.ErrorList t.SymTable (e.Generated) e.Tail>;
 
-  t.ErrorList t.SymTable (e.Generated) (TkNative t.SrcPos e.Code) e.Tail =
+  t.ErrorList t.SymTable (e.Generated) (TkNative t.SrcPos e.Native) e.Tail =
     <ParseElements
-      t.ErrorList t.SymTable (e.Generated <GenNative e.Code>) e.Tail
+      t.ErrorList t.SymTable (e.Generated <GenNative e.Native>) e.Tail
     >;
 
   t.ErrorList t.SymTable (e.Generated) t.Unexpected e.Tail =
@@ -206,7 +202,7 @@ ParseNameList-Enum {
   t.ErrorList t.SymTable s.ScopeClass
   (TkName t.SrcPos e.Name) e.Tail =
     <ParseNameList-Tail-Enum
-      (e.Generated <GenEnum s.ScopeClass e.Name>)
+      (e.Generated <GenFunction s.ScopeClass (e.Name) Sentences /* пусто */>)
       <ST-AddDefined t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
       s.ScopeClass
       e.Tail
@@ -289,50 +285,9 @@ ParseFunction {
 }
 
 ParseFunction-BlockParsed {
-  s.ScopeClass (e.Name)
-  (Sentences e.Sentences) t.ErrorList t.SymTable e.Tail =
-    (<GenFunctionBody s.ScopeClass (e.Name) e.Sentences>)
+  s.ScopeClass (e.Name) (e.Body) t.ErrorList t.SymTable e.Tail =
+    (<GenFunction s.ScopeClass (e.Name) e.Body>)
     t.ErrorList t.SymTable e.Tail;
-
-  s.ScopeClass (e.Name)
-  (Native e.Code) t.ErrorList t.SymTable e.Tail =
-    (
-      <GenFnStart s.ScopeClass e.Name>
-      <GenNative e.Code>
-      <GenFnEnd s.ScopeClass e.Name>
-    )
-    t.ErrorList t.SymTable e.Tail;
-}
-
-GenFunctionBody {
-  /*
-    если последнее предложение имеет вид
-    e.X = ...;, в конце не генерится вызов
-    r05_recognition_impossible()
-  */
-  s.ScopeClass (e.Name)
-  e.Sentences (((Variable 'e' e.Index)) (e.Result)) =
-    <GenFnStart s.ScopeClass e.Name>
-    <GenThisIsGeneratedFunction>
-    <Map
-      parser_Compile-and-GenSentence
-      e.Sentences (((Variable 'e' e.Index)) (e.Result))
-    >
-    <GenFnEnd s.ScopeClass e.Name>;
-
-  s.ScopeClass (e.Name) e.Sentences =
-    <GenFnStart s.ScopeClass e.Name>
-    <GenThisIsGeneratedFunction>
-    <Map parser_Compile-and-GenSentence e.Sentences>
-    <GenFail>
-    <GenFnEnd s.ScopeClass e.Name>;
-}
-
-$ENTRY parser_Compile-and-GenSentence {
-  ((e.Pattern) (e.Result)) =
-    <GenSentence
-      <CompileSentence (e.Pattern) (e.Result)>
-    >;
 }
 
 /*
@@ -344,8 +299,8 @@ $ENTRY parser_Compile-and-GenSentence {
   Открывающая скобка должна отсутствовать во входном потоке.
 */
 ParseBlock {
-  t.ErrorList t.SymTable (TkNative t.SrcPos e.Code) e.Tail =
-    (Native e.Code)
+  t.ErrorList t.SymTable (TkNative t.SrcPos e.Native) e.Tail =
+    (Native e.Native)
     <ParseBlock-CloseBlock t.ErrorList t.SymTable e.Tail>;
 
   t.ErrorList t.SymTable e.Tokens =
