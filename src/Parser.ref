@@ -15,12 +15,15 @@ $EXTERN ST-Create, ST-AddUnresolveds, ST-AllFunctions, ST-AddDefined,
   ST-AddDeclared, ST-AddFunctionCall;
 
 *$FROM Generator
-$EXTERN GenPostprocess, GenDeclaration, GN-Local, GenNative, GN-Entry, GenEnum,
+$EXTERN GenPostprocess, GenDeclaration, GenNative, GenEnum,
   GenFnStart, GenFnEnd, GenThisIsGeneratedFunction, GenFail, GenSentence;
 
 *$FROM Sentence
-$EXTERN CompileSentence, Symbol, Char, Number, Name, Variable, Brackets,
-  CallBrackets;
+$EXTERN CompileSentence;
+
+*$FROM R05-AST
+$EXTERN Extern, Function, Native, Entry, Local, Sentences, Symbol, Char, Number,
+  Name, Variable, Brackets, CallBrackets;
 
 
 /**
@@ -131,7 +134,7 @@ ParseElements {
     <ParseElements-ElementParsed
       (e.Generated)
       <ParseNameList-Enum
-        (/* generated */) t.ErrorList t.SymTable GN-Local e.Tail
+        (/* generated */) t.ErrorList t.SymTable Local e.Tail
       >
     >;
 
@@ -140,7 +143,7 @@ ParseElements {
     <ParseElements-ElementParsed
       (e.Generated)
       <ParseNameList-Enum
-        (/* generated */) t.ErrorList t.SymTable GN-Entry e.Tail
+        (/* generated */) t.ErrorList t.SymTable Entry e.Tail
       >
     >;
 
@@ -149,8 +152,8 @@ ParseElements {
     <ParseElements-ElementParsed
       (e.Generated)
       <ParseFunction
-        GN-Entry (e.Name)
-        <ST-AddDefined t.ErrorList t.SymTable GN-Entry t.NameSrcPos e.Name>
+        Entry (e.Name)
+        <ST-AddDefined t.ErrorList t.SymTable Entry t.NameSrcPos e.Name>
         e.Tail
       >
     >;
@@ -166,8 +169,8 @@ ParseElements {
     <ParseElements-ElementParsed
       (e.Generated)
       <ParseFunction
-        GN-Local (e.Name)
-        <ST-AddDefined t.ErrorList t.SymTable GN-Local t.SrcPos e.Name>
+        Local (e.Name)
+        <ST-AddDefined t.ErrorList t.SymTable Local t.SrcPos e.Name>
         e.Tail
       >
     >;
@@ -284,8 +287,6 @@ ParseFunction {
     <EL-AddUnexpected t.ErrorList t.Unexpected 'open brace'>
     t.SymTable t.Unexpected e.Tail;
 }
-
-*$ENUM Sentences, Native
 
 ParseFunction-BlockParsed {
   s.ScopeClass (e.Name)

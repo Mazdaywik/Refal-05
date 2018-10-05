@@ -1,0 +1,76 @@
+*$FROM Escape
+$EXTERN EscapeChar;
+
+
+/**
+  e.Tree ::= t.TreeItem*
+  t.TreeItem ::=
+      (Extern e.Name)
+    | (Function s.Scope (e.Name) e.Body)
+    | (Native e.Native)
+
+  e.Name ::= s.CHAR+
+*/
+*$EENUM Extern, Function, Native
+
+/**
+  s.Scope ::= Entry | Local
+*/
+*$EENUM Entry, Local
+
+/**
+  e.Body ::= Sentences t.Sentence* | Native e.Native
+  e.Native ::= (s.Line e.SourceName) (s.CHAR*)*
+  s.Line ::= s.NUMBER
+  e.SourceName ::= s.CHAR+
+*/
+*$EENUM Sentences
+
+/**
+  t.Sentence ::= ((e.Pattern) (e.Result))
+  e.Pattern, e.Result ::= e.Expression
+  e.Expression ::= t.Term*
+  t.Term ::=
+      (Symbol Char s.CHAR)
+    | (Symbol Number s.NUMBER)
+    | (Symbol Name e.Name)
+    | (Variable s.Mode e.Index)
+    | (Brackets e.Expression)
+    | (CallBrackets e.Expression)
+  s.Mode ::= 's' | 't' | 'e'
+  e.Index ::= s.CHAR+
+*/
+*$EENUM Symbol, Char, Number, Name, Variable, Brackets, CallBrackets
+
+
+/**
+  <TextFromExpr e.Expression> == s.CHAR*
+*/
+$ENTRY TextFromExpr {
+  /* пусто */ = /* пусто */;
+
+  t.Term = <TextFromTerm t.Term>;
+
+  (Symbol Char s.Char) e.Tail =
+    ' \'' <TextFromExpr-Char (Symbol Char s.Char) e.Tail>;
+
+  t.Term e.Expr = <TextFromTerm t.Term> ' ' <TextFromExpr e.Expr>;
+}
+
+TextFromExpr-Char {
+  (Symbol Char s.Char) e.Tail =
+    <EscapeChar s.Char> <TextFromExpr-Char e.Tail>;
+
+  e.Other = '\' ' <TextFromExpr e.Other>;
+}
+
+TextFromTerm {
+  (Brackets e.Inner) = '(' <TextFromExpr e.Inner> ')';
+  (CallBrackets e.Inner) = '<' <TextFromExpr e.Inner> '>';
+
+  (Symbol Char s.Char) = '\'' <EscapeChar s.Char> '\'';
+  (Symbol Number s.Number) = <Symb s.Number>;
+  (Symbol Name e.Name) = e.Name;
+
+  (Variable s.Mode e.Index) = s.Mode '.' e.Index;
+}

@@ -4,8 +4,8 @@ $EXTERN Map, Reduce;
 *$FROM Error
 $EXTERN EL-AddErrorAt;
 
-*$FROM Generator
-$EXTERN GN-Entry;
+*$FROM R05-AST
+$EXTERN Entry;
 
 
 *$ENUM SymTable
@@ -151,7 +151,7 @@ $ENTRY ST-AllFunctions {
 }
 
 $ENTRY symtable_FunctionFromKnown {
-  (Declared Used e.Name) = (GN-Entry e.Name);
+  (Declared Used e.Name) = (Entry e.Name);
   (Declared Unused e.Name) = /* пропускаем */;
   (Defined s.ScopeClass e.Name) = (s.ScopeClass e.Name);
 }

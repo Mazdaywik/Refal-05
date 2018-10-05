@@ -4,6 +4,9 @@ $EXTERN Inc, Dec, Map;
 *$FROM Escape
 $EXTERN EscapeChar;
 
+*$FROM R05-AST
+$EXTERN TextFromExpr, Symbol, Brackets, Variable, Char, CallBrackets;
+
 
 $ENTRY CompileSentence {
   (e.Pattern) (e.Result) =
@@ -28,8 +31,6 @@ CompileSentence-Aux {
 
 * Направление распознавания
 *$EENUM AlgLeft, AlgRight
-
-*$EENUM Brackets, CallBrackets, Symbol, Char, Number, Name, Variable
 
 /*
 Команды распознавания
@@ -76,7 +77,7 @@ GenPattern {
     <DoGenPattern
       1 (0 e.Pattern) (/* vars */)
       (
-        (CmdComment <TextFromPattern e.Pattern>)
+        (CmdComment <TextFromExpr e.Pattern>)
         /* commands */
       )
     >;
@@ -210,32 +211,6 @@ SaveRanges {
 
   s.NumRanges (e.ScannedRanges) /* пусто */ (e.Vars) (e.Commands) =
     s.NumRanges e.ScannedRanges (e.Vars) (e.Commands);
-}
-
-TextFromPattern {
-  (Brackets e.Inner) e.Tail =
-    ' (' <TextFromPattern e.Inner> ' )' <TextFromPattern e.Tail>;
-
-  (Symbol Char s.Char) e.Tail =
-    ' \'' <TextFromPattern-Char (Symbol Char s.Char) e.Tail>;
-
-  (Symbol Number s.Number) e.Tail =
-    ' ' <Symb s.Number> <TextFromPattern e.Tail>;
-
-  (Symbol Name e.Name) e.Tail =
-    ' & ' e.Name <TextFromPattern e.Tail>;
-
-  (Variable s.Mode e.Index) e.Tail =
-    ' ' s.Mode '.' e.Index <TextFromPattern e.Tail>;
-
-  = ' ';
-}
-
-TextFromPattern-Char {
-  (Symbol Char s.Char) e.Tail =
-    <EscapeChar s.Char> <TextFromPattern-Char e.Tail>;
-
-  e.Other = '\'' <TextFromPattern e.Other>;
 }
 
 *===============================================================================
@@ -462,7 +437,7 @@ FilterCommonVarsAndPatternCommands {
       (e.PatternVars-B e.PatternVars-E)
       (
         e.PatternCommands-B
-        (CmdComment ' Unused closed variable e.' e.Index)
+        (CmdComment 'Unused closed variable e.' e.Index)
         e.PatternCommands-E
       )
       e.Unuseds

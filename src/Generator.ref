@@ -1,3 +1,6 @@
+*$FROM R05-AST
+$EXTERN Local, Entry, Symbol, Brackets, Variable, Char, Number, Name;
+
 *$FROM LibraryEx
 $EXTERN MapAccum, Map, Dec, DelAccumulator, Inc;
 
@@ -6,15 +9,13 @@ $EXTERN
   CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdMatch, CmdEmpty,
   CmdClosedE, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,
   CmdResultArray, CmdAllocateElem, CmdLinkBrackets, CmdPushStack, CmdInsertVar,
-  CmdReturnResult, Symbol, Brackets, Repeated, Variable, Char, Number, Name,
+  CmdReturnResult, Repeated,
   AlgLeft, AlgRight, ElSymbol, ElString, ElOpenBracket, ElCloseBracket,
   ElOpenCall, ElCloseCall, ElSavePos, ElVariable;
 
 
-*$EENUM GN-Local, GN-Entry
-
 TextFromMemoryClass {
-  GN-Local = 'static '; GN-Entry = ;
+  Local = 'static '; Entry = ;
 }
 
 $ENTRY GenFnStart {
@@ -54,8 +55,8 @@ $ENTRY GenEnum {
 }
 
 $ENTRY GenDeclaration {
-  (GN-Entry e.Name) = ('extern struct r05_function r05f_' e.Name ';');
-  (GN-Local e.Name) = ('static struct r05_function r05f_' e.Name ';');
+  (Entry e.Name) = ('extern struct r05_function r05f_' e.Name ';');
+  (Local e.Name) = ('static struct r05_function r05f_' e.Name ';');
 }
 
 GenCommonHeaders {
@@ -112,7 +113,7 @@ SafeComment {
 
 $ENTRY generator_GenCommand {
   (e.Indent) (CmdComment e.Text) =
-    (e.Indent) (e.Indent '/*' <SafeComment e.Text> '*/');
+    (e.Indent) (e.Indent '/* ' <SafeComment e.Text> ' */');
 
   (e.Indent) (CmdDeclareVar s.Usings 'e' e.Index) =
     (e.Indent)
