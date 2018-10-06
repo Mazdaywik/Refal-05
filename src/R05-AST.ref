@@ -1,4 +1,10 @@
 /**
+  Любой элемент дерева, который описан как
+    t.X ::= (Func e.Info)
+  или
+    e.X ::= Func e.Info
+  может быть вызван как <Func e.Info>. Возвращаемое значение — s.CHAR*.
+
   e.Tree ::= t.TreeItem*
   t.TreeItem ::=
       (Extern e.Name)
@@ -7,12 +13,37 @@
 
   e.Name ::= s.CHAR+
 */
-*$EENUM Extern, Function, Native
+
+/**
+  <TextFromTree e.Tree> == s.CHAR*
+*/
+$ENTRY TextFromTree {
+  (Extern e.Name1) (Extern e.Name2) e.Tree =
+    <Extern e.Name1> <TextFromTree (Extern e.Name2) e.Tree>;
+
+  (e.Item) = <Mu e.Item>;
+  (e.Item) e.Tree = <Mu e.Item> '\n' <TextFromTree e.Tree>;
+
+  /* пусто */ = /* пусто */;
+}
+
+$ENTRY Extern {
+  e.Name = '$EXTERN ' e.Name ';\n';
+}
+
+$ENTRY Function {
+  Entry (e.Name) Sentences /* пусто */ = '$EENUM ' e.Name ';\n';
+  Local (e.Name) Sentences /* пусто */ = '$ENUM ' e.Name ';\n';
+
+  s.Scope (e.Name) e.Body = <s.Scope> e.Name ' {\n' <Mu e.Body> '}\n';
+}
 
 /**
   s.Scope ::= Entry | Local
 */
-*$EENUM Entry, Local
+
+$ENTRY Entry { = '$ENTRY ' }
+$ENTRY Local { = /* пусто */ }
 
 /**
   e.Body ::= Sentences t.Sentence* | Native e.Native
@@ -20,7 +51,39 @@
   s.Line ::= s.NUMBER
   e.SourceName ::= s.CHAR+
 */
-*$EENUM Sentences
+
+$ENTRY Sentences {
+  /* пусто */ = /* пусто */;
+  t.Sentence = <Sentence t.Sentence>;
+
+  t.Sentence e.Sentences =
+    <Sentence t.Sentence> '\n' <Sentences e.Sentences>;
+}
+
+Sentence {
+  ((/* пусто */) (/* пусто */)) = '  = ;\n';
+
+  ((/* пусто */) (e.Result)) = '  = ' <TextFromExpr e.Result> ';\n';
+
+  ((e.Pattern) (/* пусто */)) =
+    '  ' <TextFromExpr e.Pattern> ' = ;\n';
+
+  ((e.Pattern) (e.Result)) =
+    '  ' <TextFromExpr e.Pattern> ' =\n    ' <TextFromExpr e.Result> ';\n';
+}
+
+$ENTRY Native {
+  (e.SourceName s.LineNo) e.Lines =
+    '/* file: "' e.SourceName '", line: ' <Symb s.LineNo> ' */\n'
+    '%%\n'
+    <FlatLines e.Lines>
+    '%%\n';
+}
+
+FlatLines {
+  (e.Line) e.Lines = e.Line '\n' <FlatLines e.Lines>;
+  /* пусто */ = /* пусто */;
+}
 
 /**
   t.Sentence ::= ((e.Pattern) (e.Result))
@@ -36,7 +99,34 @@
   s.Mode ::= 's' | 't' | 'e'
   e.Index ::= s.CHAR+
 */
-*$EENUM Symbol, Char, Number, Name, Variable, Brackets, CallBrackets
+
+$ENTRY Symbol {
+  s.Type e.Value = <Mu s.Type e.Value>;
+}
+
+$ENTRY Char {
+  s.Char = '\'' <EscapeChar s.Char> '\'';
+}
+
+$ENTRY Number {
+  s.Number = <Symb s.Number>;
+}
+
+$ENTRY Name {
+  e.Name = e.Name;
+}
+
+$ENTRY Variable {
+  s.Mode e.Index = s.Mode '.' e.Index;
+}
+
+$ENTRY Brackets {
+  e.Inner = '(' <TextFromExpr e.Inner> ')';
+}
+
+$ENTRY CallBrackets {
+  e.Inner = '<' <TextFromExpr e.Inner> '>';
+}
 
 
 /**
@@ -48,7 +138,7 @@ $ENTRY TextFromExpr {
   t.Term = <TextFromTerm t.Term>;
 
   (Symbol Char s.Char) e.Tail =
-    ' \'' <TextFromExpr-Char (Symbol Char s.Char) e.Tail>;
+    '\'' <TextFromExpr-Char (Symbol Char s.Char) e.Tail>;
 
   t.Term e.Expr = <TextFromTerm t.Term> ' ' <TextFromExpr e.Expr>;
 }
@@ -57,18 +147,13 @@ TextFromExpr-Char {
   (Symbol Char s.Char) e.Tail =
     <EscapeChar s.Char> <TextFromExpr-Char e.Tail>;
 
+  /* пусто */ = '\'';
+
   e.Other = '\' ' <TextFromExpr e.Other>;
 }
 
 TextFromTerm {
-  (Brackets e.Inner) = '(' <TextFromExpr e.Inner> ')';
-  (CallBrackets e.Inner) = '<' <TextFromExpr e.Inner> '>';
-
-  (Symbol Char s.Char) = '\'' <EscapeChar s.Char> '\'';
-  (Symbol Number s.Number) = <Symb s.Number>;
-  (Symbol Name e.Name) = e.Name;
-
-  (Variable s.Mode e.Index) = s.Mode '.' e.Index;
+  (s.Type e.Info) = <Mu s.Type e.Info>;
 }
 
 
