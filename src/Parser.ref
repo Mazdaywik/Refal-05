@@ -24,7 +24,7 @@ $ENTRY R05-Parse {
     <R05-Parse-Aux
       <SemanticCheck
         <ParseElements
-          <EL-Create> <ST-Create>
+          <EL-Create> (/* имена вызываемых функций */)
           (/* строчки сгенерированного кода */)
           <LexFolding e.SourceFile>
         >
@@ -359,8 +359,8 @@ DoParsePattern {
   t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
   (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
     <DoParsePattern
-      t.ErrorList <ST-AddFunctionCall (e.References) t.SrcPos e.Name>
-      (e.Variables) (e.MultiBrackets)
+      t.ErrorList (e.References (t.SrcPos e.Name)) (e.Variables)
+      (e.MultiBrackets)
       (e.Scanned (Symbol Name e.Name)) e.Tail
     >;
 
@@ -537,8 +537,7 @@ DoParseResult {
   t.ErrorList (e.References) (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
     <DoParseResult
-      t.ErrorList <ST-AddFunctionCall (e.References) t.SrcPos e.Name>
-      (e.Variables)
+      t.ErrorList (e.References (t.SrcPos e.Name)) (e.Variables)
       (e.MultiBracket) (e.Scanned (Symbol Name e.Name)) e.Tail
     >;
 
@@ -642,7 +641,7 @@ BracketPairName {
 SemanticCheck {
   t.ErrorList (e.References) e.Tree =
     <CheckRepeatedDefinitions
-      t.ErrorList (<ST-GetAllReferences (e.References)>) <LoadBuiltins> e.Tree
+      t.ErrorList (e.References) <LoadBuiltins> e.Tree
     >;
 }
 
@@ -736,29 +735,4 @@ $ENTRY parser_AddUnresolved {
     <EL-AddErrorAt
       t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
     >;
-}
-
-ST-Create {
-  = (/* пусто */);
-}
-
-/*
-  Внутренний формат
-  (e.References) ::= (t.Reference*)
-  t.Reference ::= (t.SrcPos e.Name)
-*/
-
-/**
-  <ST-AddFunctionCall (e.References) t.SrcPos e.Name> == (e.References)
-*/
-ST-AddFunctionCall {
-  (e.References) t.SrcPos e.Name =
-    (e.References (t.SrcPos e.Name));
-}
-
-/**
-  <ST-GetAllReferences (e.References)> == (t.SrcPos e.Name)*
-*/
-ST-GetAllReferences {
-  (e.References) = e.References;
 }
