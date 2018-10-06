@@ -35,7 +35,7 @@ $ENTRY Function {
   Entry (e.Name) Sentences /* пусто */ = '$EENUM ' e.Name ';\n';
   Local (e.Name) Sentences /* пусто */ = '$ENUM ' e.Name ';\n';
 
-  s.Scope (e.Name) e.Body = <s.Scope> e.Name ' {\n' <Mu e.Body> '}\n';
+  s.Scope (e.Name) e.Body = <Mu s.Scope> e.Name ' {\n' <Mu e.Body> '}\n';
 }
 
 /**
