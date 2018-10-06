@@ -1,6 +1,6 @@
 #!/bin/bash
 (
-  MODULES="refal05c Error Escape FindFile Generator Lexer Parser R05-AST
+  MODULES="refal05c Escape FindFile Generator Lexer Parser R05-AST
     Sentence LibraryEx"
   MODULES=$(echo $MODULES)
 

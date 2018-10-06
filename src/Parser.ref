@@ -1,10 +1,8 @@
-*$FROM Error
-$EXTERN EL-Create, EL-Destroy, EL-AddUnexpected, EL-AddErrorAt;
-
 *$FROM Lexer
 $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
   TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
-  TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace;
+  TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace, TkError,
+  TkUnexpected, StrFromToken;
 
 *$FROM LibraryEx
 $EXTERN Success, Fails, Map, Reduce;
@@ -736,4 +734,40 @@ RemoveReference {
 $ENTRY parser_AddUnresolved {
   t.ErrorList (t.SrcPos e.Name) =
     <EL-AddErrorAt t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'>;
+}
+
+
+*$ENUM ErrorList
+
+EL-Create {
+  = (ErrorList);
+}
+
+EL-AddErrorAt {
+  (ErrorList e.Errors) t.SrcPos e.Message =
+    (ErrorList e.Errors (t.SrcPos e.Message));
+}
+
+EL-AddUnexpected {
+  t.ErrorList (TkError t.SrcPos e.Message) e.Expected =
+    <EL-AddErrorAt
+      t.ErrorList t.SrcPos e.Message
+    >;
+
+  t.ErrorList (TkUnexpected t.SrcPos e.Unexpected) e.Expected =
+    <EL-AddErrorAt
+      t.ErrorList t.SrcPos
+      'Unknown characters "' e.Unexpected '"'
+    >;
+
+  t.ErrorList (s.Unexpected t.SrcPos e.Info) e.Expected =
+    <EL-AddErrorAt
+      t.ErrorList t.SrcPos
+      'Unexpected ' <StrFromToken s.Unexpected e.Info>
+      ', expected ' e.Expected
+    >;
+}
+
+EL-Destroy {
+  (ErrorList e.Errors) = e.Errors;
 }
