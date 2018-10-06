@@ -1,7 +1,7 @@
 @echo off
 setlocal
-  set MODULES=refal05c FindFile Generator Lexer
-  set MODULES=%MODULES% Parser R05-AST Sentence LibraryEx
+  set MODULES=refal05c R05-AST R05-FindFile R05-Generator R05-Lexer R05-Parser
+  set MODULES=%MODULES% R05-Sentence LibraryEx
 
   md ..\bin 2>NUL
 

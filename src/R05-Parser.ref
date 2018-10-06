@@ -1,4 +1,4 @@
-*$FROM Lexer
+*$FROM R05-Lexer
 $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
   TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
   TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace, TkError,

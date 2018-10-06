@@ -5,7 +5,7 @@ $EXTERN Extern, Entry, Function, Native, Local, Sentences, Variable, Symbol,
 *$FROM LibraryEx
 $EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
 
-*$FROM Sentence
+*$FROM R05-Sentence
 $EXTERN CompileSentence,
   CmdComment, CmdDeclareVar, CmdRangeArray, CmdInitB0, CmdMatch, CmdEmpty,
   CmdClosedE, CmdOpenedE-Start, CmdOpenedE-End, CmdSave, CmdEmptyResult,

@@ -1,13 +1,13 @@
 *$FROM LibraryEx
 $EXTERN ArgList, LoadFile, Map, Success, Fails;
 
-*$FROM FindFile
+*$FROM R05-FindFile
 $EXTERN FindFiles, NotFound, Output, Source;
 
-*$FROM Parser
+*$FROM R05-Parser
 $EXTERN R05-Parse;
 
-*$FROM Generator
+*$FROM R05-Generator
 $EXTERN R05-Generate;
 
 
