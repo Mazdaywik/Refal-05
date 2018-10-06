@@ -131,69 +131,69 @@ CompareError {
 */
 
 ParseElements {
-  t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
-    t.ErrorList t.SymTable e.Generated;
+  t.ErrorList (e.References) (e.Generated) (TkEOF t.SrcPos) =
+    t.ErrorList (e.References) e.Generated;
 
-  t.ErrorList t.SymTable (e.Generated)
+  t.ErrorList (e.References) (e.Generated)
   (TkExtern t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList (/* generated */) t.ErrorList t.SymTable Extern e.Tail>
+      <ParseNameList (/* generated */) t.ErrorList (e.References) Extern e.Tail>
     >;
 
-  t.ErrorList t.SymTable (e.Generated)
+  t.ErrorList (e.References) (e.Generated)
   (TkEnum t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList (/* generated */) t.ErrorList t.SymTable Local e.Tail>
+      <ParseNameList (/* generated */) t.ErrorList (e.References) Local e.Tail>
     >;
 
-  t.ErrorList t.SymTable (e.Generated)
+  t.ErrorList (e.References) (e.Generated)
   (TkEEnum t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList (/* generated */) t.ErrorList t.SymTable Entry e.Tail>
+      <ParseNameList (/* generated */) t.ErrorList (e.References) Entry e.Tail>
     >;
 
-  t.ErrorList t.SymTable (e.Generated)
+  t.ErrorList (e.References) (e.Generated)
   (TkEntry t.EntrySrcPos) (TkName t.NameSrcPos e.Name) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseFunction Entry (e.Name) t.NameSrcPos t.ErrorList t.SymTable e.Tail>
+      <ParseFunction Entry (e.Name) t.NameSrcPos t.ErrorList (e.References) e.Tail>
     >;
 
-  t.ErrorList t.SymTable (e.Generated)
+  t.ErrorList (e.References) (e.Generated)
   (TkEntry t.EntrySrcPos) t.Unexpected e.Tail =
     <ParseElements
       <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
-      t.SymTable (e.Generated) t.Unexpected e.Tail
+      (e.References) (e.Generated) t.Unexpected e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Generated) (TkName t.SrcPos e.Name) e.Tail =
+  t.ErrorList (e.References) (e.Generated) (TkName t.SrcPos e.Name) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseFunction Local (e.Name) t.SrcPos t.ErrorList t.SymTable e.Tail>
+      <ParseFunction Local (e.Name) t.SrcPos t.ErrorList (e.References) e.Tail>
     >;
 
-  t.ErrorList t.SymTable (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
-    <ParseElements t.ErrorList t.SymTable (e.Generated) e.Tail>;
+  t.ErrorList (e.References) (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
+    <ParseElements t.ErrorList (e.References) (e.Generated) e.Tail>;
 
-  t.ErrorList t.SymTable (e.Generated) (TkNative t.SrcPos e.Native) e.Tail =
+  t.ErrorList (e.References) (e.Generated) (TkNative t.SrcPos e.Native) e.Tail =
     <ParseElements
-      t.ErrorList t.SymTable (e.Generated (Native e.Native)) e.Tail
+      t.ErrorList (e.References) (e.Generated (Native e.Native)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Generated) t.Unexpected e.Tail =
+  t.ErrorList (e.References) (e.Generated) t.Unexpected e.Tail =
     <ParseElements
       <EL-AddUnexpected t.ErrorList t.Unexpected 'directive or name'>
-      t.SymTable (e.Generated) e.Tail
+      (e.References) (e.Generated) e.Tail
     >;
 }
 
 ParseElements-ElementParsed {
-  (e.Generated) (e.NewGenerated) t.ErrorList t.SymTable e.Tail =
+  (e.Generated) (e.NewGenerated) t.ErrorList (e.References) e.Tail =
     <ParseElements
-      t.ErrorList t.SymTable (e.Generated e.NewGenerated) e.Tail
+      t.ErrorList (e.References) (e.Generated e.NewGenerated) e.Tail
     >;
 }
 
@@ -202,36 +202,37 @@ ParseElements-ElementParsed {
 */
 
 ParseNameList {
-  (e.Generated) t.ErrorList t.SymTable
+  (e.Generated) t.ErrorList (e.References)
   s.ScopeClass (TkName t.SrcPos e.Name) e.Tail =
     <ParseNameList-Tail
       (
         e.Generated
         (Function t.SrcPos s.ScopeClass (e.Name) Sentences /* пусто */)
       )
-      t.ErrorList t.SymTable s.ScopeClass e.Tail
+      t.ErrorList (e.References) s.ScopeClass e.Tail
     >;
 
-  (e.Generated) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail =
+  (e.Generated) t.ErrorList (e.References) s.ScopeClass t.Unexpected e.Tail =
     (e.Generated)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
-    t.SymTable t.Unexpected e.Tail;
+    (e.References) t.Unexpected e.Tail;
 }
 
 ParseNameList-Tail {
-  (e.Generated) t.ErrorList t.SymTable s.ScopeClass (TkComma t.SrcPos) e.Tail =
+  (e.Generated) t.ErrorList (e.References)
+  s.ScopeClass (TkComma t.SrcPos) e.Tail =
     <ParseNameList
-      (e.Generated) t.ErrorList t.SymTable s.ScopeClass e.Tail
+      (e.Generated) t.ErrorList (e.References) s.ScopeClass e.Tail
     >;
 
-  (e.Generated) t.ErrorList t.SymTable
+  (e.Generated) t.ErrorList (e.References)
   s.ScopeClass (TkSemicolon t.SrcPos) e.Tail =
-    (e.Generated) t.ErrorList t.SymTable e.Tail;
+    (e.Generated) t.ErrorList (e.References) e.Tail;
 
-  (e.Generated) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail =
+  (e.Generated) t.ErrorList (e.References) s.ScopeClass t.Unexpected e.Tail =
     (e.Generated)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
-    t.SymTable t.Unexpected e.Tail;
+    (e.References) t.Unexpected e.Tail;
 }
 
 /*
@@ -239,101 +240,101 @@ ParseNameList-Tail {
 */
 
 ParseFunction {
-  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList t.SymTable
+  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList (e.References)
   (TkOpenBlock t.SrcPos) e.Tail =
     <ParseFunction-BlockParsed
       s.ScopeClass (e.Name) t.NameSrcPos
-      <ParseBlock t.ErrorList t.SymTable e.Tail>
+      <ParseBlock t.ErrorList (e.References) e.Tail>
     >;
 
-  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList t.SymTable
+  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList (e.References)
   t.Unexpected e.Tail =
     (/* ничего не сгенерировали */)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'open brace'>
-    t.SymTable t.Unexpected e.Tail;
+    (e.References) t.Unexpected e.Tail;
 }
 
 ParseFunction-BlockParsed {
-  s.ScopeClass (e.Name) t.SrcPos (e.Body) t.ErrorList t.SymTable e.Tail =
+  s.ScopeClass (e.Name) t.SrcPos (e.Body) t.ErrorList (e.References) e.Tail =
     ((Function t.SrcPos s.ScopeClass (e.Name) e.Body))
-    t.ErrorList t.SymTable e.Tail;
+    t.ErrorList (e.References) e.Tail;
 }
 
 /*
-  <ParseBlock t.ErrorList t.SymTable e.Tokens>
-    == t.ErrorList t.SymTable e.Tokens
+  <ParseBlock t.ErrorList (e.References) e.Tokens>
+    == t.ErrorList (e.References) e.Tokens
 
   t.FunctionBody ::= (((e.Pattern) (e.Result))*)
 
   Открывающая скобка должна отсутствовать во входном потоке.
 */
 ParseBlock {
-  t.ErrorList t.SymTable (TkNative t.SrcPos e.Native) e.Tail =
+  t.ErrorList (e.References) (TkNative t.SrcPos e.Native) e.Tail =
     (Native e.Native)
-    <ParseBlock-CloseBlock t.ErrorList t.SymTable e.Tail>;
+    <ParseBlock-CloseBlock t.ErrorList (e.References) e.Tail>;
 
-  t.ErrorList t.SymTable e.Tokens =
+  t.ErrorList (e.References) e.Tokens =
     <DoParseBlock
-      t.ErrorList t.SymTable (/* sentences */) e.Tokens
+      t.ErrorList (e.References) (/* sentences */) e.Tokens
     >;
 }
 
 ParseBlock-CloseBlock {
-  t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tail =
-    t.ErrorList t.SymTable e.Tail;
+  t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tail =
+    t.ErrorList (e.References) e.Tail;
 
-  t.ErrorList t.SymTable t.Unexpected e.Tail =
+  t.ErrorList (e.References) t.Unexpected e.Tail =
     <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>
-    t.SymTable t.Unexpected e.Tail;
+    (e.References) t.Unexpected e.Tail;
 }
 
 DoParseBlock {
-  t.ErrorList t.SymTable (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
-    (Sentences e.Sentences) t.ErrorList t.SymTable e.Tail;
+  t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
+    (Sentences e.Sentences) t.ErrorList (e.References) e.Tail;
 
-  t.ErrorList t.SymTable (e.Sentences) (TkEOF t.SrcPos) e.Tail =
+  t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail =
     (Sentences e.Sentences)
     <EL-AddErrorAt
       t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
     >
-    t.SymTable
+    (e.References)
     (TkEOF t.SrcPos) e.Tail;
 
-  t.ErrorList t.SymTable (e.Sentences) e.Tokens =
-    <ParseSentence t.ErrorList t.SymTable (e.Sentences) e.Tokens>;
+  t.ErrorList (e.References) (e.Sentences) e.Tokens =
+    <ParseSentence t.ErrorList (e.References) (e.Sentences) e.Tokens>;
 }
 
 ParseSentence {
-  t.ErrorList t.SymTable (e.Sentences) e.Tokens =
+  t.ErrorList (e.References) (e.Sentences) e.Tokens =
     <ParseSentence-Aux
       (e.Sentences)
-      <ParsePattern t.ErrorList t.SymTable e.Tokens>
+      <ParsePattern t.ErrorList (e.References) e.Tokens>
     >;
 }
 
 ParseSentence-Aux {
   (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList t.SymTable (TkSemicolon t.SrcPos) e.Tokens =
+  t.ErrorList (e.References) (TkSemicolon t.SrcPos) e.Tokens =
     <DoParseBlock
-      t.ErrorList t.SymTable (e.Sentences ((e.Pattern) (e.Result))) e.Tokens
+      t.ErrorList (e.References) (e.Sentences ((e.Pattern) (e.Result))) e.Tokens
     >;
 
   (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList t.SymTable (TkCloseBlock t.SrcPos) e.Tokens =
+  t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens =
     (Sentences e.Sentences ((e.Pattern) (e.Result)))
-    t.ErrorList t.SymTable e.Tokens;
+    t.ErrorList (e.References) e.Tokens;
 
   (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList t.SymTable t.Unexpected e.Tokens =
+  t.ErrorList (e.References) t.Unexpected e.Tokens =
     (Sentences e.Sentences ((e.Pattern) (e.Result)))
     <EL-AddUnexpected t.ErrorList t.Unexpected '"=" or ";"'>
-    t.SymTable t.Unexpected e.Tokens;
+    (e.References) t.Unexpected e.Tokens;
 }
 
 ParsePattern {
-  t.ErrorList t.SymTable e.Tokens =
+  t.ErrorList (e.References) e.Tokens =
     <DoParsePattern
-      t.ErrorList t.SymTable (/* таблица переменных */) (/* мультискобки */)
+      t.ErrorList (e.References) (/* таблица переменных */) (/* мультискобки */)
       (/* просканировано */) e.Tokens
     >;
 }
@@ -341,45 +342,45 @@ ParsePattern {
 DoParsePattern {
   /* Обработка литералов атомов */
 
-  t.ErrorList t.SymTable (e.Variables) (e.MultiBrackets)
+  t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
   (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
     <DoParsePattern
-      t.ErrorList t.SymTable (e.Variables) (e.MultiBrackets)
+      t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
       (e.Scanned (Symbol Char s.Char)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables) (e.MultiBrackets)
+  t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
   (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
     <DoParsePattern
-      t.ErrorList t.SymTable (e.Variables) (e.MultiBrackets)
+      t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
       (e.Scanned (Symbol Number s.Number)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables) (e.MultiBrackets)
+  t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
   (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
     <DoParsePattern
-      t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
+      t.ErrorList <ST-AddFunctionCall (e.References) t.SrcPos e.Name>
       (e.Variables) (e.MultiBrackets)
       (e.Scanned (Symbol Name e.Name)) e.Tail
     >;
 
   /* Переменные */
 
-  t.ErrorList t.SymTable
+  t.ErrorList (e.References)
   (e.Variables-B (s.Mode e.Index) e.Variables-E)
   (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <DoParsePattern
-      t.ErrorList t.SymTable
+      t.ErrorList (e.References)
       (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket)
       (e.Scanned (Variable s.Mode e.Index)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
+  t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <DoParsePattern
-      t.ErrorList t.SymTable ((s.Mode e.Index) e.Variables) (e.MultiBracket)
+      t.ErrorList (e.References) ((s.Mode e.Index) e.Variables) (e.MultiBracket)
       (e.Scanned (Variable s.Mode e.Index)) e.Tail
     >;
 
@@ -393,10 +394,10 @@ DoParsePattern {
     если имеем непарную закрывающую скобку, считаем её лишней.
   */
 
-  t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
+  t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkOpen t.SrcPos Bracket) e.Tail =
     <DoParsePattern
-      t.ErrorList t.SymTable (e.Variables)
+      t.ErrorList (e.References) (e.Variables)
       (
         e.MultiBracket
         (Brackets t.SrcPos Bracket e.Scanned)
@@ -404,13 +405,13 @@ DoParsePattern {
       () e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
+  t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
   (e.Scanned) (TkOpen t.SrcPos CallBracket) e.Tail =
     <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Unexpected call bracket in pattern expression'
       >
-      t.SymTable (e.Variables)
+      (e.References) (e.Variables)
       (
         e.MultiBracket
         (Brackets t.SrcPos CallBracket e.Scanned)
@@ -418,19 +419,19 @@ DoParsePattern {
       () e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (
     e.MultiBracket
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) (TkClose t.CloseSrcPos s.CloseBracket) e.Tail =
     <DoParsePattern
-      t.ErrorList t.SymTable (e.Variables) (e.MultiBracket)
+      t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
       (e.Scanned (s.BracketsSign e.InnerScanned))
       e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (
     e.MultiBracket
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
@@ -441,23 +442,23 @@ DoParsePattern {
         t.ErrorList t.InnerSrcPos
         'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
       >
-      t.SymTable (e.Variables) (e.MultiBracket)
+      (e.References) (e.Variables) (e.MultiBracket)
       (e.Scanned (s.BracketsSign e.InnerScanned))
       (TkClose t.SrcPos s.OtherCloseBracket) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables) ()
+  t.ErrorList (e.References) (e.Variables) ()
   (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
     <DoParsePattern
       <EL-AddErrorAt
         t.ErrorList t.SrcPos
         'Unbalanced bracket "' <StrFromBracket s.CloseBracket> '"'
       >
-      t.SymTable (e.Variables) ()
+      (e.References) (e.Variables) ()
       (e.Scanned) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (
     e.MultiBracket
     (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
@@ -468,17 +469,17 @@ DoParsePattern {
         t.ErrorList t.InnerSrcPos
         'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
       >
-      t.SymTable (e.Variables) (e.MultiBracket)
+      (e.References) (e.Variables) (e.MultiBracket)
       (e.Scanned (s.BracketsSign e.InnerScanned))
       e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables) ()
+  t.ErrorList (e.References) (e.Variables) ()
   (e.Pattern) e.Tail =
     /* Выбрасываем образец из рекурсивого вызова */
     (e.Pattern)
     <ParsePattern-ExpectReplace
-      t.ErrorList t.SymTable (e.Variables) e.Tail
+      t.ErrorList (e.References) (e.Variables) e.Tail
     >;
 }
 
@@ -490,73 +491,73 @@ StrFromBracket {
 }
 
 ParsePattern-ExpectReplace {
-  t.ErrorList t.SymTable (e.Variables) (TkReplace t.SrcPos) e.Tokens =
+  t.ErrorList (e.References) (e.Variables) (TkReplace t.SrcPos) e.Tokens =
     <ParseResult
-      t.ErrorList t.SymTable (e.Variables) e.Tokens
+      t.ErrorList (e.References) (e.Variables) e.Tokens
     >;
 
-  t.ErrorList t.SymTable (e.Variables) t.Unexpected e.Tokens =
+  t.ErrorList (e.References) (e.Variables) t.Unexpected e.Tokens =
     <ParseResult
       <EL-AddUnexpected t.ErrorList t.Unexpected '"="'>
-      t.SymTable (e.Variables) t.Unexpected e.Tokens
+      (e.References) (e.Variables) t.Unexpected e.Tokens
     >;
 }
 
 ParseResult {
-  t.ErrorList t.SymTable (e.Variables) e.Tokens =
+  t.ErrorList (e.References) (e.Variables) e.Tokens =
     <DoParseResult
-      t.ErrorList t.SymTable (e.Variables)
+      t.ErrorList (e.References) (e.Variables)
       (/* мультискобки */) (/* просканировано */) e.Tokens
     >;
 }
 
 /*
   <DoParseResult
-    t.ErrorList t.SymTable (e.Variables)
+    t.ErrorList (e.References) (e.Variables)
     (e.MultiBracket) (e.Scanned) e.Tail
   >
 */
 DoParseResult {
   /* Обработка литералов атомов */
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
     <DoParseResult
-      t.ErrorList t.SymTable (e.Variables)
+      t.ErrorList (e.References) (e.Variables)
       (e.MultiBracket) (e.Scanned (Symbol Char s.Char)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
     <DoParseResult
-      t.ErrorList t.SymTable (e.Variables)
+      t.ErrorList (e.References) (e.Variables)
       (e.MultiBracket) (e.Scanned (Symbol Number s.Number)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
     <DoParseResult
-      t.ErrorList <ST-AddFunctionCall t.SymTable t.SrcPos e.Name>
+      t.ErrorList <ST-AddFunctionCall (e.References) t.SrcPos e.Name>
       (e.Variables)
       (e.MultiBracket) (e.Scanned (Symbol Name e.Name)) e.Tail
     >;
 
   /* Переменные */
 
-  t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
+  t.ErrorList (e.References) (e.Variables-B (s.Mode e.Index) e.Variables-E)
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <DoParseResult
-      t.ErrorList t.SymTable (e.Variables-B (s.Mode e.Index) e.Variables-E)
+      t.ErrorList (e.References) (e.Variables-B (s.Mode e.Index) e.Variables-E)
       (e.MultiBracket) (e.Scanned (Variable s.Mode e.Index)) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
     <DoParseResult
       <EL-AddErrorAt
         t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
       >
-      t.SymTable (e.Variables) (e.MultiBracket) (e.Scanned) e.Tail
+      (e.References) (e.Variables) (e.MultiBracket) (e.Scanned) e.Tail
     >;
 
   /*
@@ -570,10 +571,10 @@ DoParseResult {
   */
 
   /* Структурные и угловые скобки обрабатываются одинаково */
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (e.MultiBracket) (e.Scanned) (TkOpen t.SrcPos s.OpenBracket) e.Tail =
     <DoParseResult
-      t.ErrorList t.SymTable (e.Variables)
+      t.ErrorList (e.References) (e.Variables)
       (
         e.MultiBracket
         (
@@ -587,20 +588,20 @@ DoParseResult {
     >;
 
   /* Правильная закрывающая скобка */
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (
     e.MultiBracket
     (s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned)
   )
   (e.InnerScanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
     <DoParseResult
-      t.ErrorList t.SymTable (e.Variables)
+      t.ErrorList (e.References) (e.Variables)
       (e.MultiBracket) (e.Scanned (s.BracketsSign e.InnerScanned))
       e.Tail
     >;
 
   /* Неправильная закрывающая скобка или закрывающая скобка отсутствует */
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   (
     e.MultiBracket
     (s.BracketsSign t.OpenSrcPos s.CloseBracket e.Scanned)
@@ -611,25 +612,25 @@ DoParseResult {
         t.ErrorList t.OpenSrcPos
         'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
       >
-      t.SymTable (e.Variables)
+      (e.References) (e.Variables)
       (e.MultiBracket) (e.Scanned (s.BracketsSign e.InnerScanned))
       e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   () (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
     <DoParseResult
       <EL-AddErrorAt
         t.ErrorList t.SrcPos
         'Unbalanced bracket "' <StrFromBracket s.CloseBracket> '"'
       >
-      t.SymTable (e.Variables)
+      (e.References) (e.Variables)
       () (e.Scanned) e.Tail
     >;
 
-  t.ErrorList t.SymTable (e.Variables)
+  t.ErrorList (e.References) (e.Variables)
   () (e.Result) e.Tail =
-    (e.Result) t.ErrorList t.SymTable e.Tail;
+    (e.Result) t.ErrorList (e.References) e.Tail;
 }
 
 BracketPairName {
@@ -639,9 +640,9 @@ BracketPairName {
 
 
 SemanticCheck {
-  t.ErrorList t.SymTable e.Tree =
+  t.ErrorList (e.References) e.Tree =
     <CheckRepeatedDefinitions
-      t.ErrorList (<ST-GetAllReferences t.SymTable>) <LoadBuiltins> e.Tree
+      t.ErrorList (<ST-GetAllReferences (e.References)>) <LoadBuiltins> e.Tree
     >;
 }
 
@@ -737,29 +738,27 @@ $ENTRY parser_AddUnresolved {
     >;
 }
 
-*$ENUM SymTable
-
 ST-Create {
-  = (SymTable);
+  = (/* пусто */);
 }
 
 /*
   Внутренний формат
-  t.SymTable ::= (SymTable t.Reference*)
+  (e.References) ::= (t.Reference*)
   t.Reference ::= (t.SrcPos e.Name)
 */
 
 /**
-  <ST-AddFunctionCall t.SymTable t.SrcPos e.Name> == t.SymTable
+  <ST-AddFunctionCall (e.References) t.SrcPos e.Name> == (e.References)
 */
 ST-AddFunctionCall {
-  (SymTable e.References) t.SrcPos e.Name =
-    (SymTable e.References (t.SrcPos e.Name));
+  (e.References) t.SrcPos e.Name =
+    (e.References (t.SrcPos e.Name));
 }
 
 /**
-  <ST-GetAllReferences t.SymTable> == (t.SrcPos e.Name)*
+  <ST-GetAllReferences (e.References)> == (t.SrcPos e.Name)*
 */
 ST-GetAllReferences {
-  (SymTable e.References) = e.References;
+  (e.References) = e.References;
 }
