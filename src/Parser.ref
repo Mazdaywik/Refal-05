@@ -2,8 +2,7 @@
 $EXTERN EL-Create, EL-Destroy, EL-AddUnexpected, EL-AddErrorAt;
 
 *$FROM SymTable
-$EXTERN ST-Create, ST-AddUnresolveds, ST-AllExterns, ST-AddDefined,
-  ST-AddDeclared, ST-AddFunctionCall;
+$EXTERN ST-Create, ST-AddFunctionCall, ST-GetAllReferences;
 
 *$FROM Lexer
 $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
@@ -11,7 +10,7 @@ $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
   TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace;
 
 *$FROM LibraryEx
-$EXTERN Success, Fails, Map;
+$EXTERN Success, Fails, Map, Reduce;
 
 *$FROM R05-AST
 $EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
@@ -134,55 +133,36 @@ CompareError {
     Function .
 */
 
-$ENTRY parser_MakeExtern {
-  (e.Name) = (Extern e.Name);
-}
-
 ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkEOF t.SrcPos) =
-    t.ErrorList t.SymTable
-    <Map parser_MakeExtern <ST-AllExterns t.SymTable>>
-    e.Generated;
+    t.ErrorList t.SymTable e.Generated;
 
   t.ErrorList t.SymTable (e.Generated)
   (TkExtern t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList
-        (/* generated */) t.ErrorList t.SymTable
-        AddDeclaredWrapper MakeExtern Entry e.Tail
-      >
+      <ParseNameList (/* generated */) t.ErrorList t.SymTable Extern e.Tail>
     >;
 
   t.ErrorList t.SymTable (e.Generated)
   (TkEnum t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList
-        (/* generated */) t.ErrorList t.SymTable
-        ST-AddDefined MakeEnum Local e.Tail
-      >
+      <ParseNameList (/* generated */) t.ErrorList t.SymTable Local e.Tail>
     >;
 
   t.ErrorList t.SymTable (e.Generated)
   (TkEEnum t.SrcPos) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseNameList
-        (/* generated */) t.ErrorList t.SymTable
-        ST-AddDefined MakeEnum Entry e.Tail
-      >
+      <ParseNameList (/* generated */) t.ErrorList t.SymTable Entry e.Tail>
     >;
 
   t.ErrorList t.SymTable (e.Generated)
   (TkEntry t.EntrySrcPos) (TkName t.NameSrcPos e.Name) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseFunction
-        Entry (e.Name)
-        <ST-AddDefined t.ErrorList t.SymTable Entry t.NameSrcPos e.Name>
-        e.Tail
-      >
+      <ParseFunction Entry (e.Name) t.NameSrcPos t.ErrorList t.SymTable e.Tail>
     >;
 
   t.ErrorList t.SymTable (e.Generated)
@@ -195,11 +175,7 @@ ParseElements {
   t.ErrorList t.SymTable (e.Generated) (TkName t.SrcPos e.Name) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseFunction
-        Local (e.Name)
-        <ST-AddDefined t.ErrorList t.SymTable Local t.SrcPos e.Name>
-        e.Tail
-      >
+      <ParseFunction Local (e.Name) t.SrcPos t.ErrorList t.SymTable e.Tail>
     >;
 
   t.ErrorList t.SymTable (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
@@ -217,19 +193,6 @@ ParseElements {
     >;
 }
 
-MakeExtern {
-  s.ScopeClass e.Name = /* (Extern e.Name) */;
-}
-
-AddDeclaredWrapper {
-  t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name =
-    t.ErrorList <ST-AddDeclared t.SymTable e.Name>;
-}
-
-MakeEnum {
-  s.ScopeClass e.Name = (Function s.ScopeClass (e.Name) Sentences /* пусто */);
-}
-
 ParseElements-ElementParsed {
   (e.Generated) (e.NewGenerated) t.ErrorList t.SymTable e.Tail =
     <ParseElements
@@ -243,34 +206,32 @@ ParseElements-ElementParsed {
 
 ParseNameList {
   (e.Generated) t.ErrorList t.SymTable
-  s.FnRegister s.FnMake s.ScopeClass (TkName t.SrcPos e.Name) e.Tail =
+  s.ScopeClass (TkName t.SrcPos e.Name) e.Tail =
     <ParseNameList-Tail
-      (e.Generated <Mu s.FnMake s.ScopeClass e.Name>)
-      <Mu s.FnRegister t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
-      s.FnRegister s.FnMake s.ScopeClass e.Tail
+      (
+        e.Generated
+        (Function t.SrcPos s.ScopeClass (e.Name) Sentences /* пусто */)
+      )
+      t.ErrorList t.SymTable s.ScopeClass e.Tail
     >;
 
-  (e.Generated) t.ErrorList t.SymTable
-  s.FnRegister s.FnMake s.ScopeClass t.Unexpected e.Tail =
+  (e.Generated) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail =
     (e.Generated)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
     t.SymTable t.Unexpected e.Tail;
 }
 
 ParseNameList-Tail {
-  (e.Generated) t.ErrorList t.SymTable
-  s.FnRegister s.FnMake s.ScopeClass (TkComma t.SrcPos) e.Tail =
+  (e.Generated) t.ErrorList t.SymTable s.ScopeClass (TkComma t.SrcPos) e.Tail =
     <ParseNameList
-      (e.Generated) t.ErrorList t.SymTable
-      s.FnRegister s.FnMake s.ScopeClass e.Tail
+      (e.Generated) t.ErrorList t.SymTable s.ScopeClass e.Tail
     >;
 
   (e.Generated) t.ErrorList t.SymTable
-  s.FnRegister s.FnMake s.ScopeClass (TkSemicolon t.SrcPos) e.Tail =
+  s.ScopeClass (TkSemicolon t.SrcPos) e.Tail =
     (e.Generated) t.ErrorList t.SymTable e.Tail;
 
-  (e.Generated) t.ErrorList t.SymTable
-  s.FnRegister s.FnMake s.ScopeClass t.Unexpected e.Tail =
+  (e.Generated) t.ErrorList t.SymTable s.ScopeClass t.Unexpected e.Tail =
     (e.Generated)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
     t.SymTable t.Unexpected e.Tail;
@@ -281,14 +242,14 @@ ParseNameList-Tail {
 */
 
 ParseFunction {
-  s.ScopeClass (e.Name) t.ErrorList t.SymTable
+  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList t.SymTable
   (TkOpenBlock t.SrcPos) e.Tail =
     <ParseFunction-BlockParsed
-      s.ScopeClass (e.Name)
+      s.ScopeClass (e.Name) t.NameSrcPos
       <ParseBlock t.ErrorList t.SymTable e.Tail>
     >;
 
-  s.ScopeClass (e.Name) t.ErrorList t.SymTable
+  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList t.SymTable
   t.Unexpected e.Tail =
     (/* ничего не сгенерировали */)
     <EL-AddUnexpected t.ErrorList t.Unexpected 'open brace'>
@@ -296,8 +257,8 @@ ParseFunction {
 }
 
 ParseFunction-BlockParsed {
-  s.ScopeClass (e.Name) (e.Body) t.ErrorList t.SymTable e.Tail =
-    ((Function s.ScopeClass (e.Name) e.Body))
+  s.ScopeClass (e.Name) t.SrcPos (e.Body) t.ErrorList t.SymTable e.Tail =
+    ((Function t.SrcPos s.ScopeClass (e.Name) e.Body))
     t.ErrorList t.SymTable e.Tail;
 }
 
@@ -682,5 +643,99 @@ BracketPairName {
 
 SemanticCheck {
   t.ErrorList t.SymTable e.Tree =
-    <ST-AddUnresolveds t.ErrorList t.SymTable> e.Tree;
+    <CheckRepeatedDefinitions
+      t.ErrorList (<ST-GetAllReferences t.SymTable>) <LoadBuiltins> e.Tree
+    >;
+}
+
+LoadBuiltins {
+  = <Map parser_BuiltinDeclaration <ListOfBuiltin>>;
+}
+
+$ENTRY parser_BuiltinDeclaration {
+  (s.Number s.Name s.Type) = <Normalize <Explode s.Name>>;
+}
+
+Normalize {
+  /* пусто */ = /* пропускаем */;
+  e.Name '$' = /* пропускаем */;
+
+  e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
+
+  e.Name = (Function NO-POS Extern (e.Name) Sentences /* пусто */);
+}
+
+*$ENUM NO-POS
+
+CheckRepeatedDefinitions {
+  t.ErrorList (e.References)
+  e.Tree-B (Function t.SrcPos1 s.ScopeClass (e.Name) e.Body) e.Tree-E
+  (Function t.SrcPos2 Extern (e.Name) Sentences) =
+    /* $EXTERN для уже существующей функции */
+    <CheckRepeatedDefinitions
+      t.ErrorList (e.References)
+      e.Tree-B (Function t.SrcPos1 s.ScopeClass (e.Name) e.Body) e.Tree-E
+    >;
+
+  t.ErrorList (e.References-B (t.SrcPosRef e.Name) e.References-E)
+  e.Tree (Function t.SrcPos Extern (e.Name) Sentences) =
+    /* $EXTERN используется */
+    <CheckRepeatedDefinitions
+      t.ErrorList (e.References-B <RemoveReference (e.Name) e.References-E>)
+      e.Tree
+    >
+    (Extern e.Name);
+
+  t.ErrorList (e.References)
+  e.Tree (Function t.SrcPos Extern (e.Name) Sentences) =
+    /* $EXTERN не используется */
+    <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree>;
+
+  t.ErrorList (e.References)
+  e.Tree-B (Function t.SrcPos1 Extern (e.Name) Sentences) e.Tree-E
+  (Function t.SrcPos2 s.ScopeClass (e.Name) e.Body) =
+    /* $EXTERN для уже существующей функции */
+    <CheckRepeatedDefinitions
+      t.ErrorList (e.References)
+      e.Tree-B e.Tree-E (Function t.SrcPos2 s.ScopeClass (e.Name) e.Body)
+    >;
+
+  t.ErrorList (e.References)
+  e.Tree-B (Function t.SrcPos1 s.ScopeClass1 (e.Name) e.Body1) e.Tree-E
+  (Function t.SrcPos2 s.ScopeClass2 (e.Name) e.Body2) =
+    /* Повторное определение функции */
+    <CheckRepeatedDefinitions
+      <EL-AddErrorAt
+        t.ErrorList t.SrcPos2 'Function ' e.Name ' already defined'
+      >
+      (e.References)
+      e.Tree-B (Function t.SrcPos1 s.ScopeClass1 (e.Name) e.Body1) e.Tree-E
+    >;
+
+  t.ErrorList (e.References)
+  e.Tree (Function t.SrcPos s.ScopeClass (e.Name) e.Body) =
+    <CheckRepeatedDefinitions
+      t.ErrorList (<RemoveReference (e.Name) e.References>) e.Tree
+    >
+    (Function s.ScopeClass (e.Name) e.Body);
+
+  t.ErrorList (e.References) e.Tree (Native e.Native) =
+    <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree> (Native e.Native);
+
+  t.ErrorList (e.References) /* пусто */ =
+    <Reduce parser_AddUnresolved t.ErrorList e.References>;
+}
+
+RemoveReference {
+  (e.Name) e.References-B (t.SrcPos e.Name) e.References-E =
+    e.References-B <RemoveReference (e.Name) e.References-E>;
+
+  (e.Name) e.References = e.References;
+}
+
+$ENTRY parser_AddUnresolved {
+  t.ErrorList (t.SrcPos e.Name) =
+    <EL-AddErrorAt
+      t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
+    >;
 }

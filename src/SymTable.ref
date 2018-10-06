@@ -1,156 +1,26 @@
-*$FROM LibraryEx
-$EXTERN Map, Reduce;
-
-*$FROM Error
-$EXTERN EL-AddErrorAt;
-
-*$FROM R05-AST
-$EXTERN Entry;
-
-
 *$ENUM SymTable
 
 $ENTRY ST-Create {
-  = (SymTable <LoadBuiltins> ());
-}
-
-LoadBuiltins {
-  = <Map symtable_BuiltinDeclaration <ListOfBuiltin>>;
-}
-
-$ENTRY symtable_BuiltinDeclaration {
-  (s.Number s.Name s.Type) = <Normalize <Explode s.Name>>;
-}
-
-Normalize {
-  /* пусто */ = /* пропускаем */;
-  e.Name '$' = /* пропускаем */;
-
-  e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
-
-  e.Name = (Declared Unused e.Name);
+  = (SymTable);
 }
 
 /*
   Внутренний формат
-  t.SymTable ::= (SymTable t.Name* (t.Reference*))
-  t.Name ::=
-      (Declared s.Used e.Name)
-    | (Defined s.ScopeClass e.Name)
+  t.SymTable ::= (SymTable t.Reference*)
   t.Reference ::= (t.SrcPos e.Name)
-  s.Used ::= Used | Unused
 */
-
-*$ENUM Declared, Defined, Used, Unused
-
-PatchReferences {
-  e.References-B (t.SrcPos e.Name) e.References-E (e.Name) =
-    e.References-B <PatchReferences e.References-E (e.Name)>;
-
-  e.References (e.Name) = e.References;
-}
-
-/**
-  <ST-AddDefined t.ErrorList t.SymTable s.ScopeClass t.SrcPos e.Name>
-    == t.ErrorList t.SymTable
-*/
-$ENTRY ST-AddDefined {
-  t.ErrorList
-  (SymTable
-    e.Names-B (Defined s.AnyScopeClass e.Name) e.Names-E (e.References)
-  )
-  s.ScopeClass t.SrcPos e.Name =
-    <EL-AddErrorAt t.ErrorList t.SrcPos 'Function ' e.Name ' already defined'>
-    (SymTable
-      e.Names-B (Defined s.AnyScopeClass e.Name) e.Names-E (e.References)
-    );
-
-  t.ErrorList
-  (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References))
-  s.ScopeClass t.SrcPos e.Name =
-    t.ErrorList
-    (SymTable
-      e.Names-B (Defined s.ScopeClass e.Name) e.Names-E
-      (<PatchReferences e.References (e.Name)>)
-    );
-
-  t.ErrorList
-  (SymTable e.Names (e.References)) s.ScopeClass t.SrcPos e.Name =
-    t.ErrorList
-    (SymTable
-      e.Names (Defined s.ScopeClass e.Name)
-      (<PatchReferences e.References (e.Name)>)
-    );
-}
-
-/**
-  <ST-AddDeclared t.SymTable e.Name> == t.SymTable
-*/
-$ENTRY ST-AddDeclared {
-  /*
-    Можно повторно объявить имя не зависимо от того, было ли оно до этого
-    объявлено или определено.
-  */
-  (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References))
-  e.Name =
-    (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References));
-
-  (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References))
-  e.Name =
-    (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References));
-
-  (SymTable e.Names (e.References-B (t.SrcPos e.Name) e.References-E)) e.Name =
-    (SymTable
-      e.Names (Declared Used e.Name)
-      (e.References-B <PatchReferences e.References-E (e.Name)>)
-    );
-
-  (SymTable e.Names (e.References)) e.Name =
-    (SymTable e.Names (Declared Unused e.Name) (e.References));
-}
 
 /**
   <ST-AddFunctionCall t.SymTable t.SrcPos e.Name> == t.SymTable
 */
 $ENTRY ST-AddFunctionCall {
-  (SymTable e.Names-B (Declared s.Used e.Name) e.Names-E (e.References))
-  t.SrcPos e.Name =
-    (SymTable e.Names-B (Declared Used e.Name) e.Names-E (e.References));
-
-  (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References))
-  t.SrcPos e.Name =
-    (SymTable e.Names-B (Defined s.ScopeClass e.Name) e.Names-E (e.References));
-
-  (SymTable e.Names (e.References))
-  t.SrcPos e.Name =
-    (SymTable e.Names (e.References (t.SrcPos e.Name)));
+  (SymTable e.References) t.SrcPos e.Name =
+    (SymTable e.References (t.SrcPos e.Name));
 }
 
 /**
-  <ST-AddUnresolveds t.ErrorList t.SymTable>
-    == t.ErrorList
+  <ST-GetAllReferences t.SymTable> == (t.SrcPos e.Name)*
 */
-$ENTRY ST-AddUnresolveds {
-  t.ErrorList (SymTable e.Names (e.References)) =
-    <Reduce symtable_AddUnresolved t.ErrorList e.References>;
-}
-
-$ENTRY symtable_AddUnresolved {
-  t.ErrorList (t.SrcPos e.Name) =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
-    >;
-}
-
-/**
-  <ST-AllExterns t.SymTable> == (e.Name)*
-*/
-$ENTRY ST-AllExterns {
-  (SymTable e.Names (e.References)) = <Map symtable_UsedExterns e.Names>;
-}
-
-$ENTRY symtable_UsedExterns {
-  (Declared Used e.Name) = (e.Name);
-  (Declared Unused e.Name) = /* пропускаем */;
-  (Defined s.ScopeClass e.Name) = /* пропускаем */;
+$ENTRY ST-GetAllReferences {
+  (SymTable e.References) = e.References;
 }
