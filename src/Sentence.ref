@@ -1,9 +1,6 @@
 *$FROM LibraryEx
 $EXTERN Inc, Dec, Map;
 
-*$FROM Escape
-$EXTERN EscapeChar;
-
 *$FROM R05-AST
 $EXTERN TextFromExpr, Symbol, Brackets, Variable, Char, CallBrackets;
 

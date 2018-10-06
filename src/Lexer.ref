@@ -1,7 +1,7 @@
 *$FROM LibraryEx
 $EXTERN Map, LoadFile, Inc, Success, Fails;
 
-*$FROM Escape
+*$FROM R05-AST
 $EXTERN EscapeChar;
 
 
