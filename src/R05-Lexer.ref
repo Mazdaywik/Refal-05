@@ -120,7 +120,7 @@ $ENTRY TkName { e.Name = e.Name }
 
 $ENTRY TkNative {
   (e.SourceName s.LineNo) e.Code =
-    '/* file: "' e.SourceName '", line: ' <Symb s.LineNo> ' */\n'
+    '* file: "' e.SourceName '", line: ' <Symb s.LineNo> '\n'
     '%%\n'
     <FlatLines e.Code>
     '%%\n';

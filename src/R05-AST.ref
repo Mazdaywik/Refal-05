@@ -74,7 +74,7 @@ Sentence {
 
 $ENTRY Native {
   (e.SourceName s.LineNo) e.Lines =
-    '/* file: "' e.SourceName '", line: ' <Symb s.LineNo> ' */\n'
+    '* file: "' e.SourceName '", line: ' <Symb s.LineNo> '\n'
     '%%\n'
     <FlatLines e.Lines>
     '%%\n';
