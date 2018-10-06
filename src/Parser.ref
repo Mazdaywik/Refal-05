@@ -1,9 +1,6 @@
 *$FROM Error
 $EXTERN EL-Create, EL-Destroy, EL-AddUnexpected, EL-AddErrorAt;
 
-*$FROM SymTable
-$EXTERN ST-Create, ST-AddFunctionCall, ST-GetAllReferences;
-
 *$FROM Lexer
 $EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
   TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
@@ -738,4 +735,31 @@ $ENTRY parser_AddUnresolved {
     <EL-AddErrorAt
       t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
     >;
+}
+
+*$ENUM SymTable
+
+ST-Create {
+  = (SymTable);
+}
+
+/*
+  Внутренний формат
+  t.SymTable ::= (SymTable t.Reference*)
+  t.Reference ::= (t.SrcPos e.Name)
+*/
+
+/**
+  <ST-AddFunctionCall t.SymTable t.SrcPos e.Name> == t.SymTable
+*/
+ST-AddFunctionCall {
+  (SymTable e.References) t.SrcPos e.Name =
+    (SymTable e.References (t.SrcPos e.Name));
+}
+
+/**
+  <ST-GetAllReferences t.SymTable> == (t.SrcPos e.Name)*
+*/
+ST-GetAllReferences {
+  (SymTable e.References) = e.References;
 }
