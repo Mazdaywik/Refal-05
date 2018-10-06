@@ -159,7 +159,9 @@ ParseElements {
   (TkEntry t.EntrySrcPos) (TkName t.NameSrcPos e.Name) e.Tail =
     <ParseElements-ElementParsed
       (e.Generated)
-      <ParseFunction Entry (e.Name) t.NameSrcPos t.ErrorList (e.References) e.Tail>
+      <ParseFunction
+        Entry (e.Name) t.NameSrcPos t.ErrorList (e.References) e.Tail
+      >
     >;
 
   t.ErrorList (e.References) (e.Generated)
@@ -717,7 +719,8 @@ CheckRepeatedDefinitions {
     (Function s.ScopeClass (e.Name) e.Body);
 
   t.ErrorList (e.References) e.Tree (Native e.Native) =
-    <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree> (Native e.Native);
+    <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree>
+    (Native e.Native);
 
   t.ErrorList (e.References) /* пусто */ =
     <Reduce parser_AddUnresolved t.ErrorList e.References>;
@@ -732,7 +735,5 @@ RemoveReference {
 
 $ENTRY parser_AddUnresolved {
   t.ErrorList (t.SrcPos e.Name) =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'
-    >;
+    <EL-AddErrorAt t.ErrorList t.SrcPos 'Function ' e.Name ' is not defined'>;
 }
