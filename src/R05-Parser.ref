@@ -1,5 +1,5 @@
 *$FROM R05-Lexer
-$EXTERN LexFolding, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
+$EXTERN R05-LexScan, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
   TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
   TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace, TkError,
   TkUnexpected, StrFromToken;
@@ -24,7 +24,7 @@ $ENTRY R05-Parse {
         <ParseElements
           <EL-Create> (/* имена вызываемых функций */)
           (/* строчки сгенерированного кода */)
-          <LexFolding e.SourceFile>
+          <R05-LexScan e.SourceFile>
         >
       >
     >

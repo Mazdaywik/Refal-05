@@ -1,18 +1,42 @@
 *$FROM LibraryEx
-$EXTERN Map, LoadFile, Inc, Success, Fails;
-
-*$FROM R05-AST
-$EXTERN EscapeChar;
+$EXTERN LoadFile, Inc, Success, Fails, Dec;
 
 
-$ENTRY lexer_FlatLine {
-  /* Для случая чтения исходников с CRLF на платформе с LF */
-  (e.Line '\r') = e.Line '\n';
+/**
+  <R05-LexScan e.SourceName>
+    == e.Tokens
+  e.Tokens ::= (s.TokType t.SrcPos e.Info)
+  t.SrcPos ::= (s.Row s.Col)
 
-  (e.Line) = e.Line '\n';
-}
+  <Mu s.TokType e.Info> == s.CHAR*
 
-$ENTRY LexFolding {
+  s.TokType e.Info ::=
+      TkChar s.CHAR
+    | TkClose s.Bracket
+    | TkCloseBlock
+    | TkComma
+    | TkEEnum
+    | TkEOF
+    | TkEntry
+    | TkEnum
+    | TkError e.Message
+    | TkExtern
+    | TkName e.Name
+    | TkNative (e.SourceName s.LineNo) (s.CHAR*)*
+    | TkNumber s.NUMBER
+    | TkOpen s.Bracket
+    | TkOpenBlock
+    | TkReplace
+    | TkSemicolon
+    | TkUnexpected e.BadCharacters
+    | TkVariable s.Mode e.Index
+
+  s.Bracket ::= Bracket | CallBracket
+  e.Message, e.Name, e.SourceName, e.BadCharacters, e.Index ::= s.CHAR+
+  s.LineNo ::= s.NUMBER
+  s.Mode ::= 's' | 't' | 'e'
+*/
+$ENTRY R05-LexScan {
   e.FileName =
     <PrepareTkNative (e.FileName) <Scan 1 1 <LoadText e.FileName>>>;
 }
@@ -27,7 +51,14 @@ PrepareTkNative {
 }
 
 LoadText {
-  e.FileName = <SkipBOM <Map lexer_FlatLine <LoadFile e.FileName>>>;
+  e.FileName = <SkipBOM <FlatLines <LoadFile e.FileName>>>;
+}
+
+FlatLines {
+  /* Для случая чтения исходников с CRLF на платформе с LF */
+  (e.Line '\r') e.Lines = e.Line '\n' <FlatLines e.Lines>;
+  (e.Line) e.Lines = e.Line '\n' <FlatLines e.Lines>;
+  /* пусто */ = /* пусто */;
 }
 
 SkipBOM {
@@ -37,25 +68,76 @@ SkipBOM {
   e.Content = e.Content;
 }
 
-*$EENUM TkChar
-*$EENUM TkClose
-*$EENUM TkCloseBlock
-*$EENUM TkComma
-*$EENUM TkEEnum
-*$EENUM TkEOF
-*$EENUM TkEntry
-*$EENUM TkEnum
-*$EENUM TkError
-*$EENUM TkExtern
-*$EENUM TkName
-*$EENUM TkNative
-*$EENUM TkNumber
-*$EENUM TkOpen
-*$EENUM TkOpenBlock
-*$EENUM TkReplace
-*$EENUM TkSemicolon
-*$EENUM TkUnexpected
-*$EENUM TkVariable
+$ENTRY TkChar { s.Char = '\'' <EscapeChar s.Char> '\'' }
+
+EscapeChar {
+  '\n' = '\\n';
+  '\t' = '\\t';
+  '\r' = '\\r';
+  '\'' = '\\\'';
+  '\"' = '\\\"';
+  '\\' = '\\\\';
+
+  s.Other = <EscapeChar-Aux s.Other <Ord s.Other>>;
+}
+
+EscapeChar-Aux {
+  s.Other s.Code =
+    <EscapeChar-SwCompare
+      s.Other <Compare 31 s.Code> <Compare s.Code 128> s.Code
+    >;
+}
+
+EscapeChar-SwCompare {
+  s.Other '-' '-' s.Code = s.Other;
+
+  s.Other s.Compare1 s.Compare2 s.Code =
+    '\\x' <Hex <Div s.Code 16>> <Hex <Mod s.Code 16>>;
+}
+
+Hex {
+  s.Value = <Hex-Aux s.Value <HexDigits>>;
+}
+
+Hex-Aux {
+  s.Value e.Hex-B (s.Digit s.Value) e.Hex-E = s.Digit;
+}
+
+$ENTRY TkClose {
+  Bracket = ')';
+  CallBracket = '>';
+}
+
+$ENTRY TkCloseBlock { = '}' }
+$ENTRY TkComma { = ',' }
+$ENTRY TkEEnum { = '$EENUM' }
+$ENTRY TkEOF { = '/* end of file */' }
+$ENTRY TkEntry { = '$ENTRY' }
+$ENTRY TkEnum { = '$ENUM' }
+$ENTRY TkError { e.Message = '[LEXER ERROR: ' e.Message ']' }
+$ENTRY TkExtern { = '$EXTERN' }
+$ENTRY TkName { e.Name = e.Name }
+
+$ENTRY TkNative {
+  (e.SourceName s.LineNo) e.Code =
+    '/* file: "' e.SourceName '", line: ' <Symb s.LineNo> ' */\n'
+    '%%\n'
+    <FlatLines e.Code>
+    '%%\n';
+}
+
+$ENTRY TkNumber { s.Number = <Symb s.Number> }
+
+$ENTRY TkOpen {
+  Bracket = '(';
+  CallBracket = '<';
+}
+
+$ENTRY TkOpenBlock { = '{' }
+$ENTRY TkReplace { = '=' }
+$ENTRY TkSemicolon { = ';' }
+$ENTRY TkUnexpected { e.Unexpected = e.Unexpected }
+$ENTRY TkVariable { s.Mode e.Index = s.Mode '.' e.Index }
 
 *$EENUM Bracket, CallBracket
 
@@ -112,7 +194,7 @@ ScanPseudo-SwDirective {
 }
 
 ScanPseudo-AddSemicolon {
-  e.Tokens (TkEOF t.SrcPos) = e.Tokens (TkSemicolon t.SrcPos);
+  e.Tokens (TkEOF (s.Row s.Col)) = e.Tokens (TkSemicolon (<Dec s.Row> s.Col));
 }
 
 ScanCComment {
@@ -353,37 +435,68 @@ ScanNumber {
 }
 
 
+/**
+  <StrFromToken s.TokType e.Info> ::= e.HumanReadableRep
+  e.HumanReadableRep ::= s.CHAR*
+*/
 $ENTRY StrFromToken {
-  TkChar s.Char = '\'' <EscapeChar s.Char> '\'';
-  TkClose Bracket = '")"';
-  TkClose CallBracket = '">"';
-  TkCloseBlock = '"}"';
-  TkComma = '","';
-  TkEEnum = 'EENUM';
-  TkEOF = 'end of file';
-  TkEntry = 'ENTRY';
-  TkEnum = 'ENUM';
-  TkError e.Message = 'LEXER ERROR: ' e.Message;
-  TkExtern = 'EXTERN';
-  TkName e.Name = 'Name ' e.Name;
   TkNative (e.SrcFile s.Line) e.Code =
     '"%%...%%" at ' <Symb s.Line> ', "' e.SrcFile '"';
-  TkNumber s.Number = 'Number ' <Symb s.Number>;
-  TkOpen Bracket = '"("';
-  TkOpen CallBracket = '"<"';
-  TkOpenBlock = '"{"';
-  TkReplace = '"="';
-  TkSemicolon = '";"';
+
   TkUnexpected e.Unexpected = 'Unexpected characters <' e.Unexpected '>';
-  TkVariable s.Mode e.Index = s.Mode '.' e.Index;
+
+  s.Other e.Info = '"' <Mu s.Other e.Info> '"';
 }
 
 DigitFromChar {
-  '0' = 0; '1' = 1; '2' = 2; '3' = 3; '4' = 4;
-  '5' = 5; '6' = 6; '7' = 7; '8' = 8; '9' = 9;
+  s.Digit = <DigitFromChar-Aux s.Digit <HexDigits>>
+}
 
-  'A' = 10; 'B' = 11; 'C' = 12; 'D' = 13; 'E' = 14; 'F' = 15;
-  'a' = 10; 'b' = 11; 'c' = 12; 'd' = 13; 'e' = 14; 'f' = 15;
+DigitFromChar-Aux {
+  s.Digit e.Hex-B (s.Digit s.Value) e.Hex-E = s.Value;
+  s.Other e.Hex = Fails s.Other;
+}
 
-  s.Other = Fails s.Other;
+HexDigits {
+  = ('0' 0) ('1' 1) ('2' 2) ('3' 3) ('4' 4)
+    ('5' 5) ('6' 6) ('7' 7) ('8' 8) ('9' 9)
+    ('A' 10) ('B' 11) ('C' 12) ('D' 13) ('E' 14) ('F' 15)
+    ('a' 10) ('b' 11) ('c' 12) ('d' 13) ('e' 14) ('f' 15)
+}
+
+/**
+  <R05-LexDump e.Tokens> == s.CHAR*
+*/
+$ENTRY R05-LexDump {
+  (s.Tok (s.Row s.Col) e.Info) e.Tokens =
+    <DoLexDump s.Row (<Mu s.Tok e.Info>) e.Tokens>;
+
+  /* пусто */ = /* пусто */
+}
+
+DoLexDump {
+  s.Row (e.Buffer) (s.Tok (s.Row s.Col) e.Info) e.Tokens =
+    <DoLexDump
+      s.Row (<BufAppend (e.Buffer) <Mu s.Tok e.Info>>) e.Tokens
+    >;
+
+  s.Row1 (e.Buffer) (s.Tok (s.Row2 s.Col) e.Info) e.Tokens =
+    e.Buffer '\n'
+    <DoLexDump s.Row2 (<Mu s.Tok e.Info>) e.Tokens>;
+
+  s.Row (e.Buffer) /* пусто */ = e.Buffer;
+}
+
+BufAppend {
+  (e.Buffer '\'') '\'' e.CharRep = e.Buffer e.CharRep;
+
+  (e.Buffer '<') e.TokenRep = e.Buffer '<' e.TokenRep;
+  (e.Buffer '(') e.TokenRep = e.Buffer '(' e.TokenRep;
+
+  (e.Buffer) ')' = e.Buffer ')';
+  (e.Buffer) ',' = e.Buffer ',';
+  (e.Buffer) ';' = e.Buffer ';';
+  (e.Buffer) '>' = e.Buffer '>';
+
+  (e.Buffer) e.TokenRep = e.Buffer ' ' e.TokenRep;
 }
