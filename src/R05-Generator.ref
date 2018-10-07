@@ -227,9 +227,6 @@ MatchArgs {
 
   Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
 
-  Repeated s.Usings 'e' e.Index =
-    <EVarsPtr s.Usings 'e' e.Index> ', ' <EVars <Dec s.Usings> 'e' e.Index>;
-
   Repeated s.Usings s.Mode e.Index =
     <VarPtr s.Usings s.Mode e.Index> ', ' <Var <Dec s.Usings> s.Mode e.Index>;
 
@@ -266,7 +263,7 @@ CmdOpenedE-End {
   (e.Indent) s.BracketNumber 'e' e.Index =
     (e.Indent
       '} while (r05_open_evar_advance('
-      <EVarsPtr 1 'e' e.Index> ', ' <RangeVarsPtr s.BracketNumber>
+      <VarPtr 1 'e' e.Index> ', ' <RangeVarsPtr s.BracketNumber>
       '));'
     );
 }
@@ -306,10 +303,7 @@ ElCloseCall { s.Pos = 'close_call(' <ElemPtr s.Pos> ');' }
 
 ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ');' }
 
-ElVariable {
-  'e' e.Index = 'evar(' <EVars 1 'e' e.Index> ');';
-  s.Mode e.Index = s.Mode 'var(' <Var 1 s.Mode e.Index> ');';
-}
+ElVariable { s.Mode e.Index = s.Mode 'var(' <Var 1 s.Mode e.Index> ');' }
 
 CmdLinkBrackets {
   (e.Indent) s.Left s.Right =
@@ -322,14 +316,10 @@ CmdPushStack {
 }
 
 CmdInsertVar {
-  (e.Indent) s.Pos s.Usings 'e' e.Index =
+  (e.Indent) s.Pos s.Usings s.Mode e.Index =
     (e.Indent
-      'r05_splice_evar(' <Elem s.Pos> ', ' <EVars s.Usings 'e' e.Index> ');'
-    );
-
-  (e.Indent) s.Pos s.Usings 't' e.Index =
-    (e.Indent
-      'r05_splice_tvar(' <Elem s.Pos> ', ' <Var s.Usings 't' e.Index> ');'
+      'r05_splice_' s.Mode 'var'
+      '(' <Elem s.Pos> ', ' <Var s.Usings s.Mode e.Index> ');'
     );
 }
 
@@ -373,39 +363,24 @@ EscapeChar-SwCompare {
 }
 
 Var {
+  s.Usings 'e' e.Index =
+    <EVar-B s.Usings 'e' e.Index> ', ' <EVar-E s.Usings 'e' e.Index>;
+
   s.Usings s.Mode e.Index = s.Mode e.Index '_' <Symb s.Usings>;
 }
 
 VarPtr {
+  s.Usings 'e' e.Index =
+    '&' <EVar-B s.Usings 'e' e.Index> ', &' <EVar-E s.Usings 'e' e.Index>;
+
   s.Usings s.Mode e.Index = '&' s.Mode e.Index '_' <Symb s.Usings>;
 }
 
-EVar-B {
-  s.Usings s.Mode e.Index = s.Mode e.Index '_b_' <Symb s.Usings>;
-}
+EVar-B { s.Usings 'e' e.Index = 'e' e.Index '_b_' <Symb s.Usings> }
+EVar-E { s.Usings 'e' e.Index = 'e' e.Index '_e_' <Symb s.Usings> }
 
-EVar-E {
-  s.Usings s.Mode e.Index = s.Mode e.Index '_e_' <Symb s.Usings>;
-}
-
-EVars {
-  s.Usings s.Mode e.Index =
-    <EVar-B s.Usings s.Mode e.Index> ', ' <EVar-E s.Usings s.Mode e.Index>;
-}
-
-EVarsPtr {
-  s.Usings s.Mode e.Index =
-    '&' <EVar-B s.Usings s.Mode e.Index> ', '
-    '&' <EVar-E s.Usings s.Mode e.Index>;
-}
-
-Elem {
-  s.Number = 'n[' <Symb s.Number> ']';
-}
-
-ElemPtr {
-  s.Number = 'n+' <Symb s.Number>;
-}
+Elem { s.Number = 'n[' <Symb s.Number> ']' }
+ElemPtr { s.Number = 'n+' <Symb s.Number> }
 
 *$ENUM BeginNative, EndNative
 
