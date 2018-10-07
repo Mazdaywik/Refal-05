@@ -1,7 +1,7 @@
 #!/bin/bash
 (
   MODULES="refal05c R05-AST R05-FindFile R05-Generator R05-Lexer R05-Parser
-    R05-Sentence LibraryEx"
+    LibraryEx"
   MODULES=$(echo $MODULES)
 
   mkdir -p ../bin
