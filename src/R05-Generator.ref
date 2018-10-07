@@ -288,41 +288,27 @@ CmdResultArray {
 
 CmdAllocateElem {
   (e.Indent) s.ElementType e.Info =
-    (e.Indent
-      'r05_alloc_' <AllocFunc s.ElementType e.Info>
-      '(' <AllocArgs s.ElementType e.Info> ');'
-    );
+    (e.Indent 'r05_alloc_' <Mu s.ElementType e.Info>);
 }
 
-AllocFunc {
-  ElSymbol s.Type e.Value = <SymbolFunc s.Type>;
-  ElString s.Len e.String = 'chars';
-
-  ElOpenBracket s.Pos = 'open_bracket';
-  ElCloseBracket s.Pos = 'close_bracket';
-
-  ElOpenCall s.Pos = 'open_call';
-  ElCloseCall s.Pos = 'close_call';
-
-  ElSavePos s.Pos = 'insert_pos';
-
-  ElVariable s.Mode e.Index = s.Mode 'var';
+ElSymbol {
+  s.Type e.Value = <SymbolFunc s.Type> '(' <SymbolTextRep s.Type e.Value> ');';
 }
 
-AllocArgs {
-  ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
-  ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
+ElString {
+  s.Len e.String = 'chars("' <EscapeString e.String> '", ' <Symb s.Len> ');';
+}
 
-  ElOpenBracket s.Pos = <ElemPtr s.Pos>;
-  ElCloseBracket s.Pos = <ElemPtr s.Pos>;
+ElOpenBracket { s.Pos = 'open_bracket(' <ElemPtr s.Pos> ');' }
+ElCloseBracket { s.Pos = 'close_bracket(' <ElemPtr s.Pos> ');' }
+ElOpenCall { s.Pos = 'open_call(' <ElemPtr s.Pos> ');' }
+ElCloseCall { s.Pos = 'close_call(' <ElemPtr s.Pos> ');' }
 
-  ElOpenCall s.Pos = <ElemPtr s.Pos>;
-  ElCloseCall s.Pos = <ElemPtr s.Pos>;
+ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ');' }
 
-  ElSavePos s.Pos = <ElemPtr s.Pos>;
-
-  ElVariable 'e' e.Index = <EVars 1 'e' e.Index>;
-  ElVariable s.Mode e.Index = <Var 1 s.Mode e.Index>;
+ElVariable {
+  'e' e.Index = 'evar(' <EVars 1 'e' e.Index> ');';
+  s.Mode e.Index = s.Mode 'var(' <Var 1 s.Mode e.Index> ');';
 }
 
 CmdLinkBrackets {
@@ -685,12 +671,6 @@ GenResult {
 *  (CmdPushStack s.Number)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
 
-
-* Спецификаторы команд (элементы)
-*$ENUM ElSymbol, ElString
-*$ENUM ElOpenBracket, ElCloseBracket
-*$ENUM ElOpenCall, ElCloseCall
-*$ENUM ElSavePos, ElVariable
 
 /*
   Порядок выполнения команд.
