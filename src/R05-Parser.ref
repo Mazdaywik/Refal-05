@@ -659,8 +659,21 @@ BracketPairName {
 
 SemanticCheck {
   t.ErrorList (e.References) e.Tree =
+    <FindOneEntry t.ErrorList (e.References) <LoadBuiltins> e.Tree>;
+}
+
+FindOneEntry {
+  t.ErrorList (e.References)
+  e.Tree-B (Function t.SrcPos Entry (e.Name) e.Body) e.Tree-E =
     <CheckRepeatedDefinitions
-      t.ErrorList (e.References) <LoadBuiltins> e.Tree
+      t.ErrorList (e.References)
+      e.Tree-B (Function t.SrcPos Entry (e.Name) e.Body) e.Tree-E
+    >;
+
+  t.ErrorList (e.References) e.Tree =
+    <CheckRepeatedDefinitions
+      <EL-AddErrorAt t.ErrorList (1 1) 'No entry functions in file'>
+      (e.References) e.Tree
     >;
 }
 
