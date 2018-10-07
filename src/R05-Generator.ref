@@ -127,20 +127,20 @@ SkipIndentAccum {
   ('    ') e.Generated = e.Generated;
 }
 
-BracketsVar-B {
+RangeVar-B {
   s.BracketNumber = 'bb[' <Symb s.BracketNumber> ']';
 }
 
-BracketsVar-E {
+RangeVar-E {
   s.BracketNumber = 'be[' <Symb s.BracketNumber> ']';
 }
 
-BracketsVars {
+RangeVars {
   s.BracketNumber =
-    <BracketsVar-B s.BracketNumber> ', ' <BracketsVar-E s.BracketNumber>;
+    <RangeVar-B s.BracketNumber> ', ' <RangeVar-E s.BracketNumber>;
 }
 
-BracketsVarsPtr {
+RangeVarsPtr {
   s.BracketNumber = 'bb+' <Symb s.BracketNumber> ', be+' <Symb s.BracketNumber>;
 }
 
@@ -175,11 +175,11 @@ CmdComment {
 
 CmdDeclareVar {
   (e.Indent) s.Usings 'e' e.Index =
-    (e.Indent 'struct r05_node *' <PrintEVar-B s.Usings 'e' e.Index> ';')
-    (e.Indent 'struct r05_node *' <PrintEVar-E s.Usings 'e' e.Index> ';');
+    (e.Indent 'struct r05_node *' <EVar-B s.Usings 'e' e.Index> ';')
+    (e.Indent 'struct r05_node *' <EVar-E s.Usings 'e' e.Index> ';');
 
   (e.Indent) s.Usings s.Mode e.Index =
-    (e.Indent 'struct r05_node *' <PrintVar s.Usings s.Mode e.Index> ';');
+    (e.Indent 'struct r05_node *' <Var s.Usings s.Mode e.Index> ';');
 }
 
 CmdRangeArray {
@@ -191,40 +191,34 @@ CmdRangeArray {
 CmdInitB0 {
   (e.Indent) =
     (e.Indent 'r05_start_sentence();')
-    (e.Indent 'r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);');
+    (e.Indent 'r05_prepare_argument(' <RangeVarsPtr 0> ', arg_begin, arg_end);');
 }
 
 CmdMatch {
   (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
     (e.Indent
       'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
-      '(' <MatchRep s.Type e.Value> ', ' <BracketsVarsPtr s.BracketNumber> '))'
+      '(' <MatchRep s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> '))'
     )
     (e.Indent '  continue;');
 }
 
 CmdEmpty {
   (e.Indent) s.BracketNumber =
-    (e.Indent
-      'if (! r05_empty_seq(' <BracketsVars s.BracketNumber> '))'
-    )
+    (e.Indent 'if (! r05_empty_seq(' <RangeVars s.BracketNumber> '))')
     (e.Indent '  continue;');
 }
 
 CmdClosedE {
   (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent
-      <PrintEVar-B 1 'e' e.Index> ' = ' <BracketsVar-B s.BracketNumber> ';'
-    )
-    (e.Indent
-      <PrintEVar-E 1 'e' e.Index> ' = ' <BracketsVar-E s.BracketNumber> ';'
-    );
+    (e.Indent <EVar-B 1 'e' e.Index> ' = ' <RangeVar-B s.BracketNumber> ';')
+    (e.Indent <EVar-E 1 'e' e.Index> ' = ' <RangeVar-E s.BracketNumber> ';');
 }
 
 CmdOpenedE-Start {
   (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent <PrintEVar-B 1 'e' e.Index> ' = 0;')
-    (e.Indent <PrintEVar-E 1 'e' e.Index> ' = 0;')
+    (e.Indent <EVar-B 1 'e' e.Index> ' = 0;')
+    (e.Indent <EVar-E 1 'e' e.Index> ' = 0;')
     (e.Indent 'r05_start_e_loop();')
     (e.Indent 'do {');
 }
@@ -233,15 +227,15 @@ CmdOpenedE-End {
   (e.Indent) s.BracketNumber 'e' e.Index =
     (e.Indent
       '} while (r05_open_evar_advance('
-      <PrintEVarsPtr 1 'e' e.Index> ', ' <BracketsVarsPtr s.BracketNumber>
+      <EVarsPtr 1 'e' e.Index> ', ' <RangeVarsPtr s.BracketNumber>
       '));'
     );
 }
 
 CmdSave {
   (e.Indent) s.Old s.New =
-    (e.Indent <BracketsVar-B s.New> ' = ' <BracketsVar-B s.Old> ';')
-    (e.Indent <BracketsVar-E s.New> ' = ' <BracketsVar-E s.Old> ';');
+    (e.Indent <RangeVar-B s.New> ' = ' <RangeVar-B s.Old> ';')
+    (e.Indent <RangeVar-E s.New> ' = ' <RangeVar-E s.Old> ';');
 }
 
 CmdEmptyResult {
@@ -259,28 +253,23 @@ CmdAllocateElem {
 
 CmdLinkBrackets {
   (e.Indent) s.Left s.Right =
-    (e.Indent
-      'r05_link_brackets'
-      '(' <PrintElemVar s.Left> ', ' <PrintElemVar s.Right> ');'
-    );
+    (e.Indent 'r05_link_brackets(' <Elem s.Left> ', ' <Elem s.Right> ');');
 }
 
 CmdPushStack {
   (e.Indent) s.ElemNumber =
-    (e.Indent 'r05_push_stack(' <PrintElemVar s.ElemNumber> ');');
+    (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ');');
 }
 
 CmdInsertVar {
   (e.Indent) s.Pos s.Usings 'e' e.Index =
     (e.Indent
-      'r05_splice_evar(' <PrintElemVar s.Pos> ', '
-      <PrintEVars s.Usings 'e' e.Index> ');'
+      'r05_splice_evar(' <Elem s.Pos> ', ' <EVars s.Usings 'e' e.Index> ');'
     );
 
   (e.Indent) s.Pos s.Usings 't' e.Index =
     (e.Indent
-      'r05_splice_tvar(' <PrintElemVar s.Pos> ', '
-      <PrintVar s.Usings 't' e.Index> ');'
+      'r05_splice_tvar(' <Elem s.Pos> ', ' <Var s.Usings 't' e.Index> ');'
     );
 }
 
@@ -323,32 +312,31 @@ EscapeChar-SwCompare {
     <Symb <Mod s.Code 8>>;
 }
 
-PrintVar {
+Var {
   s.Usings s.Mode e.Index = s.Mode e.Index '_' <Symb s.Usings>;
 }
 
-PrintVarPtr {
+VarPtr {
   s.Usings s.Mode e.Index = '&' s.Mode e.Index '_' <Symb s.Usings>;
 }
 
-PrintEVar-B {
+EVar-B {
   s.Usings s.Mode e.Index = s.Mode e.Index '_b_' <Symb s.Usings>;
 }
 
-PrintEVar-E {
+EVar-E {
   s.Usings s.Mode e.Index = s.Mode e.Index '_e_' <Symb s.Usings>;
 }
 
-PrintEVars {
+EVars {
   s.Usings s.Mode e.Index =
-    <PrintEVar-B s.Usings s.Mode e.Index> ', '
-    <PrintEVar-E s.Usings s.Mode e.Index>;
+    <EVar-B s.Usings s.Mode e.Index> ', ' <EVar-E s.Usings s.Mode e.Index>;
 }
 
-PrintEVarsPtr {
+EVarsPtr {
   s.Usings s.Mode e.Index =
-    '&' <PrintEVar-B s.Usings s.Mode e.Index> ', '
-    '&' <PrintEVar-E s.Usings s.Mode e.Index>;
+    '&' <EVar-B s.Usings s.Mode e.Index> ', '
+    '&' <EVar-E s.Usings s.Mode e.Index>;
 }
 
 MatchFunc {
@@ -363,17 +351,15 @@ MatchFunc {
 MatchRep {
   Symbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
 
-  Brackets s.InnerNum = <BracketsVarsPtr s.InnerNum>;
+  Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
 
   Repeated s.Usings 'e' e.Index =
-    <PrintEVarsPtr s.Usings 'e' e.Index> ', '
-    <PrintEVars <Dec s.Usings> 'e' e.Index>;
+    <EVarsPtr s.Usings 'e' e.Index> ', ' <EVars <Dec s.Usings> 'e' e.Index>;
 
   Repeated s.Usings s.Mode e.Index =
-    <PrintVarPtr s.Usings s.Mode e.Index> ', '
-    <PrintVar <Dec s.Usings> s.Mode e.Index>;
+    <VarPtr s.Usings s.Mode e.Index> ', ' <Var <Dec s.Usings> s.Mode e.Index>;
 
-  Variable s.Mode e.Index = <PrintVarPtr 1 s.Mode e.Index>;
+  Variable s.Mode e.Index = <VarPtr 1 s.Mode e.Index>;
 }
 
 SymbolFunc {
@@ -392,11 +378,11 @@ StrFromDirection {
   AlgLeft = 'left'; AlgRight = 'right';
 }
 
-PrintElemVar {
+Elem {
   s.Number = 'n[' <Symb s.Number> ']';
 }
 
-PrintElemVarPtr {
+ElemPtr {
   s.Number = 'n+' <Symb s.Number>;
 }
 
@@ -427,16 +413,16 @@ SwInfo {
   ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
   ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
 
-  ElOpenBracket s.Pos = <PrintElemVarPtr s.Pos>;
-  ElCloseBracket s.Pos = <PrintElemVarPtr s.Pos>;
+  ElOpenBracket s.Pos = <ElemPtr s.Pos>;
+  ElCloseBracket s.Pos = <ElemPtr s.Pos>;
 
-  ElOpenCall s.Pos = <PrintElemVarPtr s.Pos>;
-  ElCloseCall s.Pos = <PrintElemVarPtr s.Pos>;
+  ElOpenCall s.Pos = <ElemPtr s.Pos>;
+  ElCloseCall s.Pos = <ElemPtr s.Pos>;
 
-  ElSavePos s.Pos = <PrintElemVarPtr s.Pos>;
+  ElSavePos s.Pos = <ElemPtr s.Pos>;
 
-  ElVariable 'e' e.Index = <PrintEVars 1 'e' e.Index>;
-  ElVariable s.Mode e.Index = <PrintVar 1 s.Mode e.Index>;
+  ElVariable 'e' e.Index = <EVars 1 'e' e.Index>;
+  ElVariable s.Mode e.Index = <Var 1 s.Mode e.Index>;
 }
 
 *$ENUM BeginNative, EndNative
