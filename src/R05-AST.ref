@@ -15,14 +15,14 @@
 */
 
 /**
-  <TextFromTree e.Tree> == s.CHAR*
+  <R05-TextFromTree e.Tree> == s.CHAR*
 */
-$ENTRY TextFromTree {
+$ENTRY R05-TextFromTree {
   (Extern e.Name1) (Extern e.Name2) e.Tree =
-    <Extern e.Name1> <TextFromTree (Extern e.Name2) e.Tree>;
+    <Extern e.Name1> <R05-TextFromTree (Extern e.Name2) e.Tree>;
 
   (e.Item) = <Mu e.Item>;
-  (e.Item) e.Tree = <Mu e.Item> '\n' <TextFromTree e.Tree>;
+  (e.Item) e.Tree = <Mu e.Item> '\n' <R05-TextFromTree e.Tree>;
 
   /* пусто */ = /* пусто */;
 }
