@@ -741,12 +741,29 @@ CheckRepeatedDefinitions {
       e.Tree-B (Function t.SrcPos1 s.ScopeClass1 (e.Name) e.Body1) e.Tree-E
     >;
 
+  t.ErrorList (e.References-B (t.SrcPosRef e.Name) e.References-E)
+  e.Tree (Function t.SrcPos Local (e.Name) e.Body) =
+    <CheckRepeatedDefinitions
+      t.ErrorList (e.References-B <RemoveReference (e.Name) e.References-E>)
+      e.Tree
+    >
+    (Function Local (e.Name) e.Body);
+
   t.ErrorList (e.References)
-  e.Tree (Function t.SrcPos s.ScopeClass (e.Name) e.Body) =
+  e.Tree (Function t.SrcPos Local (e.Name) e.Body) =
+    <CheckRepeatedDefinitions
+      <EL-AddErrorAt t.ErrorList t.SrcPos 'Unused local function "' e.Name '"'>
+      (e.References) e.Tree
+    >
+    (Function Local (e.Name) e.Body);
+
+
+  t.ErrorList (e.References)
+  e.Tree (Function t.SrcPos Entry (e.Name) e.Body) =
     <CheckRepeatedDefinitions
       t.ErrorList (<RemoveReference (e.Name) e.References>) e.Tree
     >
-    (Function s.ScopeClass (e.Name) e.Body);
+    (Function Entry (e.Name) e.Body);
 
   t.ErrorList (e.References) e.Tree (Native e.Native) =
     <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree>
