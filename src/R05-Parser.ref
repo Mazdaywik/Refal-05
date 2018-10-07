@@ -1,8 +1,8 @@
 *$FROM R05-Lexer
-$EXTERN R05-LexScan, TkEOF, TkExtern, TkEnum, TkEEnum, TkEntry, TkName,
-  TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock, TkChar, TkNumber,
-  TkVariable, TkOpen, Bracket, CallBracket, TkClose, TkReplace, TkError,
-  TkUnexpected, StrFromToken;
+$EXTERN R05-LexScan-File, R05-LexScan-String, TkEOF, TkExtern, TkEnum, TkEEnum,
+  TkEntry, TkName, TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock,
+  TkChar, TkNumber, TkVariable, TkOpen, Bracket, CallBracket, TkClose,
+  TkReplace, TkError, TkUnexpected, StrFromToken;
 
 *$FROM LibraryEx
 $EXTERN Success, Fails, Map, Reduce;
@@ -13,18 +13,37 @@ $EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
 
 
 /**
-  <R05-Parse e.SourceFile>
+  <R05-Parse-File e.SourceFile>
     == Success e.Tree
     == Fails e.Errors
 */
-$ENTRY R05-Parse {
-  e.SourceFile =
+$ENTRY R05-Parse-File {
+  e.SourceFile = <R05-Parse-Tokens <R05-LexScan-File e.SourceFile>>;
+}
+
+/**
+  <R05-Parse-String e.String>
+    == Success e.Tree
+    == Fails e.Errors
+*/
+$ENTRY R05-Parse-String {
+  e.String = <R05-Parse-Tokens <R05-LexScan-String e.String>>;
+}
+
+/**
+  <R05-Parse-Tokens e.Tokens>
+    == Success e.Tree
+    == Fails e.Errors
+*/
+$ENTRY R05-Parse-Tokens {
+  e.Tokens =
     <R05-Parse-Aux
       <SemanticCheck
         <ParseElements
-          <EL-Create> (/* имена вызываемых функций */)
-          (/* строчки сгенерированного кода */)
-          <R05-LexScan e.SourceFile>
+          <EL-Create>
+          (/* имена вызываемых функций */)
+          (/* сгенерированное дерево */)
+          e.Tokens
         >
       >
     >

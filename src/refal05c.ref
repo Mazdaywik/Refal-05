@@ -5,10 +5,10 @@ $EXTERN ArgList, LoadFile, Map, Success, Fails;
 $EXTERN FindFiles, NotFound, Output, Source;
 
 *$FROM R05-Parser
-$EXTERN R05-Parse;
+$EXTERN R05-Parse-File;
 
 *$FROM R05-Generator
-$EXTERN R05-Generate;
+$EXTERN R05-Generate-ToFile;
 
 
 $ENTRY Go {
@@ -65,13 +65,13 @@ $ENTRY refal05c_ProcessEachSource {
   (Source (e.Source) e.OutputName) =
     <Prout '*Compiling ' e.Source ':'>
     <CompileSource-SwSuccessedParse
-      (e.Source) (e.OutputName) <R05-Parse e.Source>
+      (e.Source) (e.OutputName) <R05-Parse-File e.Source>
     >
 }
 
 CompileSource-SwSuccessedParse {
   (e.SrcName) (e.OutputName) Success e.Tree =
-    <R05-Generate (e.OutputName) e.Tree>
+    <R05-Generate-ToFile (e.OutputName) e.Tree>
     (e.OutputName);
 
   (e.SrcName) (e.OutputName) Fails e.Errors =

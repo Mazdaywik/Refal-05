@@ -7,9 +7,21 @@ $EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
 
 
 /**
-  <R05-Generate (e.OutputFile) e.Tree> == пусто
+  <R05-Generate-ToFile (e.OutputFile) e.Tree> == пусто
 */
-$ENTRY R05-Generate {
+$ENTRY R05-Generate-ToFile {
+  (e.OutputFile) e.Tree =
+    <SaveFile (e.OutputFile) <Generate (e.OutputFile) e.Tree>>;
+}
+
+/**
+  <R05-Generate-ToLines e.Tree> == (s.CHAR*)*
+*/
+$ENTRY R05-Generate-ToLines {
+  e.Tree = <Generate ('<user output>') e.Tree>;
+}
+
+Generate {
   (e.OutputFile) e.Tree =
     <R05-Generate-Aux
       (e.OutputFile)
@@ -19,20 +31,17 @@ $ENTRY R05-Generate {
 
 R05-Generate-Aux {
   (e.OutputFile) (e.Declarations) e.Definitions =
-    <SaveFile
+    <GenPostprocess
       (e.OutputFile)
-      <GenPostprocess
-        (e.OutputFile)
-        ('/* Automatically generated file. Don\'t edit! */')
-        ('#include "refal05rts.h"')
-        ()
-        ()
-        e.Declarations
-        ()
-        e.Definitions
-        ()
-        ('/* End of file */')
-      >
+      ('/* Automatically generated file. Don\'t edit! */')
+      ('#include "refal05rts.h"')
+      ()
+      ()
+      e.Declarations
+      ()
+      e.Definitions
+      ()
+      ('/* End of file */')
     >;
 }
 

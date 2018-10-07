@@ -3,7 +3,7 @@ $EXTERN LoadFile, Inc, Success, Fails, Dec;
 
 
 /**
-  <R05-LexScan e.SourceName>
+  <R05-LexScan-File e.SourceName>
     == e.Tokens
   e.Tokens ::= (s.TokType t.SrcPos e.Info)
   t.SrcPos ::= (s.Row s.Col)
@@ -36,18 +36,8 @@ $EXTERN LoadFile, Inc, Success, Fails, Dec;
   s.LineNo ::= s.NUMBER
   s.Mode ::= 's' | 't' | 'e'
 */
-$ENTRY R05-LexScan {
-  e.FileName =
-    <PrepareTkNative (e.FileName) <Scan 1 1 <LoadText e.FileName>>>;
-}
-
-PrepareTkNative {
-  (e.FileName) e.Tokens-B (TkNative (s.Row s.Col) e.Code) e.Tokens-E =
-    e.Tokens-B
-    (TkNative (s.Row s.Col) (e.FileName s.Row) e.Code)
-    <PrepareTkNative (e.FileName) e.Tokens-E>;
-
-  (e.FileName) e.Tokens = e.Tokens;
+$ENTRY R05-LexScan-File {
+  e.FileName = <ScanString (e.FileName) <LoadText e.FileName>>;
 }
 
 LoadText {
@@ -66,6 +56,28 @@ SkipBOM {
   '\xEF\xBB\xBF' e.Content = e.Content;
 
   e.Content = e.Content;
+}
+
+/**
+  <R05-LexScan-String e.String> == e.Tokens
+
+  e.String ::= s.CHAR*
+*/
+$ENTRY R05-LexScan-String {
+  e.String = <ScanString ('<user input>') e.String>;
+}
+
+ScanString {
+  (e.FileName) e.String = <PrepareTkNative (e.FileName) <Scan 1 1 e.String>>;
+}
+
+PrepareTkNative {
+  (e.FileName) e.Tokens-B (TkNative (s.Row s.Col) e.Code) e.Tokens-E =
+    e.Tokens-B
+    (TkNative (s.Row s.Col) (e.FileName s.Row) e.Code)
+    <PrepareTkNative (e.FileName) e.Tokens-E>;
+
+  (e.FileName) e.Tokens = e.Tokens;
 }
 
 $ENTRY TkChar { s.Char = '\'' <EscapeChar s.Char> '\'' }
