@@ -198,9 +198,48 @@ CmdMatch {
   (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
     (e.Indent
       'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
-      '(' <MatchRep s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> '))'
+      '(' <MatchArgs s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> '))'
     )
     (e.Indent '  continue;');
+}
+
+MatchFunc {
+  Symbol s.Type e.Value = <SymbolFunc s.Type>;
+  Brackets s.InnerNum = 'brackets';
+  Repeated s.Usings 'e' e.Index = 'repeated_evar';
+  Repeated s.Usings s.Mode e.Index = 'repeated_stvar';
+  Variable 's' e.Index = 'svar';
+  Variable 't' e.Index = 'tvar';
+}
+
+SymbolFunc {
+  Char = 'char';
+  Number = 'number';
+  Name = 'function';
+}
+
+StrFromDirection {
+  AlgLeft = 'left'; AlgRight = 'right';
+}
+
+MatchArgs {
+  Symbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
+
+  Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
+
+  Repeated s.Usings 'e' e.Index =
+    <EVarsPtr s.Usings 'e' e.Index> ', ' <EVars <Dec s.Usings> 'e' e.Index>;
+
+  Repeated s.Usings s.Mode e.Index =
+    <VarPtr s.Usings s.Mode e.Index> ', ' <Var <Dec s.Usings> s.Mode e.Index>;
+
+  Variable s.Mode e.Index = <VarPtr 1 s.Mode e.Index>;
+}
+
+SymbolTextRep {
+  Char s.Char = '\'' <EscapeChar s.Char> '\'';
+  Number s.Number = <Symb s.Number> 'UL';
+  Name e.Name = '&r05f_' e.Name;
 }
 
 CmdEmpty {
@@ -248,7 +287,42 @@ CmdResultArray {
 }
 
 CmdAllocateElem {
-  (e.Indent) e.ElemInfo = <PrintAllocateElem (e.Indent) e.ElemInfo>;
+  (e.Indent) s.ElementType e.Info =
+    (e.Indent
+      'r05_alloc_' <AllocFunc s.ElementType e.Info>
+      '(' <AllocArgs s.ElementType e.Info> ');'
+    );
+}
+
+AllocFunc {
+  ElSymbol s.Type e.Value = <SymbolFunc s.Type>;
+  ElString s.Len e.String = 'chars';
+
+  ElOpenBracket s.Pos = 'open_bracket';
+  ElCloseBracket s.Pos = 'close_bracket';
+
+  ElOpenCall s.Pos = 'open_call';
+  ElCloseCall s.Pos = 'close_call';
+
+  ElSavePos s.Pos = 'insert_pos';
+
+  ElVariable s.Mode e.Index = s.Mode 'var';
+}
+
+AllocArgs {
+  ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
+  ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
+
+  ElOpenBracket s.Pos = <ElemPtr s.Pos>;
+  ElCloseBracket s.Pos = <ElemPtr s.Pos>;
+
+  ElOpenCall s.Pos = <ElemPtr s.Pos>;
+  ElCloseCall s.Pos = <ElemPtr s.Pos>;
+
+  ElSavePos s.Pos = <ElemPtr s.Pos>;
+
+  ElVariable 'e' e.Index = <EVars 1 'e' e.Index>;
+  ElVariable s.Mode e.Index = <Var 1 s.Mode e.Index>;
 }
 
 CmdLinkBrackets {
@@ -339,90 +413,12 @@ EVarsPtr {
     '&' <EVar-E s.Usings s.Mode e.Index>;
 }
 
-MatchFunc {
-  Symbol s.Type e.Value = <SymbolFunc s.Type>;
-  Brackets s.InnerNum = 'brackets';
-  Repeated s.Usings 'e' e.Index = 'repeated_evar';
-  Repeated s.Usings s.Mode e.Index = 'repeated_stvar';
-  Variable 's' e.Index = 'svar';
-  Variable 't' e.Index = 'tvar';
-}
-
-MatchRep {
-  Symbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
-
-  Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
-
-  Repeated s.Usings 'e' e.Index =
-    <EVarsPtr s.Usings 'e' e.Index> ', ' <EVars <Dec s.Usings> 'e' e.Index>;
-
-  Repeated s.Usings s.Mode e.Index =
-    <VarPtr s.Usings s.Mode e.Index> ', ' <Var <Dec s.Usings> s.Mode e.Index>;
-
-  Variable s.Mode e.Index = <VarPtr 1 s.Mode e.Index>;
-}
-
-SymbolFunc {
-  Char = 'char';
-  Number = 'number';
-  Name = 'function';
-}
-
-SymbolTextRep {
-  Char s.Char = '\'' <EscapeChar s.Char> '\'';
-  Number s.Number = <Symb s.Number> 'UL';
-  Name e.Name = '&r05f_' e.Name;
-}
-
-StrFromDirection {
-  AlgLeft = 'left'; AlgRight = 'right';
-}
-
 Elem {
   s.Number = 'n[' <Symb s.Number> ']';
 }
 
 ElemPtr {
   s.Number = 'n+' <Symb s.Number>;
-}
-
-PrintAllocateElem {
-  (e.Indent) s.ElementType e.Info =
-    (e.Indent
-      'r05_alloc_' <SwAllocator s.ElementType e.Info>
-      '(' <SwInfo s.ElementType e.Info> ');'
-    );
-}
-
-SwAllocator {
-  ElSymbol s.Type e.Value = <SymbolFunc s.Type>;
-  ElString s.Len e.String = 'chars';
-
-  ElOpenBracket s.Pos = 'open_bracket';
-  ElCloseBracket s.Pos = 'close_bracket';
-
-  ElOpenCall s.Pos = 'open_call';
-  ElCloseCall s.Pos = 'close_call';
-
-  ElSavePos s.Pos = 'insert_pos';
-
-  ElVariable s.Mode e.Index = s.Mode 'var';
-}
-
-SwInfo {
-  ElSymbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
-  ElString s.Len e.String = '"' <EscapeString e.String> '", ' <Symb s.Len>;
-
-  ElOpenBracket s.Pos = <ElemPtr s.Pos>;
-  ElCloseBracket s.Pos = <ElemPtr s.Pos>;
-
-  ElOpenCall s.Pos = <ElemPtr s.Pos>;
-  ElCloseCall s.Pos = <ElemPtr s.Pos>;
-
-  ElSavePos s.Pos = <ElemPtr s.Pos>;
-
-  ElVariable 'e' e.Index = <EVars 1 'e' e.Index>;
-  ElVariable s.Mode e.Index = <Var 1 s.Mode e.Index>;
 }
 
 *$ENUM BeginNative, EndNative
