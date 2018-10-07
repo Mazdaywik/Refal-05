@@ -214,7 +214,6 @@ ScanCComment {
     <ScanCCommentContent s.Row s.Col (e.Comment '*/') e.Tail>;
 
   /* Обработка незакрытого комментария */
-  /* TODO: подумать потом о предупреждениях вложенных комментариев */
   s.Row s.Col e.Line '\n' e.Comment = <ScanCComment <Inc s.Row> 1 e.Comment>;
 
   /* Гарантируется, что в конце потока символов есть \n */
@@ -224,9 +223,12 @@ ScanCComment {
 }
 
 ScanCCommentContent {
-  s.Row s.Col (e.Line '\n' e.Comment) e.Tail =
-    /* TODO: подумать потом о предупреждениях вложенных комментариев */
+  s.Row s.Col ('\n' e.Comment) e.Tail =
     <ScanCCommentContent <Inc s.Row> 1 (e.Comment) e.Tail>;
+
+  s.Row s.Col ('/*' e.Comment) e.Tail =
+    (TkError (s.Row s.Col) '"/*" in comments is forbidden')
+    <ScanCCommentContent s.Row <Inc2 s.Col> (e.Comment) e.Tail>;
 
   s.Row s.Col (s.Char e.Comment) e.Tail =
     <ScanCCommentContent s.Row <Inc s.Col> (e.Comment) e.Tail>;
