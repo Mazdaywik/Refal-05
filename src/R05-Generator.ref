@@ -155,114 +155,137 @@ SafeComment {
 }
 
 $ENTRY generator_GenCommand {
-  (e.Indent) (CmdComment e.Text) =
-    (e.Indent) (e.Indent '/* ' <SafeComment e.Text> ' */');
+  (e.Indent)
+  (CmdOpenedE-Start s.BracketNumber 'e' e.Index) =
+    (e.Indent '  ')
+    <CmdOpenedE-Start (e.Indent) s.BracketNumber 'e' e.Index>;
 
-  (e.Indent) (CmdDeclareVar s.Usings 'e' e.Index) =
+  (e.Indent '  ')
+  (CmdOpenedE-End s.BracketNumber 'e' e.Index) =
     (e.Indent)
+    <CmdOpenedE-End (e.Indent) s.BracketNumber 'e' e.Index>;
+
+  (e.Indent) (s.Command e.Args) =
+    (e.Indent) <Mu s.Command (e.Indent) e.Args>;
+}
+
+CmdComment {
+  (e.Indent) e.Text = (e.Indent '/* ' <SafeComment e.Text> ' */');
+}
+
+CmdDeclareVar {
+  (e.Indent) s.Usings 'e' e.Index =
     (e.Indent 'struct r05_node *' <PrintEVar-B s.Usings 'e' e.Index> ';')
     (e.Indent 'struct r05_node *' <PrintEVar-E s.Usings 'e' e.Index> ';');
 
-  (e.Indent) (CmdDeclareVar s.Usings s.Mode e.Index) =
-    (e.Indent)
+  (e.Indent) s.Usings s.Mode e.Index =
     (e.Indent 'struct r05_node *' <PrintVar s.Usings s.Mode e.Index> ';');
+}
 
-  (e.Indent) (CmdRangeArray s.Size) =
-    (e.Indent)
+CmdRangeArray {
+  (e.Indent) s.Size =
     (e.Indent 'struct r05_node *bb[' <Symb s.Size> '] = { 0 };')
     (e.Indent 'struct r05_node *be[' <Symb s.Size> '] = { 0 };');
+}
 
-  (e.Indent) (CmdInitB0) =
-    (e.Indent)
+CmdInitB0 {
+  (e.Indent) =
     (e.Indent 'r05_start_sentence();')
     (e.Indent 'r05_prepare_argument(' <BracketsVarsPtr 0> ', arg_begin, arg_end);');
+}
 
-  (e.Indent) (CmdMatch s.Direction s.BracketNumber s.Type e.Value) =
-    (e.Indent)
+CmdMatch {
+  (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
     (e.Indent
       'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
       '(' <MatchRep s.Type e.Value> ', ' <BracketsVarsPtr s.BracketNumber> '))'
     )
     (e.Indent '  continue;');
+}
 
-  (e.Indent) (CmdEmpty s.BracketNumber) =
-    (e.Indent)
+CmdEmpty {
+  (e.Indent) s.BracketNumber =
     (e.Indent
       'if (! r05_empty_seq(' <BracketsVars s.BracketNumber> '))'
     )
     (e.Indent '  continue;');
+}
 
-  (e.Indent) (CmdClosedE s.BracketNumber 'e' e.Index) =
-    (e.Indent)
+CmdClosedE {
+  (e.Indent) s.BracketNumber 'e' e.Index =
     (e.Indent
       <PrintEVar-B 1 'e' e.Index> ' = ' <BracketsVar-B s.BracketNumber> ';'
     )
     (e.Indent
       <PrintEVar-E 1 'e' e.Index> ' = ' <BracketsVar-E s.BracketNumber> ';'
     );
+}
 
-  (e.Indent)
-  (CmdOpenedE-Start s.BracketNumber 'e' e.Index) =
-    (e.Indent '  ')
+CmdOpenedE-Start {
+  (e.Indent) s.BracketNumber 'e' e.Index =
     (e.Indent <PrintEVar-B 1 'e' e.Index> ' = 0;')
     (e.Indent <PrintEVar-E 1 'e' e.Index> ' = 0;')
     (e.Indent 'r05_start_e_loop();')
     (e.Indent 'do {');
+}
 
-  (e.Indent '  ')
-  (CmdOpenedE-End s.BracketNumber 'e' e.Index) =
-    (e.Indent)
+CmdOpenedE-End {
+  (e.Indent) s.BracketNumber 'e' e.Index =
     (e.Indent
       '} while (r05_open_evar_advance('
       <PrintEVarsPtr 1 'e' e.Index> ', ' <BracketsVarsPtr s.BracketNumber>
       '));'
     );
+}
 
-  (e.Indent) (CmdSave s.Old s.New) =
-    (e.Indent)
+CmdSave {
+  (e.Indent) s.Old s.New =
     (e.Indent <BracketsVar-B s.New> ' = ' <BracketsVar-B s.Old> ';')
     (e.Indent <BracketsVar-E s.New> ' = ' <BracketsVar-E s.Old> ';');
+}
 
-  (e.Indent) (CmdEmptyResult) =
-    (e.Indent)
-    ()
-    (e.Indent 'r05_reset_allocator();');
+CmdEmptyResult {
+  (e.Indent) = () (e.Indent 'r05_reset_allocator();');
+}
 
-  (e.Indent) (CmdResultArray s.Size) =
-    (e.Indent)
+CmdResultArray {
+  (e.Indent) s.Size =
     (e.Indent 'struct r05_node *n[' <Symb s.Size> '] = { 0 };');
+}
 
-  (e.Indent) (CmdAllocateElem e.ElemInfo) =
-    (e.Indent)
-    <PrintAllocateElem (e.Indent) e.ElemInfo>;
+CmdAllocateElem {
+  (e.Indent) e.ElemInfo = <PrintAllocateElem (e.Indent) e.ElemInfo>;
+}
 
-  (e.Indent) (CmdLinkBrackets s.Left s.Right) =
-    (e.Indent)
+CmdLinkBrackets {
+  (e.Indent) s.Left s.Right =
     (e.Indent
       'r05_link_brackets'
       '(' <PrintElemVar s.Left> ', ' <PrintElemVar s.Right> ');'
     );
+}
 
-  (e.Indent) (CmdPushStack s.ElemNumber) =
-    (e.Indent)
+CmdPushStack {
+  (e.Indent) s.ElemNumber =
     (e.Indent 'r05_push_stack(' <PrintElemVar s.ElemNumber> ');');
+}
 
-  (e.Indent) (CmdInsertVar s.Pos s.Usings 'e' e.Index) =
-    (e.Indent)
+CmdInsertVar {
+  (e.Indent) s.Pos s.Usings 'e' e.Index =
     (e.Indent
       'r05_splice_evar(' <PrintElemVar s.Pos> ', '
       <PrintEVars s.Usings 'e' e.Index> ');'
     );
 
-  (e.Indent) (CmdInsertVar s.Pos s.Usings 't' e.Index) =
-    (e.Indent)
+  (e.Indent) s.Pos s.Usings 't' e.Index =
     (e.Indent
       'r05_splice_tvar(' <PrintElemVar s.Pos> ', '
       <PrintVar s.Usings 't' e.Index> ');'
     );
+}
 
-  (e.Indent) (CmdReturnResult) =
-    (e.Indent)
+CmdReturnResult {
+  (e.Indent) =
     (e.Indent 'r05_splice_from_freelist(arg_begin);')
     (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end);')
     (e.Indent 'return;');
@@ -515,9 +538,7 @@ CompileSentence-Aux {
   Комментарий, вносимый в исходный код:
     (CmdComment e.Text)
 */
-*$ENUM CmdMatch, Repeated, CmdEmpty, CmdClosedE
-*$ENUM CmdOpenedE-Start, CmdOpenedE-End
-*$ENUM CmdComment, CmdSave
+*$ENUM Repeated
 
 *$ENUM CmdOpenedE
 
@@ -681,10 +702,6 @@ GenResult {
 *  (CmdLinkBrackets s.Left s.Right)
 *  (CmdPushStack s.Number)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
-*$ENUM CmdAllocateElem
-*$ENUM CmdLinkBrackets
-*$ENUM CmdPushStack
-*$ENUM CmdInsertVar
 
 
 * Спецификаторы команд (элементы)
@@ -856,8 +873,6 @@ DecUsings {
 }
 
 
-*$ENUM CmdEmptyResult, CmdReturnResult
-
 ComposeSentenceCommands {
   s.NumRanges (e.PatternVars) (e.PatternCommands)
   s.ResultCounter (e.UnusedVars) (e.ResultCommands) =
@@ -901,8 +916,6 @@ FilterCommonVarsAndPatternCommands {
     (e.PatternVars) e.PatternCommands;
 }
 
-*$ENUM CmdRangeArray, CmdInitB0, CmdResultArray
-
 ComposeSentenceCommands-Aux {
   s.NumRanges s.ResultCounter (e.ResultCommands)
   (e.PatternVars) e.PatternCommands =
@@ -917,8 +930,6 @@ ComposeSentenceCommands-Aux {
       (CmdReturnResult)
     >;
 }
-
-*$ENUM CmdDeclareVar
 
 $ENTRY generator_MakeDeclaration {
   (s.Usings s.Mode e.Index) =
