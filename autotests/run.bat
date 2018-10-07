@@ -68,6 +68,9 @@ setlocal
   set REF=%1
   set CFILE=%~n1.c
 
+  set R05CCOMP=
+  set R05PATH=
+
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt

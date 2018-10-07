@@ -43,7 +43,7 @@ run_test_aux.BAD-SYNTAX() {
   CFILE=${REF%%.ref}.c
   EXE=${REF%%.ref}
 
-  ../bin/refal05c $REF 2>__error.txt
+  R05CCOMP= R05PATH= ../bin/refal05c $REF 2>__error.txt
   if [ $? -ge 200 ]; then
     echo COMPILER ON $REF FAILS, SEE __error.txt
     exit
