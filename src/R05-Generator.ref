@@ -127,13 +127,8 @@ SkipIndentAccum {
   ('    ') e.Generated = e.Generated;
 }
 
-RangeVar-B {
-  s.BracketNumber = 'bb[' <Symb s.BracketNumber> ']';
-}
-
-RangeVar-E {
-  s.BracketNumber = 'be[' <Symb s.BracketNumber> ']';
-}
+RangeVar-B { s.BracketNumber = 'bb[' <Symb s.BracketNumber> ']' }
+RangeVar-E { s.BracketNumber = 'be[' <Symb s.BracketNumber> ']' }
 
 RangeVars {
   s.BracketNumber =
