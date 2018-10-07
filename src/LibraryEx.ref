@@ -3,7 +3,7 @@
 *===============================================================================
 
 
-* Основные перечисления
+* Общеупотребительные функции-имена
 *$EENUM Success, Fails
 
 
@@ -52,15 +52,11 @@ MapAccum-AddScanned {
     t.Acc (e.Scanned e.StepScanned);
 }
 
-$ENTRY UnBracket {
-  (e.Expr) = e.Expr;
-}
-
 $ENTRY DelAccumulator {
   t.Acc e.Tail = e.Tail;
 }
 
-LOAD-SAVE-HANDLE { = 20; }
+LOAD-SAVE-HANDLE { = 39; }
 
 $ENTRY LoadFile {
   e.FileName =
