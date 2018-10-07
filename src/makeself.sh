@@ -14,6 +14,12 @@
     EXECUTABLE="../bin/refal05c"
   fi
 
+  if [ "$1" == "lambda" ]; then
+    srmake -o$EXECUTABLE refal05c.ref
+    echo
+    rm -f *.rasl
+  fi
+
   source ../c-plus-plus.conf.sh
   export R05CFLAGS="-orefal05c -DR05_SHOW_STAT"
   export R05PATH=../lib

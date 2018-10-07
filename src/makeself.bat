@@ -6,11 +6,17 @@ setlocal
   md ..\bin 2>NUL
 
   if {%1}=={stable} (
-    for %%r in (%MODULES%) do refc %%r
+    refc %MODULES%
     move *.rsl ..\bin >NUL
     set EXECUTABLE=refgo ../bin^(%MODULES: =+%^)
   ) else (
     set EXECUTABLE=..\bin\refal05c.exe
+  )
+
+  if {%1}=={lambda} (
+    call srmake -o..\bin\refal05c.exe refal05c.ref
+    echo.
+    erase *.rasl
   )
 
   call ..\c-plus-plus.conf.bat
