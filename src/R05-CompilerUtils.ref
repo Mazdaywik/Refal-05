@@ -10,7 +10,26 @@ $EXTERN True, False;
 *$ENUM Current
 
 /**
-  <FindFiles (e.Folders) e.Files>
+  <R05-LoadPath> == e.Folders
+
+  e.Folders ::= (e.Folder)*
+*/
+$ENTRY R05-LoadPath {
+  = <ParsePath <GetEnv 'R05PATH'>>
+}
+
+ParsePath {
+  e.Folder ';' e.Path = <ParseFolder e.Folder> <ParsePath e.Path>;
+  e.Folder = <ParseFolder e.Folder>;
+}
+
+ParseFolder {
+  /* пусто */ = /* пусто */;
+  e.Folder = (e.Folder);
+}
+
+/**
+  <R05-FindFiles-Default e.Files>
     == t.FoundFile*
 
   t.FoundFile ::=
@@ -18,7 +37,15 @@ $EXTERN True, False;
     (Output e.Output)
     (NotFound e.FileName)
 */
-$ENTRY FindFiles {
+$ENTRY R05-FindFiles-Default {
+  e.Files = <R05-FindFiles (<R05-LoadPath>) e.Files>;
+}
+
+/**
+  <R05-FindFiles (e.Folders) e.Files>
+    == t.FoundFile*
+*/
+$ENTRY R05-FindFiles {
   (e.Folders) e.Files =
     <Map (findfile_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
 }
@@ -89,4 +116,33 @@ AnalyzeBoth-CheckExist {
   (False e.SoureName) True e.OutName = (Output e.OutName);
 
   (False e.UnitName '.ref') False e.UnitName '.c' = (NotFound e.UnitName);
+}
+
+
+/**
+  <R05-CCompile e.CSources> == e.RetCode
+
+  e.CSources ::= (s.CHAR* '.c')*
+*/
+$ENTRY R05-CCompile {
+  e.CSources = <CCompile-SwSetEnv (<GetEnv 'R05CCOMP'>) e.CSources>;
+}
+
+CCompile-SwSetEnv {
+  (/* не установлена R05CCOMP */) e.CSources = 0;
+
+  (e.CommandLine) e.CSources =
+    <System
+      e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
+      <Map compilerutils_IncludeFlag <R05-LoadPath>>
+      <Map compilerutils_QuoteFile e.CSources>
+    >;
+}
+
+$ENTRY compilerutils_IncludeFlag {
+  (e.PathEntry) = ' -I"' e.PathEntry '"';
+}
+
+$ENTRY compilerutils_QuoteFile {
+  (e.FileName) = ' "' e.FileName '"';
 }

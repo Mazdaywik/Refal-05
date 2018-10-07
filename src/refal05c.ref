@@ -1,8 +1,8 @@
 *$FROM LibraryEx
 $EXTERN ArgList, LoadFile, Map, Success, Fails;
 
-*$FROM R05-FindFile
-$EXTERN FindFiles, NotFound, Output, Source;
+*$FROM R05-CompilerUtils
+$EXTERN R05-FindFiles-Default, NotFound, Output, Source, R05-CCompile;
 
 *$FROM R05-Parser
 $EXTERN R05-Parse-File;
@@ -20,23 +20,7 @@ Main {
     <Main (e.ProgName) <LoadFile e.Config>>;
 
   (e.ProgName) e.Files =
-    <FindFiles-SwFound
-      <FindFiles (<LoadPath>) e.Files>
-    >;
-}
-
-LoadPath {
-  = <ParsePath <GetEnv 'R05PATH'>>
-}
-
-ParsePath {
-  e.Folder ';' e.Path = <ParseFolder e.Folder> <ParsePath e.Path>;
-  e.Folder = <ParseFolder e.Folder>;
-}
-
-ParseFolder {
-  /* пусто */ = /* пусто */;
-  e.Folder = (e.Folder);
+    <FindFiles-SwFound <R05-FindFiles-Default e.Files>>;
 }
 
 FindFiles-SwFound {
@@ -94,24 +78,11 @@ CheckCompilationResult {
     <Prout '*** COMPILATION FAILED ***'>
     <Exit 1>;
 
-  e.Outputs =
-    <Link (<GetEnv 'R05CCOMP'>) e.Outputs>;
-}
-
-Link {
-  (/* не установлена R05CCOMP */) e.Files =
-    <Prout '*** Compilation successed ***'>;
-
-  (e.CommandLine) e.Files =
-    <CheckRetcode
-      <System
-        e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
-        <Map refal05c_IncludeFlag <LoadPath>>
-        <Map refal05c_QuoteFile e.Files>>
-    >;
+  e.Outputs = <CheckRetcode <R05-CCompile e.Outputs>>;
 }
 
 CheckRetcode {
+  /* Не установлена R05CCOMP или компиляция прошла успешно */
   0 = <Prout '*** Compilation successed ***'>;
 
   e.RetCode =
@@ -120,12 +91,4 @@ CheckRetcode {
       '(C COMPILER FAILED, RETCODE: ' <Symb e.RetCode>')***'
     >
     <Exit e.RetCode>;
-}
-
-$ENTRY refal05c_IncludeFlag {
-  (e.PathEntry) = ' -I"' e.PathEntry '"';
-}
-
-$ENTRY refal05c_QuoteFile {
-  (e.FileName) = ' "' e.FileName '"';
 }

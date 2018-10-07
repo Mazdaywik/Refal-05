@@ -1,6 +1,6 @@
 #!/bin/bash
 (
-  MODULES="refal05c R05-AST R05-FindFile R05-Generator R05-Lexer R05-Parser
+  MODULES="refal05c R05-AST R05-CompilerUtils R05-Generator R05-Lexer R05-Parser
     LibraryEx"
   MODULES=$(echo $MODULES)
 
