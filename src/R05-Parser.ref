@@ -16,6 +16,8 @@ $EXTERN Extern, Local, Entry, Native, Function, Sentences, Symbol, Char, Number,
   <R05-Parse-File e.SourceFile>
     == Success e.Tree
     == Fails e.Errors
+
+  e.Errors ::= ((s.Row s.Col) e.Message)*
 */
 $ENTRY R05-Parse-File {
   e.SourceFile = <R05-Parse-Tokens <R05-LexScan-File e.SourceFile>>;
