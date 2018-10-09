@@ -274,7 +274,7 @@ $ENTRY Mod {
 
 
 /**
-  18. <Mul s.NUMBER s.NUMBER> == s.NUMBER
+  20. <Mul s.NUMBER s.NUMBER> == s.NUMBER
 */
 $ENTRY Mul {
 %%
@@ -331,7 +331,12 @@ $ENTRY Open {
   unsigned int file_no;
   char mode_str[2] = { '.', '\0' };
   const char *mode = mode_str;
-  char filename[FILENAME_MAX + 1] = { '\0' };
+  static const char filename_format[] = "REFAL%u.DAT";
+  enum {
+    DEFAULT_LEN = sizeof(filename_format) + UINT_DIGITS,
+    FILENAME_LEN = FILENAME_MAX > DEFAULT_LEN ? FILENAME_MAX : DEFAULT_LEN
+  };
+  char filename[FILENAME_LEN + 1] = { '\0' };
   size_t filename_len;
 
   r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
@@ -346,13 +351,15 @@ $ENTRY Open {
   }
 
   filename_len =
-    r05_read_chars(filename, FILENAME_MAX, &eFileName_b, &eFileName_e);
+    r05_read_chars(filename, FILENAME_LEN, &eFileName_b, &eFileName_e);
 
-  if (filename_len == 0) {
-    r05_recognition_impossible();
+  file_no = sFileNo->info.number % FILE_LIMIT;
+
+  if (filename_len != 0) {
+    filename[filename_len] = '\0';
+  } else {
+    sprintf(filename, filename_format, file_no);
   }
-
-  filename[filename_len] = '\0';
 
   if (R05_DATATAG_CHAR == sMode->tag) {
     char mode = sMode->info.char_;
@@ -372,8 +379,6 @@ $ENTRY Open {
     sprintf(error, error_format, (unsigned int) FILENAME_MAX);
     r05_builtin_error(error);
   }
-
-  file_no = sFileNo->info.number % FILE_LIMIT;
 
   ensure_close_stream(file_no);
 
