@@ -198,15 +198,15 @@ ScanPseudo {
 }
 
 ScanPseudo-SwDirective {
-  s.Row s.Col (Success s.Directive) e.Tail =
-    (s.Directive (s.Row 2)) <ScanPseudo-AddSemicolon <Scan s.Row s.Col e.Tail>>;
+  s.Row s.Col (Success s.Directive) e.Tail '\n' =
+    (s.Directive (s.Row 2)) <ScanPseudo-SkipEOF <Scan s.Row s.Col e.Tail ';\n'>>;
 
   s.Row s.Col (Fails e.Directive) e.Tail =
     /* ничего не генерируем, это обычный комментарий */;
 }
 
-ScanPseudo-AddSemicolon {
-  e.Tokens (TkEOF (s.Row s.Col)) = e.Tokens (TkSemicolon (<Dec s.Row> s.Col));
+ScanPseudo-SkipEOF {
+  e.Tokens (TkEOF (s.Row s.Col)) = e.Tokens;
 }
 
 ScanCComment {
