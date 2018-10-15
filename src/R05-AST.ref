@@ -54,13 +54,13 @@ $ENTRY Local { = /* пусто */ }
 
 $ENTRY Sentences {
   /* пусто */ = /* пусто */;
-  t.Sentence = <Sentence t.Sentence>;
+  t.Sentence = <TextFromSentence t.Sentence>;
 
   t.Sentence e.Sentences =
-    <Sentence t.Sentence> '\n' <Sentences e.Sentences>;
+    <TextFromSentence t.Sentence> '\n' <Sentences e.Sentences>;
 }
 
-Sentence {
+TextFromSentence {
   ((/* пусто */) (/* пусто */)) = '  = ;\n';
 
   ((/* пусто */) (e.Result)) = '  = ' <TextFromExpr e.Result> ';\n';
@@ -179,10 +179,10 @@ EscapeChar-SwCompare {
   s.Other '-' '-' s.Code = s.Other;
 
   s.Other s.Compare1 s.Compare2 s.Code =
-    '\\x' <Hex <Div s.Code 16>> <Hex <Mod s.Code 16>>;
+    '\\x' <CharFromHex <Div s.Code 16>> <CharFromHex <Mod s.Code 16>>;
 }
 
-Hex {
+CharFromHex {
   0 = '0'; 1 = '1'; 2 = '2'; 3 = '3'; 4 = '4';
   5 = '5'; 6 = '6'; 7 = '7'; 8 = '8'; 9 = '9';
 

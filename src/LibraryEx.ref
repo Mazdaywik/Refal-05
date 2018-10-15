@@ -76,11 +76,11 @@ DoLoadFile {
 $ENTRY SaveFile {
   (e.FileName) e.Lines =
     <Open 'w' <LOAD-SAVE-HANDLE> e.FileName>
-    <Map WriteBracketLine e.Lines>
+    <Map SaveFile-WriteBracketLine e.Lines>
     <Close <LOAD-SAVE-HANDLE>>;
 }
 
-WriteBracketLine {
+SaveFile-WriteBracketLine {
   (e.Line) = <Putout <LOAD-SAVE-HANDLE> e.Line>;
 }
 

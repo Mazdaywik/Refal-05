@@ -104,14 +104,14 @@ EscapeChar-SwCompare {
   s.Other '-' '-' s.Code = s.Other;
 
   s.Other s.Compare1 s.Compare2 s.Code =
-    '\\x' <Hex <Div s.Code 16>> <Hex <Mod s.Code 16>>;
+    '\\x' <CharFromHex <Div s.Code 16>> <CharFromHex <Mod s.Code 16>>;
 }
 
-Hex {
-  s.Value = <Hex-Aux s.Value <HexDigits>>;
+CharFromHex {
+  s.Value = <CharFromHex-Aux s.Value <HexDigits>>;
 }
 
-Hex-Aux {
+CharFromHex-Aux {
   s.Value e.Hex-B (s.Digit s.Value) e.Hex-E = s.Digit;
 }
 
@@ -181,7 +181,7 @@ Scan {
   s.Row s.Col 't.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 't' () <Type e.Tail>>;
 
   s.Row s.Col s.Next e.Tail =
-    <Scan-ByPunctuation s.Row s.Col (<Punctuation s.Next>) e.Tail>;
+    <Scan-ByPunctuation s.Row s.Col (<CheckValidPunctuation s.Next>) e.Tail>;
 
   s.Row s.Col /* пусто */ = (TkEOF (s.Row s.Col));
 }
@@ -194,7 +194,7 @@ ScanPseudo {
     <ScanPseudo s.Row <Inc s.Col> (e.Scanned s.Digit) <Type e.Tail>>;
 
   s.Row s.Col (e.Scanned) s.Type s.SubType e.Tail =
-    <ScanPseudo-SwDirective s.Row s.Col (<Directive e.Scanned>) e.Tail>;
+    <ScanPseudo-SwDirective s.Row s.Col (<CheckValidDirective e.Scanned>) e.Tail>;
 }
 
 ScanPseudo-SwDirective {
@@ -264,10 +264,10 @@ ScanDirective {
 
 MakeDirective {
   s.Row s.Col e.Directive =
-    <MakeDirective-SwValid s.Row s.Col <Directive e.Directive>>;
+    <MakeDirective-SwValid s.Row s.Col <CheckValidDirective e.Directive>>;
 }
 
-Directive {
+CheckValidDirective {
   'ENUM' = Success TkEnum;
   'EENUM' = Success TkEEnum;
   'ENTRY' = Success TkEntry;
@@ -302,7 +302,7 @@ ScanChars-Escape {
     <ScanChars-Escape-Hex s.Row <Inc s.Col> () e.Tail>;
 
   s.Row s.Col s.Next e.Tail =
-    <ScanChars-Escape-SwValid s.Row s.Col <Escape s.Next> e.Tail>;
+    <ScanChars-Escape-SwValid s.Row s.Col <CheckValidEscape s.Next> e.Tail>;
 
   /* Пустой суффикс быть не может, поскольку в конец добавляется \n */
 }
@@ -329,7 +329,7 @@ ScanChars-Escape-Hex-SwHex {
     <ScanChars-Escape-Hex s.Row <Inc s.Col> (e.Digits s.Digit) e.Tail>;
 }
 
-Escape {
+CheckValidEscape {
   'n' = Success '\n';
   't' = Success '\t';
   'r' = Success '\r';
@@ -376,7 +376,7 @@ ScanVariable {
     <Scan s.Row s.Col e.Tail>;
 }
 
-Punctuation {
+CheckValidPunctuation {
   /* упорядочены по ASCII-кодам */
   '(' = Success TkOpen Bracket;
   ')' = Success TkClose Bracket;
