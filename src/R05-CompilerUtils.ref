@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN Map;
+$EXTERN Trim, Map;
 
 *$FROM Library
 $EXTERN True, False;
@@ -24,6 +24,10 @@ ParsePath {
 }
 
 ParseFolder {
+  e.Folder = <ParseFolder-CheckEmpty <Trim e.Folder>>;
+}
+
+ParseFolder-CheckEmpty {
   /* пусто */ = /* пусто */;
   e.Folder = (e.Folder);
 }
