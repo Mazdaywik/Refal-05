@@ -7,6 +7,14 @@
 *$EENUM Success, Fails
 
 
+/**
+  <Apply t.Closure e.Arg> == e.Res
+
+  t.Closure ::=
+      s.FUNCTION
+    | (t.Closure e.Bounded)
+  e.Arg, e.Res, e.Bounded ::= e.AnyExpr
+*/
 $ENTRY Apply {
   s.Fn e.Argument = <Mu s.Fn e.Argument>;
 
@@ -14,12 +22,25 @@ $ENTRY Apply {
     <Apply t.Closure e.Bounded e.Argument>;
 }
 
+
+/**
+  <Map t.Closure t.Item*> == e.ItemRes*
+
+  <Apply t.Closure t.Item> == e.ItemRes
+*/
 $ENTRY Map {
   t.Fn t.Next e.Tail = <Apply t.Fn t.Next> <Map t.Fn e.Tail>;
 
   t.Fn = ;
 }
 
+
+/**
+  <Reduce t.Closure t.Accum t.Item*> == t.Accum′
+
+  <Apply t.Closure t.Accum t.Item> == t.Accum′
+  t.Accum′ ::= t.Accum
+*/
 $ENTRY Reduce {
   t.Fn t.Acc t.Next e.Tail =
     <Reduce
@@ -29,6 +50,13 @@ $ENTRY Reduce {
   t.Fn t.Acc = t.Acc;
 }
 
+
+/**
+  <MapAccum t.Closure t.Accum t.Item*> == t.Accum′ e.ItemRes*
+
+  <Apply t.Closure t.Accum t.Item> == t.Accum′ e.ItemRes
+  t.Accum′ ::= t.Accum
+*/
 $ENTRY MapAccum {
   t.Fn t.Acc e.Tail =
     <DoMapAccum t.Fn t.Acc () e.Tail>;
@@ -52,12 +80,23 @@ MapAccum-AddScanned {
     t.Acc (e.Scanned e.StepScanned);
 }
 
+
+/**
+  <DelAccumulator t.Accum e.AnyExpr> == e.AnyExpr
+*/
 $ENTRY DelAccumulator {
   t.Acc e.Tail = e.Tail;
 }
 
 LOAD-SAVE-HANDLE { = 39; }
 
+
+/**
+  <LoadFile e.FileName> == e.Lines
+
+  e.Lines ::= (e.Line)*
+  e.Line ::= s.CHAR*
+*/
 $ENTRY LoadFile {
   e.FileName =
     <Open 'r' <LOAD-SAVE-HANDLE> e.FileName>
@@ -73,6 +112,10 @@ DoLoadFile {
   e.Line = (e.Line) <DoLoadFile <Get <LOAD-SAVE-HANDLE>>>;
 }
 
+
+/**
+  <SaveFile (e.FileName) e.Lines> == empty
+*/
 $ENTRY SaveFile {
   (e.FileName) e.Lines =
     <Open 'w' <LOAD-SAVE-HANDLE> e.FileName>
@@ -84,6 +127,11 @@ SaveFile-WriteBracketLine {
   (e.Line) = <Putout <LOAD-SAVE-HANDLE> e.Line>;
 }
 
+
+/**
+  <Inc s.NUMBER> == s.NUMBER
+  <Dec s.NUMBER> == s.NUMBER
+*/
 $ENTRY Inc {
   s.Num = <Add s.Num 1>;
 }
@@ -92,6 +140,11 @@ $ENTRY Dec {
   s.Num = <Sub s.Num 1>;
 }
 
+
+/**
+  <ArgList> == (e.Arg)+
+  e.Arg ::= s.CHAR*
+*/
 $ENTRY ArgList {
   = <DoArgList 0>;
 }
@@ -106,6 +159,10 @@ SwDoArgList {
   s.Next e.Arg = (e.Arg) <DoArgList s.Next>;
 }
 
+
+/**
+  <Trim s.CHAR*> == s.CHAR*
+*/
 $ENTRY Trim {
   ' ' e.Line = <Trim e.Line>;
   '\t' e.Line = <Trim e.Line>;
