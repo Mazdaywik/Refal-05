@@ -1331,7 +1331,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
 static void make_dump(void) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
-  fprintf(stderr, "\nERROR EXPRESSION:\n");
+  fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
   print_seq(s_arg_begin, s_arg_end);
   fprintf(stderr, "\nVIEW FIELD:\n");
   print_seq(&s_begin_view_field, &s_end_view_field);
