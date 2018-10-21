@@ -5,7 +5,7 @@ $EXTERN LoadFile, Inc, Success, Fails, Dec;
 /**
   <R05-LexScan-File e.SourceName>
     == e.Tokens
-  e.Tokens ::= (s.TokType t.SrcPos e.Info)
+  e.Tokens ::= (s.TokType t.SrcPos e.Info)*
   t.SrcPos ::= (s.Row s.Col)
 
   <Mu s.TokType e.Info> == s.CHAR*
