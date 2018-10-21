@@ -13,6 +13,7 @@
 Приложения
 ----------
 * [А. Рекомендации по стилю оформления][A]
+* [B. Формальное описание лексики и грамматики Рефала-05][B]
 
 
 [1]: 1-intro.md
@@ -20,3 +21,4 @@
 [3]: 3-install-and-usage.md
 [4]: 4-libraryex-components.md
 [A]: A-style-guide.md
+[B]: B-syntax-grammar.md
