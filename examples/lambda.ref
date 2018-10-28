@@ -1,0 +1,150 @@
+$ENTRY Go {
+  /* пусто */ =
+    <Eval
+      (
+        /* let * = λn.λm.λs.n(ms) in */
+        let (L (L (L (A (V 2) (A (V 1) (V 0)))))) in
+        (
+          /* let pred = */
+          let
+          (
+            /* let pair = λx.λy.λf.fxy in */
+            let (L (L (L (A (A (V 0) (V 2)) (V 1))))) in
+            (
+              /* let fst = λp.p(λx.λy.x) in */
+              let (L (A (V 0) (L (L (V 1))))) in
+              (
+                /* let snd = λp.p(λx.λy.y) in */
+                let (L (A (V 0) (L (L (V 0))))) in
+                /* λn.λs.λz. */
+                (L (L (L
+                  /* snd (n (λp. pair (s (fst p)) (fst p)) (pair z z)) */
+                  (A (V 3) (A (A (V 2) (L (A (A (V 6) (A (V 2) (A (V 5) (V 0))))
+                                             (A (V 5) (V 0)))))
+                              (A (A (V 5) (V 0)) (V 0))))
+                )))
+              )
+            )
+          )
+          /* in */
+          in
+          (
+            /* let isZero = λn.((n λz.λt.λf.f) λt.λf.t) in */
+            let (L (A (A (V 0) (L (L (L (V 0))))) (L (L (V 1))))) in
+            (
+              /* let if = λcond.λthen.λelse = (((cond then) else) \x.x) in */
+              let (L (L (L (A (A (A (V 2) (V 1)) (V 0)) (L (V 0)))))) in
+              (
+                /* letrec fact = λn.if (izZero n) λ_.1 λ_.(* n (fact (pred n))) in */
+                letrec
+                (L (A (A (A (V 2) (A (V 3) (V 0)))
+                         /* then */
+                         (L (L (L (A (V 1) (V 0))))))
+                      /* else */
+                      (L (A (A (V 6) (V 1)) (A (V 2) (A (V 5) (V 1))))))) in
+                /* η-редукция: putNum (getNum fact)) */
+                (A (V 5) (A (V 6) (V 0)))
+*                /* без η-редукции: putNum (getNum (λn.fact n)) */
+*                (A (V 5) (A (V 6) (L (A (V 1) (V 0)))))
+              )
+            )
+          )
+        )
+      )
+      /* На стеке лежат предопределённые операции */
+      vPutNum
+      vGetNum
+    >;
+}
+
+*$ENUM L, A, V, let, letrec, in, Fix
+/*
+  t.Expr ::=
+      (let t.Expr in t.Expr)
+    | (letrec t.Expr in t.Expr)
+    | (A t.Expr t.Expr)
+    | (L t.Expr)
+    | (Fix t.Expr)
+    | (V s.NUMBER)
+*/
+
+*$ENUM vClosure, vS, vNum, vFix, vPutNum, vGetNum
+/*
+  t.Value ::=
+      (vClosure t.Expr e.Stack)
+    | (vFix t.Expr e.Stack)
+    | (vNum s.NUMBER)
+    | vS
+    | vPutNum
+    | vGetNum
+
+  e.Stack ::= t.Value*
+*/
+
+/*
+  <Eval t.Expr e.Stack> == t.Value
+*/
+Eval {
+  /* Let — синтаксический сахар */
+  (let t.Definition in t.Expr) e.Stack =
+    <Eval (A (L t.Expr) t.Definition) e.Stack>;
+
+  /* Letrec — синтаксический сахар */
+  (letrec t.Definition in t.Expr) e.Stack =
+    <Eval (A (L t.Expr) (Fix t.Definition)) e.Stack>;
+
+  /* Апликация */
+  (A t.Callee t.Arg) e.Stack =
+    <Apply <Eval t.Callee e.Stack> <Eval t.Arg e.Stack>>;
+
+  /* Лямбда */
+  (L t.Expr) e.Stack = (vClosure t.Expr e.Stack);
+
+  /* Комбинатор неподвижной точки, реализует цикл */
+  (Fix t.Expr) e.Stack = (vFix t.Expr e.Stack);
+
+  /* Переменная де Брёйна */
+  (V s.N) e.Stack = <Lookup s.N e.Stack>;
+}
+
+Lookup {
+  0 t.Val e.Stack = t.Val;
+  s.N t.Val e.Stack = <Lookup <Sub s.N 1> e.Stack>;
+}
+
+Apply {
+  (vClosure t.Expr e.Stack) t.Argument = <Eval t.Expr t.Argument e.Stack>;
+
+  (vFix t.Expr e.Stack) t.Argument =
+    <Apply <Eval t.Expr (vFix t.Expr e.Stack) e.Stack> t.Argument>;
+
+  /* Встроенные операции */
+  vS (vNum s.n) = (vNum <Add 1 s.n>);
+  vPutNum t.Value = <PutNum t.Value>;
+  vGetNum t.Value = <GetNum t.Value>;
+}
+
+PutNum {
+  t.Value =
+    <PutNum-Aux <Apply <Apply t.Value vS> (vNum 0)>>
+    t.Value;
+}
+
+PutNum-Aux {
+  (vNum s.Value) = <Prout s.Value>;
+}
+
+GetNum {
+  t.Value =
+    <Prout 'Enter a number:'>
+    <Apply t.Value <GetNum-MakeExpr <Numb <Card>>>>;
+}
+
+GetNum-MakeExpr {
+  s.Value = (vClosure (L <GetNum-DoMakeExpr s.Value>));
+}
+
+GetNum-DoMakeExpr {
+  0 = (V 0);
+  s.N = (A (V 1) <GetNum-DoMakeExpr <Sub s.N 1>>);
+}
