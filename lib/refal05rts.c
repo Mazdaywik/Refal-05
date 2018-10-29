@@ -1002,6 +1002,7 @@ static void print_profile(void) {
   clock_t refal_time;
   clock_t repeated_time;
   clock_t eloop_time;
+  clock_t repeated_time_outside_e;
 
   enum { nItems = 11 };
   struct time_item items[nItems];
@@ -1013,6 +1014,9 @@ static void print_profile(void) {
   repeated_time =
     s_total_match_repeated_tvar_time + s_total_match_repeated_evar_time;
   eloop_time = s_total_e_loop - repeated_time;
+  repeated_time_outside_e =
+    s_total_match_repeated_tvar_time_outside_e
+    + s_total_match_repeated_evar_time_outside_e;
 
   /*
     Ложное предупреждение BCC 5.5:
@@ -1025,9 +1029,10 @@ static void print_profile(void) {
   items[2].name = "(Total refal time)";
   items[2].counter = refal_time;
   items[3].name = "Linear pattern time";
-  items[3].counter = s_total_pattern_match_time;
+  items[3].counter = s_total_pattern_match_time
+    - (eloop_time + repeated_time + repeated_time_outside_e);
   items[4].name = "Linear result time";
-  items[4].counter = s_total_building_result_time;
+  items[4].counter = s_total_building_result_time - s_total_copy_tevar_time;
   items[5].name = "Open e-loop time (clear)";
   items[5].counter = eloop_time;
   items[6].name = "Repeated e-var match time (inside e-loops)";
