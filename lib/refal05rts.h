@@ -58,7 +58,6 @@ struct r05_node {
   enum r05_datatag tag;
   union {
     char char_;
-    void *file;
     struct r05_function *function;
     r05_number number;
     struct r05_node *link;
@@ -153,6 +152,8 @@ size_t r05_read_chars(
   struct r05_node **first, struct r05_node **last
 );
 
+/* Операции построения результата */
+
 void r05_push_stack(struct r05_node *call_bracket);
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
 
@@ -163,8 +164,6 @@ void r05_splice_evar(
 
 void r05_splice_to_freelist(struct r05_node *first, struct r05_node *last);
 void r05_splice_from_freelist(struct r05_node *pos);
-
-/* Операции построения результата */
 
 void r05_reset_allocator(void);
 

@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN LoadFile, Inc, Success, Fails, Dec;
+$EXTERN LoadFile, Inc, Success, Fails;
 
 
 /**
