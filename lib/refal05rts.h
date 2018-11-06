@@ -72,9 +72,6 @@ void r05_prepare_argument(
   struct r05_node *arg_begin, struct r05_node *arg_end
 );
 
-void r05_move_left(struct r05_node **begin, struct r05_node **end);
-void r05_move_right(struct r05_node **begin, struct r05_node **end);
-
 int r05_empty_seq(struct r05_node *begin, struct r05_node *end);
 
 int r05_function_left(

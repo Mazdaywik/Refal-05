@@ -34,7 +34,7 @@ void r05_prepare_argument(
 }
 
 
-void r05_move_left(struct r05_node **first, struct r05_node **last) {
+static void move_left(struct r05_node **first, struct r05_node **last) {
   /* assert((*first == 0) == (*last == 0)); */
   if (*first == 0) assert (*last == 0);
   if (*first != 0) assert (*last != 0);
@@ -48,7 +48,7 @@ void r05_move_left(struct r05_node **first, struct r05_node **last) {
 }
 
 
-void r05_move_right(struct r05_node **first, struct r05_node **last) {
+static void move_right(struct r05_node **first, struct r05_node **last) {
   /* assert((*first == 0) == (*last == 0)); */
   if (*first == 0) assert (*last == 0);
   if (*first != 0) assert (*last != 0);
@@ -83,7 +83,7 @@ int r05_function_left(
   } else if ((*first)->info.function != fn) {
     return 0;
   } else {
-    r05_move_left(first, last);
+    move_left(first, last);
     return 1;
   }
 }
@@ -101,7 +101,7 @@ int r05_function_right(
   } else if ((*last)->info.function != fn) {
     return 0;
   } else {
-    r05_move_right(first, last);
+    move_right(first, last);
     return 1;
   }
 }
@@ -117,7 +117,7 @@ int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
   } else if ((*first)->info.char_ != ch) {
     return 0;
   } else {
-    r05_move_left(first, last);
+    move_left(first, last);
     return 1;
   }
 }
@@ -133,7 +133,7 @@ int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
   } else if ((*last)->info.char_ != ch) {
     return 0;
   } else {
-    r05_move_right(first, last);
+    move_right(first, last);
     return 1;
   }
 }
@@ -151,7 +151,7 @@ int r05_number_left(
   } else if ((*first)->info.number != num) {
     return 0;
   } else {
-    r05_move_left(first, last);
+    move_left(first, last);
     return 1;
   }
 }
@@ -169,7 +169,7 @@ int r05_number_right(
   } else if ((*last)->info.number != num) {
     return 0;
   } else {
-    r05_move_right(first, last);
+    move_right(first, last);
     return 1;
   }
 }
@@ -257,7 +257,7 @@ int r05_svar_left(
     return 0;
   } else {
     *svar = *first;
-    r05_move_left(first, last);
+    move_left(first, last);
     return 1;
   }
 }
@@ -274,7 +274,7 @@ int r05_svar_right(
     return 0;
   } else {
     *svar = *last;
-    r05_move_right(first, last);
+    move_right(first, last);
     return 1;
   }
 }
@@ -292,11 +292,11 @@ int r05_tvar_left(
 
     *tvar = *first;
     *first = right_bracket;
-    r05_move_left(first, last);
+    move_left(first, last);
     return 1;
   } else {
     *tvar = *first;
-    r05_move_left(first, last);
+    move_left(first, last);
     return 1;
   }
 }
@@ -315,11 +315,11 @@ int r05_tvar_right(
 
     *tvar = left_bracket;
     *last = left_bracket;
-    r05_move_right(first, last);
+    move_right(first, last);
     return 1;
   } else {
     *tvar = *last;
-    r05_move_right(first, last);
+    move_right(first, last);
     return 1;
   }
 }
@@ -377,8 +377,8 @@ static int equal_expressions(
     ! r05_empty_seq(first1, last1) && ! r05_empty_seq(first2, last2)
       && equal_nodes(first1, first2)
   ) {
-    r05_move_left(&first1, &last1);
-    r05_move_left(&first2, &last2);
+    move_left(&first1, &last1);
+    move_left(&first2, &last2);
   }
 
   /*
@@ -489,8 +489,8 @@ int r05_repeated_evar_left(
       && !r05_empty_seq(cur_sample, evar_e_sample)
       && equal_nodes(current, cur_sample)
   ) {
-    r05_move_left(&cur_sample, &evar_e_sample);
-    r05_move_left(&current, &copy_last);
+    move_left(&cur_sample, &evar_e_sample);
+    move_left(&current, &copy_last);
   }
 
   add_match_repeated_evar_time(clock() - start_match);
@@ -542,8 +542,8 @@ int r05_repeated_evar_right(
       && !r05_empty_seq(evar_b_sample, cur_sample)
       && equal_nodes(current, cur_sample)
   ) {
-    r05_move_right(&copy_first, &current);
-    r05_move_right(&evar_b_sample, &cur_sample);
+    move_right(&copy_first, &current);
+    move_right(&evar_b_sample, &cur_sample);
   }
 
   add_match_repeated_evar_time(clock() - start_match);
@@ -617,7 +617,7 @@ size_t r05_read_chars(
   ) {
     buffer[read] = (*first)->info.char_;
     ++read;
-    r05_move_left(first, last);
+    move_left(first, last);
   }
   return read;
 }
@@ -801,7 +801,7 @@ static void copy_nonempty_evar(
       copy->info = evar_b_sample->info;
     }
 
-    r05_move_left(&evar_b_sample, &evar_e_sample);
+    move_left(&evar_b_sample, &evar_e_sample);
   }
 
   assert(bracket_stack == 0);
@@ -1220,7 +1220,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             } else {
               fprintf(stderr, "\n[NONE]");
             }
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_CHAR:
@@ -1230,12 +1230,12 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
           case R05_DATATAG_NUMBER:
             fprintf(stderr, "%ld ", begin->info.number);
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_FUNCTION:
             fprintf(stderr, "%s ", begin->info.function->name);
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_OPEN_BRACKET:
@@ -1246,13 +1246,13 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             after_bracket = 1;
             reset_after_bracket = 0;
             fprintf(stderr, "(");
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_CLOSE_BRACKET:
             --indent;
             fprintf(stderr, ")");
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_OPEN_CALL:
@@ -1263,13 +1263,13 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             after_bracket = 1;
             reset_after_bracket = 0;
             fprintf(stderr, "<");
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           case R05_DATATAG_CLOSE_CALL:
             --indent;
             fprintf(stderr, ">");
-            r05_move_left(&begin, &end);
+            move_left(&begin, &end);
             continue;
 
           default:
@@ -1310,7 +1310,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
                 }
                 break;
               }
-              r05_move_left(&begin, &end);
+              move_left(&begin, &end);
               continue;
             }
 
