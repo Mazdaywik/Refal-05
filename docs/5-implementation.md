@@ -610,9 +610,7 @@ _повторной,)_ то для неё запоминаются все вх�
 
 будет скомпилирована в
 
-    static void r05c_Extern(
-      struct r05_node *arg_begin, struct r05_node *arg_end
-    ) {
+    static void r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end) {
       r05_this_is_generated_function();
 
       do {
@@ -663,16 +661,42 @@ _повторной,)_ то для неё запоминаются все вх�
 (recognition impossible) — всегда завершает выполнение программы с дампом поля
 зрения.
 
-$EXTERN-объявления Рефала компилируются в extern-объявления языка Си:
+Для каждой функции в исходном файле и для каждой используемой внешней функции
+(включая и встроенные), в начале файла добавляется объявление её дескриптора:
 
-    $EXTERN LoadFile, Inc, Success, Fails;
+    extern struct r05_function r05f_Mu;
+    extern struct r05_function r05f_Div;
+    extern struct r05_function r05f_Mod;
+    extern struct r05_function r05f_Ord;
+    extern struct r05_function r05f_Symb;
+    extern struct r05_function r05f_Compare;
+    extern struct r05_function r05f_R05_TextFromTree;
+    extern struct r05_function r05f_Extern;
+    extern struct r05_function r05f_Function;
+    extern struct r05_function r05f_Entry;
+    extern struct r05_function r05f_Local;
+    extern struct r05_function r05f_Sentences;
+    static struct r05_function r05f_TextFromSentence;
+    extern struct r05_function r05f_Native;
+    static struct r05_function r05f_FlatLines;
+    extern struct r05_function r05f_Symbol;
+    extern struct r05_function r05f_Char;
+    extern struct r05_function r05f_Number;
+    extern struct r05_function r05f_Name;
+    extern struct r05_function r05f_Variable;
+    extern struct r05_function r05f_Brackets;
+    extern struct r05_function r05f_CallBrackets;
+    extern struct r05_function r05f_TextFromExpr;
+    static struct r05_function r05f_TextFromExpr_Char;
+    static struct r05_function r05f_TextFromTerm;
+    extern struct r05_function r05f_EscapeChar;
+    static struct r05_function r05f_EscapeChar_Aux;
+    static struct r05_function r05f_EscapeChar_SwCompare;
+    static struct r05_function r05f_CharFromHex;
 
-           ↓       ↓       ↓       ↓
-
-    extern struct r05_function r05f_LoadFile;
-    extern struct r05_function r05f_Inc;
-    extern struct r05_function r05f_Success;
-    extern struct r05_function r05f_Fails;
+В отличие от C++, язык Си допускает многократное объявление статических
+переменных в одном файле, важно только, чтобы инициализатор был только у одной
+из них.
 
 Символы-функции сравниваются на равенство по значению `info.function` —
 указатели на дескрипторы должны совпадать. Поле `ptr` дескриптора используется
