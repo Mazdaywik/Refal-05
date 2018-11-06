@@ -922,14 +922,6 @@ static void start_profiler(void) {
 }
 
 
-static void stop_e_loop(void) {
-  if (s_in_e_loop > 0) {
-    s_total_e_loop += (clock() - s_start_e_loop);
-    s_in_e_loop = 0;
-  }
-}
-
-
 static void start_building_result(void) {
   if (s_in_generated) {
     clock_t pattern_match;
@@ -938,7 +930,10 @@ static void start_building_result(void) {
     pattern_match = s_start_building_result_time - s_start_pattern_match_time;
     s_total_pattern_match_time += pattern_match;
 
-    stop_e_loop();
+    if (s_in_e_loop > 0) {
+      s_total_e_loop += (s_start_building_result_time - s_start_e_loop);
+      s_in_e_loop = 0;
+    }
   }
 }
 
@@ -1073,6 +1068,8 @@ static void end_profiler(void) {
 
 
 void r05_start_e_loop(void) {
+  assert(s_in_generated);
+
   if (s_in_e_loop++ == 0) {
     s_start_e_loop = clock();
   }
@@ -1085,8 +1082,12 @@ void r05_this_is_generated_function(void) {
 }
 
 
-void r05_start_sentence(void) {
-  stop_e_loop();
+void r05_stop_e_loop(void) {
+  assert(s_in_generated);
+
+  if (--s_in_e_loop == 0) {
+    s_total_e_loop += (clock() - s_start_e_loop);
+  }
 }
 
 

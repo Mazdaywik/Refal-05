@@ -207,8 +207,8 @@ void r05_enum_function_code(struct r05_node *begin, struct r05_node *end);
 /* Профилирование */
 
 void r05_this_is_generated_function(void);
-void r05_start_sentence(void);
 void r05_start_e_loop(void);
+void r05_stop_e_loop(void);
 
 /* Рефал-машина, операционная среда и диагностика */
 

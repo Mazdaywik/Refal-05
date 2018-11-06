@@ -194,7 +194,6 @@ CmdRangeArray {
 
 CmdInitB0 {
   (e.Indent) =
-    (e.Indent 'r05_start_sentence();')
     (e.Indent 'r05_prepare_argument(' <RangeVarsPtr 0> ', arg_begin, arg_end);');
 }
 
@@ -269,7 +268,8 @@ CmdOpenedE-End {
       '} while (r05_open_evar_advance('
       <VarPtr 1 'e' e.Index> ', ' <RangeVarsPtr s.BracketNumber>
       '));'
-    );
+    )
+    (e.Indent 'r05_stop_e_loop();');
 }
 
 CmdSave {
