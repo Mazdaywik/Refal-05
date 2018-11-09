@@ -1576,6 +1576,418 @@ e-переменными такое присваивание нулей буде
 
 
 
+### Построение результатного выражения
+
+Как было сказано ранее, построение результатного выражения делится на две
+фазы: распределение памяти и сборка результата. Стадия распределения памяти
+может остановить программу с выдачей дампа, но поле зрения не меняет. Стадия
+сборки результата перекраивает поле зрения, провязывает ссылки в скобочных
+узлах и прерваться ошибкой не может.
+
+**Фаза распределения памяти** довольно бесхитростна. Распределение памяти
+начинается с команды `r05_reset_allocator();`, которая подготавливает
+распределитель памяти к построению результата, подробнее её обсудим чуть
+ниже.
+
+Затем последовательно просматривается правая часть и для каждого элемента:
+
+* если он является t- или e-переменной, и есть вхождение этой переменной
+  в образец, которое ещё не было вычеркнуто, генерируется команда сохранения
+  позиции вставки, из образца вычёркивается одно из вхождений этой переменной;
+* если элемент является символом, скобкой, s-переменной, t- или e-переменной,
+  все вхождения в образец которой вычеркнуты, генерируется команда создания
+  этого элемента, в том числе создания копии переменной.
+
+Очевидно, «вычёркивание» позволяет находить вхождения переменных, которые
+копировать не нужно, достаточно только переносить.
+
+При создании скобок сохраняются их позиции в списке свободных узлов — они
+нужны будут на стадии сборки результата для провязывания их между собой.
+
+Рантайм содержит внутреннюю переменную `s_free_ptr`, которая указывает
+на следующий непроинициализированный узел в списке свободных узлов. Функция
+`r05_reset_allocator();` устанавливает этот указатель на начало списка
+свободных узлов (а также сообщает профилировщику, что анализ левой части
+закончился, начался синтез правой).
+
+Команды создания новых элементов инициализируют узлы, начиная с `s_free_ptr`,
+при этом сдвигая этот указатель вперёд. Если указатель `s_free_ptr` указывает
+на `s_end_free_list`, то команды создания запрашивают у операционной системы
+память для создания новых узлов. Если память выделить не удаётся, либо число
+созданных узлов превысило `R05_MEMORY_LIMIT` (см. [раздел 3][3]), программа
+завершается с выдачей аварийного дампа.
+
+Команда сохранения позиции вставки возвращает текущее значение `s_free_ptr`,
+не сдвигая его. Однако, есть один нюанс. Позиция вставки может указывать
+только на актуальный узел, поэтому, когда `s_free_ptr` ссылается
+на `s_end_free_list`, распределяется память для новых узлов. Следовательно,
+запрос позиции вставки может привести к остановке программы с выдачей аварийного
+дампа. Это не ошибка в API, это так и было задумано. Поэтому команды сохранения
+позиции могут располагаться только во второй фазе — фазе распределения памяти.
+
+Точно также, как и команды сопоставления слева/справа, команды распределения
+памяти строятся по одному шаблону и имеют вид
+
+    r05_alloc_***(«значение»);
+
+где `***` и `«значение»` определяются таблицей:
+
+
+`***`           | `«значение»`
+----------------|---------------------------------------------------------------
+`char`          | символьный литерал вида `'a'`, `'\n'` или `'\ooo'`
+`chars`         | `"строка", длина`, например, `"abc", 3`
+`number`        | целое число с суффиксом `UL`, например `42UL`
+`function`      | указатель на описатель функции, `&r05f_ИмяФункции`
+`open_bracket`  | позиция, `n+j`
+`close_bracket` | позиция, `n+j`
+`open_call`     | позиция, `n+j`
+`close_call`    | позиция, `n+j`
+`insert_pos`    | позиция, `n+j`
+`svar`          | s-переменная, `sVar_n`
+`tvar`          | t-переменная, `tVar_n`
+`evar`          | e-переменная, пара указателей: `eVar_b_n, eVar_e_n`
+
+Функция `r05_alloc_chars()` добавлена для оптимизации случая, когда несколько
+литер идут подряд. Аналогичной оптимизации для левой части не предусмотрено,
+поскольку по опыту автора эта оптимизация нужна гораздо реже.
+
+Странная функция `r05_alloc_insert_pos()` добавлена в API для единообразия
+генерации кода для второй фазы — чтобы не рассматривать частный случай отдельно.
+Для данной операции в API предусмотрена функция `r05_insert_pos()`, возвращающая
+позицию вставки, а `r05_alloc_insert_pos` — это просто макрообёртка над ней.
+
+Теперь становится понятным, зачем нужен в коде предложения массив
+
+    struct r05_node *n[k] = { 0 };
+
+и почему его может не быть. В этом массиве сохраняются указатели на скобки
+и позиции вставки — если таковых в правой части нет, то массив из нуля элементов
+не создаётся.
+
+Команды третьей фазы предложения (и второй фазы обработки правой части) более
+разнообразны.
+
+**Помещение угловых скобок на стек** выполняется командой
+
+    r05_push_stack(n[j]);
+
+где `n[j]` должен ссылаться на угловую скобку. Эта функция просто кладёт узел
+на вершину стека `s_stack_ptr`, как было описано в самом начале раздела.
+
+Первичное активное подвыражение — это пара скобок активации, такая что
+
+1. она самая левая;
+2. внутри неё при этом нет других пар скобок активации.
+
+Нетрудно заметить, что самая левая закрывающая угловая скобка будет принадлежать
+первичному активному подвыражению. И вообще, функции в поле зрения будут
+вычисляться в порядке перечисления их закрывающих угловых скобок:
+
+    <F <G > <H <I > > >
+          1       2 3 4
+
+Поэтому порядок команд `r05_push_stack` определяется порядком закрывающих
+угловых скобок:
+
+* первой на стек кладётся самая правая угловая скобка,
+* после каждой закрывающей угловой скобки на стек кладётся парная ей
+  открывающая.
+
+Например, для выражения выше, скобки на стек будут положены в следующем порядке:
+
+    <F <G > <H <I > > >
+    2  8  7 4  6  5 3 1
+
+Легко убедиться, что они дадут именно ту картину связей, которая рассматривалась
+в самом начале раздела.
+
+**Связывание круглых скобок** выполняется командой
+
+    r05_link_brackets(n[i], n[j]);
+
+Тут всё просто — поля `info.link` обоих узлов проставляются друг на друга.
+
+**Перенос переменных в их позиции** выполняется командами
+
+    r05_splice_tvar(n[j], tVar_n);
+
+    r05_splice_evar(n[j], eVar_b_n, eVar_e_n);
+
+Обе команды переносят значения переменных _перед_ сохранённым указателем.
+
+**Перенос подготовленного результата в поле зрения:**
+
+    r05_splice_from_freelist(arg_begin);
+
+Должна выполняться после всех команд `r05_splice_?var`.
+
+Команда переносит фрагмент списка свободных узлов от начала до текущего
+положения `s_free_ptr` (не включая сам `s_free_ptr`) перед открывающей
+угловой скобкой первичного активного подвыражения. Вернее того, что от него
+осталось, поскольку команды `r05_splice_?var` уже перенесли его фрагменты
+в подготовленный результат.
+
+**Удаление первичного активного подвыражения из поля зрения:**
+
+    r05_splice_to_freelist(arg_begin, arg_end);
+
+Команда переносит первичное активное подвыражение в список свободных узлов.
+
+**Рассмотренных сведений достаточно для того, чтобы читать сгенерированный
+код на Си для программ на Рефале.**
+
+**Пример.** Функция
+
+    $ENTRY Apply {
+      s.Fn e.Argument = <Mu s.Fn e.Argument>;
+
+      (t.Closure e.Bounded) e.Argument =
+        <Apply t.Closure e.Bounded e.Argument>;
+    }
+
+компилируется в
+
+    static void r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_end) {
+      r05_this_is_generated_function();
+
+      do {
+        struct r05_node *sFn_1;
+        struct r05_node *eArgument_b_1;
+        struct r05_node *eArgument_e_1;
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[3] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* s.Fn e.Argument */
+        if (! r05_svar_left(&sFn_1, bb+0, be+0))
+          continue;
+        eArgument_b_1 = bb[0];
+        eArgument_e_1 = be[0];
+
+        r05_reset_allocator();
+        r05_alloc_open_call(n+0);
+        r05_alloc_function(&r05f_Mu);
+        r05_alloc_svar(sFn_1);
+        r05_alloc_insert_pos(n+1);
+        r05_alloc_close_call(n+2);
+        r05_push_stack(n[2]);
+        r05_push_stack(n[0]);
+        r05_splice_evar(n[1], eArgument_b_1, eArgument_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      do {
+        struct r05_node *eArgument_b_1;
+        struct r05_node *eArgument_e_1;
+        struct r05_node *tClosure_1;
+        struct r05_node *eBounded_b_1;
+        struct r05_node *eBounded_e_1;
+        struct r05_node *bb[2] = { 0 };
+        struct r05_node *be[2] = { 0 };
+        struct r05_node *n[3] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* (t.Closure e.Bounded) e.Argument */
+        if (! r05_brackets_left(bb+1, be+1, bb+0, be+0))
+          continue;
+        eArgument_b_1 = bb[0];
+        eArgument_e_1 = be[0];
+        if (! r05_tvar_left(&tClosure_1, bb+1, be+1))
+          continue;
+        eBounded_b_1 = bb[1];
+        eBounded_e_1 = be[1];
+
+        r05_reset_allocator();
+        r05_alloc_open_call(n+0);
+        r05_alloc_function(&r05f_Apply);
+        r05_alloc_insert_pos(n+1);
+        r05_alloc_close_call(n+2);
+        r05_push_stack(n[2]);
+        r05_push_stack(n[0]);
+        r05_splice_tvar(n[1], tClosure_1);
+        r05_splice_evar(n[1], eBounded_b_1, eBounded_e_1);
+        r05_splice_evar(n[1], eArgument_b_1, eArgument_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      r05_recognition_impossible();
+    }
+    struct r05_function r05f_Apply = { r05c_Apply, "Apply" };
+
+**Пример.** Функция
+
+    $ENTRY Map {
+      t.Fn t.Next e.Tail = <Apply t.Fn t.Next> <Map t.Fn e.Tail>;
+
+      t.Fn = ;
+    }
+
+компилируется в
+
+    static void r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end) {
+      r05_this_is_generated_function();
+
+      do {
+        struct r05_node *tFn_1;
+        struct r05_node *tNext_1;
+        struct r05_node *eTail_b_1;
+        struct r05_node *eTail_e_1;
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[6] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* t.Fn t.Next e.Tail */
+        if (! r05_tvar_left(&tFn_1, bb+0, be+0))
+          continue;
+        if (! r05_tvar_left(&tNext_1, bb+0, be+0))
+          continue;
+        eTail_b_1 = bb[0];
+        eTail_e_1 = be[0];
+
+        r05_reset_allocator();
+        r05_alloc_open_call(n+0);
+        r05_alloc_function(&r05f_Apply);
+        r05_alloc_insert_pos(n+1);
+        r05_alloc_close_call(n+2);
+        r05_alloc_open_call(n+3);
+        r05_alloc_function(&r05f_Map);
+        r05_alloc_tvar(tFn_1);
+        r05_alloc_insert_pos(n+4);
+        r05_alloc_close_call(n+5);
+        r05_push_stack(n[5]);
+        r05_push_stack(n[3]);
+        r05_push_stack(n[2]);
+        r05_push_stack(n[0]);
+        r05_splice_tvar(n[1], tFn_1);
+        r05_splice_tvar(n[1], tNext_1);
+        r05_splice_evar(n[4], eTail_b_1, eTail_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      do {
+        struct r05_node *tFn_1;
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* t.Fn */
+        if (! r05_tvar_left(&tFn_1, bb+0, be+0))
+          continue;
+        if (! r05_empty_seq(bb[0], be[0]))
+          continue;
+
+        r05_reset_allocator();
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      r05_recognition_impossible();
+    }
+    struct r05_function r05f_Map = { r05c_Map, "Map" };
+
+**Пример.** Функция
+
+    DoLoadFile {
+      /* пусто */ 0 = /* конец файла, пропускаем тут пустую строку */;
+
+      e.Line 0 = (e.Line) /* конец файла */;
+
+      e.Line = (e.Line) <DoLoadFile <Get <LOAD-SAVE-HANDLE>>>;
+    }
+
+компилируется в
+
+    static void r05c_DoLoadFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
+      r05_this_is_generated_function();
+
+      do {
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* 0 */
+        if (! r05_number_left(0UL, bb+0, be+0))
+          continue;
+        if (! r05_empty_seq(bb[0], be[0]))
+          continue;
+
+        r05_reset_allocator();
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      do {
+        struct r05_node *eLine_b_1;
+        struct r05_node *eLine_e_1;
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[3] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* e.Line 0 */
+        if (! r05_number_right(0UL, bb+0, be+0))
+          continue;
+        eLine_b_1 = bb[0];
+        eLine_e_1 = be[0];
+
+        r05_reset_allocator();
+        r05_alloc_open_bracket(n+0);
+        r05_alloc_insert_pos(n+1);
+        r05_alloc_close_bracket(n+2);
+        r05_link_brackets(n[0], n[2]);
+        r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      do {
+        struct r05_node *eLine_b_1;
+        struct r05_node *eLine_e_1;
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[9] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* e.Line */
+        eLine_b_1 = bb[0];
+        eLine_e_1 = be[0];
+
+        r05_reset_allocator();
+        r05_alloc_open_bracket(n+0);
+        r05_alloc_insert_pos(n+1);
+        r05_alloc_close_bracket(n+2);
+        r05_alloc_open_call(n+3);
+        r05_alloc_function(&r05f_DoLoadFile);
+        r05_alloc_open_call(n+4);
+        r05_alloc_function(&r05f_Get);
+        r05_alloc_open_call(n+5);
+        r05_alloc_function(&r05f_LOAD_SAVE_HANDLE);
+        r05_alloc_close_call(n+6);
+        r05_alloc_close_call(n+7);
+        r05_alloc_close_call(n+8);
+        r05_push_stack(n[8]);
+        r05_push_stack(n[3]);
+        r05_push_stack(n[7]);
+        r05_push_stack(n[4]);
+        r05_push_stack(n[6]);
+        r05_push_stack(n[5]);
+        r05_link_brackets(n[0], n[2]);
+        r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+    }
+    static struct r05_function r05f_DoLoadFile = { r05c_DoLoadFile, "DoLoadFile" };
+
+Заметим, что последнее предложение функции имеет вид `e.Line = …;`, а значит,
+всегда выполняется успешно. Поэтому команда `r05_recognition_impossible();`
+в конце не генерируется.
 
 
 [2]: 2-syntax.md
