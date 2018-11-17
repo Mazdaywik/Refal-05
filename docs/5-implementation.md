@@ -571,7 +571,7 @@ _повторной,)_ то для неё запоминаются все вх�
     static struct r05_node s_begin_view_field;
     static struct r05_node s_end_view_field;
 
-Список свободных узлов ограничен
+Список свободных узлов также ограничен переменными
 
      static struct r05_node s_begin_free_list;
      static struct r05_node s_end_free_list;
@@ -596,7 +596,37 @@ _повторной,)_ то для неё запоминаются все вх�
 макрос препроцессора Си `R05_DUMP_FREE_LIST` — см. [третий раздел][3].
 Наблюдаемые в списке скобки обоих видов обычно не сбалансированы, ссылки
 внутри них могут указывать на произвольные узлы поля зрения или списка
-свободных узлов. Этот список — мусор, подлежащий переработке.
+свободных узлов. Этот список — строительный материал для порождения новых
+узлов поля зрения.
+
+### Общаая структура сгенерированного файла
+
+Исходный файл на Рефале содержит объявления и определения функций и нативные
+вставки (см. далее) и ничего больше. Сгенерированный код на Си имеет следующий
+вид:
+
+    /* Automatically generated file. Don't edit! */
+    #include "refal05rts.h"
+
+
+    〈объявления всех используемых функций〉
+
+    〈определения функций и нативные вставки в порядке их следования в исходнике〉
+
+
+    /* End of file */
+
+Файл `refal05rts.h` содержит определения структур данных поля зрения
+и объявления функций, выполняющих элементарные операции сопоставления с левой
+частью и построения правой части.
+
+В части объявлений описываются дескрипторы как функций, которые в исходном
+файле объявлялись при помощи `$EXTERN`, так и определённых в исходном файле
+функций. Благодаря этому в последующих определениях функций можно ссылаться
+на любые функции из текущей области видимости.
+
+В следующей части записываются скомпилированные тела функций и текст нативных
+вставок в том порядке, в каком они располагались в исходнике.
 
 ### Функции в сгенерированном коде
 
@@ -1988,6 +2018,123 @@ e-переменными такое присваивание нулей буде
 Заметим, что последнее предложение функции имеет вид `e.Line = …;`, а значит,
 всегда выполняется успешно. Поэтому команда `r05_recognition_impossible();`
 в конце не генерируется.
+
+**Пример.** Программа
+
+    $ENTRY Go {
+      = <Prout 'What is your name?'> <Hello <Card>>;
+    }
+
+    Hello {
+      /* пусто */ = <Prout 'Hello!'>;
+      e.UserName = <Prout 'Hello, ' e.UserName '!'>;
+    }
+
+компилируется в следующий текст
+
+    /* Automatically generated file. Don't edit! */
+    #include "refal05rts.h"
+
+
+    extern struct r05_function r05f_Card;
+    extern struct r05_function r05f_Prout;
+    extern struct r05_function r05f_Go;
+    static struct r05_function r05f_Hello;
+
+    static void r05c_Go(struct r05_node *arg_begin, struct r05_node *arg_end) {
+      r05_this_is_generated_function();
+
+      do {
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[6] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /*  */
+        if (! r05_empty_seq(bb[0], be[0]))
+          continue;
+
+        r05_reset_allocator();
+        r05_alloc_open_call(n+0);
+        r05_alloc_function(&r05f_Prout);
+        r05_alloc_chars("What is your name?", 18);
+        r05_alloc_close_call(n+1);
+        r05_alloc_open_call(n+2);
+        r05_alloc_function(&r05f_Hello);
+        r05_alloc_open_call(n+3);
+        r05_alloc_function(&r05f_Card);
+        r05_alloc_close_call(n+4);
+        r05_alloc_close_call(n+5);
+        r05_push_stack(n[5]);
+        r05_push_stack(n[2]);
+        r05_push_stack(n[4]);
+        r05_push_stack(n[3]);
+        r05_push_stack(n[1]);
+        r05_push_stack(n[0]);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      r05_recognition_impossible();
+    }
+    struct r05_function r05f_Go = { r05c_Go, "Go" };
+
+    static void r05c_Hello(struct r05_node *arg_begin, struct r05_node *arg_end) {
+      r05_this_is_generated_function();
+
+      do {
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[2] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /*  */
+        if (! r05_empty_seq(bb[0], be[0]))
+          continue;
+
+        r05_reset_allocator();
+        r05_alloc_open_call(n+0);
+        r05_alloc_function(&r05f_Prout);
+        r05_alloc_chars("Hello!", 6);
+        r05_alloc_close_call(n+1);
+        r05_push_stack(n[1]);
+        r05_push_stack(n[0]);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+
+      do {
+        struct r05_node *eUserName_b_1;
+        struct r05_node *eUserName_e_1;
+        struct r05_node *bb[1] = { 0 };
+        struct r05_node *be[1] = { 0 };
+        struct r05_node *n[3] = { 0 };
+        r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
+        /* e.UserName */
+        eUserName_b_1 = bb[0];
+        eUserName_e_1 = be[0];
+
+        r05_reset_allocator();
+        r05_alloc_open_call(n+0);
+        r05_alloc_function(&r05f_Prout);
+        r05_alloc_chars("Hello, ", 7);
+        r05_alloc_insert_pos(n+1);
+        r05_alloc_char('!');
+        r05_alloc_close_call(n+2);
+        r05_push_stack(n[2]);
+        r05_push_stack(n[0]);
+        r05_splice_evar(n[1], eUserName_b_1, eUserName_e_1);
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (0);
+    }
+    static struct r05_function r05f_Hello = { r05c_Hello, "Hello" };
+
+
+    /* End of file */
+
+
 
 
 [2]: 2-syntax.md
