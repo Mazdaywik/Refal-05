@@ -2134,6 +2134,354 @@ e-переменными такое присваивание нулей буде
 
     /* End of file */
 
+### Некоторые избранные места рантайма
+
+Чтобы ещё лучше понимать работу рефал-машины, рассмотрим некоторые фрагменты
+кода её реализации. Код местами будет упрощён, в частности, будут опущены
+встроенные средства отладки и профилирования. Желающие могут прочитать исходники
+рантайма целиком ([`refal05rts.h`][h], [`refal05rts.c`][c]), они короткие, менее
+2000 строк, но для прикладного программирования, включая даже написание
+нативных вставок, это не нужно. Фрагменты исходников в этом параграфе даются
+только в качестве иллюстрации.
+
+**Примечание.** Фрагменты исходного текста актуальны на момент написания
+документации. В последующем рантайм может обновляться без синхронного обновления
+этого параграфа.
+
+Начнём с начала — с функции `main()`:
+
+    int main(int argc, char **argv) {
+      s_argc = argc;
+      s_argv = argv;
+
+      init_view_field();
+      start_profiler();
+      main_loop();
+      r05_exit(0);
+    }
+
+Глобальные (статические) переменные `s_argc` и `s_argv` сохраняют значения
+аргументов командной строки для того, чтобы их могла прочитать встроенная
+функция `Arg`. Функция `init_view_field()` создаёт вызов `<Go>` в поле зрения.
+`start_profiler()` засекает время начала выполнения программы. `main_loop()` —
+главный цикл преобразования поля зрения. Функция `r05_exit()` завершает работу
+рефал-машины и всей программы целиком.
+
+Подсистему профилирования мы рассматривать не будем, поскольку содержательно
+интересного в ней ничего нет — рефал-машина и без неё останется рефал-машиной.
+
+Функция `init_view_field()` создаёт начальное содержимое поля зрения при помощи
+уже известных нам функций построения результата:
+
+    static void init_view_field(void) {
+      struct r05_node *open, *close;
+
+      r05_reset_allocator();
+      r05_alloc_open_call(&open);
+      r05_alloc_function(&r05f_Go);
+      r05_alloc_close_call(&close);
+      r05_push_stack(close);
+      r05_push_stack(open);
+      r05_splice_from_freelist(s_begin_view_field.next);
+    }
+
+Основной цикл работы рефал-машины (с сокращениями):
+
+    static void main_loop(void) {
+      while (! empty_stack()) {
+        struct r05_node *function;
+
+        s_arg_begin = pop_stack();
+        s_arg_end = pop_stack();
+
+        function = s_arg_begin->next;
+        if (R05_DATATAG_FUNCTION == function->tag) {
+          (function->info.function->ptr)(s_arg_begin, s_arg_end);
+        } else {
+          r05_recognition_impossible();
+        }
+      }
+    }
+
+Скобки активации, которые располагаются в поле зрения, обязательно должны
+образовывать односвязный список — стек скобок активации. Поэтому условие,
+что рефал-машина выполняет шаги до тех пор, пока поле зрения активно — в нём
+есть вызовы функций, эквивалентно условию, что стек скобок активации не пуст.
+
+На каждой итерации со стека снимаются левая и правая скобки — они соответствуют
+первичному активному подвыражению, из следующего после левой скобки узла
+извлекается указатель на функцию и эта функция вызывается с передачей ей
+указателей на скобки. Если справа от левой скобки активации функции
+не оказалось — программа завершается с выдачей аварийного дампа и ошибки
+невозможности отождествления.
+
+Операции со стеком довольно очевидные — просто оперируют с односвязным списком:
+
+    static struct r05_node *s_stack_ptr = NULL;
+
+    void r05_push_stack(struct r05_node *call_bracket) {
+      call_bracket->info.link = s_stack_ptr;
+      s_stack_ptr = call_bracket;
+    }
+
+    static struct r05_node *pop_stack(void) {
+      struct r05_node *res = s_stack_ptr;
+      s_stack_ptr = s_stack_ptr->info.link;
+      return res;
+    }
+
+    static int empty_stack(void) {
+      return (s_stack_ptr == 0);
+    }
+
+Функция `r05_exit()` освобождает память и завершает программу вызовом функции
+`exit()` языка Си (код с сокращениями):
+
+    void r05_exit(int retcode) {
+      end_profiler();
+      free_memory();
+      exit(retcode);
+    }
+
+Профилировщик при остановке выводит статистику, `free_memory()` освобождает
+память, выделенную под узлы в поле зрения и в списке свободных узлов.
+
+Функция `r05_recognition_impossible()` выполняющая аварийный останов при
+невозможности отождествления, реализована посредством `r05_exit()`:
+
+    void r05_recognition_impossible(void) {
+      fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
+      make_dump();
+      r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+    }
+
+Константа `EXIT_CODE_RECOGNITION_IMPOSSIBLE` определена как `201`, функция
+`make_dump()` распечатывает содержимое поля зрения на `stderr`.
+
+Элементарные операции распределения памяти реализованы посредством функции
+`r05_alloc_node()`, которая инициализирует очередной узел в списке свободных
+узлов. Вот как это выглядит в `refal05rts.h` (фрагмент):
+
+    struct r05_node *r05_alloc_node(enum r05_datatag tag);
+
+    struct r05_node *r05_insert_pos(void);
+
+    #define r05_alloc_char(ch) \
+      (r05_alloc_node(R05_DATATAG_CHAR)->info.char_ = (ch))
+
+    void r05_alloc_chars(const char buffer[], size_t len);
+
+    #define r05_alloc_number(num) \
+      (r05_alloc_node(R05_DATATAG_NUMBER)->info.number = (num))
+
+    #define r05_alloc_function(func) \
+      (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function = func)
+
+    . . .
+
+    #define r05_alloc_insert_pos(pos) (*(pos) = r05_insert_pos());
+
+    . . .
+
+Функции `r05_alloc_node()` и `r05_insert_pos()` реализованы так:
+
+    struct r05_node *r05_alloc_node(enum r05_datatag tag) {
+      struct r05_node *node;
+
+      ensure_memory();
+      node = s_free_ptr;
+      s_free_ptr = s_free_ptr->next;
+      node->tag = tag;
+      return node;
+    }
+
+
+    struct r05_node *r05_insert_pos(void) {
+      ensure_memory();
+      return s_free_ptr;
+    }
+
+Функция `ensure_memory()` обеспечивает наличие узлов в позиции `s_free_ptr`,
+т.е. если они есть, управление просто возвращается, если нет — распределяет
+новую память, если распределить память не удалось — программа аварийно
+завершается. После вызова `ensure_memory()` в `r05_alloc_node()` узел в позиции
+`s_free_ptr` получает новый тег, указатель `s_free_ptr` сдвигается вперёд,
+указатель на новый узел возвращается. В `r05_insert_pos()` всё ещё проще —
+обеспечивается (ensure), что указатель `s_free_ptr` указывает на валидный узел
+(не на границу `s_end_free_list`) и этот указатель возвращается.
+
+Функция `ensure_memory()` устроена так:
+
+    static void ensure_memory(void) {
+      if ((s_free_ptr == &s_end_free_list) && ! create_nodes()) {
+        fprintf(stderr, "\nNO MEMORY\n\n");
+        make_dump();
+
+        r05_exit(EXIT_CODE_NO_MEMORY);
+      }
+    }
+
+Если `s_free_ptr` указывает на границу и не удалось выделить новую память —
+аварийно останавливаем программу. Иначе ничего делать не надо. Очевидное
+постусловие: `s_free_ptr` указывает на валидный узел.
+
+Функцию `create_nodes()` рассматривать не будем, отметим лишь, что ради повышения
+быстродействия она выделяет память кусками (chunks) по несколько сотен узлов
+за раз и инициализирует новые узлы тегом `R05_DATATAG_ILLEGAL`.
+
+Рассмотрим операции копирования t- и e-переменных (в первой главе раздела
+давался псевдокод, можете сравнить):
+
+    void r05_alloc_tvar(struct r05_node *sample) {
+      if (is_open_bracket(sample)) {
+        struct r05_node *end_of_sample = sample->info.link;
+        copy_nonempty_evar(sample, end_of_sample);
+      } else {
+        r05_alloc_svar(sample);
+      }
+    }
+
+
+    void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e) {
+      if (! r05_empty_seq(sample_b, sample_e)) {
+        copy_nonempty_evar(sample_b, sample_e);
+      }
+    }
+
+
+    static void copy_nonempty_evar(
+      struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
+    ) {
+      clock_t start_copy_time = clock();
+
+      struct r05_node *bracket_stack = 0;
+
+      while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
+        struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
+
+        if (is_open_bracket(copy)) {
+          copy->info.link = bracket_stack;
+          bracket_stack = copy;
+        } else if (is_close_bracket(copy)) {
+          struct r05_node *open_cobracket = bracket_stack;
+
+          assert(bracket_stack != 0);
+          bracket_stack = bracket_stack->info.link;
+          r05_link_brackets(open_cobracket, copy);
+        } else {
+          copy->info = evar_b_sample->info;
+        }
+
+        move_left(&evar_b_sample, &evar_e_sample);
+      }
+
+      assert(bracket_stack == 0);
+
+      add_copy_tevar_time(clock() - start_copy_time);
+    }
+
+Видно, что для копирования объектных выражений рекурсивных вызовов не требуется.
+Аналогично не требуется рекурсии и для сравнения выражений на равенство:
+
+    int r05_repeated_evar_left(
+      struct r05_node **evar_b, struct r05_node **evar_e,
+      struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+      struct r05_node **first, struct r05_node **last
+    ) {
+      clock_t start_match = clock();
+      struct r05_node *current = *first;
+      struct r05_node *cur_sample = evar_b_sample;
+      struct r05_node *copy_last = *last;
+
+      while (
+        /* порядок условий важен */
+        ! r05_empty_seq(current, copy_last)
+          && ! r05_empty_seq(cur_sample, evar_e_sample)
+          && equal_nodes(current, cur_sample)
+      ) {
+        move_left(&cur_sample, &evar_e_sample);
+        move_left(&current, &copy_last);
+      }
+
+      add_match_repeated_evar_time(clock() - start_match);
+
+      /*
+        Здесь r05_empty_seq(current, copy_last)
+          || r05_empty_seq(cur_sample, evar_e_sample
+          || ! equal_nodes(current, cur_sample)
+      */
+      if (r05_empty_seq(cur_sample, evar_e_sample)) {
+        /* Это нормальное завершение цикла — вся образцовая переменная проверена */
+
+        if (r05_empty_seq(current, copy_last)) {
+          *evar_b = *first;
+          *evar_e = *last;
+
+          *first = 0;
+          *last = 0;
+        } else if (current != *first) {
+          *evar_b = *first;
+          *evar_e = current->prev;
+
+          *first = current;
+        } else {
+          *evar_b = 0;
+          *evar_e = 0;
+        }
+
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+
+    static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
+      if (node1->tag != node2->tag) {
+        return 0;
+      } else {
+        switch (node1->tag) {
+          case R05_DATATAG_CHAR:
+            return (node1->info.char_ == node2->info.char_);
+
+          case R05_DATATAG_NUMBER:
+            return (node1->info.number == node2->info.number);
+
+          case R05_DATATAG_FUNCTION:
+            return (node1->info.function == node2->info.function);
+
+          /*
+            Сведения о связях между скобками нужны для других целей,
+            здесь же нам важны только их одновременные появления.
+          */
+          case R05_DATATAG_OPEN_BRACKET:
+          case R05_DATATAG_CLOSE_BRACKET:
+            return 1;
+
+          /*
+            Данная функция предназначена только для использования функциями
+            сопоставления с образцом. Поэтому других узлов мы тут не ожидаем.
+          */
+          default:
+            r05_switch_default_violation(node1->tag);
+        }
+      }
+    }
+
+Функция `move_left()`, упоминавшаяся выше, сужает диапазон на один узел:
+
+    static void move_left(struct r05_node **first, struct r05_node **last) {
+      /* assert((*first == 0) == (*last == 0)); */
+      if (*first == 0) assert (*last == 0);
+      if (*first != 0) assert (*last != 0);
+
+      if (*first == *last) {
+        *first = 0;
+        *last = 0;
+      } else {
+        *first = (*first)->next;
+      }
+    }
+
 
 
 
@@ -2148,3 +2496,5 @@ e-переменными такое присваивание нулей буде
 [rope-habr]: https://habr.com/post/144736/
 [rope-ifmo]: http://neerc.ifmo.ru/wiki/index.php?title=Rope
 [pfds]: https://github.com/gogabr/pfds
+[h]: https://github.com/Mazdaywik/Refal-05/blob/master/lib/refal05rts.h
+[c]: https://github.com/Mazdaywik/Refal-05/blob/master/lib/refal05rts.c
