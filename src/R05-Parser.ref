@@ -41,12 +41,7 @@ $ENTRY R05-Parse-Tokens {
   e.Tokens =
     <R05-Parse-Aux
       <SemanticCheck
-        <ParseElements
-          <EL-Create>
-          (/* имена вызываемых функций */)
-          (/* сгенерированное дерево */)
-          e.Tokens
-        >
+        <ParseProgram e.Tokens <EL-Create>>
       >
     >
 }
@@ -99,19 +94,222 @@ CompareError {
 }
 
 
+*$ENUM Program, Element
+
+/*
+  Program ::= Program Element | Program ';' | ε.
+
+  <ParseProgram e.Stack e.Tokens t.ErrorList>
+    == t.ErrorList (e.References) e.Tree
+*/
+ParseProgram {
+  /* Конец разбора */
+  (Program (e.References) e.Tree) (TkEOF t.SrcPos) t.ErrorList =
+    t.ErrorList (e.References) e.Tree;
+
+  /* Program ::= Program Element */
+  (Program (e.References) e.Tree) (Element (e.ElementReferences) e.Elements)
+  e.Tokens t.ErrorList =
+    <ParseProgram
+      (Program (e.References e.ElementReferences) e.Tree e.Elements)
+      e.Tokens t.ErrorList
+    >;
+
+  /* Program ::= Program ';' */
+  (Program (e.References) e.Tree) (TkSemicolon t.Pos) e.Tokens t.ErrorList =
+    <ParseProgram (Program (e.References) e.Tree) e.Tokens t.ErrorList>;
+
+  /* Program ::= Program … */
+  (Program (e.References) e.Tree) e.Tokens t.ErrorList =
+    <ParseProgram
+      (Program (e.References) e.Tree) <ParseElement e.Tokens t.ErrorList>
+    >;
+
+  /* Program ::= … */
+  e.Tokens t.ErrorList =
+    <ParseProgram (Program (/* references */) /* tree */) e.Tokens t.ErrorList>;
+}
+
+
+*$ENUM List
+
+/*
+  Element ::= List ';' | Function | NATIVE-CODE.
+
+  <ParseElement e.Stack e.Tokens t.ErrorList>
+    == (Element (e.References) e.Elements) e.Tokens t.ErrorList
+*/
+ParseElement {
+  /* Element ::= List ';' */
+  (List s.ScopeClass e.Names) (TkSemicolon t.SrcPos) e.Tokens t.ErrorList =
+    (Element
+      (/* no references */)
+      <Map (parser_MakeListFunction s.ScopeClass) e.Names>
+    )
+    e.Tokens t.ErrorList;
+
+  /* Element ::= List … */
+  (List s.ScopeClass e.Names) t.Unexpected e.Tail t.ErrorList =
+    <ParseElement
+      (List s.ScopeClass e.Names) (TkSemicolon NO-POS) t.Unexpected e.Tail
+      <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
+    >;
+
+  /* Element ::= List~ … */
+  (TkEnum t.SrcPos) e.Tokens t.ErrorList =
+    <ParseElement <ParseList (TkEnum t.SrcPos) e.Tokens t.ErrorList>>;
+
+  (TkEEnum t.SrcPos) e.Tokens t.ErrorList =
+    <ParseElement <ParseList (TkEEnum t.SrcPos) e.Tokens t.ErrorList>>;
+
+  (TkExtern t.SrcPos) e.Tokens t.ErrorList =
+    <ParseElement <ParseList (TkExtern t.SrcPos) e.Tokens t.ErrorList>>;
+
+
+  /* Element ::= Function */
+  (Function t.SrcPos s.ScopeClass (e.Name) (e.References) e.Body) e.Tokens
+  t.ErrorList =
+    (Element
+      (e.References)
+      (Function t.SrcPos s.ScopeClass (e.Name) e.Body)
+    )
+    e.Tokens t.ErrorList;
+
+  /* Element ::= Function~ */
+  (TkEntry t.SrcPos) e.Tokens t.ErrorList =
+    <ParseElement
+      <ParseFunction (TkEntry t.SrcPos) e.Tokens t.ErrorList>
+    >;
+
+  (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
+    <ParseElement
+      <ParseFunction (TkName t.SrcPos e.Name) e.Tokens t.ErrorList>
+    >;
+
+
+  /* Element ::= NATIVE-CODE */
+  (TkNative t.SrcPos e.Native) e.Tokens t.ErrorList =
+    (Element (/* no references */) (Native e.Native)) e.Tokens t.ErrorList;
+
+  t.Unexpected e.Tokens t.ErrorList =
+    e.Tokens <EL-AddUnexpected t.ErrorList t.Unexpected 'directive or name'>;
+}
+
+$ENTRY parser_MakeListFunction {
+  s.ScopeClass (t.SrcPos e.Name) =
+    (Function t.SrcPos s.ScopeClass (e.Name) Sentences /* пусто */);
+}
+
+
+*$ENUM ListKeyWord
+
+/*
+  List ::= List ',' NAME | ListKeyWord NAME.
+
+  <ParseList e.Stack e.Tokens t.ErrorList>
+    == (List s.ScopeClass (t.SrcPos e.Name)*) e.Tokens t.ErrorList
+*/
+ParseList {
+  /* List ::= List ',' NAME */
+  (List s.ScopeClass e.Names)
+  (TkComma t.CommaSrcPos) (TkName t.NameSrcPos e.Name) e.Tokens t.ErrorList =
+    <ParseList
+      (List s.ScopeClass e.Names (t.NameSrcPos e.Name)) e.Tokens t.ErrorList
+    >;
+
+  (List s.ScopeClass e.Names) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
+    <ParseList
+      (List s.ScopeClass e.Names (t.SrcPos e.Name))
+      e.Tokens
+      <EL-AddErrorAt t.SrcPos 'expected comma'>
+    >;
+
+  (List s.ScopeClass e.Names) (TkComma t.SrcPos) e.Tokens t.ErrorList =
+    <ParseList
+      (List s.ScopeClass e.Names) e.Tokens
+      <EL-AddErrorAt t.SrcPos 'missed function name'>
+    >;
+
+  (List s.ScopeClass e.Names) e.Tokens t.ErrorList =
+    (List s.ScopeClass e.Names) e.Tokens t.ErrorList;
+
+  /* List ::= ListKeyWord NAME */
+  (ListKeyWord s.ScopeClass) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
+    <ParseList (List s.ScopeClass (t.SrcPos e.Name)) e.Tokens t.ErrorList>;
+
+  /* List ::= ListKeyWord~ … */
+  e.Tokens t.ErrorList =
+    <ParseList <ParseListKeyWord e.Tokens t.ErrorList>>;
+}
+
+
+/*
+  ListKeyWord ::= '$ENUM' | '$EENUM' | '$EXTERN'.
+
+  <ParseListKeyWord e.Tokens t.ErrorList>
+    == (ListKeyWord s.ScopeClass) e.Tokens t.ErrorList
+*/
+ParseListKeyWord {
+  (TkEnum t.SrcPos) e.Tokens t.ErrorList =
+    (ListKeyWord Local) e.Tokens t.ErrorList;
+
+  (TkEEnum t.SrcPos) e.Tokens t.ErrorList =
+    (ListKeyWord Entry) e.Tokens t.ErrorList;
+
+  (TkExtern t.SrcPos) e.Tokens t.ErrorList =
+    (ListKeyWord Extern) e.Tokens t.ErrorList;
+
+  /* предложение не должно выполняться, но должно быть для единообразия */
+  t.Unexpected e.Tokens t.ErrorList =
+    (ListKeyWord Extern) t.Unexpected e.Tokens
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'directive'>;
+}
+
+
+*$ENUM Scope
+
+/*
+  Function ::= Scope NAME '{' Body '}'.
+
+  <ParseFunction e.Stack e.Tokens t.ErrorList>
+    == (Function t.SrcPos s.ScopeClass (e.Name) (e.References) e.Body)?
+       e.Tokens t.ErrorList
+*/
+ParseFunction {
+  (Scope s.ScopeClass) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
+    <ParseFunction-Aux
+      <ParseFunction_
+        s.ScopeClass (e.Name) t.SrcPos t.ErrorList (/* references */) e.Tokens
+      >
+    >;
+
+  (Scope s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
+    t.Unexpected e.Tokens
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>;
+
+  /* Function ::= Scope~ … */
+  e.Tokens t.ErrorList =
+    <ParseFunction <ParseScope e.Tokens t.ErrorList>>;
+}
+
+/*
+  Scope ::= '$ENTRY'?.
+*/
+ParseScope {
+  (TkEntry t.SrcPos) e.Tokens t.ErrorList = (Scope Entry) e.Tokens t.ErrorList;
+  e.Tokens t.ErrorList = (Scope Local) e.Tokens t.ErrorList;
+}
+
+ParseFunction-Aux {
+  ((Function t.SrcPos s.ScopeClass (e.Name) e.Body))
+  t.ErrorList (e.References) e.Tokens =
+    (Function t.SrcPos s.ScopeClass (e.Name) (e.References) e.Body)
+    e.Tokens t.ErrorList;
+}
+
+
 /*
   Трансляция осуществляется обычным методом рекурсивного спуска.
-
-  TranslationUnit = Element* .
-
-  Element =
-    '$ENUM' NameList |
-    '$EENUM' NameList |
-    '$EXTERN' NameList |
-    '$ENTRY' Function |
-    Function .
-
-  NameList = Name ',' NameList | Name ';' .
 
   Function = Name Block .
 
@@ -137,130 +335,10 @@ CompareError {
 */
 
 /*
-  TranslationUnit = Element* .
-*/
-
-/*
-  Element =
-    '$ENUM' NameList |
-    '$EENUM' NameList |
-    '$EXTERN' NameList |
-    '$ENTRY' Function |
-    Function .
-*/
-
-ParseElements {
-  t.ErrorList (e.References) (e.Generated) (TkEOF t.SrcPos) =
-    t.ErrorList (e.References) e.Generated;
-
-  t.ErrorList (e.References) (e.Generated)
-  (TkExtern t.SrcPos) e.Tail =
-    <ParseElements-ElementParsed
-      (e.Generated)
-      <ParseNameList (/* generated */) t.ErrorList (e.References) Extern e.Tail>
-    >;
-
-  t.ErrorList (e.References) (e.Generated)
-  (TkEnum t.SrcPos) e.Tail =
-    <ParseElements-ElementParsed
-      (e.Generated)
-      <ParseNameList (/* generated */) t.ErrorList (e.References) Local e.Tail>
-    >;
-
-  t.ErrorList (e.References) (e.Generated)
-  (TkEEnum t.SrcPos) e.Tail =
-    <ParseElements-ElementParsed
-      (e.Generated)
-      <ParseNameList (/* generated */) t.ErrorList (e.References) Entry e.Tail>
-    >;
-
-  t.ErrorList (e.References) (e.Generated)
-  (TkEntry t.EntrySrcPos) (TkName t.NameSrcPos e.Name) e.Tail =
-    <ParseElements-ElementParsed
-      (e.Generated)
-      <ParseFunction
-        Entry (e.Name) t.NameSrcPos t.ErrorList (e.References) e.Tail
-      >
-    >;
-
-  t.ErrorList (e.References) (e.Generated)
-  (TkEntry t.EntrySrcPos) t.Unexpected e.Tail =
-    <ParseElements
-      <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
-      (e.References) (e.Generated) t.Unexpected e.Tail
-    >;
-
-  t.ErrorList (e.References) (e.Generated) (TkName t.SrcPos e.Name) e.Tail =
-    <ParseElements-ElementParsed
-      (e.Generated)
-      <ParseFunction Local (e.Name) t.SrcPos t.ErrorList (e.References) e.Tail>
-    >;
-
-  t.ErrorList (e.References) (e.Generated) (TkSemicolon t.SrcPos) e.Tail =
-    <ParseElements t.ErrorList (e.References) (e.Generated) e.Tail>;
-
-  t.ErrorList (e.References) (e.Generated) (TkNative t.SrcPos e.Native) e.Tail =
-    <ParseElements
-      t.ErrorList (e.References) (e.Generated (Native e.Native)) e.Tail
-    >;
-
-  t.ErrorList (e.References) (e.Generated) t.Unexpected e.Tail =
-    <ParseElements
-      <EL-AddUnexpected t.ErrorList t.Unexpected 'directive or name'>
-      (e.References) (e.Generated) e.Tail
-    >;
-}
-
-ParseElements-ElementParsed {
-  (e.Generated) (e.NewGenerated) t.ErrorList (e.References) e.Tail =
-    <ParseElements
-      t.ErrorList (e.References) (e.Generated e.NewGenerated) e.Tail
-    >;
-}
-
-/*
-  NameList = Name ',' NameList | Name ';' .
-*/
-
-ParseNameList {
-  (e.Generated) t.ErrorList (e.References)
-  s.ScopeClass (TkName t.SrcPos e.Name) e.Tail =
-    <ParseNameList-Tail
-      (
-        e.Generated
-        (Function t.SrcPos s.ScopeClass (e.Name) Sentences /* пусто */)
-      )
-      t.ErrorList (e.References) s.ScopeClass e.Tail
-    >;
-
-  (e.Generated) t.ErrorList (e.References) s.ScopeClass t.Unexpected e.Tail =
-    (e.Generated)
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>
-    (e.References) t.Unexpected e.Tail;
-}
-
-ParseNameList-Tail {
-  (e.Generated) t.ErrorList (e.References)
-  s.ScopeClass (TkComma t.SrcPos) e.Tail =
-    <ParseNameList
-      (e.Generated) t.ErrorList (e.References) s.ScopeClass e.Tail
-    >;
-
-  (e.Generated) t.ErrorList (e.References)
-  s.ScopeClass (TkSemicolon t.SrcPos) e.Tail =
-    (e.Generated) t.ErrorList (e.References) e.Tail;
-
-  (e.Generated) t.ErrorList (e.References) s.ScopeClass t.Unexpected e.Tail =
-    (e.Generated)
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or semicolon'>
-    (e.References) t.Unexpected e.Tail;
-}
-
-/*
   Function = Name '{' Sentence* '}'
 */
 
-ParseFunction {
+ParseFunction_ {
   s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList (e.References)
   (TkOpenBlock t.SrcPos) e.Tail =
     <ParseFunction-BlockParsed
