@@ -266,7 +266,7 @@ ParseListKeyWord {
 }
 
 
-*$ENUM Scope
+*$ENUM Scope, Body
 
 /*
   Function ::= Scope NAME '{' Body '}'.
@@ -276,11 +276,40 @@ ParseListKeyWord {
        e.Tokens t.ErrorList
 */
 ParseFunction {
-  (Scope s.ScopeClass) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    <ParseFunction-Aux
-      <ParseFunction_
-        s.ScopeClass (e.Name) t.SrcPos t.ErrorList (/* references */) e.Tokens
-      >
+  /* Function ::= Scope NAME '{' Body '}' */
+  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) (TkOpenBlock t.OpenSrcPos)
+  (Body (e.References) e.Body) (TkCloseBlock t.CloseSrcPos) e.Tokens
+  t.ErrorList =
+    (Function t.NameSrcPos s.ScopeClass (e.Name) (e.References) e.Body)
+    e.Tokens t.ErrorList;
+
+  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) (TkOpenBlock t.OpenSrcPos)
+  (Body (e.References) e.Body) t.Unexpected e.Tokens t.ErrorList =
+    <ParseFunction
+      (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name)
+      (TkOpenBlock t.OpenSrcPos) (Body (e.References) e.Body)
+      (TkCloseBlock NO-POS) t.Unexpected e.Tokens
+      <EL-AddUnexpected t.ErrorList t.Unexpected '}'>
+    >;
+
+  /* Function ::= Scope NAME '{' Body~ … */
+  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) (TkOpenBlock t.OpenSrcPos)
+  e.Tokens t.ErrorList =
+    <ParseFunction
+      (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name)
+      (TkOpenBlock t.OpenSrcPos)
+      <ParseBody e.Tokens t.ErrorList>
+    >;
+
+  (Scope s.ScopeClass) (TkName t.NameSrcPos) t.Unexpected e.Tokens t.ErrorList =
+    t.Unexpected e.Tokens
+    <EL-AddErrorAt t.ErrorList t.Unexpected 'open brace'>;
+
+  (Scope s.ScopeClass) (TkOpenBlock t.OpenSrcPos) e.Tokens t.ErrorList =
+    <ParseFunction
+      (Scope s.ScopeClass) (TkName t.OpenSrcPos 'CTHULHU-FHTAGN')
+      (TkOpenBlock t.OpenSrcPos) e.Tokens
+      <EL-AddErrorAt t.OpenSrcPos 'function name is missed'>
     >;
 
   (Scope s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
@@ -300,18 +329,49 @@ ParseScope {
   e.Tokens t.ErrorList = (Scope Local) e.Tokens t.ErrorList;
 }
 
-ParseFunction-Aux {
-  ((Function t.SrcPos s.ScopeClass (e.Name) e.Body))
-  t.ErrorList (e.References) e.Tokens =
-    (Function t.SrcPos s.ScopeClass (e.Name) (e.References) e.Body)
-    e.Tokens t.ErrorList;
+
+/*
+  Body ::= Sentences | NATIVE-CODE
+
+  <ParseBody e.Stack e.Tokens t.ErrorList>
+    == (Body (e.References) e.Body) e.Tokens t.ErrorList
+*/
+ParseBody {
+  /* Body ::= NATIVE-CODE */
+  (TkNative t.SrcPos e.Native) e.Tokens t.ErrorList =
+    (Body (/* no references */) Native e.Native) e.Tokens t.ErrorList;
+
+  /* Body ::= Sentences */
+  (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList =
+    (Body (e.References) Sentences e.Sentences) e.Tokens t.ErrorList;
+
+  /* Body ::= Sentences~ … */
+  e.Tokens t.ErrorList =
+    <ParseBody <ParseSentences e.Tokens t.ErrorList>>;
+}
+
+
+/*
+  Sentences ::= …
+
+  <ParseSentences e.Stack e.Tokens t.ErrorList>
+    == (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList
+*/
+ParseSentences {
+  e.Tokens t.ErrorList =
+    <ParseSentences-Aux
+      <DoParseBlock t.ErrorList (/* references */) (/* sentences */) e.Tokens>
+    >;
+}
+
+ParseSentences-Aux {
+  (Sentences e.Sentences) t.ErrorList (e.References) e.Tokens =
+    (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList;
 }
 
 
 /*
   Трансляция осуществляется обычным методом рекурсивного спуска.
-
-  Function = Name Block .
 
   Block = '{' Sentence* '}' .
 
@@ -338,58 +398,10 @@ ParseFunction-Aux {
   Function = Name '{' Sentence* '}'
 */
 
-ParseFunction_ {
-  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList (e.References)
-  (TkOpenBlock t.SrcPos) e.Tail =
-    <ParseFunction-BlockParsed
-      s.ScopeClass (e.Name) t.NameSrcPos
-      <ParseBlock t.ErrorList (e.References) e.Tail>
-    >;
-
-  s.ScopeClass (e.Name) t.NameSrcPos t.ErrorList (e.References)
-  t.Unexpected e.Tail =
-    (/* ничего не сгенерировали */)
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'open brace'>
-    (e.References) t.Unexpected e.Tail;
-}
-
-ParseFunction-BlockParsed {
-  s.ScopeClass (e.Name) t.SrcPos (e.Body) t.ErrorList (e.References) e.Tail =
-    ((Function t.SrcPos s.ScopeClass (e.Name) e.Body))
-    t.ErrorList (e.References) e.Tail;
-}
-
-/*
-  <ParseBlock t.ErrorList (e.References) e.Tokens>
-    == t.ErrorList (e.References) e.Tokens
-
-  t.FunctionBody ::= (((e.Pattern) (e.Result))*)
-
-  Открывающая скобка должна отсутствовать во входном потоке.
-*/
-ParseBlock {
-  t.ErrorList (e.References) (TkNative t.SrcPos e.Native) e.Tail =
-    (Native e.Native)
-    <ParseBlock-CloseBlock t.ErrorList (e.References) e.Tail>;
-
-  t.ErrorList (e.References) e.Tokens =
-    <DoParseBlock
-      t.ErrorList (e.References) (/* sentences */) e.Tokens
-    >;
-}
-
-ParseBlock-CloseBlock {
-  t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tail =
-    t.ErrorList (e.References) e.Tail;
-
-  t.ErrorList (e.References) t.Unexpected e.Tail =
-    <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>
-    (e.References) t.Unexpected e.Tail;
-}
-
 DoParseBlock {
   t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
-    (Sentences e.Sentences) t.ErrorList (e.References) e.Tail;
+    (Sentences e.Sentences) t.ErrorList (e.References)
+    (TkCloseBlock t.SrcPos) e.Tail;
 
   t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail =
     (Sentences e.Sentences)
@@ -421,7 +433,7 @@ ParseSentence-Aux {
   (e.Sentences) (e.Pattern) (e.Result)
   t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens =
     (Sentences e.Sentences ((e.Pattern) (e.Result)))
-    t.ErrorList (e.References) e.Tokens;
+    t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens;
 
   (e.Sentences) (e.Pattern) (e.Result)
   t.ErrorList (e.References) t.Unexpected e.Tokens =
