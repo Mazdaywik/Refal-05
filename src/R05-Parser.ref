@@ -221,13 +221,13 @@ ParseList {
     <ParseList
       (List s.ScopeClass e.Names (t.SrcPos e.Name))
       e.Tokens
-      <EL-AddErrorAt t.SrcPos 'expected comma'>
+      <EL-AddErrorAt t.ErrorList t.SrcPos 'expected comma'>
     >;
 
   (List s.ScopeClass e.Names) (TkComma t.SrcPos) e.Tokens t.ErrorList =
     <ParseList
       (List s.ScopeClass e.Names) e.Tokens
-      <EL-AddErrorAt t.SrcPos 'missed function name'>
+      <EL-AddErrorAt t.ErrorList t.SrcPos 'missed function name'>
     >;
 
   (List s.ScopeClass e.Names) e.Tokens t.ErrorList =
@@ -309,7 +309,7 @@ ParseFunction {
     <ParseFunction
       (Scope s.ScopeClass) (TkName t.OpenSrcPos 'CTHULHU-FHTAGN')
       (TkOpenBlock t.OpenSrcPos) e.Tokens
-      <EL-AddErrorAt t.OpenSrcPos 'function name is missed'>
+      <EL-AddErrorAt t.ErrorList t.OpenSrcPos 'function name is missed'>
     >;
 
   (Scope s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
