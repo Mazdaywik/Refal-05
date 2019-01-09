@@ -1,0 +1,11 @@
+ParseFunction {
+/*
+  (Scope s.ScopeClass) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
+    <ParseFunction-Aux
+      <ParseFunction_
+        s.ScopeClass (e.Name) t.SrcPos t.ErrorList (/* references */) e.Tokens
+      >
+    >;
+*/
+}
+
