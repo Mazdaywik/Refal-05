@@ -322,7 +322,7 @@ ParseFunction {
 }
 
 /*
-  Scope ::= '$ENTRY'?.
+  Scope ::= '$ENTRY' | ε.
 */
 ParseScope {
   (TkEntry t.SrcPos) e.Tokens t.ErrorList = (Scope Entry) e.Tokens t.ErrorList;
@@ -331,12 +331,17 @@ ParseScope {
 
 
 /*
-  Body ::= Sentences | NATIVE-CODE
+  Body ::= Sentences | NATIVE-CODE | ε.
 
   <ParseBody e.Stack e.Tokens t.ErrorList>
     == (Body (e.References) e.Body) e.Tokens t.ErrorList
 */
 ParseBody {
+  /* Body ::= ε */
+  (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList =
+    (Body (/* no references */) Sentences /* no sentences */)
+    (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList;
+
   /* Body ::= NATIVE-CODE */
   (TkNative t.SrcPos e.Native) e.Tokens t.ErrorList =
     (Body (/* no references */) Native e.Native) e.Tokens t.ErrorList;
@@ -351,29 +356,85 @@ ParseBody {
 }
 
 
+*$ENUM Sentence
+
 /*
-  Sentences ::= …
+  Sentences ::= Sentence | Sentences Sentence.
 
   <ParseSentences e.Stack e.Tokens t.ErrorList>
     == (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList
 */
 ParseSentences {
+  /* Sentences ::= Sentences / '}' */
+  (Sentences (e.References) e.Sentences)
+  (TkCloseBlock t.CloseBlockPos) e.Tokens t.ErrorList =
+    (Sentences (e.References) e.Sentences)
+    (TkCloseBlock t.CloseBlockPos) e.Tokens t.ErrorList;
+
+  /* Sentences ::= Sentences Sentence */
+  (Sentences (e.References) e.Sentences)
+  (Sentence (e.ReferencesOne) e.OneSentence)
   e.Tokens t.ErrorList =
-    <ParseSentences-Aux
-      <DoParseBlock t.ErrorList (/* references */) (/* sentences */) e.Tokens>
+    <ParseSentences
+      (Sentences (e.References e.ReferencesOne) e.Sentences (e.OneSentence))
+      e.Tokens t.ErrorList
+    >;
+
+  /* Sentences ::= Sentences Sentence~ */
+  (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList =
+    <ParseSentences
+      (Sentences (e.References) e.Sentences)
+      <ParseSentence e.Tokens t.ErrorList>
+    >;
+
+  /* Sentences ::= Sentence */
+  (Sentence (e.References) e.Sentence) e.Tokens t.ErrorList =
+    <ParseSentences
+      (Sentences (e.References) (e.Sentence)) e.Tokens t.ErrorList
+    >;
+
+  /* Sentences ::= Sentence~ */
+  e.Tokens t.ErrorList =
+    <ParseSentences
+      <ParseSentence e.Tokens t.ErrorList>
     >;
 }
 
-ParseSentences-Aux {
-  (Sentences e.Sentences) t.ErrorList (e.References) e.Tokens =
-    (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList;
+
+/*
+  Sentence ::= Pattern '=' Result ';' | Pattern '=' Result / '}'.
+
+  <ParseSentence e.Stack e.Tokens t.ErrorList>
+    == (Sentence (e.References) e.Sentence) e.Tokens t.ErrorList
+  e.Sentence ::= (e.Pattern) (e.Result)
+*/
+ParseSentence {
+  e.Tokens t.ErrorList =
+    <ParseSentence-Aux
+      <ParsePattern t.ErrorList (/* references */) e.Tokens>
+    >;
+}
+
+ParseSentence-Aux {
+  (e.Pattern) (e.Result)
+  t.ErrorList (e.References) (TkSemicolon t.SrcPos) e.Tokens =
+    (Sentence (e.References) (e.Pattern) (e.Result)) e.Tokens t.ErrorList;
+
+  (e.Pattern) (e.Result)
+  t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens =
+    (Sentence (e.References) (e.Pattern) (e.Result))
+    (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList;
+
+  (e.Pattern) (e.Result)
+  t.ErrorList (e.References) t.Unexpected e.Tokens =
+    (Sentence (e.References) (e.Pattern) (e.Result))
+    (TkCloseBlock NO-POS) t.Unexpected e.Tokens
+    <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>;
 }
 
 
 /*
   Трансляция осуществляется обычным методом рекурсивного спуска.
-
-  Block = '{' Sentence* '}' .
 
   Sentence = Pattern '=' Result ';' .
 
@@ -386,61 +447,7 @@ ParseSentences-Aux {
   Result = ResultTerm* .
 
   ResultTerm = CommonTerm | '(' Result ')' | '<' Result '>' .
-
-  Стратегия обработки ошибок. Выделяем только одну функцию, проглатывающую
-  неожиданные лексемы. Остальные функции при обнаружении неожиданной лексемы
-  должны её оставить в лексической свёртке перейдя в одно из состояний уровнем
-  выше. Данная стратегия обработки ошибок может нарушаться, но при этом должно
-  выполняться условие, что TkEOF передаётся в ParseElements.
 */
-
-/*
-  Function = Name '{' Sentence* '}'
-*/
-
-DoParseBlock {
-  t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
-    (Sentences e.Sentences) t.ErrorList (e.References)
-    (TkCloseBlock t.SrcPos) e.Tail;
-
-  t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail =
-    (Sentences e.Sentences)
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
-    >
-    (e.References)
-    (TkEOF t.SrcPos) e.Tail;
-
-  t.ErrorList (e.References) (e.Sentences) e.Tokens =
-    <ParseSentence t.ErrorList (e.References) (e.Sentences) e.Tokens>;
-}
-
-ParseSentence {
-  t.ErrorList (e.References) (e.Sentences) e.Tokens =
-    <ParseSentence-Aux
-      (e.Sentences)
-      <ParsePattern t.ErrorList (e.References) e.Tokens>
-    >;
-}
-
-ParseSentence-Aux {
-  (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList (e.References) (TkSemicolon t.SrcPos) e.Tokens =
-    <DoParseBlock
-      t.ErrorList (e.References) (e.Sentences ((e.Pattern) (e.Result))) e.Tokens
-    >;
-
-  (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens =
-    (Sentences e.Sentences ((e.Pattern) (e.Result)))
-    t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens;
-
-  (e.Sentences) (e.Pattern) (e.Result)
-  t.ErrorList (e.References) t.Unexpected e.Tokens =
-    (Sentences e.Sentences ((e.Pattern) (e.Result)))
-    <EL-AddUnexpected t.ErrorList t.Unexpected '"=" or ";"'>
-    (e.References) t.Unexpected e.Tokens;
-}
 
 ParsePattern {
   t.ErrorList (e.References) e.Tokens =
