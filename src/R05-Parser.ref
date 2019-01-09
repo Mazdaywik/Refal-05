@@ -401,6 +401,8 @@ ParseSentences {
 }
 
 
+*$ENUM Pattern, Result
+
 /*
   Sentence ::= Pattern '=' Result ';' | Pattern '=' Result / '}'.
 
@@ -409,98 +411,162 @@ ParseSentences {
   e.Sentence ::= (e.Pattern) (e.Result)
 */
 ParseSentence {
+  /* Sentence ::= Pattern '=' Result ';' */
+  (Pattern (e.PatternRef) (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
+  (Result (e.ResultRef) e.Result) (TkSemicolon t.SemicolonSrcPos)
   e.Tokens t.ErrorList =
-    <ParseSentence-Aux
-      <ParsePattern t.ErrorList (/* references */) e.Tokens>
+    (Sentence (e.PatternRef e.ResultRef) (e.Pattern) (e.Result))
+    e.Tokens t.ErrorList;
+
+  /* Sentence ::= Pattern '=' Result / '}' */
+  (Pattern (e.PatternRef) (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
+  (Result (e.ResultRef) e.Result) (TkCloseBlock t.CloseBlockPos)
+  e.Tokens t.ErrorList =
+    (Sentence (e.PatternRef e.ResultRef) (e.Pattern) (e.Result))
+    (TkCloseBlock t.CloseBlockPos) e.Tokens t.ErrorList;
+
+  /* Sentence ::= Pattern '=' Result */
+  (Pattern (e.PatternRef) (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
+  (Result (e.ResultRef) e.Result)
+  t.Unexpected e.Tokens t.ErrorList =
+    <ParseSentence
+      (Pattern (e.PatternRef) (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
+      (Result (e.ResultRef) e.Result) (TkCloseBlock NO-POS)
+      t.Unexpected e.Tokens
+      <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>
+    >;
+
+
+  /* Sentence ::= Pattern '=' Result~ */
+  (Pattern (e.PatternRef) (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
+  e.Tokens t.ErrorList =
+    <ParseSentence
+      (Pattern (e.PatternRef) (e.Variables) e.Pattern)
+      (TkReplace t.ReplaceSrcPos)
+      <ParseResult e.Tokens (e.Variables) t.ErrorList>
+    >;
+
+  /* Sentence ::= Pattern */
+  (Pattern (e.PatternRef) (e.Variables) e.Pattern)
+  t.Unexpected e.Tokens t.ErrorList =
+    <ParseSentence
+      (Pattern (e.PatternRef) (e.Variables) e.Pattern) (TkReplace NO-POS)
+      t.Unexpected e.Tokens
+      <EL-AddUnexpected t.ErrorList t.Unexpected '"="'>
+    >;
+
+  /* Sentence ::= Pattern~ */
+  e.Tokens t.ErrorList =
+    <ParseSentence
+      <ParsePattern TopLevel e.Tokens t.ErrorList>
     >;
 }
 
-ParseSentence-Aux {
-  (e.Pattern) (e.Result)
-  t.ErrorList (e.References) (TkSemicolon t.SrcPos) e.Tokens =
-    (Sentence (e.References) (e.Pattern) (e.Result)) e.Tokens t.ErrorList;
 
-  (e.Pattern) (e.Result)
-  t.ErrorList (e.References) (TkCloseBlock t.SrcPos) e.Tokens =
-    (Sentence (e.References) (e.Pattern) (e.Result))
-    (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList;
+*$ENUM PatternTerm, NoTerm, TopLevel, Nested
 
-  (e.Pattern) (e.Result)
-  t.ErrorList (e.References) t.Unexpected e.Tokens =
-    (Sentence (e.References) (e.Pattern) (e.Result))
-    (TkCloseBlock NO-POS) t.Unexpected e.Tokens
-    <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>;
+/*
+  Pattern ::= ε | Pattern PatternTerm.
+
+  <ParsePattern s.Level e.Stack e.Tokens t.ErrorList>
+    == (Pattern (e.References) (e.Variables) e.Pattern)
+
+  s.Level ::= TopLevel | Nested
+  e.Variables ::= (s.Mode e.Index)*
+*/
+ParsePattern {
+  /* Pattern ::= Pattern PatternTerm */
+  s.Level
+  (Pattern (e.References) (e.Variables) e.Pattern)
+  (PatternTerm (e.TermReferences) (e.TermVariables) t.Term)
+  e.Tokens t.ErrorList =
+    <ParsePattern
+      s.Level
+      (Pattern
+        (e.References e.TermReferences)
+        (<CleanupDoubleVars e.TermVariables (e.Variables)>)
+        e.Pattern t.Term
+      )
+      e.Tokens t.ErrorList
+    >;
+
+  /* Pattern ::= Pattern / NoTerm */
+  s.Level (Pattern (e.References) (e.Variables) e.Pattern) (NoTerm)
+  e.Tokens t.ErrorList =
+    (Pattern (e.References) (e.Variables) e.Pattern)
+    e.Tokens t.ErrorList;
+
+  /*
+    Восстановление после ошибок — лишняя закрывающая скобка на верхнем уровне
+    Pattern ::= Pattern ')'
+    Pattern ::= Pattern '>'
+  */
+  TopLevel (Pattern (e.References) (e.Variables) e.Pattern)
+  (TkClose t.SrcPos s.CloseBracket)
+  e.Tokens t.ErrorList =
+    <ParsePattern
+      TopLevel (Pattern (e.References) (e.Variables) e.Pattern)
+      e.Tokens
+      <EL-AddErrorAt
+        t.ErrorList t.SrcPos
+        'Unbalanced bracket "' <StrFromBracket s.CloseBracket> '"'
+      >
+    >;
+
+  /* Pattern ::= Pattern PatternTerm~ */
+  s.Level (Pattern (e.References) (e.Variables) e.Pattern)
+  e.Tokens t.ErrorList =
+    <ParsePattern
+      s.Level (Pattern (e.References) (e.Variables) e.Pattern)
+      <ParsePatternTerm e.Tokens t.ErrorList>
+    >;
+
+  /* Pattern ::= ε */
+  s.Level e.Tokens t.ErrorList =
+    <ParsePattern
+      s.Level
+      (Pattern (/* no references */) (/* no variables */) /* no terms */)
+      e.Tokens t.ErrorList
+    >;
+}
+
+CleanupDoubleVars {
+  e.NewVariables-B (s.Mode e.Index) e.NewVariables-E
+  (e.OldVariables-B (s.Mode e.Index) e.OldVariables-E) =
+    <CleanupDoubleVars
+      e.NewVariables-E
+      (e.NewVariables-B e.OldVariables-B (s.Mode e.Index) e.OldVariables-E)
+    >;
+
+  e.NewVariables (e.OldVariables) = e.NewVariables e.OldVariables;
 }
 
 
 /*
-  Трансляция осуществляется обычным методом рекурсивного спуска.
+  PatternTerm ::= Char | Number | Name | Variable | '(' Pattern ')'.
 
-  Sentence = Pattern '=' Result ';' .
-
-  Pattern = PatternTerm* .
-
-  PatternTerm = CommonTerm | '(' Pattern ')' | .
-
-  CommonTerm = Char | Number | Name | Variable .
-
-  Result = ResultTerm* .
-
-  ResultTerm = CommonTerm | '(' Result ')' | '<' Result '>' .
+  <ParsePatternTerm e.Stack e.Tokens t.ErrorList>
+    == (PatternTerm (e.References) (e.Variables) t.Term) e.Tokens t.ErrorList
+    == (NoTerm) e.Tokens t.ErrorList
 */
-
-ParsePattern {
-  t.ErrorList (e.References) e.Tokens =
-    <DoParsePattern
-      t.ErrorList (e.References) (/* таблица переменных */) (/* мультискобки */)
-      (/* просканировано */) e.Tokens
-    >;
-}
-
-DoParsePattern {
+ParsePatternTerm {
   /* Обработка литералов атомов */
 
-  t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
-  (e.Scanned) (TkChar t.SrcPos s.Char) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
-      (e.Scanned (Symbol Char s.Char)) e.Tail
-    >;
+  (TkChar t.SrcPos s.Char) e.Tokens t.ErrorList =
+    (PatternTerm () () (Symbol Char s.Char)) e.Tokens t.ErrorList;
 
-  t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
-  (e.Scanned) (TkNumber t.SrcPos s.Number) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
-      (e.Scanned (Symbol Number s.Number)) e.Tail
-    >;
+  (TkNumber t.SrcPos s.Number) e.Tokens t.ErrorList =
+    (PatternTerm () () (Symbol Number s.Number)) e.Tokens t.ErrorList;
 
-  t.ErrorList (e.References) (e.Variables) (e.MultiBrackets)
-  (e.Scanned) (TkName t.SrcPos e.Name) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References (t.SrcPos e.Name)) (e.Variables)
-      (e.MultiBrackets)
-      (e.Scanned (Symbol Name e.Name)) e.Tail
-    >;
+  (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
+    (PatternTerm ((t.SrcPos e.Name)) () (Symbol Name e.Name))
+    e.Tokens t.ErrorList;
 
   /* Переменные */
 
-  t.ErrorList (e.References)
-  (e.Variables-B (s.Mode e.Index) e.Variables-E)
-  (e.MultiBracket)
-  (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References)
-      (e.Variables-B (s.Mode e.Index) e.Variables-E)
-      (e.MultiBracket)
-      (e.Scanned (Variable s.Mode e.Index)) e.Tail
-    >;
-
-  t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
-  (e.Scanned) (TkVariable t.SrcPos s.Mode e.Index) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References) ((s.Mode e.Index) e.Variables) (e.MultiBracket)
-      (e.Scanned (Variable s.Mode e.Index)) e.Tail
-    >;
+  (TkVariable t.SrcPos s.Mode e.Index) e.Tokens t.ErrorList =
+    (PatternTerm () ((s.Mode e.Index)) (Variable s.Mode e.Index))
+    e.Tokens t.ErrorList;
 
   /*
     Скобки.
@@ -512,94 +578,79 @@ DoParsePattern {
     если имеем непарную закрывающую скобку, считаем её лишней.
   */
 
-  t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
-  (e.Scanned) (TkOpen t.SrcPos Bracket) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References) (e.Variables)
-      (
-        e.MultiBracket
-        (Brackets t.SrcPos Bracket e.Scanned)
-      )
-      () e.Tail
+  /* PatternTerm ::= '(' Pattern ')' */
+  (TkOpen t.OpenSrcPos s.BracketsSign)
+  (Pattern (e.References) (e.Variables) e.Pattern)
+  (TkClose t.CloseSrcPos s.BracketsSign)
+  e.Tokens t.ErrorList =
+    (PatternTerm (e.References) (e.Variables) (Brackets e.Pattern))
+    e.Tokens t.ErrorList;
+
+  /* PatternTerm ::= '(' Pattern  # ошибка */
+  (TkOpen t.OpenSrcPos s.BracketsSign)
+  (Pattern (e.References) (e.Variables) e.Pattern)
+  /* нет скобки */ e.Tokens t.ErrorList =
+    (PatternTerm (e.References) (e.Variables) (Brackets e.Pattern)) e.Tokens
+    <EL-AddErrorAt
+      t.ErrorList t.OpenSrcPos
+      'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
     >;
 
-  t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
-  (e.Scanned) (TkOpen t.SrcPos CallBracket) e.Tail =
-    <DoParsePattern
-      <EL-AddErrorAt
-        t.ErrorList t.SrcPos 'Unexpected call bracket in pattern expression'
+  /* PatternTerm ::= '(' Pattern~ */
+  (TkOpen t.OpenSrcPos Bracket) e.Tokens t.ErrorList =
+    <ParsePatternTerm
+      (TkOpen t.OpenSrcPos Bracket) <ParsePattern Nested e.Tokens t.ErrorList>
+    >;
+
+  /* PatternTerm ::= '<' Pattern~  # ошибка */
+  (TkOpen t.OpenSrcPos CallBracket) e.Tokens t.ErrorList =
+    <ParsePatternTerm
+      (TkOpen t.OpenSrcPos CallBracket)
+      <ParsePattern
+        Nested
+        e.Tokens
+        <EL-AddErrorAt
+          t.ErrorList t.OpenSrcPos
+          'Unexpected call bracket in pattern expression'
+        >
       >
-      (e.References) (e.Variables)
-      (
-        e.MultiBracket
-        (Brackets t.SrcPos CallBracket e.Scanned)
-      )
-      () e.Tail
     >;
 
-  t.ErrorList (e.References) (e.Variables)
-  (
-    e.MultiBracket
-    (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
-  )
-  (e.InnerScanned) (TkClose t.CloseSrcPos s.CloseBracket) e.Tail =
-    <DoParsePattern
-      t.ErrorList (e.References) (e.Variables) (e.MultiBracket)
-      (e.Scanned (s.BracketsSign e.InnerScanned))
-      e.Tail
-    >;
+  /* не терм */
+  e.Tokens t.ErrorList = (NoTerm) e.Tokens t.ErrorList;
+}
 
-  t.ErrorList (e.References) (e.Variables)
-  (
-    e.MultiBracket
-    (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
-  )
-  (e.InnerScanned) (TkClose t.SrcPos s.OtherCloseBracket) e.Tail =
-    <DoParsePattern
-      <EL-AddErrorAt
-        t.ErrorList t.InnerSrcPos
-        'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
-      >
-      (e.References) (e.Variables) (e.MultiBracket)
-      (e.Scanned (s.BracketsSign e.InnerScanned))
-      (TkClose t.SrcPos s.OtherCloseBracket) e.Tail
-    >;
 
-  t.ErrorList (e.References) (e.Variables) ()
-  (e.Scanned) (TkClose t.SrcPos s.CloseBracket) e.Tail =
-    <DoParsePattern
-      <EL-AddErrorAt
-        t.ErrorList t.SrcPos
-        'Unbalanced bracket "' <StrFromBracket s.CloseBracket> '"'
-      >
-      (e.References) (e.Variables) ()
-      (e.Scanned) e.Tail
-    >;
+/*
+  Result = …
 
-  t.ErrorList (e.References) (e.Variables)
-  (
-    e.MultiBracket
-    (s.BracketsSign t.InnerSrcPos s.CloseBracket e.Scanned)
-  )
-  (e.InnerScanned) e.Tail =
-    <DoParsePattern
-      <EL-AddErrorAt
-        t.ErrorList t.InnerSrcPos
-        'Unbalanced bracket "' <StrFromBracket s.BracketsSign> '"'
-      >
-      (e.References) (e.Variables) (e.MultiBracket)
-      (e.Scanned (s.BracketsSign e.InnerScanned))
-      e.Tail
-    >;
-
-  t.ErrorList (e.References) (e.Variables) ()
-  (e.Pattern) e.Tail =
-    /* Выбрасываем образец из рекурсивого вызова */
-    (e.Pattern)
-    <ParsePattern-ExpectReplace
-      t.ErrorList (e.References) (e.Variables) e.Tail
+  <ParseResult e.Stack e.Tokens (e.Variables) t.ErrorList>
+    == (Result (e.References) e.Result)
+*/
+ParseResult {
+  e.Tokens (e.Variables) t.ErrorList =
+    <ParseResult-Aux
+      <ParseResult_ t.ErrorList (/* references */) (e.Variables) e.Tokens>
     >;
 }
+
+ParseResult-Aux {
+  (e.Result) t.ErrorList (e.References) e.Tail =
+    (Result (e.References) e.Result) e.Tail t.ErrorList;
+}
+
+
+
+
+/*
+  Трансляция осуществляется обычным методом рекурсивного спуска.
+
+  CommonTerm = Char | Number | Name | Variable .
+
+  Result = ResultTerm* .
+
+  ResultTerm = CommonTerm | '(' Result ')' | '<' Result '>' .
+*/
 
 StrFromBracket {
   Bracket = ')';
@@ -608,20 +659,7 @@ StrFromBracket {
   CallBrackets = '<';
 }
 
-ParsePattern-ExpectReplace {
-  t.ErrorList (e.References) (e.Variables) (TkReplace t.SrcPos) e.Tokens =
-    <ParseResult
-      t.ErrorList (e.References) (e.Variables) e.Tokens
-    >;
-
-  t.ErrorList (e.References) (e.Variables) t.Unexpected e.Tokens =
-    <ParseResult
-      <EL-AddUnexpected t.ErrorList t.Unexpected '"="'>
-      (e.References) (e.Variables) t.Unexpected e.Tokens
-    >;
-}
-
-ParseResult {
+ParseResult_ {
   t.ErrorList (e.References) (e.Variables) e.Tokens =
     <DoParseResult
       t.ErrorList (e.References) (e.Variables)
