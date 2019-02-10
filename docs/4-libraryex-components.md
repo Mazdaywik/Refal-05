@@ -239,7 +239,7 @@
       s.Value ::= s.NUMBER | s.CHAR
     */
     Hash {
-      e.InputString = <Reduce reduce_example_HashOne 43 <Ord e.InputString>;
+      e.InputString = <Reduce reduce_example_HashOne 43 <Ord e.InputString>>;
     }
 
     $ENTRY reduce_example_HashOne {
