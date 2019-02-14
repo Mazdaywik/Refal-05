@@ -1,0 +1,10 @@
+$ENTRY Go {
+  = <Draw
+      <CalcSemiplane '* '-'>
+      (FlipH)
+    >
+}
+
+Draw {=}
+CalcSemiplane {=}
+FlipH {=}

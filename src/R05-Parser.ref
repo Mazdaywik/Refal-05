@@ -301,9 +301,10 @@ ParseFunction {
       <ParseBody e.Tokens t.ErrorList>
     >;
 
-  (Scope s.ScopeClass) (TkName t.NameSrcPos) t.Unexpected e.Tokens t.ErrorList =
+  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) t.Unexpected
+  e.Tokens t.ErrorList =
     t.Unexpected e.Tokens
-    <EL-AddErrorAt t.ErrorList t.Unexpected 'open brace'>;
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'open brace'>;
 
   (Scope s.ScopeClass) (TkOpenBlock t.OpenSrcPos) e.Tokens t.ErrorList =
     <ParseFunction
