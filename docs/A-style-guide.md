@@ -255,7 +255,7 @@ if (x != 0) {
 * В операторе `switch` должны быть явным образом перечислены все допустимые
   варианты. Если переход на ветку `default:` никогда не должен происходить,
   то в ней располагается вызов макроса
-  `r05__switch_default_violation(выражение_внутри_switch)`,
+  `r05_switch_default_violation(выражение_внутри_switch)`,
   который при передаче управления на него, выбрасывает исключение. Таким
   образом выявляются ошибки в программе, связанные с передачей неверных данных.
 * Директивы условной компиляции препроцессора, в отличие от обычного кода
@@ -266,15 +266,20 @@ if (x != 0) {
   от начала строки
 
 ```C++
-      case icPerformNative:
-        {
-#ifdef ENABLE_DEBUGGER
-          if (debugger.handle_function_call(begin, end, callee) == cExit) {
-            return cExit;
-          }
-#endif  // ifdef ENABLE_DEBUGGER
-          RefalNativeFunction *native_callee =
-            static_cast<RefalNativeFunction*>(callee);
+R05_NORETURN void r05_exit(int retcode) {
+  fflush(stderr);
+  fflush(stdout);
+  end_profiler();
+
+#ifdef R05_SHOW_STAT
+  fprintf(stderr, "Step count %lu\n", s_step_counter);
+#endif  /* R05_SHOW_STAT */
+
+  free_memory();
+  fflush(stdout);
+
+  exit(retcode);
+}
 ```
 
 * После директивы `#endif` должен располагаться комментарий с текстом условия
