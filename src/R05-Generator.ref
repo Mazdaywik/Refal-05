@@ -239,7 +239,7 @@ MatchArgs {
 SymbolTextRep {
   Char s.Char = '\'' <EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
-  Name e.Name = '&r05f_' e.Name;
+  Name t.SrcPos e.Name = '&r05f_' e.Name;
 }
 
 CmdEmpty {
@@ -461,7 +461,7 @@ CompileSentence-Aux {
     s.MatchType e.MatchValue ::=
         Symbol Char s.Char
       | Symbol Number s.Number
-      | Symbol Name e.Name
+      | Symbol Name t.SrcPos e.Name
       | Brackets s.InnerNum
       | Repeated s.Usings s.Mode e.Index
       | Variable s.Mode e.Index

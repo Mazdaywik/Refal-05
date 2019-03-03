@@ -570,7 +570,7 @@ ParsePatternTerm {
 
   /* PatternTerm ::= NAME */
   (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    (PatternTerm ((t.SrcPos e.Name)) () (Symbol Name e.Name))
+    (PatternTerm ((t.SrcPos e.Name)) () (Symbol Name t.SrcPos e.Name))
     e.Tokens t.ErrorList;
 
   /* Переменные */
@@ -717,7 +717,7 @@ ParseResultTerm {
 
   /* ResultTerm ::= NAME */
   (TkName t.SrcPos e.Name) e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm ((t.SrcPos e.Name)) (Symbol Name e.Name))
+    (ResultTerm ((t.SrcPos e.Name)) (Symbol Name t.SrcPos e.Name))
     e.Tokens (e.Variables) t.ErrorList;
 
   /* Переменные */

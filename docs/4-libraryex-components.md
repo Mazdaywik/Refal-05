@@ -353,10 +353,11 @@
     t.Term ::=
         (Symbol Char s.CHAR)
       | (Symbol Number s.NUMBER)
-      | (Symbol Name e.Name)
+      | (Symbol Name t.SrcPos e.Name)
       | (Variable s.Mode e.Index)
       | (Brackets e.Expression)
       | (CallBrackets e.Expression)
+    t.SrcPos ::= (s.Row s.Col)
     s.Mode ::= 's' | 't' | 'e'
     e.Index ::= s.CHAR+
 
@@ -372,7 +373,7 @@
     <Symbol s.Type e.Info> == s.CHAR*
     <Char s.CHAR> == s.CHAR*
     <Number s.NUMBER> == s.CHAR*
-    <Name e.Name> == s.CHAR*
+    <Name t.SrcPos e.Name> == s.CHAR*
     <Variable s.Mode e.Index> == s.CHAR*
     <Brackets e.Expression> == s.CHAR*
     <CallBrackets e.Expression> == s.CHAR*

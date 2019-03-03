@@ -92,7 +92,7 @@ FlatLines {
   t.Term ::=
       (Symbol Char s.CHAR)
     | (Symbol Number s.NUMBER)
-    | (Symbol Name e.Name)
+    | (Symbol Name t.SrcPos e.Name)
     | (Variable s.Mode e.Index)
     | (Brackets e.Expression)
     | (CallBrackets e.Expression)
@@ -113,7 +113,7 @@ $ENTRY Number {
 }
 
 $ENTRY Name {
-  e.Name = e.Name;
+  t.SrcPos e.Name = e.Name;
 }
 
 $ENTRY Variable {
