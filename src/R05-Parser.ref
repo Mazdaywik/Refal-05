@@ -241,6 +241,10 @@ ParseList {
   (ListKeyWord s.ScopeClass) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
     <ParseList (List s.ScopeClass (t.SrcPos e.Name)) e.Tokens t.ErrorList>;
 
+  (ListKeyWord s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
+    (List s.ScopeClass) t.Unexpected e.Tokens
+    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>;
+
   /* List ::= ListKeyWord~ … */
   e.Tokens t.ErrorList =
     <ParseList <ParseListKeyWord e.Tokens t.ErrorList>>;
