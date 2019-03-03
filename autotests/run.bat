@@ -1,21 +1,21 @@
 @echo off
 call :MAIN %*
-exit
+exit /b
 
 :MAIN
 setlocal
   call ..\c-plus-plus.conf.bat
   if {%1}=={} (
-    for %%s in (*.ref) do call :RUN_TEST %%s
+    for %%s in (*.ref) do call :RUN_TEST %%s || exit /b 1
   ) else (
-    for %%s in (%*) do call :RUN_TEST %%s
+    for %%s in (%*) do call :RUN_TEST %%s || exit /b 1
   )
 endlocal
 goto :EOF
 
 :RUN_TEST
 setlocal
-  for %%s in (%~n1) do call :RUN_TEST_AUX%%~xs %1
+  for %%s in (%~n1) do call :RUN_TEST_AUX%%~xs %1 || exit /b 1
 endlocal
 goto :EOF
 
@@ -33,25 +33,25 @@ setlocal
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
-    exit
+    exit /b 1
   )
   erase __error.txt
   if not exist %CFILE% (
     echo COMPILATION FAILED
-    exit
+    exit /b 1
   )
 
   %CLINE% -I../lib %CFILE% ../lib/refal05rts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
-    exit
+    exit /b 1
   )
   if exist a.exe move a.exe %EXE%
 
   %EXE% 2> __dump.txt
   if errorlevel 200 (
     echo TEST FAILED, SEE __dump.txt
-    exit
+    exit /b 1
   )
 
   erase %CFILE% %EXE%
@@ -74,13 +74,13 @@ setlocal
   ..\bin\refal05c %1 2> __error.txt
   if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
-    exit
+    exit /b 1
   )
   erase __error.txt
   if exist %CFILE% (
     echo COMPILATION SUCCESSED, BUT EXPECTED SYNTAX ERROR
     erase %CFILE%
-    exit
+    exit /b
   )
   echo Ok! Compiler didn't crash on invalid syntax
   echo.
