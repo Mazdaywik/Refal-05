@@ -191,6 +191,10 @@ ParseElement {
   (TkNative t.SrcPos e.Native) e.Tokens t.ErrorList =
     (Element (/* no references */) (Native e.Native)) e.Tokens t.ErrorList;
 
+  (TkEOF t.SrcPos) t.ErrorList =
+    (TkEOF t.SrcPos)
+    <EL-AddUnexpected t.ErrorList (TkEOF t.SrcPos) 'directive or name'>;
+
   t.Unexpected e.Tokens t.ErrorList =
     e.Tokens <EL-AddUnexpected t.ErrorList t.Unexpected 'directive or name'>;
 }
