@@ -35,7 +35,7 @@ $EXTERN LoadFile, Inc, Success, Fails;
   s.Mode ::= 's' | 't' | 'e'
 */
 $ENTRY R05-LexScan-File {
-  e.FileName = <ScanString (e.FileName) <LoadText e.FileName>>;
+  e.FileName = <R05-LexScan-String <LoadText e.FileName>>;
 }
 
 LoadText {
@@ -62,20 +62,7 @@ SkipBOM {
   e.String ::= s.CHAR*
 */
 $ENTRY R05-LexScan-String {
-  e.String = <ScanString ('<user input>') e.String>;
-}
-
-ScanString {
-  (e.FileName) e.String = <PrepareTkNative (e.FileName) <Scan 1 1 e.String>>;
-}
-
-PrepareTkNative {
-  (e.FileName) e.Tokens-B (TkNative (s.Row s.Col) e.Code) e.Tokens-E =
-    e.Tokens-B
-    (TkNative (s.Row s.Col) (e.FileName s.Row) e.Code)
-    <PrepareTkNative (e.FileName) e.Tokens-E>;
-
-  (e.FileName) e.Tokens = e.Tokens;
+  e.String = <Scan 1 1 e.String>;
 }
 
 $ENTRY TkChar { s.Char = '\'' <EscapeChar s.Char> '\'' }
@@ -127,14 +114,6 @@ $ENTRY TkEnum { = '$ENUM' }
 $ENTRY TkError { e.Message = '[LEXER ERROR: ' e.Message ']' }
 $ENTRY TkExtern { = '$EXTERN' }
 $ENTRY TkName { e.Name = e.Name }
-
-$ENTRY TkNative {
-  (e.SourceName s.LineNo) e.Code =
-    '* file: "' e.SourceName '", line: ' <Symb s.LineNo> '\n'
-    '%%\n'
-    <FlatLines e.Code>
-    '%%\n';
-}
 
 $ENTRY TkNumber { s.Number = <Symb s.Number> }
 
@@ -436,9 +415,6 @@ ScanNumber {
   e.HumanReadableRep ::= s.CHAR*
 */
 $ENTRY StrFromToken {
-  TkNative (e.SrcFile s.Line) e.Code =
-    '"%%...%%" at ' <Symb s.Line> ', "' e.SrcFile '"';
-
   TkUnexpected e.Unexpected = 'Unexpected characters <' e.Unexpected '>';
 
   s.Other e.Info = '"' <Mu s.Other e.Info> '"';

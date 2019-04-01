@@ -1,6 +1,6 @@
 *$FROM R05-Lexer
 $EXTERN R05-LexScan-File, R05-LexScan-String, TkEOF, TkExtern, TkEnum, TkEEnum,
-  TkEntry, TkName, TkSemicolon, TkNative, TkComma, TkOpenBlock, TkCloseBlock,
+  TkEntry, TkName, TkSemicolon, TkComma, TkOpenBlock, TkCloseBlock,
   TkChar, TkNumber, TkVariable, TkOpen, Bracket, CallBracket, TkClose,
   TkReplace, TkError, TkUnexpected, StrFromToken;
 
@@ -127,7 +127,7 @@ ParseProgram {
 *$ENUM List
 
 /*
-  Element ::= List ';' | Function | NATIVE-CODE.
+  Element ::= List ';' | Function.
 
   <ParseElement e.Stack e.Tokens t.ErrorList>
     == (Element e.Elements) e.Tokens t.ErrorList
@@ -177,10 +177,6 @@ ParseElement {
       <ParseFunction (TkName t.SrcPos e.Name) e.Tokens t.ErrorList>
     >;
 
-
-  /* Element ::= NATIVE-CODE */
-  (TkNative t.SrcPos e.Native) e.Tokens t.ErrorList =
-    (Element (Native e.Native)) e.Tokens t.ErrorList;
 
   (TkEOF t.SrcPos) t.ErrorList =
     (TkEOF t.SrcPos)
@@ -331,7 +327,7 @@ ParseScope {
 
 
 /*
-  Body ::= Sentences | NATIVE-CODE | ε.
+  Body ::= Sentences | ε.
 
   <ParseBody e.Stack e.Tokens t.ErrorList>
     == (Body e.Body) e.Tokens t.ErrorList
@@ -341,10 +337,6 @@ ParseBody {
   (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList =
     (Body Sentences /* no sentences */)
     (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList;
-
-  /* Body ::= NATIVE-CODE */
-  (TkNative t.SrcPos e.Native) e.Tokens t.ErrorList =
-    (Body Native e.Native) e.Tokens t.ErrorList;
 
   /* Body ::= Sentences */
   (Sentences e.Sentences) e.Tokens t.ErrorList =
