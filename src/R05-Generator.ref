@@ -1,5 +1,5 @@
 *$FROM R05-AST
-$EXTERN Extern, Entry, Function, Native, Local, Sentences, Variable, Symbol,
+$EXTERN Extern, Entry, Function, Local, Sentences, Variable, Symbol,
   Brackets, Char, Number, Name, TextFromExpr, CallBrackets;
 
 *$FROM LibraryEx
@@ -11,38 +11,30 @@ $EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
 */
 $ENTRY R05-Generate-ToFile {
   (e.OutputFile) e.Tree =
-    <SaveFile (e.OutputFile) <Generate (e.OutputFile) e.Tree>>;
+    <SaveFile (e.OutputFile) <R05-Generate-ToLines e.Tree>>;
 }
 
 /**
   <R05-Generate-ToLines e.Tree> == (s.CHAR*)*
 */
 $ENTRY R05-Generate-ToLines {
-  e.Tree = <Generate ('<user output>') e.Tree>;
-}
-
-Generate {
-  (e.OutputFile) e.Tree =
+  e.Tree =
     <R05-Generate-Aux
-      (e.OutputFile)
       <MapAccum generator_GenTreeItem (/* declarations */) e.Tree>
     >;
 }
 
 R05-Generate-Aux {
-  (e.OutputFile) (e.Declarations) e.Definitions =
-    <GenPostprocess
-      (e.OutputFile)
-      ('/* Automatically generated file. Don\'t edit! */')
-      ('#include "refal05rts.h"')
-      ()
-      ()
-      e.Declarations
-      ()
-      e.Definitions
-      ()
-      ('/* End of file */')
-    >;
+  (e.Declarations) e.Definitions =
+    ('/* Automatically generated file. Don\'t edit! */')
+    ('#include "refal05rts.h"')
+    ()
+    ()
+    e.Declarations
+    ()
+    e.Definitions
+    ()
+    ('/* End of file */')
 }
 
 $ENTRY generator_GenTreeItem {
@@ -53,9 +45,6 @@ $ENTRY generator_GenTreeItem {
   (e.Declarations) (Function s.ScopeClass (e.Name) e.Body) =
     (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
     <GenFunction s.ScopeClass (e.Name) e.Body>;
-
-  (e.Declarations) (Native e.Native) =
-    (e.Declarations) <GenNative e.Native>;
 }
 
 
@@ -73,19 +62,12 @@ GenFunction {
     ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_ENUM(' e.Name ')')
     ();
 
-  s.ScopeClass (e.Name) e.Body =
+  s.ScopeClass (e.Name) Sentences e.Sentences =
     ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_FUNCTION(' e.Name ') {')
-    <GenFunctionBody e.Body>
+    ('  r05_this_is_generated_function();')
+    <Map generator_GenSentence <AddFailCommand e.Sentences>>
     ('}')
     ();
-}
-
-GenFunctionBody {
-  Sentences e.Sentences =
-    ('  r05_this_is_generated_function();')
-    <Map generator_GenSentence <AddFailCommand e.Sentences>>;
-
-  Native e.Native = <GenNative e.Native>;
 }
 
 *$ENUM ReturnRecognitionImpossible
@@ -374,42 +356,6 @@ EVar-E { s.Usings 'e' e.Index = 'e' e.Index '_e_' <Symb s.Usings> }
 
 Elem { s.Number = 'n[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'n+' <Symb s.Number> }
-
-*$ENUM BeginNative, EndNative
-
-GenNative {
-  (e.SrcName s.Line) e.Code = (BeginNative e.SrcName s.Line) e.Code (EndNative);
-}
-
-GenPostprocess {
-  (e.OutputName) e.Lines-B (EndNative) e.Lines-E =
-    <DelAccumulator
-      <MapAccum
-        (generator_EnumerateLines (e.OutputName))
-        1
-        e.Lines-B (EndNative) e.Lines-E
-      >
-    >;
-
-  (e.OutputName) e.Lines = e.Lines;
-}
-
-$ENTRY generator_EnumerateLines {
-  (e.OutputName) s.LineNo (BeginNative e.SrcName s.NativeLineNo) =
-    <Inc s.LineNo>
-    <LineDirective s.NativeLineNo e.SrcName>;
-
-  (e.OutputName) s.LineNo (EndNative) =
-    <Inc s.LineNo>
-    <LineDirective s.LineNo e.OutputName>;
-
-  (e.OutputName) s.LineNo (e.Line) = <Inc s.LineNo> (e.Line);
-}
-
-LineDirective {
-  s.LineNo e.FileName =
-    ('#line ' <Symb <Inc s.LineNo>> ' "' <EscapeString e.FileName> '"');
-}
 
 
 *===============================================================================

@@ -70,14 +70,6 @@ TextFromSentence {
     '  ' <TextFromExpr e.Pattern> ' =\n    ' <TextFromExpr e.Result> ';\n';
 }
 
-$ENTRY Native {
-  (e.SourceName s.LineNo) e.Lines =
-    '* file: "' e.SourceName '", line: ' <Symb s.LineNo> '\n'
-    '%%\n'
-    <FlatLines e.Lines>
-    '%%\n';
-}
-
 FlatLines {
   (e.Line) e.Lines = e.Line '\n' <FlatLines e.Lines>;
   /* пусто */ = /* пусто */;
