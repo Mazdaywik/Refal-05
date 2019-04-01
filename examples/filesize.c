@@ -1,20 +1,11 @@
-%%
 #include <stdio.h>
-%%
+#include "refal05rts.h"
 
-$ENTRY Go {
-  = <PrintSize 'filesize.ref'>;
-}
-
-PrintSize {
-  e.FileName = <Prout 'Size of ' e.FileName ' is ' <FileSize e.FileName>>;
-}
 
 /*
   <FileSize s.CHAR+> == s.NUMBER
 */
-FileSize {
-%%
+R05_DEFINE_ENTRY_FUNCTION(FileSize) {
   struct r05_node *fname_b, *fname_e;
   char filename[FILENAME_MAX + 1];
   size_t filename_len;
@@ -68,5 +59,4 @@ FileSize {
   arg_begin->tag = R05_DATATAG_NUMBER;
   arg_begin->info.number = (r05_number) size;
   r05_splice_to_freelist(callee, arg_end);
-%%
 }

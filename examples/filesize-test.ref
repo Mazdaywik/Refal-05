@@ -1,0 +1,10 @@
+*$FROM filesize
+$EXTERN FileSize;
+
+$ENTRY Go {
+  = <PrintSize 'filesize.c'> <PrintSize 'filesize-test.ref'>;
+}
+
+PrintSize {
+  e.FileName = <Prout 'Size of ' e.FileName ' is ' <FileSize e.FileName>>;
+}
