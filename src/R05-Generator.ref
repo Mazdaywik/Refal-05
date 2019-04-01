@@ -60,34 +60,23 @@ $ENTRY generator_GenTreeItem {
 
 
 TextFromScopeClass {
-  Local = 'static '; Entry = ;
+  Entry = 'ENTRY'; Local = 'LOCAL';
 }
 
 GenDeclaration {
-  Entry e.Name = ('extern struct r05_function r05f_' e.Name ';');
-  Local e.Name = ('static struct r05_function r05f_' e.Name ';');
+  s.ScopeClass e.Name =
+    ('R05_DECLARE_' <TextFromScopeClass s.ScopeClass> '_FUNCTION(' e.Name ')');
 }
 
 GenFunction {
   s.ScopeClass (e.Name) Sentences /* пусто */ =
-    (
-      <TextFromScopeClass s.ScopeClass>
-      'struct r05_function r05f_' e.Name ' = '
-      '{ r05_enum_function_code, "' e.Name '" };'
-    )
+    ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_ENUM(' e.Name ')')
     ();
 
   s.ScopeClass (e.Name) e.Body =
-    (
-      'static void r05c_' e.Name
-      '(struct r05_node *arg_begin, struct r05_node *arg_end) {'
-    )
+    ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_FUNCTION(' e.Name ') {')
     <GenFunctionBody e.Body>
     ('}')
-    (
-      <TextFromScopeClass s.ScopeClass>
-      'struct r05_function r05f_' e.Name ' = { r05c_' e.Name ', "' e.Name '" };'
-    )
     ();
 }
 

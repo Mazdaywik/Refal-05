@@ -641,7 +641,7 @@ _повторной,)_ то для неё запоминаются все вх�
 
 будет скомпилирована в
 
-    static void r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_ENTRY_FUNCTION(Extern) {
       r05_this_is_generated_function();
 
       do {
@@ -665,11 +665,19 @@ _повторной,)_ то для неё запоминаются все вх�
         return;
       } while (0);
     }
+
+где макрос `R05_DEFINE_ENTRY_FUNCTION(Extern)` раскроется в
+
+    static void r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end);
     struct r05_function r05f_Extern = { r05c_Extern, "Extern" };
+    static void r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end)
+
 
 Имя функции на Си и описателя получается из имени исходной функции путём
 _нормализации_ — замены в нём всех минусов `-` на прочерки `_` и добавлением
 префикса: `r05c_` для функций и `r05f_` для описателей.
+
+Именами аргументов функции по умолчанию являются `arg_begin` и `arg_end`.
 
 Компилируемая функция всегда имеет статическую область видимости, описатель
 статический для локальных функций и нестатический для entry-функций.
@@ -684,6 +692,11 @@ _нормализации_ — замены в нём всех минусов 
 
 будет скомпилировано в
 
+    R05_DEFINE_ENTRY_ENUM(Success)
+    R05_DEFINE_ENTRY_ENUM(Fails)
+
+что после раскрытия макросов даст
+
     struct r05_function r05f_Success = { r05_enum_function_code, "Success" };
     struct r05_function r05f_Fails = { r05_enum_function_code, "Fails" };
 
@@ -694,34 +707,44 @@ _нормализации_ — замены в нём всех минусов 
 Для каждой функции в исходном файле и для каждой используемой внешней функции
 (включая и встроенные), в начале файла добавляется объявление её дескриптора:
 
+    R05_DECLARE_ENTRY_FUNCTION(Mu)
+    R05_DECLARE_ENTRY_FUNCTION(Div)
+    R05_DECLARE_ENTRY_FUNCTION(Mod)
+    R05_DECLARE_ENTRY_FUNCTION(Ord)
+    R05_DECLARE_ENTRY_FUNCTION(Symb)
+    R05_DECLARE_ENTRY_FUNCTION(Compare)
+    R05_DECLARE_ENTRY_FUNCTION(R05_TextFromTree)
+    R05_DECLARE_ENTRY_FUNCTION(Extern)
+    R05_DECLARE_ENTRY_FUNCTION(Function)
+    R05_DECLARE_ENTRY_FUNCTION(Entry)
+    R05_DECLARE_ENTRY_FUNCTION(Local)
+    R05_DECLARE_ENTRY_FUNCTION(Sentences)
+    R05_DECLARE_LOCAL_FUNCTION(TextFromSentence)
+    R05_DECLARE_ENTRY_FUNCTION(Native)
+    R05_DECLARE_LOCAL_FUNCTION(FlatLines)
+    R05_DECLARE_ENTRY_FUNCTION(Symbol)
+    R05_DECLARE_ENTRY_FUNCTION(Char)
+    R05_DECLARE_ENTRY_FUNCTION(Number)
+    R05_DECLARE_ENTRY_FUNCTION(Name)
+    R05_DECLARE_ENTRY_FUNCTION(Variable)
+    R05_DECLARE_ENTRY_FUNCTION(Brackets)
+    R05_DECLARE_ENTRY_FUNCTION(CallBrackets)
+    R05_DECLARE_ENTRY_FUNCTION(TextFromExpr)
+    R05_DECLARE_LOCAL_FUNCTION(TextFromExpr_Char)
+    R05_DECLARE_LOCAL_FUNCTION(TextFromTerm)
+    R05_DECLARE_ENTRY_FUNCTION(EscapeChar)
+    R05_DECLARE_LOCAL_FUNCTION(EscapeChar_Aux)
+    R05_DECLARE_LOCAL_FUNCTION(EscapeChar_SwCompare)
+    R05_DECLARE_LOCAL_FUNCTION(CharFromHex)
+
+Макросы `R05_DECLARE_LOCAL_FUNCTION` и `R05_DECLARE_ENTRY_FUNCTION` раскрываются,
+соответственно, в
+
     extern struct r05_function r05f_Mu;
-    extern struct r05_function r05f_Div;
-    extern struct r05_function r05f_Mod;
-    extern struct r05_function r05f_Ord;
-    extern struct r05_function r05f_Symb;
-    extern struct r05_function r05f_Compare;
-    extern struct r05_function r05f_R05_TextFromTree;
-    extern struct r05_function r05f_Extern;
-    extern struct r05_function r05f_Function;
-    extern struct r05_function r05f_Entry;
-    extern struct r05_function r05f_Local;
-    extern struct r05_function r05f_Sentences;
+    ...
     static struct r05_function r05f_TextFromSentence;
     extern struct r05_function r05f_Native;
-    static struct r05_function r05f_FlatLines;
-    extern struct r05_function r05f_Symbol;
-    extern struct r05_function r05f_Char;
-    extern struct r05_function r05f_Number;
-    extern struct r05_function r05f_Name;
-    extern struct r05_function r05f_Variable;
-    extern struct r05_function r05f_Brackets;
-    extern struct r05_function r05f_CallBrackets;
-    extern struct r05_function r05f_TextFromExpr;
-    static struct r05_function r05f_TextFromExpr_Char;
-    static struct r05_function r05f_TextFromTerm;
-    extern struct r05_function r05f_EscapeChar;
-    static struct r05_function r05f_EscapeChar_Aux;
-    static struct r05_function r05f_EscapeChar_SwCompare;
+    ...
     static struct r05_function r05f_CharFromHex;
 
 В отличие от C++, язык Си допускает многократное объявление статических
@@ -737,7 +760,7 @@ _нормализации_ — замены в нём всех минусов 
 
 Непустые функции компилируются по следующему шаблону:
 
-    static void r05c_FuncName(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_*****_FUNCTION(FuncName) {
       r05_this_is_generated_function();
 
       do {
@@ -758,7 +781,6 @@ _нормализации_ — замены в нём всех минусов 
 
       r05_recognition_impossible();  /* может отсутствовать */
     }
-    struct r05_function r05f_FuncName = { r05c_FuncName, "FuncName" };
 
 Вызов `r05_this_is_generated_function();` добавляется в начало каждой функции,
 написанной на Рефале — он сообщает профилировщику о том, что функция не нативная
@@ -1780,7 +1802,7 @@ e-переменными такое присваивание нулей буде
 
 компилируется в
 
-    static void r05c_Apply(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_ENTRY_FUNCTION(Apply) {
       r05_this_is_generated_function();
 
       do {
@@ -1848,7 +1870,6 @@ e-переменными такое присваивание нулей буде
 
       r05_recognition_impossible();
     }
-    struct r05_function r05f_Apply = { r05c_Apply, "Apply" };
 
 **Пример.** Функция
 
@@ -1860,7 +1881,7 @@ e-переменными такое присваивание нулей буде
 
 компилируется в
 
-    static void r05c_Map(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_ENTRY_FUNCTION(Map) {
       r05_this_is_generated_function();
 
       do {
@@ -1921,7 +1942,6 @@ e-переменными такое присваивание нулей буде
 
       r05_recognition_impossible();
     }
-    struct r05_function r05f_Map = { r05c_Map, "Map" };
 
 **Пример.** Функция
 
@@ -1935,7 +1955,7 @@ e-переменными такое присваивание нулей буде
 
 компилируется в
 
-    static void r05c_DoLoadFile(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_LOCAL_FUNCTION(DoLoadFile) {
       r05_this_is_generated_function();
 
       do {
@@ -2015,7 +2035,6 @@ e-переменными такое присваивание нулей буде
         return;
       } while (0);
     }
-    static struct r05_function r05f_DoLoadFile = { r05c_DoLoadFile, "DoLoadFile" };
 
 Заметим, что последнее предложение функции имеет вид `e.Line = …;`, а значит,
 всегда выполняется успешно. Поэтому команда `r05_recognition_impossible();`
@@ -2038,12 +2057,12 @@ e-переменными такое присваивание нулей буде
     #include "refal05rts.h"
 
 
-    extern struct r05_function r05f_Card;
-    extern struct r05_function r05f_Prout;
-    extern struct r05_function r05f_Go;
-    static struct r05_function r05f_Hello;
+    R05_DECLARE_ENTRY_FUNCTION(Card)
+    R05_DECLARE_ENTRY_FUNCTION(Prout)
+    R05_DECLARE_ENTRY_FUNCTION(Go)
+    R05_DECLARE_LOCAL_FUNCTION(Hello)
 
-    static void r05c_Go(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_ENTRY_FUNCTION(Go) {
       r05_this_is_generated_function();
 
       do {
@@ -2079,9 +2098,8 @@ e-переменными такое присваивание нулей буде
 
       r05_recognition_impossible();
     }
-    struct r05_function r05f_Go = { r05c_Go, "Go" };
 
-    static void r05c_Hello(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_LOCAL_FUNCTION(Hello) {
       r05_this_is_generated_function();
 
       do {
@@ -2131,7 +2149,6 @@ e-переменными такое присваивание нулей буде
         return;
       } while (0);
     }
-    static struct r05_function r05f_Hello = { r05c_Hello, "Hello" };
 
 
     /* End of file */
@@ -2545,18 +2562,17 @@ _вместо_ предложений на Рефале. Простейший �
     #include "refal05rts.h"
 
 
-    extern struct r05_function r05f_Go;
+    R05_DECLARE_ENTRY_FUNCTION(Go)
 
     #line 2 "native-hello.ref"
     #include <stdio.h>
     #line 10 "native-hello.c"
-    static void r05c_Go(struct r05_node *arg_begin, struct r05_node *arg_end) {
+    R05_DEFINE_ENTRY_FUNCTION(Go) {
     #line 7 "native-hello.ref"
       printf("Hello, World!\n");
       r05_splice_to_freelist(arg_begin, arg_end);
     #line 15 "native-hello.c"
     }
-    struct r05_function r05f_Go = { r05c_Go, "Go" };
 
 
     /* End of file */

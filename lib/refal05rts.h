@@ -227,6 +227,33 @@ R05_NORETURN void r05_switch_default_violation_impl(
 );
 
 
+#define R05_DEFINE_ENTRY_ENUM(name) \
+  struct r05_function r05f_ ## name = { r05_enum_function_code, #name };
+#define R05_DEFINE_LOCAL_ENUM(name) \
+  static struct r05_function r05f_ ## name = { r05_enum_function_code, #name };
+
+
+#define R05_DECLARE_ENTRY_FUNCTION(name) \
+  extern struct r05_function r05f_ ## name;
+#define R05_DECLARE_LOCAL_FUNCTION(name) \
+  static struct r05_function r05f_ ## name;
+
+
+#define R05_DEFINE_ENTRY_FUNCTION(name) \
+  R05_DEFINE_FUNCTION_AUX(name, /* пусто */)
+#define R05_DEFINE_LOCAL_FUNCTION(name) \
+  R05_DEFINE_FUNCTION_AUX(name, static)
+
+#define R05_DEFINE_FUNCTION_AUX(name, scope) \
+  static void r05c_ ## name( \
+    struct r05_node *arg_begin, struct r05_node *arg_end \
+  ); \
+  scope struct r05_function r05f_ ## name = { r05c_ ## name, #name }; \
+  static void r05c_ ## name( \
+    struct r05_node *arg_begin, struct r05_node *arg_end \
+  )
+
+
 #ifdef __cplusplus
 }  /* extern "C" */
 #endif /* __cplusplus */
