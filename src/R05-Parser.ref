@@ -8,7 +8,7 @@ $EXTERN R05-LexScan-File, R05-LexScan-String, TkEOF, TkExtern, TkEnum, TkEEnum,
 $EXTERN Success, Fails, Map, Reduce;
 
 *$FROM R05-AST
-$EXTERN Extern, Local, Entry, Function, Sentences, Symbol, Char, Number,
+$EXTERN Extern, Local, Entry, Function, Symbol, Char, Number,
   Name, Variable, Brackets, CallBrackets;
 
 
@@ -188,7 +188,7 @@ ParseElement {
 
 $ENTRY parser_MakeListFunction {
   s.ScopeClass (t.SrcPos e.Name) =
-    (Function t.SrcPos s.ScopeClass (e.Name) Sentences /* пусто */);
+    (Function t.SrcPos s.ScopeClass (e.Name) /* пусто */);
 }
 
 
@@ -326,6 +326,8 @@ ParseScope {
 }
 
 
+*$ENUM Sentences
+
 /*
   Body ::= Sentences | ε.
 
@@ -335,12 +337,12 @@ ParseScope {
 ParseBody {
   /* Body ::= ε */
   (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList =
-    (Body Sentences /* no sentences */)
+    (Body /* no sentences */)
     (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList;
 
   /* Body ::= Sentences */
   (Sentences e.Sentences) e.Tokens t.ErrorList =
-    (Body Sentences e.Sentences) e.Tokens t.ErrorList;
+    (Body e.Sentences) e.Tokens t.ErrorList;
 
   /* Body ::= Sentences~ … */
   e.Tokens t.ErrorList =
@@ -759,10 +761,8 @@ ExtractReferences {
 }
 
 $ENTRY parser_ExtractReferences {
-  (Function t.SrcPos s.ScopeClass (e.Name) Sentences e.Sentences) =
+  (Function t.SrcPos s.ScopeClass (e.Name) e.Sentences) =
     <Map parser_ExtractReferences-Sentences e.Sentences>;
-
-  t.OtherItem = /* тут нет имён функций */;
 }
 
 $ENTRY parser_ExtractReferences-Sentences {
@@ -814,7 +814,7 @@ Normalize {
 
   e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
 
-  e.Name = (Function NO-POS Extern (e.Name) Sentences /* пусто */);
+  e.Name = (Function NO-POS Extern (e.Name) /* пусто */);
 }
 
 *$ENUM NO-POS
@@ -822,7 +822,7 @@ Normalize {
 CheckRepeatedDefinitions {
   t.ErrorList (e.References)
   e.Tree-B (Function t.SrcPos1 s.ScopeClass (e.Name) e.Body) e.Tree-E
-  (Function t.SrcPos2 Extern (e.Name) Sentences) =
+  (Function t.SrcPos2 Extern (e.Name)) =
     /* $EXTERN для уже существующей функции */
     <CheckRepeatedDefinitions
       t.ErrorList (e.References)
@@ -830,7 +830,7 @@ CheckRepeatedDefinitions {
     >;
 
   t.ErrorList (e.References-B (t.SrcPosRef e.Name) e.References-E)
-  e.Tree (Function t.SrcPos Extern (e.Name) Sentences) =
+  e.Tree (Function t.SrcPos Extern (e.Name)) =
     /* $EXTERN используется */
     <CheckRepeatedDefinitions
       t.ErrorList (e.References-B <RemoveReference (e.Name) e.References-E>)
@@ -839,12 +839,12 @@ CheckRepeatedDefinitions {
     (Extern e.Name);
 
   t.ErrorList (e.References)
-  e.Tree (Function t.SrcPos Extern (e.Name) Sentences) =
+  e.Tree (Function t.SrcPos Extern (e.Name)) =
     /* $EXTERN не используется */
     <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree>;
 
   t.ErrorList (e.References)
-  e.Tree-B (Function t.SrcPos1 Extern (e.Name) Sentences) e.Tree-E
+  e.Tree-B (Function t.SrcPos1 Extern (e.Name)) e.Tree-E
   (Function t.SrcPos2 s.ScopeClass (e.Name) e.Body) =
     /* $EXTERN для уже существующей функции */
     <CheckRepeatedDefinitions

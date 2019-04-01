@@ -341,7 +341,7 @@
     e.Name ::= s.CHAR+
     s.Scope ::= Entry | Local
 
-    e.Body ::= Sentences t.Sentence*
+    e.Body ::= t.Sentence*
     s.Line ::= s.NUMBER
     e.SourceName ::= s.CHAR+
 
@@ -365,7 +365,8 @@
     <Function s.Scope (e.Name) e.Body> == s.CHAR*
     <Entry> == s.CHAR*  -- '$ENTRY'
     <Local> == s.CHAR*  -- пусто
-    <Sentences t.Sentence*> == s.CHAR*
+
+    <TextFromBody t.Sentence*> == s.CHAR*
 
     <Symbol s.Type e.Info> == s.CHAR*
     <Char s.CHAR> == s.CHAR*
@@ -380,10 +381,10 @@
     <EscapeChar s.CHAR> == s.CHAR*
 
 Все элементы синтаксического дерева могут вызываться как функции — формируют
-соответствующий текст на Рефале-05. Функции `R05-TextFromTree` и `TextFromExpr`
-предназначены для «неименованных» конструкций — самого дерева и выражения
-(образца и результата). Функция `EscapeChar` при необходимости экранирует символ
-по правилам Рефала-05.
+соответствующий текст на Рефале-05. Функции `R05-TextFromTree`, `TextFromBody`
+и `TextFromExpr` предназначены для «неименованных» конструкций — самого дерева,
+тела функции и выражения (образца и результата). Функция `EscapeChar`
+при необходимости экранирует символ по правилам Рефала-05.
 
 `$ENUM` и `$EENUM` — это синтаксический сахар, разрешаемый при синтаксическом
 анализе. Пустые функции, введённые при помощи этих ключевых слов, эквивалентны

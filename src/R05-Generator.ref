@@ -1,5 +1,5 @@
 *$FROM R05-AST
-$EXTERN Extern, Entry, Function, Local, Sentences, Variable, Symbol,
+$EXTERN Extern, Entry, Function, Local, Variable, Symbol,
   Brackets, Char, Number, Name, TextFromExpr, CallBrackets;
 
 *$FROM LibraryEx
@@ -58,11 +58,11 @@ GenDeclaration {
 }
 
 GenFunction {
-  s.ScopeClass (e.Name) Sentences /* пусто */ =
+  s.ScopeClass (e.Name) /* пусто */ =
     ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_ENUM(' e.Name ')')
     ();
 
-  s.ScopeClass (e.Name) Sentences e.Sentences =
+  s.ScopeClass (e.Name) e.Sentences =
     ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_FUNCTION(' e.Name ') {')
     ('  r05_this_is_generated_function();')
     <Map generator_GenSentence <AddFailCommand e.Sentences>>
