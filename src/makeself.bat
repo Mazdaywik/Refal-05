@@ -31,5 +31,4 @@ setlocal
 
   md cfiles 2>NUL
   move *.c cfiles >NUL
-  move ..\lib\Library.c cfiles >NUL
 endlocal

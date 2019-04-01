@@ -32,5 +32,5 @@
   mv refal05c ../bin
 
   mkdir -p cfiles
-  mv *.c ../lib/Library.c cfiles
+  mv *.c cfiles
 )

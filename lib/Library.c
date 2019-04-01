@@ -1,4 +1,3 @@
-%%
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,21 +6,29 @@
 #ifdef R05_POSIX
 #include <sys/wait.h>
 #endif  /* R05_POSIX */
-%%
+
+#include "refal05rts.h"
 
 
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
-$ENTRY Mu {
-  s.Func e.Arg = <s.Func e.Arg>;
+R05_DEFINE_ENTRY_FUNCTION(Mu) {
+  struct r05_node *mu = arg_begin->next;
+  struct r05_node *callable = mu->next;
+  if (callable->tag != R05_DATATAG_FUNCTION) {
+    r05_recognition_impossible();
+  }
+
+  r05_splice_to_freelist(mu, mu);
+  r05_push_stack(arg_end);
+  r05_push_stack(arg_begin);
 }
 
 
 /**
    2. <Add s.NUMBER s.NUMBER> == s.NUMBER
 */
-%%
 #define ARITHM_OP(op, check) \
   struct r05_node *func_name, *sX, *sY; \
   func_name = arg_begin->next; \
@@ -52,13 +59,10 @@ $ENTRY Mu {
   if (sY->info.number == 0) { \
     r05_builtin_error("divide by zero"); \
   }
-%%
 
 
-$ENTRY Add {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Add) {
   ARITHM_OP(+, NO_CHECK)
-%%
 }
 
 
@@ -68,8 +72,7 @@ $ENTRY Add {
       s.ArgNo ::= s.NUMBER
       e.Argument ::= s.CHAR*
 */
-$ENTRY Arg {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Arg) {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *parg_no = callable->next;
   int arg_no;
@@ -88,19 +91,15 @@ $ENTRY Arg {
   r05_alloc_string(r05_arg(arg_no));
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
 /**
    5. <Card> == s.CHAR* 0?
 */
-%%
 static void read_from_stream(FILE *input);
-%%
 
-$ENTRY Card {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Card) {
   struct r05_node *callee = arg_begin->next;
 
   if (callee->next != arg_end) {
@@ -111,11 +110,9 @@ $ENTRY Card {
   read_from_stream(stdin);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
-%%
 static void read_from_stream(FILE *input) {
   int cur_char;
 
@@ -127,7 +124,6 @@ static void read_from_stream(FILE *input) {
     r05_alloc_number(0);
   }
 }
-%%
 
 
 /**
@@ -135,8 +131,7 @@ static void read_from_stream(FILE *input) {
 
    В e.Expr’ все числа заменены на литеры с соответствующими кодами
 */
-$ENTRY Chr {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Chr) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
 
@@ -150,25 +145,21 @@ $ENTRY Chr {
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
-%%
 }
 
 
 /**
   10. <Div s.NUMBER s.NUMBER> == s.NUMBER
 */
-$ENTRY Div {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Div) {
   ARITHM_OP(/, CHECK_ZERODIV);
-%%
 }
 
 
 /**
   12. <Explode s.FUNCTION> == s.CHAR+
 */
-$ENTRY Explode {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Explode) {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *ident = callable->next;
 
@@ -184,7 +175,6 @@ $ENTRY Explode {
   r05_alloc_string(ident->info.function->name);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
@@ -192,12 +182,9 @@ $ENTRY Explode {
   14. <Get s.FileNo> == s.Char* 0?
       s.FileNo ::= s.NUMBER
 */
-%%
 FILE *open_numbered(unsigned int no, const char mode);
-%%
 
-$ENTRY Get {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Get) {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pfile_no = callable->next;
   FILE *stream;
@@ -216,11 +203,9 @@ $ENTRY Get {
   read_from_stream(stream);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
-%%
 enum { FILE_LIMIT = 40 };
 
 static FILE *s_streams[FILE_LIMIT] = { NULL };
@@ -260,26 +245,21 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
 
   return s_streams[file_no];
 }
-%%
 
 
 /**
   19. <Mod s.NUMBER s.NUMBER> == s.NUMBER
 */
-$ENTRY Mod {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Mod) {
   ARITHM_OP(%, CHECK_ZERODIV);
-%%
 }
 
 
 /**
   20. <Mul s.NUMBER s.NUMBER> == s.NUMBER
 */
-$ENTRY Mul {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Mul) {
   ARITHM_OP(*, NO_CHECK)
-%%
 }
 
 
@@ -290,8 +270,7 @@ $ENTRY Mul {
       Если аргумент не начинается с последовательности цифр,
       функция возвращает 0.
 */
-$ENTRY Numb {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Numb) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p;
   r05_number result = 0;
@@ -308,7 +287,6 @@ $ENTRY Numb {
   arg_begin->info.number = result;
 
   r05_splice_to_freelist(callee, arg_end);
-%%
 }
 
 
@@ -319,14 +297,16 @@ $ENTRY Numb {
         |  r  |  w  |  a
         |  rb |  wb |  ab
 */
-$EENUM r, w, a, rb, wb, ab;
+R05_DEFINE_ENTRY_ENUM(r)
+R05_DEFINE_ENTRY_ENUM(w)
+R05_DEFINE_ENTRY_ENUM(a)
+R05_DEFINE_ENTRY_ENUM(rb)
+R05_DEFINE_ENTRY_ENUM(wb)
+R05_DEFINE_ENTRY_ENUM(ab)
 
-%%
 static void ensure_close_stream(unsigned int file_no);
-%%
 
-$ENTRY Open {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Open) {
   struct r05_node *eFileName_b, *eFileName_e, *sMode, *sFileNo;
   unsigned int file_no;
   char mode_str[2] = { '.', '\0' };
@@ -394,10 +374,8 @@ $ENTRY Open {
   }
 
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
-%%
 static void ensure_close_stream(unsigned int file_no) {
   if (s_streams[file_no] != NULL && fclose(s_streams[file_no]) == EOF) {
     r05_builtin_error_errno("Can't close stream");
@@ -405,7 +383,6 @@ static void ensure_close_stream(unsigned int file_no) {
 
   s_streams[file_no] = NULL;
 }
-%%
 
 
 /**
@@ -413,8 +390,7 @@ static void ensure_close_stream(unsigned int file_no) {
 
   В e.Expr’ все литеры заменены на их коды ASCII
 */
-$ENTRY Ord {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Ord) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
 
@@ -428,11 +404,9 @@ $ENTRY Ord {
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
-%%
 }
 
 
-%%
 enum output_func_type {
   PROUT, PUTOUT,
 };
@@ -441,9 +415,7 @@ static void output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   enum output_func_type type
 );
-%%
 
-%%
 static void output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   enum output_func_type type
@@ -505,36 +477,29 @@ static void output_func(
 
   r05_splice_to_freelist(arg_begin, arg_end);
 }
-%%
 
 
 /**
   25. <Prout e.Expr> == []
 */
-$ENTRY Prout {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Prout) {
   output_func(arg_begin, arg_end, PROUT);
-%%
 }
 
 
 /**
   27. <Putout s.FileNo e.Expr> == []
 */
-$ENTRY Putout {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Putout) {
   output_func(arg_begin, arg_end, PUTOUT);
-%%
 }
 
 
 /**
   30. <Sub s.NUMBER s.NUMBER> == s.NUMBER
 */
-$ENTRY Sub {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Sub) {
   ARITHM_OP(-, NO_CHECK)
-%%
 }
 
 
@@ -542,8 +507,7 @@ $ENTRY Sub {
   31. <Symb e.Sign s.NUMBER> == e.Sign s.CHAR+
       e.Sign ::= '+' | '-' | пусто
 */
-$ENTRY Symb {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Symb) {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pnumber = callable->next;
   r05_number number;
@@ -598,7 +562,6 @@ $ENTRY Symb {
 
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
@@ -619,8 +582,7 @@ $ENTRY Symb {
         | 'B0' — brackets
         | '*0' — empty expression
 */
-$ENTRY Type {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Type) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *first_term = callee->next;
   char type, subtype;
@@ -668,7 +630,6 @@ $ENTRY Type {
   callee->info.char_ = subtype;
 
   r05_splice_to_freelist(arg_end, arg_end);
-%%
 }
 
 
@@ -676,8 +637,7 @@ $ENTRY Type {
   51. <GetEnv e.EnvName> == e.EnvValue
       e.EnvName, e.EnvValue ::= s.CHAR*
 */
-$ENTRY GetEnv {
-%%
+R05_DEFINE_ENTRY_FUNCTION(GetEnv) {
   struct r05_node *eEnvName_b, *eEnvName_e;
   char env_name[2001];
   size_t env_name_len;
@@ -705,7 +665,6 @@ $ENTRY GetEnv {
   r05_alloc_string(env_value);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
@@ -713,8 +672,7 @@ $ENTRY GetEnv {
   52. <System e.Command> == e.RetCode
       e.RetCode ::= '-'? s.NUMBER
 */
-$ENTRY System {
-%%
+R05_DEFINE_ENTRY_FUNCTION(System) {
   struct r05_node *eCommand_b, *eCommand_e;
   char command[2001];
   size_t command_len;
@@ -752,15 +710,13 @@ $ENTRY System {
   r05_alloc_number((r05_number) retcode);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
 /**
   53. <Exit e.RetCode>
 */
-$ENTRY Exit {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Exit) {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pretcode = callable->next;
   int retcode;
@@ -789,15 +745,13 @@ $ENTRY Exit {
 
   retcode = sign * (int) pretcode->info.number;
   r05_exit(retcode);
-%%
 }
 
 
 /**
   54. <Close s.FileNo> == []
 */
-$ENTRY Close {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Close) {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pfile_no = callable->next;
   unsigned int file_no;
@@ -813,7 +767,6 @@ $ENTRY Close {
   file_no = (unsigned int) pfile_no->info.number % FILE_LIMIT;
   ensure_close_stream(file_no);
   r05_splice_to_freelist(arg_begin, arg_end);
-%%
 }
 
 
@@ -823,10 +776,10 @@ $ENTRY Close {
         == False
       e.FileName ::= s.CHAR+
 */
-$EENUM True, False;
+R05_DEFINE_ENTRY_ENUM(True)
+R05_DEFINE_ENTRY_ENUM(False)
 
-$ENTRY ExistFile {
-%%
+R05_DEFINE_ENTRY_FUNCTION(ExistFile) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *eFileName_b, *eFileName_e;
   char filename[FILENAME_MAX + 1];
@@ -859,7 +812,6 @@ $ENTRY ExistFile {
   }
 
   r05_splice_to_freelist(callee, arg_end);
-%%
 }
 
 
@@ -870,8 +822,7 @@ $ENTRY ExistFile {
 
   Функция возвращает знак разности между s.X и s.Y
 */
-$ENTRY Compare {
-%%
+R05_DEFINE_ENTRY_FUNCTION(Compare) {
   struct r05_node *func_name, *sX, *sY;
 
   func_name = arg_begin->next;
@@ -900,7 +851,6 @@ $ENTRY Compare {
 
   r05_splice_to_freelist(arg_begin, func_name);
   r05_splice_to_freelist(sY, arg_end);
-%%
 }
 
 
@@ -911,9 +861,11 @@ $ENTRY Compare {
       s.Name ::= s.FUNCTION
       s.Type ::= special | regular
 */
-$EENUM special, regular;
+R05_DEFINE_ENTRY_ENUM(special)
+R05_DEFINE_ENTRY_ENUM(regular)
 
-$ENTRY ListOfBuiltin {
+
+R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin) {
 /*
   Чтобы добавить встроенную функцию Рефала-5, нужно раскомментировать
   строчку в функции ListOfBuiltin и реализовать функцию.
@@ -930,69 +882,92 @@ $ENTRY ListOfBuiltin {
   первые две — деталь внутренней реализации Рефала-5 (версии PZ),
   а третья — артефакт.
 */
-  = (1 Mu special)
-    (2 Add regular)
-    (3 Arg regular)
-*    (4 Br regular)
-    (5 Card regular)
-    (6 Chr regular)
-*    (7 Cp regular)
-*    (8 Dg regular)
-*    (9 Dgall regular)
-    (10 Div regular)
-*    (11 Divmod regular)
-    (12 Explode regular)
-*    (13 First regular)
-    (14 Get regular)
-*    (15 Implode regular)
-*    (16 Last regular)
-*    (17 Lenw regular)
-*    (18 Lower regular)
-    (19 Mod regular)
-    (20 Mul regular)
-    (21 Numb regular)
-    (22 Open regular)
-    (23 Ord regular)
-*    (24 Print regular)
-    (25 Prout regular)
-*    (26 Put regular)
-    (27 Putout regular)
-*    (28 Rp regular)
-*    (29 Step regular)
-    (30 Sub regular)
-    (31 Symb regular)
-*    (32 Time regular)
-    (33 Type regular)
-*    (34 Upper regular)
-*    (35 Sysfun regular)
-    /* (42 "Imp$$" regular) */
-    /* (43 "Stop$$" regular) */
-    /* (44 "" regular) */
-*    (45 Freeze regular)
-*    (46 Freezer regular)
-*    (47 Dn regular)
-*    (48 Up special)
-*    (49 Ev-met special)
-*    (50 Residue special)
-    (51 GetEnv regular)
-    (52 System regular)
-    (53 Exit regular)
-    (54 Close regular)
-    (55 ExistFile regular)
-*    (56 GetCurrentDirectory regular)
-*    (57 RemoveFile regular)
-*    (58 Implode_Ext regular)
-*    (59 Explode_Ext regular)
-*    (60 TimeElapsed regular)
-    (61 Compare regular)
-*    (62 DeSysfun regular)
-*    (63 XMLParse regular)
-*    (64 Random regular)
-*    (65 RandomDigit regular)
-*    (66 Write regular)
-    (67 ListOfBuiltin regular)
-*    (68 SizeOf regular)
-*    (69 GetPID regular)
-*    (70 int4fab_1 regular)
-*    (71 GetPPID regular)
-}
+
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *left_bracket, *right_bracket;
+
+  if (callee->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+#define ALLOC_BUILTIN(id, function, type) \
+  r05_alloc_open_bracket(&left_bracket); \
+  r05_alloc_number(id); \
+  r05_alloc_function(&r05f_ ## function); \
+  r05_alloc_function(&r05f_ ## type); \
+  r05_alloc_close_bracket(&right_bracket); \
+  r05_link_brackets(left_bracket, right_bracket);
+
+  r05_reset_allocator();
+
+  ALLOC_BUILTIN(1, Mu, special)
+  ALLOC_BUILTIN(2, Add, regular)
+  ALLOC_BUILTIN(3, Arg, regular)
+  /* ALLOC_BUILTIN(4, Br, regular) */
+  ALLOC_BUILTIN(5, Card, regular)
+  ALLOC_BUILTIN(6, Chr, regular)
+  /* ALLOC_BUILTIN(7, Cp, regular) */
+  /* ALLOC_BUILTIN(8, Dg, regular) */
+  /* ALLOC_BUILTIN(9, Dgall, regular) */
+  ALLOC_BUILTIN(10, Div, regular)
+  /* ALLOC_BUILTIN(11, Divmod, regular) */
+  ALLOC_BUILTIN(12, Explode, regular)
+  /* ALLOC_BUILTIN(13, First, regular) */
+  ALLOC_BUILTIN(14, Get, regular)
+  /* ALLOC_BUILTIN(15, Implode, regular) */
+  /* ALLOC_BUILTIN(16, Last, regular) */
+  /* ALLOC_BUILTIN(17, Lenw, regular) */
+  /* ALLOC_BUILTIN(18, Lower, regular) */
+  ALLOC_BUILTIN(19, Mod, regular)
+  ALLOC_BUILTIN(20, Mul, regular)
+  ALLOC_BUILTIN(21, Numb, regular)
+  ALLOC_BUILTIN(22, Open, regular)
+  ALLOC_BUILTIN(23, Ord, regular)
+  /* ALLOC_BUILTIN(24, Print, regular) */
+  ALLOC_BUILTIN(25, Prout, regular)
+  /* ALLOC_BUILTIN(26, Put, regular) */
+  ALLOC_BUILTIN(27, Putout, regular)
+  /* ALLOC_BUILTIN(28, Rp, regular) */
+  /* ALLOC_BUILTIN(29, Step, regular) */
+  ALLOC_BUILTIN(30, Sub, regular)
+  ALLOC_BUILTIN(31, Symb, regular)
+  /* ALLOC_BUILTIN(32, Time, regular) */
+  ALLOC_BUILTIN(33, Type, regular)
+  /* ALLOC_BUILTIN(34, Upper, regular) */
+  /* ALLOC_BUILTIN(35, Sysfun, regular) */
+  /* 42, "Imp$$", regular */
+  /* 43, "Stop$$", regular */
+  /* 44, "", regular */
+  /* ALLOC_BUILTIN(45, Freeze, regular) */
+  /* ALLOC_BUILTIN(46, Freezer, regular) */
+  /* ALLOC_BUILTIN(47, Dn, regular) */
+  /* ALLOC_BUILTIN(48, Up, special) */
+  /* ALLOC_BUILTIN(49, Ev_met, special) */
+  /* ALLOC_BUILTIN(50, Residue, special) */
+  ALLOC_BUILTIN(51, GetEnv, regular)
+  ALLOC_BUILTIN(52, System, regular)
+  ALLOC_BUILTIN(53, Exit, regular)
+  ALLOC_BUILTIN(54, Close, regular)
+  ALLOC_BUILTIN(55, ExistFile, regular)
+  /* ALLOC_BUILTIN(56, GetCurrentDirectory, regular) */
+  /* ALLOC_BUILTIN(57, RemoveFile, regular) */
+  /* ALLOC_BUILTIN(58, Implode_Ext, regular) */
+  /* ALLOC_BUILTIN(59, Explode_Ext, regular) */
+  /* ALLOC_BUILTIN(60, TimeElapsed, regular) */
+  ALLOC_BUILTIN(61, Compare, regular)
+  /* ALLOC_BUILTIN(62, DeSysfun, regular) */
+  /* ALLOC_BUILTIN(63, XMLParse, regular) */
+  /* ALLOC_BUILTIN(64, Random, regular) */
+  /* ALLOC_BUILTIN(65, RandomDigit, regular) */
+  /* ALLOC_BUILTIN(66, Write, regular) */
+  ALLOC_BUILTIN(67, ListOfBuiltin, regular)
+  /* ALLOC_BUILTIN(68, SizeOf, regular) */
+  /* ALLOC_BUILTIN(69, GetPID, regular) */
+  /* ALLOC_BUILTIN(70, int4fab_1, regular) */
+  /* ALLOC_BUILTIN(71, GetPPID, regular) */
+
+#undef ALLOC_BUILTIN
+
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+};
