@@ -67,6 +67,12 @@ R05_DEFINE_ENTRY_FUNCTION(Add) {
 
 
 /**
+  4. <Br e.Key '=' e.Value> == empty
+*/
+R05_DEFINE_ENTRY_ENUM(Br);
+
+
+/**
    3. <Ars s.ArgNo> == e.Argument
 
       s.ArgNo ::= s.NUMBER
@@ -149,6 +155,12 @@ R05_DEFINE_ENTRY_FUNCTION(Chr) {
 
 
 /**
+  8. <Dg e.Key> == e.Value
+*/
+R05_DEFINE_ENTRY_ENUM(Dg);
+
+
+/**
   10. <Div s.NUMBER s.NUMBER> == s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Div) {
@@ -176,6 +188,15 @@ R05_DEFINE_ENTRY_FUNCTION(Explode) {
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
+
+
+/**
+  13. <First s.Len e.Items> == (e.Prefix) e.Suffix
+
+  e.Items : e.Prefix e.Suffix
+  |e.Prefix| == s.Len || { |e.Prefix| < s.Len && |e.Suffix| == 0 }
+*/
+R05_DEFINE_ENTRY_ENUM(First)
 
 
 /**
@@ -903,16 +924,16 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin) {
   ALLOC_BUILTIN(1, Mu, special)
   ALLOC_BUILTIN(2, Add, regular)
   ALLOC_BUILTIN(3, Arg, regular)
-  /* ALLOC_BUILTIN(4, Br, regular) */
+  ALLOC_BUILTIN(4, Br, regular)
   ALLOC_BUILTIN(5, Card, regular)
   ALLOC_BUILTIN(6, Chr, regular)
   /* ALLOC_BUILTIN(7, Cp, regular) */
-  /* ALLOC_BUILTIN(8, Dg, regular) */
+  ALLOC_BUILTIN(8, Dg, regular)
   /* ALLOC_BUILTIN(9, Dgall, regular) */
   ALLOC_BUILTIN(10, Div, regular)
   /* ALLOC_BUILTIN(11, Divmod, regular) */
   ALLOC_BUILTIN(12, Explode, regular)
-  /* ALLOC_BUILTIN(13, First, regular) */
+  ALLOC_BUILTIN(13, First, regular)
   ALLOC_BUILTIN(14, Get, regular)
   /* ALLOC_BUILTIN(15, Implode, regular) */
   /* ALLOC_BUILTIN(16, Last, regular) */
