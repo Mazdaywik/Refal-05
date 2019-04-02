@@ -155,6 +155,26 @@ Scan {
   s.Row s.Col 's.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 's' () <Type e.Tail>>;
   s.Row s.Col 't.' e.Tail = <ScanVariable s.Row <Inc2 s.Col> 't' () <Type e.Tail>>;
 
+  s.Row s.Col '<+' e.Tail =
+    (TkOpen (s.Row s.Col) CallBracket) (TkName (s.Row <Inc s.Col>) 'Add')
+    <Scan s.Row <Add s.Col 2> e.Tail>;
+
+  s.Row s.Col '<-' e.Tail =
+    (TkOpen (s.Row s.Col) CallBracket) (TkName (s.Row <Inc s.Col>) 'Sub')
+    <Scan s.Row <Add s.Col 2> e.Tail>;
+
+  s.Row s.Col '<*' e.Tail =
+    (TkOpen (s.Row s.Col) CallBracket) (TkName (s.Row <Inc s.Col>) 'Mul')
+    <Scan s.Row <Add s.Col 2> e.Tail>;
+
+  s.Row s.Col '</' e.Tail =
+    (TkOpen (s.Row s.Col) CallBracket) (TkName (s.Row <Inc s.Col>) 'Div')
+    <Scan s.Row <Add s.Col 2> e.Tail>;
+
+  s.Row s.Col '<%' e.Tail =
+    (TkOpen (s.Row s.Col) CallBracket) (TkName (s.Row <Inc s.Col>) 'Mod')
+    <Scan s.Row <Add s.Col 2> e.Tail>;
+
   s.Row s.Col s.Next e.Tail =
     <Scan-ByPunctuation s.Row s.Col (<CheckValidPunctuation s.Next>) e.Tail>;
 
