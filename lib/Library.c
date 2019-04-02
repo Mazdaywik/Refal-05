@@ -196,7 +196,45 @@ R05_DEFINE_ENTRY_FUNCTION(Explode) {
   e.Items : e.Prefix e.Suffix
   |e.Prefix| == s.Len || { |e.Prefix| < s.Len && |e.Suffix| == 0 }
 */
-R05_DEFINE_ENTRY_ENUM(First)
+R05_DEFINE_ENTRY_FUNCTION(First) {
+  struct r05_node *sLen, *eItems_b, *eItems_e;
+  r05_number counter;
+  struct r05_node *ePrefix_b, *ePrefix_e, *eSuffix_b, *eSuffix_e;
+  struct r05_node *left_bracket, *right_bracket, *pos;
+
+  r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
+
+  if (
+    ! r05_svar_left(&sLen, &eItems_b, &eItems_e)
+    || sLen->tag != R05_DATATAG_NUMBER
+  ) {
+    r05_recognition_impossible();
+  }
+
+  counter = sLen->info.number;
+
+  ePrefix_b = 0;
+  ePrefix_e = 0;
+  eSuffix_b = eItems_b;
+  eSuffix_e = eItems_e;
+  while (
+    counter > 0
+    && r05_open_evar_advance(&ePrefix_b, &ePrefix_e, &eSuffix_b, &eSuffix_e)
+  ) {
+    -- counter;
+  }
+
+  r05_reset_allocator();
+  r05_alloc_open_bracket(&left_bracket);
+  r05_alloc_close_bracket(&right_bracket);
+  pos = r05_insert_pos();
+
+  r05_link_brackets(left_bracket, right_bracket);
+  r05_splice_evar(right_bracket, ePrefix_b, ePrefix_e);
+  r05_splice_evar(pos, eSuffix_b, eSuffix_e);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
 
 
 /**

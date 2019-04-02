@@ -1,0 +1,11 @@
+$ENTRY Go {
+  = <Eq (('ABC'      ) 'DEF'      ) <First 3 'ABCDEF'>>
+    <Eq ((/* пусто */) /* пусто */) <First 3 /* пусто */>>
+    <Eq (('ABC'      ) /* пусто */) <First 10 'ABC'>>
+    <Eq (('ABCDE'    ) /* пусто */) <First 5 'ABCDE'>>
+    <Eq ((/* пусто */) 'ABCDE'    ) <First 0 'ABCDE'>>
+    <Eq ((/* пусто */) /* пусто */) <First 0 /* пусто */>>
+    <Eq ((() '*' ()  ) '*' ()     ) <First 3 () '*' () '*' ()>>
+}
+
+Eq { (e.Eq) e.Eq = }
