@@ -1335,12 +1335,16 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 }
 
 
+static void dump_buried(void);
+
 static void make_dump(void) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
   print_seq(s_arg_begin, s_arg_end);
   fprintf(stderr, "\nVIEW FIELD:\n");
   print_seq(&s_begin_view_field, &s_end_view_field);
+
+  dump_buried();
 
 #ifdef R05_DUMP_FREE_LIST
   fprintf(stderr, "\nFREE LIST:\n");
@@ -1353,6 +1357,7 @@ static void make_dump(void) {
 
 
 R05_NORETURN void r05_exit(int retcode) {
+  dump_buried();
   fflush(stderr);
   fflush(stdout);
   end_profiler();
@@ -1410,6 +1415,91 @@ R05_NORETURN void r05_switch_default_violation_impl(
   fprintf(stderr, "%s:%d:SWITCH DEFAULT VIOLATION\n", file, line);
   fprintf(stderr, "    expression %s -> %ld is not handled\n", expr, value);
   abort();
+}
+
+
+/*==============================================================================
+   Копилка
+==============================================================================*/
+
+
+static struct r05_node s_end_buried;
+
+static struct r05_node s_begin_buried = {
+  0, &s_end_buried, R05_DATATAG_ILLEGAL, { '\0' }
+};
+static struct r05_node s_end_buried = {
+  &s_begin_buried, 0, R05_DATATAG_ILLEGAL, { '\0' }
+};
+
+
+void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p, *left_bracket, *right_bracket;
+
+  p = callee->next;
+  while (
+    p != arg_end && ! (p->tag == R05_DATATAG_CHAR && p->info.char_ == '=')
+  ) {
+    p = p->next;
+  }
+
+  if (p == arg_end) {
+    r05_recognition_impossible();
+  }
+
+  left_bracket = callee;
+  right_bracket = arg_end;
+  left_bracket->tag = R05_DATATAG_OPEN_BRACKET;
+  right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
+  r05_link_brackets(left_bracket, right_bracket);
+  list_splice(s_begin_buried.next, left_bracket, right_bracket);
+
+  r05_splice_to_freelist(arg_begin, arg_begin);
+}
+
+
+void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  struct r05_node *buried_begin = s_begin_buried.next;
+  struct r05_node *key_begin, *key_end;
+
+  r05_prepare_argument(&key_begin, &key_end, arg_begin, arg_end);
+
+  while (buried_begin != &s_end_buried) {
+    struct r05_node *left_bracket = buried_begin;
+    struct r05_node *right_bracket = left_bracket->info.link;
+
+    struct r05_node *in_brackets_b = left_bracket->next;
+    struct r05_node *in_brackets_e = right_bracket->prev;
+    struct r05_node *rep_key_b, *rep_key_e;
+
+    int found =
+      r05_repeated_evar_left(
+        &rep_key_b, &rep_key_e,
+        key_begin, key_end,
+        &in_brackets_b, &in_brackets_e
+      )
+      && r05_char_left('=', &in_brackets_b, &in_brackets_e);
+
+    if (found) {
+      r05_splice_evar(arg_begin, in_brackets_b, in_brackets_e);
+      r05_splice_to_freelist(left_bracket, right_bracket);
+      break;
+    }
+
+    buried_begin = right_bracket->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, arg_end);
+  return;
+}
+
+
+static void dump_buried(void) {
+#ifdef R05_DUMP_BURIED
+  fprintf(stderr, "\nBURIED:\n");
+  print_seq(&s_begin_buried, &s_end_buried);
+#endif  /* ifdef R05_DUMP_BURIED */
 }
 
 

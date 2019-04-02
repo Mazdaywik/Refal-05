@@ -69,7 +69,7 @@ R05_DEFINE_ENTRY_FUNCTION(Add) {
 /**
   4. <Br e.Key '=' e.Value> == empty
 */
-R05_DEFINE_ENTRY_ENUM(Br);
+struct r05_function r05f_Br = { r05_br, "Br" };
 
 
 /**
@@ -157,7 +157,7 @@ R05_DEFINE_ENTRY_FUNCTION(Chr) {
 /**
   8. <Dg e.Key> == e.Value
 */
-R05_DEFINE_ENTRY_ENUM(Dg);
+struct r05_function r05f_Dg = { r05_dg, "Dg" };
 
 
 /**

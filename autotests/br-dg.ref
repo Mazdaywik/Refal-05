@@ -1,0 +1,27 @@
+$ENTRY Go {
+  = <Eq () <Dg 'Foo'>>
+    <Eq () <Br 'Foo=' 1 2>>
+    <Eq () <Br 'Bar=' 3 4>>
+    <Eq () <Br 'Foo=' 5 6>>
+    <Eq (3 4) <Dg 'Bar'>>
+    <Eq () <Dg 'Bar'>>
+    <Eq () <Br '=' 10 11>>
+    <Eq () <Br 'Zz='>>
+    <Eq (10 11) <Dg>>
+    <Eq () <Dg 'Zz'>>
+    <Eq (5 6) <Dg 'Foo'>>
+    <Eq (1 2) <Dg 'Foo'>>
+    <Eq () <Dg 'Foo'>>
+
+    <Test_Refal-5_bug>;
+}
+
+Eq { (e.Eq) e.Eq = }
+
+* Тест на совместимость с багом Рефала-5
+
+Test_Refal-5_bug {
+  = <Br 'A=B=C'> <C <Dg 'A=B'>>
+}
+
+C { 'C' = }

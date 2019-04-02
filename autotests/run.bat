@@ -41,7 +41,7 @@ setlocal
     exit /b 1
   )
 
-  %CLINE% -I../lib %CFILE% ../lib/refal05rts.c
+  %CLINE% -I../lib %CFILE% ../lib/Library.c ../lib/refal05rts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit /b 1

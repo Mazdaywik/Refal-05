@@ -254,6 +254,10 @@ R05_NORETURN void r05_switch_default_violation_impl(
   )
 
 
+void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end);
+void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end);
+
+
 #ifdef __cplusplus
 }  /* extern "C" */
 #endif /* __cplusplus */
