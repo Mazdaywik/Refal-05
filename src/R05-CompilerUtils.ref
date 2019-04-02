@@ -16,6 +16,7 @@ $EXTERN True, False;
 */
 $ENTRY R05-LoadPath {
   = <ParsePath <GetEnv 'R05PATH'>>
+    <ParsePath <GetEnv 'REF5RSL'>>
 }
 
 ParsePath {
