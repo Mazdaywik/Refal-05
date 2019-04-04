@@ -9,7 +9,7 @@ $EXTERN Success, Fails, Map, Reduce;
 
 *$FROM R05-AST
 $EXTERN Extern, Local, Entry, Function, Symbol, Char, Number,
-  Name, Variable, Brackets, CallBrackets;
+  Word, Variable, Brackets, Call;
 
 
 /**
@@ -546,7 +546,7 @@ ParsePatternTerm {
 
   /* PatternTerm ::= NAME */
   (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    (PatternTerm () (Symbol Name t.SrcPos e.Name))
+    (PatternTerm () (Symbol Word t.SrcPos e.Name))
     e.Tokens t.ErrorList;
 
   /* Переменные */
@@ -685,7 +685,7 @@ ParseResultTerm {
 
   /* ResultTerm ::= NAME */
   (TkName t.SrcPos e.Name) e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm (Symbol Name t.SrcPos e.Name))
+    (ResultTerm (Symbol Word t.SrcPos e.Name))
     e.Tokens (e.Variables) t.ErrorList;
 
   /* Переменные */
@@ -745,7 +745,7 @@ ParseResultTerm {
 
 BracketPairName {
   Bracket = Brackets;
-  CallBracket = CallBrackets;
+  CallBracket = Call;
 }
 
 
@@ -776,13 +776,13 @@ ExtractReferences-Expr {
 }
 
 $ENTRY parser_ExtractReferences-Expr {
-  (Symbol Name t.SrcPos e.Name) = (t.SrcPos e.Name);
+  (Symbol Word t.SrcPos e.Name) = (t.SrcPos e.Name);
   (Symbol s.Type e.Value) = /* это не имя функции */;
 
   (Variable s.Mode e.Index) = /* это не имя функции */;
 
   (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
-  (CallBrackets e.Expr) = <ExtractReferences-Expr e.Expr>;
+  (Call e.Expr) = <ExtractReferences-Expr e.Expr>;
 }
 
 FindOneEntry {

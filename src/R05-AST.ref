@@ -82,10 +82,10 @@ FlatLines {
   t.Term ::=
       (Symbol Char s.CHAR)
     | (Symbol Number s.NUMBER)
-    | (Symbol Name t.SrcPos e.Name)
+    | (Symbol Word t.SrcPos e.Name)
     | (Variable s.Mode e.Index)
     | (Brackets e.Expression)
-    | (CallBrackets e.Expression)
+    | (Call e.Expression)
   s.Mode ::= 's' | 't' | 'e'
   e.Index ::= s.CHAR+
 */
@@ -102,7 +102,7 @@ $ENTRY Number {
   s.Number = <Symb s.Number>;
 }
 
-$ENTRY Name {
+$ENTRY Word {
   t.SrcPos e.Name = e.Name;
 }
 
@@ -114,7 +114,7 @@ $ENTRY Brackets {
   e.Inner = '(' <TextFromExpr e.Inner> ')';
 }
 
-$ENTRY CallBrackets {
+$ENTRY Call {
   e.Inner = '<' <TextFromExpr e.Inner> '>';
 }
 

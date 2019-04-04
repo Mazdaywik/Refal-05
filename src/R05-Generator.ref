@@ -1,6 +1,6 @@
 *$FROM R05-AST
 $EXTERN Extern, Entry, Function, Local, Variable, Symbol,
-  Brackets, Char, Number, Name, TextFromExpr, CallBrackets;
+  Brackets, Char, Number, Word, TextFromExpr, Call;
 
 *$FROM LibraryEx
 $EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
@@ -189,7 +189,7 @@ MatchFunc {
 SymbolFunc {
   Char = 'char';
   Number = 'number';
-  Name = 'function';
+  Word = 'function';
 }
 
 StrFromDirection {
@@ -210,7 +210,7 @@ MatchArgs {
 SymbolTextRep {
   Char s.Char = '\'' <EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
-  Name t.SrcPos e.Name = '&r05f_' e.Name;
+  Word t.SrcPos e.Name = '&r05f_' e.Name;
 }
 
 CmdEmpty {
@@ -396,7 +396,7 @@ CompileSentence-Aux {
     s.MatchType e.MatchValue ::=
         Symbol Char s.Char
       | Symbol Number s.Number
-      | Symbol Name t.SrcPos e.Name
+      | Symbol Word t.SrcPos e.Name
       | Brackets s.InnerNum
       | Repeated s.Usings s.Mode e.Index
       | Variable s.Mode e.Index
@@ -652,7 +652,7 @@ DoGenResult {
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (CallBrackets e.InBrackets) e.Result =
+  s.Counter (Call e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
