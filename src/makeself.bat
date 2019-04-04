@@ -1,14 +1,15 @@
 @echo off
 setlocal
   set MODULES=refal05c R05-AST R05-CompilerUtils R05-Generator R05-Lexer
-  set MODULES=%MODULES% R05-Parser LibraryEx
+  set MODULES=%MODULES% R05-Parser
+  set LIBS=LibraryEx
 
   md ..\bin 2>NUL
 
   if {%1}=={stable} (
     refc %MODULES%
     move *.rsl ..\bin >NUL
-    set EXECUTABLE=refgo ../bin^(%MODULES: =+%^)
+    set EXECUTABLE=refgo ../bin^(%MODULES: =+%^)+%LIBS: =+%
   ) else (
     set EXECUTABLE=..\bin\refal05c.exe
   )
@@ -22,7 +23,7 @@ setlocal
   call ..\c-plus-plus.conf.bat
   set R05CFLAGS=-DR05_SHOW_STAT %R05CFLAGS%
   set R05PATH=..\lib
-  echo Y|%EXECUTABLE% %MODULES% Library refal05rts
+  echo Y|%EXECUTABLE% %MODULES% %LIBS% Library refal05rts
   if exist a.exe move a.exe refal05c.exe
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds

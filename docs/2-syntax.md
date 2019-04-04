@@ -1930,5 +1930,5 @@ entry-функции путём добавления либо префиксов
 [Att]: ftp://ftp.botik.ru/pub/local/scp/refal5/book/attachment-to-refal-book_180214.zip
 [B]: B-syntax-grammar.md
 [3]: 3-install-and-usage.md
-[5]: 4-libraryex-components.md
+[4]: https://mazdaywik.github.io/refal-5-framework/LibraryEx
 [5]: 5-implementation.md

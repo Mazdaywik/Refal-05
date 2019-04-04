@@ -1,15 +1,14 @@
 #!/bin/bash
 (
-  MODULES="refal05c R05-AST R05-CompilerUtils R05-Generator R05-Lexer R05-Parser
-    LibraryEx"
-  MODULES=$(echo $MODULES)
+  MODULES="refal05c R05-AST R05-CompilerUtils R05-Generator R05-Lexer R05-Parser"
+  LIBS="LibraryEx"
 
   mkdir -p ../bin
 
   if [ "$1" == "stable" ]; then
     refc $MODULES
     mv *.rsl ../bin
-    EXECUTABLE="refgo ../bin(${MODULES// /+})"
+    EXECUTABLE="refgo ../bin(${MODULES// /+})+${LIBS// / +}"
   else
     EXECUTABLE="../bin/refal05c"
   fi
@@ -23,7 +22,7 @@
   source ../c-plus-plus.conf.sh
   export R05CFLAGS="-orefal05c -DR05_SHOW_STAT $R05CFLAGS"
   export R05PATH=../lib
-  echo Y | $EXECUTABLE $MODULES Library refal05rts
+  echo Y | $EXECUTABLE $MODULES ${LIBS} Library refal05rts
 
   # Копирование необходимо при компиляции при помощи Cygwin или MSYS,
   # поскольку на платформе Windows невозможно перезаписать исполнимый
