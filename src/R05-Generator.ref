@@ -3,7 +3,7 @@ $EXTERN Extern, Entry, Function, Local, Variable, Symbol,
   Brackets, Char, Number, Word, Call;
 
 *$FROM LibraryEx
-$EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
+$EXTERN SaveFile, MapAccum, Map, Dec, Inc;
 
 *$FROM Refal5-Plainer
 $EXTERN InlineExpr;

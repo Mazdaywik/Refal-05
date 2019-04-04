@@ -1,3 +1,4 @@
 $ENTRY Go { = }
 
+Foo { = Bar }
 Bar { = Bar }

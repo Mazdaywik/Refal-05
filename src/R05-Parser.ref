@@ -819,33 +819,67 @@ FindUnusedFunctions {
 $ENTRY r05-parser_PrepareCrossRefs {
   (e.Entries) (Function t.SrcPos Entry (e.Name) e.Sentences)
     = (e.Entries (t.SrcPos e.Name))
-      ((e.Name) t.SrcPos <ExtractReferences-Sentences e.Sentences>);
+      ((e.Name) t.SrcPos Entry <ExtractReferences-Sentences e.Sentences>);
 
-  (e.Entries) (Function t.SrcPos Local (e.Name) e.Sentences)
+  (e.Entries) (Function t.SrcPos s.Scope (e.Name) e.Sentences)
     = (e.Entries)
-      ((e.Name) t.SrcPos <ExtractReferences-Sentences e.Sentences>);
-
-  (e.Entries) (Function t.SrcPos Extern (e.Name) /* пусто */)
-    = (e.Entries) /* пусто */;
+      ((e.Name) t.SrcPos s.Scope <ExtractReferences-Sentences e.Sentences>);
 }
 
 FindUnusedFunctions-Aux {
+  t.ErrorList (e.UsedReferences) /* все функции вызваны */ = t.ErrorList;
+
   t.ErrorList ((t.RefPos e.NextName) e.UsedReferences)
-  e.Functions-B ((e.NextName) t.FunctionPos e.References) e.Functions-E
+  e.Functions-B ((e.NextName) t.FunctionPos s.Scope e.References) e.Functions-E
     = <FindUnusedFunctions-Aux
         t.ErrorList (e.UsedReferences e.References) e.Functions-B e.Functions-E
       >;
+
 
   t.ErrorList ((t.RefPos e.NextName) e.UsedReferences) e.Functions
     = <FindUnusedFunctions-Aux t.ErrorList (e.UsedReferences) e.Functions>;
 
   t.ErrorList (/* пусто */) e.UnusedFunctions
-    = <Reduce r05-parser_AddUnusedFunction t.ErrorList e.UnusedFunctions>;
+    = <FindUnusedRoot t.ErrorList (e.UnusedFunctions) e.UnusedFunctions>;
 }
 
-$ENTRY r05-parser_AddUnusedFunction {
-  t.ErrorList ((e.Name) t.SrcPos e.References)
-    = <EL-AddErrorAt t.ErrorList t.SrcPos 'Unused local function ' e.Name>
+FindUnusedRoot {
+  t.ErrorList (((e.Root) t.RootPos s.Scope e.RootRefs)) e.AllFunctions
+    = <FindUnusedFunctions-Aux
+        <AddUnusedMessage t.ErrorList t.RootPos s.Scope e.Root>
+        ((t.RootPos e.Root)) e.AllFunctions
+      >;
+
+  t.ErrorList
+  (((e.NotARoot) t.NotARootPos s.NotARootScope e.Body) e.Unuseds)
+  e.Users-B
+  ((e.User) t.UserPos s.Scope e.Refs-B (t.RefPos e.NotARoot) e.Refs-E)
+  e.Users-E
+    = <FindUnusedRoot
+        t.ErrorList (e.Unuseds)
+        e.Users-B
+        ((e.User) t.UserPos s.Scope e.Refs-B (t.RefPos e.NotARoot) e.Refs-E)
+        e.Users-E
+      >;
+
+  t.ErrorList (((e.Root) t.RootPos s.Scope e.RootRefs) e.Unuseds) e.AllFunctions
+    = <FindUnusedFunctions-Aux
+        <AddUnusedMessage t.ErrorList t.RootPos s.Scope e.Root>
+        ((t.RootPos e.Root)) e.AllFunctions
+      >;
+
+  t.ErrorList (/* кончились неиспользуемые функции */) e.AllFunctions
+    = t.ErrorList;
+}
+
+AddUnusedMessage {
+  t.ErrorList t.Pos Local e.Name
+     = <EL-AddErrorAt t.ErrorList t.Pos 'Unused local function ' e.Name>;
+
+  t.ErrorList NO-POS Extern e.Name = t.ErrorList;
+
+  t.ErrorList t.Pos Extern e.Name
+     = <EL-AddErrorAt t.ErrorList t.Pos 'Unused external declaration ' e.Name>;
 }
 
 
