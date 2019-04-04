@@ -5,7 +5,7 @@ $EXTERN R05-LexScan-File, R05-LexScan-String, TkEOF, TkExtern, TkEnum, TkEEnum,
   TkReplace, TkError, TkUnexpected, StrFromToken;
 
 *$FROM LibraryEx
-$EXTERN Success, Fails, Map, Reduce;
+$EXTERN Success, Fails, Map, Reduce, MapAccum;
 
 *$FROM Refal5-AST
 $EXTERN Extern, Local, Entry, Function, Symbol, Char, Number,
@@ -762,7 +762,11 @@ ExtractReferences {
 
 $ENTRY parser_ExtractReferences {
   (Function t.SrcPos s.ScopeClass (e.Name) e.Sentences) =
-    <Map parser_ExtractReferences-Sentences e.Sentences>;
+    <ExtractReferences-Sentences e.Sentences>;
+}
+
+ExtractReferences-Sentences {
+  e.Sentences = <Map parser_ExtractReferences-Sentences e.Sentences>;
 }
 
 $ENTRY parser_ExtractReferences-Sentences {
@@ -788,17 +792,62 @@ $ENTRY parser_ExtractReferences-Expr {
 FindOneEntry {
   t.ErrorList (e.References)
   e.Tree-B (Function t.SrcPos Entry (e.Name) e.Body) e.Tree-E =
-    <CheckRepeatedDefinitions
+    <FindUnusedFunctions
       t.ErrorList (e.References)
       e.Tree-B (Function t.SrcPos Entry (e.Name) e.Body) e.Tree-E
     >;
 
   t.ErrorList (e.References) e.Tree =
-    <CheckRepeatedDefinitions
+    <FindUnusedFunctions
       <EL-AddErrorAt t.ErrorList (1 1) 'No entry functions in file'>
       (e.References) e.Tree
     >;
 }
+
+
+FindUnusedFunctions {
+  t.ErrorList (e.References) e.AST
+    = <CheckRepeatedDefinitions
+        <FindUnusedFunctions-Aux
+          t.ErrorList
+          <MapAccum r05-parser_PrepareCrossRefs () e.AST>
+        >
+        (e.References) e.AST
+      >;
+}
+
+$ENTRY r05-parser_PrepareCrossRefs {
+  (e.Entries) (Function t.SrcPos Entry (e.Name) e.Sentences)
+    = (e.Entries (t.SrcPos e.Name))
+      ((e.Name) t.SrcPos <ExtractReferences-Sentences e.Sentences>);
+
+  (e.Entries) (Function t.SrcPos Local (e.Name) e.Sentences)
+    = (e.Entries)
+      ((e.Name) t.SrcPos <ExtractReferences-Sentences e.Sentences>);
+
+  (e.Entries) (Function t.SrcPos Extern (e.Name) /* пусто */)
+    = (e.Entries) /* пусто */;
+}
+
+FindUnusedFunctions-Aux {
+  t.ErrorList ((t.RefPos e.NextName) e.UsedReferences)
+  e.Functions-B ((e.NextName) t.FunctionPos e.References) e.Functions-E
+    = <FindUnusedFunctions-Aux
+        t.ErrorList (e.UsedReferences e.References) e.Functions-B e.Functions-E
+      >;
+
+  t.ErrorList ((t.RefPos e.NextName) e.UsedReferences) e.Functions
+    = <FindUnusedFunctions-Aux t.ErrorList (e.UsedReferences) e.Functions>;
+
+  t.ErrorList (/* пусто */) e.UnusedFunctions
+    = <Reduce r05-parser_AddUnusedFunction t.ErrorList e.UnusedFunctions>;
+}
+
+$ENTRY r05-parser_AddUnusedFunction {
+  t.ErrorList ((e.Name) t.SrcPos e.References)
+    = <EL-AddErrorAt t.ErrorList t.SrcPos 'Unused local function ' e.Name>
+}
+
 
 LoadBuiltins {
   = <Map parser_BuiltinDeclaration <ListOfBuiltin>>;
@@ -864,29 +913,12 @@ CheckRepeatedDefinitions {
       e.Tree-B (Function t.SrcPos1 s.ScopeClass1 (e.Name) e.Body1) e.Tree-E
     >;
 
-  t.ErrorList (e.References-B (t.SrcPosRef e.Name) e.References-E)
-  e.Tree (Function t.SrcPos Local (e.Name) e.Body) =
-    <CheckRepeatedDefinitions
-      t.ErrorList (e.References-B <RemoveReference (e.Name) e.References-E>)
-      e.Tree
-    >
-    (Function Local (e.Name) e.Body);
-
   t.ErrorList (e.References)
-  e.Tree (Function t.SrcPos Local (e.Name) e.Body) =
-    <CheckRepeatedDefinitions
-      <EL-AddErrorAt t.ErrorList t.SrcPos 'Unused local function "' e.Name '"'>
-      (e.References) e.Tree
-    >
-    (Function Local (e.Name) e.Body);
-
-
-  t.ErrorList (e.References)
-  e.Tree (Function t.SrcPos Entry (e.Name) e.Body) =
+  e.Tree (Function t.SrcPos s.Scope (e.Name) e.Body) =
     <CheckRepeatedDefinitions
       t.ErrorList (<RemoveReference (e.Name) e.References>) e.Tree
     >
-    (Function Entry (e.Name) e.Body);
+    (Function s.Scope (e.Name) e.Body);
 
   t.ErrorList (e.References) /* пусто */ =
     <Reduce parser_AddUnresolved t.ErrorList e.References>;
