@@ -211,7 +211,7 @@ MatchArgs {
 }
 
 SymbolTextRep {
-  Char s.Char = '\'' <EscapeChar s.Char> '\'';
+  Char s.Char = '\'' <r05-generator_EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
   Word t.SrcPos e.Name = '&r05f_' e.Name;
 }
@@ -309,10 +309,10 @@ CmdReturnResult {
 }
 
 EscapeString {
-  e.String = <Map EscapeChar e.String>;
+  e.String = <Map r05-generator_EscapeChar e.String>;
 }
 
-EscapeChar {
+$ENTRY r05-generator_EscapeChar {
   '\n' = '\\n';
   '\t' = '\\t';
   '\r' = '\\r';
