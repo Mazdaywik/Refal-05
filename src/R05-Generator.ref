@@ -1,9 +1,12 @@
-*$FROM R05-AST
+*$FROM Refal5-AST
 $EXTERN Extern, Entry, Function, Local, Variable, Symbol,
-  Brackets, Char, Number, Word, TextFromExpr, Call;
+  Brackets, Char, Number, Word, Call;
 
 *$FROM LibraryEx
 $EXTERN SaveFile, MapAccum, Map, Dec, DelAccumulator, Inc;
+
+*$FROM Refal5-Plainer
+$EXTERN InlineExpr;
 
 
 /**
@@ -429,7 +432,7 @@ GenPattern {
     <DoGenPattern
       1 (0 e.Pattern) (/* vars */)
       (
-        (CmdComment <TextFromExpr e.Pattern>)
+        (CmdComment <InlineExpr e.Pattern>)
         /* commands */
       )
     >;

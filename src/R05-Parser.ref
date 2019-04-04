@@ -7,7 +7,7 @@ $EXTERN R05-LexScan-File, R05-LexScan-String, TkEOF, TkExtern, TkEnum, TkEEnum,
 *$FROM LibraryEx
 $EXTERN Success, Fails, Map, Reduce;
 
-*$FROM R05-AST
+*$FROM Refal5-AST
 $EXTERN Extern, Local, Entry, Function, Symbol, Char, Number,
   Word, Variable, Brackets, Call;
 
