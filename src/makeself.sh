@@ -1,7 +1,8 @@
 #!/bin/bash
 (
-  MODULES="refal05c R05-CompilerUtils R05-Generator R05-Lexer R05-Parser"
-  LIBS="LibraryEx Refal5-AST Refal5-Plainer"
+  MODULES="refal05c R05-CompilerUtils R05-Generator R05-Parser"
+  LIBS="LibraryEx Refal5-AST Refal5-Plainer Refal5-Lexer Refal5-Parser"
+  LIBS="${LIBS} Refal5-Transformer Refal5-Tokens"
 
   mkdir -p ../bin
 

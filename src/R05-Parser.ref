@@ -1,15 +1,26 @@
-*$FROM R05-Lexer
-$EXTERN R05-LexScan-File, R05-LexScan-String, TkEOF, TkExtern, TkEnum, TkEEnum,
-  TkEntry, TkName, TkSemicolon, TkComma, TkOpenBlock, TkCloseBlock,
-  TkChar, TkNumber, TkVariable, TkOpen, Bracket, CallBracket, TkClose,
-  TkReplace, TkError, TkUnexpected, StrFromToken;
+*$FROM Refal5-Lexer
+$EXTERN Scan, ScanString-FromPos;
 
 *$FROM LibraryEx
-$EXTERN Success, Fails, Map, Reduce, MapAccum;
+$EXTERN MapAccum, Map, Reduce;
+*$EXTERN Success, Fails
+
+*$FROM Refal5-Tokens
+*$EXTERN TkCompound, TkError, TkEOF, TkComma, TkName
+
+*$FROM Refal5-Parser
+$EXTERN Parse, TokName;
+
+*$FROM Refal5-Transformer
+$EXTERN Transform;
+*$EXTERN NO-POS
 
 *$FROM Refal5-AST
-$EXTERN Extern, Local, Entry, Function, Symbol, Char, Number,
-  Word, Variable, Brackets, Call;
+*$EXTERN Function, Extern, SpecialComment, RETURN, Symbol, Word, Number, Char
+*$EXTERN Variable, Brackets, Call, Local, Entry
+
+*$FROM Libarary
+*$EXTERN True, False
 
 
 /**
@@ -20,30 +31,36 @@ $EXTERN Extern, Local, Entry, Function, Symbol, Char, Number,
   e.Errors ::= ((s.Row s.Col) e.Message)*
 */
 $ENTRY R05-Parse-File {
-  e.SourceFile = <R05-Parse-Tokens <R05-LexScan-File e.SourceFile>>;
+  e.SourceFile = <Parse-CheckTokens <Scan e.SourceFile>>;
 }
 
-/**
-  <R05-Parse-String e.String>
-    == Success e.Tree
-    == Fails e.Errors
-*/
-$ENTRY R05-Parse-String {
-  e.String = <R05-Parse-Tokens <R05-LexScan-String e.String>>;
+Parse-CheckTokens {
+  e.Tokens
+    = <Parse-CheckTokens-Aux
+        <MapAccum r05-parser_AddCompoundErrors (/* errors */) e.Tokens>
+      >;
 }
 
-/**
-  <R05-Parse-Tokens e.Tokens>
-    == Success e.Tree
-    == Fails e.Errors
-*/
-$ENTRY R05-Parse-Tokens {
-  e.Tokens =
-    <R05-Parse-Aux
-      <SemanticCheck
-        <ParseProgram e.Tokens <EL-Create>>
-      >
-    >
+$ENTRY r05-parser_AddCompoundErrors {
+  (e.Errors) (TkCompound t.SrcPos e.Text)
+    = (e.Errors (t.SrcPos 'Refal-05 don\'t support compounds in qoutes'));
+
+  (e.Errors) (TkError t.SrcPos e.Message) = (e.Errors (t.SrcPos e.Message));
+
+  (e.Errors) t.OtherToken = (e.Errors) t.OtherToken;
+}
+
+Parse-CheckTokens-Aux {
+  (e.LexerErrors) e.Tokens
+    , <Parse e.Tokens>
+    : {
+        Success e.AST
+          = <R05-Parse-Aux
+              <SemanticCheck <PrepareR05AST <EL-Create e.LexerErrors> e.AST>>
+            >;
+
+        Fails e.ParserErrors = Fails <SortErrors e.LexerErrors e.ParserErrors>;
+      };
 }
 
 R05-Parse-Aux {
@@ -86,109 +103,117 @@ SortErrors-Insert-Compare {
 }
 
 CompareError {
-  ((s.Row s.Col1) e.Message1) ((s.Row s.Col2) e.Message2) =
+  ((s.Row s.Col1 e.File1) e.Message1) ((s.Row s.Col2 e.File2) e.Message2) =
     <Compare s.Col1 s.Col2>;
 
-  ((s.Row1 s.Col1) e.Message1) ((s.Row2 s.Col2) e.Message2) =
+  ((s.Row1 s.Col1 e.File1) e.Message1) ((s.Row2 s.Col2 e.File2) e.Message2) =
     <Compare s.Row1 s.Row2>;
 }
 
 
-*$ENUM Program, Element
-
-/*
-  Program ::= Program Element | Program ';' | ε.
-
-  <ParseProgram e.Stack e.Tokens t.ErrorList>
-    == t.ErrorList e.Tree
-*/
-ParseProgram {
-  /* Конец разбора */
-  (Program e.Tree) (TkEOF t.SrcPos) t.ErrorList = t.ErrorList e.Tree;
-
-  /* Program ::= Program Element */
-  (Program e.Tree) (Element e.Elements) e.Tokens t.ErrorList =
-    <ParseProgram (Program e.Tree e.Elements) e.Tokens t.ErrorList>;
-
-  /* Program ::= Program ';' */
-  (Program e.Tree) (TkSemicolon t.Pos) e.Tokens t.ErrorList =
-    <ParseProgram (Program e.Tree) e.Tokens t.ErrorList>;
-
-  /* Program ::= Program … */
-  (Program e.Tree) e.Tokens t.ErrorList =
-    <ParseProgram (Program e.Tree) <ParseElement e.Tokens t.ErrorList>>;
-
-  /* Program ::= … */
-  e.Tokens t.ErrorList =
-    <ParseProgram (Program /* tree */) e.Tokens t.ErrorList>;
+PrepareR05AST {
+  t.ErrorList e.AST
+    = <MapAccum r05-parser_PrepareUnit t.ErrorList <Transform e.AST>>;
 }
 
+$ENTRY r05-parser_PrepareUnit {
+  t.ErrorList (Function t.SrcPos (e.Name) s.Scope e.Sentences)
+    = t.ErrorList
+      (Function
+        t.SrcPos s.Scope (<Normalize e.Name>)
+        <Map r05-parser_PrepareSentence e.Sentences>
+      );
+
+  t.ErrorList (Extern e.Names)
+    = t.ErrorList <Map r05-parser_PrepareExterns e.Names>;
+
+  t.ErrorList (SpecialComment t.SrcPos e.Text)
+    = <PrepareSpecialComment t.ErrorList t.SrcPos e.Text>;
+}
+
+$ENTRY r05-parser_PrepareSentence {
+  ((e.Pattern) RETURN (e.Result)) =
+    ((<PrepareExpression e.Pattern>) (<PrepareExpression e.Result>))
+}
+
+PrepareExpression {
+  e.Expression = <Map r05-parser_PrepareTerm e.Expression>;
+}
+
+$ENTRY r05-parser_PrepareTerm {
+  (Symbol Word t.SrcPos e.Name) = (Symbol Word t.SrcPos <Normalize e.Name>);
+  (Symbol Number s.Number) = (Symbol Number s.Number);
+  (Symbol Char s.Char) = (Symbol Char s.Char);
+
+  (Variable t.SrcPos s.Type e.Index) = (Variable s.Type <Normalize e.Index>);
+  (Brackets e.Expression) = (Brackets <PrepareExpression e.Expression>);
+  (Call t.SrcPos (e.Name) e.Expression)
+    = (Call
+        (Symbol Word t.SrcPos <Normalize e.Name>)
+        <PrepareExpression e.Expression>
+      );
+}
+
+$ENTRY r05-parser_PrepareExterns {
+  (t.SrcPos e.Name)
+    = (Function t.SrcPos Extern (<Normalize e.Name>) /* пусто */);
+}
+
+PrepareSpecialComment {
+  t.ErrorList t.Pos '*$' e.KeyWord s.Space e.Rest
+    , <IsKeyWord e.KeyWord> : s.Scope
+    , <IsSpace s.Space> : True
+    = <ParseSpecialComment
+        s.Scope
+        <ScanString-FromPos t.Pos <Spaces '*$' e.KeyWord> e.Rest>
+        t.ErrorList
+      >;
+
+* пропускаем любые другие специальные комментарии
+  t.ErrorList t.Pos e.OtherComment = t.ErrorList;
+}
+
+IsKeyWord {
+  'ENUM' = Local;
+  'EENUM' = Entry;
+  'EXTRN' = Extern;
+  'EXTERN' = Extern;
+  'EXTERNAL' = Extern;
+
+  e.Other = /* пусто */;
+}
+
+IsSpace { ' ' = True; '\t' = True; s.Other = False }
+
+Spaces {
+  s.Char e.String = ' ' <Spaces e.String>;
+  /* пусто */ = /* пусто */
+}
+
+ParseSpecialComment {
+  s.Scope e.Tokens t.ErrorList
+    , <ParseList (ListKeyWord s.Scope) e.Tokens t.ErrorList>
+    : (List s.ScopeClass e.Names) e.UnexpectedTokens (TkEOF t.SrcPos)
+      t.ErrorList2
+    = <AddUnexpectedTokens t.ErrorList2 e.UnexpectedTokens>
+      <Map (parser_MakeListFunction s.ScopeClass) e.Names>;
+}
+
+AddUnexpectedTokens {
+  t.ErrorList /* пусто */ = t.ErrorList;
+
+  t.ErrorList t.Unexpected e.Tokens
+    = <AddUnexpectedTokens
+        <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or name'>
+        e.Tokens
+      >;
+}
 
 *$ENUM List
 
-/*
-  Element ::= List ';' | Function.
-
-  <ParseElement e.Stack e.Tokens t.ErrorList>
-    == (Element e.Elements) e.Tokens t.ErrorList
-*/
-ParseElement {
-  /* Element ::= List ';' */
-  (List s.ScopeClass e.Names) (TkSemicolon t.SrcPos) e.Tokens t.ErrorList =
-    (Element
-      <Map (parser_MakeListFunction s.ScopeClass) e.Names>
-    )
-    e.Tokens t.ErrorList;
-
-  /* Element ::= List … */
-  (List s.ScopeClass e.Names) t.Unexpected e.Tail t.ErrorList =
-    <ParseElement
-      (List s.ScopeClass e.Names) (TkSemicolon NO-POS) t.Unexpected e.Tail
-      <EL-AddUnexpected t.ErrorList t.Unexpected 'semicolon'>
-    >;
-
-  /* Element ::= List~ … */
-  (TkEnum t.SrcPos) e.Tokens t.ErrorList =
-    <ParseElement <ParseList (TkEnum t.SrcPos) e.Tokens t.ErrorList>>;
-
-  (TkEEnum t.SrcPos) e.Tokens t.ErrorList =
-    <ParseElement <ParseList (TkEEnum t.SrcPos) e.Tokens t.ErrorList>>;
-
-  (TkExtern t.SrcPos) e.Tokens t.ErrorList =
-    <ParseElement <ParseList (TkExtern t.SrcPos) e.Tokens t.ErrorList>>;
-
-
-  /* Element ::= Function */
-  (Function t.SrcPos s.ScopeClass (e.Name) e.Body) e.Tokens
-  t.ErrorList =
-    (Element
-      (Function t.SrcPos s.ScopeClass (e.Name) e.Body)
-    )
-    e.Tokens t.ErrorList;
-
-  /* Element ::= Function~ */
-  (TkEntry t.SrcPos) e.Tokens t.ErrorList =
-    <ParseElement
-      <ParseFunction (TkEntry t.SrcPos) e.Tokens t.ErrorList>
-    >;
-
-  (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    <ParseElement
-      <ParseFunction (TkName t.SrcPos e.Name) e.Tokens t.ErrorList>
-    >;
-
-
-  (TkEOF t.SrcPos) t.ErrorList =
-    (TkEOF t.SrcPos)
-    <EL-AddUnexpected t.ErrorList (TkEOF t.SrcPos) 'directive or name'>;
-
-  t.Unexpected e.Tokens t.ErrorList =
-    e.Tokens <EL-AddUnexpected t.ErrorList t.Unexpected 'directive or name'>;
-}
-
 $ENTRY parser_MakeListFunction {
   s.ScopeClass (t.SrcPos e.Name) =
-    (Function t.SrcPos s.ScopeClass (e.Name) /* пусто */);
+    (Function t.SrcPos s.ScopeClass (<Normalize e.Name>) /* пусто */);
 }
 
 
@@ -231,521 +256,6 @@ ParseList {
   (ListKeyWord s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
     (List s.ScopeClass) t.Unexpected e.Tokens
     <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>;
-
-  /* List ::= ListKeyWord~ … */
-  e.Tokens t.ErrorList =
-    <ParseList <ParseListKeyWord e.Tokens t.ErrorList>>;
-}
-
-
-/*
-  ListKeyWord ::= '$ENUM' | '$EENUM' | '$EXTERN'.
-
-  <ParseListKeyWord e.Tokens t.ErrorList>
-    == (ListKeyWord s.ScopeClass) e.Tokens t.ErrorList
-*/
-ParseListKeyWord {
-  (TkEnum t.SrcPos) e.Tokens t.ErrorList =
-    (ListKeyWord Local) e.Tokens t.ErrorList;
-
-  (TkEEnum t.SrcPos) e.Tokens t.ErrorList =
-    (ListKeyWord Entry) e.Tokens t.ErrorList;
-
-  (TkExtern t.SrcPos) e.Tokens t.ErrorList =
-    (ListKeyWord Extern) e.Tokens t.ErrorList;
-
-  /* предложение не должно выполняться, но должно быть для единообразия */
-  t.Unexpected e.Tokens t.ErrorList =
-    (ListKeyWord Extern) t.Unexpected e.Tokens
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'directive'>;
-}
-
-
-*$ENUM Scope, Body
-
-/*
-  Function ::= Scope NAME '{' Body '}'.
-
-  <ParseFunction e.Stack e.Tokens t.ErrorList>
-    == (Function t.SrcPos s.ScopeClass (e.Name) e.Body)?
-       e.Tokens t.ErrorList
-*/
-ParseFunction {
-  /* Function ::= Scope NAME '{' Body '}' */
-  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) (TkOpenBlock t.OpenSrcPos)
-  (Body e.Body) (TkCloseBlock t.CloseSrcPos) e.Tokens
-  t.ErrorList =
-    (Function t.NameSrcPos s.ScopeClass (e.Name) e.Body)
-    e.Tokens t.ErrorList;
-
-  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) (TkOpenBlock t.OpenSrcPos)
-  (Body e.Body) t.Unexpected e.Tokens t.ErrorList =
-    <ParseFunction
-      (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name)
-      (TkOpenBlock t.OpenSrcPos) (Body e.Body)
-      (TkCloseBlock NO-POS) t.Unexpected e.Tokens
-      <EL-AddUnexpected t.ErrorList t.Unexpected '}'>
-    >;
-
-  /* Function ::= Scope NAME '{' Body~ … */
-  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) (TkOpenBlock t.OpenSrcPos)
-  e.Tokens t.ErrorList =
-    <ParseFunction
-      (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name)
-      (TkOpenBlock t.OpenSrcPos)
-      <ParseBody e.Tokens t.ErrorList>
-    >;
-
-  (Scope s.ScopeClass) (TkName t.NameSrcPos e.Name) t.Unexpected
-  e.Tokens t.ErrorList =
-    t.Unexpected e.Tokens
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'open brace'>;
-
-  (Scope s.ScopeClass) (TkOpenBlock t.OpenSrcPos) e.Tokens t.ErrorList =
-    <ParseFunction
-      (Scope s.ScopeClass) (TkName t.OpenSrcPos 'CTHULHU-FHTAGN')
-      (TkOpenBlock t.OpenSrcPos) e.Tokens
-      <EL-AddErrorAt t.ErrorList t.OpenSrcPos 'function name is missed'>
-    >;
-
-  (Scope s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
-    t.Unexpected e.Tokens
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>;
-
-  /* Function ::= Scope~ … */
-  e.Tokens t.ErrorList =
-    <ParseFunction <ParseScope e.Tokens t.ErrorList>>;
-}
-
-/*
-  Scope ::= '$ENTRY' | ε.
-*/
-ParseScope {
-  (TkEntry t.SrcPos) e.Tokens t.ErrorList = (Scope Entry) e.Tokens t.ErrorList;
-  e.Tokens t.ErrorList = (Scope Local) e.Tokens t.ErrorList;
-}
-
-
-*$ENUM Sentences
-
-/*
-  Body ::= Sentences | ε.
-
-  <ParseBody e.Stack e.Tokens t.ErrorList>
-    == (Body e.Body) e.Tokens t.ErrorList
-*/
-ParseBody {
-  /* Body ::= ε */
-  (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList =
-    (Body /* no sentences */)
-    (TkCloseBlock t.SrcPos) e.Tokens t.ErrorList;
-
-  /* Body ::= Sentences */
-  (Sentences e.Sentences) e.Tokens t.ErrorList =
-    (Body e.Sentences) e.Tokens t.ErrorList;
-
-  /* Body ::= Sentences~ … */
-  e.Tokens t.ErrorList =
-    <ParseBody <ParseSentences e.Tokens t.ErrorList>>;
-}
-
-
-*$ENUM Sentence
-
-/*
-  Sentences ::= Sentence | Sentences Sentence.
-
-  <ParseSentences e.Stack e.Tokens t.ErrorList>
-    == (Sentences (e.References) e.Sentences) e.Tokens t.ErrorList
-*/
-ParseSentences {
-  /* Sentences ::= Sentences / '}' */
-  (Sentences e.Sentences)
-  (TkCloseBlock t.CloseBlockPos) e.Tokens t.ErrorList =
-    (Sentences e.Sentences) (TkCloseBlock t.CloseBlockPos) e.Tokens t.ErrorList;
-
-  /* Sentences ::= Sentences Sentence */
-  (Sentences e.Sentences)
-  (Sentence e.OneSentence)
-  e.Tokens t.ErrorList =
-    <ParseSentences
-      (Sentences e.Sentences (e.OneSentence)) e.Tokens t.ErrorList
-    >;
-
-  /* Sentences ::= Sentences Sentence~ */
-  (Sentences e.Sentences) e.Tokens t.ErrorList =
-    <ParseSentences
-      (Sentences e.Sentences) <ParseSentence e.Tokens t.ErrorList>
-    >;
-
-  /* Sentences ::= Sentence */
-  (Sentence e.Sentence) e.Tokens t.ErrorList =
-    <ParseSentences
-      (Sentences (e.Sentence)) e.Tokens t.ErrorList
-    >;
-
-  /* Sentences ::= Sentence~ */
-  e.Tokens t.ErrorList =
-    <ParseSentences
-      <ParseSentence e.Tokens t.ErrorList>
-    >;
-}
-
-
-*$ENUM Pattern, Result
-
-/*
-  Sentence ::= Pattern '=' Result ';' | Pattern '=' Result / '}'.
-
-  <ParseSentence e.Stack e.Tokens t.ErrorList>
-    == (Sentence e.Sentence) e.Tokens t.ErrorList
-  e.Sentence ::= (e.Pattern) (e.Result)
-*/
-ParseSentence {
-  /* Sentence ::= Pattern '=' Result ';' */
-  (Pattern (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
-  (Result e.Result) (TkSemicolon t.SemicolonSrcPos)
-  e.Tokens t.ErrorList =
-    (Sentence (e.Pattern) (e.Result)) e.Tokens t.ErrorList;
-
-  /* Sentence ::= Pattern '=' Result / '}' */
-  (Pattern (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
-  (Result e.Result) (TkCloseBlock t.CloseBlockPos)
-  e.Tokens t.ErrorList =
-    (Sentence (e.Pattern) (e.Result))
-    (TkCloseBlock t.CloseBlockPos) e.Tokens t.ErrorList;
-
-  /* Sentence ::= Pattern '=' Result */
-  (Pattern (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
-  (Result e.Result)
-  t.Unexpected e.Tokens t.ErrorList =
-    <ParseSentence
-      (Pattern (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
-      (Result e.Result) (TkCloseBlock NO-POS)
-      t.Unexpected e.Tokens
-      <EL-AddUnexpected t.ErrorList t.Unexpected '"}"'>
-    >;
-
-
-  /* Sentence ::= Pattern '=' Result~ */
-  (Pattern (e.Variables) e.Pattern) (TkReplace t.ReplaceSrcPos)
-  e.Tokens t.ErrorList =
-    <ParseSentence
-      (Pattern (e.Variables) e.Pattern)
-      (TkReplace t.ReplaceSrcPos)
-      <ParseResult TopLevel e.Tokens (e.Variables) t.ErrorList>
-    >;
-
-  /* Sentence ::= Pattern */
-  (Pattern (e.Variables) e.Pattern)
-  t.Unexpected e.Tokens t.ErrorList =
-    <ParseSentence
-      (Pattern (e.Variables) e.Pattern) (TkReplace NO-POS)
-      t.Unexpected e.Tokens
-      <EL-AddUnexpected t.ErrorList t.Unexpected '"="'>
-    >;
-
-  /* Sentence ::= Pattern~ */
-  e.Tokens t.ErrorList =
-    <ParseSentence
-      <ParsePattern TopLevel e.Tokens t.ErrorList>
-    >;
-}
-
-
-*$ENUM PatternTerm, NoTerm, TopLevel, Nested
-
-/*
-  Pattern ::= Pattern PatternTerm | ε.
-
-  <ParsePattern s.Level e.Stack e.Tokens t.ErrorList>
-    == (Pattern (e.Variables) e.Pattern)
-
-  s.Level ::= TopLevel | Nested
-  e.Variables ::= (s.Mode e.Index)*
-*/
-ParsePattern {
-  /* Pattern ::= Pattern PatternTerm */
-  s.Level
-  (Pattern (e.Variables) e.Pattern)
-  (PatternTerm (e.TermVariables) t.Term)
-  e.Tokens t.ErrorList =
-    <ParsePattern
-      s.Level
-      (Pattern
-        (<CleanupDoubleVars e.TermVariables (e.Variables)>)
-        e.Pattern t.Term
-      )
-      e.Tokens t.ErrorList
-    >;
-
-  /* Pattern ::= Pattern / NoTerm */
-  s.Level (Pattern (e.Variables) e.Pattern) (NoTerm)
-  e.Tokens t.ErrorList =
-    (Pattern (e.Variables) e.Pattern) e.Tokens t.ErrorList;
-
-  /*
-    Восстановление после ошибок — лишняя закрывающая скобка на верхнем уровне
-    Pattern ::= Pattern ')'
-    Pattern ::= Pattern '>'
-  */
-  TopLevel (Pattern (e.Variables) e.Pattern)
-  (TkClose t.SrcPos s.CloseBracket)
-  e.Tokens t.ErrorList =
-    <ParsePattern
-      TopLevel (Pattern (e.Variables) e.Pattern) e.Tokens
-      <EL-AddErrorAt
-        t.ErrorList t.SrcPos 'Unbalanced bracket "' <TkClose s.CloseBracket> '"'
-      >
-    >;
-
-  /* Pattern ::= Pattern PatternTerm~ */
-  s.Level (Pattern (e.Variables) e.Pattern)
-  e.Tokens t.ErrorList =
-    <ParsePattern
-      s.Level (Pattern (e.Variables) e.Pattern)
-      <ParsePatternTerm e.Tokens t.ErrorList>
-    >;
-
-  /* Pattern ::= ε */
-  s.Level e.Tokens t.ErrorList =
-    <ParsePattern
-      s.Level (Pattern (/* no variables */) /* no terms */) e.Tokens t.ErrorList
-    >;
-}
-
-CleanupDoubleVars {
-  e.NewVariables-B (s.Mode e.Index) e.NewVariables-E
-  (e.OldVariables-B (s.Mode e.Index) e.OldVariables-E) =
-    <CleanupDoubleVars
-      e.NewVariables-E
-      (e.NewVariables-B e.OldVariables-B (s.Mode e.Index) e.OldVariables-E)
-    >;
-
-  e.NewVariables (e.OldVariables) = e.NewVariables e.OldVariables;
-}
-
-
-/*
-  PatternTerm ::= Char | Number | Name | Variable | '(' Pattern ')'.
-
-  <ParsePatternTerm e.Stack e.Tokens t.ErrorList>
-    == (PatternTerm (e.Variables) t.Term) e.Tokens t.ErrorList
-    == (NoTerm) e.Tokens t.ErrorList
-*/
-ParsePatternTerm {
-  /* Обработка литералов атомов */
-
-  /* PatternTerm ::= CHAR */
-  (TkChar t.SrcPos s.Char) e.Tokens t.ErrorList =
-    (PatternTerm () (Symbol Char s.Char)) e.Tokens t.ErrorList;
-
-  /* PatternTerm ::= NUMBER */
-  (TkNumber t.SrcPos s.Number) e.Tokens t.ErrorList =
-    (PatternTerm () (Symbol Number s.Number)) e.Tokens t.ErrorList;
-
-  /* PatternTerm ::= NAME */
-  (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    (PatternTerm () (Symbol Word t.SrcPos e.Name))
-    e.Tokens t.ErrorList;
-
-  /* Переменные */
-
-  /* PatternTerm ::= VARIABLE */
-  (TkVariable t.SrcPos s.Mode e.Index) e.Tokens t.ErrorList =
-    (PatternTerm ((s.Mode e.Index)) (Variable s.Mode e.Index))
-    e.Tokens t.ErrorList;
-
-  /*
-    Скобки.
-
-    Стратегия обработки ошибок: если мы встретили "не ту" закрывающую
-    скобку, считаем, что "та" была пропущена.
-    Если имеем непарную открывающую скобку, считаем,
-    что соответствующая скобка была пропущена в конце выражения;
-    если имеем непарную закрывающую скобку, считаем её лишней.
-  */
-
-  /* PatternTerm ::= '(' Pattern ')' */
-  (TkOpen t.OpenSrcPos s.BracketsSign)
-  (Pattern (e.Variables) e.Pattern)
-  (TkClose t.CloseSrcPos s.BracketsSign)
-  e.Tokens t.ErrorList =
-    (PatternTerm (e.Variables) (Brackets e.Pattern))
-    e.Tokens t.ErrorList;
-
-  /* PatternTerm ::= '(' Pattern  # ошибка */
-  (TkOpen t.OpenSrcPos s.BracketsSign)
-  (Pattern (e.Variables) e.Pattern)
-  /* нет скобки */ e.Tokens t.ErrorList =
-    (PatternTerm (e.Variables) (Brackets e.Pattern)) e.Tokens
-    <EL-AddErrorAt
-      t.ErrorList t.OpenSrcPos 'Unbalanced bracket "' <TkOpen s.BracketsSign> '"'
-    >;
-
-  /* PatternTerm ::= '(' Pattern~ */
-  (TkOpen t.OpenSrcPos Bracket) e.Tokens t.ErrorList =
-    <ParsePatternTerm
-      (TkOpen t.OpenSrcPos Bracket) <ParsePattern Nested e.Tokens t.ErrorList>
-    >;
-
-  /* PatternTerm ::= '<' Pattern~  # ошибка */
-  (TkOpen t.OpenSrcPos CallBracket) e.Tokens t.ErrorList =
-    <ParsePatternTerm
-      (TkOpen t.OpenSrcPos CallBracket)
-      <ParsePattern
-        Nested
-        e.Tokens
-        <EL-AddErrorAt
-          t.ErrorList t.OpenSrcPos
-          'Unexpected call bracket in pattern expression'
-        >
-      >
-    >;
-
-  /* не терм */
-  e.Tokens t.ErrorList = (NoTerm) e.Tokens t.ErrorList;
-}
-
-
-*$ENUM ResultTerm
-
-/*
-  Result = Result ResultTerm | ε.
-
-  <ParseResult s.Level e.Stack e.Tokens (e.Variables) t.ErrorList>
-    == (Result e.Result) e.Tokens (e.Variables)? t.ErrorList
-
-  (e.Variables) возвращается только при s.Level == Nested
-*/
-ParseResult {
-  /* Result ::= Result ResultTerm */
-  s.Level
-  (Result e.Result) (ResultTerm e.Term) e.Tokens (e.Variables) t.ErrorList =
-    <ParseResult
-      s.Level (Result e.Result e.Term) e.Tokens (e.Variables) t.ErrorList
-    >;
-
-  /* Result ::= Result / NoTerm */
-  TopLevel (Result e.Result) (NoTerm) e.Tokens (e.Variables) t.ErrorList =
-    (Result e.Result) e.Tokens t.ErrorList;
-
-  Nested (Result e.Result) (NoTerm) e.Tokens (e.Variables) t.ErrorList =
-    (Result e.Result) e.Tokens (e.Variables) t.ErrorList;
-
-  /*
-    Восстановление после ошибок — лишняя закрывающая скобка на верхнем уровне
-    Pattern ::= Pattern ')'
-    Pattern ::= Pattern '>'
-  */
-  TopLevel (Result e.Result)
-  (TkClose t.SrcPos s.CloseBracket) e.Tokens (e.Variables) t.ErrorList =
-    <ParseResult
-      TopLevel (Result e.Result) e.Tokens (e.Variables)
-      <EL-AddErrorAt
-        t.ErrorList t.SrcPos 'Unbalanced bracket "' <TkClose s.CloseBracket> '"'
-      >
-    >;
-
-  /* Result ::= Result ResultTerm~ */
-  s.Level (Result e.Result) e.Tokens (e.Variables) t.ErrorList =
-    <ParseResult
-      s.Level (Result e.Result)
-      <ParseResultTerm e.Tokens (e.Variables) t.ErrorList>
-    >;
-
-  /* Result ::= ε */
-  s.Level e.Tokens (e.Variables) t.ErrorList =
-    <ParseResult
-      s.Level (Result /* no terms */) e.Tokens (e.Variables) t.ErrorList
-    >;
-}
-
-
-/*
-  ResultTerm ::= Char | Number | Name | Variable
-    | '(' Result ')' | '<' Result '>'.
-
-  <ParseResultTerm e.Stack e.Tokens (e.Variables) t.ErrorList>
-    == (ResultTerm t.Term?) e.Tokens (e.Variables) t.ErrorList
-    == (NoTerm) e.Tokens (e.Variables) t.ErrorList
-
-  t.Term отсутствует для прочитанной необъявленной переменной
-*/
-ParseResultTerm {
-  /* Обработка литералов атомов */
-
-  /* ResultTerm ::= CHAR */
-  (TkChar t.SrcPos s.Char) e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm (Symbol Char s.Char)) e.Tokens (e.Variables) t.ErrorList;
-
-  /* ResultTerm ::= NUMBER */
-  (TkNumber t.SrcPos s.Number) e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm (Symbol Number s.Number)) e.Tokens (e.Variables) t.ErrorList;
-
-  /* ResultTerm ::= NAME */
-  (TkName t.SrcPos e.Name) e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm (Symbol Word t.SrcPos e.Name))
-    e.Tokens (e.Variables) t.ErrorList;
-
-  /* Переменные */
-
-  /* ResultTerm ::= VARIABLE */
-  (TkVariable t.SrcPos s.Mode e.Index) e.Tokens
-  (e.Variables-B (s.Mode e.Index) e.Variables-E) t.ErrorList =
-    (ResultTerm (Variable s.Mode e.Index))
-    e.Tokens (e.Variables-B (s.Mode e.Index) e.Variables-E) t.ErrorList;
-
-  (TkVariable t.SrcPos s.Mode e.Index) e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm /* нет терма */) e.Tokens (e.Variables)
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos 'Variable ' s.Mode '.' e.Index ' not found'
-    >;
-
-  /*
-    Скобки.
-
-    Стратегия обработки ошибок: если мы встретили "не ту"
-    закрывающую скобку, считаем, что "та" была пропущена.
-    Если имеем непарную открывающую скобку, считаем,
-    что соответствующая скобка была пропущена в конце выражения;
-    если имеем непарную закрывающую скобку, считаем её лишней.
-  */
-
-  /* ResultTerm ::= '(' Result ')' | '<' Result '>' */
-  (TkOpen t.OpenSrcPos s.BracketsSign)
-  (Result e.Result)
-  (TkClose t.CloseSrcPos s.BracketsSign)
-  e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm (<BracketPairName s.BracketsSign> e.Result))
-    e.Tokens (e.Variables) t.ErrorList;
-
-  /* Неправильная закрывающая скобка или закрывающая скобка отсутствует */
-  /* ResultTerm ::= '(' Result | '<' Result */
-  (TkOpen t.OpenSrcPos s.BracketsSign)
-  (Result e.Result)
-  /* нет скобки */ e.Tokens (e.Variables) t.ErrorList =
-    (ResultTerm (<BracketPairName s.BracketsSign> e.Result))
-    e.Tokens (e.Variables)
-    <EL-AddErrorAt
-      t.ErrorList t.OpenSrcPos 'Unbalanced bracket "' <TkOpen s.BracketsSign> '"'
-    >;
-
-  /* ResultTerm ::= '(' Result~ | '<' Result~ */
-  (TkOpen t.OpenSrcPos s.BracketsSign) e.Tokens (e.Variables) t.ErrorList =
-    <ParseResultTerm
-      (TkOpen t.OpenSrcPos s.BracketsSign)
-      <ParseResult Nested e.Tokens (e.Variables) t.ErrorList>
-    >;
-
-  /* не терм */
-  e.Tokens (e.Variables) t.ErrorList =
-    (NoTerm) e.Tokens (e.Variables) t.ErrorList;
-}
-
-BracketPairName {
-  Bracket = Brackets;
-  CallBracket = Call;
 }
 
 
@@ -888,19 +398,28 @@ LoadBuiltins {
 }
 
 $ENTRY parser_BuiltinDeclaration {
-  (s.Number s.Name s.Type) = <Normalize <Explode s.Name>>;
+  (s.Number s.Name s.Type)
+    , <Explode s.Name>
+    : {
+        /* пусто */ = /* пропускаем */;
+        e.Name '$' = /* пропускаем */;
+
+        e.Name = (Function NO-POS Extern (<Normalize e.Name>) /* пусто */);
+      }
 }
 
 Normalize {
-  /* пусто */ = /* пропускаем */;
-  e.Name '$' = /* пропускаем */;
+  '%' = 'Mod';
+  '*' = 'Mul';
+  '+' = 'Add';
+  '-' = 'Sub';
+  '/' = 'Div';
+  '?' = 'Residue';
 
   e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
 
-  e.Name = (Function NO-POS Extern (e.Name) /* пусто */);
+  e.Name = e.Name;
 }
-
-*$ENUM NO-POS
 
 CheckRepeatedDefinitions {
   t.ErrorList (e.References)
@@ -974,7 +493,7 @@ $ENTRY parser_AddUnresolved {
 *$ENUM ErrorList
 
 EL-Create {
-  = (ErrorList);
+  e.Errors = (ErrorList e.Errors);
 }
 
 EL-AddErrorAt {
@@ -988,17 +507,10 @@ EL-AddUnexpected {
       t.ErrorList t.SrcPos e.Message
     >;
 
-  t.ErrorList (TkUnexpected t.SrcPos e.Unexpected) e.Expected =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos
-      'Unknown characters "' e.Unexpected '"'
-    >;
-
   t.ErrorList (s.Unexpected t.SrcPos e.Info) e.Expected =
     <EL-AddErrorAt
       t.ErrorList t.SrcPos
-      'Unexpected ' <StrFromToken s.Unexpected e.Info>
-      ', expected ' e.Expected
+      'Unexpected ' <TokName s.Unexpected> ', expected ' e.Expected
     >;
 }
 

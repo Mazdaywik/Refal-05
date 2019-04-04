@@ -69,7 +69,7 @@ $ENTRY refal05c_WriteError {
 }
 
 StrFromSrcPos {
-  (s.Line s.Col) = <Symb s.Line> ':' <Symb s.Col>;
+  (s.Line s.Col e.FileName) = <Symb s.Line> ':' <Symb s.Col>;
 }
 
 

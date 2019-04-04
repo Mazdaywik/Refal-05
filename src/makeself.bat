@@ -1,8 +1,8 @@
 @echo off
 setlocal
-  set MODULES=refal05c R05-CompilerUtils R05-Generator R05-Lexer
-  set MODULES=%MODULES% R05-Parser
-  set LIBS=LibraryEx Refal5-AST Refal5-Plainer
+  set MODULES=refal05c R05-CompilerUtils R05-Generator R05-Parser
+  set LIBS=LibraryEx Refal5-AST Refal5-Plainer Refal5-Lexer Refal5-Parser
+  set LIBS=%LIBS% Refal5-Transformer Refal5-Tokens
 
   md ..\bin 2>NUL
 
