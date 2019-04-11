@@ -51,26 +51,43 @@ $ENTRY generator_GenTreeItem {
 }
 
 
-TextFromScopeClass {
+Scope {
   Entry = 'ENTRY'; Local = 'LOCAL';
 }
 
 GenDeclaration {
   s.ScopeClass e.Name =
-    ('R05_DECLARE_' <TextFromScopeClass s.ScopeClass> '_FUNCTION(' e.Name ')');
+    ('R05_DECLARE_' <Scope s.ScopeClass> '_FUNCTION(' <EscapeName e.Name> ')');
 }
 
 GenFunction {
   s.ScopeClass (e.Name) /* пусто */ =
-    ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_ENUM(' e.Name ')')
+    ('R05_DEFINE_' <Scope s.ScopeClass> '_ENUM(' <DefName e.Name> ')')
     ();
 
   s.ScopeClass (e.Name) e.Sentences =
-    ('R05_DEFINE_' <TextFromScopeClass s.ScopeClass> '_FUNCTION(' e.Name ') {')
+    ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
     ('  r05_this_is_generated_function();')
     <Map generator_GenSentence <AddFailCommand e.Sentences>>
     ('}')
     ();
+}
+
+DefName {
+  e.Name = <EscapeName e.Name> ', "' e.Name '"';
+}
+
+/*
+  Разрешим знак $ для функций Stop$$ и Imp$$ на всякий случай.
+  Декорирование было выбрано именно таким, чтобы избежать двух прочерков
+  подряд в декорированном имени.
+*/
+EscapeName {
+  '_' e.Name = 'u_' <EscapeName e.Name>;
+  '-' e.Name = 'm_' <EscapeName e.Name>;
+  '$' e.Name = 'd_' <EscapeName e.Name>;
+  s.Other e.Name = s.Other <EscapeName e.Name>;
+  /* пусто */ = /* пусто */;
 }
 
 *$ENUM ReturnRecognitionImpossible
@@ -213,7 +230,7 @@ MatchArgs {
 SymbolTextRep {
   Char s.Char = '\'' <r05-generator_EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
-  Word t.SrcPos e.Name = '&r05f_' e.Name;
+  Word t.SrcPos e.Name = '&r05f_' <EscapeName e.Name>;
 }
 
 CmdEmpty {
@@ -344,21 +361,39 @@ Var {
   s.Usings 'e' e.Index =
     <EVar-B s.Usings 'e' e.Index> ', ' <EVar-E s.Usings 'e' e.Index>;
 
-  s.Usings s.Mode e.Index = s.Mode e.Index '_' <Symb s.Usings>;
+  s.Usings s.Mode e.Index = s.Mode <EscapeVar e.Index> '_' <Symb s.Usings>;
 }
 
 VarPtr {
   s.Usings 'e' e.Index =
     '&' <EVar-B s.Usings 'e' e.Index> ', &' <EVar-E s.Usings 'e' e.Index>;
 
-  s.Usings s.Mode e.Index = '&' s.Mode e.Index '_' <Symb s.Usings>;
+  s.Usings s.Mode e.Index = '&' s.Mode <EscapeVar e.Index> '_' <Symb s.Usings>;
 }
 
-EVar-B { s.Usings 'e' e.Index = 'e' e.Index '_b_' <Symb s.Usings> }
-EVar-E { s.Usings 'e' e.Index = 'e' e.Index '_e_' <Symb s.Usings> }
+EVar-B { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_b_' <Symb s.Usings> }
+EVar-E { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_e_' <Symb s.Usings> }
 
 Elem { s.Number = 'n[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'n+' <Symb s.Number> }
+
+/*
+  Декорирование отличается от декорирования имён функций, поскольку мы хотим
+  избежать двух прочерков подряд в именах переменных.
+*/
+EscapeVar {
+  e.Name = <EscapeVar-Dash <EscapeVar-Underline e.Name>>;
+}
+
+EscapeVar-Underline {
+  e.Name-B '_' e.Name-E = e.Name-B '_u' <EscapeVar-Underline e.Name-E>;
+  e.Name = e.Name;
+}
+
+EscapeVar-Dash {
+  e.Name-B '-' e.Name-E = e.Name-B '_m' <EscapeVar-Dash e.Name-E>;
+  e.Name = e.Name;
+}
 
 
 *===============================================================================

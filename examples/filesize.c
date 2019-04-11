@@ -5,7 +5,7 @@
 /*
   <FileSize s.CHAR+> == s.NUMBER
 */
-R05_DEFINE_ENTRY_FUNCTION(FileSize) {
+R05_DEFINE_ENTRY_FUNCTION(FileSize, "FileSize") {
   struct r05_node *fname_b, *fname_e;
   char filename[FILENAME_MAX + 1];
   size_t filename_len;

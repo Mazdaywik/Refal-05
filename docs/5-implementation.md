@@ -640,7 +640,7 @@ _повторной,)_ то для неё запоминаются все вх�
 
 будет скомпилирована в
 
-    R05_DEFINE_ENTRY_FUNCTION(Extern) {
+    R05_DEFINE_ENTRY_FUNCTION(Extern, "Extern") {
       r05_this_is_generated_function();
 
       do {
@@ -665,7 +665,7 @@ _повторной,)_ то для неё запоминаются все вх�
       } while (0);
     }
 
-где макрос `R05_DEFINE_ENTRY_FUNCTION(Extern)` раскроется в
+где макрос `R05_DEFINE_ENTRY_FUNCTION(Extern, "Extern")` раскроется в
 
     static void r05c_Extern(struct r05_node *arg_begin, struct r05_node *arg_end);
     struct r05_function r05f_Extern = { r05c_Extern, "Extern" };
@@ -673,8 +673,8 @@ _повторной,)_ то для неё запоминаются все вх�
 
 
 Имя функции на Си и описателя получается из имени исходной функции путём
-_нормализации_ — замены в нём всех минусов `-` на прочерки `_` и добавлением
-префикса: `r05c_` для функций и `r05f_` для описателей.
+_декорирования_ — замены в нём всех минусов `-` на `m_`, прочерков `_` на `u_`
+и добавлением префикса: `r05c_` для функций и `r05f_` для описателей.
 
 Именами аргументов функции по умолчанию являются `arg_begin` и `arg_end`.
 
@@ -691,8 +691,8 @@ _нормализации_ — замены в нём всех минусов 
 
 будет скомпилировано в
 
-    R05_DEFINE_ENTRY_ENUM(Success)
-    R05_DEFINE_ENTRY_ENUM(Fails)
+    R05_DEFINE_ENTRY_ENUM(Success, "Success")
+    R05_DEFINE_ENTRY_ENUM(Fails, "Fails")
 
 что после раскрытия макросов даст
 
@@ -759,7 +759,7 @@ _нормализации_ — замены в нём всех минусов 
 
 Непустые функции компилируются по следующему шаблону:
 
-    R05_DEFINE_*****_FUNCTION(FuncName) {
+    R05_DEFINE_*****_FUNCTION(FuncName, "FuncName") {
       r05_this_is_generated_function();
 
       do {
@@ -1800,7 +1800,7 @@ e-переменными такое присваивание нулей буде
 
 компилируется в
 
-    R05_DEFINE_ENTRY_FUNCTION(Apply) {
+    R05_DEFINE_ENTRY_FUNCTION(Apply, "Apply") {
       r05_this_is_generated_function();
 
       do {
@@ -1879,7 +1879,7 @@ e-переменными такое присваивание нулей буде
 
 компилируется в
 
-    R05_DEFINE_ENTRY_FUNCTION(Map) {
+    R05_DEFINE_ENTRY_FUNCTION(Map, "Map") {
       r05_this_is_generated_function();
 
       do {
@@ -1953,7 +1953,7 @@ e-переменными такое присваивание нулей буде
 
 компилируется в
 
-    R05_DEFINE_LOCAL_FUNCTION(DoLoadFile) {
+    R05_DEFINE_LOCAL_FUNCTION(DoLoadFile, "DoLoadFile") {
       r05_this_is_generated_function();
 
       do {
@@ -2060,7 +2060,7 @@ e-переменными такое присваивание нулей буде
     R05_DECLARE_ENTRY_FUNCTION(Go)
     R05_DECLARE_LOCAL_FUNCTION(Hello)
 
-    R05_DEFINE_ENTRY_FUNCTION(Go) {
+    R05_DEFINE_ENTRY_FUNCTION(Go, "Go") {
       r05_this_is_generated_function();
 
       do {
@@ -2097,7 +2097,7 @@ e-переменными такое присваивание нулей буде
       r05_recognition_impossible();
     }
 
-    R05_DEFINE_LOCAL_FUNCTION(Hello) {
+    R05_DEFINE_LOCAL_FUNCTION(Hello, "Hello") {
       r05_this_is_generated_function();
 
       do {
@@ -2518,7 +2518,7 @@ e-переменными такое присваивание нулей буде
     #include <stdio.h>
     #include "refal05rts.h"
 
-    R05_DEFINE_ENTRY_FUNCTION(Go) {
+    R05_DEFINE_ENTRY_FUNCTION(Go, "Go") {
       printf("Hello, World!\n");
       r05_splice_to_freelist(arg_begin, arg_end);
     }
@@ -2697,7 +2697,7 @@ API рантайма.
     /*
       <FileSize s.CHAR+> == s.NUMBER
     */
-    R05_DEFINE_ENTRY_FUNCTION(FileSize) {
+    R05_DEFINE_ENTRY_FUNCTION(FileSize, "FileSize") {
       struct r05_node *fname_b, *fname_e;
       char filename[FILENAME_MAX + 1];
       size_t filename_len;
@@ -2756,7 +2756,7 @@ API рантайма.
 Поскольку мы пишем на языке Си89, мы вынуждены записывать объявления переменных
 до выполняемых операторов, поэтому функция начинается с объявлений:
 
-    R05_DEFINE_ENTRY_FUNCTION(FileSize) {
+    R05_DEFINE_ENTRY_FUNCTION(FileSize, "FileSize") {
       struct r05_node *fname_b, *fname_e;
       char filename[FILENAME_MAX + 1];
       size_t filename_len;

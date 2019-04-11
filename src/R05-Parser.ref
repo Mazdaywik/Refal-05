@@ -120,7 +120,7 @@ $ENTRY r05-parser_PrepareUnit {
   t.ErrorList (Function t.SrcPos (e.Name) s.Scope e.Sentences)
     = t.ErrorList
       (Function
-        t.SrcPos s.Scope (<Normalize e.Name>)
+        t.SrcPos s.Scope (e.Name)
         <Map r05-parser_PrepareSentence e.Sentences>
       );
 
@@ -145,7 +145,7 @@ $ENTRY r05-parser_PrepareTerm {
   (Symbol Number s.Number) = (Symbol Number s.Number);
   (Symbol Char s.Char) = (Symbol Char s.Char);
 
-  (Variable t.SrcPos s.Type e.Index) = (Variable s.Type <Normalize e.Index>);
+  (Variable t.SrcPos s.Type e.Index) = (Variable s.Type e.Index);
   (Brackets e.Expression) = (Brackets <PrepareExpression e.Expression>);
   (Call t.SrcPos (e.Name) e.Expression)
     = (Call
@@ -155,8 +155,7 @@ $ENTRY r05-parser_PrepareTerm {
 }
 
 $ENTRY r05-parser_PrepareExterns {
-  (t.SrcPos e.Name)
-    = (Function t.SrcPos Extern (<Normalize e.Name>) /* пусто */);
+  (t.SrcPos e.Name) = (Function t.SrcPos Extern (e.Name) /* пусто */);
 }
 
 PrepareSpecialComment {
@@ -213,7 +212,7 @@ AddUnexpectedTokens {
 
 $ENTRY parser_MakeListFunction {
   s.ScopeClass (t.SrcPos e.Name) =
-    (Function t.SrcPos s.ScopeClass (<Normalize e.Name>) /* пусто */);
+    (Function t.SrcPos s.ScopeClass (e.Name) /* пусто */);
 }
 
 
@@ -415,8 +414,6 @@ Normalize {
   '-' = 'Sub';
   '/' = 'Div';
   '?' = 'Residue';
-
-  e.Name-B '-' e.Name-E = <Normalize e.Name-B '_' e.Name-E>;
 
   e.Name = e.Name;
 }

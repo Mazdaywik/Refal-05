@@ -227,10 +227,10 @@ R05_NORETURN void r05_switch_default_violation_impl(
 );
 
 
-#define R05_DEFINE_ENTRY_ENUM(name) \
-  struct r05_function r05f_ ## name = { r05_enum_function_code, #name };
-#define R05_DEFINE_LOCAL_ENUM(name) \
-  static struct r05_function r05f_ ## name = { r05_enum_function_code, #name };
+#define R05_DEFINE_ENTRY_ENUM(name, rep) \
+  struct r05_function r05f_ ## name = { r05_enum_function_code, rep };
+#define R05_DEFINE_LOCAL_ENUM(name, rep) \
+  static struct r05_function r05f_ ## name = { r05_enum_function_code, rep };
 
 
 #define R05_DECLARE_ENTRY_FUNCTION(name) \
@@ -239,16 +239,16 @@ R05_NORETURN void r05_switch_default_violation_impl(
   static struct r05_function r05f_ ## name;
 
 
-#define R05_DEFINE_ENTRY_FUNCTION(name) \
-  R05_DEFINE_FUNCTION_AUX(name, /* пусто */)
-#define R05_DEFINE_LOCAL_FUNCTION(name) \
-  R05_DEFINE_FUNCTION_AUX(name, static)
+#define R05_DEFINE_ENTRY_FUNCTION(name, rep) \
+  R05_DEFINE_FUNCTION_AUX(name, /* пусто */, rep)
+#define R05_DEFINE_LOCAL_FUNCTION(name, rep) \
+  R05_DEFINE_FUNCTION_AUX(name, static, rep)
 
-#define R05_DEFINE_FUNCTION_AUX(name, scope) \
+#define R05_DEFINE_FUNCTION_AUX(name, scope, rep) \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
-  scope struct r05_function r05f_ ## name = { r05c_ ## name, #name }; \
+  scope struct r05_function r05f_ ## name = { r05c_ ## name, rep }; \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   )

@@ -13,7 +13,7 @@
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
-R05_DEFINE_ENTRY_FUNCTION(Mu) {
+R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   struct r05_node *mu = arg_begin->next;
   struct r05_node *callable = mu->next;
   if (callable->tag != R05_DATATAG_FUNCTION) {
@@ -61,7 +61,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu) {
   }
 
 
-R05_DEFINE_ENTRY_FUNCTION(Add) {
+R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
   ARITHM_OP(+, NO_CHECK)
 }
 
@@ -78,7 +78,7 @@ struct r05_function r05f_Br = { r05_br, "Br" };
       s.ArgNo ::= s.NUMBER
       e.Argument ::= s.CHAR*
 */
-R05_DEFINE_ENTRY_FUNCTION(Arg) {
+R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *parg_no = callable->next;
   int arg_no;
@@ -105,7 +105,7 @@ R05_DEFINE_ENTRY_FUNCTION(Arg) {
 */
 static void read_from_stream(FILE *input);
 
-R05_DEFINE_ENTRY_FUNCTION(Card) {
+R05_DEFINE_ENTRY_FUNCTION(Card, "Card") {
   struct r05_node *callee = arg_begin->next;
 
   if (callee->next != arg_end) {
@@ -137,7 +137,7 @@ static void read_from_stream(FILE *input) {
 
    В e.Expr’ все числа заменены на литеры с соответствующими кодами
 */
-R05_DEFINE_ENTRY_FUNCTION(Chr) {
+R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
 
@@ -163,7 +163,7 @@ struct r05_function r05f_Dg = { r05_dg, "Dg" };
 /**
   10. <Div s.NUMBER s.NUMBER> == s.NUMBER
 */
-R05_DEFINE_ENTRY_FUNCTION(Div) {
+R05_DEFINE_ENTRY_FUNCTION(Div, "Div") {
   ARITHM_OP(/, CHECK_ZERODIV);
 }
 
@@ -171,7 +171,7 @@ R05_DEFINE_ENTRY_FUNCTION(Div) {
 /**
   12. <Explode s.FUNCTION> == s.CHAR+
 */
-R05_DEFINE_ENTRY_FUNCTION(Explode) {
+R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *ident = callable->next;
 
@@ -196,7 +196,7 @@ R05_DEFINE_ENTRY_FUNCTION(Explode) {
   e.Items : e.Prefix e.Suffix
   |e.Prefix| == s.Len || { |e.Prefix| < s.Len && |e.Suffix| == 0 }
 */
-R05_DEFINE_ENTRY_FUNCTION(First) {
+R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   struct r05_node *sLen, *eItems_b, *eItems_e;
   r05_number counter;
   struct r05_node *ePrefix_b, *ePrefix_e, *eSuffix_b, *eSuffix_e;
@@ -243,7 +243,7 @@ R05_DEFINE_ENTRY_FUNCTION(First) {
 */
 FILE *open_numbered(unsigned int no, const char mode);
 
-R05_DEFINE_ENTRY_FUNCTION(Get) {
+R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pfile_no = callable->next;
   FILE *stream;
@@ -309,7 +309,7 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
 /**
   19. <Mod s.NUMBER s.NUMBER> == s.NUMBER
 */
-R05_DEFINE_ENTRY_FUNCTION(Mod) {
+R05_DEFINE_ENTRY_FUNCTION(Mod, "Mod") {
   ARITHM_OP(%, CHECK_ZERODIV);
 }
 
@@ -317,7 +317,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mod) {
 /**
   20. <Mul s.NUMBER s.NUMBER> == s.NUMBER
 */
-R05_DEFINE_ENTRY_FUNCTION(Mul) {
+R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
   ARITHM_OP(*, NO_CHECK)
 }
 
@@ -329,7 +329,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mul) {
       Если аргумент не начинается с последовательности цифр,
       функция возвращает 0.
 */
-R05_DEFINE_ENTRY_FUNCTION(Numb) {
+R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p;
   r05_number result = 0;
@@ -356,16 +356,16 @@ R05_DEFINE_ENTRY_FUNCTION(Numb) {
         |  r  |  w  |  a
         |  rb |  wb |  ab
 */
-R05_DEFINE_ENTRY_ENUM(r)
-R05_DEFINE_ENTRY_ENUM(w)
-R05_DEFINE_ENTRY_ENUM(a)
-R05_DEFINE_ENTRY_ENUM(rb)
-R05_DEFINE_ENTRY_ENUM(wb)
-R05_DEFINE_ENTRY_ENUM(ab)
+R05_DEFINE_ENTRY_ENUM(r, "r")
+R05_DEFINE_ENTRY_ENUM(w, "w")
+R05_DEFINE_ENTRY_ENUM(a, "a")
+R05_DEFINE_ENTRY_ENUM(rb, "rb")
+R05_DEFINE_ENTRY_ENUM(wb, "wb")
+R05_DEFINE_ENTRY_ENUM(ab, "ab")
 
 static void ensure_close_stream(unsigned int file_no);
 
-R05_DEFINE_ENTRY_FUNCTION(Open) {
+R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   struct r05_node *eFileName_b, *eFileName_e, *sMode, *sFileNo;
   unsigned int file_no;
   char mode_str[2] = { '.', '\0' };
@@ -449,7 +449,7 @@ static void ensure_close_stream(unsigned int file_no) {
 
   В e.Expr’ все литеры заменены на их коды ASCII
 */
-R05_DEFINE_ENTRY_FUNCTION(Ord) {
+R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
 
@@ -541,7 +541,7 @@ static void output_func(
 /**
   25. <Prout e.Expr> == []
 */
-R05_DEFINE_ENTRY_FUNCTION(Prout) {
+R05_DEFINE_ENTRY_FUNCTION(Prout, "Prout") {
   output_func(arg_begin, arg_end, PROUT);
 }
 
@@ -549,7 +549,7 @@ R05_DEFINE_ENTRY_FUNCTION(Prout) {
 /**
   27. <Putout s.FileNo e.Expr> == []
 */
-R05_DEFINE_ENTRY_FUNCTION(Putout) {
+R05_DEFINE_ENTRY_FUNCTION(Putout, "Putout") {
   output_func(arg_begin, arg_end, PUTOUT);
 }
 
@@ -557,7 +557,7 @@ R05_DEFINE_ENTRY_FUNCTION(Putout) {
 /**
   30. <Sub s.NUMBER s.NUMBER> == s.NUMBER
 */
-R05_DEFINE_ENTRY_FUNCTION(Sub) {
+R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
   ARITHM_OP(-, NO_CHECK)
 }
 
@@ -566,7 +566,7 @@ R05_DEFINE_ENTRY_FUNCTION(Sub) {
   31. <Symb e.Sign s.NUMBER> == e.Sign s.CHAR+
       e.Sign ::= '+' | '-' | пусто
 */
-R05_DEFINE_ENTRY_FUNCTION(Symb) {
+R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pnumber = callable->next;
   r05_number number;
@@ -641,7 +641,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb) {
         | 'B0' — brackets
         | '*0' — empty expression
 */
-R05_DEFINE_ENTRY_FUNCTION(Type) {
+R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *first_term = callee->next;
   char type, subtype;
@@ -696,7 +696,7 @@ R05_DEFINE_ENTRY_FUNCTION(Type) {
   51. <GetEnv e.EnvName> == e.EnvValue
       e.EnvName, e.EnvValue ::= s.CHAR*
 */
-R05_DEFINE_ENTRY_FUNCTION(GetEnv) {
+R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
   struct r05_node *eEnvName_b, *eEnvName_e;
   char env_name[2001];
   size_t env_name_len;
@@ -731,7 +731,7 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv) {
   52. <System e.Command> == e.RetCode
       e.RetCode ::= '-'? s.NUMBER
 */
-R05_DEFINE_ENTRY_FUNCTION(System) {
+R05_DEFINE_ENTRY_FUNCTION(System, "System") {
   struct r05_node *eCommand_b, *eCommand_e;
   char command[2001];
   size_t command_len;
@@ -775,7 +775,7 @@ R05_DEFINE_ENTRY_FUNCTION(System) {
 /**
   53. <Exit e.RetCode>
 */
-R05_DEFINE_ENTRY_FUNCTION(Exit) {
+R05_DEFINE_ENTRY_FUNCTION(Exit, "Exit") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pretcode = callable->next;
   int retcode;
@@ -810,7 +810,7 @@ R05_DEFINE_ENTRY_FUNCTION(Exit) {
 /**
   54. <Close s.FileNo> == []
 */
-R05_DEFINE_ENTRY_FUNCTION(Close) {
+R05_DEFINE_ENTRY_FUNCTION(Close, "Close") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pfile_no = callable->next;
   unsigned int file_no;
@@ -835,10 +835,10 @@ R05_DEFINE_ENTRY_FUNCTION(Close) {
         == False
       e.FileName ::= s.CHAR+
 */
-R05_DEFINE_ENTRY_ENUM(True)
-R05_DEFINE_ENTRY_ENUM(False)
+R05_DEFINE_ENTRY_ENUM(True, "True")
+R05_DEFINE_ENTRY_ENUM(False, "False")
 
-R05_DEFINE_ENTRY_FUNCTION(ExistFile) {
+R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *eFileName_b, *eFileName_e;
   char filename[FILENAME_MAX + 1];
@@ -881,7 +881,7 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile) {
 
   Функция возвращает знак разности между s.X и s.Y
 */
-R05_DEFINE_ENTRY_FUNCTION(Compare) {
+R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
   struct r05_node *func_name, *sX, *sY;
 
   func_name = arg_begin->next;
@@ -920,11 +920,11 @@ R05_DEFINE_ENTRY_FUNCTION(Compare) {
       s.Name ::= s.FUNCTION
       s.Type ::= special | regular
 */
-R05_DEFINE_ENTRY_ENUM(special)
-R05_DEFINE_ENTRY_ENUM(regular)
+R05_DEFINE_ENTRY_ENUM(special, "special")
+R05_DEFINE_ENTRY_ENUM(regular, "regular")
 
 
-R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin) {
+R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 /*
   Чтобы добавить встроенную функцию Рефала-5, нужно раскомментировать
   строчку в функции ListOfBuiltin и реализовать функцию.
@@ -994,8 +994,8 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin) {
   ALLOC_BUILTIN(33, Type, regular)
   /* ALLOC_BUILTIN(34, Upper, regular) */
   /* ALLOC_BUILTIN(35, Sysfun, regular) */
-  /* 42, "Imp$$", regular */
-  /* 43, "Stop$$", regular */
+  /* ALLOC_BUILTIN(42, Impd_d_, regular) */
+  /* ALLOC_BUILTIN(43, Stopd_d_, regular) */
   /* 44, "", regular */
   /* ALLOC_BUILTIN(45, Freeze, regular) */
   /* ALLOC_BUILTIN(46, Freezer, regular) */
