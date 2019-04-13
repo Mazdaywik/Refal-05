@@ -6,4 +6,4 @@ Hello {
   World = ;
 }
 
-$ENUM World;
+*$ENUM World
