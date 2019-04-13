@@ -80,7 +80,7 @@ setlocal
   if exist %CFILE% (
     echo COMPILATION SUCCESSED, BUT EXPECTED SYNTAX ERROR
     erase %CFILE%
-    exit /b
+    exit /b 1
   )
   echo Ok! Compiler didn't crash on invalid syntax
   echo.
