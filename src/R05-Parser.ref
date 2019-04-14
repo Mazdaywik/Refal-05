@@ -17,11 +17,309 @@ $EXTERN Transform;
 
 *$FROM Refal5-AST
 *$EXTERN Function, Extern, SpecialComment, RETURN, Symbol, Word, Number, Char
-*$EXTERN Variable, Brackets, Call, Local, Entry
+*$EXTERN Variable, Brackets, Call, Local, Entry, Condition, CALL-BLOCK
 
 *$FROM Libarary
 *$EXTERN True, False
 
+
+/**
+  <R05-PrepareAST e.AST>
+    == Success e.R05-AST
+    == Fails e.Errors
+
+  Function expands specific pseudocomments, checks specific errors
+  and transform to basic Refal
+*/
+$ENTRY R05-PrepareAST {
+  e.AST = <CheckAST <ExpandComments e.AST>>;
+}
+
+ExpandComments {
+  e.AST = <MapAccum r05-parser_ExpandComment <EL-Create> e.AST>;
+}
+
+$ENTRY r05-parser_ExpandComment {
+  t.ErrorList (SpecialComment t.SrcPos '*$' e.KeyWord s.Space e.Rest)
+    , <IsKeyWord e.KeyWord> : s.Scope
+    , <IsSpace s.Space> : True
+    , <ParseSpecialComment
+        s.Scope
+        <ScanString-FromPos t.SrcPos <Spaces '*$' e.KeyWord> e.Rest>
+        t.ErrorList
+      >
+    /* TODO: удалить после рефакторинга */
+    : t.ErrorList1 e.Functions
+    = t.ErrorList1 <AjustCommentFunction e.Functions>;
+
+  t.ErrorList t.OtherNode = t.ErrorList t.OtherNode;
+}
+
+AjustCommentFunction {
+  (Function t.SrcPos Extern (e.Name)) e.Functions
+    = (Extern (t.SrcPos e.Name))
+      <AjustCommentFunction e.Functions>;
+
+  (Function t.SrcPos s.ScopeClass (e.Name)) e.Functions
+    = (Function t.SrcPos (e.Name) s.ScopeClass)
+      <AjustCommentFunction e.Functions>;
+
+  /* empty */ = /* empty */;
+}
+
+IsKeyWord {
+  'ENUM' = Local;
+  'EENUM' = Entry;
+  'EXTRN' = Extern;
+  'EXTERN' = Extern;
+  'EXTERNAL' = Extern;
+
+  e.Other = /* пусто */;
+}
+
+IsSpace { ' ' = True; '\t' = True; s.Other = False }
+
+Spaces {
+  s.Char e.String = ' ' <Spaces e.String>;
+  /* пусто */ = /* пусто */
+}
+
+CheckAST {
+  t.ErrorList e.AST
+    , <CheckAST-FindEntry e.AST> : e.EntryError
+    , <CheckAST-Redefinitions e.AST> : e.RedefinitionErrors
+    = <CheckAST-SwErrors
+        (<EL-Destroy t.ErrorList> e.EntryError e.RedefinitionErrors)
+        <CheckAST-Functions <ExtractReferences e.AST>>
+        (e.AST)
+      >;
+}
+
+CheckAST-SwErrors {
+  (/* no comment errors */) e.Builtins (/* no semantic errors */) (e.AST)
+    = Success e.Builtins e.AST;
+
+  (e.CommentErrors) e.Builtins (e.SemanticErrors) (e.AST)
+    = Fails e.CommentErrors e.SemanticErrors;
+}
+
+CheckAST-FindEntry {
+  e.AST-B (Function t.SrcPos (e.Name) Entry e.Sentences) e.AST-E
+    = /* нет ошибок */;
+
+  (Function t.SrcPos (e.Name) s.Scope e.Body) e.AST = <NoEntryError t.SrcPos>;
+  (Extern (t.SrcPos e.Name) e.Externs) e.AST = <NoEntryError t.SrcPos>;
+  (SpecialComment t.SrcPos e.Text) e.AST = <NoEntryError t.SrcPos>;
+
+  /* нет дерева */ = <NoEntryError NO-POS>;
+}
+
+NoEntryError {
+  (s.Row s.Col e.FileName) = ((1 1 e.FileName) 'No entry function in file');
+
+  NO-POS = ((1 1 '<unknown>') 'No entry function in file');
+}
+
+CheckAST-Redefinitions {
+  /*
+    Ошибки в переопределениях могут быть только для пустых функций,
+    поскольку на входе мы полагаем корректное синтаксическое дерево.
+  */
+  e.Items-B
+  (Function t.SrcPos1 (e.Name) s.Scope1 e.Sentences)
+  e.Items-M
+  (Function t.SrcPos2 (e.Name) s.Scope2 /* пусто */)
+  e.Items-E
+    = (t.SrcPos2 'Empty function ' e.Name ' redefines other function')
+      <CheckAST-Redefinitions
+        e.Items-B
+        (Function t.SrcPos1 (e.Name) s.Scope1 e.Sentences)
+        e.Items-M e.Items-E
+      >;
+
+  e.Items-B
+  (Function t.SrcPos1 (e.Name) s.Scope1 /* пусто */)
+  e.Items-M
+  (Function t.SrcPos2 (e.Name) s.Scope2 e.Sentences)
+  e.Items-E
+    = (t.SrcPos1 'Empty function ' e.Name ' redefines other function')
+      <CheckAST-Redefinitions
+        e.Items-B e.Items-M
+        (Function t.SrcPos2 (e.Name) s.Scope2 e.Sentences)
+        e.Items-E
+      >;
+
+  e.Items = /* пусто */;
+}
+
+CheckAST-Functions {
+  e.ReferenceBags
+    , <CheckAST-Functions-Calls
+        <MapAccum r05-parser_PlainBags (/* func names */) e.ReferenceBags>
+      >
+    : e.UsedBuiltins (e.Errors)
+    = e.UsedBuiltins
+      (e.Errors <CheckAST-Functions-Unused e.ReferenceBags>);
+}
+
+$ENTRY r05-parser_PlainBags {
+  (e.FuncNames) (t.SrcPos (e.FuncName) s.ScopeEx e.References)
+    = (e.FuncNames (e.FuncName)) e.References;
+}
+
+CheckAST-Functions-Calls {
+  (e.FuncNames) e.References
+    = <CheckAST-Functions-DoCalls (e.FuncNames) <UniqReferences e.References>>;
+}
+
+CheckAST-Functions-DoCalls {
+  ((e.Name) e.FuncNames) e.References-B ((e.Name) e.Positions) e.References-E
+    = <CheckAST-Functions-DoCalls (e.FuncNames) e.References-B e.References-E>;
+
+  ((e.Name) e.FuncNames) e.References
+    = <CheckAST-Functions-DoCalls (e.FuncNames) e.References>;
+
+  (/* no names */) e.References
+    = <CheckAST-Functions-UsedBuiltins <LoadBuiltins> (e.References)>;
+}
+
+LoadBuiltins { = <Map r05-parser_BuiltinName <ListOfBuiltin>> }
+
+$ENTRY r05-parser_BuiltinName { (s.Id s.Name s.Type) = (<Explode s.Name>) }
+
+CheckAST-Functions-UsedBuiltins {
+  (e.Builtin) e.Builtins (e.Refs-B ((e.Builtin) e.Pos) e.Refs-E)
+    = (Extern (NO-POS e.Builtin))
+      <CheckAST-Functions-UsedBuiltins e.Builtins (e.Refs-B e.Refs-E)>;
+
+  (e.Builtin) e.Builtins (e.References)
+    = <CheckAST-Functions-UsedBuiltins e.Builtins (e.References)>;
+
+  /* кончились встроенные */ (e.UndefinedReferences)
+    = (<Map r05-parser_UndefinedReferenceMessage e.UndefinedReferences>);
+}
+
+$ENTRY r05-parser_UndefinedReferenceMessage {
+  ((e.Name) t.Pos e.PosList)
+    = (t.Pos 'Function ' e.Name ' is not defined')
+      <r05-parser_UndefinedReferenceMessage ((e.Name) e.PosList)>;
+
+  ((e.Name) /* no pos */) = /* no errors */;
+}
+
+CheckAST-Functions-Unused {
+  e.ReferenceBags
+     = <EL-Destroy
+          <FindUnusedFunctions-Aux
+            <EL-Create>
+            <PrepareFormat-FUF-A e.ReferenceBags>
+          >
+       >;
+}
+
+PrepareFormat-FUF-A {
+  e.ReferenceBags
+    = <MapAccum r05-parser_PrepareFormat-FUF-A-Bag () e.ReferenceBags>;
+}
+
+/* TODO */
+$ENTRY r05-parser_PrepareFormat-FUF-A-Bag {
+  (e.Entries) (t.SrcPos (e.Name) Entry e.References)
+    = (e.Entries (t.SrcPos e.Name))
+      ((e.Name) t.SrcPos Entry
+        <Map r05-parser_PrepareFormat-FUF-A-Reference e.References>
+      );
+
+  (e.Entries) (t.SrcPos (e.Name) s.ScopeEx e.References)
+    = (e.Entries)
+      ((e.Name) t.SrcPos s.ScopeEx
+        <Map r05-parser_PrepareFormat-FUF-A-Reference e.References>
+      );
+}
+
+$ENTRY r05-parser_PrepareFormat-FUF-A-Reference {
+  ((e.Name) t.Pos e.Poses) = (t.Pos e.Name);
+}
+
+/*
+  <ExtractReferences e.AST> == e.ReferenceBag*
+
+  e.ReferenceBag ::= (t.SrcPos (e.FuncName) s.ScopeEx t.Reference*)*
+  s.ScopeEx ::= Entry | Local | Extern
+  t.Reference ::= ((e.Name) t.SrcPos+)
+*/
+ExtractReferences {
+  e.AST = <Map r05-parser_ExtractReferences-Functions e.AST>;
+}
+
+$ENTRY r05-parser_ExtractReferences-Functions {
+  (Function t.SrcPos (e.Name) s.Scope e.Sentences)
+    = (t.SrcPos (e.Name) s.Scope
+        <UniqReferences <ExtractReferences-Sentences e.Sentences>>
+      );
+
+  (Extern e.Externs) = <Map r05-parser_ExternAsBag e.Externs>;
+
+  (SpecialComment t.SrcPos e.Text) = /* нет мешков в комментарии */;
+}
+
+$ENTRY r05-parser_ExternAsBag {
+  (t.SrcPos e.Name) = (t.SrcPos (e.Name) Extern /* no bags */);
+}
+
+ExtractReferences-Sentences {
+  e.Sentences = <Map r05-parser_ExtractReferences-OneSentence e.Sentences>;
+}
+
+$ENTRY r05-parser_ExtractReferences-OneSentence {
+  ((e.Pattern) e.Tail)
+    = <ExtractReferences-Expr e.Pattern> <ExtractReferences-Tail e.Tail>;
+}
+
+ExtractReferences-Tail {
+  (Condition (e.Result) (e.Pattern)) e.Tail
+    = <ExtractReferences-Expr e.Result> <ExtractReferences-Expr e.Pattern>
+      <ExtractReferences-Tail e.Tail>;
+
+  RETURN (e.Result) = <ExtractReferences-Expr e.Result>;
+
+  CALL-BLOCK (e.Result) e.Sentences
+    = <ExtractReferences-Expr e.Result>
+      <ExtractReferences-Sentences e.Sentences>;
+}
+
+ExtractReferences-Expr {
+  e.Expr = <Map r05-parser_ExtractReferences-Term e.Expr>;
+}
+
+$ENTRY r05-parser_ExtractReferences-Term {
+  (Symbol Word t.SrcPos e.Name) = ((e.Name) t.SrcPos);
+
+  (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
+
+  (Call t.SrcPos (e.Name) e.Expr)
+    = ((<DesugarName e.Name>) t.SrcPos) <ExtractReferences-Expr e.Expr>;
+
+  t.Other = /* пусто */;
+}
+
+DesugarName {
+  '%' = 'Mod';
+  '*' = 'Mul';
+  '+' = 'Add';
+  '-' = 'Sub';
+  '/' = 'Div';
+  '?' = 'Residue';
+
+  e.Name = e.Name;
+}
+
+UniqReferences {
+  e.Unique ((e.Name) e.Pos1) e.Refs-B ((e.Name) e.Pos2) e.Refs-E
+    = e.Unique <UniqReferences e.Refs-B ((e.Name) e.Pos1 e.Pos2) e.Refs-E>;
+
+  e.Unique = e.Unique;
+}
 
 /**
   <R05-Parse-File e.SourceFile>
@@ -55,9 +353,18 @@ Parse-CheckTokens-Aux {
     , <Parse e.Tokens>
     : {
         Success e.AST
-          = <R05-Parse-Aux
-              <SemanticCheck <PrepareR05AST <EL-Create e.LexerErrors> e.AST>>
-            >;
+          , <R05-PrepareAST e.AST>
+          : {
+            Success e.PreparedAST
+              = <R05-Parse-Aux
+                  <SemanticCheck
+                     <PrepareR05AST <EL-Create e.LexerErrors> e.PreparedAST>
+                  >
+                >;
+
+            Fails e.SemanticErrors
+              = Fails <SortErrors e.LexerErrors e.SemanticErrors>;
+          };
 
         Fails e.ParserErrors = Fails <SortErrors e.LexerErrors e.ParserErrors>;
       };
@@ -71,7 +378,7 @@ R05-Parse-Aux {
 R05-Parse-SwErrors {
   (/* no errors */) e.Tree = Success e.Tree;
 
-  (e.Errors) e.Tree = Fails <SortErrors e.Errors>;
+*  (e.Errors) e.Tree = Fails <SortErrors e.Errors>;
 }
 
 SortErrors {
@@ -172,22 +479,6 @@ PrepareSpecialComment {
   t.ErrorList t.Pos e.OtherComment = t.ErrorList;
 }
 
-IsKeyWord {
-  'ENUM' = Local;
-  'EENUM' = Entry;
-  'EXTRN' = Extern;
-  'EXTERN' = Extern;
-  'EXTERNAL' = Extern;
-
-  e.Other = /* пусто */;
-}
-
-IsSpace { ' ' = True; '\t' = True; s.Other = False }
-
-Spaces {
-  s.Char e.String = ' ' <Spaces e.String>;
-  /* пусто */ = /* пусто */
-}
 
 ParseSpecialComment {
   s.Scope e.Tokens t.ErrorList
@@ -261,30 +552,30 @@ ParseList {
 SemanticCheck {
   t.ErrorList e.Tree =
     <FindOneEntry
-      t.ErrorList (<ExtractReferences e.Tree>) <LoadBuiltins> e.Tree
+      t.ErrorList (<ExtractReferences-Old e.Tree>) <LoadBuiltins-Old> e.Tree
     >;
 }
 
-ExtractReferences {
+ExtractReferences-Old {
   e.Tree = <Map parser_ExtractReferences e.Tree>;
 }
 
 $ENTRY parser_ExtractReferences {
   (Function t.SrcPos s.ScopeClass (e.Name) e.Sentences) =
-    <ExtractReferences-Sentences e.Sentences>;
+    <ExtractReferences-Old-Sentences e.Sentences>;
 }
 
-ExtractReferences-Sentences {
+ExtractReferences-Old-Sentences {
   e.Sentences = <Map parser_ExtractReferences-Sentences e.Sentences>;
 }
 
 $ENTRY parser_ExtractReferences-Sentences {
   ((e.Pattern) (e.Result)) =
-    <ExtractReferences-Expr e.Pattern>
-    <ExtractReferences-Expr e.Result>;
+    <ExtractReferences-Old-Expr e.Pattern>
+    <ExtractReferences-Old-Expr e.Result>;
 }
 
-ExtractReferences-Expr {
+ExtractReferences-Old-Expr {
   e.Expr = <Map parser_ExtractReferences-Expr e.Expr>;
 }
 
@@ -294,8 +585,8 @@ $ENTRY parser_ExtractReferences-Expr {
 
   (Variable s.Mode e.Index) = /* это не имя функции */;
 
-  (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
-  (Call e.Expr) = <ExtractReferences-Expr e.Expr>;
+  (Brackets e.Expr) = <ExtractReferences-Old-Expr e.Expr>;
+  (Call e.Expr) = <ExtractReferences-Old-Expr e.Expr>;
 }
 
 FindOneEntry {
@@ -328,11 +619,11 @@ FindUnusedFunctions {
 $ENTRY r05-parser_PrepareCrossRefs {
   (e.Entries) (Function t.SrcPos Entry (e.Name) e.Sentences)
     = (e.Entries (t.SrcPos e.Name))
-      ((e.Name) t.SrcPos Entry <ExtractReferences-Sentences e.Sentences>);
+      ((e.Name) t.SrcPos Entry <ExtractReferences-Old-Sentences e.Sentences>);
 
   (e.Entries) (Function t.SrcPos s.Scope (e.Name) e.Sentences)
     = (e.Entries)
-      ((e.Name) t.SrcPos s.Scope <ExtractReferences-Sentences e.Sentences>);
+      ((e.Name) t.SrcPos s.Scope <ExtractReferences-Old-Sentences e.Sentences>);
 }
 
 FindUnusedFunctions-Aux {
@@ -392,7 +683,7 @@ AddUnusedMessage {
 }
 
 
-LoadBuiltins {
+LoadBuiltins-Old {
   = <Map parser_BuiltinDeclaration <ListOfBuiltin>>;
 }
 
