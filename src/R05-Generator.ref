@@ -41,13 +41,17 @@ R05-Generate-Aux {
 }
 
 $ENTRY generator_GenTreeItem {
-  (e.Declarations) (Extern e.Name) =
-    (e.Declarations <GenDeclaration Entry e.Name>)
+  (e.Declarations) (Extern e.Names) =
+    (e.Declarations <Map r05-generator_GenExtern e.Names>)
     /* пусто */;
 
-  (e.Declarations) (Function s.ScopeClass (e.Name) e.Body) =
+  (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body) =
     (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
     <GenFunction s.ScopeClass (e.Name) e.Body>;
+}
+
+$ENTRY r05-generator_GenExtern {
+  (t.SrcPos e.Name) = <GenDeclaration Entry e.Name>;
 }
 
 
@@ -633,6 +637,17 @@ GenResult {
 
 *$ENUM TkString, TkCloseBracket, TkCloseCall
 
+DesugarName {
+  '%' = 'Mod';
+  '*' = 'Mul';
+  '+' = 'Add';
+  '-' = 'Sub';
+  '/' = 'Div';
+  '?' = 'Residue';
+
+  e.Name = e.Name;
+}
+
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
@@ -690,12 +705,13 @@ DoGenResult {
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Call e.InBrackets) e.Result =
+  s.Counter (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
-      <Inc s.Counter> e.InBrackets (TkCloseCall s.Counter) e.Result
+      <Inc s.Counter> (Symbol Word t.SrcPos <DesugarName e.Name>)
+      e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
 
   /*

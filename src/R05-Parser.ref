@@ -56,11 +56,11 @@ $ENTRY r05-parser_ExpandComment {
 }
 
 AjustCommentFunction {
-  (Function t.SrcPos Extern (e.Name)) e.Functions
+  (Function t.SrcPos (e.Name) Extern) e.Functions
     = (Extern (t.SrcPos e.Name))
       <AjustCommentFunction e.Functions>;
 
-  (Function t.SrcPos s.ScopeClass (e.Name)) e.Functions
+  (Function t.SrcPos (e.Name) s.ScopeClass) e.Functions
     = (Function t.SrcPos (e.Name) s.ScopeClass)
       <AjustCommentFunction e.Functions>;
 
@@ -427,7 +427,7 @@ $ENTRY r05-parser_PrepareUnit {
   t.ErrorList (Function t.SrcPos (e.Name) s.Scope e.Sentences)
     = t.ErrorList
       (Function
-        t.SrcPos s.Scope (e.Name)
+        t.SrcPos (e.Name) s.Scope
         <Map r05-parser_PrepareSentence e.Sentences>
       );
 
@@ -455,14 +455,11 @@ $ENTRY r05-parser_PrepareTerm {
   (Variable t.SrcPos s.Type e.Index) = (Variable s.Type e.Index);
   (Brackets e.Expression) = (Brackets <PrepareExpression e.Expression>);
   (Call t.SrcPos (e.Name) e.Expression)
-    = (Call
-        (Symbol Word t.SrcPos <Normalize e.Name>)
-        <PrepareExpression e.Expression>
-      );
+    = (Call t.SrcPos (<Normalize e.Name>) <PrepareExpression e.Expression>);
 }
 
 $ENTRY r05-parser_PrepareExterns {
-  (t.SrcPos e.Name) = (Function t.SrcPos Extern (e.Name) /* пусто */);
+  (t.SrcPos e.Name) = (Function t.SrcPos (e.Name) Extern /* пусто */);
 }
 
 PrepareSpecialComment {
@@ -503,7 +500,7 @@ AddUnexpectedTokens {
 
 $ENTRY parser_MakeListFunction {
   s.ScopeClass (t.SrcPos e.Name) =
-    (Function t.SrcPos s.ScopeClass (e.Name) /* пусто */);
+    (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */);
 }
 
 
@@ -561,7 +558,7 @@ ExtractReferences-Old {
 }
 
 $ENTRY parser_ExtractReferences {
-  (Function t.SrcPos s.ScopeClass (e.Name) e.Sentences) =
+  (Function t.SrcPos (e.Name) s.ScopeClass e.Sentences) =
     <ExtractReferences-Old-Sentences e.Sentences>;
 }
 
@@ -586,15 +583,16 @@ $ENTRY parser_ExtractReferences-Expr {
   (Variable s.Mode e.Index) = /* это не имя функции */;
 
   (Brackets e.Expr) = <ExtractReferences-Old-Expr e.Expr>;
-  (Call e.Expr) = <ExtractReferences-Old-Expr e.Expr>;
+  (Call t.SrcPos (e.Name) e.Expr)
+     = (t.SrcPos e.Name) <ExtractReferences-Old-Expr e.Expr>;
 }
 
 FindOneEntry {
   t.ErrorList (e.References)
-  e.Tree-B (Function t.SrcPos Entry (e.Name) e.Body) e.Tree-E =
+  e.Tree-B (Function t.SrcPos (e.Name) Entry e.Body) e.Tree-E =
     <FindUnusedFunctions
       t.ErrorList (e.References)
-      e.Tree-B (Function t.SrcPos Entry (e.Name) e.Body) e.Tree-E
+      e.Tree-B (Function t.SrcPos (e.Name) Entry e.Body) e.Tree-E
     >;
 
   t.ErrorList (e.References) e.Tree =
@@ -617,11 +615,11 @@ FindUnusedFunctions {
 }
 
 $ENTRY r05-parser_PrepareCrossRefs {
-  (e.Entries) (Function t.SrcPos Entry (e.Name) e.Sentences)
+  (e.Entries) (Function t.SrcPos (e.Name) Entry e.Sentences)
     = (e.Entries (t.SrcPos e.Name))
       ((e.Name) t.SrcPos Entry <ExtractReferences-Old-Sentences e.Sentences>);
 
-  (e.Entries) (Function t.SrcPos s.Scope (e.Name) e.Sentences)
+  (e.Entries) (Function t.SrcPos (e.Name) s.Scope e.Sentences)
     = (e.Entries)
       ((e.Name) t.SrcPos s.Scope <ExtractReferences-Old-Sentences e.Sentences>);
 }
@@ -694,7 +692,7 @@ $ENTRY parser_BuiltinDeclaration {
         /* пусто */ = /* пропускаем */;
         e.Name '$' = /* пропускаем */;
 
-        e.Name = (Function NO-POS Extern (<Normalize e.Name>) /* пусто */);
+        e.Name = (Function NO-POS (<Normalize e.Name>) Extern /* пусто */);
       }
 }
 
@@ -711,55 +709,55 @@ Normalize {
 
 CheckRepeatedDefinitions {
   t.ErrorList (e.References)
-  e.Tree-B (Function t.SrcPos1 s.ScopeClass (e.Name) e.Body) e.Tree-E
-  (Function t.SrcPos2 Extern (e.Name)) =
+  e.Tree-B (Function t.SrcPos1 (e.Name) s.ScopeClass e.Body) e.Tree-E
+  (Function t.SrcPos2 (e.Name) Extern) =
     /* $EXTERN для уже существующей функции */
     <CheckRepeatedDefinitions
       t.ErrorList (e.References)
-      e.Tree-B (Function t.SrcPos1 s.ScopeClass (e.Name) e.Body) e.Tree-E
+      e.Tree-B (Function t.SrcPos1 (e.Name) s.ScopeClass e.Body) e.Tree-E
     >;
 
   t.ErrorList (e.References-B (t.SrcPosRef e.Name) e.References-E)
-  e.Tree (Function t.SrcPos Extern (e.Name)) =
+  e.Tree (Function t.SrcPos (e.Name) Extern) =
     /* $EXTERN используется */
     <CheckRepeatedDefinitions
       t.ErrorList (e.References-B <RemoveReference (e.Name) e.References-E>)
       e.Tree
     >
-    (Extern e.Name);
+    (Extern (t.SrcPos e.Name));
 
   t.ErrorList (e.References)
-  e.Tree (Function t.SrcPos Extern (e.Name)) =
+  e.Tree (Function t.SrcPos (e.Name) Extern) =
     /* $EXTERN не используется */
     <CheckRepeatedDefinitions t.ErrorList (e.References) e.Tree>;
 
   t.ErrorList (e.References)
-  e.Tree-B (Function t.SrcPos1 Extern (e.Name)) e.Tree-E
-  (Function t.SrcPos2 s.ScopeClass (e.Name) e.Body) =
+  e.Tree-B (Function t.SrcPos1 (e.Name) Extern) e.Tree-E
+  (Function t.SrcPos2 (e.Name) s.ScopeClass e.Body) =
     /* $EXTERN для уже существующей функции */
     <CheckRepeatedDefinitions
       t.ErrorList (e.References)
-      e.Tree-B e.Tree-E (Function t.SrcPos2 s.ScopeClass (e.Name) e.Body)
+      e.Tree-B e.Tree-E (Function t.SrcPos2 (e.Name) s.ScopeClass e.Body)
     >;
 
   t.ErrorList (e.References)
-  e.Tree-B (Function t.SrcPos1 s.ScopeClass1 (e.Name) e.Body1) e.Tree-E
-  (Function t.SrcPos2 s.ScopeClass2 (e.Name) e.Body2) =
+  e.Tree-B (Function t.SrcPos1 (e.Name) s.ScopeClass1 e.Body1) e.Tree-E
+  (Function t.SrcPos2 (e.Name) s.ScopeClass2 e.Body2) =
     /* Повторное определение функции */
     <CheckRepeatedDefinitions
       <EL-AddErrorAt
         t.ErrorList t.SrcPos2 'Function ' e.Name ' already defined'
       >
       (e.References)
-      e.Tree-B (Function t.SrcPos1 s.ScopeClass1 (e.Name) e.Body1) e.Tree-E
+      e.Tree-B (Function t.SrcPos1 (e.Name) s.ScopeClass1 e.Body1) e.Tree-E
     >;
 
   t.ErrorList (e.References)
-  e.Tree (Function t.SrcPos s.Scope (e.Name) e.Body) =
+  e.Tree (Function t.SrcPos (e.Name) s.Scope e.Body) =
     <CheckRepeatedDefinitions
       t.ErrorList (<RemoveReference (e.Name) e.References>) e.Tree
     >
-    (Function s.Scope (e.Name) e.Body);
+    (Function t.SrcPos (e.Name) s.Scope e.Body);
 
   t.ErrorList (e.References) /* пусто */ =
     <Reduce parser_AddUnresolved t.ErrorList e.References>;
