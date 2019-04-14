@@ -32,7 +32,7 @@ $EXTERN Transform;
   and transform to basic Refal
 */
 $ENTRY R05-PrepareAST {
-  e.AST = <CheckAST <ExpandComments e.AST>>;
+  e.AST = <CheckAST <RedudandExterns <ExpandComments e.AST>>>;
 }
 
 ExpandComments {
@@ -82,6 +82,71 @@ IsSpace { ' ' = True; '\t' = True; s.Other = False }
 Spaces {
   s.Char e.String = ' ' <Spaces e.String>;
   /* пусто */ = /* пусто */
+}
+
+RedudandExterns {
+  t.ErrorList
+  e.AST-B
+  (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-M (t.SrcPos2 e.Name) e.Names-E)
+  e.AST-E
+    = <RedudandExterns
+        t.ErrorList
+        e.AST-B
+        (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-M e.Names-E)
+        e.AST-E
+      >;
+
+  t.ErrorList
+  e.AST-B
+  (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-E)
+  e.AST-M
+  (Function t.SrcPos2 (e.Name) s.Scope e.Sentences)
+  e.AST-E
+    = <RedudandExterns
+        t.ErrorList
+        e.AST-B
+        <FoldExtern e.Names-B e.Names-E>
+        e.AST-M
+        (Function t.SrcPos2 (e.Name) s.Scope e.Sentences)
+        e.AST-E
+      >;
+
+  t.ErrorList
+  e.AST-B
+  (Function t.SrcPos1 (e.Name) s.Scope e.Sentences)
+  e.AST-M
+  (Extern e.Names-B (t.SrcPos2 e.Name) e.Names-E)
+  e.AST-E
+    = <RedudandExterns
+        t.ErrorList
+        e.AST-B
+        (Function t.SrcPos1 (e.Name) s.Scope e.Sentences)
+        e.AST-M
+        <FoldExtern e.Names-B e.Names-E>
+        e.AST-E
+      >;
+
+  t.ErrorList
+  e.AST-B
+  (Extern e.Names1-B (t.SrcPos1 e.Name) e.Names1-E)
+  e.AST-M
+  (Extern e.Names2-B (t.SrcPos2 e.Name) e.Names2-E)
+  e.AST-E
+    = <RedudandExterns
+        t.ErrorList
+        e.AST-B
+        (Extern e.Names1-B (t.SrcPos1 e.Name) e.Names1-E)
+        e.AST-M
+        <FoldExtern e.Names2-B e.Names2-E>
+        e.AST-E
+      >;
+
+  t.ErrorList e.AST = t.ErrorList e.AST;
+}
+
+FoldExtern {
+  /* пусто */ = /* пусто */;
+  e.Names = (Extern e.Names);
 }
 
 CheckAST {
