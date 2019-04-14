@@ -1,5 +1,5 @@
 *$FROM Refal5-AST
-$EXTERN Extern, Entry, Function, Local, Variable, Symbol,
+$EXTERN Extern, Entry, Function, SpecialComment, Local, Variable, RETURN, Symbol,
   Brackets, Char, Number, Word, Call;
 
 *$FROM LibraryEx
@@ -48,6 +48,20 @@ $ENTRY generator_GenTreeItem {
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body) =
     (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
     <GenFunction s.ScopeClass (e.Name) e.Body>;
+
+  (e.Declarations) (SpecialComment t.SrcPos e.Text) =
+    (e.Declarations)
+    ('/*')
+    (<SafeSpecialComment e.Text>)
+    ('*/');
+}
+
+SafeSpecialComment {
+  '!' e.Comment = '!!' <SafeSpecialComment e.Comment>;
+  '/*' e.Comment = '/!*' <SafeSpecialComment e.Comment>;
+  '*/' e.Comment = '*!/' <SafeSpecialComment e.Comment>;
+  s.Other e.Comment = s.Other <SafeSpecialComment e.Comment>;
+  /* пусто */ = /* пусто */;
 }
 
 $ENTRY r05-generator_GenExtern {
@@ -102,14 +116,14 @@ AddFailCommand {
     e.X = ...;, в конце не генерится вызов
     r05_recognition_impossible()
   */
-  e.Sentences (((Variable 'e' e.Index)) (e.Result)) =
-    e.Sentences (((Variable 'e' e.Index)) (e.Result));
+  e.Sentences (((Variable t.SrcPos 'e' e.Index)) RETURN (e.Result)) =
+    e.Sentences (((Variable t.SrcPos 'e' e.Index)) RETURN (e.Result));
 
   e.Sentences = e.Sentences ReturnRecognitionImpossible;
 }
 
 $ENTRY generator_GenSentence {
-  ((e.Pattern) (e.Result)) =
+  ((e.Pattern) RETURN (e.Result)) =
     ()
     ('  do {')
     <SkipIndentAccum
@@ -441,7 +455,7 @@ CompileSentence-Aux {
       | Symbol Word t.SrcPos e.Name
       | Brackets s.InnerNum
       | Repeated s.Usings s.Mode e.Index
-      | Variable s.Mode e.Index
+      | Variable t.SrcPos s.Mode e.Index
 
   Пустые скобки:
     (CmdEmpty s.BracketNum),
@@ -523,7 +537,8 @@ DoGenPattern {
     >;
 
   /* Распознавание переменных */
-  s.NumRanges e.Ranges-B (s.Num (Variable s.Mode e.Index) e.Range) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num (Variable t.SrcPos s.Mode e.Index) e.Range) e.Ranges-E
   (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -531,7 +546,8 @@ DoGenPattern {
       (e.Commands (CmdMatch AlgLeft s.Num Repeated <Inc s.Count> s.Mode e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num e.Range (Variable s.Mode e.Index)) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num e.Range (Variable t.SrcPos s.Mode e.Index)) e.Ranges-E
   (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -540,7 +556,7 @@ DoGenPattern {
     >;
 
   /* Диапазон с закрытой переменной */
-  s.NumRanges e.Ranges-B (s.Num (Variable 'e' e.Index)) e.Ranges-E
+  s.NumRanges e.Ranges-B (s.Num (Variable t.SrcPos 'e' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B e.Ranges-E
@@ -548,7 +564,8 @@ DoGenPattern {
       (e.Commands (CmdClosedE s.Num 'e' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (Variable 's' e.Index) e.Range) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num (Variable t.SrcPos 's' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -556,7 +573,8 @@ DoGenPattern {
       (e.Commands (CmdMatch AlgLeft s.Num Variable 's' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (Variable 't' e.Index) e.Range) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num (Variable t.SrcPos 't' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -564,7 +582,8 @@ DoGenPattern {
       (e.Commands (CmdMatch AlgLeft s.Num Variable 't' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num e.Range (Variable 's' e.Index)) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num e.Range (Variable t.SrcPos 's' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -572,7 +591,8 @@ DoGenPattern {
       (e.Commands (CmdMatch AlgRight s.Num Variable 's' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num e.Range (Variable 't' e.Index)) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num e.Range (Variable t.SrcPos 't' e.Index)) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       s.NumRanges e.Ranges-B (s.Num e.Range) e.Ranges-E
@@ -580,7 +600,8 @@ DoGenPattern {
       (e.Commands (CmdMatch AlgRight s.Num Variable 't' e.Index))
     >;
 
-  s.NumRanges e.Ranges-B (s.Num (Variable 'e' e.Index) e.Range) e.Ranges-E
+  s.NumRanges
+  e.Ranges-B (s.Num (Variable t.SrcPos 'e' e.Index) e.Range) e.Ranges-E
   (e.Vars) (e.Commands) =
     <DoGenPattern
       <SaveRanges
@@ -745,7 +766,7 @@ DoGenResult {
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable 's' e.Index) e.Result =
+  s.Counter (Variable t.SrcPos 's' e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
@@ -756,7 +777,7 @@ DoGenResult {
   /* Переменная есть в образце — переносим, позиция подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
   (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos)) (e.Commands)
-  s.Counter (Variable s.Mode e.Index) e.Result =
+  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
@@ -770,7 +791,7 @@ DoGenResult {
 
   /* Переменная есть в образце — переносим, позиция не подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable s.Mode e.Index) e.Result =
+  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.Counter))
@@ -784,7 +805,7 @@ DoGenResult {
 
   /* Переменной нет в образце — копируем */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable s.Mode e.Index) e.Result =
+  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))

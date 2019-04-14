@@ -16,8 +16,8 @@ $EXTERN Transform;
 *$EXTERN NO-POS
 
 *$FROM Refal5-AST
-*$EXTERN Function, Extern, SpecialComment, RETURN, Symbol, Word, Number, Char
-*$EXTERN Variable, Brackets, Call, Local, Entry, Condition, CALL-BLOCK
+*$EXTERN Function, Extern, SpecialComment, RETURN, Symbol, Word
+*$EXTERN Brackets, Call, Local, Entry, Condition, CALL-BLOCK
 
 *$FROM Libarary
 *$EXTERN True, False
@@ -409,29 +409,13 @@ Parse-CheckTokens {
         Success e.AST
           , <R05-PrepareAST e.AST>
           : {
-            Success e.PreparedAST
-              = <R05-Parse-Aux
-                  <SemanticCheck
-                     <PrepareR05AST <EL-Create> e.PreparedAST>
-                  >
-                >;
+            Success e.PreparedAST = Success <Transform e.PreparedAST>;
 
             Fails e.SemanticErrors = Fails <SortErrors e.SemanticErrors>;
           };
 
         Fails e.ParserErrors = Fails <SortErrors e.ParserErrors>;
       };
-}
-
-R05-Parse-Aux {
-  t.ErrorList e.Tree =
-    <R05-Parse-SwErrors (<EL-Destroy t.ErrorList>) e.Tree>;
-}
-
-R05-Parse-SwErrors {
-  (/* no errors */) e.Tree = Success e.Tree;
-
-*  (e.Errors) e.Tree = Fails <SortErrors e.Errors>;
 }
 
 SortErrors {
@@ -470,64 +454,6 @@ CompareError {
     <Compare s.Row1 s.Row2>;
 }
 
-
-PrepareR05AST {
-  t.ErrorList e.AST
-    = <MapAccum r05-parser_PrepareUnit t.ErrorList <Transform e.AST>>;
-}
-
-$ENTRY r05-parser_PrepareUnit {
-  t.ErrorList (Function t.SrcPos (e.Name) s.Scope e.Sentences)
-    = t.ErrorList
-      (Function
-        t.SrcPos (e.Name) s.Scope
-        <Map r05-parser_PrepareSentence e.Sentences>
-      );
-
-  t.ErrorList (Extern e.Names)
-    = t.ErrorList <Map r05-parser_PrepareExterns e.Names>;
-
-  t.ErrorList (SpecialComment t.SrcPos e.Text)
-    = <PrepareSpecialComment t.ErrorList t.SrcPos e.Text>;
-}
-
-$ENTRY r05-parser_PrepareSentence {
-  ((e.Pattern) RETURN (e.Result)) =
-    ((<PrepareExpression e.Pattern>) (<PrepareExpression e.Result>))
-}
-
-PrepareExpression {
-  e.Expression = <Map r05-parser_PrepareTerm e.Expression>;
-}
-
-$ENTRY r05-parser_PrepareTerm {
-  (Symbol Word t.SrcPos e.Name) = (Symbol Word t.SrcPos e.Name);
-  (Symbol Number s.Number) = (Symbol Number s.Number);
-  (Symbol Char s.Char) = (Symbol Char s.Char);
-
-  (Variable t.SrcPos s.Type e.Index) = (Variable s.Type e.Index);
-  (Brackets e.Expression) = (Brackets <PrepareExpression e.Expression>);
-  (Call t.SrcPos (e.Name) e.Expression)
-    = (Call t.SrcPos (e.Name) <PrepareExpression e.Expression>);
-}
-
-$ENTRY r05-parser_PrepareExterns {
-  (t.SrcPos e.Name) = (Function t.SrcPos (e.Name) Extern /* пусто */);
-}
-
-PrepareSpecialComment {
-  t.ErrorList t.Pos '*$' e.KeyWord s.Space e.Rest
-    , <IsKeyWord e.KeyWord> : s.Scope
-    , <IsSpace s.Space> : True
-    = <ParseSpecialComment
-        s.Scope
-        <ScanString-FromPos t.Pos <Spaces '*$' e.KeyWord> e.Rest>
-        t.ErrorList
-      >;
-
-* пропускаем любые другие специальные комментарии
-  t.ErrorList t.Pos e.OtherComment = t.ErrorList;
-}
 
 
 ParseSpecialComment {
@@ -599,11 +525,6 @@ ParseList {
 }
 
 
-SemanticCheck {
-  t.ErrorList e.Tree =
-    <CheckRepeatedDefinitions t.ErrorList e.Tree>;
-}
-
 FindUnusedFunctions-Aux {
   t.ErrorList (e.UsedReferences) /* все функции вызваны */ = t.ErrorList;
 
@@ -658,30 +579,6 @@ AddUnusedMessage {
 
   t.ErrorList t.Pos Extern e.Name
      = <EL-AddErrorAt t.ErrorList t.Pos 'Unused external declaration ' e.Name>;
-}
-
-
-$ENTRY parser_BuiltinDeclaration {
-  (s.Number s.Name s.Type)
-    , <Explode s.Name>
-    : {
-        /* пусто */ = /* пропускаем */;
-        e.Name '$' = /* пропускаем */;
-
-        e.Name = (Function NO-POS (e.Name) Extern /* пусто */);
-      }
-}
-
-CheckRepeatedDefinitions {
-  t.ErrorList e.Tree (Function t.SrcPos (e.Name) Extern) =
-    <CheckRepeatedDefinitions t.ErrorList e.Tree>
-    (Extern (t.SrcPos e.Name));
-
-  t.ErrorList e.Tree (Function t.SrcPos (e.Name) s.Scope e.Body) =
-    <CheckRepeatedDefinitions t.ErrorList e.Tree>
-    (Function t.SrcPos (e.Name) s.Scope e.Body);
-
-  t.ErrorList /* пусто */ = t.ErrorList;
 }
 
 
