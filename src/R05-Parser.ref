@@ -90,7 +90,7 @@ RedudandExterns {
   (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-M (t.SrcPos2 e.Name) e.Names-E)
   e.AST-E
     = <RedudandExterns
-        t.ErrorList
+        <AddRedudandExtern t.ErrorList t.SrcPos2 e.Name>
         e.AST-B
         (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-M e.Names-E)
         e.AST-E
@@ -103,7 +103,7 @@ RedudandExterns {
   (Function t.SrcPos2 (e.Name) s.Scope e.Sentences)
   e.AST-E
     = <RedudandExterns
-        t.ErrorList
+        <AddRedudandExtern t.ErrorList t.SrcPos1 e.Name>
         e.AST-B
         <FoldExtern e.Names-B e.Names-E>
         e.AST-M
@@ -118,7 +118,7 @@ RedudandExterns {
   (Extern e.Names-B (t.SrcPos2 e.Name) e.Names-E)
   e.AST-E
     = <RedudandExterns
-        t.ErrorList
+        <AddRedudandExtern t.ErrorList t.SrcPos2 e.Name>
         e.AST-B
         (Function t.SrcPos1 (e.Name) s.Scope e.Sentences)
         e.AST-M
@@ -133,7 +133,7 @@ RedudandExterns {
   (Extern e.Names2-B (t.SrcPos2 e.Name) e.Names2-E)
   e.AST-E
     = <RedudandExterns
-        t.ErrorList
+        <AddRedudandExtern t.ErrorList t.SrcPos2 e.Name>
         e.AST-B
         (Extern e.Names1-B (t.SrcPos1 e.Name) e.Names1-E)
         e.AST-M
@@ -142,6 +142,11 @@ RedudandExterns {
       >;
 
   t.ErrorList e.AST = t.ErrorList e.AST;
+}
+
+AddRedudandExtern {
+  t.ErrorList t.SrcPos e.Name
+    = <EL-AddErrorAt t.ErrorList t.SrcPos 'Redudand external name ' e.Name>;
 }
 
 FoldExtern {
