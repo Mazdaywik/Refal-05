@@ -43,28 +43,13 @@ $ENTRY r05-parser_ExpandComment {
   t.ErrorList (SpecialComment t.SrcPos '*$' e.KeyWord s.Space e.Rest)
     , <IsKeyWord e.KeyWord> : s.Scope
     , <IsSpace s.Space> : True
-    , <ParseSpecialComment
+    = <ParseSpecialComment
         s.Scope
         <ScanString-FromPos t.SrcPos <Spaces '*$' e.KeyWord> e.Rest>
         t.ErrorList
-      >
-    /* TODO: удалить после рефакторинга */
-    : t.ErrorList1 e.Functions
-    = t.ErrorList1 <AjustCommentFunction e.Functions>;
+      >;
 
   t.ErrorList t.OtherNode = t.ErrorList t.OtherNode;
-}
-
-AjustCommentFunction {
-  (Function t.SrcPos (e.Name) Extern) e.Functions
-    = (Extern (t.SrcPos e.Name))
-      <AjustCommentFunction e.Functions>;
-
-  (Function t.SrcPos (e.Name) s.ScopeClass) e.Functions
-    = (Function t.SrcPos (e.Name) s.ScopeClass)
-      <AjustCommentFunction e.Functions>;
-
-  /* empty */ = /* empty */;
 }
 
 IsKeyWord {
@@ -280,35 +265,34 @@ $ENTRY r05-parser_UndefinedReferenceMessage {
 CheckAST-Functions-Unused {
   e.ReferenceBags
      = <EL-Destroy
-          <FindUnusedFunctions-Aux
+          <FindUnusedFunctions
             <EL-Create>
-            <PrepareFormat-FUF-A e.ReferenceBags>
+            <PrepareBagsForFindUnusedFunctions e.ReferenceBags>
           >
        >;
 }
 
-PrepareFormat-FUF-A {
+PrepareBagsForFindUnusedFunctions {
   e.ReferenceBags
-    = <MapAccum r05-parser_PrepareFormat-FUF-A-Bag () e.ReferenceBags>;
+    = <MapAccum r05-parser_SelectEntries () e.ReferenceBags>;
 }
 
-/* TODO */
-$ENTRY r05-parser_PrepareFormat-FUF-A-Bag {
+$ENTRY r05-parser_SelectEntries {
   (e.Entries) (t.SrcPos (e.Name) Entry e.References)
-    = (e.Entries (t.SrcPos e.Name))
-      ((e.Name) t.SrcPos Entry
-        <Map r05-parser_PrepareFormat-FUF-A-Reference e.References>
+    = (e.Entries (e.Name))
+      (t.SrcPos (e.Name) Entry
+        <Map r05-parser_SimplifyReferences e.References>
       );
 
   (e.Entries) (t.SrcPos (e.Name) s.ScopeEx e.References)
     = (e.Entries)
-      ((e.Name) t.SrcPos s.ScopeEx
-        <Map r05-parser_PrepareFormat-FUF-A-Reference e.References>
+      (t.SrcPos (e.Name) s.ScopeEx
+        <Map r05-parser_SimplifyReferences e.References>
       );
 }
 
-$ENTRY r05-parser_PrepareFormat-FUF-A-Reference {
-  ((e.Name) t.Pos e.Poses) = (t.Pos e.Name);
+$ENTRY r05-parser_SimplifyReferences {
+  ((e.Name) e.Pos) = (e.Name);
 }
 
 /*
@@ -399,12 +383,8 @@ UniqReferences {
   e.Errors ::= ((s.Row s.Col) e.Message)*
 */
 $ENTRY R05-Parse-File {
-  e.SourceFile = <Parse-CheckTokens <Scan e.SourceFile>>;
-}
-
-Parse-CheckTokens {
-  e.Tokens
-    , <Parse e.Tokens>
+  e.SourceFile
+    , <Parse <Scan e.SourceFile>>
     : {
         Success e.AST
           , <R05-PrepareAST e.AST>
@@ -458,7 +438,7 @@ CompareError {
 
 ParseSpecialComment {
   s.Scope e.Tokens t.ErrorList
-    , <ParseList (ListKeyWord s.Scope) e.Tokens t.ErrorList>
+    , <ParseList (List s.Scope) (TkComma NO-POS) e.Tokens t.ErrorList>
     : (List s.ScopeClass e.Names) e.UnexpectedTokens (TkEOF t.SrcPos)
       t.ErrorList2
     = <AddUnexpectedTokens t.ErrorList2 e.UnexpectedTokens>
@@ -478,15 +458,15 @@ AddUnexpectedTokens {
 *$ENUM List
 
 $ENTRY parser_MakeListFunction {
+  Extern (t.SrcPos e.Name) = (Extern (t.SrcPos e.Name));
+
   s.ScopeClass (t.SrcPos e.Name) =
     (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */);
 }
 
 
-*$ENUM ListKeyWord
-
 /*
-  List ::= List ',' NAME | ListKeyWord NAME.
+  List ::= List ',' NAME.
 
   <ParseList e.Stack e.Tokens t.ErrorList>
     == (List s.ScopeClass (t.SrcPos e.Name)*) e.Tokens t.ErrorList
@@ -514,57 +494,50 @@ ParseList {
 
   (List s.ScopeClass e.Names) e.Tokens t.ErrorList =
     (List s.ScopeClass e.Names) e.Tokens t.ErrorList;
-
-  /* List ::= ListKeyWord NAME */
-  (ListKeyWord s.ScopeClass) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    <ParseList (List s.ScopeClass (t.SrcPos e.Name)) e.Tokens t.ErrorList>;
-
-  (ListKeyWord s.ScopeClass) t.Unexpected e.Tokens t.ErrorList =
-    (List s.ScopeClass) t.Unexpected e.Tokens
-    <EL-AddUnexpected t.ErrorList t.Unexpected 'function name'>;
 }
 
 
-FindUnusedFunctions-Aux {
+FindUnusedFunctions {
   t.ErrorList (e.UsedReferences) /* все функции вызваны */ = t.ErrorList;
 
-  t.ErrorList ((t.RefPos e.NextName) e.UsedReferences)
-  e.Functions-B ((e.NextName) t.FunctionPos s.Scope e.References) e.Functions-E
-    = <FindUnusedFunctions-Aux
+  t.ErrorList ((e.NextName) e.UsedReferences)
+  e.Functions-B (t.FunctionPos (e.NextName) s.Scope e.References) e.Functions-E
+    = <FindUnusedFunctions
         t.ErrorList (e.UsedReferences e.References) e.Functions-B e.Functions-E
       >;
 
 
-  t.ErrorList ((t.RefPos e.NextName) e.UsedReferences) e.Functions
-    = <FindUnusedFunctions-Aux t.ErrorList (e.UsedReferences) e.Functions>;
+  t.ErrorList ((e.NextName) e.UsedReferences) e.Functions
+    = <FindUnusedFunctions t.ErrorList (e.UsedReferences) e.Functions>;
 
   t.ErrorList (/* пусто */) e.UnusedFunctions
     = <FindUnusedRoot t.ErrorList (e.UnusedFunctions) e.UnusedFunctions>;
 }
 
 FindUnusedRoot {
-  t.ErrorList (((e.Root) t.RootPos s.Scope e.RootRefs)) e.AllFunctions
-    = <FindUnusedFunctions-Aux
+  t.ErrorList ((t.RootPos (e.Root) s.Scope e.RootRefs)) e.AllFunctions
+    = <FindUnusedFunctions
         <AddUnusedMessage t.ErrorList t.RootPos s.Scope e.Root>
-        ((t.RootPos e.Root)) e.AllFunctions
+        ((e.Root)) e.AllFunctions
       >;
 
   t.ErrorList
-  (((e.NotARoot) t.NotARootPos s.NotARootScope e.Body) e.Unuseds)
+  ((t.NotARootPos (e.NotARoot) s.NotARootScope e.Body) e.Unuseds)
   e.Users-B
-  ((e.User) t.UserPos s.Scope e.Refs-B (t.RefPos e.NotARoot) e.Refs-E)
+  (t.UserPos (e.User) s.Scope e.Refs-B (e.NotARoot) e.Refs-E)
   e.Users-E
     = <FindUnusedRoot
         t.ErrorList (e.Unuseds)
         e.Users-B
-        ((e.User) t.UserPos s.Scope e.Refs-B (t.RefPos e.NotARoot) e.Refs-E)
+        (t.UserPos (e.User) s.Scope e.Refs-B (e.NotARoot) e.Refs-E)
         e.Users-E
       >;
 
-  t.ErrorList (((e.Root) t.RootPos s.Scope e.RootRefs) e.Unuseds) e.AllFunctions
-    = <FindUnusedFunctions-Aux
+  t.ErrorList
+  ((t.RootPos (e.Root) s.Scope e.RootRefs) e.Unuseds) e.AllFunctions
+    = <FindUnusedFunctions
         <AddUnusedMessage t.ErrorList t.RootPos s.Scope e.Root>
-        ((t.RootPos e.Root)) e.AllFunctions
+        ((e.Root)) e.AllFunctions
       >;
 
   t.ErrorList (/* кончились неиспользуемые функции */) e.AllFunctions
@@ -574,8 +547,6 @@ FindUnusedRoot {
 AddUnusedMessage {
   t.ErrorList t.Pos Local e.Name
      = <EL-AddErrorAt t.ErrorList t.Pos 'Unused local function ' e.Name>;
-
-  t.ErrorList NO-POS Extern e.Name = t.ErrorList;
 
   t.ErrorList t.Pos Extern e.Name
      = <EL-AddErrorAt t.ErrorList t.Pos 'Unused external declaration ' e.Name>;
