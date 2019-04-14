@@ -6,7 +6,7 @@ $EXTERN MapAccum, Map, Reduce;
 *$EXTERN Success, Fails
 
 *$FROM Refal5-Tokens
-*$EXTERN TkCompound, TkError, TkEOF, TkComma, TkName
+*$EXTERN TkError, TkEOF, TkComma, TkName
 
 *$FROM Refal5-Parser
 $EXTERN Parse, TokName;
@@ -404,22 +404,6 @@ $ENTRY R05-Parse-File {
 
 Parse-CheckTokens {
   e.Tokens
-    = <Parse-CheckTokens-Aux
-        <MapAccum r05-parser_AddCompoundErrors (/* errors */) e.Tokens>
-      >;
-}
-
-$ENTRY r05-parser_AddCompoundErrors {
-  (e.Errors) (TkCompound t.SrcPos e.Text)
-    = (e.Errors (t.SrcPos 'Refal-05 don\'t support compounds in qoutes'));
-
-  (e.Errors) (TkError t.SrcPos e.Message) = (e.Errors (t.SrcPos e.Message));
-
-  (e.Errors) t.OtherToken = (e.Errors) t.OtherToken;
-}
-
-Parse-CheckTokens-Aux {
-  (e.LexerErrors) e.Tokens
     , <Parse e.Tokens>
     : {
         Success e.AST
@@ -428,15 +412,14 @@ Parse-CheckTokens-Aux {
             Success e.PreparedAST
               = <R05-Parse-Aux
                   <SemanticCheck
-                     <PrepareR05AST <EL-Create e.LexerErrors> e.PreparedAST>
+                     <PrepareR05AST <EL-Create> e.PreparedAST>
                   >
                 >;
 
-            Fails e.SemanticErrors
-              = Fails <SortErrors e.LexerErrors e.SemanticErrors>;
+            Fails e.SemanticErrors = Fails <SortErrors e.SemanticErrors>;
           };
 
-        Fails e.ParserErrors = Fails <SortErrors e.LexerErrors e.ParserErrors>;
+        Fails e.ParserErrors = Fails <SortErrors e.ParserErrors>;
       };
 }
 
