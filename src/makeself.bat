@@ -9,7 +9,7 @@ setlocal
   if {%1}=={stable} (
     refc %MODULES%
     move *.rsl ..\bin >NUL
-    set EXECUTABLE=refgo ../bin^(%MODULES: =+%^)+%LIBS: =+%
+    set EXECUTABLE=refgo -l20 ../bin^(%MODULES: =+%^)+%LIBS: =+%
   ) else (
     set EXECUTABLE=..\bin\refal05c.exe
   )
