@@ -4,6 +4,9 @@ $EXTERN Trim, Map;
 *$FROM Library
 $EXTERN True, False;
 
+*$FROM Platform
+$EXTERN PathSeparator;
+
 
 *$EENUM Source, Output, NotFound
 
@@ -20,7 +23,9 @@ $ENTRY R05-LoadPath {
 }
 
 ParsePath {
-  e.Folder ';' e.Path = <ParseFolder e.Folder> <ParsePath e.Path>;
+  e.Folder s.Sep e.Path
+    , <PathSeparator> : s.Sep
+    = <ParseFolder e.Folder> <ParsePath e.Path>;
   e.Folder = <ParseFolder e.Folder>;
 }
 
