@@ -9,7 +9,7 @@
   if [[ "$1" == "stable" ]]; then
     refc ${MODULES}
     mv *.rsl ../bin
-    EXECUTABLE="refgo ../bin(${MODULES// /+})+${LIBS// / +}"
+    EXECUTABLE="refgo ../bin(${MODULES// /+})+${LIBS// /+}"
   else
     EXECUTABLE="../bin/refal05c"
   fi
