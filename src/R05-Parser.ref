@@ -12,7 +12,6 @@ $EXTERN MapAccum, Map;
 $EXTERN Parse, TokName;
 
 *$FROM Refal5-Transformer
-$EXTERN Transform;
 *$EXTERN NO-POS
 
 *$FROM Refal5-AST
@@ -505,7 +504,7 @@ $ENTRY R05-Parse-File {
         Success e.AST
           , <R05-PrepareAST e.AST>
           : {
-            Success e.PreparedAST = Success <Transform e.PreparedAST>;
+            Success e.PreparedAST = Success e.PreparedAST;
 
             Fails e.SemanticErrors = Fails <SortErrors e.SemanticErrors>;
           };
