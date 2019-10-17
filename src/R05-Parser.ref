@@ -16,6 +16,7 @@ $EXTERN Transform;
 *$EXTERN NO-POS
 
 *$FROM Refal5-AST
+$EXTERN Builtins;
 *$EXTERN Function, Extern, SpecialComment, RETURN, Symbol, Word
 *$EXTERN Brackets, Call, Local, Entry, Condition, CALL-BLOCK
 
@@ -297,12 +298,8 @@ CheckAST-Functions-DoCalls {
     = <CheckAST-Functions-DoCalls (e.FuncNames) e.References>;
 
   (/* no names */) e.References
-    = <CheckAST-Functions-UsedBuiltins <LoadBuiltins> (e.References)>;
+    = <CheckAST-Functions-UsedBuiltins <Builtins> (e.References)>;
 }
-
-LoadBuiltins { = <Map r05-parser_BuiltinName <ListOfBuiltin>> }
-
-$ENTRY r05-parser_BuiltinName { (s.Id s.Name s.Type) = (<Explode s.Name>) }
 
 CheckAST-Functions-UsedBuiltins {
   (e.Builtin) e.Builtins (e.Refs-B ((e.Builtin) e.Pos) e.Refs-E)
