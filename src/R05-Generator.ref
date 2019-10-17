@@ -248,7 +248,9 @@ MatchArgs {
 SymbolTextRep {
   Char s.Char = '\'' <r05-generator_EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
-  Word t.SrcPos e.Name = '&r05f_' <EscapeName e.Name>;
+  /* TODO: удалить после обновления библиотеки */
+  Word (e.SrcPos) e.Name = '&r05f_' <EscapeName e.Name>;
+  Word e.Name = '&r05f_' <EscapeName e.Name>;
 }
 
 CmdEmpty {
@@ -452,7 +454,7 @@ CompileSentence-Aux {
     s.MatchType e.MatchValue ::=
         Symbol Char s.Char
       | Symbol Number s.Number
-      | Symbol Word t.SrcPos e.Name
+      | Symbol Word t.SrcPos? e.Name
       | Brackets s.InnerNum
       | Repeated s.Usings s.Mode e.Index
       | Variable t.SrcPos s.Mode e.Index
@@ -731,7 +733,7 @@ DoGenResult {
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
-      <Inc s.Counter> (Symbol Word t.SrcPos <DesugarName e.Name>)
+      <Inc s.Counter> (Symbol Word <DesugarName e.Name>)
       e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
 
