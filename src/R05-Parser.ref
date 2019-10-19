@@ -145,7 +145,7 @@ $ENTRY r05-parser_FindRedefinitions-Item {
   (Function t.Pos (e.Name) s.Scope e.Body)
     = (
         <AddRedudand t.ErrorList t.KnownPos s.KnownScope e.Name>
-        e.Items-B e.Items-E (t.Pos (e.Name) s.Scope e.Body)
+        e.Items-B e.Items-E (t.Pos (e.Name) s.Scope <ExtractReferences e.Body>)
       );
 
   (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.KnownScope e.Body) e.Items-E)
@@ -156,7 +156,7 @@ $ENTRY r05-parser_FindRedefinitions-Item {
       );
 
   (t.ErrorList e.Items) (Function t.Pos (e.Name) s.Scope e.Body)
-    = (t.ErrorList e.Items (t.Pos (e.Name) s.Scope e.Body));
+    = (t.ErrorList e.Items (t.Pos (e.Name) s.Scope <ExtractReferences e.Body>));
 
   (t.ErrorList e.Items) (SpecialComment t.Pos e.Text) = (t.ErrorList e.Items);
 }
@@ -173,8 +173,8 @@ AddRedudand {
 }
 
 CheckAST-Aux {
-  (t.ErrorList e.RefinedAST) e.AST
-    , <CheckAST-Functions t.ErrorList <ExtractReferences e.RefinedAST>>
+  (t.ErrorList e.References) e.AST
+    , <CheckAST-Functions t.ErrorList e.References>
     : {
         e.UsedBuiltins (/* no errors */) = Success e.UsedBuiltins e.AST;
         e.UsedBuiltins (e.Errors) = Fails e.Errors;
@@ -183,16 +183,13 @@ CheckAST-Aux {
 
 CheckAST-Functions {
   t.ErrorList e.ReferenceBags
-    , <CheckAST-Functions-Calls
-        <MapAccum r05-parser_PlainBags (/* func names */) e.ReferenceBags>
-      >
-    : e.UsedBuiltins (e.Errors)
-    = e.UsedBuiltins
-      (
-        <EL-Destroy t.ErrorList>
-        e.Errors
-        <CheckAST-Functions-Unused e.ReferenceBags>
-      );
+    = <CheckAST-Functions-Aux
+        <CheckAST-Functions-Calls
+          t.ErrorList
+          <MapAccum r05-parser_PlainBags (/* func names */) e.ReferenceBags>
+        >
+        (e.ReferenceBags)
+      >;
 }
 
 $ENTRY r05-parser_PlainBags {
@@ -205,19 +202,25 @@ $ENTRY r05-parser_PlainBags-Reference {
   t.SrcPos (e.FuncName) (e.Reference) = ((t.SrcPos e.FuncName) e.Reference);
 }
 
+CheckAST-Functions-Aux {
+  e.UsedBuiltins t.ErrorList (e.ReferenceBags)
+    = e.UsedBuiltins
+      (<EL-Destroy <CheckAST-Functions-Unused t.ErrorList e.ReferenceBags>>);
+}
+
 CheckAST-Functions-Calls {
-  (e.FuncNames) e.References
-    = <CheckAST-Functions-DoCalls (e.FuncNames) e.References>;
+  t.ErrorList (e.FuncNames) e.References
+    = <CheckAST-Functions-DoCalls t.ErrorList (e.FuncNames) e.References>;
 }
 
 CheckAST-Functions-DoCalls {
-  ((e.Name) e.FuncNames) e.References
+  t.ErrorList ((e.Name) e.FuncNames) e.References
     = <CheckAST-Functions-DoCalls
-        (e.FuncNames) <RemoveRef (e.Name) e.References>
+        t.ErrorList (e.FuncNames) <RemoveRef (e.Name) e.References>
       >;
 
-  (/* no names */) e.References
-    = <CheckAST-Functions-UsedBuiltins <Builtins> (e.References)>;
+  t.ErrorList (/* no names */) e.References
+    = <CheckAST-Functions-UsedBuiltins t.ErrorList <Builtins> (e.References)>;
 }
 
 RemoveRef {
@@ -228,33 +231,35 @@ RemoveRef {
 }
 
 CheckAST-Functions-UsedBuiltins {
-  (e.Builtin) e.Builtins (e.Refs-B (t.Caller e.Builtin) e.Refs-E)
+  t.ErrorList (e.Builtin) e.Builtins (e.Refs-B (t.Caller e.Builtin) e.Refs-E)
     = (Extern (NO-POS e.Builtin))
       <CheckAST-Functions-UsedBuiltins
+        t.ErrorList
         e.Builtins (e.Refs-B <RemoveRef (e.Builtin) e.Refs-E>)
       >;
 
-  (e.Builtin) e.Builtins (e.References)
-    = <CheckAST-Functions-UsedBuiltins e.Builtins (e.References)>;
+  t.ErrorList (e.Builtin) e.Builtins (e.References)
+    = <CheckAST-Functions-UsedBuiltins t.ErrorList e.Builtins (e.References)>;
 
-  /* кончились встроенные */ (e.UndefinedReferences)
-    = (<Map r05-parser_UndefinedReferenceMessage e.UndefinedReferences>);
+  t.ErrorList /* кончились встроенные */ (e.UndefinedReferences)
+    = <Reduce
+        r05-parser_UndefinedReferenceMessage t.ErrorList e.UndefinedReferences
+      >;
 }
 
 $ENTRY r05-parser_UndefinedReferenceMessage {
-  ((t.FuncPos e.FuncName) e.Reference)
-    = (t.FuncPos
+  t.ErrorList ((t.FuncPos e.FuncName) e.Reference)
+    = <EL-AddErrorAt
+        t.ErrorList t.FuncPos
         'Undefined symbol ' e.Reference ' in function ' e.FuncName
-      );
+      >;
 }
 
 CheckAST-Functions-Unused {
-  e.ReferenceBags
-     = <EL-Destroy
-          <FindUnusedFunctions
-            <EL-Create>
-            <PrepareBagsForFindUnusedFunctions e.ReferenceBags>
-          >
+  t.ErrorList e.ReferenceBags
+     = <FindUnusedFunctions
+          t.ErrorList
+          <PrepareBagsForFindUnusedFunctions e.ReferenceBags>
        >;
 }
 
@@ -301,28 +306,13 @@ AddUnusedMessage {
 }
 
 /*
-  <ExtractReferences e.RefinedAST> == e.ReferenceBag*
-
-  e.ReferenceBag ::= (t.SrcPos (e.FuncName) s.ScopeEx t.Reference*)*
-  s.ScopeEx ::= Entry | Local | Extern
-  t.Reference ::= ((e.Name) t.SrcPos+)
+  <ExtractReferences e.Sentences> == (e.Name)*
 */
 ExtractReferences {
-  e.AST = <Map r05-parser_ExtractReferences-Functions e.AST>;
+  e.Sentences = <Unique <Map r05-parser_ExtractReferences-Sentence e.Sentences>>;
 }
 
-$ENTRY r05-parser_ExtractReferences-Functions {
-  (t.SrcPos (e.Name) s.Scope e.Sentences)
-    = (t.SrcPos (e.Name) s.Scope
-        <Unique <ExtractReferences-Sentences e.Sentences>>
-      );
-}
-
-ExtractReferences-Sentences {
-  e.Sentences = <Map r05-parser_ExtractReferences-OneSentence e.Sentences>;
-}
-
-$ENTRY r05-parser_ExtractReferences-OneSentence {
+$ENTRY r05-parser_ExtractReferences-Sentence {
   ((e.Pattern) e.Tail)
     = <ExtractReferences-Expr e.Pattern> <ExtractReferences-Tail e.Tail>;
 }
@@ -336,7 +326,7 @@ ExtractReferences-Tail {
 
   CALL-BLOCK (e.Result) e.Sentences
     = <ExtractReferences-Expr e.Result>
-      <ExtractReferences-Sentences e.Sentences>;
+      <ExtractReferences e.Sentences>;
 }
 
 ExtractReferences-Expr {
