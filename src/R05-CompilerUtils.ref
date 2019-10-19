@@ -5,7 +5,7 @@ $EXTERN Trim, Map;
 $EXTERN True, False;
 
 *$FROM Platform
-$EXTERN PathSeparator;
+$EXTERN PathSeparator, IsDirectorySeparator;
 
 
 *$EENUM Source, Output, NotFound
@@ -109,7 +109,8 @@ AnalyzeFile {
 }
 
 AnalyzeSource-CheckExist {
-  True e.UnitName '.ref' = (Source (e.UnitName '.ref') e.UnitName '.c');
+  True e.UnitName '.ref'
+     = (Source (e.UnitName '.ref') <CutFolder e.UnitName '.c'>);
 
   False e.SourceName = (NotFound e.SourceName);
 }
@@ -121,11 +122,19 @@ AnalyzeOutput-CheckExist {
 }
 
 AnalyzeBoth-CheckExist {
-  (True e.SoureName) s.Res e.OutName = (Source (e.SoureName) e.OutName);
+  (True e.SoureName) s.Res e.OutName
+    = (Source (e.SoureName) <CutFolder e.OutName>);
 
   (False e.SoureName) True e.OutName = (Output e.OutName);
 
   (False e.UnitName '.ref') False e.UnitName '.c' = (NotFound e.UnitName);
+}
+
+CutFolder {
+  e.Folder s.Sep e.FileName, <IsDirectorySeparator s.Sep> : True
+     = <CutFolder e.FileName>;
+
+  e.FileName = e.FileName;
 }
 
 
