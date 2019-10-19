@@ -334,8 +334,6 @@ ExtractReferences-Expr {
 }
 
 $ENTRY r05-parser_ExtractReferences-Term {
-  /* TODO: удалить после обновления библиотеки */
-  (Symbol Word (e.SrcPos) e.Name) = (e.Name);
   (Symbol Word e.Name) = (e.Name);
 
   (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;

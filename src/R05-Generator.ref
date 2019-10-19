@@ -251,8 +251,6 @@ MatchArgs {
 SymbolTextRep {
   Char s.Char = '\'' <r05-generator_EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
-  /* TODO: удалить после обновления библиотеки */
-  Word (e.SrcPos) e.Name = '&r05f_' <EscapeName e.Name>;
   Word e.Name = '&r05f_' <EscapeName e.Name>;
 }
 
