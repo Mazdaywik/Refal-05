@@ -251,23 +251,21 @@
     <R05-Parse-File e.SourceFile>
       == Success e.Tree
       == Fails e.Errors
-    <R05-Parse-String e.String>
-      == Success e.Tree
-      == Fails e.Errors
-    <R05-Parse-Tokens e.Tokens>
-      == Success e.Tree
-      == Fails e.Errors
 
     e.Errors ::= ((s.Row s.Col) e.Message)*
 
-Все три функции выполняют синтаксический анализ указанного источника,
-и, если не было синтаксических ошибок, возвращают дерево, в противном случае
-возвращают список ошибок.
+Функция выполняет синтаксический анализ указанного источника, и, если не было
+синтаксических ошибок, возвращает дерево, в противном случае возвращает
+список ошибок.
 
-Функция `R05-Parse-Tokens` выполняет синтаксический разбор для цепочки
-токенов, две другие функции — `R05-Parse-File` и `R05-Parse-String` —
-определены через неё и функции `R05-LexScan-File` и `R05-LexScan-String`
-соответственно.
+    <R05-PrepareAST e.Refal5-AST>
+      == Success e.R05-AST
+      == Fails e.Errors
+
+Функция преобразует `e.Refal5-AST` (определено
+в [refal-5-framework/R5FW-Parser-Defs.md][Parser-Defs]) в синтаксическое дерево
+Рефала-05, в частности, раскрывает псевдокомментарии `*$ENUM`, `*$EENUM`
+и `*$EXTERN` и выполняет дополнительные семантические проверки.
 
 
 Главный файл компилятора — компонент `refal05c`
@@ -285,3 +283,4 @@
 Однако, этот способ использования не поддерживается и не рекомендуется.
 
 [B]: B-syntax-grammar.md
+[Parser-Defs]: http://mazdaywik.github.io/refal-5-framework/R5FW-Parser-Defs.html
