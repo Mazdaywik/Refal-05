@@ -202,13 +202,12 @@ $ENTRY r05-parser_PlainBags {
 }
 
 $ENTRY r05-parser_PlainBags-Reference {
-  t.SrcPos (e.FuncName) ((e.Reference) e.ReferencePos)
-    = ((t.SrcPos e.FuncName) e.Reference);
+  t.SrcPos (e.FuncName) (e.Reference) = ((t.SrcPos e.FuncName) e.Reference);
 }
 
 CheckAST-Functions-Calls {
   (e.FuncNames) e.References
-    = <CheckAST-Functions-DoCalls (e.FuncNames) <Unique e.References>>;
+    = <CheckAST-Functions-DoCalls (e.FuncNames) e.References>;
 }
 
 CheckAST-Functions-DoCalls {
@@ -266,20 +265,10 @@ PrepareBagsForFindUnusedFunctions {
 
 $ENTRY r05-parser_SelectEntries {
   (e.Entries) (t.SrcPos (e.Name) Entry e.References)
-    = (e.Entries (e.Name))
-      (t.SrcPos (e.Name) Entry
-        <Map r05-parser_SimplifyReferences e.References>
-      );
+    = (e.Entries (e.Name)) (t.SrcPos (e.Name) Entry e.References);
 
   (e.Entries) (t.SrcPos (e.Name) s.ScopeEx e.References)
-    = (e.Entries)
-      (t.SrcPos (e.Name) s.ScopeEx
-        <Map r05-parser_SimplifyReferences e.References>
-      );
-}
-
-$ENTRY r05-parser_SimplifyReferences {
-  ((e.Name) e.Pos) = (e.Name);
+    = (e.Entries) (t.SrcPos (e.Name) s.ScopeEx e.References);
 }
 
 FindUnusedFunctions {
@@ -325,7 +314,7 @@ ExtractReferences {
 $ENTRY r05-parser_ExtractReferences-Functions {
   (t.SrcPos (e.Name) s.Scope e.Sentences)
     = (t.SrcPos (e.Name) s.Scope
-        <UniqReferences <ExtractReferences-Sentences e.Sentences>>
+        <Unique <ExtractReferences-Sentences e.Sentences>>
       );
 }
 
@@ -356,13 +345,13 @@ ExtractReferences-Expr {
 
 $ENTRY r05-parser_ExtractReferences-Term {
   /* TODO: удалить после обновления библиотеки */
-  (Symbol Word (e.SrcPos) e.Name) = ((e.Name) (e.SrcPos));
-  (Symbol Word e.Name) = ((e.Name) (1 1 '<unknown>'));
+  (Symbol Word (e.SrcPos) e.Name) = (e.Name);
+  (Symbol Word e.Name) = (e.Name);
 
   (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
 
   (Call t.SrcPos (e.Name) e.Expr)
-    = ((<DesugarName e.Name>) t.SrcPos) <ExtractReferences-Expr e.Expr>;
+    = (<DesugarName e.Name>) <ExtractReferences-Expr e.Expr>;
 
   t.Other = /* пусто */;
 }
@@ -376,13 +365,6 @@ DesugarName {
   '?' = 'Residue';
 
   e.Name = e.Name;
-}
-
-UniqReferences {
-  e.Unique ((e.Name) e.Pos1) e.Refs-B ((e.Name) e.Pos2) e.Refs-E
-    = e.Unique <UniqReferences e.Refs-B ((e.Name) e.Pos1 e.Pos2) e.Refs-E>;
-
-  e.Unique = e.Unique;
 }
 
 /**
