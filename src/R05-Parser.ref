@@ -203,10 +203,9 @@ FoldExtern {
 
 CheckAST {
   t.ErrorList e.AST
-    , <CheckAST-FindEntry e.AST> : e.EntryError
     , <CheckAST-Redefinitions e.AST> : e.RedefinitionErrors
     = <CheckAST-SwErrors
-        (<EL-Destroy t.ErrorList> e.EntryError e.RedefinitionErrors)
+        (<EL-Destroy t.ErrorList> e.RedefinitionErrors)
         <CheckAST-Functions <ExtractReferences e.AST>>
         (e.AST)
       >;
@@ -218,23 +217,6 @@ CheckAST-SwErrors {
 
   (e.CommentErrors) e.Builtins (e.SemanticErrors) (e.AST)
     = Fails e.CommentErrors e.SemanticErrors;
-}
-
-CheckAST-FindEntry {
-  e.AST-B (Function t.SrcPos (e.Name) Entry e.Sentences) e.AST-E
-    = /* нет ошибок */;
-
-  (Function t.SrcPos (e.Name) s.Scope e.Body) e.AST = <NoEntryError t.SrcPos>;
-  (Extern (t.SrcPos e.Name) e.Externs) e.AST = <NoEntryError t.SrcPos>;
-  (SpecialComment t.SrcPos e.Text) e.AST = <NoEntryError t.SrcPos>;
-
-  /* нет дерева */ = <NoEntryError NO-POS>;
-}
-
-NoEntryError {
-  (s.Row s.Col e.FileName) = ((1 1 e.FileName) 'No entry function in file');
-
-  NO-POS = ((1 1 '<unknown>') 'No entry function in file');
 }
 
 CheckAST-Redefinitions {
