@@ -2,7 +2,7 @@
 $EXTERN Scan, ScanString-FromPos;
 
 *$FROM LibraryEx
-$EXTERN MapAccum, Map;
+$EXTERN MapAccum, Map, Reduce;
 *$EXTERN Success, Fails
 
 *$FROM Refal5-Tokens
@@ -348,37 +348,12 @@ FindUnusedFunctions {
     = <FindUnusedFunctions t.ErrorList (e.UsedReferences) e.Functions>;
 
   t.ErrorList (/* пусто */) e.UnusedFunctions
-    = <FindUnusedRoot t.ErrorList (e.UnusedFunctions) e.UnusedFunctions>;
+    = <Reduce r05-parser_AddUnusedMessage t.ErrorList e.UnusedFunctions>;
 }
 
-FindUnusedRoot {
-  t.ErrorList ((t.RootPos (e.Root) s.Scope e.RootRefs)) e.AllFunctions
-    = <FindUnusedFunctions
-        <AddUnusedMessage t.ErrorList t.RootPos s.Scope e.Root>
-        ((e.Root)) e.AllFunctions
-      >;
-
-  t.ErrorList
-  ((t.NotARootPos (e.NotARoot) s.NotARootScope e.Body) e.Unuseds)
-  e.Users-B
-  (t.UserPos (e.User) s.Scope e.Refs-B (e.NotARoot) e.Refs-E)
-  e.Users-E
-    = <FindUnusedRoot
-        t.ErrorList (e.Unuseds)
-        e.Users-B
-        (t.UserPos (e.User) s.Scope e.Refs-B (e.NotARoot) e.Refs-E)
-        e.Users-E
-      >;
-
-  t.ErrorList
-  ((t.RootPos (e.Root) s.Scope e.RootRefs) e.Unuseds) e.AllFunctions
-    = <FindUnusedFunctions
-        <AddUnusedMessage t.ErrorList t.RootPos s.Scope e.Root>
-        ((e.Root)) e.AllFunctions
-      >;
-
-  t.ErrorList (/* кончились неиспользуемые функции */) e.AllFunctions
-    = t.ErrorList;
+$ENTRY r05-parser_AddUnusedMessage {
+  t.ErrorList (t.Pos (e.Name) s.Scope e.Body)
+    = <AddUnusedMessage t.ErrorList t.Pos s.Scope e.Name>;
 }
 
 AddUnusedMessage {
