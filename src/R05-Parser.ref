@@ -2,7 +2,7 @@
 $EXTERN Scan, ScanString-FromPos;
 
 *$FROM LibraryEx
-$EXTERN MapAccum, Map, OneOf, Reduce;
+$EXTERN MapAccum, Map, OneOf, Reduce, Unique;
 *$EXTERN Success, Fails
 
 *$FROM Refal5-Tokens
@@ -197,29 +197,43 @@ CheckAST-Functions {
 
 $ENTRY r05-parser_PlainBags {
   (e.FuncNames) (t.SrcPos (e.FuncName) s.ScopeEx e.References)
-    = (e.FuncNames (e.FuncName)) e.References;
+    = (e.FuncNames (e.FuncName))
+      <Map (r05-parser_PlainBags-Reference t.SrcPos (e.FuncName)) e.References>;
+}
+
+$ENTRY r05-parser_PlainBags-Reference {
+  t.SrcPos (e.FuncName) ((e.Reference) e.ReferencePos)
+    = ((t.SrcPos e.FuncName) e.Reference);
 }
 
 CheckAST-Functions-Calls {
   (e.FuncNames) e.References
-    = <CheckAST-Functions-DoCalls (e.FuncNames) <UniqReferences e.References>>;
+    = <CheckAST-Functions-DoCalls (e.FuncNames) <Unique e.References>>;
 }
 
 CheckAST-Functions-DoCalls {
-  ((e.Name) e.FuncNames) e.References-B ((e.Name) e.Positions) e.References-E
-    = <CheckAST-Functions-DoCalls (e.FuncNames) e.References-B e.References-E>;
-
   ((e.Name) e.FuncNames) e.References
-    = <CheckAST-Functions-DoCalls (e.FuncNames) e.References>;
+    = <CheckAST-Functions-DoCalls
+        (e.FuncNames) <RemoveRef (e.Name) e.References>
+      >;
 
   (/* no names */) e.References
     = <CheckAST-Functions-UsedBuiltins <Builtins> (e.References)>;
 }
 
+RemoveRef {
+  (e.Name) e.References-B (t.Caller e.Name) e.References-E
+    = e.References-B <RemoveRef (e.Name) e.References-E>;
+
+  (e.Name) e.References = e.References;
+}
+
 CheckAST-Functions-UsedBuiltins {
-  (e.Builtin) e.Builtins (e.Refs-B ((e.Builtin) e.Pos) e.Refs-E)
+  (e.Builtin) e.Builtins (e.Refs-B (t.Caller e.Builtin) e.Refs-E)
     = (Extern (NO-POS e.Builtin))
-      <CheckAST-Functions-UsedBuiltins e.Builtins (e.Refs-B e.Refs-E)>;
+      <CheckAST-Functions-UsedBuiltins
+        e.Builtins (e.Refs-B <RemoveRef (e.Builtin) e.Refs-E>)
+      >;
 
   (e.Builtin) e.Builtins (e.References)
     = <CheckAST-Functions-UsedBuiltins e.Builtins (e.References)>;
@@ -229,11 +243,10 @@ CheckAST-Functions-UsedBuiltins {
 }
 
 $ENTRY r05-parser_UndefinedReferenceMessage {
-  ((e.Name) t.Pos e.PosList)
-    = (t.Pos 'Function ' e.Name ' is not defined')
-      <r05-parser_UndefinedReferenceMessage ((e.Name) e.PosList)>;
-
-  ((e.Name) /* no pos */) = /* no errors */;
+  ((t.FuncPos e.FuncName) e.Reference)
+    = (t.FuncPos
+        'Undefined symbol ' e.Reference ' in function ' e.FuncName
+      );
 }
 
 CheckAST-Functions-Unused {
