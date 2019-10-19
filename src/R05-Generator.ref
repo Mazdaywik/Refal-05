@@ -1,14 +1,14 @@
-*$FROM Refal5-AST
+*$FROM R5FW-Parser-Defs
 $EXTERN Extern, Entry, Function, SpecialComment, Local, Variable, RETURN, Symbol,
   Brackets, Char, Number, Word, Call;
 
 *$FROM LibraryEx
 $EXTERN SaveFile, MapAccum, Map, Dec, Inc;
 
-*$FROM Refal5-Plainer
+*$FROM R5FW-Plainer
 $EXTERN InlineExpr;
 
-*$FROM Refal5-Transformer
+*$FROM R5FW-Transformer
 $EXTERN Transform;
 
 

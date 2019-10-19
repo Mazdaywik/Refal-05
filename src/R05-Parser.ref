@@ -1,23 +1,18 @@
-*$FROM Refal5-Lexer
-$EXTERN Scan, ScanString-FromPos;
+*$FROM Refal5-Parser
+$EXTERN Scan, ScanString-FromPos, Parse, TokName;
 
 *$FROM LibraryEx
 $EXTERN MapAccum, Map, OneOf, Reduce, Unique;
 *$EXTERN Success, Fails
 
-*$FROM Refal5-Tokens
-*$EXTERN TkError, TkEOF, TkComma, TkSemicolon, TkName
-
-*$FROM Refal5-Parser
-$EXTERN Parse, TokName;
-
-*$FROM Refal5-Transformer
-*$EXTERN NO-POS
-
-*$FROM Refal5-AST
+*$FROM R5FW-Parser-Defs
 $EXTERN Builtins;
+*$EXTERN TkError, TkEOF, TkComma, TkSemicolon, TkName
 *$EXTERN Function, Extern, SpecialComment, RETURN, Symbol, Word
 *$EXTERN Brackets, Call, Local, Entry, Condition, CALL-BLOCK
+
+*$FROM R5FW-Transformer
+*$EXTERN NO-POS
 
 *$FROM Libarary
 *$EXTERN True, False
