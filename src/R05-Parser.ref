@@ -174,25 +174,25 @@ AddRedudand {
 
 CheckAST-Aux {
   (t.ErrorList e.RefinedAST) e.AST
-    , (<EL-Destroy t.ErrorList>)
-      <CheckAST-Functions <ExtractReferences e.RefinedAST>>
+    , <CheckAST-Functions t.ErrorList <ExtractReferences e.RefinedAST>>
     : {
-        (/* no comment errors */) e.Builtins (/* no semantic errors */)
-          = Success e.Builtins e.AST;
-
-        (e.CommentErrors) e.Builtins (e.SemanticErrors)
-          = Fails e.CommentErrors e.SemanticErrors;
+        e.UsedBuiltins (/* no errors */) = Success e.UsedBuiltins e.AST;
+        e.UsedBuiltins (e.Errors) = Fails e.Errors;
       }
 }
 
 CheckAST-Functions {
-  e.ReferenceBags
+  t.ErrorList e.ReferenceBags
     , <CheckAST-Functions-Calls
         <MapAccum r05-parser_PlainBags (/* func names */) e.ReferenceBags>
       >
     : e.UsedBuiltins (e.Errors)
     = e.UsedBuiltins
-      (e.Errors <CheckAST-Functions-Unused e.ReferenceBags>);
+      (
+        <EL-Destroy t.ErrorList>
+        e.Errors
+        <CheckAST-Functions-Unused e.ReferenceBags>
+      );
 }
 
 $ENTRY r05-parser_PlainBags {
@@ -290,7 +290,6 @@ FindUnusedFunctions {
     = <FindUnusedFunctions
         t.ErrorList (e.UsedReferences e.References) e.Functions-B e.Functions-E
       >;
-
 
   t.ErrorList ((e.NextName) e.UsedReferences) e.Functions
     = <FindUnusedFunctions t.ErrorList (e.UsedReferences) e.Functions>;
