@@ -2,11 +2,11 @@
 $EXTERN Scan, ScanString-FromPos;
 
 *$FROM LibraryEx
-$EXTERN MapAccum, Map, Reduce;
+$EXTERN MapAccum, Map, OneOf, Reduce;
 *$EXTERN Success, Fails
 
 *$FROM Refal5-Tokens
-*$EXTERN TkError, TkEOF, TkComma, TkName
+*$EXTERN TkError, TkEOF, TkComma, TkSemicolon, TkName
 
 *$FROM Refal5-Parser
 $EXTERN Parse, TokName;
@@ -69,64 +69,42 @@ Spaces {
   /* пусто */ = /* пусто */
 }
 
+/*
+  Для простоты разбора синтаксис ослаблен — запятые и точки с запятой
+  игнорируются:
+
+  NameList = (Name | "," | ";")*.
+*/
 ParseSpecialComment {
   s.Scope e.Tokens t.ErrorList
-    , <ParseList (List s.Scope) (TkComma NO-POS) e.Tokens t.ErrorList>
-    : (List s.ScopeClass e.Names) e.UnexpectedTokens (TkEOF t.SrcPos)
-      t.ErrorList2
-    = <AddUnexpectedTokens t.ErrorList2 e.UnexpectedTokens>
-      <Map (parser_MakeListFunction s.ScopeClass) e.Names>;
+    = <DoParseSpecialComment s.Scope (/* names */) e.Tokens t.ErrorList>;
 }
 
-AddUnexpectedTokens {
-  t.ErrorList /* пусто */ = t.ErrorList;
+DoParseSpecialComment {
+  s.Scope (e.Names) (TkName t.Pos e.Name) e.Tokens t.ErrorList
+    = <DoParseSpecialComment
+        s.Scope (e.Names (t.Pos e.Name)) e.Tokens t.ErrorList
+      >;
 
-  t.ErrorList t.Unexpected e.Tokens
-    = <AddUnexpectedTokens
+  s.Scope (e.Names) (s.Sep t.Pos) e.Tokens t.ErrorList
+    , <OneOf s.Sep TkComma TkSemicolon> : True
+    = <DoParseSpecialComment s.Scope (e.Names) e.Tokens t.ErrorList>;
+
+  Extern (e.Names) (TkEOF t.Pos) t.ErrorList = t.ErrorList (Extern e.Names);
+
+  s.Scope (e.Names) (TkEOF t.Pos) t.ErrorList
+    = t.ErrorList <Map (parser_MakeListFunction s.Scope) e.Names>;
+
+  s.Scope (e.Names) t.Unexpected e.Tokens t.ErrorList
+    = <DoParseSpecialComment
+        s.Scope (e.Names) e.Tokens
         <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or name'>
-        e.Tokens
       >;
 }
 
-*$ENUM List
-
 $ENTRY parser_MakeListFunction {
-  Extern (t.SrcPos e.Name) = (Extern (t.SrcPos e.Name));
-
   s.ScopeClass (t.SrcPos e.Name) =
     (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */);
-}
-
-
-/*
-  List ::= List ',' NAME.
-
-  <ParseList e.Stack e.Tokens t.ErrorList>
-    == (List s.ScopeClass (t.SrcPos e.Name)*) e.Tokens t.ErrorList
-*/
-ParseList {
-  /* List ::= List ',' NAME */
-  (List s.ScopeClass e.Names)
-  (TkComma t.CommaSrcPos) (TkName t.NameSrcPos e.Name) e.Tokens t.ErrorList =
-    <ParseList
-      (List s.ScopeClass e.Names (t.NameSrcPos e.Name)) e.Tokens t.ErrorList
-    >;
-
-  (List s.ScopeClass e.Names) (TkName t.SrcPos e.Name) e.Tokens t.ErrorList =
-    <ParseList
-      (List s.ScopeClass e.Names (t.SrcPos e.Name))
-      e.Tokens
-      <EL-AddErrorAt t.ErrorList t.SrcPos 'expected comma'>
-    >;
-
-  (List s.ScopeClass e.Names) (TkComma t.SrcPos) e.Tokens t.ErrorList =
-    <ParseList
-      (List s.ScopeClass e.Names) e.Tokens
-      <EL-AddErrorAt t.ErrorList t.SrcPos 'missed function name'>
-    >;
-
-  (List s.ScopeClass e.Names) e.Tokens t.ErrorList =
-    (List s.ScopeClass e.Names) e.Tokens t.ErrorList;
 }
 
 
