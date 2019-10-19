@@ -108,85 +108,74 @@ $ENTRY parser_MakeListFunction {
 }
 
 
-RedudandExterns {
-  t.ErrorList
-  e.AST-B
-  (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-M (t.SrcPos2 e.Name) e.Names-E)
-  e.AST-E
-    = <RedudandExterns
-        <AddRedudandExtern t.ErrorList t.SrcPos2 e.Name>
-        e.AST-B
-        (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-M e.Names-E)
-        e.AST-E
-      >;
-
-  t.ErrorList
-  e.AST-B
-  (Extern e.Names-B (t.SrcPos1 e.Name) e.Names-E)
-  e.AST-M
-  (Function t.SrcPos2 (e.Name) s.Scope e.Sentences)
-  e.AST-E
-    = <RedudandExterns
-        <AddRedudandExtern t.ErrorList t.SrcPos1 e.Name>
-        e.AST-B
-        <FoldExtern e.Names-B e.Names-E>
-        e.AST-M
-        (Function t.SrcPos2 (e.Name) s.Scope e.Sentences)
-        e.AST-E
-      >;
-
-  t.ErrorList
-  e.AST-B
-  (Function t.SrcPos1 (e.Name) s.Scope e.Sentences)
-  e.AST-M
-  (Extern e.Names-B (t.SrcPos2 e.Name) e.Names-E)
-  e.AST-E
-    = <RedudandExterns
-        <AddRedudandExtern t.ErrorList t.SrcPos2 e.Name>
-        e.AST-B
-        (Function t.SrcPos1 (e.Name) s.Scope e.Sentences)
-        e.AST-M
-        <FoldExtern e.Names-B e.Names-E>
-        e.AST-E
-      >;
-
-  t.ErrorList
-  e.AST-B
-  (Extern e.Names1-B (t.SrcPos1 e.Name) e.Names1-E)
-  e.AST-M
-  (Extern e.Names2-B (t.SrcPos2 e.Name) e.Names2-E)
-  e.AST-E
-    = <RedudandExterns
-        <AddRedudandExtern t.ErrorList t.SrcPos2 e.Name>
-        e.AST-B
-        (Extern e.Names1-B (t.SrcPos1 e.Name) e.Names1-E)
-        e.AST-M
-        <FoldExtern e.Names2-B e.Names2-E>
-        e.AST-E
-      >;
-
-  t.ErrorList e.AST = t.ErrorList e.AST;
-}
-
-AddRedudandExtern {
-  t.ErrorList t.SrcPos e.Name
-    = <EL-AddErrorAt t.ErrorList t.SrcPos 'Redudand external name ' e.Name>;
-}
-
-FoldExtern {
-  /* пусто */ = /* пусто */;
-  e.Names = (Extern e.Names);
-}
-
-
 CheckAST {
-  t.ErrorList e.AST = <CheckAST-Aux <RedudandExterns t.ErrorList e.AST>>;
+  t.ErrorList e.AST
+    = <CheckAST-Aux <FindRedefinitions t.ErrorList e.AST> e.AST>;
+}
+
+FindRedefinitions {
+  t.ErrorList e.AST
+    = <Reduce
+        r05-parser_FindRedefinitions-Item
+        (t.ErrorList /* items */)
+        e.AST
+      >;
+}
+
+$ENTRY r05-parser_FindRedefinitions-Item {
+  (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.Scope e.Body) e.Items-E)
+  (Extern (t.Pos e.Name) e.Names)
+    = <r05-parser_FindRedefinitions-Item
+        (
+          <AddRedudand t.ErrorList t.Pos Extern e.Name>
+          e.Items-B (t.KnownPos (e.Name) s.Scope e.Body) e.Items-E
+        )
+        (Extern e.Names)
+      >;
+
+  (t.ErrorList e.Items) (Extern (t.Pos e.Name) e.Names)
+    = <r05-parser_FindRedefinitions-Item
+        (t.ErrorList e.Items (t.Pos (e.Name) Extern /* пусто */))
+        (Extern e.Names)
+      >;
+
+  (t.ErrorList e.Items) (Extern /* пусто */) = (t.ErrorList e.Items);
+
+  (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.KnownScope /* пусто */) e.Items-E)
+  (Function t.Pos (e.Name) s.Scope e.Body)
+    = (
+        <AddRedudand t.ErrorList t.KnownPos s.KnownScope e.Name>
+        e.Items-B e.Items-E (t.Pos (e.Name) s.Scope e.Body)
+      );
+
+  (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.KnownScope e.Body) e.Items-E)
+  (Function t.Pos (e.Name) s.Scope /* пусто */)
+    = (
+        <AddRedudand t.ErrorList t.Pos s.Scope e.Name>
+        e.Items-B (t.KnownPos (e.Name) s.KnownScope e.Body) e.Items-E
+      );
+
+  (t.ErrorList e.Items) (Function t.Pos (e.Name) s.Scope e.Body)
+    = (t.ErrorList e.Items (t.Pos (e.Name) s.Scope e.Body));
+
+  (t.ErrorList e.Items) (SpecialComment t.Pos e.Text) = (t.ErrorList e.Items);
+}
+
+AddRedudand {
+  t.ErrorList t.SrcPos Extern e.Name
+    = <EL-AddErrorAt t.ErrorList t.SrcPos 'Redudand external name ' e.Name>;
+
+  t.ErrorList t.SrcPos s.Scope e.Name
+    = <EL-AddErrorAt
+        t.ErrorList t.SrcPos
+        'Empty function ' e.Name ' redefines other function'
+      >;
 }
 
 CheckAST-Aux {
-  t.ErrorList e.AST
-    , (<EL-Destroy t.ErrorList> <CheckAST-Redefinitions e.AST>)
-      <CheckAST-Functions <ExtractReferences e.AST>>
+  (t.ErrorList e.RefinedAST) e.AST
+    , (<EL-Destroy t.ErrorList>)
+      <CheckAST-Functions <ExtractReferences e.RefinedAST>>
     : {
         (/* no comment errors */) e.Builtins (/* no semantic errors */)
           = Success e.Builtins e.AST;
@@ -194,38 +183,6 @@ CheckAST-Aux {
         (e.CommentErrors) e.Builtins (e.SemanticErrors)
           = Fails e.CommentErrors e.SemanticErrors;
       }
-}
-
-CheckAST-Redefinitions {
-  /*
-    Ошибки в переопределениях могут быть только для пустых функций,
-    поскольку на входе мы полагаем корректное синтаксическое дерево.
-  */
-  e.Items-B
-  (Function t.SrcPos1 (e.Name) s.Scope1 e.Sentences)
-  e.Items-M
-  (Function t.SrcPos2 (e.Name) s.Scope2 /* пусто */)
-  e.Items-E
-    = (t.SrcPos2 'Empty function ' e.Name ' redefines other function')
-      <CheckAST-Redefinitions
-        e.Items-B
-        (Function t.SrcPos1 (e.Name) s.Scope1 e.Sentences)
-        e.Items-M e.Items-E
-      >;
-
-  e.Items-B
-  (Function t.SrcPos1 (e.Name) s.Scope1 /* пусто */)
-  e.Items-M
-  (Function t.SrcPos2 (e.Name) s.Scope2 e.Sentences)
-  e.Items-E
-    = (t.SrcPos1 'Empty function ' e.Name ' redefines other function')
-      <CheckAST-Redefinitions
-        e.Items-B e.Items-M
-        (Function t.SrcPos2 (e.Name) s.Scope2 e.Sentences)
-        e.Items-E
-      >;
-
-  e.Items = /* пусто */;
 }
 
 CheckAST-Functions {
@@ -343,7 +300,7 @@ AddUnusedMessage {
 }
 
 /*
-  <ExtractReferences e.AST> == e.ReferenceBag*
+  <ExtractReferences e.RefinedAST> == e.ReferenceBag*
 
   e.ReferenceBag ::= (t.SrcPos (e.FuncName) s.ScopeEx t.Reference*)*
   s.ScopeEx ::= Entry | Local | Extern
@@ -354,18 +311,10 @@ ExtractReferences {
 }
 
 $ENTRY r05-parser_ExtractReferences-Functions {
-  (Function t.SrcPos (e.Name) s.Scope e.Sentences)
+  (t.SrcPos (e.Name) s.Scope e.Sentences)
     = (t.SrcPos (e.Name) s.Scope
         <UniqReferences <ExtractReferences-Sentences e.Sentences>>
       );
-
-  (Extern e.Externs) = <Map r05-parser_ExternAsBag e.Externs>;
-
-  (SpecialComment t.SrcPos e.Text) = /* нет мешков в комментарии */;
-}
-
-$ENTRY r05-parser_ExternAsBag {
-  (t.SrcPos e.Name) = (t.SrcPos (e.Name) Extern /* no bags */);
 }
 
 ExtractReferences-Sentences {
