@@ -32,7 +32,7 @@ $EXTERN Builtins;
   and transform to basic Refal
 */
 $ENTRY R05-PrepareAST {
-  e.AST = <CheckAST <RedudandExterns <ExpandComments e.AST>>>;
+  e.AST = <CheckAST <ExpandComments e.AST>>;
 }
 
 ExpandComments {
@@ -202,21 +202,20 @@ FoldExtern {
 
 
 CheckAST {
-  t.ErrorList e.AST
-    , <CheckAST-Redefinitions e.AST> : e.RedefinitionErrors
-    = <CheckAST-SwErrors
-        (<EL-Destroy t.ErrorList> e.RedefinitionErrors)
-        <CheckAST-Functions <ExtractReferences e.AST>>
-        (e.AST)
-      >;
+  t.ErrorList e.AST = <CheckAST-Aux <RedudandExterns t.ErrorList e.AST>>;
 }
 
-CheckAST-SwErrors {
-  (/* no comment errors */) e.Builtins (/* no semantic errors */) (e.AST)
-    = Success e.Builtins e.AST;
+CheckAST-Aux {
+  t.ErrorList e.AST
+    , (<EL-Destroy t.ErrorList> <CheckAST-Redefinitions e.AST>)
+      <CheckAST-Functions <ExtractReferences e.AST>>
+    : {
+        (/* no comment errors */) e.Builtins (/* no semantic errors */)
+          = Success e.Builtins e.AST;
 
-  (e.CommentErrors) e.Builtins (e.SemanticErrors) (e.AST)
-    = Fails e.CommentErrors e.SemanticErrors;
+        (e.CommentErrors) e.Builtins (e.SemanticErrors)
+          = Fails e.CommentErrors e.SemanticErrors;
+      }
 }
 
 CheckAST-Redefinitions {
