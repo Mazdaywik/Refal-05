@@ -155,6 +155,12 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
 
 
 /**
+  7. <Cp e.Key> == e.Value
+*/
+struct r05_function r05f_Cp = { r05_cp, "Cp" };
+
+
+/**
   8. <Dg e.Key> == e.Value
 */
 struct r05_function r05f_Dg = { r05_dg, "Dg" };
@@ -965,7 +971,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(4, Br, regular)
   ALLOC_BUILTIN(5, Card, regular)
   ALLOC_BUILTIN(6, Chr, regular)
-  /* ALLOC_BUILTIN(7, Cp, regular) */
+  ALLOC_BUILTIN(7, Cp, regular)
   ALLOC_BUILTIN(8, Dg, regular)
   /* ALLOC_BUILTIN(9, Dgall, regular) */
   ALLOC_BUILTIN(10, Div, regular)

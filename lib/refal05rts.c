@@ -1459,11 +1459,17 @@ void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
 }
 
 
-void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end) {
+enum dgcp_behavior { DGCP_DG, DGCP_CP };
+
+static void dgcp_impl(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  enum dgcp_behavior behavior
+) {
   struct r05_node *buried_begin = s_begin_buried.next;
   struct r05_node *key_begin, *key_end;
 
   r05_prepare_argument(&key_begin, &key_end, arg_begin, arg_end);
+  r05_reset_allocator();
 
   while (buried_begin != &s_end_buried) {
     struct r05_node *left_bracket = buried_begin;
@@ -1482,16 +1488,30 @@ void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end) {
       && r05_char_left('=', &in_brackets_b, &in_brackets_e);
 
     if (found) {
-      r05_splice_evar(arg_begin, in_brackets_b, in_brackets_e);
-      r05_splice_to_freelist(left_bracket, right_bracket);
+      if (behavior == DGCP_DG) {
+        r05_splice_evar(arg_begin, in_brackets_b, in_brackets_e);
+        r05_splice_to_freelist(left_bracket, right_bracket);
+      } else {
+        r05_alloc_evar(in_brackets_b, in_brackets_e);
+      }
       break;
     }
 
     buried_begin = right_bracket->next;
   }
 
+  r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-  return;
+}
+
+
+void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  dgcp_impl(arg_begin, arg_end, DGCP_DG);
+}
+
+
+void r05_cp(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  dgcp_impl(arg_begin, arg_end, DGCP_CP);
 }
 
 
