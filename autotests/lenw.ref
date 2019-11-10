@@ -1,0 +1,10 @@
+$ENTRY Go {
+  = <Eq (5 'ABCDE')         <Lenw 'ABCDE'>>
+    <Eq (0 /* пусто */)     <Lenw /* пусто */>>
+    <Eq (5 () () () () ())  <Lenw () () () () ()>>
+    <Eq (4 (A) (B) (3) (4)) <Lenw (A) (B) (3) (4)>>
+}
+
+*$ENUM A, B
+
+Eq { (e.Eq) e.Eq = }

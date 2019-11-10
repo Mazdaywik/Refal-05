@@ -313,6 +313,29 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
 
 
 /**
+  17. <Lenw e.Expr> == s.Len e.Expr
+      s.Len ::= s.NUMBER, s.Len == |e.Expr|
+*/
+R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
+  struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm;
+  r05_number counter = 0;
+
+  r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
+  sLen = arg_begin->next;
+
+  while (r05_tvar_left(&tTerm, &eItems_b, &eItems_e)) {
+    ++ counter;
+  }
+
+  sLen->tag = R05_DATATAG_NUMBER;
+  sLen->info.number = counter;
+
+  r05_splice_to_freelist(arg_begin, arg_begin);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+
+
+/**
   19. <Mod s.NUMBER s.NUMBER> == s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Mod, "Mod") {
@@ -981,7 +1004,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(14, Get, regular)
   /* ALLOC_BUILTIN(15, Implode, regular) */
   /* ALLOC_BUILTIN(16, Last, regular) */
-  /* ALLOC_BUILTIN(17, Lenw, regular) */
+  ALLOC_BUILTIN(17, Lenw, regular)
   /* ALLOC_BUILTIN(18, Lower, regular) */
   ALLOC_BUILTIN(19, Mod, regular)
   ALLOC_BUILTIN(20, Mul, regular)
