@@ -496,7 +496,7 @@ R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
 
 
 enum output_func_type {
-  PROUT, PUTOUT,
+  PROUT, PUTOUT, WRITE
 };
 
 static void output_func(
@@ -510,7 +510,7 @@ static void output_func(
   if (type == PROUT) {
     before_expr = callee;
     output = stdout;
-  } else if (type == PUTOUT) {
+  } else if (type == PUTOUT || type == WRITE) {
     struct r05_node *pfile_no = callee->next;
 
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
@@ -554,7 +554,9 @@ static void output_func(
     }
   }
 
-  CHECK_PRINTF(fprintf(output, "\n"));
+  if (type != WRITE) {
+    CHECK_PRINTF(fprintf(output, "\n"));
+  }
 
 #undef CHECK_PRINTF
 
@@ -938,6 +940,14 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
 
 
 /**
+  66. <Write e.Expr> == []
+*/
+R05_DEFINE_ENTRY_FUNCTION(Write, "Write") {
+  output_func(arg_begin, arg_end, WRITE);
+}
+
+
+/**
   67. <ListOfBuiltin> == (s.No s.Name s.Type)*
 
       s.No ::= s.NUMBER
@@ -1042,7 +1052,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(63, XMLParse, regular) */
   /* ALLOC_BUILTIN(64, Random, regular) */
   /* ALLOC_BUILTIN(65, RandomDigit, regular) */
-  /* ALLOC_BUILTIN(66, Write, regular) */
+  ALLOC_BUILTIN(66, Write, regular)
   ALLOC_BUILTIN(67, ListOfBuiltin, regular)
   /* ALLOC_BUILTIN(68, SizeOf, regular) */
   /* ALLOC_BUILTIN(69, GetPID, regular) */
