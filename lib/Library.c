@@ -502,11 +502,6 @@ enum output_func_type {
 static void output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   enum output_func_type type
-);
-
-static void output_func(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
-  enum output_func_type type
 ) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p, *before_expr;
