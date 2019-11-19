@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -927,6 +928,55 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
 
 
 /**
+  57. <RemoveFile e.FileName>
+        == True ()
+        == False (e.Message)
+      e.Message ::= s.CHAR*
+*/
+R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
+  struct r05_node *eFileName_b, *eFileName_e, *left_bracket, *right_bracket;
+  char filename[FILENAME_MAX + 1];
+  size_t filename_len;
+  int res;
+  struct r05_function *sign;
+  const char *message;
+
+  r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
+  filename_len =
+    r05_read_chars(filename, sizeof(filename) - 1, &eFileName_b, &eFileName_e);
+
+  if (! r05_empty_seq(eFileName_b, eFileName_e)) {
+    if (R05_DATATAG_CHAR == eFileName_b->tag) {
+      r05_builtin_error("very long filename");
+    } else {
+      r05_recognition_impossible();
+    }
+  }
+
+  filename[filename_len] = '\0';
+  errno = 0;
+  res = remove(filename);
+
+  if (res == 0) {
+    sign = &r05f_True;
+    message = "";
+  } else {
+    sign = &r05f_False;
+    message = strerror(errno);
+  }
+
+  r05_reset_allocator();
+  r05_alloc_function(sign);
+  r05_alloc_open_bracket(&left_bracket);
+  r05_alloc_string(message);
+  r05_alloc_close_bracket(&right_bracket);
+  r05_link_brackets(left_bracket, right_bracket);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+
+
+/**
   61. <Compare s.X s.Y>
         == '-' | '0' | '+'
       s.X, s.Y ::= s.NUMBER
@@ -1069,7 +1119,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(54, Close, regular)
   ALLOC_BUILTIN(55, ExistFile, regular)
   /* ALLOC_BUILTIN(56, GetCurrentDirectory, regular) */
-  /* ALLOC_BUILTIN(57, RemoveFile, regular) */
+  ALLOC_BUILTIN(57, RemoveFile, regular)
   /* ALLOC_BUILTIN(58, Implode_Ext, regular) */
   /* ALLOC_BUILTIN(59, Explode_Ext, regular) */
   /* ALLOC_BUILTIN(60, TimeElapsed, regular) */

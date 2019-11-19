@@ -1,0 +1,28 @@
+*$FROM Library
+*$EXTERN True, False
+
+$ENTRY Go {
+  = <Open 'w' 10 'write.tmp'>
+    <Eq () <Write 10 'Hello, '>>
+    <Eq () <Write 10 'World!'>>
+    <Eq () <Close 10>>
+    <Open 'r' 10 'write.tmp'>
+    <Eq ('Hello, World!' 0) <Get 10>>
+    <Close 10>
+
+    <Eq (True) <ExistFile 'write.tmp'>>
+    <Eq-RemoveFile True <RemoveFile 'write.tmp'>>
+    <Eq (False) <ExistFile 'write.tmp'>>
+
+    <Eq (False) <ExistFile 'not-exist.tmp'>>
+    <Eq-RemoveFile False <RemoveFile 'not-exist.tmp'>>
+}
+
+Eq { (e.X) e.X = }
+
+Eq-RemoveFile {
+  True True () = ;
+
+  False False (e.Message) =
+    <Prout 'Remove not existant file, message: ' e.Message>;
+}
