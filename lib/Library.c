@@ -1016,6 +1016,90 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
 
 
 /**
+  64. <Random s.Len> == e.RandomDigits
+      e.RandomDigits ::= s.NUMBER+
+      |e.RandomDigits| == ((s.Len != 0) ? s.Len : 1)
+*/
+static r05_number random_digit_in_range(r05_number max);
+static r05_number random_digit(void);
+
+R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
+  struct r05_node *callable = arg_begin->next;
+  struct r05_node *pcount = callable->next;
+  r05_number count;
+
+  if (R05_DATATAG_NUMBER != pcount->tag || pcount->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  count = pcount->info.number;
+  count = count > 0 ? count - 1 : 1;
+  count = random_digit_in_range(count) + 1;
+
+  r05_reset_allocator();
+  while (count > 0) {
+    r05_alloc_number(random_digit());
+    --count;
+  }
+
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+
+static r05_number random_digit_in_range(r05_number limit) {
+  const r05_number MAX = ~0;
+  r05_number max_valid;
+  r05_number random;
+
+  if (limit == 0) {
+    return 0;
+  }
+
+  max_valid = MAX - MAX % limit;
+
+  do {
+    random = random_digit();
+  } while (random >= max_valid);
+
+  return random % limit;
+}
+
+/*
+  Метод Фибоначчи с запаздываниями.
+  См. D. E. Knuth, The Art of Computer Programming,
+  Volume 2, chapter 3.2.2, program A
+*/
+static r05_number random_digit(void) {
+  enum { cMinDelay = 24, cMaxDelay = 55 };
+
+  static int init = 0;
+  static size_t k = cMaxDelay - 1;
+  static size_t j = cMinDelay - 1;
+  static r05_number y[cMaxDelay];
+
+  r05_number result;
+
+  if (! init) {
+    r05_number seed = (r05_number) time(NULL);
+    size_t i;
+
+    for (i = 0; i < cMaxDelay; ++i) {
+      seed = seed * 1103515245 + 12345;
+      y[i] = seed;
+    }
+
+    init = 1;
+  }
+
+  result = y[k] = y[k] + y[j];
+  k = (k + cMaxDelay - 1) % cMaxDelay;
+  j = (j + cMaxDelay - 1) % cMaxDelay;
+
+  return result;
+}
+
+
+/**
   66. <Write e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Write, "Write") {
@@ -1126,7 +1210,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(61, Compare, regular)
   /* ALLOC_BUILTIN(62, DeSysfun, regular) */
   /* ALLOC_BUILTIN(63, XMLParse, regular) */
-  /* ALLOC_BUILTIN(64, Random, regular) */
+  ALLOC_BUILTIN(64, Random, regular)
   /* ALLOC_BUILTIN(65, RandomDigit, regular) */
   ALLOC_BUILTIN(66, Write, regular)
   ALLOC_BUILTIN(67, ListOfBuiltin, regular)
