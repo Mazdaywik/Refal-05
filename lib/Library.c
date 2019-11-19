@@ -1,7 +1,9 @@
+#include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #ifdef R05_POSIX
 #include <sys/wait.h>
@@ -651,6 +653,30 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
 
 
 /**
+  32. <Time> == s.CHAR+
+*/
+R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
+  char *time_str, *n;
+  time_t now;
+
+  if (arg_begin->next->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  time(&now);
+  time_str = ctime(&now);
+  n = strchr(time_str, '\n');
+  assert(n != NULL);
+  *n = '\0';
+
+  r05_reset_allocator();
+  r05_alloc_string(time_str);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+
+
+/**
   33. <Type e.Expr> == s.Type s.SubType e.Expr
       Type of first term of e.Expr
 
@@ -1024,7 +1050,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(29, Step, regular) */
   ALLOC_BUILTIN(30, Sub, regular)
   ALLOC_BUILTIN(31, Symb, regular)
-  /* ALLOC_BUILTIN(32, Time, regular) */
+  ALLOC_BUILTIN(32, Time, regular)
   ALLOC_BUILTIN(33, Type, regular)
   /* ALLOC_BUILTIN(34, Upper, regular) */
   /* ALLOC_BUILTIN(35, Sysfun, regular) */

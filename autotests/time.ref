@@ -1,0 +1,25 @@
+$ENTRY Go {
+  = <CheckTime <Time>>
+}
+
+CheckTime {
+  e.W ' ' e.M ' ' e.D ' ' e.h ':' e.m ':' e.s ' ' e.Y
+    , e.W : s.W1 s.W2 s.W3  /* letters */
+    , e.M : s.M1 s.M2 s.M3  /* letters */
+    , <Digits e.D> <Digits e.h> <Digits e.m> <Digits e.s> <Digits e.Y>
+    : =
+}
+
+Digits {
+  ' ' e.Digits, <Digits-Aux e.Digits> : = ;
+  e.Digits, <Digits-Aux e.Digits> : = ;
+}
+
+Digits-Aux {
+  s.Char, <Digit s.Char> : = ;
+  s.Char e.Digits, <Digit s.Char> : = <Digits-Aux e.Digits>;
+}
+
+Digit {
+  s.Char, '0123456789' : e.B s.Char e.E = ;
+}
