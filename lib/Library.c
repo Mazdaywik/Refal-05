@@ -520,7 +520,7 @@ R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
 
 
 enum output_func_type {
-  PROUT, PUTOUT, WRITE
+  PRINT, PROUT, PUT, PUTOUT, WRITE
 };
 
 static void output_func(
@@ -531,10 +531,10 @@ static void output_func(
   struct r05_node *p, *before_expr;
   FILE *output;
 
-  if (type == PROUT) {
+  if (type == PRINT || type == PROUT) {
     before_expr = callee;
     output = stdout;
-  } else if (type == PUTOUT || type == WRITE) {
+  } else if (type == PUT || type == PUTOUT || type == WRITE) {
     struct r05_node *pfile_no = callee->next;
 
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
@@ -584,7 +584,22 @@ static void output_func(
 
 #undef CHECK_PRINTF
 
-  r05_splice_to_freelist(arg_begin, arg_end);
+  if (type == PRINT || type == PUT) {
+    r05_splice_to_freelist(arg_begin, before_expr);
+    r05_splice_to_freelist(arg_end, arg_end);
+  } else if (type == PROUT || type == PUTOUT || type == WRITE) {
+    r05_splice_to_freelist(arg_begin, arg_end);
+  } else {
+    r05_switch_default_violation(type);
+  }
+}
+
+
+/**
+  24. <Print e.Expr> == []
+*/
+R05_DEFINE_ENTRY_FUNCTION(Print, "Print") {
+  output_func(arg_begin, arg_end, PRINT);
 }
 
 
@@ -593,6 +608,14 @@ static void output_func(
 */
 R05_DEFINE_ENTRY_FUNCTION(Prout, "Prout") {
   output_func(arg_begin, arg_end, PROUT);
+}
+
+
+/**
+  26. <Put s.FileNo e.Expr> == []
+*/
+R05_DEFINE_ENTRY_FUNCTION(Put, "Put") {
+  output_func(arg_begin, arg_end, PUT);
 }
 
 
@@ -1218,9 +1241,9 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(21, Numb, regular)
   ALLOC_BUILTIN(22, Open, regular)
   ALLOC_BUILTIN(23, Ord, regular)
-  /* ALLOC_BUILTIN(24, Print, regular) */
+  ALLOC_BUILTIN(24, Print, regular)
   ALLOC_BUILTIN(25, Prout, regular)
-  /* ALLOC_BUILTIN(26, Put, regular) */
+  ALLOC_BUILTIN(26, Put, regular)
   ALLOC_BUILTIN(27, Putout, regular)
   /* ALLOC_BUILTIN(28, Rp, regular) */
   /* ALLOC_BUILTIN(29, Step, regular) */

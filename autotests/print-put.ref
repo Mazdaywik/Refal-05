@@ -1,0 +1,13 @@
+$EXTERN True;
+
+$ENTRY Go {
+  = <Eq ('Hello' () 10 Go) <Print 'Hello' () 10 Go>>
+    <Eq ()                 <Prout 'Hello' () 10 Go>>
+    <Eq ()                 <Open 'w' 10 'put.tmp'>>
+    <Eq ('Hello' () 10 Go) <Put 10 'Hello' () 10 Go>>
+    <Eq ()                 <Putout 10 'Hello' () 10 Go>>
+    <Eq ()                 <Close 10>>
+    <Eq (True ())          <RemoveFile 'put.tmp'>>
+}
+
+Eq { (e.X) e.X = }
