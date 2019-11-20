@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <ctype.h>
+#include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -337,6 +338,26 @@ R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
   r05_splice_to_freelist(arg_end, arg_end);
 }
 
+
+/**
+   18. <Lower e.Expr> == e.Expr’
+
+   В e.Expr’ все литеры приведены к нижнему регистру
+*/
+R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_CHAR) {
+      p->info.char_ = (char) tolower(p->info.char_);
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
 
 /**
   19. <Mod s.NUMBER s.NUMBER> == s.NUMBER
@@ -741,6 +762,27 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
   callee->tag = R05_DATATAG_CHAR;
   callee->info.char_ = subtype;
 
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+
+
+/**
+   34. <Upper e.Expr> == e.Expr’
+
+   В e.Expr’ все литеры приведены к верхнему регистру
+*/
+R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_CHAR) {
+      p->info.char_ = (char) toupper(p->info.char_);
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
 }
 
@@ -1170,7 +1212,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(15, Implode, regular) */
   /* ALLOC_BUILTIN(16, Last, regular) */
   ALLOC_BUILTIN(17, Lenw, regular)
-  /* ALLOC_BUILTIN(18, Lower, regular) */
+  ALLOC_BUILTIN(18, Lower, regular)
   ALLOC_BUILTIN(19, Mod, regular)
   ALLOC_BUILTIN(20, Mul, regular)
   ALLOC_BUILTIN(21, Numb, regular)
@@ -1186,7 +1228,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(31, Symb, regular)
   ALLOC_BUILTIN(32, Time, regular)
   ALLOC_BUILTIN(33, Type, regular)
-  /* ALLOC_BUILTIN(34, Upper, regular) */
+  ALLOC_BUILTIN(34, Upper, regular)
   /* ALLOC_BUILTIN(35, Sysfun, regular) */
   /* ALLOC_BUILTIN(42, Impd_d_, regular) */
   /* ALLOC_BUILTIN(43, Stopd_d_, regular) */
