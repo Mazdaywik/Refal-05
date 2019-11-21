@@ -30,10 +30,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
 }
 
 
-/**
-   2. <Add s.NUMBER s.NUMBER> == s.NUMBER
-*/
-#define ARITHM_OP(op, check) \
+#define ARITHM_PREFIX \
   struct r05_node *func_name, *sX, *sY; \
   func_name = arg_begin->next; \
   \
@@ -49,7 +46,10 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   \
   if (sY->next != arg_end) { \
     r05_recognition_impossible(); \
-  } \
+  }
+
+#define ARITHM_OP(op, check) \
+  ARITHM_PREFIX \
   \
   check \
   \
@@ -65,8 +65,29 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   }
 
 
+/**
+   2. <Add s.NUMBER s.NUMBER> == 1? s.NUMBER
+*/
 R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
-  ARITHM_OP(+, NO_CHECK)
+  r05_number res;
+  ARITHM_PREFIX
+
+  res = sX->info.number + sY->info.number;
+
+  if (res >= sX->info.number) {
+    arg_begin->tag = R05_DATATAG_NUMBER;
+    arg_begin->info.number = res;
+
+    r05_splice_to_freelist(func_name, arg_end);
+  } else {
+    arg_begin->tag = R05_DATATAG_NUMBER;
+    arg_begin->info.number = 1;
+
+    func_name->tag = R05_DATATAG_NUMBER;
+    func_name->info.number = res;
+
+    r05_splice_to_freelist(sX, arg_end);
+  }
 }
 
 
@@ -634,10 +655,25 @@ struct r05_function r05f_Rp = { r05_rp, "Rp" };
 
 
 /**
-  30. <Sub s.NUMBER s.NUMBER> == s.NUMBER
+  30. <Sub s.NUMBER s.NUMBER> == '-' s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
-  ARITHM_OP(-, NO_CHECK)
+  ARITHM_PREFIX
+
+  if (sX->info.number >= sY->info.number) {
+    arg_begin->tag = R05_DATATAG_NUMBER;
+    arg_begin->info.number = sX->info.number - sY->info.number;
+
+    r05_splice_to_freelist(func_name, arg_end);
+  } else {
+    arg_begin->tag = R05_DATATAG_CHAR;
+    arg_begin->info.char_ = '-';
+
+    func_name->tag = R05_DATATAG_NUMBER;
+    func_name->info.number = sY->info.number - sX->info.number;
+
+    r05_splice_to_freelist(sX, arg_end);
+  }
 }
 
 
