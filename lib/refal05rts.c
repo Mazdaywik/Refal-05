@@ -1459,27 +1459,30 @@ void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
 }
 
 
-enum dgcp_behavior { DGCP_DG, DGCP_CP };
+struct buried_query {
+  struct r05_node *left_bracket;
+  struct r05_node *right_bracket;
+  struct r05_node *value_begin;
+  struct r05_node *value_end;
+};
 
-static void dgcp_impl(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
-  enum dgcp_behavior behavior
+int buried_query(
+  struct buried_query *res, struct r05_node *key_begin, struct r05_node *key_end
 ) {
   struct r05_node *buried_begin = s_begin_buried.next;
-  struct r05_node *key_begin, *key_end;
+  struct r05_node *left_bracket, *right_bracket;
+  struct r05_node *in_brackets_b, *in_brackets_e;
+  int found = 0;
 
-  r05_prepare_argument(&key_begin, &key_end, arg_begin, arg_end);
-  r05_reset_allocator();
-
-  while (buried_begin != &s_end_buried) {
-    struct r05_node *left_bracket = buried_begin;
-    struct r05_node *right_bracket = left_bracket->info.link;
-
-    struct r05_node *in_brackets_b = left_bracket->next;
-    struct r05_node *in_brackets_e = right_bracket->prev;
+  while (buried_begin != &s_end_buried && ! found) {
     struct r05_node *rep_key_b, *rep_key_e;
 
-    int found =
+    left_bracket = buried_begin;
+    right_bracket = left_bracket->info.link;
+    in_brackets_b = left_bracket->next;
+    in_brackets_e = right_bracket->prev;
+
+    found =
       r05_repeated_evar_left(
         &rep_key_b, &rep_key_e,
         key_begin, key_end,
@@ -1487,17 +1490,42 @@ static void dgcp_impl(
       )
       && r05_char_left('=', &in_brackets_b, &in_brackets_e);
 
-    if (found) {
-      if (behavior == DGCP_DG) {
-        r05_splice_evar(arg_begin, in_brackets_b, in_brackets_e);
-        r05_splice_to_freelist(left_bracket, right_bracket);
-      } else {
-        r05_alloc_evar(in_brackets_b, in_brackets_e);
-      }
-      break;
-    }
-
     buried_begin = right_bracket->next;
+  }
+
+  if (found) {
+    res->left_bracket = left_bracket;
+    res->right_bracket = right_bracket;
+    res->value_begin = in_brackets_b;
+    res->value_end = in_brackets_e;
+  }
+
+  return found;
+}
+
+
+enum dgcp_behavior { DGCP_DG, DGCP_CP };
+
+static void dgcp_impl(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  enum dgcp_behavior behavior
+) {
+  struct r05_node *key_begin, *key_end;
+  struct buried_query query;
+  int found;
+
+  r05_prepare_argument(&key_begin, &key_end, arg_begin, arg_end);
+  r05_reset_allocator();
+
+  found = buried_query(&query, key_begin, key_end);
+
+  if (found) {
+    if (behavior == DGCP_DG) {
+      r05_splice_evar(arg_begin, query.value_begin, query.value_end);
+      r05_splice_to_freelist(query.left_bracket, query.right_bracket);
+    } else {
+      r05_alloc_evar(query.value_begin, query.value_end);
+    }
   }
 
   r05_splice_from_freelist(arg_begin);
