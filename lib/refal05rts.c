@@ -1230,7 +1230,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             continue;
 
           case R05_DATATAG_NUMBER:
-            fprintf(stderr, "%ld ", begin->info.number);
+            fprintf(stderr, "%lu ", begin->info.number);
             move_left(&begin, &end);
             continue;
 
