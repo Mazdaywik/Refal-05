@@ -1048,6 +1048,12 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
 
 
 /**
+  12. <Explode_Ext s.FUNCTION> == s.CHAR+
+*/
+struct r05_function r05f_Explodeu_Ext = { r05c_Explode, "Explode_Ext" };
+
+
+/**
   61. <Compare s.X s.Y>
         == '-' | '0' | '+'
       s.X, s.Y ::= s.NUMBER
@@ -1306,7 +1312,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(56, GetCurrentDirectory, regular) */
   ALLOC_BUILTIN(57, RemoveFile, regular)
   /* ALLOC_BUILTIN(58, Implode_Ext, regular) */
-  /* ALLOC_BUILTIN(59, Explode_Ext, regular) */
+  ALLOC_BUILTIN(59, Explodeu_Ext, regular)
   /* ALLOC_BUILTIN(60, TimeElapsed, regular) */
   ALLOC_BUILTIN(61, Compare, regular)
   /* ALLOC_BUILTIN(62, DeSysfun, regular) */
