@@ -4,6 +4,7 @@ $ENTRY Go {
     <Len 2 <Random 2>>
     <Len 1 <Random 1>>
     <Len 1 <Random 0>>
+    <CheckRandomDigitType <Type <RandomDigit 100>>>
 }
 
 Len {
@@ -16,3 +17,5 @@ Len {
 
   1 s.1 = ;
 }
+
+CheckRandomDigitType { 'N0' s.Digit = }

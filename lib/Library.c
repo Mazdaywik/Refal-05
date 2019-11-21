@@ -1086,14 +1086,15 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
 }
 
 
+static r05_number random_digit_in_range(r05_number max);
+static r05_number random_digit(void);
+
+
 /**
   64. <Random s.Len> == e.RandomDigits
       e.RandomDigits ::= s.NUMBER+
       |e.RandomDigits| == ((s.Len != 0) ? s.Len : 1)
 */
-static r05_number random_digit_in_range(r05_number max);
-static r05_number random_digit(void);
-
 R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
   struct r05_node *callable = arg_begin->next;
   struct r05_node *pcount = callable->next;
@@ -1116,6 +1117,35 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
+
+
+/**
+  65. <RandomDigit s.Max> == s.RandomDigit
+      s.RandomDigit, s.Max ::= s.NUMBER
+      s.RandomDigit <= s.Max
+*/
+R05_DEFINE_ENTRY_FUNCTION(RandomDigit, "RandomDigit") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *pmax = callee->next;
+  const r05_number MAX = ~0;
+  r05_number max, res;
+
+  if (R05_DATATAG_NUMBER != pmax->tag || pmax->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  max = pmax->info.number;
+  if (max != MAX) {
+    res = random_digit_in_range(max + 1);
+  } else {
+    res = random_digit();
+  }
+
+  arg_begin->tag = R05_DATATAG_NUMBER;
+  arg_begin->info.number = res;
+  r05_splice_to_freelist(callee, arg_end);
+}
+
 
 static r05_number random_digit_in_range(r05_number limit) {
   const r05_number MAX = ~0;
@@ -1282,7 +1312,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(62, DeSysfun, regular) */
   /* ALLOC_BUILTIN(63, XMLParse, regular) */
   ALLOC_BUILTIN(64, Random, regular)
-  /* ALLOC_BUILTIN(65, RandomDigit, regular) */
+  ALLOC_BUILTIN(65, RandomDigit, regular)
   ALLOC_BUILTIN(66, Write, regular)
   ALLOC_BUILTIN(67, ListOfBuiltin, regular)
   /* ALLOC_BUILTIN(68, SizeOf, regular) */
