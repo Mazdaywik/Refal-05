@@ -1442,6 +1442,9 @@ void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
     p != arg_end && ! (p->tag == R05_DATATAG_CHAR && p->info.char_ == '=')
   ) {
     p = p->next;
+    if (R05_DATATAG_OPEN_BRACKET == p->tag) {
+      p = p->info.link;
+    }
   }
 
   if (p == arg_end) {
