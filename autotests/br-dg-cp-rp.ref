@@ -16,6 +16,11 @@ $ENTRY Go {
     <Eq (1 2) <Cp 'Foo'>>
     <Eq (1 2) <Dg 'Foo'>>
     <Eq () <Dg 'Foo'>>
+    <Eq () <Rp 'Foo=' 1 2>>
+    <Eq (1 2) <Cp 'Foo'>>
+    <Eq () <Rp 'Foo=' 3 4>>
+    <Eq (3 4) <Dg 'Foo'>>
+    <Eq () <Dg 'Foo'>>
 
     <Test_Refal-5_bug>;
 }

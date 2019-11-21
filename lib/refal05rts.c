@@ -1433,9 +1433,11 @@ static struct r05_node s_end_buried = {
 };
 
 
+static void bury(struct r05_node *left_bracket, struct r05_node *right_bracket);
+
 void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
   struct r05_node *callee = arg_begin->next;
-  struct r05_node *p, *left_bracket, *right_bracket;
+  struct r05_node *p;
 
   p = callee->next;
   while (
@@ -1451,14 +1453,15 @@ void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
     r05_recognition_impossible();
   }
 
-  left_bracket = callee;
-  right_bracket = arg_end;
+  bury(callee, arg_end);
+  r05_splice_to_freelist(arg_begin, arg_begin);
+}
+
+static void bury(struct r05_node *left_bracket, struct r05_node *right_bracket) {
   left_bracket->tag = R05_DATATAG_OPEN_BRACKET;
   right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
   r05_link_brackets(left_bracket, right_bracket);
   list_splice(s_begin_buried.next, left_bracket, right_bracket);
-
-  r05_splice_to_freelist(arg_begin, arg_begin);
 }
 
 
@@ -1543,6 +1546,33 @@ void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end) {
 
 void r05_cp(struct r05_node *arg_begin, struct r05_node *arg_end) {
   dgcp_impl(arg_begin, arg_end, DGCP_CP);
+}
+
+
+void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *key_b, *key_e, *val_b, *val_e;
+
+  key_b = NULL;
+  key_e = NULL;
+  r05_prepare_argument(&val_b, &val_e, arg_begin, arg_end);
+  do {
+    if (r05_char_left('=', &val_b, &val_e)) {
+      struct buried_query query;
+
+      if (buried_query(&query, key_b, key_e)) {
+        list_splice(query.right_bracket, val_b, val_e);
+        list_splice(arg_end, query.value_begin, query.value_end);
+      } else {
+        bury(callee, arg_end);
+        arg_end = arg_begin;
+      }
+      r05_splice_to_freelist(arg_begin, arg_end);
+      return;
+    }
+  } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e));
+
+  r05_recognition_impossible();
 }
 
 

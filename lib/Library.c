@@ -628,6 +628,12 @@ R05_DEFINE_ENTRY_FUNCTION(Putout, "Putout") {
 
 
 /**
+  28. <Rp e.Key '=' e.Value> == empty
+*/
+struct r05_function r05f_Rp = { r05_rp, "Rp" };
+
+
+/**
   30. <Sub s.NUMBER s.NUMBER> == s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
@@ -1245,7 +1251,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   ALLOC_BUILTIN(25, Prout, regular)
   ALLOC_BUILTIN(26, Put, regular)
   ALLOC_BUILTIN(27, Putout, regular)
-  /* ALLOC_BUILTIN(28, Rp, regular) */
+  ALLOC_BUILTIN(28, Rp, regular)
   /* ALLOC_BUILTIN(29, Step, regular) */
   ALLOC_BUILTIN(30, Sub, regular)
   ALLOC_BUILTIN(31, Symb, regular)
