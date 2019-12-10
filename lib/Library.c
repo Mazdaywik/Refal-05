@@ -21,7 +21,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   struct r05_node *mu = arg_begin->next;
   struct r05_node *callable = mu->next;
   if (callable->tag != R05_DATATAG_FUNCTION) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   r05_splice_to_freelist(mu, mu);
@@ -36,16 +36,16 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   \
   sX = func_name->next; \
   if (sX->tag != R05_DATATAG_NUMBER) { \
-    r05_recognition_impossible(); \
+    r05_recognition_impossible(state); \
   } \
   \
   sY = sX->next; \
   if (sY->tag != R05_DATATAG_NUMBER) { \
-    r05_recognition_impossible(); \
+    r05_recognition_impossible(state); \
   } \
   \
   if (sY->next != arg_end) { \
-    r05_recognition_impossible(); \
+    r05_recognition_impossible(state); \
   }
 
 #define ARITHM_OP(op, check) \
@@ -61,7 +61,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
 #define NO_CHECK
 #define CHECK_ZERODIV \
   if (sY->info.number == 0) { \
-    r05_builtin_error("divide by zero"); \
+    r05_builtin_error("divide by zero", state); \
   }
 
 
@@ -113,13 +113,13 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
     || R05_DATATAG_NUMBER != parg_no->tag
     || parg_no->next != arg_end
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   arg_no = (int) parg_no->info.number;
 
   r05_reset_allocator();
-  r05_alloc_string(r05_arg(arg_no));
+  r05_alloc_string(r05_arg(arg_no), state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -128,31 +128,31 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
 /**
    5. <Card> == s.CHAR* 0?
 */
-static void read_from_stream(FILE *input);
+static void read_from_stream(FILE *input, struct r05_state *state);
 
 R05_DEFINE_ENTRY_FUNCTION(Card, "Card") {
   struct r05_node *callee = arg_begin->next;
 
   if (callee->next != arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   r05_reset_allocator();
-  read_from_stream(stdin);
+  read_from_stream(stdin, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
 
 
-static void read_from_stream(FILE *input) {
+static void read_from_stream(FILE *input, struct r05_state *state) {
   int cur_char;
 
   while (cur_char = fgetc(input), cur_char != EOF && cur_char != '\n') {
-    r05_alloc_char((char) cur_char);
+    r05_alloc_char((char) cur_char, state);
   }
 
   if (cur_char == EOF) {
-    r05_alloc_number(0);
+    r05_alloc_number(0, state);
   }
 }
 
@@ -211,11 +211,11 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
      || R05_DATATAG_FUNCTION != ident->tag
      || ident->next != arg_end
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   r05_reset_allocator();
-  r05_alloc_string(ident->info.function->name);
+  r05_alloc_string(ident->info.function->name, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -239,7 +239,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
     ! r05_svar_left(&sLen, &eItems_b, &eItems_e)
     || sLen->tag != R05_DATATAG_NUMBER
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   counter = sLen->info.number;
@@ -256,9 +256,9 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   }
 
   r05_reset_allocator();
-  r05_alloc_open_bracket(&left_bracket);
-  r05_alloc_close_bracket(&right_bracket);
-  pos = r05_insert_pos();
+  r05_alloc_open_bracket(&left_bracket, state);
+  r05_alloc_close_bracket(&right_bracket, state);
+  pos = r05_insert_pos(state);
 
   r05_link_brackets(left_bracket, right_bracket);
   r05_splice_evar(right_bracket, ePrefix_b, ePrefix_e);
@@ -272,7 +272,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   14. <Get s.FileNo> == s.Char* 0?
       s.FileNo ::= s.NUMBER
 */
-FILE *open_numbered(unsigned int no, const char mode);
+FILE *open_numbered(unsigned int no, const char mode, struct r05_state *state);
 
 R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
   struct r05_node *callable = arg_begin->next;
@@ -284,13 +284,13 @@ R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
     || R05_DATATAG_NUMBER != pfile_no->tag
     || pfile_no->next != arg_end
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
-  stream = open_numbered((unsigned int) pfile_no->info.number, 'r');
+  stream = open_numbered((unsigned int) pfile_no->info.number, 'r', state);
 
   r05_reset_allocator();
-  read_from_stream(stream);
+  read_from_stream(stream, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -302,7 +302,10 @@ static FILE *s_streams[FILE_LIMIT] = { NULL };
 
 enum { UINT_DIGITS = (sizeof(unsigned int) * 8 + 2) / 3 };
 
-FILE *open_numbered(unsigned int file_no, const char mode) {
+FILE *open_numbered(
+  unsigned int file_no, const char mode,
+  struct r05_state *state
+) {
   char mode_str[2] = "*";
 
   /*
@@ -329,7 +332,7 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
       char error[sizeof(error_format) + UINT_DIGITS];
 
       sprintf(error, error_format, file_no, mode);
-      r05_builtin_error_errno(error);
+      r05_builtin_error_errno(error, state);
     }
   }
 
@@ -437,7 +440,7 @@ R05_DEFINE_ENTRY_ENUM(rb, "rb")
 R05_DEFINE_ENTRY_ENUM(wb, "wb")
 R05_DEFINE_ENTRY_ENUM(ab, "ab")
 
-static void ensure_close_stream(unsigned int file_no);
+static void ensure_close_stream(unsigned int file_no, struct r05_state *state);
 
 R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   struct r05_node *eFileName_b, *eFileName_e, *sMode, *sFileNo;
@@ -460,7 +463,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
     || ! r05_svar_left(&sFileNo, &eFileName_b, &eFileName_e)
     || R05_DATATAG_NUMBER != sFileNo->tag
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   filename_len =
@@ -477,7 +480,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   if (R05_DATATAG_CHAR == sMode->tag) {
     char mode = sMode->info.char_;
     if (mode != 'r' && mode != 'w' && mode != 'a') {
-      r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'");
+      r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'", state);
     }
     mode_str[0] = mode;
   } else {
@@ -490,10 +493,10 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
     char error[sizeof(error_format) + UINT_DIGITS];
 
     sprintf(error, error_format, (unsigned int) FILENAME_MAX);
-    r05_builtin_error(error);
+    r05_builtin_error(error, state);
   }
 
-  ensure_close_stream(file_no);
+  ensure_close_stream(file_no, state);
 
   s_streams[file_no] = fopen(filename, mode);
   if (s_streams[file_no] == NULL) {
@@ -503,15 +506,15 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
 
     strncpy(mode_buffer, mode, sizeof(mode_buffer) - 1);
     sprintf(error, error_format, filename, mode_buffer);
-    r05_builtin_error_errno(error);
+    r05_builtin_error_errno(error, state);
   }
 
   r05_splice_to_freelist(arg_begin, arg_end);
 }
 
-static void ensure_close_stream(unsigned int file_no) {
+static void ensure_close_stream(unsigned int file_no, struct r05_state *state) {
   if (s_streams[file_no] != NULL && fclose(s_streams[file_no]) == EOF) {
-    r05_builtin_error_errno("Can't close stream");
+    r05_builtin_error_errno("Can't close stream", state);
   }
 
   s_streams[file_no] = NULL;
@@ -546,7 +549,7 @@ enum output_func_type {
 
 static void output_func(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  enum output_func_type type
+  enum output_func_type type, struct r05_state *state
 ) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p, *before_expr;
@@ -559,18 +562,18 @@ static void output_func(
     struct r05_node *pfile_no = callee->next;
 
     if (R05_DATATAG_NUMBER != pfile_no->tag) {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
 
     before_expr = pfile_no;
-    output = open_numbered((unsigned int) pfile_no->info.number, 'w');
+    output = open_numbered((unsigned int) pfile_no->info.number, 'w', state);
   } else {
     r05_switch_default_violation(type);
   }
 
 #define CHECK_PRINTF(printf_call) \
   ((printf_call) >= 0 ? (void) 0 \
-  : r05_builtin_error_errno("Error in call " #printf_call))
+  : r05_builtin_error_errno("Error in call " #printf_call, state))
 
   for (p = before_expr->next; p != arg_end; p = p->next) {
     switch (p->tag) {
@@ -620,7 +623,7 @@ static void output_func(
   24. <Print e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Print, "Print") {
-  output_func(arg_begin, arg_end, PRINT);
+  output_func(arg_begin, arg_end, PRINT, state);
 }
 
 
@@ -628,7 +631,7 @@ R05_DEFINE_ENTRY_FUNCTION(Print, "Print") {
   25. <Prout e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Prout, "Prout") {
-  output_func(arg_begin, arg_end, PROUT);
+  output_func(arg_begin, arg_end, PROUT, state);
 }
 
 
@@ -636,7 +639,7 @@ R05_DEFINE_ENTRY_FUNCTION(Prout, "Prout") {
   26. <Put s.FileNo e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Put, "Put") {
-  output_func(arg_begin, arg_end, PUT);
+  output_func(arg_begin, arg_end, PUT, state);
 }
 
 
@@ -644,7 +647,7 @@ R05_DEFINE_ENTRY_FUNCTION(Put, "Put") {
   27. <Putout s.FileNo e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Putout, "Putout") {
-  output_func(arg_begin, arg_end, PUTOUT);
+  output_func(arg_begin, arg_end, PUTOUT, state);
 }
 
 
@@ -700,7 +703,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
     sign = pnumber->info.char_;
 
     if (sign != '+' && sign != '-') {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
 
     pnumber = pnumber->next;
@@ -711,7 +714,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
     || R05_DATATAG_NUMBER != pnumber->tag
     || pnumber->next != arg_end
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   number = pnumber->info.number;
@@ -719,7 +722,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
   r05_reset_allocator();
 
   if (sign != '\0') {
-    r05_alloc_char(sign);
+    r05_alloc_char(sign, state);
   }
 
   if (number > 0) {
@@ -729,9 +732,9 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
       number /= 10;
     }
 
-    r05_alloc_string(cur_digit);
+    r05_alloc_string(cur_digit, state);
   } else {
-    r05_alloc_string("0");
+    r05_alloc_string("0", state);
   }
 
   r05_splice_from_freelist(arg_begin);
@@ -747,7 +750,7 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
   time_t now;
 
   if (arg_begin->next->next != arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   time(&now);
@@ -757,7 +760,7 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
   *n = '\0';
 
   r05_reset_allocator();
-  r05_alloc_string(time_str);
+  r05_alloc_string(time_str, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -868,9 +871,9 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
 
   if (! r05_empty_seq(eEnvName_b, eEnvName_e)) {
     if (R05_DATATAG_CHAR == eEnvName_b->tag) {
-      r05_builtin_error("very long environment variable name");
+      r05_builtin_error("very long environment variable name", state);
     } else {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
   }
 
@@ -881,7 +884,7 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
   }
 
   r05_reset_allocator();
-  r05_alloc_string(env_value);
+  r05_alloc_string(env_value, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -903,9 +906,9 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
 
   if (! r05_empty_seq(eCommand_b, eCommand_e)) {
     if (R05_DATATAG_CHAR == eCommand_b->tag) {
-      r05_builtin_error("very long command line");
+      r05_builtin_error("very long command line", state);
     } else {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
   }
 
@@ -923,10 +926,10 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
 
   r05_reset_allocator();
   if (retcode < 0) {
-    r05_alloc_char('-');
+    r05_alloc_char('-', state);
     retcode = -retcode;
   }
-  r05_alloc_number((r05_number) retcode);
+  r05_alloc_number((r05_number) retcode, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -942,7 +945,7 @@ R05_DEFINE_ENTRY_FUNCTION(Exit, "Exit") {
   signed sign = +1;
 
   if (pretcode == arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   if (R05_DATATAG_CHAR == pretcode->tag) {
@@ -950,7 +953,7 @@ R05_DEFINE_ENTRY_FUNCTION(Exit, "Exit") {
       sign = -1;
       pretcode = pretcode->next;
     } else {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
   }
 
@@ -959,11 +962,11 @@ R05_DEFINE_ENTRY_FUNCTION(Exit, "Exit") {
     || R05_DATATAG_NUMBER != pretcode->tag
     || pretcode->next != arg_end
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   retcode = sign * (int) pretcode->info.number;
-  r05_exit(retcode);
+  r05_exit(retcode, state);
 }
 
 
@@ -980,11 +983,11 @@ R05_DEFINE_ENTRY_FUNCTION(Close, "Close") {
     || R05_DATATAG_NUMBER != pfile_no->tag
     || pfile_no->next != arg_end
   ) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   file_no = (unsigned int) pfile_no->info.number % FILE_LIMIT;
-  ensure_close_stream(file_no);
+  ensure_close_stream(file_no, state);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
 
@@ -1011,9 +1014,9 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
 
   if (! r05_empty_seq(eFileName_b, eFileName_e)) {
     if (R05_DATATAG_CHAR == eFileName_b->tag) {
-      r05_builtin_error("very long filename");
+      r05_builtin_error("very long filename", state);
     } else {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
   }
 
@@ -1024,7 +1027,7 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   if (file != NULL) {
     arg_begin->info.function = &r05f_True;
     if (fclose(file) == EOF) {
-      r05_builtin_error_errno("fclose error");
+      r05_builtin_error_errno("fclose error", state);
     }
   } else {
     arg_begin->info.function = &r05f_False;
@@ -1054,9 +1057,9 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
 
   if (! r05_empty_seq(eFileName_b, eFileName_e)) {
     if (R05_DATATAG_CHAR == eFileName_b->tag) {
-      r05_builtin_error("very long filename");
+      r05_builtin_error("very long filename", state);
     } else {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
   }
 
@@ -1073,10 +1076,10 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
   }
 
   r05_reset_allocator();
-  r05_alloc_function(sign);
-  r05_alloc_open_bracket(&left_bracket);
-  r05_alloc_string(message);
-  r05_alloc_close_bracket(&right_bracket);
+  r05_alloc_function(sign, state);
+  r05_alloc_open_bracket(&left_bracket, state);
+  r05_alloc_string(message, state);
+  r05_alloc_close_bracket(&right_bracket, state);
   r05_link_brackets(left_bracket, right_bracket);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -1102,16 +1105,16 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
   func_name = arg_begin->next;
   sX = func_name->next;
   if (sX->tag != R05_DATATAG_NUMBER) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   sY = sX->next;
   if (sY->tag != R05_DATATAG_NUMBER) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   if (sY->next != arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   if (sX->info.number < sY->info.number) {
@@ -1143,7 +1146,7 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
   r05_number count;
 
   if (R05_DATATAG_NUMBER != pcount->tag || pcount->next != arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   count = pcount->info.number;
@@ -1152,7 +1155,7 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
 
   r05_reset_allocator();
   while (count > 0) {
-    r05_alloc_number(random_digit());
+    r05_alloc_number(random_digit(), state);
     --count;
   }
 
@@ -1173,7 +1176,7 @@ R05_DEFINE_ENTRY_FUNCTION(RandomDigit, "RandomDigit") {
   r05_number max, res;
 
   if (R05_DATATAG_NUMBER != pmax->tag || pmax->next != arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
   max = pmax->info.number;
@@ -1246,7 +1249,7 @@ static r05_number random_digit(void) {
   66. <Write e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Write, "Write") {
-  output_func(arg_begin, arg_end, WRITE);
+  output_func(arg_begin, arg_end, WRITE, state);
 }
 
 
@@ -1283,15 +1286,15 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   struct r05_node *left_bracket, *right_bracket;
 
   if (callee->next != arg_end) {
-    r05_recognition_impossible();
+    r05_recognition_impossible(state);
   }
 
 #define ALLOC_BUILTIN(id, function, type) \
-  r05_alloc_open_bracket(&left_bracket); \
-  r05_alloc_number(id); \
-  r05_alloc_function(&r05f_ ## function); \
-  r05_alloc_function(&r05f_ ## type); \
-  r05_alloc_close_bracket(&right_bracket); \
+  r05_alloc_open_bracket(&left_bracket, state); \
+  r05_alloc_number(id, state); \
+  r05_alloc_function(&r05f_ ## function, state); \
+  r05_alloc_function(&r05f_ ## type, state); \
+  r05_alloc_close_bracket(&right_bracket, state); \
   r05_link_brackets(left_bracket, right_bracket);
 
   r05_reset_allocator();

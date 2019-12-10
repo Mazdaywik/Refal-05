@@ -638,7 +638,7 @@ static struct r05_node s_end_free_list = {
 
 static struct r05_node *s_free_ptr = &s_end_free_list;
 
-static size_t s_memory_use = 0;
+/*static size_t s_memory_use = 0;*/
 
 
 enum { CHUNK_SIZE = 251 };
@@ -659,12 +659,12 @@ static void weld(struct r05_node *left, struct r05_node *right) {
 }
 
 
-static int create_nodes(void) {
+static int create_nodes(struct r05_state *state) {
   size_t i;
   struct memory_chunk *chunk;
 
 #ifdef R05_MEMORY_LIMIT
-  if (s_memory_use >= R05_MEMORY_LIMIT) {
+  if (state->memory_use >= R05_MEMORY_LIMIT) {
     return 0;
   }
 #endif  /* ifdef R05_MEMORY_LIMIT */
@@ -689,25 +689,25 @@ static int create_nodes(void) {
   weld(&chunk->elems[CHUNK_SIZE - 1], &s_end_free_list);
 
   s_free_ptr = &chunk->elems[0];
-  s_memory_use += CHUNK_SIZE;
+  state->memory_use += CHUNK_SIZE;
 
   return 1;
 }
 
 
-static void make_dump(void);
+static void make_dump(struct r05_state *state);
 
-static void ensure_memory(void) {
-  if ((s_free_ptr == &s_end_free_list) && ! create_nodes()) {
+static void ensure_memory(struct r05_state *state) {
+  if ((s_free_ptr == &s_end_free_list) && ! create_nodes(state)) {
     fprintf(stderr, "\nNO MEMORY\n\n");
-    make_dump();
+    make_dump(state);
 
-    r05_exit(EXIT_CODE_NO_MEMORY);
+    r05_exit(EXIT_CODE_NO_MEMORY, state);
   }
 }
 
 
-static void free_memory(void) {
+static void free_memory(struct r05_state *state) {
   while (s_pool != 0) {
     struct memory_chunk *next = s_pool->next;
     free(s_pool);
@@ -718,10 +718,10 @@ static void free_memory(void) {
   fprintf(
     stderr,
     "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
-    (unsigned long int) s_memory_use,
-    (unsigned long int) s_memory_use,
+    (unsigned long int) state->memory_use,
+    (unsigned long int) state->memory_use,
     (unsigned long int) sizeof(struct r05_node),
-    (unsigned long int) (s_memory_use * sizeof(struct r05_node))
+    (unsigned long int) (state->memory_use * sizeof(struct r05_node))
   );
 #endif  /* R05_SHOW_STAT */
 }
@@ -739,10 +739,10 @@ void r05_reset_allocator(void) {
 }
 
 
-struct r05_node *r05_alloc_node(enum r05_datatag tag) {
+struct r05_node *r05_alloc_node(enum r05_datatag tag, struct r05_state *state) {
   struct r05_node *node;
 
-  ensure_memory();
+  ensure_memory(state);
   node = s_free_ptr;
   s_free_ptr = s_free_ptr->next;
   node->tag = tag;
@@ -750,8 +750,8 @@ struct r05_node *r05_alloc_node(enum r05_datatag tag) {
 }
 
 
-struct r05_node *r05_insert_pos(void) {
-  ensure_memory();
+struct r05_node *r05_insert_pos(struct r05_state *state) {
+  ensure_memory(state);
   return s_free_ptr;
 }
 
@@ -779,14 +779,15 @@ static struct r05_node *list_splice(
 static void add_copy_tevar_time(clock_t duration);
 
 static void copy_nonempty_evar(
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
+  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
+  struct r05_state *state
 ) {
   clock_t start_copy_time = clock();
 
   struct r05_node *bracket_stack = 0;
 
   while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
-    struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
+    struct r05_node *copy = r05_alloc_node(evar_b_sample->tag, state);
 
     if (is_open_bracket(copy)) {
       copy->info.link = bracket_stack;
@@ -810,34 +811,37 @@ static void copy_nonempty_evar(
 }
 
 
-void r05_alloc_chars(const char buffer[], size_t len) {
+void r05_alloc_chars(const char buffer[], size_t len, struct r05_state *state) {
   size_t i;
   for (i = 0; i < len; ++i) {
-    r05_alloc_char(buffer[i]);
+    r05_alloc_char(buffer[i], state);
   }
 }
 
 
-void r05_alloc_tvar(struct r05_node *sample) {
+void r05_alloc_tvar(struct r05_node *sample, struct r05_state *state) {
   if (is_open_bracket(sample)) {
     struct r05_node *end_of_sample = sample->info.link;
-    copy_nonempty_evar(sample, end_of_sample);
+    copy_nonempty_evar(sample, end_of_sample, sample);
   } else {
-    r05_alloc_svar(sample);
+    r05_alloc_svar(sample, state);
   }
 }
 
 
-void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e) {
+void r05_alloc_evar(
+  struct r05_node *sample_b, struct r05_node *sample_e,
+  struct r05_state *state
+) {
   if (! r05_empty_seq(sample_b, sample_e)) {
-    copy_nonempty_evar(sample_b, sample_e);
+    copy_nonempty_evar(sample_b, sample_e, state);
   }
 }
 
 
-void r05_alloc_string(const char *string) {
+void r05_alloc_string(const char *string, struct r05_state *state) {
   for (/* пусто */; *string != '\0'; ++string) {
-    r05_alloc_char(*string);
+    r05_alloc_char(*string, state);
   }
 }
 
@@ -887,10 +891,12 @@ void r05_splice_from_freelist(struct r05_node *pos) {
 }
 
 
-void r05_enum_function_code(struct r05_node *begin, struct r05_node *end) {
+void r05_enum_function_code(
+  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+) {
   (void) begin;
   (void) end;
-  r05_recognition_impossible();
+  r05_recognition_impossible(state);
 }
 
 
@@ -1123,13 +1129,13 @@ static int empty_stack(void) {
 
 extern struct r05_function r05f_Go;
 
-static void init_view_field(void) {
+static void init_view_field(struct r05_state *state) {
   struct r05_node *open, *close;
 
   r05_reset_allocator();
-  r05_alloc_open_call(&open);
-  r05_alloc_function(&r05f_Go);
-  r05_alloc_close_call(&close);
+  r05_alloc_open_call(&open, state);
+  r05_alloc_function(&r05f_Go, state);
+  r05_alloc_close_call(&close, state);
   r05_push_stack(close);
   r05_push_stack(open);
   r05_splice_from_freelist(s_begin_view_field.next);
@@ -1138,7 +1144,7 @@ static void init_view_field(void) {
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-static void main_loop(void) {
+static void main_loop(struct r05_state *state) {
   while (! empty_stack()) {
     struct r05_node *function;
 
@@ -1148,15 +1154,15 @@ static void main_loop(void) {
 
 #if R05_SHOW_DEBUG
     if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
-      make_dump();
+      make_dump(&state);
     }
 #endif  /* R05_SHOW_DEBUG */
 
     function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      (function->info.function->ptr)(s_arg_begin, s_arg_end);
+      (function->info.function->ptr)(s_arg_begin, s_arg_end, state);
     } else {
-      r05_recognition_impossible();
+      r05_recognition_impossible(state);
     }
     after_step();
 
@@ -1337,7 +1343,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
 static void dump_buried(void);
 
-static void make_dump(void) {
+static void make_dump(struct r05_state *state) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
   print_seq(s_arg_begin, s_arg_end);
@@ -1356,7 +1362,7 @@ static void make_dump(void) {
 }
 
 
-R05_NORETURN void r05_exit(int retcode) {
+R05_NORETURN void r05_exit(int retcode, struct r05_state *state) {
   dump_buried();
   fflush(stderr);
   fflush(stdout);
@@ -1366,34 +1372,39 @@ R05_NORETURN void r05_exit(int retcode) {
   fprintf(stderr, "Step count %lu\n", s_step_counter);
 #endif  /* R05_SHOW_STAT */
 
-  free_memory();
+  free_memory(state);
   fflush(stdout);
 
   exit(retcode);
 }
 
 
-R05_NORETURN void r05_recognition_impossible(void) {
+R05_NORETURN void r05_recognition_impossible(struct r05_state *state) {
   fprintf(stderr, "\nRECOGNITION IMPOSSIBLE\n\n");
-  make_dump();
-  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  make_dump(state);
+  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE, state);
 }
 
 
-R05_NORETURN void r05_builtin_error(const char *message) {
+R05_NORETURN void r05_builtin_error(const char *message,
+  struct r05_state *state
+) {
   fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
-  make_dump();
-  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  make_dump(state);
+  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE, state);
 }
 
 
-R05_NORETURN void r05_builtin_error_errno(const char *message) {
+R05_NORETURN void r05_builtin_error_errno(
+  const char *message,
+  struct r05_state *state
+) {
   fprintf(
     stderr, "\nBUILTIN FUNCTION ERROR: %s\n(errno = %d: %s)\n\n",
     message, errno, strerror(errno)
   );
-  make_dump();
-  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  make_dump(state);
+  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE, state);
 }
 
 
@@ -1482,7 +1493,7 @@ enum brrp_behavior { BRRP_BR, BRRP_RP };
 
 static void brrp_impl(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  enum brrp_behavior behavior
+  enum brrp_behavior behavior, struct r05_state *state
 ) {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *key_b, *key_e, *val_b, *val_e;
@@ -1511,7 +1522,7 @@ static void brrp_impl(
     }
   } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e));
 
-  r05_recognition_impossible();
+  r05_recognition_impossible(state);
 }
 
 
@@ -1519,7 +1530,7 @@ enum dgcp_behavior { DGCP_DG, DGCP_CP };
 
 static void dgcp_impl(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  enum dgcp_behavior behavior
+  enum dgcp_behavior behavior, struct r05_state *state
 ) {
   struct r05_node *key_begin, *key_end;
   struct buried_query query;
@@ -1535,7 +1546,7 @@ static void dgcp_impl(
       r05_splice_evar(arg_begin, query.value_begin, query.value_end);
       r05_splice_to_freelist(query.left_bracket, query.right_bracket);
     } else {
-      r05_alloc_evar(query.value_begin, query.value_end);
+      r05_alloc_evar(query.value_begin, query.value_end, state);
     }
   }
 
@@ -1544,20 +1555,31 @@ static void dgcp_impl(
 }
 
 
-void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  brrp_impl(arg_begin, arg_end, BRRP_BR);
+void r05_br(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+) {
+  brrp_impl(arg_begin, arg_end, BRRP_BR, state);
 }
 
-void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  dgcp_impl(arg_begin, arg_end, DGCP_DG);
+void r05_dg(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+) {
+  dgcp_impl(arg_begin, arg_end, DGCP_DG, state);
 }
 
-void r05_cp(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  dgcp_impl(arg_begin, arg_end, DGCP_CP);
+void r05_cp(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+) {
+  dgcp_impl(arg_begin, arg_end, DGCP_CP, state);
 }
 
-void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end) {
-  brrp_impl(arg_begin, arg_end, BRRP_RP);
+void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+) {
+  brrp_impl(arg_begin, arg_end, BRRP_RP, state);
 }
 
 
@@ -1572,11 +1594,14 @@ static void dump_buried(void) {
 int main(int argc, char **argv) {
   s_argc = argc;
   s_argv = argv;
+  struct r05_state state = {
+      0 /* memory_use */
+  };
 
-  init_view_field();
+  init_view_field(&state);
   start_profiler();
-  main_loop();
-  r05_exit(0);
+  main_loop(&state);
+  r05_exit(0, &state);
 
 #ifndef R05_NORETURN_DEFINED
   return 0;

@@ -140,7 +140,7 @@ $ENTRY generator_GenSentence {
 
   ReturnRecognitionImpossible =
     ()
-    ('  r05_recognition_impossible();');
+    ('  r05_recognition_impossible(state);');
 }
 
 SkipIndentAccum {
@@ -305,21 +305,23 @@ CmdAllocateElem {
 }
 
 ElSymbol {
-  s.Type e.Value = <SymbolFunc s.Type> '(' <SymbolTextRep s.Type e.Value> ');';
+  s.Type e.Value =
+    <SymbolFunc s.Type> '(' <SymbolTextRep s.Type e.Value> ', state);';
 }
 
 ElString {
-  s.Len e.String = 'chars("' <EscapeString e.String> '", ' <Symb s.Len> ');';
+  s.Len e.String =
+    'chars("' <EscapeString e.String> '", ' <Symb s.Len> ', state);';
 }
 
-ElOpenBracket { s.Pos = 'open_bracket(' <ElemPtr s.Pos> ');' }
-ElCloseBracket { s.Pos = 'close_bracket(' <ElemPtr s.Pos> ');' }
-ElOpenCall { s.Pos = 'open_call(' <ElemPtr s.Pos> ');' }
-ElCloseCall { s.Pos = 'close_call(' <ElemPtr s.Pos> ');' }
+ElOpenBracket { s.Pos = 'open_bracket(' <ElemPtr s.Pos> ', state);' }
+ElCloseBracket { s.Pos = 'close_bracket(' <ElemPtr s.Pos> ', state);' }
+ElOpenCall { s.Pos = 'open_call(' <ElemPtr s.Pos> ', state);' }
+ElCloseCall { s.Pos = 'close_call(' <ElemPtr s.Pos> ', state);' }
 
-ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ');' }
+ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ', state);' }
 
-ElVariable { s.Mode e.Index = s.Mode 'var(' <Var 1 s.Mode e.Index> ');' }
+ElVariable { s.Mode e.Index = s.Mode 'var(' <Var 1 s.Mode e.Index> ', state);' }
 
 CmdLinkBrackets {
   (e.Indent) s.Left s.Right =

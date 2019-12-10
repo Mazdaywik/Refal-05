@@ -43,7 +43,13 @@ enum r05_datatag {
 
 struct r05_node;
 
-typedef void (*r05_function_ptr) (struct r05_node *begin, struct r05_node *end);
+struct r05_state {
+  size_t memory_use;
+};
+
+typedef void (*r05_function_ptr) (
+  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+);
 
 struct r05_function {
   r05_function_ptr ptr;
@@ -164,44 +170,49 @@ void r05_splice_from_freelist(struct r05_node *pos);
 
 void r05_reset_allocator(void);
 
-struct r05_node *r05_alloc_node(enum r05_datatag tag);
+struct r05_node *r05_alloc_node(enum r05_datatag tag, struct r05_state *state);
 
-struct r05_node *r05_insert_pos(void);
+struct r05_node *r05_insert_pos(struct r05_state *state);
 
-#define r05_alloc_char(ch) \
-  (r05_alloc_node(R05_DATATAG_CHAR)->info.char_ = (ch))
+#define r05_alloc_char(ch, state) \
+  (r05_alloc_node(R05_DATATAG_CHAR, (state))->info.char_ = (ch))
 
-void r05_alloc_chars(const char buffer[], size_t len);
+void r05_alloc_chars(const char buffer[], size_t len, struct r05_state *state);
 
-#define r05_alloc_number(num) \
-  (r05_alloc_node(R05_DATATAG_NUMBER)->info.number = (num))
+#define r05_alloc_number(num, state) \
+  (r05_alloc_node(R05_DATATAG_NUMBER, (state))->info.number = (num))
 
-#define r05_alloc_function(func) \
-  (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function = func)
+#define r05_alloc_function(func, state) \
+  (r05_alloc_node(R05_DATATAG_FUNCTION, (state))->info.function = (func))
 
-#define r05_alloc_open_bracket(pos) \
-  (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET))
+#define r05_alloc_open_bracket(pos, state) \
+  (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET, (state)))
 
-#define r05_alloc_close_bracket(pos) \
-  (*(pos) = r05_alloc_node(R05_DATATAG_CLOSE_BRACKET))
+#define r05_alloc_close_bracket(pos, state) \
+  (*(pos) = r05_alloc_node(R05_DATATAG_CLOSE_BRACKET, (state)))
 
-#define r05_alloc_open_call(pos) \
-  (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_CALL))
+#define r05_alloc_open_call(pos, state) \
+  (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_CALL, (state)))
 
-#define r05_alloc_close_call(pos) \
-  (*(pos) = r05_alloc_node(R05_DATATAG_CLOSE_CALL))
+#define r05_alloc_close_call(pos, state) \
+  (*(pos) = r05_alloc_node(R05_DATATAG_CLOSE_CALL, (state)))
 
-#define r05_alloc_insert_pos(pos) (*(pos) = r05_insert_pos());
+#define r05_alloc_insert_pos(pos, state) (*(pos) = r05_insert_pos((state)));
 
-#define r05_alloc_svar(sample) \
-  (r05_alloc_node((sample)->tag)->info = (sample)->info);
+#define r05_alloc_svar(sample, state) \
+  (r05_alloc_node((sample)->tag, (state))->info = (sample)->info);
 
-void r05_alloc_tvar(struct r05_node *sample);
-void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e);
-void r05_alloc_string(const char *string);
+void r05_alloc_tvar(struct r05_node *sample, struct r05_state *state);
+void r05_alloc_evar(
+  struct r05_node *sample_b, struct r05_node *sample_e,
+  struct r05_state *state
+);
+void r05_alloc_string(const char *string, struct r05_state *state);
 
 
-void r05_enum_function_code(struct r05_node *begin, struct r05_node *end);
+void r05_enum_function_code(
+  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+);
 
 
 /* Профилирование */
@@ -212,10 +223,10 @@ void r05_stop_e_loop(void);
 
 /* Рефал-машина, операционная среда и диагностика */
 
-R05_NORETURN void r05_recognition_impossible(void);
-R05_NORETURN void r05_exit(int retcode);
-R05_NORETURN void r05_builtin_error(const char *message);
-R05_NORETURN void r05_builtin_error_errno(const char *message);
+R05_NORETURN void r05_recognition_impossible(struct r05_state *state);
+R05_NORETURN void r05_exit(int retcode, struct r05_state *state);
+R05_NORETURN void r05_builtin_error(const char *message, struct r05_state *state);
+R05_NORETURN void r05_builtin_error_errno(const char *message, struct r05_state *state);
 
 const char *r05_arg(int no);
 
@@ -246,18 +257,32 @@ R05_NORETURN void r05_switch_default_violation_impl(
 
 #define R05_DEFINE_FUNCTION_AUX(name, scope, rep) \
   static void r05c_ ## name( \
-    struct r05_node *arg_begin, struct r05_node *arg_end \
+    struct r05_node *arg_begin, struct r05_node *arg_end, \
+    struct r05_state *state \
   ); \
   scope struct r05_function r05f_ ## name = { r05c_ ## name, rep }; \
   static void r05c_ ## name( \
-    struct r05_node *arg_begin, struct r05_node *arg_end \
+    struct r05_node *arg_begin, struct r05_node *arg_end, \
+    struct r05_state *state \
   )
 
 
-void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end);
-void r05_dg(struct r05_node *arg_begin, struct r05_node *arg_end);
-void r05_cp(struct r05_node *arg_begin, struct r05_node *arg_end);
-void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end);
+void r05_br(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+);
+void r05_dg(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+);
+void r05_cp(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+);
+void r05_rp(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_state *state
+);
 
 
 #ifdef __cplusplus
