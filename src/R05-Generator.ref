@@ -343,8 +343,8 @@ CmdInsertVar {
 
 CmdReturnResult {
   (e.Indent) =
-    (e.Indent 'r05_splice_from_freelist(arg_begin);')
-    (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end);')
+    (e.Indent 'r05_splice_from_freelist(arg_begin, state);')
+    (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end, state);')
     (e.Indent 'return;');
 }
 

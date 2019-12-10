@@ -24,7 +24,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
     r05_recognition_impossible(state);
   }
 
-  r05_splice_to_freelist(mu, mu);
+  r05_splice_to_freelist(mu, mu, state);
   r05_push_stack(arg_end);
   r05_push_stack(arg_begin);
 }
@@ -55,8 +55,8 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   \
   sX->info.number = sX->info.number op sY->info.number; \
   \
-  r05_splice_to_freelist(arg_begin, func_name); \
-  r05_splice_to_freelist(sY, arg_end);
+  r05_splice_to_freelist(arg_begin, func_name, state); \
+  r05_splice_to_freelist(sY, arg_end, state);
 
 #define NO_CHECK
 #define CHECK_ZERODIV \
@@ -78,7 +78,7 @@ R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
     arg_begin->tag = R05_DATATAG_NUMBER;
     arg_begin->info.number = res;
 
-    r05_splice_to_freelist(func_name, arg_end);
+    r05_splice_to_freelist(func_name, arg_end, state);
   } else {
     arg_begin->tag = R05_DATATAG_NUMBER;
     arg_begin->info.number = 1;
@@ -86,7 +86,7 @@ R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
     func_name->tag = R05_DATATAG_NUMBER;
     func_name->info.number = res;
 
-    r05_splice_to_freelist(sX, arg_end);
+    r05_splice_to_freelist(sX, arg_end, state);
   }
 }
 
@@ -120,8 +120,8 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
 
   r05_reset_allocator(state);
   r05_alloc_string(r05_arg(arg_no), state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -139,8 +139,8 @@ R05_DEFINE_ENTRY_FUNCTION(Card, "Card") {
 
   r05_reset_allocator(state);
   read_from_stream(stdin, state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -174,8 +174,8 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
     p = p->next;
   }
 
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
+  r05_splice_to_freelist(arg_begin, callee, state);
+  r05_splice_to_freelist(arg_end, arg_end, state);
 }
 
 
@@ -216,8 +216,8 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
 
   r05_reset_allocator(state);
   r05_alloc_string(ident->info.function->name, state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -263,8 +263,8 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   r05_link_brackets(left_bracket, right_bracket);
   r05_splice_evar(right_bracket, ePrefix_b, ePrefix_e);
   r05_splice_evar(pos, eSuffix_b, eSuffix_e);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -291,8 +291,8 @@ R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
 
   r05_reset_allocator(state);
   read_from_stream(stream, state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -358,8 +358,8 @@ R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
   sLen->tag = R05_DATATAG_NUMBER;
   sLen->info.number = counter;
 
-  r05_splice_to_freelist(arg_begin, arg_begin);
-  r05_splice_to_freelist(arg_end, arg_end);
+  r05_splice_to_freelist(arg_begin, arg_begin, state);
+  r05_splice_to_freelist(arg_end, arg_end, state);
 }
 
 
@@ -379,8 +379,8 @@ R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
     p = p->next;
   }
 
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
+  r05_splice_to_freelist(arg_begin, callee, state);
+  r05_splice_to_freelist(arg_end, arg_end, state);
 }
 
 /**
@@ -422,7 +422,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   arg_begin->tag = R05_DATATAG_NUMBER;
   arg_begin->info.number = result;
 
-  r05_splice_to_freelist(callee, arg_end);
+  r05_splice_to_freelist(callee, arg_end, state);
 }
 
 
@@ -509,7 +509,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
     r05_builtin_error_errno(error, state);
   }
 
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 static void ensure_close_stream(unsigned int file_no, struct r05_state *state) {
@@ -538,8 +538,8 @@ R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
     p = p->next;
   }
 
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
+  r05_splice_to_freelist(arg_begin, callee, state);
+  r05_splice_to_freelist(arg_end, arg_end, state);
 }
 
 
@@ -609,10 +609,10 @@ static void output_func(
 #undef CHECK_PRINTF
 
   if (type == PRINT || type == PUT) {
-    r05_splice_to_freelist(arg_begin, before_expr);
-    r05_splice_to_freelist(arg_end, arg_end);
+    r05_splice_to_freelist(arg_begin, before_expr, state);
+    r05_splice_to_freelist(arg_end, arg_end, state);
   } else if (type == PROUT || type == PUTOUT || type == WRITE) {
-    r05_splice_to_freelist(arg_begin, arg_end);
+    r05_splice_to_freelist(arg_begin, arg_end, state);
   } else {
     r05_switch_default_violation(type);
   }
@@ -667,7 +667,7 @@ R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
     arg_begin->tag = R05_DATATAG_NUMBER;
     arg_begin->info.number = sX->info.number - sY->info.number;
 
-    r05_splice_to_freelist(func_name, arg_end);
+    r05_splice_to_freelist(func_name, arg_end, state);
   } else {
     arg_begin->tag = R05_DATATAG_CHAR;
     arg_begin->info.char_ = '-';
@@ -675,7 +675,7 @@ R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
     func_name->tag = R05_DATATAG_NUMBER;
     func_name->info.number = sY->info.number - sX->info.number;
 
-    r05_splice_to_freelist(sX, arg_end);
+    r05_splice_to_freelist(sX, arg_end, state);
   }
 }
 
@@ -737,8 +737,8 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
     r05_alloc_string("0", state);
   }
 
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -761,8 +761,8 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
 
   r05_reset_allocator(state);
   r05_alloc_string(time_str, state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -830,7 +830,7 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
   callee->tag = R05_DATATAG_CHAR;
   callee->info.char_ = subtype;
 
-  r05_splice_to_freelist(arg_end, arg_end);
+  r05_splice_to_freelist(arg_end, arg_end, state);
 }
 
 
@@ -850,8 +850,8 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
     p = p->next;
   }
 
-  r05_splice_to_freelist(arg_begin, callee);
-  r05_splice_to_freelist(arg_end, arg_end);
+  r05_splice_to_freelist(arg_begin, callee, state);
+  r05_splice_to_freelist(arg_end, arg_end, state);
 }
 
 
@@ -885,8 +885,8 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
 
   r05_reset_allocator(state);
   r05_alloc_string(env_value, state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -930,8 +930,8 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
     retcode = -retcode;
   }
   r05_alloc_number((r05_number) retcode, state);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -988,7 +988,7 @@ R05_DEFINE_ENTRY_FUNCTION(Close, "Close") {
 
   file_no = (unsigned int) pfile_no->info.number % FILE_LIMIT;
   ensure_close_stream(file_no, state);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -1033,7 +1033,7 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
     arg_begin->info.function = &r05f_False;
   }
 
-  r05_splice_to_freelist(callee, arg_end);
+  r05_splice_to_freelist(callee, arg_end, state);
 }
 
 
@@ -1081,8 +1081,8 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
   r05_alloc_string(message, state);
   r05_alloc_close_bracket(&right_bracket, state);
   r05_link_brackets(left_bracket, right_bracket);
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -1126,8 +1126,8 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
   }
   sX->tag = R05_DATATAG_CHAR;
 
-  r05_splice_to_freelist(arg_begin, func_name);
-  r05_splice_to_freelist(sY, arg_end);
+  r05_splice_to_freelist(arg_begin, func_name, state);
+  r05_splice_to_freelist(sY, arg_end, state);
 }
 
 
@@ -1159,8 +1159,8 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
     --count;
   }
 
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -1188,7 +1188,7 @@ R05_DEFINE_ENTRY_FUNCTION(RandomDigit, "RandomDigit") {
 
   arg_begin->tag = R05_DATATAG_NUMBER;
   arg_begin->info.number = res;
-  r05_splice_to_freelist(callee, arg_end);
+  r05_splice_to_freelist(callee, arg_end, state);
 }
 
 
@@ -1367,6 +1367,6 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 
 #undef ALLOC_BUILTIN
 
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 };

@@ -43,22 +43,7 @@ enum r05_datatag {
 };
 
 struct r05_node;
-
-struct r05_state {
-  size_t memory_use;
-  clock_t start_program_time;
-  clock_t start_pattern_match_time;
-  clock_t total_pattern_match_time;
-  clock_t start_building_result_time;
-  clock_t total_building_result_time;
-  clock_t total_copy_tevar_time;
-  clock_t total_match_repeated_tvar_time;
-  clock_t total_match_repeated_evar_time;
-  clock_t start_e_loop;
-  clock_t total_e_loop;
-  clock_t total_match_repeated_tvar_time_outside_e;
-  clock_t total_match_repeated_evar_time_outside_e;
-};
+struct r05_state;
 
 typedef void (*r05_function_ptr) (
   struct r05_node *begin, struct r05_node *end, struct r05_state *state
@@ -81,6 +66,41 @@ struct r05_node {
     r05_number number;
     struct r05_node *link;
   } info;
+};
+
+enum { CHUNK_SIZE = 251 };
+
+struct memory_chunk {
+  struct r05_node elems[CHUNK_SIZE];
+  struct memory_chunk *next;
+};
+
+struct r05_state {
+  struct memory_chunk *pool;
+  struct r05_node *begin_free_list;
+  struct r05_node *end_free_list;
+  struct r05_node *free_ptr;
+  struct r05_node *begin_view_field;
+  struct r05_node *end_view_field;
+  struct r05_node *begin_arg;
+  struct r05_node *end_arg;
+  /* Переменные копилки */
+  struct r05_node *begin_buried;
+  struct r05_node *end_buried;
+  /* Переменные профилировщика */
+  size_t memory_use;
+  clock_t start_program_time;
+  clock_t start_pattern_match_time;
+  clock_t total_pattern_match_time;
+  clock_t start_building_result_time;
+  clock_t total_building_result_time;
+  clock_t total_copy_tevar_time;
+  clock_t total_match_repeated_tvar_time;
+  clock_t total_match_repeated_evar_time;
+  clock_t start_e_loop;
+  clock_t total_e_loop;
+  clock_t total_match_repeated_tvar_time_outside_e;
+  clock_t total_match_repeated_evar_time_outside_e;
 };
 
 
@@ -199,8 +219,11 @@ void r05_splice_evar(
   struct r05_node *res, struct r05_node *first, struct r05_node *last
 );
 
-void r05_splice_to_freelist(struct r05_node *first, struct r05_node *last);
-void r05_splice_from_freelist(struct r05_node *pos);
+void r05_splice_to_freelist(
+  struct r05_node *first, struct r05_node *last,
+  struct r05_state *state
+);
+void r05_splice_from_freelist(struct r05_node *pos, struct r05_state *state);
 
 void r05_reset_allocator(struct r05_state *state);
 

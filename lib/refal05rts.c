@@ -663,29 +663,6 @@ size_t r05_read_chars(
    Распределитель памяти
 ==============================================================================*/
 
-static struct r05_node s_end_free_list;
-
-static struct r05_node s_begin_free_list = {
-  0, &s_end_free_list, R05_DATATAG_ILLEGAL, { '\0' }
-};
-static struct r05_node s_end_free_list = {
-  &s_begin_free_list, 0, R05_DATATAG_ILLEGAL, { '\0' }
-};
-
-static struct r05_node *s_free_ptr = &s_end_free_list;
-
-/*static size_t s_memory_use = 0;*/
-
-
-enum { CHUNK_SIZE = 251 };
-
-struct memory_chunk {
-  struct r05_node elems[CHUNK_SIZE];
-  struct memory_chunk *next;
-};
-
-static struct memory_chunk *s_pool = NULL;
-
 
 static void weld(struct r05_node *left, struct r05_node *right) {
   assert(left != 0 && right != 0);
@@ -711,8 +688,8 @@ static int create_nodes(struct r05_state *state) {
     return 0;
   }
 
-  chunk->next = s_pool;
-  s_pool = chunk;
+  chunk->next = state->pool;
+  state->pool = chunk;
 
   for (i = 0; i < CHUNK_SIZE - 1; ++i) {
     chunk->elems[i].next = &chunk->elems[i + 1];
@@ -721,10 +698,10 @@ static int create_nodes(struct r05_state *state) {
   }
   chunk->elems[CHUNK_SIZE - 1].tag = R05_DATATAG_ILLEGAL;
 
-  weld(s_end_free_list.prev, &chunk->elems[0]);
-  weld(&chunk->elems[CHUNK_SIZE - 1], &s_end_free_list);
+  weld(state->end_free_list->prev, &chunk->elems[0]);
+  weld(&chunk->elems[CHUNK_SIZE - 1], state->end_free_list);
 
-  s_free_ptr = &chunk->elems[0];
+  state->free_ptr = &chunk->elems[0];
   state->memory_use += CHUNK_SIZE;
 
   return 1;
@@ -734,7 +711,7 @@ static int create_nodes(struct r05_state *state) {
 static void make_dump(struct r05_state *state);
 
 static void ensure_memory(struct r05_state *state) {
-  if ((s_free_ptr == &s_end_free_list) && ! create_nodes(state)) {
+  if ((state->free_ptr == state->end_free_list) && ! create_nodes(state)) {
     fprintf(stderr, "\nNO MEMORY\n\n");
     make_dump(state);
 
@@ -744,10 +721,10 @@ static void ensure_memory(struct r05_state *state) {
 
 
 static void free_memory(struct r05_state *state) {
-  while (s_pool != 0) {
-    struct memory_chunk *next = s_pool->next;
-    free(s_pool);
-    s_pool = next;
+  while (state->pool != NULL) {
+    struct memory_chunk *next = state->pool->next;
+    free(state->pool);
+    state->pool = next;
   }
 
 #ifdef R05_SHOW_STAT
@@ -771,7 +748,7 @@ static void start_building_result(struct r05_state *state);
 
 void r05_reset_allocator(struct r05_state *state) {
   start_building_result(state);
-  s_free_ptr = s_begin_free_list.next;
+  state->free_ptr = state->begin_free_list->next;
 }
 
 
@@ -779,8 +756,8 @@ struct r05_node *r05_alloc_node(enum r05_datatag tag, struct r05_state *state) {
   struct r05_node *node;
 
   ensure_memory(state);
-  node = s_free_ptr;
-  s_free_ptr = s_free_ptr->next;
+  node = state->free_ptr;
+  state->free_ptr = state->free_ptr->next;
   node->tag = tag;
   return node;
 }
@@ -788,7 +765,7 @@ struct r05_node *r05_alloc_node(enum r05_datatag tag, struct r05_state *state) {
 
 struct r05_node *r05_insert_pos(struct r05_state *state) {
   ensure_memory(state);
-  return s_free_ptr;
+  return state->free_ptr;
 }
 
 
@@ -914,15 +891,17 @@ void r05_splice_evar(
 }
 
 
-void r05_splice_to_freelist(struct r05_node *begin, struct r05_node *end) {
-  s_free_ptr = s_begin_free_list.next;
-  s_free_ptr = list_splice(s_free_ptr, begin, end);
+void r05_splice_to_freelist(
+  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+) {
+  state->free_ptr = state->begin_free_list->next;
+  state->free_ptr = list_splice(state->free_ptr, begin, end);
 }
 
 
-void r05_splice_from_freelist(struct r05_node *pos) {
-  if (s_free_ptr != s_begin_free_list.next) {
-    list_splice(pos, s_begin_free_list.next, s_free_ptr->prev);
+void r05_splice_from_freelist(struct r05_node *pos, struct r05_state *state) {
+  if (state->free_ptr != state->begin_free_list->next) {
+    list_splice(pos, state->begin_free_list->next, state->free_ptr->prev);
   }
 }
 
@@ -1134,15 +1113,6 @@ void r05_stop_e_loop(struct r05_state *state) {
 ==============================================================================*/
 
 
-static struct r05_node s_end_view_field;
-
-static struct r05_node s_begin_view_field = {
-  0, &s_end_view_field, R05_DATATAG_ILLEGAL, { '\0' }
-};
-static struct r05_node s_end_view_field = {
-  &s_begin_view_field, 0, R05_DATATAG_ILLEGAL, { '\0' }
-};
-
 static struct r05_node *s_stack_ptr = NULL;
 
 static unsigned long s_step_counter = 0;
@@ -1170,19 +1140,16 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_close_call(&close, state);
   r05_push_stack(close);
   r05_push_stack(open);
-  r05_splice_from_freelist(s_begin_view_field.next);
+  r05_splice_from_freelist(state->begin_view_field->next, state);
 }
-
-static struct r05_node *s_arg_begin;
-static struct r05_node *s_arg_end;
 
 static void main_loop(struct r05_state *state) {
   while (! empty_stack()) {
     struct r05_node *function;
 
-    s_arg_begin = pop_stack();
+    state->begin_arg = pop_stack();
     assert(! empty_stack());
-    s_arg_end = pop_stack();
+    state->end_arg = pop_stack();
 
 #if R05_SHOW_DEBUG
     if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
@@ -1190,9 +1157,9 @@ static void main_loop(struct r05_state *state) {
     }
 #endif  /* R05_SHOW_DEBUG */
 
-    function = s_arg_begin->next;
+    function = state->begin_arg->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      (function->info.function->ptr)(s_arg_begin, s_arg_end, state);
+      (function->info.function->ptr)(state->begin_arg, state->end_arg, state);
     } else {
       r05_recognition_impossible(state);
     }
@@ -1373,20 +1340,20 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 }
 
 
-static void dump_buried(void);
+static void dump_buried(struct r05_state *state);
 
 static void make_dump(struct r05_state *state) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
   fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
-  print_seq(s_arg_begin, s_arg_end);
+  print_seq(state->begin_arg, state->end_arg);
   fprintf(stderr, "\nVIEW FIELD:\n");
-  print_seq(&s_begin_view_field, &s_end_view_field);
+  print_seq(state->begin_view_field, state->end_view_field);
 
-  dump_buried();
+  dump_buried(state);
 
 #ifdef R05_DUMP_FREE_LIST
   fprintf(stderr, "\nFREE LIST:\n");
-  print_seq(&s_begin_free_list, &s_end_free_list);
+  print_seq(state->begin_free_list, state->end_free_list);
 #endif  /* ifdef R05_DUMP_FREE_LIST */
 
   fprintf(stderr,"\nEnd dump\n");
@@ -1395,7 +1362,7 @@ static void make_dump(struct r05_state *state) {
 
 
 R05_NORETURN void r05_exit(int retcode, struct r05_state *state) {
-  dump_buried();
+  dump_buried(state);
   fflush(stderr);
   fflush(stdout);
   end_profiler(state);
@@ -1466,16 +1433,6 @@ R05_NORETURN void r05_switch_default_violation_impl(
 ==============================================================================*/
 
 
-static struct r05_node s_end_buried;
-
-static struct r05_node s_begin_buried = {
-  0, &s_end_buried, R05_DATATAG_ILLEGAL, { '\0' }
-};
-static struct r05_node s_end_buried = {
-  &s_begin_buried, 0, R05_DATATAG_ILLEGAL, { '\0' }
-};
-
-
 struct buried_query {
   struct r05_node *left_bracket;
   struct r05_node *right_bracket;
@@ -1487,12 +1444,12 @@ int buried_query(
   struct buried_query *res, struct r05_node *key_begin,
   struct r05_node *key_end, struct r05_state *state
 ) {
-  struct r05_node *buried_begin = s_begin_buried.next;
+  struct r05_node *buried_begin = state->begin_buried->next;
   struct r05_node *left_bracket, *right_bracket;
   struct r05_node *in_brackets_b, *in_brackets_e;
   int found = 0;
 
-  while (buried_begin != &s_end_buried && ! found) {
+  while (buried_begin != state->end_buried && ! found) {
     struct r05_node *rep_key_b, *rep_key_e;
 
     left_bracket = buried_begin;
@@ -1548,10 +1505,10 @@ static void brrp_impl(
         left_bracket->tag = R05_DATATAG_OPEN_BRACKET;
         right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
         r05_link_brackets(left_bracket, right_bracket);
-        list_splice(s_begin_buried.next, left_bracket, right_bracket);
+        list_splice(state->begin_buried->next, left_bracket, right_bracket);
         arg_end = arg_begin;
       }
-      r05_splice_to_freelist(arg_begin, arg_end);
+      r05_splice_to_freelist(arg_begin, arg_end, state);
       return;
     }
   } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e, state));
@@ -1578,14 +1535,14 @@ static void dgcp_impl(
   if (found) {
     if (behavior == DGCP_DG) {
       r05_splice_evar(arg_begin, query.value_begin, query.value_end);
-      r05_splice_to_freelist(query.left_bracket, query.right_bracket);
+      r05_splice_to_freelist(query.left_bracket, query.right_bracket, state);
     } else {
       r05_alloc_evar(query.value_begin, query.value_end, state);
     }
   }
 
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+  r05_splice_from_freelist(arg_begin, state);
+  r05_splice_to_freelist(arg_begin, arg_end, state);
 }
 
 
@@ -1617,10 +1574,10 @@ void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end,
 }
 
 
-static void dump_buried(void) {
+static void dump_buried(struct r05_state *state) {
 #ifdef R05_DUMP_BURIED
   fprintf(stderr, "\nBURIED:\n");
-  print_seq(&s_begin_buried, &s_end_buried);
+  print_seq(state->begin_buried, state->end_buried);
 #endif  /* ifdef R05_DUMP_BURIED */
 }
 
@@ -1628,8 +1585,42 @@ static void dump_buried(void) {
 int main(int argc, char **argv) {
   s_argc = argc;
   s_argv = argv;
+
+  struct r05_node begin_free_list = {
+    NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  struct r05_node end_free_list = {
+    NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  weld(&begin_free_list, &end_free_list);
+
+  struct r05_node begin_view_field = {
+    NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  struct r05_node end_view_field = {
+    NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  weld(&begin_view_field, &end_view_field);
+
+  struct r05_node begin_buried = {
+    NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  struct r05_node end_buried = {
+    NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  weld(&begin_buried, &end_buried);
+
+
   struct r05_state state = {
-      0 /* memory_use */
+    NULL,
+    &begin_free_list,
+    &end_free_list,
+    &end_free_list,
+    &begin_view_field,
+    &end_view_field,
+    &begin_buried,
+    &end_buried,
+    0 /* memory_use */
   };
 
   init_view_field(&state);
