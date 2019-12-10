@@ -822,7 +822,7 @@ void r05_alloc_chars(const char buffer[], size_t len, struct r05_state *state) {
 void r05_alloc_tvar(struct r05_node *sample, struct r05_state *state) {
   if (is_open_bracket(sample)) {
     struct r05_node *end_of_sample = sample->info.link;
-    copy_nonempty_evar(sample, end_of_sample, sample);
+    copy_nonempty_evar(sample, end_of_sample, state);
   } else {
     r05_alloc_svar(sample, state);
   }
