@@ -118,7 +118,7 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
 
   arg_no = (int) parg_no->info.number;
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_string(r05_arg(arg_no), state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -137,7 +137,7 @@ R05_DEFINE_ENTRY_FUNCTION(Card, "Card") {
     r05_recognition_impossible(state);
   }
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   read_from_stream(stdin, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -214,7 +214,7 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
     r05_recognition_impossible(state);
   }
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_string(ident->info.function->name, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -236,7 +236,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
 
   if (
-    ! r05_svar_left(&sLen, &eItems_b, &eItems_e)
+    ! r05_svar_left(&sLen, &eItems_b, &eItems_e, state)
     || sLen->tag != R05_DATATAG_NUMBER
   ) {
     r05_recognition_impossible(state);
@@ -250,12 +250,12 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   eSuffix_e = eItems_e;
   while (
     counter > 0
-    && r05_open_evar_advance(&ePrefix_b, &ePrefix_e, &eSuffix_b, &eSuffix_e)
+    && r05_open_evar_advance(&ePrefix_b, &ePrefix_e, &eSuffix_b, &eSuffix_e, state)
   ) {
     -- counter;
   }
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_open_bracket(&left_bracket, state);
   r05_alloc_close_bracket(&right_bracket, state);
   pos = r05_insert_pos(state);
@@ -289,7 +289,7 @@ R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
 
   stream = open_numbered((unsigned int) pfile_no->info.number, 'r', state);
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   read_from_stream(stream, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -351,7 +351,7 @@ R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
   r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
   sLen = arg_begin->next;
 
-  while (r05_tvar_left(&tTerm, &eItems_b, &eItems_e)) {
+  while (r05_tvar_left(&tTerm, &eItems_b, &eItems_e, state)) {
     ++ counter;
   }
 
@@ -458,9 +458,9 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
 
   if (
-    ! r05_svar_left(&sMode, &eFileName_b, &eFileName_e)
+    ! r05_svar_left(&sMode, &eFileName_b, &eFileName_e, state)
     || (R05_DATATAG_CHAR != sMode->tag && R05_DATATAG_FUNCTION != sMode->tag)
-    || ! r05_svar_left(&sFileNo, &eFileName_b, &eFileName_e)
+    || ! r05_svar_left(&sFileNo, &eFileName_b, &eFileName_e, state)
     || R05_DATATAG_NUMBER != sFileNo->tag
   ) {
     r05_recognition_impossible(state);
@@ -719,7 +719,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
 
   number = pnumber->info.number;
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
 
   if (sign != '\0') {
     r05_alloc_char(sign, state);
@@ -759,7 +759,7 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
   assert(n != NULL);
   *n = '\0';
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_string(time_str, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -883,7 +883,7 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
     env_value = "";
   }
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_string(env_value, state);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -924,7 +924,7 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
   }
 #endif  /* defined(WIFEXITED) && defined(WEXITSTATUS) */
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   if (retcode < 0) {
     r05_alloc_char('-', state);
     retcode = -retcode;
@@ -1075,7 +1075,7 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
     message = strerror(errno);
   }
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_function(sign, state);
   r05_alloc_open_bracket(&left_bracket, state);
   r05_alloc_string(message, state);
@@ -1153,7 +1153,7 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
   count = count > 0 ? count - 1 : 1;
   count = random_digit_in_range(count) + 1;
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   while (count > 0) {
     r05_alloc_number(random_digit(), state);
     --count;
@@ -1297,7 +1297,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   r05_alloc_close_bracket(&right_bracket, state); \
   r05_link_brackets(left_bracket, right_bracket);
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
 
   ALLOC_BUILTIN(1, Mu, special)
   ALLOC_BUILTIN(2, Add, regular)

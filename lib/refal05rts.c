@@ -72,7 +72,8 @@ int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
 
 
 int r05_function_left(
-  struct r05_function *fn, struct r05_node **first, struct r05_node **last
+  struct r05_function *fn, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -90,7 +91,8 @@ int r05_function_left(
 
 
 int r05_function_right(
-  struct r05_function *fn, struct r05_node **first, struct r05_node **last
+  struct r05_function *fn, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -107,7 +109,10 @@ int r05_function_right(
 }
 
 
-int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
+int r05_char_left(
+  char ch, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
+) {
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -123,7 +128,10 @@ int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
 }
 
 
-int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
+int r05_char_right(
+  char ch, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
+) {
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -140,7 +148,8 @@ int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
 
 
 int r05_number_left(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  r05_number num, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -158,7 +167,8 @@ int r05_number_left(
 
 
 int r05_number_right(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  r05_number num, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -177,7 +187,8 @@ int r05_number_right(
 
 int r05_brackets_left(
   struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -211,7 +222,8 @@ int r05_brackets_left(
 
 int r05_brackets_right(
   struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -247,7 +259,8 @@ int r05_brackets_right(
 #define is_close_bracket(node) (R05_DATATAG_CLOSE_BRACKET == (node)->tag)
 
 int r05_svar_left(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -264,7 +277,8 @@ int r05_svar_left(
 
 
 int r05_svar_right(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -281,7 +295,8 @@ int r05_svar_right(
 
 
 int r05_tvar_left(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -303,7 +318,8 @@ int r05_tvar_left(
 
 
 int r05_tvar_right(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   assert((*first == 0) == (*last == 0));
 
@@ -361,11 +377,14 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
 }
 
 
-static void add_match_repeated_tvar_time(clock_t duration);
+static void add_match_repeated_tvar_time(
+  clock_t duration, struct r05_state *state
+);
 
 static int equal_expressions(
   struct r05_node *first1, struct r05_node *last1,
-  struct r05_node *first2, struct r05_node *last2
+  struct r05_node *first2, struct r05_node *last2,
+  struct r05_state *state
 ) {
   clock_t start_match = clock();
 
@@ -386,7 +405,7 @@ static int equal_expressions(
       || !equal_nodes(first1, first2)
   */
 
-  add_match_repeated_tvar_time(clock() - start_match);
+  add_match_repeated_tvar_time(clock() - start_match, state);
 
   /* Успешное завершение — если мы достигли конца в обоих выражениях */
   if (r05_empty_seq(first1, last1) && r05_empty_seq(first2, last2)) {
@@ -400,16 +419,20 @@ static int equal_expressions(
 
 int r05_repeated_stvar_left(
   struct r05_node **stvar, struct r05_node *stvar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   struct r05_node *left_term = 0;
   struct r05_node *copy_last = *last;
 
   assert((*first == 0) == (*last == 0));
 
-  if (! is_open_bracket(stvar_sample) && r05_svar_left(stvar, first, last)) {
+  if (
+    ! is_open_bracket(stvar_sample) &&
+    r05_svar_left(stvar, first, last, state)
+  ) {
     return equal_nodes(*stvar, stvar_sample);
-  } else if (r05_tvar_left(&left_term, first, last)) {
+  } else if (r05_tvar_left(&left_term, first, last, state)) {
     struct r05_node *left_term_e;
     struct r05_node *stvar_sample_e;
 
@@ -425,7 +448,9 @@ int r05_repeated_stvar_left(
       stvar_sample_e = stvar_sample;
     }
 
-    if (equal_expressions(left_term, left_term_e, stvar_sample, stvar_sample_e)) {
+    if (equal_expressions(
+        left_term, left_term_e,stvar_sample, stvar_sample_e, state
+      )) {
       *stvar = left_term;
 
       return 1;
@@ -439,16 +464,20 @@ int r05_repeated_stvar_left(
 
 int r05_repeated_stvar_right(
   struct r05_node **stvar, struct r05_node *stvar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   struct r05_node *right_term = 0;
   struct r05_node *old_last = *last;
 
   assert((*first == 0) == (*last == 0));
 
-  if (! is_open_bracket(stvar_sample) && r05_svar_right(stvar, first, last)) {
+  if (
+    ! is_open_bracket(stvar_sample)
+    && r05_svar_right(stvar, first, last, state)
+  ) {
     return equal_nodes(*stvar, stvar_sample);
-  } else if (r05_tvar_right(&right_term, first, last)) {
+  } else if (r05_tvar_right(&right_term, first, last, state)) {
     struct r05_node *right_term_e = old_last;
     struct r05_node *stvar_sample_e;
 
@@ -458,7 +487,9 @@ int r05_repeated_stvar_right(
       stvar_sample_e = stvar_sample;
     }
 
-    if (equal_expressions(right_term, right_term_e, stvar_sample, stvar_sample_e)) {
+    if (equal_expressions(
+        right_term, right_term_e, stvar_sample, stvar_sample_e, state
+      )) {
       *stvar = right_term;
 
       return 1;
@@ -471,12 +502,15 @@ int r05_repeated_stvar_right(
 }
 
 
-static void add_match_repeated_evar_time(clock_t duration);
+static void add_match_repeated_evar_time(
+  clock_t duration, struct r05_state *state
+);
 
 int r05_repeated_evar_left(
   struct r05_node **evar_b, struct r05_node **evar_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   clock_t start_match = clock();
   struct r05_node *current = *first;
@@ -493,7 +527,7 @@ int r05_repeated_evar_left(
     move_left(&current, &copy_last);
   }
 
-  add_match_repeated_evar_time(clock() - start_match);
+  add_match_repeated_evar_time(clock() - start_match, state);
 
   /*
     Здесь r05_empty_seq(current, copy_last)
@@ -529,7 +563,8 @@ int r05_repeated_evar_left(
 int r05_repeated_evar_right(
   struct r05_node **evar_b, struct r05_node **evar_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   clock_t start_match = clock();
   struct r05_node *current = *last;
@@ -546,7 +581,7 @@ int r05_repeated_evar_right(
     move_right(&evar_b_sample, &cur_sample);
   }
 
-  add_match_repeated_evar_time(clock() - start_match);
+  add_match_repeated_evar_time(clock() - start_match, state);
 
   /*
     Здесь r05_empty_seq(copy_first, current)
@@ -582,13 +617,14 @@ int r05_repeated_evar_right(
 
 int r05_open_evar_advance(
   struct r05_node **evar_b, struct r05_node **evar_e,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 ) {
   struct r05_node *prev_first = 0;
 
   assert((*first == 0) == (*last == 0));
 
-  if (r05_tvar_left(&prev_first, first, last)) {
+  if (r05_tvar_left(&prev_first, first, last, state)) {
     if (! *evar_b) {
       *evar_b = prev_first;
     }
@@ -731,10 +767,10 @@ static void free_memory(struct r05_state *state) {
    Операции построения результата
 ==============================================================================*/
 
-static void start_building_result(void);
+static void start_building_result(struct r05_state *state);
 
-void r05_reset_allocator(void) {
-  start_building_result();
+void r05_reset_allocator(struct r05_state *state) {
+  start_building_result(state);
   s_free_ptr = s_begin_free_list.next;
 }
 
@@ -776,7 +812,7 @@ static struct r05_node *list_splice(
 }
 
 
-static void add_copy_tevar_time(clock_t duration);
+static void add_copy_tevar_time(clock_t duration, struct r05_state *state);
 
 static void copy_nonempty_evar(
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
@@ -807,7 +843,7 @@ static void copy_nonempty_evar(
 
   assert(bracket_stack == 0);
 
-  add_copy_tevar_time(clock() - start_copy_time);
+  add_copy_tevar_time(clock() - start_copy_time, state);
 }
 
 
@@ -904,50 +940,39 @@ void r05_enum_function_code(
    Внутренний профилировщик
 ==============================================================================*/
 
-static clock_t s_start_program_time;
-static clock_t s_start_pattern_match_time;
-static clock_t s_total_pattern_match_time;
-static clock_t s_start_building_result_time;
-static clock_t s_total_building_result_time;
-static clock_t s_total_copy_tevar_time;
-static clock_t s_total_match_repeated_tvar_time;
-static clock_t s_total_match_repeated_evar_time;
-static clock_t s_start_e_loop;
-static clock_t s_total_e_loop;
-static clock_t s_total_match_repeated_tvar_time_outside_e;
-static clock_t s_total_match_repeated_evar_time_outside_e;
-
 
 static int s_in_generated;
 static int s_in_e_loop;
 
 
-static void start_profiler(void) {
-  s_start_program_time = clock();
+static void start_profiler(struct r05_state *state) {
+  state->start_program_time = clock();
   s_in_generated = 0;
 }
 
 
-static void start_building_result(void) {
+static void start_building_result(struct r05_state *state) {
   if (s_in_generated) {
     clock_t pattern_match;
 
-    s_start_building_result_time = clock();
-    pattern_match = s_start_building_result_time - s_start_pattern_match_time;
-    s_total_pattern_match_time += pattern_match;
+    state->start_building_result_time = clock();
+    pattern_match =
+      state->start_building_result_time - state->start_pattern_match_time;
+    state->total_pattern_match_time += pattern_match;
 
     if (s_in_e_loop > 0) {
-      s_total_e_loop += (s_start_building_result_time - s_start_e_loop);
+      state->total_e_loop +=
+        (state->start_building_result_time - state->start_e_loop);
       s_in_e_loop = 0;
     }
   }
 }
 
 
-static void after_step(void) {
+static void after_step(struct r05_state *state) {
   if (s_in_generated) {
-    clock_t building_result = clock() - s_start_building_result_time;
-    s_total_building_result_time += building_result;
+    clock_t building_result = clock() - state->start_building_result_time;
+    state->total_building_result_time += building_result;
   }
 
   assert(s_in_e_loop == 0);
@@ -957,23 +982,27 @@ static void after_step(void) {
 }
 
 
-static void add_copy_tevar_time(clock_t duration) {
-  s_total_copy_tevar_time += duration;
+static void add_copy_tevar_time(clock_t duration, struct r05_state *state) {
+  state->total_copy_tevar_time += duration;
 }
 
-static void add_match_repeated_tvar_time(clock_t duration) {
+static void add_match_repeated_tvar_time(
+  clock_t duration, struct r05_state *state
+) {
   if (s_in_e_loop) {
-    s_total_match_repeated_tvar_time += duration;
+    state->total_match_repeated_tvar_time += duration;
   } else {
-    s_total_match_repeated_tvar_time_outside_e += duration;
+    state->total_match_repeated_tvar_time_outside_e += duration;
   }
 }
 
-static void add_match_repeated_evar_time(clock_t duration) {
+static void add_match_repeated_evar_time(
+  clock_t duration, struct r05_state *state
+) {
   if (s_in_e_loop) {
-    s_total_match_repeated_evar_time += duration;
+    state->total_match_repeated_evar_time += duration;
   } else {
-    s_total_match_repeated_evar_time_outside_e += duration;
+    state->total_match_repeated_evar_time_outside_e += duration;
   }
 }
 
@@ -996,7 +1025,7 @@ static int reverse_compare(const void *left_void, const void *right_void) {
   }
 }
 
-static void print_profile(void) {
+static void print_profile(struct r05_state *state) {
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
 
   clock_t full_time;
@@ -1010,14 +1039,16 @@ static void print_profile(void) {
 
   size_t i;
 
-  full_time = clock() - s_start_program_time;
-  refal_time = s_total_pattern_match_time + s_total_building_result_time;
+  full_time = clock() - state->start_program_time;
+  refal_time =
+    state->total_pattern_match_time + state->total_building_result_time;
   repeated_time =
-    s_total_match_repeated_tvar_time + s_total_match_repeated_evar_time;
-  eloop_time = s_total_e_loop - repeated_time;
+    state->total_match_repeated_tvar_time
+    + state->total_match_repeated_evar_time;
+  eloop_time = state->total_e_loop - repeated_time;
   repeated_time_outside_e =
-    s_total_match_repeated_tvar_time_outside_e
-    + s_total_match_repeated_evar_time_outside_e;
+    state->total_match_repeated_tvar_time_outside_e
+    + state->total_match_repeated_evar_time_outside_e;
 
   /*
     Ложное предупреждение BCC 5.5:
@@ -1030,22 +1061,23 @@ static void print_profile(void) {
   items[2].name = "(Total refal time)";
   items[2].counter = refal_time;
   items[3].name = "Linear pattern time";
-  items[3].counter = s_total_pattern_match_time
+  items[3].counter = state->total_pattern_match_time
     - (eloop_time + repeated_time + repeated_time_outside_e);
   items[4].name = "Linear result time";
-  items[4].counter = s_total_building_result_time - s_total_copy_tevar_time;
+  items[4].counter =
+    state->total_building_result_time - state->total_copy_tevar_time;
   items[5].name = "Open e-loop time (clear)";
   items[5].counter = eloop_time;
   items[6].name = "Repeated e-var match time (inside e-loops)";
-  items[6].counter = s_total_match_repeated_evar_time;
+  items[6].counter = state->total_match_repeated_evar_time;
   items[7].name = "Repeated e-var match time (outside e-loops)";
-  items[7].counter = s_total_match_repeated_tvar_time_outside_e;
+  items[7].counter = state->total_match_repeated_tvar_time_outside_e;
   items[8].name = "Repeated t-var match time (inside e-loops)";
-  items[8].counter = s_total_match_repeated_tvar_time;
+  items[8].counter = state->total_match_repeated_tvar_time;
   items[9].name = "Repeated t-var match time (outside e-loops)";
-  items[9].counter = s_total_match_repeated_tvar_time_outside_e;
+  items[9].counter = state->total_match_repeated_tvar_time_outside_e;
   items[10].name = "t- and e-var copy time";
-  items[10].counter = s_total_copy_tevar_time;
+  items[10].counter = state->total_copy_tevar_time;
 
   qsort(items, nItems, sizeof(items[0]), reverse_compare);
 
@@ -1064,35 +1096,35 @@ static void print_profile(void) {
 
 #endif  /* R05_SHOW_STAT */
 
-static void end_profiler(void) {
-  after_step();
+static void end_profiler(struct r05_state *state) {
+  after_step(state);
 
 #ifdef R05_SHOW_STAT
-  print_profile();
+  print_profile(state);
 #endif  /* R05_SHOW_STAT */
 }
 
 
-void r05_start_e_loop(void) {
+void r05_start_e_loop(struct r05_state *state) {
   assert(s_in_generated);
 
   if (s_in_e_loop++ == 0) {
-    s_start_e_loop = clock();
+    state->start_e_loop = clock();
   }
 }
 
 
-void r05_this_is_generated_function(void) {
-  s_start_pattern_match_time = clock();
+void r05_this_is_generated_function(struct r05_state *state) {
+  state->start_pattern_match_time = clock();
   s_in_generated = 1;
 }
 
 
-void r05_stop_e_loop(void) {
+void r05_stop_e_loop(struct r05_state *state) {
   assert(s_in_generated);
 
   if (--s_in_e_loop == 0) {
-    s_total_e_loop += (clock() - s_start_e_loop);
+    state->total_e_loop += (clock() - state->start_e_loop);
   }
 }
 
@@ -1132,7 +1164,7 @@ extern struct r05_function r05f_Go;
 static void init_view_field(struct r05_state *state) {
   struct r05_node *open, *close;
 
-  r05_reset_allocator();
+  r05_reset_allocator(state);
   r05_alloc_open_call(&open, state);
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
@@ -1164,7 +1196,7 @@ static void main_loop(struct r05_state *state) {
     } else {
       r05_recognition_impossible(state);
     }
-    after_step();
+    after_step(state);
 
     ++ s_step_counter;
   }
@@ -1366,7 +1398,7 @@ R05_NORETURN void r05_exit(int retcode, struct r05_state *state) {
   dump_buried();
   fflush(stderr);
   fflush(stdout);
-  end_profiler();
+  end_profiler(state);
 
 #ifdef R05_SHOW_STAT
   fprintf(stderr, "Step count %lu\n", s_step_counter);
@@ -1452,7 +1484,8 @@ struct buried_query {
 };
 
 int buried_query(
-  struct buried_query *res, struct r05_node *key_begin, struct r05_node *key_end
+  struct buried_query *res, struct r05_node *key_begin,
+  struct r05_node *key_end, struct r05_state *state
 ) {
   struct r05_node *buried_begin = s_begin_buried.next;
   struct r05_node *left_bracket, *right_bracket;
@@ -1471,9 +1504,10 @@ int buried_query(
       r05_repeated_evar_left(
         &rep_key_b, &rep_key_e,
         key_begin, key_end,
-        &in_brackets_b, &in_brackets_e
+        &in_brackets_b, &in_brackets_e,
+        state
       )
-      && r05_char_left('=', &in_brackets_b, &in_brackets_e);
+      && r05_char_left('=', &in_brackets_b, &in_brackets_e, state);
 
     buried_begin = right_bracket->next;
   }
@@ -1502,10 +1536,10 @@ static void brrp_impl(
   key_e = NULL;
   r05_prepare_argument(&val_b, &val_e, arg_begin, arg_end);
   do {
-    if (r05_char_left('=', &val_b, &val_e)) {
+    if (r05_char_left('=', &val_b, &val_e, state)) {
       struct buried_query query;
 
-      if (BRRP_RP == behavior && buried_query(&query, key_b, key_e)) {
+      if (BRRP_RP == behavior && buried_query(&query, key_b, key_e, state)) {
         list_splice(query.right_bracket, val_b, val_e);
         list_splice(arg_end, query.value_begin, query.value_end);
       } else {
@@ -1520,7 +1554,7 @@ static void brrp_impl(
       r05_splice_to_freelist(arg_begin, arg_end);
       return;
     }
-  } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e));
+  } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e, state));
 
   r05_recognition_impossible(state);
 }
@@ -1537,9 +1571,9 @@ static void dgcp_impl(
   int found;
 
   r05_prepare_argument(&key_begin, &key_end, arg_begin, arg_end);
-  r05_reset_allocator();
+  r05_reset_allocator(state);
 
-  found = buried_query(&query, key_begin, key_end);
+  found = buried_query(&query, key_begin, key_end, state);
 
   if (found) {
     if (behavior == DGCP_DG) {
@@ -1599,7 +1633,7 @@ int main(int argc, char **argv) {
   };
 
   init_view_field(&state);
-  start_profiler();
+  start_profiler(&state);
   main_loop(&state);
   r05_exit(0, &state);
 

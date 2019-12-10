@@ -88,7 +88,7 @@ GenFunction {
 
   s.ScopeClass (e.Name) e.Sentences =
     ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
-    ('  r05_this_is_generated_function();')
+    ('  r05_this_is_generated_function(state);')
     <Map generator_GenSentence <AddFailCommand e.Sentences>>
     ('}')
     ();
@@ -213,7 +213,7 @@ CmdMatch {
   (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
     (e.Indent
       'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
-      '(' <MatchArgs s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> '))'
+      '(' <MatchArgs s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> ', state))'
     )
     (e.Indent '  continue;');
 }
@@ -270,7 +270,7 @@ CmdOpenedE-Start {
   (e.Indent) s.BracketNumber 'e' e.Index =
     (e.Indent <EVar-B 1 'e' e.Index> ' = 0;')
     (e.Indent <EVar-E 1 'e' e.Index> ' = 0;')
-    (e.Indent 'r05_start_e_loop();')
+    (e.Indent 'r05_start_e_loop(state);')
     (e.Indent 'do {');
 }
 
@@ -279,9 +279,9 @@ CmdOpenedE-End {
     (e.Indent
       '} while (r05_open_evar_advance('
       <VarPtr 1 'e' e.Index> ', ' <RangeVarsPtr s.BracketNumber>
-      '));'
+      ', state));'
     )
-    (e.Indent 'r05_stop_e_loop();');
+    (e.Indent 'r05_stop_e_loop(state);');
 }
 
 CmdSave {
@@ -291,7 +291,7 @@ CmdSave {
 }
 
 CmdEmptyResult {
-  (e.Indent) = () (e.Indent 'r05_reset_allocator();');
+  (e.Indent) = () (e.Indent 'r05_reset_allocator(state);');
 }
 
 CmdResultArray {

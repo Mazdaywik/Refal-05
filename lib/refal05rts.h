@@ -2,6 +2,7 @@
 #define Refal05RTS_H_
 
 #include <stddef.h>
+#include <time.h>
 
 
 #ifdef __cplusplus
@@ -45,6 +46,18 @@ struct r05_node;
 
 struct r05_state {
   size_t memory_use;
+  clock_t start_program_time;
+  clock_t start_pattern_match_time;
+  clock_t total_pattern_match_time;
+  clock_t start_building_result_time;
+  clock_t total_building_result_time;
+  clock_t total_copy_tevar_time;
+  clock_t total_match_repeated_tvar_time;
+  clock_t total_match_repeated_evar_time;
+  clock_t start_e_loop;
+  clock_t total_e_loop;
+  clock_t total_match_repeated_tvar_time_outside_e;
+  clock_t total_match_repeated_evar_time_outside_e;
 };
 
 typedef void (*r05_function_ptr) (
@@ -81,73 +94,94 @@ void r05_prepare_argument(
 int r05_empty_seq(struct r05_node *begin, struct r05_node *end);
 
 int r05_function_left(
-  struct r05_function *func, struct r05_node **first, struct r05_node **last
+  struct r05_function *func, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 int r05_function_right(
-  struct r05_function *func, struct r05_node **first, struct r05_node **last
+  struct r05_function *func, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
-int r05_char_left(char ch, struct r05_node **first, struct r05_node **last);
-int r05_char_right(char ch, struct r05_node **first, struct r05_node **last);
+int r05_char_left(
+  char ch, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
+);
+int r05_char_right(
+  char ch, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
+);
 
 int r05_number_left(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  r05_number num, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 int r05_number_right(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  r05_number num, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_brackets_left(
   struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_brackets_right(
   struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_svar_left(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_svar_right(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_tvar_left(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_tvar_right(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_repeated_stvar_left(
   struct r05_node **stvar, struct r05_node *stvar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_repeated_stvar_right(
   struct r05_node **stvar, struct r05_node *stvar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_repeated_evar_left(
   struct r05_node **evar_b, struct r05_node **evar_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_repeated_evar_right(
   struct r05_node **evar_b, struct r05_node **evar_e,
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 int r05_open_evar_advance(
   struct r05_node **evar_b, struct r05_node **evar_e,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **first, struct r05_node **last,
+  struct r05_state *state
 );
 
 size_t r05_read_chars(
@@ -168,7 +202,7 @@ void r05_splice_evar(
 void r05_splice_to_freelist(struct r05_node *first, struct r05_node *last);
 void r05_splice_from_freelist(struct r05_node *pos);
 
-void r05_reset_allocator(void);
+void r05_reset_allocator(struct r05_state *state);
 
 struct r05_node *r05_alloc_node(enum r05_datatag tag, struct r05_state *state);
 
@@ -217,9 +251,9 @@ void r05_enum_function_code(
 
 /* Профилирование */
 
-void r05_this_is_generated_function(void);
-void r05_start_e_loop(void);
-void r05_stop_e_loop(void);
+void r05_this_is_generated_function(struct r05_state *state);
+void r05_start_e_loop(struct r05_state *state);
+void r05_stop_e_loop(struct r05_state *state);
 
 /* Рефал-машина, операционная среда и диагностика */
 
