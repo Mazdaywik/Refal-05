@@ -920,18 +920,15 @@ void r05_enum_function_code(
 ==============================================================================*/
 
 
-static int s_in_generated;
-static int s_in_e_loop;
-
 
 static void start_profiler(struct r05_state *state) {
   state->start_program_time = clock();
-  s_in_generated = 0;
+  state->in_generated = 0;
 }
 
 
 static void start_building_result(struct r05_state *state) {
-  if (s_in_generated) {
+  if (state->in_generated) {
     clock_t pattern_match;
 
     state->start_building_result_time = clock();
@@ -939,25 +936,25 @@ static void start_building_result(struct r05_state *state) {
       state->start_building_result_time - state->start_pattern_match_time;
     state->total_pattern_match_time += pattern_match;
 
-    if (s_in_e_loop > 0) {
+    if (state->in_e_loop > 0) {
       state->total_e_loop +=
         (state->start_building_result_time - state->start_e_loop);
-      s_in_e_loop = 0;
+      state->in_e_loop = 0;
     }
   }
 }
 
 
 static void after_step(struct r05_state *state) {
-  if (s_in_generated) {
+  if (state->in_generated) {
     clock_t building_result = clock() - state->start_building_result_time;
     state->total_building_result_time += building_result;
   }
 
-  assert(s_in_e_loop == 0);
+  assert(state->in_e_loop == 0);
 
-  s_in_generated = 0;
-  s_in_e_loop = 0;
+  state->in_generated = 0;
+  state->in_e_loop = 0;
 }
 
 
@@ -968,7 +965,7 @@ static void add_copy_tevar_time(clock_t duration, struct r05_state *state) {
 static void add_match_repeated_tvar_time(
   clock_t duration, struct r05_state *state
 ) {
-  if (s_in_e_loop) {
+  if (state->in_e_loop) {
     state->total_match_repeated_tvar_time += duration;
   } else {
     state->total_match_repeated_tvar_time_outside_e += duration;
@@ -978,7 +975,7 @@ static void add_match_repeated_tvar_time(
 static void add_match_repeated_evar_time(
   clock_t duration, struct r05_state *state
 ) {
-  if (s_in_e_loop) {
+  if (state->in_e_loop) {
     state->total_match_repeated_evar_time += duration;
   } else {
     state->total_match_repeated_evar_time_outside_e += duration;
@@ -1085,9 +1082,9 @@ static void end_profiler(struct r05_state *state) {
 
 
 void r05_start_e_loop(struct r05_state *state) {
-  assert(s_in_generated);
+  assert(state->in_generated);
 
-  if (s_in_e_loop++ == 0) {
+  if (state->in_e_loop++ == 0) {
     state->start_e_loop = clock();
   }
 }
@@ -1095,14 +1092,14 @@ void r05_start_e_loop(struct r05_state *state) {
 
 void r05_this_is_generated_function(struct r05_state *state) {
   state->start_pattern_match_time = clock();
-  s_in_generated = 1;
+  state->in_generated = 1;
 }
 
 
 void r05_stop_e_loop(struct r05_state *state) {
-  assert(s_in_generated);
+  assert(state->in_generated);
 
-  if (--s_in_e_loop == 0) {
+  if (--state->in_e_loop == 0) {
     state->total_e_loop += (clock() - state->start_e_loop);
   }
 }
@@ -1114,8 +1111,6 @@ void r05_stop_e_loop(struct r05_state *state) {
 
 
 static struct r05_node *s_stack_ptr = NULL;
-
-static unsigned long s_step_counter = 0;
 
 
 static struct r05_node *pop_stack(void) {
@@ -1152,7 +1147,7 @@ static void main_loop(struct r05_state *state) {
     state->end_arg = pop_stack();
 
 #if R05_SHOW_DEBUG
-    if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
+    if (state->step_counter >= (unsigned long) R05_SHOW_DEBUG) {
       make_dump(&state);
     }
 #endif  /* R05_SHOW_DEBUG */
@@ -1165,7 +1160,7 @@ static void main_loop(struct r05_state *state) {
     }
     after_step(state);
 
-    ++ s_step_counter;
+    ++ state->step_counter;
   }
 }
 
@@ -1343,7 +1338,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 static void dump_buried(struct r05_state *state);
 
 static void make_dump(struct r05_state *state) {
-  fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
+  fprintf(stderr, "\nSTEP NUMBER %lu\n", state->step_counter);
   fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
   print_seq(state->begin_arg, state->end_arg);
   fprintf(stderr, "\nVIEW FIELD:\n");
@@ -1368,7 +1363,7 @@ R05_NORETURN void r05_exit(int retcode, struct r05_state *state) {
   end_profiler(state);
 
 #ifdef R05_SHOW_STAT
-  fprintf(stderr, "Step count %lu\n", s_step_counter);
+  fprintf(stderr, "Step count %lu\n", state->step_counter);
 #endif  /* R05_SHOW_STAT */
 
   free_memory(state);
@@ -1620,7 +1615,8 @@ int main(int argc, char **argv) {
     &end_view_field,
     &begin_buried,
     &end_buried,
-    0 /* memory_use */
+    0, /* memory_use */
+    0 /* step_counter */
   };
 
   init_view_field(&state);

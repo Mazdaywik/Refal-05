@@ -89,6 +89,9 @@ struct r05_state {
   struct r05_node *end_buried;
   /* Переменные профилировщика */
   size_t memory_use;
+  unsigned long step_counter;
+  int in_generated;
+  int in_e_loop;
   clock_t start_program_time;
   clock_t start_pattern_match_time;
   clock_t total_pattern_match_time;
