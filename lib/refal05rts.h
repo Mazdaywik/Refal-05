@@ -68,25 +68,18 @@ struct r05_node {
   } info;
 };
 
-enum { CHUNK_SIZE = 251 };
-
-struct memory_chunk {
-  struct r05_node elems[CHUNK_SIZE];
-  struct memory_chunk *next;
-};
+struct memory_chunk;
 
 struct r05_state {
-  struct memory_chunk *pool;
-  struct r05_node *begin_free_list;
-  struct r05_node *end_free_list;
+  struct r05_node begin_free_list;
+  struct r05_node end_free_list;
   struct r05_node *free_ptr;
-  struct r05_node *begin_view_field;
-  struct r05_node *end_view_field;
-  struct r05_node *begin_arg;
-  struct r05_node *end_arg;
+  struct r05_node *arg_begin;
+  struct r05_node *arg_end;
+  struct memory_chunk *pool;
   /* Переменные копилки */
-  struct r05_node *begin_buried;
-  struct r05_node *end_buried;
+  struct r05_node begin_buried;
+  struct r05_node end_buried;
   /* Переменные профилировщика */
   size_t memory_use;
   unsigned long step_counter;
