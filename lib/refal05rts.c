@@ -1113,7 +1113,7 @@ static void alloc_and_push_aterm_list(
   struct r05_aterm *parent, struct r05_state *state
 ) {
   struct r05_aterm *aterm;
-  aterm = malloc(sizeof(aterm));
+  aterm = malloc(sizeof(*aterm));
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
   aterm->parent = parent;
