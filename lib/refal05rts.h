@@ -3,6 +3,9 @@
 
 #include <stddef.h>
 #include <time.h>
+#include <signal.h>
+#include <pthread.h>
+#include <stdatomic.h>
 
 
 #ifdef __cplusplus
@@ -97,6 +100,15 @@ struct r05_state {
   clock_t total_e_loop;
   clock_t total_match_repeated_tvar_time_outside_e;
   clock_t total_match_repeated_evar_time_outside_e;
+};
+
+struct r05_aterm {
+  struct r05_aterm *parent; /* for tree structure */
+  struct r05_aterm *next; /* for call list structure */
+  struct r05_node *arg_begin; /* open call bracket */
+  struct r05_node *arg_end; /* close call bracket */
+  sig_atomic_t category; /* represents shadow state */
+  atomic_int child_aterms; /* counter for child aterms in tree structure */
 };
 
 
