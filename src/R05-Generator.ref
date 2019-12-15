@@ -650,6 +650,8 @@ GenResult {
       (e.PatternVars)
       (/* alloc commands */) (/* other commands */)
       0 /* счётчик новых элементов */
+      0 /* счетчик количества вызовов */
+      0 /* счетчик глубины вызова */
       e.Result
     >;
 }
@@ -683,75 +685,92 @@ DesugarName {
 
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter
   (Symbol Char s.Char1) (Symbol Char s.Char2) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+      (e.Vars) (e.AllocCommands) (e.Commands)
+      s.Counter s.CallCounter s.NestedCounter
       (TkString 2 s.Char1 s.Char2) e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Symbol Char s.Value) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Symbol Char s.Value) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElSymbol Char s.Value))
       (e.Commands)
-      s.Counter e.Result
+      s.Counter s.CallCounter s.NestedCounter
+      e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter
   (TkString s.Len e.String) (Symbol Char s.Char) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+      (e.Vars) (e.AllocCommands) (e.Commands)
+      s.Counter s.CallCounter s.NestedCounter
       (TkString <Inc s.Len> e.String s.Char) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter
   (TkString s.Len e.String) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElString s.Len e.String))
       (e.Commands)
-      s.Counter e.Result
+      s.Counter s.CallCounter s.NestedCounter
+      e.Result
     >;
 
   /* Создаём литералы */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Symbol s.Type e.Value) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Symbol s.Type e.Value) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElSymbol s.Type e.Value))
       (e.Commands)
-      s.Counter e.Result
+      s.Counter s.CallCounter s.NestedCounter
+      e.Result
     >;
 
   /*
     Обработка открывающих скобок всех типов осуществляется похоже.
   */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Brackets e.InBrackets) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Brackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Counter))
       (e.Commands)
-      <Inc s.Counter> e.InBrackets (TkCloseBracket s.Counter) e.Result
+      <Inc s.Counter> s.CallCounter s.NestedCounter
+      e.InBrackets (TkCloseBracket s.Counter) e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
-      <Inc s.Counter> (Symbol Word <DesugarName e.Name>)
-      e.InBrackets (TkCloseCall s.Counter) e.Result
+      <Inc s.Counter> <Inc s.CallCounter> <Inc s.NestedCounter>
+      (Symbol Word <DesugarName e.Name>)
+      e.InBrackets
+      (TkCloseCall s.Counter s.CallCounter s.NestedCounter)
+      e.Result
     >;
 
   /*
     Закрывающие скобки надо обрабатывать особым образом.
     Круглые скобки и АТД — слинковать, угловые — добавить в стек.
   */
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter
   (TkCloseBracket s.OpenCounter) e.Result =
     <DoGenResult
       (e.Vars)
@@ -760,11 +779,14 @@ DoGenResult {
         (CmdLinkBrackets s.OpenCounter s.Counter)
         e.Commands
       )
-      <Inc s.Counter> e.Result
+      <Inc s.Counter> s.CallCounter s.NestedCounter
+      e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
-  (TkCloseCall s.OpenCounter) e.Result =
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter
+  (TkCloseCall s.OpenCounter s.ThisCallCounter s.ThisNestedCounter)
+  e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElCloseCall s.Counter))
@@ -772,23 +794,27 @@ DoGenResult {
         (CmdAllocAndPushAtermList s.OpenCounter s.Counter)
         e.Commands
       )
-      <Inc s.Counter> e.Result
+      <Inc s.Counter> s.CallCounter <Dec s.NestedCounter>
+      e.Result
     >;
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable t.SrcPos 's' e.Index) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Variable t.SrcPos 's' e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
       (e.Commands)
-      s.Counter e.Result
+      s.Counter s.CallCounter s.NestedCounter
+      e.Result
     >;
 
   /* Переменная есть в образце — переносим, позиция подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
   (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos)) (e.Commands)
-  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
@@ -797,12 +823,14 @@ DoGenResult {
         e.Commands
         (CmdInsertVar s.InsertPos s.Usings s.Mode e.Index)
       )
-      s.Counter e.Result
+      s.Counter s.CallCounter s.NestedCounter
+      e.Result
     >;
 
   /* Переменная есть в образце — переносим, позиция не подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.Counter))
@@ -811,21 +839,25 @@ DoGenResult {
         e.Commands
         (CmdInsertVar s.Counter s.Usings s.Mode e.Index)
       )
-      <Inc s.Counter> e.Result
+      <Inc s.Counter> s.CallCounter s.NestedCounter
+      e.Result
     >;
 
   /* Переменной нет в образце — копируем */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
+  s.Counter s.CallCounter s.NestedCounter
+  (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))
       (e.Commands)
-      s.Counter e.Result
+      s.Counter s.CallCounter s.NestedCounter
+      e.Result
     >;
 
   /* Завершение просмотра */
-  (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Counter =
+  (e.UnusedVars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter =
     s.Counter (e.UnusedVars) (e.AllocCommands e.Commands);
 }
 

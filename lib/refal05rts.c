@@ -1108,7 +1108,7 @@ void r05_stop_e_loop(struct r05_state *state) {
 
 /* временно А-термы создаются через malloc и с использованием стека скобок */
 /* позже стек скобок будет убран и будет создан список свободных А-термов */
-void r05_alloc_and_push_aterm_list(
+struct r05_aterm *r05_alloc_and_push_aterm_list(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   struct r05_aterm *parent, struct r05_state *state
 ) {

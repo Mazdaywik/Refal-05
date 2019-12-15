@@ -220,7 +220,7 @@ size_t r05_read_chars(
 
 /* Операции работы с А-термами */
 
-void r05_alloc_and_push_aterm_list(
+struct r05_aterm * r05_alloc_and_push_aterm_list(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   struct r05_aterm *parent, struct r05_state *state
 );
