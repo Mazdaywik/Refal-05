@@ -358,7 +358,7 @@ DesugarName {
 InsertConcatenators {
   Success e.AST
     = Success
-      (Extern (NO-POS 'Cat'))
+      (Extern (NO-POS 'Cat@'))
       <InsertConcatenators-AUX e.AST (/* processed */)>;
   Fails e.Errors = Fails e.Errors;
 }
@@ -424,7 +424,7 @@ InsertConcatenators-Result {
   (Call t.ScrPos2 (e.Name2) e.MoreTerms2)
   e.TermsTail
   = <InsertConcatenators-Result
-    (Call NO-POS ('Cat')
+    (Call NO-POS ('Cat@')
           (Brackets
             (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
           )

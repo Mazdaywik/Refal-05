@@ -107,6 +107,7 @@ EscapeName {
   '_' e.Name = 'u_' <EscapeName e.Name>;
   '-' e.Name = 'm_' <EscapeName e.Name>;
   '$' e.Name = 'd_' <EscapeName e.Name>;
+  '@' e.Name = 'a_' <EscapeName e.Name>;
   s.Other e.Name = s.Other <EscapeName e.Name>;
   /* пусто */ = /* пусто */;
 }

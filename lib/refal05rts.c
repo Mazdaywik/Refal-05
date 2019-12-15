@@ -1626,7 +1626,7 @@ static void dump_buried(struct r05_state *state) {
    Функция конкатенации
 ==============================================================================*/
 
-R05_DEFINE_ENTRY_FUNCTION(Cat, "Cat") { /* @ декодируется в a_ */
+R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ */
   r05_this_is_generated_function(state);
 
   do {
