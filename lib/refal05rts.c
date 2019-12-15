@@ -864,14 +864,6 @@ void r05_alloc_string(const char *string, struct r05_state *state) {
 }
 
 
-static struct r05_node *s_stack_ptr;
-
-void r05_push_stack(struct r05_node *call_bracket) {
-  call_bracket->info.link = s_stack_ptr;
-  s_stack_ptr = call_bracket;
-}
-
-
 void r05_link_brackets(struct r05_node *left, struct r05_node *right) {
   left->info.link = right;
   right->info.link = left;
@@ -1111,6 +1103,56 @@ void r05_stop_e_loop(struct r05_state *state) {
 
 
 /*==============================================================================
+   Операции для работы с А-термами
+==============================================================================*/
+
+/* временно А-термы создаются через malloc и с использованием стека скобок */
+/* позже стек скобок будет убран и будет создан список свободных А-термов */
+static void alloc_and_push_aterm_list(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *parent, struct r05_state *state
+) {
+  struct r05_aterm *aterm;
+  aterm = malloc(sizeof(aterm));
+  aterm->arg_begin = arg_begin;
+  aterm->arg_end = arg_end;
+  aterm->parent = parent;
+  aterm->next = state->aterm_list_ptr;
+  state->aterm_list_ptr = aterm;
+}
+
+static struct r05_aterm *pop_aterm_list(struct r05_state *state) {
+  struct r05_aterm *res = state->aterm_list_ptr;
+  state->aterm_list_ptr = res->next;
+  return res;
+}
+
+static int empty_aterm_list(struct r05_state *state) {
+  return (state->aterm_list_ptr == NULL);
+}
+
+/* Стэк угловых скобок, временно оставлен */
+static struct r05_node *s_stack_ptr = NULL;
+
+
+static struct r05_node *pop_stack(void) {
+  struct r05_node *res = s_stack_ptr;
+  s_stack_ptr = s_stack_ptr->info.link;
+  return res;
+}
+
+void r05_push_stack(struct r05_node *call_bracket, struct r05_state *state) {
+  if (call_bracket->tag == R05_DATATAG_OPEN_CALL) {
+    struct r05_node *close_bracket = pop_stack();
+    alloc_and_push_aterm_list(call_bracket, close_bracket, NULL, state);
+  } else {
+    call_bracket->info.link = s_stack_ptr;
+    s_stack_ptr = call_bracket;
+  }
+}
+
+
+/*==============================================================================
    Рефал-машина
 ==============================================================================*/
 
@@ -1123,19 +1165,6 @@ static struct r05_node s_end_view_field = {
   &s_begin_view_field, 0, R05_DATATAG_ILLEGAL, { '\0' }
 };
 
-static struct r05_node *s_stack_ptr = NULL;
-
-
-static struct r05_node *pop_stack(void) {
-  struct r05_node *res = s_stack_ptr;
-  s_stack_ptr = s_stack_ptr->info.link;
-  return res;
-}
-
-static int empty_stack(void) {
-  return (s_stack_ptr == 0);
-}
-
 
 extern struct r05_function r05f_Go;
 
@@ -1146,18 +1175,19 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_open_call(&open, state);
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
-  r05_push_stack(close);
-  r05_push_stack(open);
+  r05_push_stack(close, state);
+  r05_push_stack(open, state);
   r05_splice_from_freelist(s_begin_view_field.next, state);
 }
 
 static void main_loop(struct r05_state *state) {
-  while (! empty_stack()) {
+  while (! empty_aterm_list(state)) {
     struct r05_node *function;
+    struct r05_aterm *next_aterm;
 
-    state->arg_begin = pop_stack();
-    assert(! empty_stack());
-    state->arg_end = pop_stack();
+    next_aterm = pop_aterm_list(state);
+    state->arg_begin = next_aterm->arg_begin;
+    state->arg_end = next_aterm->arg_end;
 
 #if R05_SHOW_DEBUG
     if (state->step_counter >= (unsigned long) R05_SHOW_DEBUG) {
@@ -1167,7 +1197,9 @@ static void main_loop(struct r05_state *state) {
 
     function = state->arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      (function->info.function->ptr)(state->arg_begin, state->arg_end, state);
+      (function->info.function->ptr)(
+        state->arg_begin, state->arg_end, state
+      );
     } else {
       r05_recognition_impossible(state);
     }
@@ -1642,7 +1674,9 @@ int main(int argc, char **argv) {
     /* arg_end */
     NULL, 
     /* pool of memory_chunks */
-    NULL, 
+    NULL,
+    /* aterm_list_ptr */
+    NULL,
     /* begin_buried */
     {NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }},
     /* end_buried */

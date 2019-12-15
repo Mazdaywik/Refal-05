@@ -330,7 +330,7 @@ CmdLinkBrackets {
 
 CmdPushStack {
   (e.Indent) s.ElemNumber =
-    (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ');');
+    (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ', state);');
 }
 
 CmdInsertVar {

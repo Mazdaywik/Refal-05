@@ -80,6 +80,7 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
+  struct r05_aterm *aterm_list_ptr;
   /* Переменные копилки */
   struct r05_node begin_buried;
   struct r05_node end_buried;
@@ -219,7 +220,7 @@ size_t r05_read_chars(
 
 /* Операции построения результата */
 
-void r05_push_stack(struct r05_node *call_bracket);
+void r05_push_stack(struct r05_node *call_bracket, struct r05_state *state);
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
 
 void r05_splice_tvar(struct r05_node *res, struct r05_node *var);
