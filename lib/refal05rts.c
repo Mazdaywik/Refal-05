@@ -1108,7 +1108,7 @@ void r05_stop_e_loop(struct r05_state *state) {
 
 /* временно А-термы создаются через malloc и с использованием стека скобок */
 /* позже стек скобок будет убран и будет создан список свободных А-термов */
-static void alloc_and_push_aterm_list(
+void r05_alloc_and_push_aterm_list(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   struct r05_aterm *parent, struct r05_state *state
 ) {
@@ -1129,26 +1129,6 @@ static struct r05_aterm *pop_aterm_list(struct r05_state *state) {
 
 static int empty_aterm_list(struct r05_state *state) {
   return (state->aterm_list_ptr == NULL);
-}
-
-/* Стэк угловых скобок, временно оставлен */
-static struct r05_node *s_stack_ptr = NULL;
-
-
-static struct r05_node *pop_stack(void) {
-  struct r05_node *res = s_stack_ptr;
-  s_stack_ptr = s_stack_ptr->info.link;
-  return res;
-}
-
-void r05_push_stack(struct r05_node *call_bracket, struct r05_state *state) {
-  if (call_bracket->tag == R05_DATATAG_OPEN_CALL) {
-    struct r05_node *close_bracket = pop_stack();
-    alloc_and_push_aterm_list(call_bracket, close_bracket, NULL, state);
-  } else {
-    call_bracket->info.link = s_stack_ptr;
-    s_stack_ptr = call_bracket;
-  }
 }
 
 
@@ -1175,8 +1155,7 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_open_call(&open, state);
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
-  r05_push_stack(close, state);
-  r05_push_stack(open, state);
+  r05_alloc_and_push_aterm_list(open, close, NULL, state);
   r05_splice_from_freelist(s_begin_view_field.next, state);
 }
 

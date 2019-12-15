@@ -25,8 +25,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   }
 
   r05_splice_to_freelist(mu, mu, state);
-  r05_push_stack(arg_end, state);
-  r05_push_stack(arg_begin, state);
+  r05_alloc_and_push_aterm_list(arg_begin, arg_end, NULL, state);
 }
 
 

@@ -218,9 +218,15 @@ size_t r05_read_chars(
   struct r05_node **first, struct r05_node **last
 );
 
+/* Операции работы с А-термами */
+
+void r05_alloc_and_push_aterm_list(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *parent, struct r05_state *state
+);
+
 /* Операции построения результата */
 
-void r05_push_stack(struct r05_node *call_bracket, struct r05_state *state);
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
 
 void r05_splice_tvar(struct r05_node *res, struct r05_node *var);

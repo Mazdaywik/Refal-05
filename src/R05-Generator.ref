@@ -329,9 +329,15 @@ CmdLinkBrackets {
     (e.Indent 'r05_link_brackets(' <Elem s.Left> ', ' <Elem s.Right> ');');
 }
 
-CmdPushStack {
-  (e.Indent) s.ElemNumber =
-    (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ', state);');
+CmdAllocAndPushAtermList {
+  (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber =
+    (
+      e.Indent
+      'r05_alloc_and_push_aterm_list('
+      <Elem s.OpenCallElemNumber> ', '
+      <Elem s.CloseCallElemNumber> ', '
+      'NULL, state);'
+    );
 }
 
 CmdInsertVar {
@@ -651,7 +657,7 @@ GenResult {
 * Основные команды работы с образцом
 *  (CmdAllocateElem s.Number s.ElType e.Info)
 *  (CmdLinkBrackets s.Left s.Right)
-*  (CmdPushStack s.Number)
+*  (CmdAllocAndPushAtermList s.OpenCallPosNumber s.CloseCallPosNumber)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
 
 
@@ -763,8 +769,7 @@ DoGenResult {
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElCloseCall s.Counter))
       (
-        (CmdPushStack s.Counter)
-        (CmdPushStack s.OpenCounter)
+        (CmdAllocAndPushAtermList s.OpenCounter s.Counter)
         e.Commands
       )
       <Inc s.Counter> e.Result
