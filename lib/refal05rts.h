@@ -3,7 +3,6 @@
 
 #include <stddef.h>
 #include <time.h>
-#include <signal.h>
 #include <pthread.h>
 #include <stdatomic.h>
 
@@ -47,9 +46,11 @@ enum r05_datatag {
 
 struct r05_node;
 struct r05_state;
+struct r05_aterm;
 
 typedef void (*r05_function_ptr) (
-  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+  struct r05_node *begin, struct r05_node *end,
+  struct r05_state *state, struct r05_aterm *aterm
 );
 
 struct r05_function {
@@ -102,11 +103,19 @@ struct r05_state {
   clock_t total_match_repeated_evar_time_outside_e;
 };
 
+enum r05_shadow_category {
+  R05_CATEGORY_ILLEGAL = 0,
+  R05_CATEGORY_ACTIVE,
+  R05_CATEGORY_SUSPENDED,
+  R05_CATEGORY_FINISHED
+};
+
 struct r05_aterm {
   struct r05_aterm *parent; /* for tree structure */
   struct r05_aterm *next; /* for call list structure */
   struct r05_node *arg_begin; /* open call bracket */
   struct r05_node *arg_end; /* close call bracket */
+  /* enum r05_shadow_category, but atomic */
   sig_atomic_t category; /* represents shadow state */
   atomic_int child_aterms; /* counter for child aterms in tree structure */
 };
@@ -217,9 +226,14 @@ size_t r05_read_chars(
   struct r05_node **first, struct r05_node **last
 );
 
-/* Операции построения результата */
+/* Операции работы с А-термами */
+void r05_push_aterm(struct r05_aterm *aterm);
+struct r05_aterm *r05_create_aterm(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *parent
+);
 
-void r05_push_stack(struct r05_node *call_bracket);
+/* Операции построения результата */
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
 
 void r05_splice_tvar(struct r05_node *res, struct r05_node *var);
@@ -323,12 +337,12 @@ R05_NORETURN void r05_switch_default_violation_impl(
 #define R05_DEFINE_FUNCTION_AUX(name, scope, rep) \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end, \
-    struct r05_state *state \
+    struct r05_state *state, struct r05_aterm *aterm \
   ); \
   scope struct r05_function r05f_ ## name = { r05c_ ## name, rep }; \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end, \
-    struct r05_state *state \
+    struct r05_state *state, struct r05_aterm *aterm \
   )
 
 

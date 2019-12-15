@@ -746,6 +746,42 @@ static void free_memory(struct r05_state *state) {
 
 
 /*==============================================================================
+   Операции работы с А-термами
+==============================================================================*/
+
+static struct r05_aterm *s_aterm_list_ptr;
+
+void r05_push_aterm(struct r05_aterm *aterm) {
+  aterm->next = s_aterm_list_ptr;
+  s_aterm_list_ptr = aterm;
+}
+
+static struct r05_aterm *pop_aterm(void) {
+  struct r05_aterm *res = s_aterm_list_ptr;
+  s_aterm_list_ptr = s_aterm_list_ptr->next;
+  return res;
+}
+
+static int empty_aterm_list(void) {
+  return (s_aterm_list_ptr == NULL);
+}
+
+/* временно А-термы создаются поштучно */
+/* список свободных А-термов будет реализован позже */
+struct r05_aterm *r05_create_aterm(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *parent
+) {
+  struct r05_aterm *res;
+  res = malloc(sizeof(res));
+  res->arg_begin = arg_begin;
+  res->arg_end = arg_end;
+  res->parent = parent;
+  return res;
+}
+
+
+/*==============================================================================
    Операции построения результата
 ==============================================================================*/
 
@@ -861,14 +897,6 @@ void r05_alloc_string(const char *string, struct r05_state *state) {
   for (/* пусто */; *string != '\0'; ++string) {
     r05_alloc_char(*string, state);
   }
-}
-
-
-static struct r05_node *s_stack_ptr;
-
-void r05_push_stack(struct r05_node *call_bracket) {
-  call_bracket->info.link = s_stack_ptr;
-  s_stack_ptr = call_bracket;
 }
 
 
@@ -1126,17 +1154,6 @@ static struct r05_node s_end_view_field = {
 static struct r05_node *s_stack_ptr = NULL;
 
 
-static struct r05_node *pop_stack(void) {
-  struct r05_node *res = s_stack_ptr;
-  s_stack_ptr = s_stack_ptr->info.link;
-  return res;
-}
-
-static int empty_stack(void) {
-  return (s_stack_ptr == 0);
-}
-
-
 extern struct r05_function r05f_Go;
 
 static void init_view_field(struct r05_state *state) {
@@ -1146,18 +1163,19 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_open_call(&open, state);
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
-  r05_push_stack(close);
-  r05_push_stack(open);
+  struct r05_aterm *aterm = r05_create_aterm(open, close, NULL);
+  r05_push_aterm(aterm);
   r05_splice_from_freelist(s_begin_view_field.next, state);
 }
 
 static void main_loop(struct r05_state *state) {
-  while (! empty_stack()) {
+  while (! empty_aterm_list()) {
     struct r05_node *function;
+    struct r05_aterm *next_aterm;
 
-    state->arg_begin = pop_stack();
-    assert(! empty_stack());
-    state->arg_end = pop_stack();
+    next_aterm = pop_aterm();
+    state->arg_begin = next_aterm->arg_begin;
+    state->arg_end = next_aterm->arg_end;
 
 #if R05_SHOW_DEBUG
     if (state->step_counter >= (unsigned long) R05_SHOW_DEBUG) {
@@ -1167,7 +1185,9 @@ static void main_loop(struct r05_state *state) {
 
     function = state->arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      (function->info.function->ptr)(state->arg_begin, state->arg_end, state);
+      (function->info.function->ptr)(
+          state->arg_begin, state->arg_end, state, next_aterm
+      );
     } else {
       r05_recognition_impossible(state);
     }
