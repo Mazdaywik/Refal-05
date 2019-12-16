@@ -348,8 +348,9 @@ CmdAllocAterm {
       );
 }
 
-/* Аргумент r05_aterm *aterm сохраняется в aterms[0],
- * так как он потом перезаписывается */
+/* Аргумент внешней функции r05_aterm *aterm сохраняется в aterms[0],
+ * так как он потом перезаписывается (в текущей версии нет, но потом будет,
+ * чтобы обесчепить провязку структуры дерева А-термов)*/
 CmdReuseAterm {
   (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber
       = (
@@ -695,15 +696,18 @@ GenResult {
 * Основные команды работы с образцом
 *  (CmdAllocateElem s.Number s.ElType e.Info)
 *  (CmdLinkBrackets s.Left s.Right)
-*  (CmdAllocAndPushAtermList s.OpenCallPosNumber s.CloseCallPosNumber)
+*  (CmdReuseAterm s.OpenCounter s.Counter)
+*  (CmdAllocAterm s.OpenCounter s.Counter s.CallCounter)
+*  (CmdInsertAtermList s.CallCounter)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
 
 
 /*
   Порядок выполнения команд.
   1. Все выделения памяти (в порядке перечисления)
-  2. Связывание крулых и угловых скобок и
-  построение результата (в обратном порядке)
+  2. Связывание крулых и угловых скобок
+  (в порядке следования закрывающих скобок)
+  и построение результата (в порядке перечисления)
 */
 
 *$ENUM TkString, TkCloseBracket, TkCloseCall
@@ -1007,10 +1011,16 @@ MakeCmdResultCommand {
 MakeCmdAtermArrayCommand {
   0 = /* пусто */;
   1 = /* пусто */;
+  /* Нулевой элемент массива aterms используется для сохранения значения
+   * аргумента r05_aterm *aterm.
+   * Это сделано, чтобы избежать запутанной магии со счетчиками и не создавать
+   * лишних переменных */
   s.CallCounter = (CmdAtermArray s.CallCounter);
 }
 
 MakeCmdMoveAtermPtr {
+  /* в конце необходимо переключиться на следующий А-терм,
+   * если текущий не удалось переиспользовать */
   0 = (CmdMoveAtermPtr);
   s.CallCounter = /* пусто */
 }

@@ -1107,8 +1107,6 @@ void r05_stop_e_loop(struct r05_state *state) {
    Операции для работы с А-термами
 ==============================================================================*/
 
-/* временно А-термы создаются через malloc и с использованием стека скобок */
-/* позже стек скобок будет убран и будет создан список свободных А-термов */
 struct r05_aterm *r05_alloc_aterm(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   struct r05_state *state
@@ -1117,10 +1115,12 @@ struct r05_aterm *r05_alloc_aterm(
   aterm = malloc(sizeof(*aterm));
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
-  aterm->next = NULL;
+  /* обнуление указателей происходит в init_view_field() */
   return aterm;
 }
 
+/* А-терм внешенй функции нужно переиспользовать, чтобы избежать
+ * ошибок доступа к памяти при одновременным изменении списка А-термов.*/
 void r05_reuse_aterm(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   struct r05_aterm *aterm, struct r05_state *state
@@ -1129,6 +1129,7 @@ void r05_reuse_aterm(
   aterm->arg_end = arg_end;
 }
 
+/* вставка А-терма после первого аргумента */
 struct r05_aterm *r05_insert_aterm_list(
   struct r05_aterm *insert_after, struct r05_aterm *new_aterm
 ) {
@@ -1138,7 +1139,9 @@ struct r05_aterm *r05_insert_aterm_list(
 }
 
 void r05_move_aterm_prt(struct r05_state *state){
+  struct r05_aterm *uselessAterm = state->aterm_list_ptr;
   state->aterm_list_ptr = state->aterm_list_ptr->next;
+  free(uselessAterm);
 }
 
 
@@ -1166,6 +1169,9 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
   state->aterm_list_ptr = r05_alloc_aterm(open, close, state);
+  /* достаточно обнулить указатели только здесь */
+  state->aterm_list_ptr->next = NULL;
+  state->aterm_list_ptr->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);
 }
 
