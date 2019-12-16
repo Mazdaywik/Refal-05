@@ -329,15 +329,49 @@ CmdLinkBrackets {
     (e.Indent 'r05_link_brackets(' <Elem s.Left> ', ' <Elem s.Right> ');');
 }
 
-CmdAllocAndPushAtermList {
-  (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber =
-    (
-      e.Indent
-      'r05_alloc_and_push_aterm_list('
-      <Elem s.OpenCallElemNumber> ', '
-      <Elem s.CloseCallElemNumber> ', '
-      'NULL, state);'
-    );
+/* Работа с А-термами */
+
+CmdAtermArray {
+  (e.Indent) s.Size =
+    (e.Indent 'struct r05_aterm *aterms[' <Symb s.Size> '] = { 0 };');
+}
+
+CmdAllocAterm {
+  (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber s.AtermNumber
+    = (
+        e.Indent
+        <Aterm s.AtermNumber> ' = '
+        'r05_alloc_aterm('
+        <Elem s.OpenCallElemNumber> ', '
+        <Elem s.CloseCallElemNumber> ', '
+        'state);'
+      );
+}
+
+/* Аргумент r05_aterm *aterm сохраняется в aterms[0],
+ * так как он потом перезаписывается */
+CmdReuseAterm {
+  (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber
+      = (
+          e.Indent
+          'r05_reuse_aterm('
+          <Elem s.OpenCallElemNumber> ', '
+          <Elem s.CloseCallElemNumber> ', '
+          'aterm, state);'
+        )
+}
+
+/* Аргумент функции aterm используется как позиция вставки */
+CmdInsertAtermList {
+  (e.Indent) s.AtermNumber
+    = (
+        e.Indent
+        'aterm = r05_insert_aterm_list(aterm, ' <Aterm s.AtermNumber>');'
+      );
+}
+
+CmdMoveAtermPtr {
+  (e.Indent) = (e.Indent 'r05_move_aterm_prt(state);');
 }
 
 CmdInsertVar {
@@ -406,6 +440,8 @@ EVar-E { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_e_' <Symb s.Usings> }
 
 Elem { s.Number = 'n[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'n+' <Symb s.Number> }
+
+Aterm { s.Number = 'aterms[' <Symb s.Number> ']'}
 
 /*
   Декорирование отличается от декорирования имён функций, поскольку мы хотим
@@ -650,7 +686,7 @@ GenResult {
       (e.PatternVars)
       (/* alloc commands */) (/* other commands */)
       0 /* счётчик новых элементов */
-      0 /* счетчик количества вызовов */
+      0 /* счетчик количества вызовов, увеличивается на закрывающей скобке */
       0 /* счетчик глубины вызова */
       e.Result
     >;
@@ -758,10 +794,10 @@ DoGenResult {
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
-      <Inc s.Counter> <Inc s.CallCounter> <Inc s.NestedCounter>
+      <Inc s.Counter> s.CallCounter <Inc s.NestedCounter>
       (Symbol Word <DesugarName e.Name>)
       e.InBrackets
-      (TkCloseCall s.Counter s.CallCounter s.NestedCounter)
+      (TkCloseCall s.Counter s.NestedCounter)
       e.Result
     >;
 
@@ -783,18 +819,41 @@ DoGenResult {
       e.Result
     >;
 
+  /* Первый вызов - переиспользуем А-терм текущей функции */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter s.CallCounter s.NestedCounter
-  (TkCloseCall s.OpenCounter s.ThisCallCounter s.ThisNestedCounter)
+  s.Counter 0 /* s.CallCounter */ s.NestedCounter
+  (TkCloseCall s.OpenCounter s.ThisNestedCounter)
   e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElCloseCall s.Counter))
       (
-        (CmdAllocAndPushAtermList s.OpenCounter s.Counter)
+        /* порядок изменен на прямой, так как вставка происходит тоже
+         * в прямом порядке */
         e.Commands
+        (CmdReuseAterm s.OpenCounter s.Counter)
+        /* Вставлять переиспользованный А-терм в список не нужно - он уже там */
       )
-      <Inc s.Counter> s.CallCounter <Dec s.NestedCounter>
+      <Inc s.Counter> 1 /* s.CallCounter */ <Dec s.NestedCounter>
+      e.Result
+    >;
+
+  /* Не первый вызов - создаем новый А-терм и вставляем его в список */
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  s.Counter s.CallCounter s.NestedCounter
+  (TkCloseCall s.OpenCounter s.ThisNestedCounter)
+  e.Result =
+    <DoGenResult
+      (e.Vars)
+      (e.AllocCommands (CmdAllocateElem ElCloseCall s.Counter))
+      (
+        /* порядок изменен на прямой, так как вставка происходит тоже
+         * в прямом порядке */
+        e.Commands
+        (CmdAllocAterm s.OpenCounter s.Counter s.CallCounter)
+        (CmdInsertAtermList s.CallCounter)
+      )
+      <Inc s.Counter> <Inc s.CallCounter> <Dec s.NestedCounter>
       e.Result
     >;
 
@@ -858,7 +917,7 @@ DoGenResult {
   /* Завершение просмотра */
   (e.UnusedVars) (e.AllocCommands) (e.Commands)
   s.Counter s.CallCounter s.NestedCounter =
-    s.Counter (e.UnusedVars) (e.AllocCommands e.Commands);
+    s.Counter s.CallCounter (e.UnusedVars) (e.AllocCommands e.Commands);
 }
 
 DecUsings {
@@ -869,9 +928,9 @@ DecUsings {
 
 ComposeSentenceCommands {
   s.NumRanges (e.PatternVars) (e.PatternCommands)
-  s.ResultCounter (e.UnusedVars) (e.ResultCommands) =
+  s.ResultCounter s.CallCounter (e.UnusedVars) (e.ResultCommands) =
     <ComposeSentenceCommands-Aux
-      s.NumRanges s.ResultCounter (e.ResultCommands)
+      s.NumRanges s.ResultCounter s.CallCounter (e.ResultCommands)
       <FilterCommonVarsAndPatternCommands
         (e.PatternVars) (e.PatternCommands) e.UnusedVars
       >
@@ -911,16 +970,18 @@ FilterCommonVarsAndPatternCommands {
 }
 
 ComposeSentenceCommands-Aux {
-  s.NumRanges s.ResultCounter (e.ResultCommands)
+  s.NumRanges s.ResultCounter s.CallCounter (e.ResultCommands)
   (e.PatternVars) e.PatternCommands =
     <GenerateResult-OpenELoops
       <Map generator_MakeDeclaration e.PatternVars>
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
+      <MakeCmdAtermArrayCommand s.CallCounter>
       (CmdInitB0)
       e.PatternCommands
       (CmdEmptyResult)
       e.ResultCommands
+      <MakeCmdMoveAtermPtr s.CallCounter>
       (CmdReturnResult)
     >;
 }
@@ -941,6 +1002,17 @@ MakeDeclaration-Aux {
 MakeCmdResultCommand {
   0 = /* пусто */;
   s.Counter = (CmdResultArray s.Counter);
+}
+
+MakeCmdAtermArrayCommand {
+  0 = /* пусто */;
+  1 = /* пусто */;
+  s.CallCounter = (CmdAtermArray s.CallCounter);
+}
+
+MakeCmdMoveAtermPtr {
+  0 = (CmdMoveAtermPtr);
+  s.CallCounter = /* пусто */
 }
 
 GenerateResult-OpenELoops {

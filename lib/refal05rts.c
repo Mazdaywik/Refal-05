@@ -904,7 +904,8 @@ void r05_splice_from_freelist(struct r05_node *pos, struct r05_state *state) {
 
 
 void r05_enum_function_code(
-  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+  struct r05_node *begin, struct r05_node *end,
+  struct r05_aterm *aterm, struct r05_state *state
 ) {
   (void) begin;
   (void) end;
@@ -1108,27 +1109,36 @@ void r05_stop_e_loop(struct r05_state *state) {
 
 /* временно А-термы создаются через malloc и с использованием стека скобок */
 /* позже стек скобок будет убран и будет создан список свободных А-термов */
-struct r05_aterm *r05_alloc_and_push_aterm_list(
+struct r05_aterm *r05_alloc_aterm(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_aterm *parent, struct r05_state *state
+  struct r05_state *state
 ) {
   struct r05_aterm *aterm;
   aterm = malloc(sizeof(*aterm));
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
-  aterm->parent = parent;
-  aterm->next = state->aterm_list_ptr;
-  state->aterm_list_ptr = aterm;
+  aterm->next = NULL;
+  return aterm;
 }
 
-static struct r05_aterm *pop_aterm_list(struct r05_state *state) {
-  struct r05_aterm *res = state->aterm_list_ptr;
-  state->aterm_list_ptr = res->next;
-  return res;
+void r05_reuse_aterm(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *aterm, struct r05_state *state
+) {
+  aterm->arg_begin = arg_begin;
+  aterm->arg_end = arg_end;
 }
 
-static int empty_aterm_list(struct r05_state *state) {
-  return (state->aterm_list_ptr == NULL);
+struct r05_aterm *r05_insert_aterm_list(
+  struct r05_aterm *insert_after, struct r05_aterm *new_aterm
+) {
+  new_aterm->next = insert_after->next;
+  insert_after->next = new_aterm;
+  return new_aterm;
+}
+
+void r05_move_aterm_prt(struct r05_state *state){
+  state->aterm_list_ptr = state->aterm_list_ptr->next;
 }
 
 
@@ -1155,16 +1165,18 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_open_call(&open, state);
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
-  r05_alloc_and_push_aterm_list(open, close, NULL, state);
+  state->aterm_list_ptr = r05_alloc_aterm(open, close, state);
   r05_splice_from_freelist(s_begin_view_field.next, state);
 }
 
+static void print_seq(struct r05_node *begin, struct r05_node *end);
+
 static void main_loop(struct r05_state *state) {
-  while (! empty_aterm_list(state)) {
+  while (state->aterm_list_ptr != NULL) {
     struct r05_node *function;
     struct r05_aterm *next_aterm;
 
-    next_aterm = pop_aterm_list(state);
+    next_aterm = state->aterm_list_ptr;
     state->arg_begin = next_aterm->arg_begin;
     state->arg_end = next_aterm->arg_end;
 
@@ -1177,7 +1189,7 @@ static void main_loop(struct r05_state *state) {
     function = state->arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
       (function->info.function->ptr)(
-        state->arg_begin, state->arg_end, state
+        state->arg_begin, state->arg_end, next_aterm, state
       );
     } else {
       r05_recognition_impossible(state);
@@ -1527,6 +1539,7 @@ static void brrp_impl(
         list_splice(state->begin_buried.next, left_bracket, right_bracket);
         arg_end = arg_begin;
       }
+      r05_move_aterm_prt(state);
       r05_splice_to_freelist(arg_begin, arg_end, state);
       return;
     }
@@ -1560,6 +1573,7 @@ static void dgcp_impl(
     }
   }
 
+  r05_move_aterm_prt(state);
   r05_splice_from_freelist(arg_begin, state);
   r05_splice_to_freelist(arg_begin, arg_end, state);
 }
@@ -1567,27 +1581,28 @@ static void dgcp_impl(
 
 void r05_br(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 ) {
   brrp_impl(arg_begin, arg_end, BRRP_BR, state);
 }
 
 void r05_dg(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 ) {
   dgcp_impl(arg_begin, arg_end, DGCP_DG, state);
 }
 
 void r05_cp(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 ) {
   dgcp_impl(arg_begin, arg_end, DGCP_CP, state);
 }
 
-void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+void r05_rp(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *aterm, struct r05_state *state
 ) {
   brrp_impl(arg_begin, arg_end, BRRP_RP, state);
 }
@@ -1629,6 +1644,7 @@ R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ *
     r05_alloc_insert_pos(n+0, state);
     r05_splice_evar(n[0], eX_b_1, eX_e_1);
     r05_splice_evar(n[0], eY_b_1, eY_e_1);
+    r05_move_aterm_prt(state);
     r05_splice_from_freelist(arg_begin, state);
     r05_splice_to_freelist(arg_begin, arg_end, state);
     return;
@@ -1649,9 +1665,9 @@ int main(int argc, char **argv) {
     /* later will be &end_free_list */
     NULL,
     /* arg_begin */
-    NULL, 
+    NULL,
     /* arg_end */
-    NULL, 
+    NULL,
     /* pool of memory_chunks */
     NULL,
     /* aterm_list_ptr */
@@ -1663,7 +1679,7 @@ int main(int argc, char **argv) {
     /* memory_use */
     0,
     /* step_counter */
-    0 
+    0
   };
 
   state.free_ptr = &state.end_free_list;

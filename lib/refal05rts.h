@@ -47,9 +47,11 @@ enum r05_datatag {
 
 struct r05_node;
 struct r05_state;
+struct r05_aterm;
 
 typedef void (*r05_function_ptr) (
-  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+  struct r05_node *begin, struct r05_node *end,
+  struct r05_aterm *aterm, struct r05_state *state
 );
 
 struct r05_function {
@@ -218,12 +220,23 @@ size_t r05_read_chars(
   struct r05_node **first, struct r05_node **last
 );
 
-/* Операции работы с А-термами */
+/* Операции для работы с А-термами */
 
-struct r05_aterm * r05_alloc_and_push_aterm_list(
+struct r05_aterm * r05_alloc_aterm(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_aterm *parent, struct r05_state *state
+  struct r05_state *state
 );
+
+void r05_reuse_aterm(
+  struct r05_node *arg_begin, struct r05_node *arg_end,
+  struct r05_aterm *aterm, struct r05_state *state
+);
+
+struct r05_aterm *r05_insert_aterm_list(
+  struct r05_aterm *insert_after, struct r05_aterm *new_aterm
+);
+
+void r05_move_aterm_prt(struct r05_state *state);
 
 /* Операции построения результата */
 
@@ -283,7 +296,8 @@ void r05_alloc_string(const char *string, struct r05_state *state);
 
 
 void r05_enum_function_code(
-  struct r05_node *begin, struct r05_node *end, struct r05_state *state
+  struct r05_node *begin, struct r05_node *end,
+  struct r05_aterm *aterm, struct r05_state *state
 );
 
 
@@ -330,30 +344,30 @@ R05_NORETURN void r05_switch_default_violation_impl(
 #define R05_DEFINE_FUNCTION_AUX(name, scope, rep) \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end, \
-    struct r05_state *state \
+    struct r05_aterm *aterm, struct r05_state *state \
   ); \
   scope struct r05_function r05f_ ## name = { r05c_ ## name, rep }; \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end, \
-    struct r05_state *state \
+    struct r05_aterm *aterm, struct r05_state *state \
   )
 
 
 void r05_br(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 );
 void r05_dg(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 );
 void r05_cp(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 );
 void r05_rp(
   struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 );
 
 
