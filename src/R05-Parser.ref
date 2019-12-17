@@ -359,20 +359,20 @@ InsertConcatenators {
   Success e.AST
     = Success
       (Extern (NO-POS 'Cat@'))
-      <InsertConcatenators-AUX e.AST (/* processed */)>;
+      <InsertConcatenators-Aux e.AST (/* processed */)>;
   Fails e.Errors = Fails e.Errors;
 }
 
-InsertConcatenators-AUX {
+InsertConcatenators-Aux {
   (Extern e.externBody) e.AST-Tail (e.Processed)
-    = <InsertConcatenators-AUX e.AST-Tail (e.Processed (Extern e.externBody))>;
+    = <InsertConcatenators-Aux e.AST-Tail (e.Processed (Extern e.externBody))>;
   (SpecialComment e.CommentBody) e.AST-Tail (e.Processed)
-    = <InsertConcatenators-AUX
+    = <InsertConcatenators-Aux
       e.AST-Tail
       (e.Processed (SpecialComment e.CommentBody))
       >;
   (Function t.SrcPos (e.Name) s.Scope e.Sentences) e.AST-Tail (e.Processed)
-    = <InsertConcatenators-AUX
+    = <InsertConcatenators-Aux
       e.AST-Tail
       (
         e.Processed
@@ -386,12 +386,12 @@ InsertConcatenators-AUX {
 
 InsertConcatenators-Sentences {
   e.Sentences
-  = <InsertConcatenators-Sentences-AUX e.Sentences (/* processed */)>;
+  = <InsertConcatenators-Sentences-Aux e.Sentences (/* processed */)>;
 }
 
-InsertConcatenators-Sentences-AUX {
+InsertConcatenators-Sentences-Aux {
   (t.Pattern e.Conditions RETURN (e.Result)) e.SentencesTail (e.Processed)
-  = <InsertConcatenators-Sentences-AUX
+  = <InsertConcatenators-Sentences-Aux
     e.SentencesTail
     (
       e.Processed
@@ -404,7 +404,7 @@ InsertConcatenators-Sentences-AUX {
     )>;
   (t.Pattern e.Conditions CALL-BLOCK (e.Result) e.SentencesInner) e.SentencesTail
   (e.Processed)
-    = <InsertConcatenators-Sentences-AUX
+    = <InsertConcatenators-Sentences-Aux
       e.SentencesTail
       (
         e.Processed
