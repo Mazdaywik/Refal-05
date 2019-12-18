@@ -393,6 +393,24 @@ CmdLinkAtermWithParent {
       );
 }
 
+CmdIncParentAtermCounter {
+  (e.Indent) s.ParentAtermNumber s.Value
+    = (
+        e.Indent
+         'atomic_fetch_add('
+        '&(' <Aterm s.ParentAtermNumber> '->child_aterms), '
+        <Symb s.Value> ');'
+      );
+}
+
+CmdDecParentAtermCounter {
+  (e.Indent)
+    = (
+        e.Indent
+        'atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
+      );
+}
+
 CmdSaveParentAterm {
   (e.Indent) = (e.Indent 'struct r05_aterm *parent = aterm;');
 }
@@ -1071,14 +1089,15 @@ MakeLinkChildAtermCommand {
   (s.ParentCallCounter (e.ChildrenCallCounters)) e.ChildrenListTail
   s.CallCounter
     = <MakeLinkChildAtermCommand-Aux
-        (/* link commands */) (e.ChildrenCallCounters) s.ParentCallCounter
+        (/* link commands */) (e.ChildrenCallCounters) s.ParentCallCounter 0
       >
       <MakeLinkChildAtermCommand e.ChildrenListTail s.CallCounter>;
   /* пусто */ s.CallCounter = /* пусто */;
 }
 
 MakeLinkChildAtermCommand-Aux {
-  (e.LinkCommands) (s.ChildCounter e.ChildrenCountersTail) s.ParentCounter
+  (e.LinkCommands) (s.ChildCounter e.ChildrenCountersTail)
+  s.ParentCounter s.LinkedCounter
     = <MakeLinkChildAtermCommand-Aux
       (
         e.LinkCommands
@@ -1086,8 +1105,13 @@ MakeLinkChildAtermCommand-Aux {
       )
       (e.ChildrenCountersTail)
       s.ParentCounter
+      <Inc s.LinkedCounter>
       >;
-  (e.LinkCommands) (/* empty */) s.CurrentCallCounter = e.LinkCommands;
+  /* родительский счетчик вызвавшей функции обрабатывается отдельно */
+  (e.LinkCommands) (/* empty */) 'x' s.LinkedCounter = e.LinkCommands;
+  (e.LinkCommands) (/* empty */) s.ParentCounter s.LinkedCounter
+    = e.LinkCommands
+      (CmdIncParentAtermCounter s.ParentCounter s.LinkedCounter);
 }
 
 DecUsings {
@@ -1152,7 +1176,7 @@ ComposeSentenceCommands-Aux {
       e.PatternCommands
       (CmdEmptyResult)
       e.ResultCommands
-      <MakeCmdMoveAtermPtr s.CallCounter>
+      <MakeCmdZeroNewCalls s.CallCounter>
       (CmdReturnResult)
     >;
 }
@@ -1189,10 +1213,11 @@ MakeCmdSaveParentAtermCommand {
   s.CallCounter = (CmdSaveParentAterm);
 }
 
-MakeCmdMoveAtermPtr {
+MakeCmdZeroNewCalls {
   /* в конце необходимо переключиться на следующий А-терм,
-   * если текущий не удалось переиспользовать */
-  0 = (CmdMoveAtermPtr);
+   * если текущий не удалось переиспользовать и уменьшить
+   счетчик дочерних в А-терме вызвавшей функции */
+  0 = (CmdMoveAtermPtr) (CmdDecParentAtermCounter);
   s.CallCounter = /* пусто */
 }
 

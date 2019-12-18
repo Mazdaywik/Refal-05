@@ -110,8 +110,8 @@ struct r05_aterm {
   struct r05_aterm *next; /* for call list structure */
   struct r05_node *arg_begin; /* open call bracket */
   struct r05_node *arg_end; /* close call bracket */
-  sig_atomic_t category; /* represents shadow state */
-  atomic_int child_aterms; /* counter for child aterms in tree structure */
+  volatile sig_atomic_t category; /* represents shadow state */
+  volatile sig_atomic_t child_aterms; /* counter for child aterms in tree structure */
 };
 
 

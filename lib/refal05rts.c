@@ -1115,6 +1115,7 @@ struct r05_aterm *r05_alloc_aterm(
   aterm = malloc(sizeof(*aterm));
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
+  atomic_init(&aterm->child_aterms, 0);
   /* обнуление указателей происходит в init_view_field() */
   return aterm;
 }
@@ -1139,9 +1140,7 @@ struct r05_aterm *r05_insert_aterm_list(
 }
 
 void r05_move_aterm_prt(struct r05_state *state){
-  struct r05_aterm *uselessAterm = state->aterm_list_ptr;
   state->aterm_list_ptr = state->aterm_list_ptr->next;
-  free(uselessAterm);
 }
 
 void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
