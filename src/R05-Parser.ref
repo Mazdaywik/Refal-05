@@ -27,7 +27,8 @@ $EXTERN Builtins;
   and transform to basic Refal
 */
 $ENTRY R05-PrepareAST {
-  e.AST = <InsertConcatenators <CheckAST <ExpandComments e.AST>>>;
+  e.AST = <CheckAST <ExpandComments e.AST>>
+  <InsertConcatenators <CheckAST <ExpandComments e.AST>>>;
 }
 
 ExpandComments {

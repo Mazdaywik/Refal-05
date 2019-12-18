@@ -351,6 +351,10 @@ CmdAllocAterm {
 /* Аргумент внешней функции r05_aterm *aterm сохраняется в aterms[0],
  * так как он потом перезаписывается (в текущей версии нет, но потом будет,
  * чтобы обесчепить провязку структуры дерева А-термов)*/
+CmdSaveReusedAterm {
+  (e.Indent) = (e.Indent 'aterms[0] = aterm;')
+}
+
 CmdReuseAterm {
   (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber
       = (
@@ -360,7 +364,6 @@ CmdReuseAterm {
           <Elem s.CloseCallElemNumber> ', '
           'aterm, state);'
         )
-        (e.Indent 'aterms[0] = aterm;')
 }
 
 /* Аргумент функции aterm используется как позиция вставки */
@@ -992,6 +995,7 @@ DoGenResult {
           /* 'x' - вместо номера вызова, родительского для текущей функции */
           <MakeLinkChildAtermCommand
             <Second <AppendChildCounter (e.NestedList) (e.ChildrenList) 0 'x'>>
+            s.CallCounter /* для оптимизации частного случая */
           >
         );
 }
@@ -1061,12 +1065,16 @@ AppendChildCounter {
 }
 
 MakeLinkChildAtermCommand {
+  /* частный случай, когда был переиспользован А-терм вызвавшей функции
+     и ничего свзяывать не надо */
+  ('x' (0)) 1 = /* пусто */;
   (s.ParentCallCounter (e.ChildrenCallCounters)) e.ChildrenListTail
+  s.CallCounter
     = <MakeLinkChildAtermCommand-Aux
         (/* link commands */) (e.ChildrenCallCounters) s.ParentCallCounter
       >
-      <MakeLinkChildAtermCommand e.ChildrenListTail>;
-  /* пусто */ = /* пусто */;
+      <MakeLinkChildAtermCommand e.ChildrenListTail s.CallCounter>;
+  /* пусто */ s.CallCounter = /* пусто */;
 }
 
 MakeLinkChildAtermCommand-Aux {
@@ -1169,11 +1177,15 @@ MakeCmdResultCommand {
 
 MakeCmdAtermArrayCommand {
   0 = /* пусто */;
-  s.CallCounter = (CmdAtermArray s.CallCounter);
+  1 = /* пусто */;
+  s.CallCounter
+    = (CmdAtermArray s.CallCounter)
+      (CmdSaveReusedAterm);
 }
 
 MakeCmdSaveParentAtermCommand {
   0 = /* пусто */;
+  1 = /* пусто */;
   s.CallCounter = (CmdSaveParentAterm);
 }
 
