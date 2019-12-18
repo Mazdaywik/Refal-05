@@ -1144,6 +1144,10 @@ void r05_move_aterm_prt(struct r05_state *state){
   free(uselessAterm);
 }
 
+void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
+  child->parent = parent;
+}
+
 
 /*==============================================================================
    Рефал-машина

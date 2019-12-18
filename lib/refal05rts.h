@@ -238,6 +238,8 @@ struct r05_aterm *r05_insert_aterm_list(
 
 void r05_move_aterm_prt(struct r05_state *state);
 
+void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent);
+
 /* Операции построения результата */
 
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);

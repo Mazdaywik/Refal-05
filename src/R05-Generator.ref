@@ -360,6 +360,7 @@ CmdReuseAterm {
           <Elem s.CloseCallElemNumber> ', '
           'aterm, state);'
         )
+        (e.Indent 'aterms[0] = aterm;')
 }
 
 /* Аргумент функции aterm используется как позиция вставки */
@@ -379,15 +380,18 @@ CmdLinkAtermWithParent {
   (e.Indent) s.ChildAtermNumber 'x'
     = (
         e.Indent
-        '/* link child ' <Aterm s.ChildAtermNumber>
-        ' with parent of the callee function */'
+        'r05_link_aterm_tree('<Aterm s.ChildAtermNumber>', parent);'
       );
   (e.Indent) s.ChildAtermNumber s.ParentAtermNumber
     = (
         e.Indent
-        '/* link child ' <Aterm s.ChildAtermNumber>
-        ' with parent ' <Aterm s.ParentAtermNumber> ' */'
+        'r05_link_aterm_tree(' <Aterm s.ChildAtermNumber>
+        ', ' <Aterm s.ParentAtermNumber> ');'
       );
+}
+
+CmdSaveParentAterm {
+  (e.Indent) = (e.Indent 'struct r05_aterm *parent = aterm;');
 }
 
 CmdInsertVar {
@@ -702,6 +706,7 @@ GenResult {
       (e.PatternVars)
       (/* alloc commands */)
       (/* other commands */)
+      (/* nested list */)
       (/* children list */)
       0 /* счётчик новых элементов */
       0 /* счетчик количества вызовов, увеличивается на закрывающей скобке */
@@ -742,56 +747,59 @@ DesugarName {
 
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Symbol Char s.Char1) (Symbol Char s.Char2) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+      (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       (TkString 2 s.Char1 s.Char2) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Symbol Char s.Value) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElSymbol Char s.Value))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (TkString s.Len e.String) (Symbol Char s.Char) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+      (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       (TkString <Inc s.Len> e.String s.Char) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (TkString s.Len e.String) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElString s.Len e.String))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       e.Result
     >;
 
   /* Создаём литералы */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Symbol s.Type e.Value) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElSymbol s.Type e.Value))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       e.Result
@@ -800,25 +808,27 @@ DoGenResult {
   /*
     Обработка открывающих скобок всех типов осуществляется похоже.
   */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Brackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Counter))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       <Inc s.Counter> s.CallCounter s.NestedCounter
       e.InBrackets (TkCloseBracket s.Counter) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       <Inc s.Counter> s.CallCounter <Inc s.NestedCounter>
       (Symbol Word <DesugarName e.Name>)
@@ -831,7 +841,7 @@ DoGenResult {
     Закрывающие скобки надо обрабатывать особым образом.
     Круглые скобки и АТД — слинковать, угловые — добавить в стек.
   */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (TkCloseBracket s.OpenCounter) e.Result =
     <DoGenResult
@@ -841,13 +851,15 @@ DoGenResult {
         (CmdLinkBrackets s.OpenCounter s.Counter)
         e.Commands
       )
+      (e.NestedList)
       (e.ChildrenList)
       <Inc s.Counter> s.CallCounter s.NestedCounter
       e.Result
     >;
 
   /* Первый вызов - переиспользуем А-терм текущей функции */
-  (e.Vars) (e.AllocCommands) (e.Commands) (/* пусто, так как первый вызов*/)
+  (e.Vars) (e.AllocCommands) (e.Commands)
+  (/* пусто, так как первый вызов*/) (/* пусто, первый вызов */)
   s.Counter 0 /* s.CallCounter */ s.NestedCounter
   (TkCloseCall s.OpenCounter s.ThisNestedCounter)
   e.Result =
@@ -861,13 +873,15 @@ DoGenResult {
         /* Вставлять переиспользованный А-терм в список не нужно - он уже там */
         (CmdReuseAterm s.OpenCounter s.Counter)
       )
-      <AppendChildCounter (/* children list */) s.NestedCounter 0>
+      <AppendChildCounter
+        (/* nested list */) (/* children list */) s.NestedCounter 0
+      >
       <Inc s.Counter> 1 /* s.CallCounter */ <Dec s.NestedCounter>
       e.Result
     >;
 
   /* Не первый вызов - создаем новый А-терм и вставляем его в список */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (TkCloseCall s.OpenCounter s.ThisNestedCounter)
   e.Result =
@@ -880,23 +894,23 @@ DoGenResult {
         e.Commands
         (CmdAllocAterm s.OpenCounter s.Counter s.CallCounter)
         (CmdInsertAtermList s.CallCounter)
-        <MakeLinkChildAtermCommand
-                        (e.ChildrenList) s.NestedCounter s.CallCounter
-        >
       )
-      <AppendChildCounter (e.ChildrenList) s.NestedCounter s.CallCounter>
+      <AppendChildCounter
+        (e.NestedList) (e.ChildrenList) s.NestedCounter s.CallCounter
+      >
       <Inc s.Counter> <Inc s.CallCounter> <Dec s.NestedCounter>
       e.Result
     >;
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Variable t.SrcPos 's' e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       e.Result
@@ -905,7 +919,7 @@ DoGenResult {
   /* Переменная есть в образце — переносим, позиция подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
   (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
-  (e.Commands) (e.ChildrenList)
+  (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
@@ -916,6 +930,7 @@ DoGenResult {
         e.Commands
         (CmdInsertVar s.InsertPos s.Usings s.Mode e.Index)
       )
+      (e.NestedList)
       (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       e.Result
@@ -923,7 +938,7 @@ DoGenResult {
 
   /* Переменная есть в образце — переносим, позиция не подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
-  (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
@@ -934,19 +949,21 @@ DoGenResult {
         e.Commands
         (CmdInsertVar s.Counter s.Usings s.Mode e.Index)
       )
+      (e.NestedList)
       (e.ChildrenList)
       <Inc s.Counter> s.CallCounter s.NestedCounter
       e.Result
     >;
 
   /* Переменной нет в образце — копируем */
-  (e.Vars) (e.AllocCommands) (e.Commands) (e.ChildrenList)
+  (e.Vars) (e.AllocCommands) (e.Commands) (e.NestedList) (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
   (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))
       (e.Commands)
+      (e.NestedList)
       (e.ChildrenList)
       s.Counter s.CallCounter s.NestedCounter
       e.Result
@@ -954,112 +971,113 @@ DoGenResult {
 
   /* Завершение просмотра */
   (e.UnusedVars) (e.AllocCommands) (e.Commands)
-  (/* пусто, в конце не должно быть непровязанных А-термов */)
+  (/* если не было вызовов вообще */)
+  (e.ChildrenList)
   s.Counter s.CallCounter s.NestedCounter
-    = s.Counter s.CallCounter (e.UnusedVars) (e.AllocCommands e.Commands);
+    = s.Counter s.CallCounter (e.UnusedVars)
+      (
+        e.AllocCommands
+        e.Commands
+        /* 'x' - вместо номера вызова, родительского для текущей функции */
+      );
+
+  (e.UnusedVars) (e.AllocCommands) (e.Commands)
+    (e.NestedList)
+    (e.ChildrenList)
+    s.Counter s.CallCounter s.NestedCounter
+      = s.Counter s.CallCounter (e.UnusedVars)
+        (
+          e.AllocCommands
+          e.Commands
+          /* 'x' - вместо номера вызова, родительского для текущей функции */
+          <MakeLinkChildAtermCommand
+            <Second <AppendChildCounter (e.NestedList) (e.ChildrenList) 0 'x'>>
+          >
+        );
+}
+
+Second {
+  (e.First) (e.Second) = e.Second
 }
 
 AppendChildCounter {
-  /* Частный случай. Для скобок на самом верхнем уровне вложенности сразу
-      формируются команды и в список их класть не надо */
-  (e.ChildrenList) 1 /* NestedCounter */ s.CurrentCallCounter = ();
   /* Если остались на том же уровне вложенности, то нужно добавить
      номер вызова в список дочерних вызовов */
-  (e.ChildrenListBegin  (s.CurrentNestedCounter (e.ChildrenCallCounters)))
-  s.CurrentNestedCounter s.CurrentCallCounter
+  (e.NestedListBegin  (s.CurrentNestedCounter (e.ChildrenCallCounters)))
+  (e.ChildrenList) s.CurrentNestedCounter s.CurrentCallCounter
     = (
-        e.ChildrenListBegin
+        e.NestedListBegin
         (s.CurrentNestedCounter (e.ChildrenCallCounters s.CurrentCallCounter))
-      );
+      )
+      (e.ChildrenList);
 
-   /* Если уровень вложенности уменьшился, то значит MakeLinkChildAtermCommand
-      сформирует команды для связывания и нужно убрать терм из ChildrenList
-      и добавить текущий вызов в ChildrenList */
+   /* Если уровень вложенности уменьшился, то формируем в ChildrenList
+      терм со списком дочерних вызовов для текущего вызова, а текущий вызов
+      все также добавляем в свой уровень вложенности в NestedList*/
 
    /* Это случай, когда А-термы такой же вложенности уже были */
   (
-    e.ChildrenListBegin
+    e.NestedListBegin
     (s.CurrentNestedCounter (e.PreviousChildrenCallCounters))
     (s.NestedCounter (e.ChildrenCallCounters))
   )
-  s.CurrentNestedCounter s.CurrentCallCounter
+  (e.ChildrenList) s.CurrentNestedCounter s.CurrentCallCounter
     , <Inc s.CurrentNestedCounter> : s.NestedCounter
     = (
-        e.ChildrenListBegin
+        e.NestedListBegin
         (
           s.CurrentNestedCounter
           (e.PreviousChildrenCallCounters s.CurrentCallCounter)
         )
-      );
+      )
+      (e.ChildrenList (s.CurrentCallCounter (e.ChildrenCallCounters)));
 
   /* Это случай, когда не было А-термов такой же вложенности,
-     тогда формируется новый терм в ChildrenLinst для них */
+     тогда формируется новый терм в NestedList для них */
   (
-    e.ChildrenListBegin
+    e.NestedListBegin
     (s.NestedCounter (e.ChildrenCallCounters))
   )
-  s.CurrentNestedCounter s.CurrentCallCounter
+  (e.ChildrenList) s.CurrentNestedCounter s.CurrentCallCounter
     , <Inc s.CurrentNestedCounter> : s.NestedCounter
     = (
-        e.ChildrenListBegin
+        e.NestedListBegin
         (
           s.CurrentNestedCounter
           (s.CurrentCallCounter)
         )
-      );
+      )
+      (e.ChildrenList (s.CurrentCallCounter (e.ChildrenCallCounters)));
 
   /* Если уровень вложенности увеличился, или предыдущих уровней вложенности
-     не было, то создается новый терм в ChildrenList*/
-  (e.ChildrenList) s.CurrentNestedCounter s.CurrentCallCounter
+     не было, то создается новый терм в NestedList*/
+  (e.NestedList) (e.ChildrenList) s.CurrentNestedCounter s.CurrentCallCounter
     = (
-        e.ChildrenList
+        e.NestedList
         (s.CurrentNestedCounter (s.CurrentCallCounter))
-      );
+      )
+      (e.ChildrenList);
 
 }
 
 MakeLinkChildAtermCommand {
-  /* Частный случай. Если это верхний уровень вложенности,
-     то нужно связать еще и текущий А-терм особым образом */
-  (e.ChildrenListBegin (2 /* NestedCounter */ (e.ChildrenCallCounters)))
-  1 /* CurrentNestedCounter */ s.CurrentCallCounter
+  (s.ParentCallCounter (e.ChildrenCallCounters)) e.ChildrenListTail
     = <MakeLinkChildAtermCommand-Aux
-        (/* команды связывания */) (e.ChildrenCallCounters) s.CurrentCallCounter
+        (/* link commands */) (e.ChildrenCallCounters) s.ParentCallCounter
       >
-      /* 'x' означает, что родительский А-терм - А-терм вызванной функции */
-      (CmdLinkAtermWithParent s.CurrentCallCounter 'x');
-
-  /* Частный случай частного случая  ¯\_(ツ)_/¯ */
-  () 1 /* CurrentNestedCounter */ s.CurrentCallCounter
-      = (CmdLinkAtermWithParent s.CurrentCallCounter 'x');
-
-  /* Если уровень вложенности стал меньше,
-     значит она принадлежит родительскому А-терму, и нужно родительский А-терм
-     связывать с дочерними */
-  (e.ChildrenListBegin (s.NestedCounter (e.ChildrenCallCounters)))
-  s.CurrentNestedCounter s.CurrentCallCounter
-    ,<Inc s.CurrentNestedCounter> : s.NestedCounter
-    = <MakeLinkChildAtermCommand-Aux
-        (/* команды связывания */) (e.ChildrenCallCounters) s.CurrentCallCounter
-      >;
-
-   /* Если уровень вложености стал больше, остался таким же или это первый
-      вызов в цепочке вложенных вызовов, то связывать А-термы еще рано,
-      так как неизвестен родительский А-терм */
-  (e.ChildrenListBegin)
-  s.CurrentNestedCounter s.CurrentCallCounter
-    = /* пусто */;
+      <MakeLinkChildAtermCommand e.ChildrenListTail>;
+  /* пусто */ = /* пусто */;
 }
 
 MakeLinkChildAtermCommand-Aux {
-  (e.LinkCommands) (s.ChildCounter e.ChildrenCountersTail) s.CurrentCallCounter
+  (e.LinkCommands) (s.ChildCounter e.ChildrenCountersTail) s.ParentCounter
     = <MakeLinkChildAtermCommand-Aux
       (
         e.LinkCommands
-        (CmdLinkAtermWithParent s.ChildCounter s.CurrentCallCounter)
+        (CmdLinkAtermWithParent s.ChildCounter s.ParentCounter)
       )
       (e.ChildrenCountersTail)
-      s.CurrentCallCounter
+      s.ParentCounter
       >;
   (e.LinkCommands) (/* empty */) s.CurrentCallCounter = e.LinkCommands;
 }
@@ -1121,6 +1139,7 @@ ComposeSentenceCommands-Aux {
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
       <MakeCmdAtermArrayCommand s.CallCounter>
+      <MakeCmdSaveParentAtermCommand s.CallCounter>
       (CmdInitB0)
       e.PatternCommands
       (CmdEmptyResult)
@@ -1150,12 +1169,12 @@ MakeCmdResultCommand {
 
 MakeCmdAtermArrayCommand {
   0 = /* пусто */;
-  1 = /* пусто */;
-  /* Нулевой элемент массива aterms используется для сохранения значения
-   * аргумента r05_aterm *aterm.
-   * Это сделано, чтобы избежать запутанной магии со счетчиками и не создавать
-   * лишних переменных */
   s.CallCounter = (CmdAtermArray s.CallCounter);
+}
+
+MakeCmdSaveParentAtermCommand {
+  0 = /* пусто */;
+  s.CallCounter = (CmdSaveParentAterm);
 }
 
 MakeCmdMoveAtermPtr {
