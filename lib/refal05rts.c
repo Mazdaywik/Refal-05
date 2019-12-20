@@ -1630,36 +1630,13 @@ static void dump_buried(struct r05_state *state) {
 ==============================================================================*/
 
 R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ */
-  r05_this_is_generated_function(state);
-
-  do {
-    struct r05_node *eX_b_1;
-    struct r05_node *eX_e_1;
-    struct r05_node *eY_b_1;
-    struct r05_node *eY_e_1;
-    struct r05_node *bb[2] = { 0 };
-    struct r05_node *be[2] = { 0 };
-    struct r05_node *n[1] = { 0 };
-    r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
-    /* (e.X) e.Y */
-    if (! r05_brackets_left(bb+1, be+1, bb+0, be+0, state))
-      continue;
-    eX_b_1 = bb[1];
-    eX_e_1 = be[1];
-    eY_b_1 = bb[0];
-    eY_e_1 = be[0];
-
-    r05_reset_allocator(state);
-    r05_alloc_insert_pos(n+0, state);
-    r05_splice_evar(n[0], eX_b_1, eX_e_1);
-    r05_splice_evar(n[0], eY_b_1, eY_e_1);
-    r05_move_aterm_prt(state);
-    r05_splice_from_freelist(arg_begin, state);
-    r05_splice_to_freelist(arg_begin, arg_end, state);
-    return;
-  } while (0);
-
-  r05_recognition_impossible(state);
+  struct r05_node *cat = arg_begin->next;
+  struct r05_node *open_bracket = cat->next;
+  struct r05_node *close_bracket = open_bracket->info.link;
+  r05_splice_to_freelist(arg_begin, open_bracket, state);
+  r05_splice_to_freelist(close_bracket, close_bracket, state);
+  r05_splice_to_freelist(arg_end, arg_end, state);
+  r05_move_aterm_prt(state);
 }
 
 int main(int argc, char **argv) {
