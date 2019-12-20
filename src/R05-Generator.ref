@@ -10,6 +10,7 @@ $EXTERN InlineExpr;
 
 *$FROM R5FW-Transformer
 $EXTERN Transform;
+*$EXTERN NO-POS
 
 
 /**
@@ -24,10 +25,79 @@ $ENTRY R05-Generate-ToFile {
   <R05-Generate-ToLines e.Tree> == (s.CHAR*)*
 */
 $ENTRY R05-Generate-ToLines {
-  e.Tree =
-    <R05-Generate-Aux
-      <MapAccum generator_GenTreeItem (/* declarations */) <Transform e.Tree>>
+  e.Tree
+    = <R05-Generate-Aux
+        <MapAccum
+          generator_GenTreeItem (/* declarations */)
+          <InsertConcatenators <Transform e.Tree>>
+        >
+      >;
+}
+
+/*
+  <InsertConcatenators e.AST> == e.AST
+  Заменяет результатные выражения вида <Function1 e.arg1> <Function2 e.arg2>
+  на <Cat@ (<Function1 e.arg1>) <Function2 e.arg2>>
+*/
+InsertConcatenators {
+  e.AST = (Extern (NO-POS 'Cat@')) <InsertConcatenators-Aux e.AST>;
+}
+
+InsertConcatenators-Aux {
+  (Extern e.externBody) e.AST-Tail
+    = (Extern e.externBody) <InsertConcatenators-Aux e.AST-Tail>;
+
+  (SpecialComment e.CommentBody) e.AST-Tail
+    = (SpecialComment e.CommentBody) <InsertConcatenators-Aux e.AST-Tail>;
+
+  (Function t.SrcPos (e.Name) s.Scope e.Sentences) e.AST-Tail
+    = (
+        Function t.SrcPos (e.Name) s.Scope
+        <InsertConcatenators-Sentences e.Sentences>
+      )
+      <InsertConcatenators-Aux e.AST-Tail>;
+
+  /* empty */ = /* empty */;
+}
+
+InsertConcatenators-Sentences {
+  (t.Pattern RETURN (e.Result)) e.SentencesTail
+    = (
+        t.Pattern
+        RETURN
+        (<InsertConcatenators-Result e.Result>)
+      )
+      <InsertConcatenators-Sentences e.SentencesTail>;
+
+  /* empty */ = /* empty */;
+}
+
+InsertConcatenators-Result {
+  (Call t.ScrPos1 (e.Name1) e.MoreTerms)
+  (Call t.ScrPos2 (e.Name2) e.MoreTerms2)
+  e.TermsTail
+  = <InsertConcatenators-Result
+    (Call NO-POS ('Cat@')
+          (Brackets
+            (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
+          )
+          (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
+    )
+    e.TermsTail
     >;
+
+  (Call t.SrcPos (e.Name) e.MoreTerms) e.TermsTail
+    = (Call t.SrcPos (e.Name) <InsertConcatenators-Result e.MoreTerms>)
+      <InsertConcatenators-Result e.TermsTail>;
+
+  (Brackets e.MoreTerms) e.TermsTail
+    = (Brackets <InsertConcatenators-Result e.MoreTerms>)
+      <InsertConcatenators-Result e.TermsTail>;
+
+  t.OtherTerm e.TermsTail
+    = t.OtherTerm <InsertConcatenators-Result e.TermsTail>;
+
+  /* empty */ = /* empty */;
 }
 
 R05-Generate-Aux {

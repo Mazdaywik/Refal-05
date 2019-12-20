@@ -27,7 +27,7 @@ $EXTERN Builtins;
   and transform to basic Refal
 */
 $ENTRY R05-PrepareAST {
-  e.AST = <InsertConcatenators <CheckAST <ExpandComments e.AST>>>;
+  e.AST = <CheckAST <ExpandComments e.AST>>;
 }
 
 ExpandComments {
@@ -348,110 +348,6 @@ DesugarName {
   '?' = 'Residue';
 
   e.Name = e.Name;
-}
-
-/*
-  <InsertConcatenators e.AST> == e.AST
-  Заменяет все предложения вида <Function1 e.arg1> <Function2 e.arg2>
-  на <Cat (<Function1 e.arg1>) <Function2 e.arg2>>
-*/
-InsertConcatenators {
-  Success e.AST
-    = Success
-      (Extern (NO-POS 'Cat@'))
-      <InsertConcatenators-Aux e.AST (/* processed */)>;
-  Fails e.Errors = Fails e.Errors;
-}
-
-InsertConcatenators-Aux {
-  (Extern e.externBody) e.AST-Tail (e.Processed)
-    = <InsertConcatenators-Aux e.AST-Tail (e.Processed (Extern e.externBody))>;
-  (SpecialComment e.CommentBody) e.AST-Tail (e.Processed)
-    = <InsertConcatenators-Aux
-      e.AST-Tail
-      (e.Processed (SpecialComment e.CommentBody))
-      >;
-  (Function t.SrcPos (e.Name) s.Scope e.Sentences) e.AST-Tail (e.Processed)
-    = <InsertConcatenators-Aux
-      e.AST-Tail
-      (
-        e.Processed
-        (
-          Function t.SrcPos (e.Name) s.Scope
-          <InsertConcatenators-Sentences e.Sentences>
-        )
-      )>;
-  (e.Processed) = e.Processed;
-}
-
-InsertConcatenators-Sentences {
-  e.Sentences
-  = <InsertConcatenators-Sentences-Aux e.Sentences (/* processed */)>;
-}
-
-InsertConcatenators-Sentences-Aux {
-  (t.Pattern e.Conditions RETURN (e.Result)) e.SentencesTail (e.Processed)
-  = <InsertConcatenators-Sentences-Aux
-    e.SentencesTail
-    (
-      e.Processed
-      (
-        t.Pattern
-        <InsertConcatenators-Conditions e.Conditions>
-        RETURN
-        (<InsertConcatenators-Result e.Result>)
-      )
-    )>;
-  (t.Pattern e.Conditions CALL-BLOCK (e.Result) e.SentencesInner) e.SentencesTail
-  (e.Processed)
-    = <InsertConcatenators-Sentences-Aux
-      e.SentencesTail
-      (
-        e.Processed
-        (
-          t.Pattern
-          <InsertConcatenators-Conditions e.Conditions>
-          CALL-BLOCK
-          (<InsertConcatenators-Result e.Result>)
-          <InsertConcatenators-Sentences e.SentencesInner>
-        )
-      )>;
- (e.Processed) = e.Processed;
-}
-
-InsertConcatenators-Result {
-  (Call t.ScrPos1 (e.Name1) e.MoreTerms)
-  (Call t.ScrPos2 (e.Name2) e.MoreTerms2)
-  e.TermsTail
-  = <InsertConcatenators-Result
-    (Call NO-POS ('Cat@')
-          (Brackets
-            (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
-          )
-          (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
-    )
-    e.TermsTail
-    >;
-  (Call t.SrcPos (e.Name) e.MoreTerms) e.TermsTail
-    = (Call t.SrcPos (e.Name) <InsertConcatenators-Result e.MoreTerms>)
-      <InsertConcatenators-Result e.TermsTail>;
-  (Brackets e.MoreTerms) e.TermsTail
-    = (Brackets <InsertConcatenators-Result e.MoreTerms>)
-      <InsertConcatenators-Result e.TermsTail>;
-  t.OtherTerm e.TermsTail
-    = t.OtherTerm <InsertConcatenators-Result e.TermsTail>;
-  /* empty */ = /* empty */;
-}
-
-InsertConcatenators-Conditions {
-  (Condition (e.Result) t.Pattern) e.CondtitionsTail
-    = (
-        Condition
-        (<InsertConcatenators-Result e.Result>)
-        t.Pattern
-      )
-      <InsertConcatenators-Conditions e.CondtitionsTail>;
-  /* empty */ = /* empty */;
 }
 
 /**
