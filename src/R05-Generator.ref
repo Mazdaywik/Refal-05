@@ -486,14 +486,6 @@ CmdDecParentAtermCounter {
       );
 }
 
-CmdSaveAterm {
-  (e.Indent)
-    = (
-        e.Indent
-        'struct r05_aterm *aterm = state->aterm_list_ptr;'
-      )
-}
-
 CmdSaveParentAterm {
   (e.Indent) = (e.Indent 'struct r05_aterm *parent = aterm;');
 }
@@ -1256,7 +1248,6 @@ ComposeSentenceCommands-Aux {
       <Map generator_MakeDeclaration e.PatternVars>
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
-      (CmdSaveAterm)
       <MakeCmdAtermArrayCommand s.CallCounter>
       <MakeCmdSaveParentAtermCommand s.CallCounter>
       (CmdInitB0)

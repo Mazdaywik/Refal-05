@@ -50,7 +50,7 @@ struct r05_state;
 struct r05_aterm;
 
 typedef void (*r05_function_ptr) (
-  struct r05_state *state
+  struct r05_aterm *aterm, struct r05_state *state
 );
 
 struct r05_function {
@@ -296,7 +296,7 @@ void r05_alloc_evar(
 void r05_alloc_string(const char *string, struct r05_state *state);
 
 
-void r05_enum_function_code(struct r05_state *state);
+void r05_enum_function_code(struct r05_aterm *aterm, struct r05_state *state);
 
 
 /* Профилирование */
@@ -309,8 +309,12 @@ void r05_stop_e_loop(struct r05_state *state);
 
 R05_NORETURN void r05_recognition_impossible(struct r05_state *state);
 R05_NORETURN void r05_exit(int retcode, struct r05_state *state);
-R05_NORETURN void r05_builtin_error(const char *message, struct r05_state *state);
-R05_NORETURN void r05_builtin_error_errno(const char *message, struct r05_state *state);
+R05_NORETURN void r05_builtin_error(
+  const char *message, struct r05_state *state
+);
+R05_NORETURN void r05_builtin_error_errno(
+  const char *message, struct r05_state *state
+);
 
 const char *r05_arg(int no);
 
@@ -341,18 +345,18 @@ R05_NORETURN void r05_switch_default_violation_impl(
 
 #define R05_DEFINE_FUNCTION_AUX(name, scope, rep) \
   static void r05c_ ## name( \
-    struct r05_state *state \
+    struct r05_aterm *aterm, struct r05_state *state \
   ); \
   scope struct r05_function r05f_ ## name = { r05c_ ## name, rep }; \
   static void r05c_ ## name( \
-    struct r05_state *state \
+    struct r05_aterm *aterm, struct r05_state *state \
   )
 
 
-void r05_br(struct r05_state *state);
-void r05_dg(struct r05_state *state);
-void r05_cp(struct r05_state *state);
-void r05_rp(struct r05_state *state);
+void r05_br(struct r05_aterm *aterm, struct r05_state *state);
+void r05_dg(struct r05_aterm *aterm, struct r05_state *state);
+void r05_cp(struct r05_aterm *aterm, struct r05_state *state);
+void r05_rp(struct r05_aterm *aterm, struct r05_state *state);
 
 
 #ifdef __cplusplus

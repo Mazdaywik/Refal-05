@@ -903,7 +903,9 @@ void r05_splice_from_freelist(struct r05_node *pos, struct r05_state *state) {
 }
 
 
-void r05_enum_function_code(struct r05_state *state) {
+void r05_enum_function_code(
+  struct r05_aterm *aterm, struct r05_state *state
+) {
   r05_recognition_impossible(state);
 }
 
@@ -1193,7 +1195,7 @@ static void main_loop(struct r05_state *state) {
     function = state->arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
       (function->info.function->ptr)(
-        state
+        next_aterm, state
       );
     } else {
       r05_recognition_impossible(state);
@@ -1581,19 +1583,19 @@ static void dgcp_impl(
 }
 
 
-void r05_br(struct r05_state *state) {
+void r05_br(struct r05_aterm *aterm, struct r05_state *state) {
   brrp_impl(BRRP_BR, state);
 }
 
-void r05_dg(struct r05_state *state) {
+void r05_dg(struct r05_aterm *aterm, struct r05_state *state) {
   dgcp_impl(DGCP_DG, state);
 }
 
-void r05_cp(struct r05_state *state) {
+void r05_cp(struct r05_aterm *aterm, struct r05_state *state) {
   dgcp_impl(DGCP_CP, state);
 }
 
-void r05_rp(struct r05_state *state) {
+void r05_rp(struct r05_aterm *aterm, struct r05_state *state) {
   brrp_impl(BRRP_RP, state);
 }
 
