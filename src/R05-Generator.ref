@@ -277,14 +277,19 @@ CmdRangeArray {
 
 CmdInitB0 {
   (e.Indent) =
-    (e.Indent 'r05_prepare_argument(' <RangeVarsPtr 0> ', arg_begin, arg_end);');
+    (
+      e.Indent
+      'r05_prepare_argument(' <RangeVarsPtr 0>
+      ', state->arg_begin, state->arg_end);'
+    );
 }
 
 CmdMatch {
   (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
     (e.Indent
       'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
-      '(' <MatchArgs s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> ', state))'
+      '(' <MatchArgs s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber>
+      ', state))'
     )
     (e.Indent '  continue;');
 }
@@ -481,6 +486,14 @@ CmdDecParentAtermCounter {
       );
 }
 
+CmdSaveAterm {
+  (e.Indent)
+    = (
+        e.Indent
+        'struct r05_aterm *aterm = state->aterm_list_ptr;'
+      )
+}
+
 CmdSaveParentAterm {
   (e.Indent) = (e.Indent 'struct r05_aterm *parent = aterm;');
 }
@@ -495,8 +508,11 @@ CmdInsertVar {
 
 CmdReturnResult {
   (e.Indent) =
-    (e.Indent 'r05_splice_from_freelist(arg_begin, state);')
-    (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end, state);')
+    (e.Indent 'r05_splice_from_freelist(state->arg_begin, state);')
+    (
+      e.Indent
+      'r05_splice_to_freelist(state->arg_begin, state->arg_end, state);'
+    )
     (e.Indent 'return;');
 }
 
@@ -1240,6 +1256,7 @@ ComposeSentenceCommands-Aux {
       <Map generator_MakeDeclaration e.PatternVars>
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
+      (CmdSaveAterm)
       <MakeCmdAtermArrayCommand s.CallCounter>
       <MakeCmdSaveParentAtermCommand s.CallCounter>
       (CmdInitB0)

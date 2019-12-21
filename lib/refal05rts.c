@@ -903,12 +903,7 @@ void r05_splice_from_freelist(struct r05_node *pos, struct r05_state *state) {
 }
 
 
-void r05_enum_function_code(
-  struct r05_node *begin, struct r05_node *end,
-  struct r05_aterm *aterm, struct r05_state *state
-) {
-  (void) begin;
-  (void) end;
+void r05_enum_function_code(struct r05_state *state) {
   r05_recognition_impossible(state);
 }
 
@@ -1198,7 +1193,7 @@ static void main_loop(struct r05_state *state) {
     function = state->arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
       (function->info.function->ptr)(
-        state->arg_begin, state->arg_end, next_aterm, state
+        state
       );
     } else {
       r05_recognition_impossible(state);
@@ -1385,7 +1380,7 @@ static void dump_buried(struct r05_state *state);
 static void make_dump(struct r05_state *state) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", state->step_counter);
   fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
-  print_seq(state->arg_begin, state->arg_end);
+  print_seq(state->aterm_list_ptr->arg_begin, state->aterm_list_ptr->arg_end);
   fprintf(stderr, "\nVIEW FIELD:\n");
   print_seq(&s_begin_view_field, &s_end_view_field);
 
@@ -1523,33 +1518,32 @@ int buried_query(
 enum brrp_behavior { BRRP_BR, BRRP_RP };
 
 static void brrp_impl(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
   enum brrp_behavior behavior, struct r05_state *state
 ) {
-  struct r05_node *callee = arg_begin->next;
+  struct r05_node *callee = state->arg_begin->next;
   struct r05_node *key_b, *key_e, *val_b, *val_e;
 
   key_b = NULL;
   key_e = NULL;
-  r05_prepare_argument(&val_b, &val_e, arg_begin, arg_end);
+  r05_prepare_argument(&val_b, &val_e, state->arg_begin, state->arg_end);
   do {
     if (r05_char_left('=', &val_b, &val_e, state)) {
       struct buried_query query;
 
       if (BRRP_RP == behavior && buried_query(&query, key_b, key_e, state)) {
         list_splice(query.right_bracket, val_b, val_e);
-        list_splice(arg_end, query.value_begin, query.value_end);
+        list_splice(state->arg_end, query.value_begin, query.value_end);
       } else {
         struct r05_node *left_bracket = callee;
-        struct r05_node *right_bracket = arg_end;
+        struct r05_node *right_bracket = state->arg_end;
         left_bracket->tag = R05_DATATAG_OPEN_BRACKET;
         right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
         r05_link_brackets(left_bracket, right_bracket);
         list_splice(state->begin_buried.next, left_bracket, right_bracket);
-        arg_end = arg_begin;
+        state->arg_end = state->arg_begin;
       }
       r05_move_aterm_prt(state);
-      r05_splice_to_freelist(arg_begin, arg_end, state);
+      r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
       return;
     }
   } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e, state));
@@ -1561,21 +1555,20 @@ static void brrp_impl(
 enum dgcp_behavior { DGCP_DG, DGCP_CP };
 
 static void dgcp_impl(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
   enum dgcp_behavior behavior, struct r05_state *state
 ) {
   struct r05_node *key_begin, *key_end;
   struct buried_query query;
   int found;
 
-  r05_prepare_argument(&key_begin, &key_end, arg_begin, arg_end);
+  r05_prepare_argument(&key_begin, &key_end, state->arg_begin, state->arg_end);
   r05_reset_allocator(state);
 
   found = buried_query(&query, key_begin, key_end, state);
 
   if (found) {
     if (behavior == DGCP_DG) {
-      r05_splice_evar(arg_begin, query.value_begin, query.value_end);
+      r05_splice_evar(state->arg_begin, query.value_begin, query.value_end);
       r05_splice_to_freelist(query.left_bracket, query.right_bracket, state);
     } else {
       r05_alloc_evar(query.value_begin, query.value_end, state);
@@ -1583,37 +1576,25 @@ static void dgcp_impl(
   }
 
   r05_move_aterm_prt(state);
-  r05_splice_from_freelist(arg_begin, state);
-  r05_splice_to_freelist(arg_begin, arg_end, state);
+  r05_splice_from_freelist(state->arg_begin, state);
+  r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
 }
 
 
-void r05_br(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_aterm *aterm, struct r05_state *state
-) {
-  brrp_impl(arg_begin, arg_end, BRRP_BR, state);
+void r05_br(struct r05_state *state) {
+  brrp_impl(BRRP_BR, state);
 }
 
-void r05_dg(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_aterm *aterm, struct r05_state *state
-) {
-  dgcp_impl(arg_begin, arg_end, DGCP_DG, state);
+void r05_dg(struct r05_state *state) {
+  dgcp_impl(DGCP_DG, state);
 }
 
-void r05_cp(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_aterm *aterm, struct r05_state *state
-) {
-  dgcp_impl(arg_begin, arg_end, DGCP_CP, state);
+void r05_cp(struct r05_state *state) {
+  dgcp_impl(DGCP_CP, state);
 }
 
-void r05_rp(
-  struct r05_node *arg_begin, struct r05_node *arg_end,
-  struct r05_aterm *aterm, struct r05_state *state
-) {
-  brrp_impl(arg_begin, arg_end, BRRP_RP, state);
+void r05_rp(struct r05_state *state) {
+  brrp_impl(BRRP_RP, state);
 }
 
 
@@ -1629,13 +1610,17 @@ static void dump_buried(struct r05_state *state) {
    Функция конкатенации
 ==============================================================================*/
 
+/*
+   1. <Cat@ (e.Exr1) e.Expr2> == e.Expr1 e.Expr2
+*/
+
 R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ */
-  struct r05_node *cat = arg_begin->next;
+  struct r05_node *cat = state->arg_begin->next;
   struct r05_node *open_bracket = cat->next;
   struct r05_node *close_bracket = open_bracket->info.link;
-  r05_splice_to_freelist(arg_begin, open_bracket, state);
+  r05_splice_to_freelist(state->arg_begin, open_bracket, state);
   r05_splice_to_freelist(close_bracket, close_bracket, state);
-  r05_splice_to_freelist(arg_end, arg_end, state);
+  r05_splice_to_freelist(state->arg_end, state->arg_end, state);
   r05_move_aterm_prt(state);
 }
 
