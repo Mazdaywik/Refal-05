@@ -12,6 +12,9 @@ $EXTERN InlineExpr;
 $EXTERN Transform;
 *$EXTERN NO-POS
 
+*$FROM Library
+*$EXTERN True, False
+
 
 /**
   <R05-Generate-ToFile (e.OutputFile) e.Tree> == пусто
@@ -40,51 +43,46 @@ $ENTRY R05-Generate-ToLines {
   на <Cat@ (<Function1 e.arg1>) <Function2 e.arg2>>
 */
 InsertConcatenators {
-  e.AST = (Extern (NO-POS 'Cat@')) <InsertConcatenators-Aux e.AST>;
+  e.AST = (Extern (NO-POS 'Cat@')) <Map InsertConcatenators-Aux e.AST>;
 }
 
-InsertConcatenators-Aux {
-  (Extern e.externBody) e.AST-Tail
-    = (Extern e.externBody) <InsertConcatenators-Aux e.AST-Tail>;
+$ENTRY InsertConcatenators-Aux {
+  (Extern e.externBody) = (Extern e.externBody);
 
-  (SpecialComment e.CommentBody) e.AST-Tail
-    = (SpecialComment e.CommentBody) <InsertConcatenators-Aux e.AST-Tail>;
+  (SpecialComment e.CommentBody) = (SpecialComment e.CommentBody);
 
-  (Function t.SrcPos (e.Name) s.Scope e.Sentences) e.AST-Tail
+  (Function t.SrcPos (e.Name) s.Scope e.Sentences)
     = (
         Function t.SrcPos (e.Name) s.Scope
-        <InsertConcatenators-Sentences e.Sentences>
-      )
-      <InsertConcatenators-Aux e.AST-Tail>;
-
-  /* empty */ = /* empty */;
+        <Map InsertConcatenators-Sentences e.Sentences>
+      );
 }
 
-InsertConcatenators-Sentences {
-  (t.Pattern RETURN (e.Result)) e.SentencesTail
+$ENTRY InsertConcatenators-Sentences {
+  (t.Pattern RETURN (e.Result))
     = (
         t.Pattern
         RETURN
         (<InsertConcatenators-Result e.Result>)
-      )
-      <InsertConcatenators-Sentences e.SentencesTail>;
-
-  /* empty */ = /* empty */;
+      );
 }
 
 InsertConcatenators-Result {
   (Call t.ScrPos1 (e.Name1) e.MoreTerms)
+  e.ZeroOrMoreEVars
   (Call t.ScrPos2 (e.Name2) e.MoreTerms2)
   e.TermsTail
-  = <InsertConcatenators-Result
-    (Call NO-POS ('Cat@')
-          (Brackets
-            (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
-          )
-          (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
-    )
-    e.TermsTail
-    >;
+    , <IsEvarSequence e.ZeroOrMoreEVars> : True
+    = <InsertConcatenators-Result
+      (Call NO-POS ('Cat@')
+            (Brackets
+              (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
+            )
+            e.ZeroOrMoreEVars
+            (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
+      )
+      e.TermsTail
+      >;
 
   (Call t.SrcPos (e.Name) e.MoreTerms) e.TermsTail
     = (Call t.SrcPos (e.Name) <InsertConcatenators-Result e.MoreTerms>)
@@ -98,6 +96,20 @@ InsertConcatenators-Result {
     = t.OtherTerm <InsertConcatenators-Result e.TermsTail>;
 
   /* empty */ = /* empty */;
+}
+
+IsEvarSequence {
+  e.expr = <And <Map IsEvar e.expr>>;
+}
+
+$ENTRY IsEvar {
+  (Variable t.SrcPos 'e' e.Index) = True;
+  e.AnyOther = False;
+}
+
+And {
+  e.B False e.E = False;
+  e.Trues = True;
 }
 
 R05-Generate-Aux {
