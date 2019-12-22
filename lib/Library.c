@@ -28,6 +28,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
     state->arg_begin, state->arg_end, aterm, state
   );
   r05_splice_to_freelist(mu, mu, state);
+  r05_enqueue_aterm(aterm, state);
 }
 
 

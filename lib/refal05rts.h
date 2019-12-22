@@ -84,6 +84,7 @@ struct r05_state {
   struct r05_aterm *begin_local_queue;
   struct r05_aterm *end_local_queue;
   int aterm_counter; /* счетчик созданных А-термов */
+  int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   /* Переменные профилировщика */
   size_t memory_use;
   unsigned long step_counter;
