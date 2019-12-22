@@ -510,14 +510,17 @@ CmdInsertVar {
     );
 }
 
-CmdReturnResult {
-  (e.Indent) =
-    (e.Indent 'r05_splice_from_freelist(state->arg_begin, state);')
-    (
-      e.Indent
-      'r05_splice_to_freelist(state->arg_begin, state->arg_end, state);'
-    )
-    (e.Indent 'return;');
+CmdSpliceFreelist {
+  (e.Indent)
+    = (e.Indent 'r05_splice_from_freelist(state->arg_begin, state);')
+      (
+        e.Indent
+        'r05_splice_to_freelist(state->arg_begin, state->arg_end, state);'
+      );
+}
+
+CmdReturn {
+  (e.Indent) = (e.Indent 'return;');
 }
 
 EscapeString {
@@ -1266,8 +1269,9 @@ ComposeSentenceCommands-Aux {
       e.PatternCommands
       (CmdEmptyResult)
       e.ResultCommands
+      (CmdSpliceFreelist)
       <MakeCmdZeroNewCalls s.CallCounter>
-      (CmdReturnResult)
+      (CmdReturn)
     >;
 }
 
