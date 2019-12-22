@@ -15,6 +15,8 @@
 #define EXIT_CODE_NO_MEMORY 202
 #define EXIT_CODE_BUILTIN_ERROR 203
 
+#define ATERM_TO_GLOBAL_QUEUE 3
+
 
 /*==============================================================================
    Операции сопоставления с образцом
@@ -1113,7 +1115,10 @@ struct r05_aterm *r05_alloc_aterm(
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
   atomic_init(&aterm->child_aterms, 0);
-  /* обнуление указателей происходит в init_view_field() */
+  aterm->category = ATERM_CAT_ACTIVE;
+  aterm->queue_next = NULL;
+  /* обнуление оставльных указателей происходит в init_view_field() */
+  ++ state->aterm_counter;
   return aterm;
 }
 
@@ -1129,6 +1134,55 @@ void r05_reuse_aterm(
 
 void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
   child->parent = parent;
+}
+
+static struct r05_aterm *s_begin_aterm_queue = NULL;
+static struct r05_aterm *s_end_aterm_queue = NULL;
+
+pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
+
+#define enqueue(begin_queue, end_queue, elem) \
+  if ((begin_queue) == NULL) { \
+    (begin_queue) = (elem); \
+    (end_queue) = (elem); \
+  } else { \
+    (end_queue)->queue_next = (elem); \
+    (end_queue) = (elem); \
+  }
+
+void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
+  if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE) {
+    enqueue(state->begin_local_queue, state->end_local_queue, aterm)
+  } else {
+    pthread_mutex_lock(&s_aterm_queue_lock);
+    enqueue(s_begin_aterm_queue, s_end_aterm_queue, aterm)
+    pthread_mutex_unlock(&s_aterm_queue_lock);
+  }
+}
+
+/* вернет NULL, если все очереди пусты */
+static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
+  if (state->begin_local_queue == NULL) {
+    pthread_mutex_lock(&s_aterm_queue_lock);
+    struct r05_aterm *res = NULL;
+    if (s_begin_aterm_queue != NULL) {
+      res = s_begin_aterm_queue;
+      s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
+      if (s_begin_aterm_queue == NULL) {
+        s_end_aterm_queue = NULL;
+      }
+    }
+    pthread_mutex_unlock(&s_aterm_queue_lock);
+    return res;
+  } else {
+    struct r05_aterm *res = state->begin_local_queue;
+    state->begin_local_queue = state->begin_local_queue->queue_next;
+    if (state->begin_local_queue == NULL) {
+      state->end_local_queue = NULL;
+    }
+    return res;
+  }
 }
 
 /* Работа с А-термами, как со списком теней */
@@ -1236,6 +1290,7 @@ static void init_view_field(struct r05_state *state) {
   s_aterm_list_ptr->next = NULL;
   s_aterm_list_ptr->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);
+  enqueue(s_begin_aterm_queue, s_end_aterm_queue, s_aterm_list_ptr)
 }
 
 static void print_seq(struct r05_node *begin, struct r05_node *end);
@@ -1719,6 +1774,12 @@ int main(int argc, char **argv) {
     NULL,
     /* pool of memory_chunks */
     NULL,
+    /* begin_local_queue */
+    NULL,
+    /* end_local_queue */
+    NULL,
+    /* aterm_counter */
+    0,
     /* memory_use */
     0,
     /* step_counter */

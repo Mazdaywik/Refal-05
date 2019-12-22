@@ -436,8 +436,7 @@ CmdAllocAterm {
 }
 
 /* Аргумент внешней функции r05_aterm *aterm сохраняется в aterms[0],
- * так как он потом перезаписывается (в текущей версии нет, но потом будет,
- * чтобы обесчепить провязку структуры дерева А-термов)*/
+ * так как он потом перезаписывается */
 CmdSaveReusedAterm {
   (e.Indent) = (e.Indent 'aterms[0] = aterm;')
 }
@@ -481,10 +480,16 @@ CmdLinkAtermWithParent {
 }
 
 CmdIncParentAtermCounter {
+  (e.Indent) 'x' 1 = /* пусто */;
+  (e.Indent) 'x' s.Value
+    = (
+        e.Indent
+        'atomic_fetch_add(&(parent->child_aterms), ' <Symb <Dec s.Value>> ');'
+      );
   (e.Indent) s.ParentAtermNumber s.Value
     = (
         e.Indent
-         'atomic_fetch_add('
+        'atomic_fetch_add('
         '&(' <Aterm s.ParentAtermNumber> '->child_aterms), '
         <Symb s.Value> ');'
       );
@@ -494,12 +499,23 @@ CmdDecParentAtermCounter {
   (e.Indent)
     = (
         e.Indent
-        'atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
-      );
+        'int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
+      )
+      (e.Indent 'if (old_counter == 1)')
+      (e.Indent '  r05_enqueue_aterm(aterm->parent, state);');
 }
 
 CmdSaveParentAterm {
-  (e.Indent) = (e.Indent 'struct r05_aterm *parent = aterm;');
+  (e.Indent) = (e.Indent 'struct r05_aterm *parent = aterm->parent;');
+}
+
+CmdEnqueueAtermArray {
+  (e.Indent) s.AtermNumber
+    = (e.Indent 'r05_enqueue_aterm(' <Aterm s.AtermNumber> ', state);');
+}
+
+CmdEnqueueAtermReused {
+  (e.Indent) = (e.Indent 'r05_enqueue_aterm(aterm, state);')
 }
 
 CmdInsertVar {
@@ -1096,8 +1112,8 @@ DoGenResult {
       (
         e.AllocCommands
         e.Commands
-        /* 'x' - вместо номера вызова, родительского для текущей функции */
-      );
+      )
+      (/* ChildrenList */);
 
   (e.UnusedVars) (e.AllocCommands) (e.Commands)
     (e.NestedList)
@@ -1107,16 +1123,13 @@ DoGenResult {
         (
           e.AllocCommands
           e.Commands
-          /* 'x' - вместо номера вызова, родительского для текущей функции */
-          <MakeLinkChildAtermCommand
-            <Second <AppendChildCounter (e.NestedList) (e.ChildrenList) 0 'x'>>
-            s.CallCounter /* для оптимизации частного случая */
-          >
-        );
+        )
+        /* 'x' - вместо номера вызова, родительского для текущей функции */
+        <Second <AppendChildCounter (e.NestedList) (e.ChildrenList) 0 'x'>>;
 }
 
 Second {
-  (e.First) (e.Second) = e.Second
+  (e.First) (e.Second) = (e.Second)
 }
 
 AppendChildCounter {
@@ -1179,17 +1192,20 @@ AppendChildCounter {
 
 }
 
+/* <MakeLinkChildAtermCommand e.ChildrenList> == e.Commands (e.Parents) */
 MakeLinkChildAtermCommand {
   /* частный случай, когда был переиспользован А-терм вызвавшей функции
      и ничего свзяывать не надо */
-  ('x' (0)) 1 = /* пусто */;
+  ('x' (0)) 1 (/* Parents */) = (/* Parents */);
   (s.ParentCallCounter (e.ChildrenCallCounters)) e.ChildrenListTail
-  s.CallCounter
+  s.CallCounter (e.Parents)
     = <MakeLinkChildAtermCommand-Aux
         (/* link commands */) (e.ChildrenCallCounters) s.ParentCallCounter 0
       >
-      <MakeLinkChildAtermCommand e.ChildrenListTail s.CallCounter>;
-  /* пусто */ s.CallCounter = /* пусто */;
+      <MakeLinkChildAtermCommand
+        e.ChildrenListTail s.CallCounter (e.Parents s.ParentCallCounter)
+      >;
+  /* пусто */ s.CallCounter (e.Parents) = (e.Parents);
 }
 
 MakeLinkChildAtermCommand-Aux {
@@ -1204,11 +1220,32 @@ MakeLinkChildAtermCommand-Aux {
       s.ParentCounter
       <Inc s.LinkedCounter>
       >;
-  /* родительский счетчик вызвавшей функции обрабатывается отдельно */
-  (e.LinkCommands) (/* empty */) 'x' s.LinkedCounter = e.LinkCommands;
   (e.LinkCommands) (/* empty */) s.ParentCounter s.LinkedCounter
     = e.LinkCommands
       (CmdIncParentAtermCounter s.ParentCounter s.LinkedCounter);
+}
+
+
+/* В очередь добавляются все А-термы, у которых нет дочерних, то есть те,
+   которых нет в списке e.Parents */
+MakeEnqueueAtermsCommand {
+  /* Частный случай, когда не создавалось массива А-термов */
+  e.Parents 1 = (CmdEnqueueAtermReused);
+  e.Parents s.CallCounter
+    = <MakeEnqueueAtermsCommand-Aux e.Parents 0 s.CallCounter>;
+}
+
+MakeEnqueueAtermsCommand-Aux {
+  e.Parents s.CallCounter s.CallCounter = /* пусто */;
+  e.Parents-B s.CurrentCounter e.Parents-E s.CurrentCounter s.CallCounter
+    = <MakeEnqueueAtermsCommand-Aux
+        e.Parents-B e.Parents-E <Inc s.CurrentCounter> s.CallCounter
+      >;
+  e.Parents s.CurrentCounter s.CallCounter
+    = (CmdEnqueueAtermArray s.CurrentCounter)
+      <MakeEnqueueAtermsCommand-Aux
+        e.Parents <Inc s.CurrentCounter> s.CallCounter
+      >;
 }
 
 DecUsings {
@@ -1218,14 +1255,20 @@ DecUsings {
 
 
 ComposeSentenceCommands {
-  s.NumRanges (e.PatternVars) (e.PatternCommands)
-  s.ResultCounter s.CallCounter (e.UnusedVars) (e.ResultCommands) =
-    <ComposeSentenceCommands-Aux
-      s.NumRanges s.ResultCounter s.CallCounter (e.ResultCommands)
-      <FilterCommonVarsAndPatternCommands
-        (e.PatternVars) (e.PatternCommands) e.UnusedVars
-      >
-    >;
+  s.NumRanges (e.PatternVars) (e.PatternCommands) s.ResultCounter s.CallCounter
+  (e.UnusedVars) (e.ResultCommands) (e.ChildrenList)
+    = <ComposeSentenceCommands-Aux
+        s.NumRanges s.ResultCounter s.CallCounter
+        (e.ResultCommands)
+        (
+          <MakeLinkChildAtermCommand
+            e.ChildrenList s.CallCounter (/* Parents */)
+          >
+        )
+        <FilterCommonVarsAndPatternCommands
+          (e.PatternVars) (e.PatternCommands) e.UnusedVars
+        >
+      >;
 }
 
 FilterCommonVarsAndPatternCommands {
@@ -1262,6 +1305,7 @@ FilterCommonVarsAndPatternCommands {
 
 ComposeSentenceCommands-Aux {
   s.NumRanges s.ResultCounter s.CallCounter (e.ResultCommands)
+  (e.LinkAtermsCommands (e.Parents))
   (e.PatternVars) e.PatternCommands =
     <GenerateResult-OpenELoops
       <Map generator_MakeDeclaration e.PatternVars>
@@ -1273,8 +1317,10 @@ ComposeSentenceCommands-Aux {
       e.PatternCommands
       (CmdEmptyResult)
       e.ResultCommands
+      e.LinkAtermsCommands
       (CmdSpliceFreelist)
       <MakeCmdZeroNewCalls s.CallCounter>
+      <MakeEnqueueAtermsCommand e.Parents s.CallCounter>
       (CmdReturn)
     >;
 }

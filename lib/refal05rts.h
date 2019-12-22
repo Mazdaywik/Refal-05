@@ -81,6 +81,9 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
+  struct r05_aterm *begin_local_queue;
+  struct r05_aterm *end_local_queue;
+  int aterm_counter; /* счетчик созданных А-термов */
   /* Переменные профилировщика */
   size_t memory_use;
   unsigned long step_counter;
@@ -108,11 +111,12 @@ enum r05_aterm_category {
 
 struct r05_aterm {
   struct r05_aterm *parent; /* for tree structure */
-  struct r05_aterm *next; /* for call list structure */
+  struct r05_aterm *next; /* for shadow list structure */
+  struct r05_aterm *queue_next; /* for queue structure */
   struct r05_node *arg_begin; /* open call bracket */
   struct r05_node *arg_end; /* close call bracket */
   volatile sig_atomic_t category; /* represents shadow state */
-  volatile sig_atomic_t child_aterms; /* counter for child aterms in tree structure */
+  volatile sig_atomic_t child_aterms; /* counter for child aterms in tree */
 };
 
 
@@ -234,6 +238,8 @@ void r05_reuse_aterm(
 );
 
 void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent);
+
+void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state);
 
 /* Работа с А-термами, как со списком теней */
 
