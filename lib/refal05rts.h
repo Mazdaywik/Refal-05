@@ -81,10 +81,6 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
-  struct r05_aterm *aterm_list_ptr;
-  /* Переменные копилки */
-  struct r05_node begin_buried;
-  struct r05_node end_buried;
   /* Переменные профилировщика */
   size_t memory_use;
   unsigned long step_counter;
@@ -102,6 +98,12 @@ struct r05_state {
   clock_t total_e_loop;
   clock_t total_match_repeated_tvar_time_outside_e;
   clock_t total_match_repeated_evar_time_outside_e;
+};
+
+enum r05_aterm_category {
+  ATERM_CAT_ACTIVE = 1,
+  ATERM_CAT_SUSPENDED = 2,
+  ATERM_CAT_COMPLETE = 3
 };
 
 struct r05_aterm {
@@ -231,13 +233,19 @@ void r05_reuse_aterm(
   struct r05_aterm *aterm, struct r05_state *state
 );
 
+void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent);
+
+/* Работа с А-термами, как со списком теней */
+
+void r05_move_aterm_prt(struct r05_state *state);
+
 struct r05_aterm *r05_insert_aterm_list(
   struct r05_aterm *insert_after, struct r05_aterm *new_aterm
 );
 
-void r05_move_aterm_prt(struct r05_state *state);
+int r05_is_ready_to_exec(struct r05_aterm *aterm);
 
-void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent);
+void r05_aterm_category_complete(struct r05_aterm *aterm);
 
 /* Операции построения результата */
 

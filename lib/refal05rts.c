@@ -1127,6 +1127,19 @@ void r05_reuse_aterm(
   aterm->arg_end = arg_end;
 }
 
+void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
+  child->parent = parent;
+}
+
+/* Работа с А-термами, как со списком теней */
+
+static struct r05_aterm *s_aterm_list_ptr;
+
+/* временная функция, будет заменена на работу с очередями */
+void r05_move_aterm_prt(struct r05_state *state){
+  s_aterm_list_ptr = s_aterm_list_ptr->next;
+}
+
 /* вставка А-терма после первого аргумента */
 struct r05_aterm *r05_insert_aterm_list(
   struct r05_aterm *insert_after, struct r05_aterm *new_aterm
@@ -1136,12 +1149,62 @@ struct r05_aterm *r05_insert_aterm_list(
   return new_aterm;
 }
 
-void r05_move_aterm_prt(struct r05_state *state){
-  state->aterm_list_ptr = state->aterm_list_ptr->next;
+/* проверка категории тени в атерме */
+int r05_is_ready_to_exec(struct r05_aterm *aterm) {
+  if (aterm->category == ATERM_CAT_ACTIVE) {
+    /* Здесь можно записывать значение без специальных функций
+     * для многопоточности, так как запись происходит только из одного потока,
+     * в котором вычисляется функция */
+    aterm->category = ATERM_CAT_SUSPENDED;
+    return 0;
+  } else if (aterm->category == ATERM_CAT_SUSPENDED) {
+    return 1;
+  } else {
+    r05_switch_default_violation(aterm->category);
+  }
 }
 
-void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
-  child->parent = parent;
+void r05_aterm_category_complete(struct r05_aterm *aterm) {
+  aterm->category = ATERM_CAT_COMPLETE;
+}
+
+/* исполняет приостановленные функции и удаляет а-термы исполненных */
+static void process_aterm_list(struct r05_state *state) {
+  struct r05_aterm *uselessAterm;
+  struct r05_node *function;
+  while (
+    s_aterm_list_ptr != NULL
+    && s_aterm_list_ptr->category != ATERM_CAT_ACTIVE
+  ) {
+    if (s_aterm_list_ptr->category == ATERM_CAT_COMPLETE) {
+      uselessAterm = s_aterm_list_ptr;
+      s_aterm_list_ptr = s_aterm_list_ptr->next;
+      free(uselessAterm);
+    } else if (s_aterm_list_ptr->category == ATERM_CAT_SUSPENDED) {
+      state->arg_begin = s_aterm_list_ptr->arg_begin;
+      state->arg_end = s_aterm_list_ptr->arg_end;
+
+#if R05_SHOW_DEBUG
+    if (state->step_counter >= (unsigned long) R05_SHOW_DEBUG) {
+      make_dump(&state);
+    }
+#endif  /* R05_SHOW_DEBUG */
+
+      function = state->arg_begin->next;
+      if (R05_DATATAG_FUNCTION == function->tag) {
+        (function->info.function->ptr)(
+          s_aterm_list_ptr, state
+        );
+      } else {
+        r05_recognition_impossible(state);
+      }
+      after_step(state);
+
+      ++ state->step_counter;
+    } else {
+      r05_switch_default_violation(s_aterm_list_ptr->category);
+    }
+  }
 }
 
 
@@ -1168,21 +1231,19 @@ static void init_view_field(struct r05_state *state) {
   r05_alloc_open_call(&open, state);
   r05_alloc_function(&r05f_Go, state);
   r05_alloc_close_call(&close, state);
-  state->aterm_list_ptr = r05_alloc_aterm(open, close, state);
+  s_aterm_list_ptr = r05_alloc_aterm(open, close, state);
   /* достаточно обнулить указатели только здесь */
-  state->aterm_list_ptr->next = NULL;
-  state->aterm_list_ptr->parent = NULL;
+  s_aterm_list_ptr->next = NULL;
+  s_aterm_list_ptr->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);
 }
 
 static void print_seq(struct r05_node *begin, struct r05_node *end);
 
 static void main_loop(struct r05_state *state) {
-  while (state->aterm_list_ptr != NULL) {
+  while (s_aterm_list_ptr != NULL) {
     struct r05_node *function;
-    struct r05_aterm *next_aterm;
-
-    next_aterm = state->aterm_list_ptr;
+    struct r05_aterm *next_aterm = s_aterm_list_ptr;
     state->arg_begin = next_aterm->arg_begin;
     state->arg_end = next_aterm->arg_end;
 
@@ -1382,7 +1443,7 @@ static void dump_buried(struct r05_state *state);
 static void make_dump(struct r05_state *state) {
   fprintf(stderr, "\nSTEP NUMBER %lu\n", state->step_counter);
   fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
-  print_seq(state->aterm_list_ptr->arg_begin, state->aterm_list_ptr->arg_end);
+  print_seq(s_aterm_list_ptr->arg_begin, s_aterm_list_ptr->arg_end);
   fprintf(stderr, "\nVIEW FIELD:\n");
   print_seq(&s_begin_view_field, &s_end_view_field);
 
@@ -1470,6 +1531,15 @@ R05_NORETURN void r05_switch_default_violation_impl(
 ==============================================================================*/
 
 
+static struct r05_node s_end_buried;
+
+static struct r05_node s_begin_buried = {
+  0, &s_end_buried, R05_DATATAG_ILLEGAL, { '\0' }
+};
+static struct r05_node s_end_buried = {
+  &s_begin_buried, 0, R05_DATATAG_ILLEGAL, { '\0' }
+};
+
 struct buried_query {
   struct r05_node *left_bracket;
   struct r05_node *right_bracket;
@@ -1481,12 +1551,12 @@ int buried_query(
   struct buried_query *res, struct r05_node *key_begin,
   struct r05_node *key_end, struct r05_state *state
 ) {
-  struct r05_node *buried_begin = state->begin_buried.next;
+  struct r05_node *buried_begin = s_begin_buried.next;
   struct r05_node *left_bracket, *right_bracket;
   struct r05_node *in_brackets_b, *in_brackets_e;
   int found = 0;
 
-  while (buried_begin != &state->end_buried && ! found) {
+  while (buried_begin != &s_end_buried && ! found) {
     struct r05_node *rep_key_b, *rep_key_e;
 
     left_bracket = buried_begin;
@@ -1520,8 +1590,10 @@ int buried_query(
 enum brrp_behavior { BRRP_BR, BRRP_RP };
 
 static void brrp_impl(
-  enum brrp_behavior behavior, struct r05_state *state
+  enum brrp_behavior behavior, struct r05_aterm *aterm, struct r05_state *state
 ) {
+  if (!r05_is_ready_to_exec(aterm))
+    return;
   struct r05_node *callee = state->arg_begin->next;
   struct r05_node *key_b, *key_e, *val_b, *val_e;
 
@@ -1541,11 +1613,12 @@ static void brrp_impl(
         left_bracket->tag = R05_DATATAG_OPEN_BRACKET;
         right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
         r05_link_brackets(left_bracket, right_bracket);
-        list_splice(state->begin_buried.next, left_bracket, right_bracket);
+        list_splice(s_begin_buried.next, left_bracket, right_bracket);
         state->arg_end = state->arg_begin;
       }
-      r05_move_aterm_prt(state);
       r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
+      r05_move_aterm_prt(state);
+      r05_aterm_category_complete(aterm);
       return;
     }
   } while (r05_open_evar_advance(&key_b, &key_e, &val_b, &val_e, state));
@@ -1557,8 +1630,10 @@ static void brrp_impl(
 enum dgcp_behavior { DGCP_DG, DGCP_CP };
 
 static void dgcp_impl(
-  enum dgcp_behavior behavior, struct r05_state *state
+  enum dgcp_behavior behavior, struct r05_aterm *aterm, struct r05_state *state
 ) {
+  if (!r05_is_ready_to_exec(aterm))
+    return;
   struct r05_node *key_begin, *key_end;
   struct buried_query query;
   int found;
@@ -1577,33 +1652,34 @@ static void dgcp_impl(
     }
   }
 
-  r05_move_aterm_prt(state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
+  r05_move_aterm_prt(state);
+  r05_aterm_category_complete(aterm);
 }
 
 
 void r05_br(struct r05_aterm *aterm, struct r05_state *state) {
-  brrp_impl(BRRP_BR, state);
+  brrp_impl(BRRP_BR, aterm, state);
 }
 
 void r05_dg(struct r05_aterm *aterm, struct r05_state *state) {
-  dgcp_impl(DGCP_DG, state);
+  dgcp_impl(DGCP_DG, aterm, state);
 }
 
 void r05_cp(struct r05_aterm *aterm, struct r05_state *state) {
-  dgcp_impl(DGCP_CP, state);
+  dgcp_impl(DGCP_CP, aterm, state);
 }
 
 void r05_rp(struct r05_aterm *aterm, struct r05_state *state) {
-  brrp_impl(BRRP_RP, state);
+  brrp_impl(BRRP_RP, aterm, state);
 }
 
 
 static void dump_buried(struct r05_state *state) {
 #ifdef R05_DUMP_BURIED
   fprintf(stderr, "\nBURIED:\n");
-  print_seq(&state->begin_buried, &state->end_buried);
+  print_seq(&s_begin_buried, &s_end_buried);
 #endif  /* ifdef R05_DUMP_BURIED */
 }
 
@@ -1643,12 +1719,6 @@ int main(int argc, char **argv) {
     NULL,
     /* pool of memory_chunks */
     NULL,
-    /* aterm_list_ptr */
-    NULL,
-    /* begin_buried */
-    {NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }},
-    /* end_buried */
-    {NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }},
     /* memory_use */
     0,
     /* step_counter */
@@ -1657,7 +1727,6 @@ int main(int argc, char **argv) {
 
   state.free_ptr = &state.end_free_list;
   weld(&state.begin_free_list, &state.end_free_list);
-  weld(&state.begin_buried, &state.end_buried);
 
   init_view_field(&state);
   start_profiler(&state);

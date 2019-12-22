@@ -519,6 +519,10 @@ CmdSpliceFreelist {
       );
 }
 
+CmdAtermCategoryComplete {
+  (e.Indent) = (e.Indent 'r05_aterm_category_complete(aterm);');
+}
+
 CmdReturn {
   (e.Indent) = (e.Indent 'return;');
 }
@@ -1311,7 +1315,7 @@ MakeCmdZeroNewCalls {
   /* в конце необходимо переключиться на следующий А-терм,
    * если текущий не удалось переиспользовать и уменьшить
    счетчик дочерних в А-терме вызвавшей функции */
-  0 = (CmdMoveAtermPtr) (CmdDecParentAtermCounter);
+  0 = (CmdMoveAtermPtr) (CmdDecParentAtermCounter) (CmdAtermCategoryComplete);
   s.CallCounter = /* пусто */
 }
 
