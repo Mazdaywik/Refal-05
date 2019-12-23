@@ -16,7 +16,7 @@
 #define EXIT_CODE_BUILTIN_ERROR 203
 
 #define ATERM_TO_GLOBAL_QUEUE 3
-#define NUM_THREADS 4
+#define NUM_THREADS 2
 
 
 /*==============================================================================
@@ -1130,6 +1130,7 @@ void r05_reuse_aterm(
 ) {
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
+  aterm->queue_next = NULL;
 }
 
 void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
@@ -1143,7 +1144,7 @@ pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
 
 pthread_cond_t s_primary_thread_cond = PTHREAD_COND_INITIALIZER;
-static volatile sig_atomic_t s_waiting_threads = 0;
+static volatile sig_atomic_t s_waiting_threads;
 
 #define enqueue(begin_queue, end_queue, elem) \
   if ((begin_queue) == NULL) { \
@@ -1172,11 +1173,12 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
     pthread_mutex_lock(&s_aterm_queue_lock);
     struct r05_aterm *res = NULL;
     if (s_begin_aterm_queue == NULL) {
-      pthread_cond_signal(&s_primary_thread_cond);
       atomic_fetch_add(&s_waiting_threads, 1);
+      pthread_cond_signal(&s_primary_thread_cond);
       while (s_begin_aterm_queue == NULL) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
+      atomic_fetch_sub(&s_waiting_threads, 1);
     }
     res = s_begin_aterm_queue;
     s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
@@ -1265,6 +1267,7 @@ static void process_aterm_list(struct r05_state *state) {
       after_step(state);
 
       ++ state->step_counter;
+      s_aterm_list_ptr = s_aterm_list_ptr->next;
     } else {
       r05_switch_default_violation(s_aterm_list_ptr->category);
     }
@@ -1305,7 +1308,12 @@ static void init_view_field(struct r05_state *state) {
 
 static void print_seq(struct r05_node *begin, struct r05_node *end);
 
+struct thread_data {
+  int id;
+};
+
 static void *thread_main(void *arg) {
+  int thread_id = ((struct thread_data*)arg)->id;
   struct r05_state state = {
     /* begin_free_list */
     {NULL, NULL, R05_DATATAG_ILLEGAL, { '\0' }},
@@ -1325,6 +1333,10 @@ static void *thread_main(void *arg) {
     NULL,
     /* aterm_counter */
     0,
+    /* is_primary */
+    0,
+    /* thread_id */
+    thread_id,
     /* memory_use */
     0,
     /* step_counter */
@@ -1347,6 +1359,8 @@ static void *thread_main(void *arg) {
 #endif  /* R05_SHOW_DEBUG */
 
     function = state.arg_begin->next;
+      state.thread_id, next_aterm, function->info.function->name);
+    //print_seq(state.arg_begin, state.arg_end);
     if (R05_DATATAG_FUNCTION == function->tag) {
       (function->info.function->ptr)(
         next_aterm, &state
@@ -1792,7 +1806,12 @@ R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ *
   r05_splice_to_freelist(state->arg_begin, open_bracket, state);
   r05_splice_to_freelist(close_bracket, close_bracket, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  r05_move_aterm_prt(state);
+  int old_counter = 0;
+  if (aterm->parent != NULL)
+    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  if (old_counter == 1)
+    r05_enqueue_aterm(aterm->parent, state);
+  r05_aterm_category_complete(aterm);
 }
 
 int main(int argc, char **argv) {
@@ -1818,6 +1837,10 @@ int main(int argc, char **argv) {
     NULL,
     /* aterm_counter */
     0,
+    /* is_primary */
+    1,
+    /* thread_id */
+    -1,
     /* memory_use */
     0,
     /* step_counter */
@@ -1830,36 +1853,32 @@ int main(int argc, char **argv) {
   init_view_field(&state);
   start_profiler(&state);
   /* start threads */
+  atomic_init(&s_waiting_threads, 0);
   pthread_t threads[NUM_THREADS];
+  struct thread_data ids[NUM_THREADS];
   int i, rc;
   for (i = 0; i < NUM_THREADS; i++) {
-    if ((rc = pthread_create(&threads[i], NULL, thread_main, NULL))) {
+    ids[i].id = i;
+    if ((rc = pthread_create(&threads[i], NULL, thread_main, &ids[i]))) {
       char message[64];
-      sprintf(message, "error: pthread_create, rc: %d", rc);
       r05_builtin_error(message, &state);
     }
   }
+  int begin_counter;
   while (1) {
-    pthread_mutex_lock(&s_aterm_queue_lock);
-    while (s_begin_aterm_queue != NULL) {
-      pthread_cond_wait(&s_primary_thread_cond, &s_aterm_queue_lock);
-    }
-    int begin = state.aterm_counter;
+    begin_counter = state.aterm_counter;
     process_aterm_list(&state);
     int waiting_threads = atomic_load(&s_waiting_threads);
-    if (state.aterm_counter == begin) {
-      if (waiting_threads == NUM_THREADS) {
-        r05_exit(0, &state);
-      } else {
-        do {
-          pthread_cond_wait(&s_primary_thread_cond, s_aterm_queue_lock);
-          waiting_threads = atomic_load(&s_waiting_threads);
-        } while (s_begin_aterm_queue == NULL || waiting_threads != NUM_THREADS);
-        if (s_begin_aterm_queue == NULL && waiting_threads == NUM_THREADS) {
-          r05_exit(0, &state);
-        }
-      }
+    if (
+      waiting_threads == NUM_THREADS
+      && begin_counter == state.aterm_counter
+    ) {
+      r05_exit(0, &state);
     }
+    pthread_mutex_lock(&s_aterm_queue_lock);
+    do {
+      pthread_cond_wait(&s_primary_thread_cond, &s_aterm_queue_lock);
+    } while (s_begin_aterm_queue != NULL);
     pthread_mutex_unlock(&s_aterm_queue_lock);
   }
 

@@ -116,6 +116,7 @@ R05-Generate-Aux {
   (e.Declarations) e.Definitions =
     ('/* Automatically generated file. Don\'t edit! */')
     ('#include "refal05rts.h"')
+    ('#include <stdio.h>')
     ()
     ()
     e.Declarations
@@ -461,10 +462,6 @@ CmdInsertAtermList {
       );
 }
 
-CmdMoveAtermPtr {
-  (e.Indent) = (e.Indent 'r05_move_aterm_prt(state);');
-}
-
 CmdLinkAtermWithParent {
   (e.Indent) s.ChildAtermNumber 'x'
     = (
@@ -484,6 +481,10 @@ CmdIncParentAtermCounter {
   (e.Indent) 'x' s.Value
     = (
         e.Indent
+        'if (parent != NULL)'
+      )
+      (
+        e.Indent '  '
         'atomic_fetch_add(&(parent->child_aterms), ' <Symb <Dec s.Value>> ');'
       );
   (e.Indent) s.ParentAtermNumber s.Value
@@ -497,9 +498,12 @@ CmdIncParentAtermCounter {
 
 CmdDecParentAtermCounter {
   (e.Indent)
-    = (
-        e.Indent
-        'int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
+    = (e.Indent 'int old_counter = 0;')
+      (e.Indent 'if (aterm->parent != NULL)')
+      (
+        e.Indent '  '
+        'old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
+        '\n printf("old counter %d parent %p\\n", old_counter, aterm->parent);'
       )
       (e.Indent 'if (old_counter == 1)')
       (e.Indent '  r05_enqueue_aterm(aterm->parent, state);');
@@ -1361,7 +1365,7 @@ MakeCmdZeroNewCalls {
   /* в конце необходимо переключиться на следующий А-терм,
    * если текущий не удалось переиспользовать и уменьшить
    счетчик дочерних в А-терме вызвавшей функции */
-  0 = (CmdMoveAtermPtr) (CmdDecParentAtermCounter) (CmdAtermCategoryComplete);
+  0 = (CmdDecParentAtermCounter) (CmdAtermCategoryComplete);
   s.CallCounter = /* пусто */
 }
 
