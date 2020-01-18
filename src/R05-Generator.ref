@@ -503,7 +503,6 @@ CmdDecParentAtermCounter {
       (
         e.Indent '  '
         'old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
-        '\n printf("old counter %d parent %p\\n", old_counter, aterm->parent);'
       )
       (e.Indent 'if (old_counter == 1)')
       (e.Indent '  r05_enqueue_aterm(aterm->parent, state);');
