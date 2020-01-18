@@ -15,8 +15,8 @@
 #define EXIT_CODE_NO_MEMORY 202
 #define EXIT_CODE_BUILTIN_ERROR 203
 
-#define ATERM_TO_GLOBAL_QUEUE 3
-#define NUM_THREADS 2
+#define ATERM_TO_GLOBAL_QUEUE 1000000000
+#define NUM_THREADS 1
 
 
 /*==============================================================================
@@ -1813,6 +1813,9 @@ static void brrp_impl(
         state->arg_end = state->arg_begin;
       }
       r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
+      int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+      if (old_counter == 1)
+        r05_enqueue_aterm(aterm->parent, state);
       r05_aterm_category_complete(aterm);
       return;
     }
@@ -1849,6 +1852,9 @@ static void dgcp_impl(
 
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  if (old_counter == 1)
+    r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
 }
 
