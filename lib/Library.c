@@ -60,9 +60,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   r05_splice_to_freelist(state->arg_begin, func_name, state); \
   r05_splice_to_freelist(sY, state->arg_end, state); \
   r05_aterm_category_complete(aterm); \
-  int old_counter = 0; \
-  if (aterm->parent != NULL) \
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1); \
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1); \
   if (old_counter == 1) \
     r05_enqueue_aterm(aterm->parent, state);
 
@@ -96,9 +94,7 @@ R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
 
     r05_splice_to_freelist(sX, state->arg_end, state);
   }
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -136,9 +132,7 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
   r05_alloc_string(r05_arg(arg_no), state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -163,9 +157,7 @@ R05_DEFINE_ENTRY_FUNCTION(Card, "Card") {
   read_from_stream(stdin, state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -203,9 +195,7 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
   }
   r05_splice_to_freelist(state->arg_begin, callee, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -251,9 +241,7 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
   r05_alloc_string(ident->info.function->name, state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -304,9 +292,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   r05_splice_evar(pos, eSuffix_b, eSuffix_e);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -340,9 +326,7 @@ R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
   read_from_stream(stream, state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -413,9 +397,7 @@ R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
 
   r05_splice_to_freelist(state->arg_begin, state->arg_begin, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -439,9 +421,7 @@ R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
   }
   r05_splice_to_freelist(state->arg_begin, callee, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -486,9 +466,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   state->arg_begin->tag = R05_DATATAG_NUMBER;
   state->arg_begin->info.number = result;
   r05_splice_to_freelist(callee, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -581,9 +559,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   }
 
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -617,9 +593,7 @@ R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
 
   r05_splice_to_freelist(state->arg_begin, callee, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -700,9 +674,7 @@ static void output_func(
   } else {
     r05_switch_default_violation(type);
   }
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -767,9 +739,7 @@ R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
 
     r05_splice_to_freelist(sX, state->arg_end, state);
   }
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -835,9 +805,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
 
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -865,9 +833,7 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
   r05_alloc_string(time_str, state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -939,9 +905,7 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
   callee->info.char_ = subtype;
 
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -966,9 +930,7 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 
   r05_splice_to_freelist(state->arg_begin, callee, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1011,9 +973,7 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
   r05_alloc_string(env_value, state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1066,9 +1026,7 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
   r05_alloc_number((r05_number) retcode, state);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1133,9 +1091,7 @@ R05_DEFINE_ENTRY_FUNCTION(Close, "Close") {
   file_no = (unsigned int) pfile_no->info.number % FILE_LIMIT;
   ensure_close_stream(file_no, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1188,9 +1144,7 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   }
 
   r05_splice_to_freelist(callee, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1247,9 +1201,7 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
   r05_link_brackets(left_bracket, right_bracket);
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1298,9 +1250,7 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
 
   r05_splice_to_freelist(state->arg_begin, func_name, state);
   r05_splice_to_freelist(sY, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1339,9 +1289,7 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
 
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1375,9 +1323,7 @@ R05_DEFINE_ENTRY_FUNCTION(RandomDigit, "RandomDigit") {
   state->arg_begin->tag = R05_DATATAG_NUMBER;
   state->arg_begin->info.number = res;
   r05_splice_to_freelist(callee, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1561,9 +1507,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
