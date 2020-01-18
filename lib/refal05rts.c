@@ -1147,7 +1147,6 @@ pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
 
 pthread_mutex_t s_primary_thread_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_primary_thread_cond = PTHREAD_COND_INITIALIZER;
-static volatile sig_atomic_t s_waiting_threads;
 static sig_atomic_t s_need_to_process_aterm_list;
 
 #define enqueue(begin_queue, end_queue, elem) \
@@ -1182,7 +1181,6 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
       printf("thread %d wait\n", state->thread_id);
 
       /* сигнал первичному потоку о том, что вторичный встал на ожидание */
-      atomic_fetch_add(&s_waiting_threads, 1);
       pthread_mutex_lock(&s_primary_thread_lock);
       s_need_to_process_aterm_list++;
       pthread_cond_signal(&s_primary_thread_cond);
@@ -1192,7 +1190,6 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
       printf("thread %d signalled\n", state->thread_id);
-      atomic_fetch_sub(&s_waiting_threads, 1);
     }
     res = s_begin_aterm_queue;
     s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
@@ -1214,11 +1211,6 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
 /* Работа с А-термами, как со списком теней */
 
 static struct r05_aterm *s_aterm_list_ptr;
-
-/* временная функция, будет заменена на работу с очередями */
-void r05_move_aterm_prt(struct r05_state *state){
-  s_aterm_list_ptr = s_aterm_list_ptr->next;
-}
 
 /* вставка А-терма после первого аргумента */
 struct r05_aterm *r05_insert_aterm_list(
@@ -1293,6 +1285,44 @@ static void process_aterm_list(struct r05_state *state) {
   printf("process_aterm_list_finished\n");
 }
 
+/*==============================================================================
+   Служебные функции
+==============================================================================*/
+
+/* Эти функции в поле зрения необходимы для запуска программы, даже если
+ * к ней не подключена Library. Поэтому они находятся в файле рантайма.
+ * К тому же программист не должен о них знать, так как они являются деталью
+ * реализации рантайма. Поэтому их не нужно добавлять в ListOfBuiltin. */
+
+/**
+   <Cat@ (e.Exr1) e.Expr2> == e.Expr1 e.Expr2
+*/
+
+R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ */
+  struct r05_node *cat = state->arg_begin->next;
+  struct r05_node *open_bracket = cat->next;
+  struct r05_node *close_bracket = open_bracket->info.link;
+  r05_splice_to_freelist(state->arg_begin, open_bracket, state);
+  r05_splice_to_freelist(close_bracket, close_bracket, state);
+  r05_splice_to_freelist(state->arg_end, state->arg_end, state);
+  int old_counter = 0;
+  if (aterm->parent != NULL)
+    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
+  if (old_counter == 1)
+    r05_enqueue_aterm(aterm->parent, state);
+  r05_aterm_category_complete(aterm);
+}
+
+/**
+   <Stop@ <Go>>
+*/
+
+R05_DEFINE_ENTRY_FUNCTION(Stopa_, "Stop@") { /* @ декодируется в a_ */
+  printf("Stop@");
+  r05_exit(0, state);
+}
+
 
 /*==============================================================================
    Рефал-машина
@@ -1310,17 +1340,30 @@ static struct r05_node s_end_view_field = {
 
 extern struct r05_function r05f_Go;
 
+/* помещает в поле зрения <Stop <Go>> и кладет
+ * а-терм Go в глобальную очередь */
 static void init_view_field(struct r05_state *state) {
-  struct r05_node *open, *close;
+  struct r05_node *openStop, *closeStop;
+  struct r05_node *openGo, *closeGo;
+  struct r05_aterm *stop;
 
   r05_reset_allocator(state);
-  r05_alloc_open_call(&open, state);
+  r05_alloc_open_call(&openStop, state);
+  r05_alloc_function(&r05f_Stopa_, state);
+  r05_alloc_open_call(&openGo, state);
   r05_alloc_function(&r05f_Go, state);
-  r05_alloc_close_call(&close, state);
-  s_aterm_list_ptr = r05_alloc_aterm(open, close, state);
+  r05_alloc_close_call(&closeGo, state);
+  r05_alloc_close_call(&closeStop, state);
+  stop = r05_alloc_aterm(openStop, closeStop, state);
+  s_aterm_list_ptr = r05_alloc_aterm(openGo, closeGo, state);
   /* достаточно обнулить указатели только здесь */
   s_aterm_list_ptr->next = NULL;
-  s_aterm_list_ptr->parent = NULL;
+  s_aterm_list_ptr->parent = stop;
+  atomic_fetch_add(&(stop->child_aterms), 1);
+  /* Stop не кладется в список теней, так как это чистая функция,
+   * и она будет вызвана последней */
+  stop->next = NULL;
+  stop->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);
   enqueue(s_begin_aterm_queue, s_end_aterm_queue, s_aterm_list_ptr)
 }
@@ -1745,7 +1788,6 @@ static void brrp_impl(
         state->arg_end = state->arg_begin;
       }
       r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-      r05_move_aterm_prt(state);
       r05_aterm_category_complete(aterm);
       return;
     }
@@ -1782,7 +1824,6 @@ static void dgcp_impl(
 
   r05_splice_from_freelist(state->arg_begin, state);
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
-  r05_move_aterm_prt(state);
   r05_aterm_category_complete(aterm);
 }
 
@@ -1811,30 +1852,6 @@ static void dump_buried(struct r05_state *state) {
 #endif  /* ifdef R05_DUMP_BURIED */
 }
 
-
-/*==============================================================================
-   Функция конкатенации
-==============================================================================*/
-
-/*
-   1. <Cat@ (e.Exr1) e.Expr2> == e.Expr1 e.Expr2
-*/
-
-R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ */
-  struct r05_node *cat = state->arg_begin->next;
-  struct r05_node *open_bracket = cat->next;
-  struct r05_node *close_bracket = open_bracket->info.link;
-  r05_splice_to_freelist(state->arg_begin, open_bracket, state);
-  r05_splice_to_freelist(close_bracket, close_bracket, state);
-  r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
-  printf("old counter %d parent %p\n", old_counter, aterm->parent);
-  if (old_counter == 1)
-    r05_enqueue_aterm(aterm->parent, state);
-  r05_aterm_category_complete(aterm);
-}
 
 int main(int argc, char **argv) {
   s_argc = argc;
@@ -1876,7 +1893,6 @@ int main(int argc, char **argv) {
   start_profiler(&state);
   printf("in main\n");
   /* start threads */
-  atomic_init(&s_waiting_threads, 0);
   s_need_to_process_aterm_list = 0;
   pthread_t threads[NUM_THREADS];
   struct thread_data ids[NUM_THREADS];
@@ -1890,19 +1906,8 @@ int main(int argc, char **argv) {
     }
   }
   printf("threads started\n");
-  int begin_counter;
   while (1) {
-    begin_counter = state.aterm_counter;
-    int waiting_threads = atomic_load(&s_waiting_threads);
     process_aterm_list(&state);
-    if (
-      waiting_threads == NUM_THREADS
-      && begin_counter == state.aterm_counter
-    ) {
-
-      printf("r05_exit\n");
-      //r05_exit(0, &state);
-    }
     pthread_mutex_lock(&s_primary_thread_lock);
     while (s_need_to_process_aterm_list == 0) {
       pthread_cond_wait(&s_primary_thread_cond, &s_primary_thread_lock);
