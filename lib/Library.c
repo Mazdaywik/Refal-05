@@ -63,6 +63,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   int old_counter = 0; \
   if (aterm->parent != NULL) \
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1); \
+  printf("old counter %d parent %p\n", old_counter, aterm->parent); \
   if (old_counter == 1) \
     r05_enqueue_aterm(aterm->parent, state);
 
@@ -99,6 +100,7 @@ R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -139,6 +141,7 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -166,6 +169,7 @@ R05_DEFINE_ENTRY_FUNCTION(Card, "Card") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -206,6 +210,7 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -254,6 +259,7 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -307,6 +313,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -343,6 +350,7 @@ R05_DEFINE_ENTRY_FUNCTION(Get, "Get") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -416,6 +424,7 @@ R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -442,6 +451,7 @@ R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -489,6 +499,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -584,6 +595,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -620,6 +632,7 @@ R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -703,6 +716,7 @@ static void output_func(
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -770,6 +784,7 @@ R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -838,6 +853,7 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -868,6 +884,7 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -942,6 +959,7 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -969,6 +987,7 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1014,6 +1033,7 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1069,6 +1089,7 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1136,6 +1157,7 @@ R05_DEFINE_ENTRY_FUNCTION(Close, "Close") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1191,6 +1213,7 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1250,6 +1273,7 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1301,6 +1325,7 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1342,6 +1367,7 @@ R05_DEFINE_ENTRY_FUNCTION(Random, "Random") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1378,6 +1404,7 @@ R05_DEFINE_ENTRY_FUNCTION(RandomDigit, "RandomDigit") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1564,6 +1591,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);

@@ -1118,6 +1118,7 @@ struct r05_aterm *r05_alloc_aterm(
   atomic_init(&aterm->child_aterms, 0);
   aterm->category = ATERM_CAT_ACTIVE;
   aterm->queue_next = NULL;
+  printf("aterm created %p\n", aterm);
   /* обнуление оставльных указателей происходит в init_view_field() */
   return aterm;
 }
@@ -1135,6 +1136,7 @@ void r05_reuse_aterm(
 
 void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
   child->parent = parent;
+  printf("linked child %p with parent %p\n", child, parent);
 }
 
 static struct r05_aterm *s_begin_aterm_queue = NULL;
@@ -1143,8 +1145,10 @@ static struct r05_aterm *s_end_aterm_queue = NULL;
 pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
 
+pthread_mutex_t s_primary_thread_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_primary_thread_cond = PTHREAD_COND_INITIALIZER;
 static volatile sig_atomic_t s_waiting_threads;
+static sig_atomic_t s_need_to_process_aterm_list;
 
 #define enqueue(begin_queue, end_queue, elem) \
   if ((begin_queue) == NULL) { \
@@ -1156,6 +1160,7 @@ static volatile sig_atomic_t s_waiting_threads;
   }
 
 void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
+  printf("thread %d enqueue %p\n", state->thread_id, aterm);
   ++ state->aterm_counter;
   if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE && !state->is_primary) {
     enqueue(state->begin_local_queue, state->end_local_queue, aterm)
@@ -1169,15 +1174,24 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
 
 /* вернет NULL, если все очереди пусты */
 static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
+  printf("thread %d dequeue\n", state->thread_id);
   if (state->begin_local_queue == NULL) {
     pthread_mutex_lock(&s_aterm_queue_lock);
     struct r05_aterm *res = NULL;
     if (s_begin_aterm_queue == NULL) {
+      printf("thread %d wait\n", state->thread_id);
+
+      /* сигнал первичному потоку о том, что вторичный встал на ожидание */
       atomic_fetch_add(&s_waiting_threads, 1);
+      pthread_mutex_lock(&s_primary_thread_lock);
+      s_need_to_process_aterm_list++;
       pthread_cond_signal(&s_primary_thread_cond);
+      pthread_mutex_unlock(&s_primary_thread_lock);
+
       while (s_begin_aterm_queue == NULL) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
+      printf("thread %d signalled\n", state->thread_id);
       atomic_fetch_sub(&s_waiting_threads, 1);
     }
     res = s_begin_aterm_queue;
@@ -1222,6 +1236,7 @@ int r05_is_ready_to_exec(struct r05_aterm *aterm) {
      * для многопоточности, так как запись происходит только из одного потока,
      * в котором вычисляется функция */
     aterm->category = ATERM_CAT_SUSPENDED;
+    printf("function suspended %p\n", aterm);
     return 0;
   } else if (aterm->category == ATERM_CAT_SUSPENDED) {
     return 1;
@@ -1231,6 +1246,7 @@ int r05_is_ready_to_exec(struct r05_aterm *aterm) {
 }
 
 void r05_aterm_category_complete(struct r05_aterm *aterm) {
+  printf("function execution finished %p\n", aterm);
   aterm->category = ATERM_CAT_COMPLETE;
 }
 
@@ -1247,6 +1263,7 @@ static void process_aterm_list(struct r05_state *state) {
       s_aterm_list_ptr = s_aterm_list_ptr->next;
       free(uselessAterm);
     } else if (s_aterm_list_ptr->category == ATERM_CAT_SUSPENDED) {
+      printf("exec from shadow list\n");
       state->arg_begin = s_aterm_list_ptr->arg_begin;
       state->arg_end = s_aterm_list_ptr->arg_end;
 
@@ -1271,7 +1288,9 @@ static void process_aterm_list(struct r05_state *state) {
     } else {
       r05_switch_default_violation(s_aterm_list_ptr->category);
     }
+    printf("next aterm %p\n", s_aterm_list_ptr);
   }
+  printf("process_aterm_list_finished\n");
 }
 
 
@@ -1347,6 +1366,7 @@ static void *thread_main(void *arg) {
   weld(&state.begin_free_list, &state.end_free_list);
   start_profiler(&state);
 
+  printf("thread %d state initialized\n", thread_id);
   while (1) {
     struct r05_node *function;
     struct r05_aterm *next_aterm = dequeue_aterm(&state);
@@ -1359,6 +1379,7 @@ static void *thread_main(void *arg) {
 #endif  /* R05_SHOW_DEBUG */
 
     function = state.arg_begin->next;
+    printf("thread %d dequeue ok %p func %s\n",
       state.thread_id, next_aterm, function->info.function->name);
     //print_seq(state.arg_begin, state.arg_end);
     if (R05_DATATAG_FUNCTION == function->tag) {
@@ -1809,6 +1830,7 @@ R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ *
   int old_counter = 0;
   if (aterm->parent != NULL)
     old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  printf("old counter %d parent %p\n", old_counter, aterm->parent);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1852,8 +1874,10 @@ int main(int argc, char **argv) {
 
   init_view_field(&state);
   start_profiler(&state);
+  printf("in main\n");
   /* start threads */
   atomic_init(&s_waiting_threads, 0);
+  s_need_to_process_aterm_list = 0;
   pthread_t threads[NUM_THREADS];
   struct thread_data ids[NUM_THREADS];
   int i, rc;
@@ -1861,25 +1885,31 @@ int main(int argc, char **argv) {
     ids[i].id = i;
     if ((rc = pthread_create(&threads[i], NULL, thread_main, &ids[i]))) {
       char message[64];
+      sprintf(message, "error: pthread_create, rc: %d", rc);
       r05_builtin_error(message, &state);
     }
   }
+  printf("threads started\n");
   int begin_counter;
   while (1) {
     begin_counter = state.aterm_counter;
-    process_aterm_list(&state);
     int waiting_threads = atomic_load(&s_waiting_threads);
+    process_aterm_list(&state);
     if (
       waiting_threads == NUM_THREADS
       && begin_counter == state.aterm_counter
     ) {
-      r05_exit(0, &state);
+
+      printf("r05_exit\n");
+      //r05_exit(0, &state);
     }
-    pthread_mutex_lock(&s_aterm_queue_lock);
-    do {
-      pthread_cond_wait(&s_primary_thread_cond, &s_aterm_queue_lock);
-    } while (s_begin_aterm_queue != NULL);
-    pthread_mutex_unlock(&s_aterm_queue_lock);
+    pthread_mutex_lock(&s_primary_thread_lock);
+    while (s_need_to_process_aterm_list == 0) {
+      pthread_cond_wait(&s_primary_thread_cond, &s_primary_thread_lock);
+    }
+    s_need_to_process_aterm_list = 0;
+    printf("primary thread: process aterm list\n");
+    pthread_mutex_unlock(&s_primary_thread_lock);
   }
 
 #ifndef R05_NORETURN_DEFINED
