@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <synchapi.h>
 
 #include "refal05rts.h"
 
@@ -1149,9 +1150,9 @@ static struct r05_aterm *s_end_aterm_queue = NULL;
 pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
 
-pthread_mutex_t s_primary_thread_lock = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t s_primary_thread_cond = PTHREAD_COND_INITIALIZER;
-static sig_atomic_t s_need_to_process_aterm_list;
+//pthread_mutex_t s_primary_thread_lock = PTHREAD_MUTEX_INITIALIZER;
+//pthread_cond_t s_primary_thread_cond = PTHREAD_COND_INITIALIZER;
+//static sig_atomic_t s_need_to_process_aterm_list;
 
 #define enqueue(begin_queue, end_queue, elem) \
   if ((begin_queue) == NULL) { \
@@ -1191,10 +1192,10 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
 #endif /* R05_THREAD_DEBUG */
 
       /* сигнал первичному потоку о том, что вторичный встал на ожидание */
-      pthread_mutex_lock(&s_primary_thread_lock);
-      s_need_to_process_aterm_list++;
-      pthread_cond_signal(&s_primary_thread_cond);
-      pthread_mutex_unlock(&s_primary_thread_lock);
+//      pthread_mutex_lock(&s_primary_thread_lock);
+//      s_need_to_process_aterm_list++;
+//      pthread_cond_signal(&s_primary_thread_cond);
+//      pthread_mutex_unlock(&s_primary_thread_lock);
 
       while (s_begin_aterm_queue == NULL) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
@@ -1923,7 +1924,7 @@ int main(int argc, char **argv) {
   init_view_field(&state);
   start_profiler(&state);
   /* start threads */
-  s_need_to_process_aterm_list = 0;
+//  s_need_to_process_aterm_list = 0;
   pthread_t threads[NUM_THREADS];
   struct thread_data ids[NUM_THREADS];
   int i, rc;
@@ -1940,15 +1941,16 @@ int main(int argc, char **argv) {
 #endif /* R05_THREAD_DEBUG */
   while (1) {
     process_aterm_list(&state);
-    pthread_mutex_lock(&s_primary_thread_lock);
-    while (s_need_to_process_aterm_list == 0) {
-      pthread_cond_wait(&s_primary_thread_cond, &s_primary_thread_lock);
-    }
-    s_need_to_process_aterm_list = 0;
+    Sleep(1);
+//    pthread_mutex_lock(&s_primary_thread_lock);
+//    while (s_need_to_process_aterm_list == 0) {
+//      pthread_cond_wait(&s_primary_thread_cond, &s_primary_thread_lock);
+//    }
+//    s_need_to_process_aterm_list = 0;
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "primary thread: process aterm list\n");
 #endif /* R05_THREAD_DEBUG */
-    pthread_mutex_unlock(&s_primary_thread_lock);
+//    pthread_mutex_unlock(&s_primary_thread_lock);
   }
 
 #ifndef R05_NORETURN_DEFINED
