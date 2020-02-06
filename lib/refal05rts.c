@@ -16,8 +16,8 @@
 #define EXIT_CODE_NO_MEMORY 202
 #define EXIT_CODE_BUILTIN_ERROR 203
 
-#define ATERM_TO_GLOBAL_QUEUE 1000000000
-#define NUM_THREADS 1
+#define ATERM_TO_GLOBAL_QUEUE 4096
+#define NUM_THREADS 4
 
 
 /*==============================================================================
@@ -1168,7 +1168,7 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
   fprintf(stderr, "thread %d enqueue %p\n", state->thread_id, aterm);
 #endif /* R05_THREAD_DEBUG */
   ++ state->aterm_counter;
-  if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE && !state->is_primary) {
+  if (state->aterm_counter % (ATERM_TO_GLOBAL_QUEUE % state->aterm_counter + 1) && !state->is_primary) {
     enqueue(state->begin_local_queue, state->end_local_queue, aterm)
   } else {
     pthread_mutex_lock(&s_aterm_queue_lock);
