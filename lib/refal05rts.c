@@ -1168,7 +1168,7 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
   fprintf(stderr, "thread %d enqueue %p\n", state->thread_id, aterm);
 #endif /* R05_THREAD_DEBUG */
   ++ state->aterm_counter;
-  if (state->aterm_counter % (ATERM_TO_GLOBAL_QUEUE % state->aterm_counter + 1) && !state->is_primary) {
+  if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE) {
     enqueue(state->begin_local_queue, state->end_local_queue, aterm)
   } else {
     pthread_mutex_lock(&s_aterm_queue_lock);
@@ -1178,7 +1178,7 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
   }
 }
 
-/* вернет NULL, если все очереди пусты */
+/* встанет на ожидание, если все очереди пусты */
 static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
 #ifdef R05_THREAD_DEBUG
   fprintf(stderr, "thread %d dequeue\n", state->thread_id);
@@ -1191,12 +1191,6 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
       fprintf(stderr, "thread %d wait\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
 
-      /* сигнал первичному потоку о том, что вторичный встал на ожидание */
-//      pthread_mutex_lock(&s_primary_thread_lock);
-//      s_need_to_process_aterm_list++;
-//      pthread_cond_signal(&s_primary_thread_cond);
-//      pthread_mutex_unlock(&s_primary_thread_lock);
-
       while (s_begin_aterm_queue == NULL) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
@@ -1208,6 +1202,32 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
     s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
     if (s_begin_aterm_queue == NULL) {
       s_end_aterm_queue = NULL;
+    }
+    pthread_mutex_unlock(&s_aterm_queue_lock);
+    return res;
+  } else {
+    struct r05_aterm *res = state->begin_local_queue;
+    state->begin_local_queue = state->begin_local_queue->queue_next;
+    if (state->begin_local_queue == NULL) {
+      state->end_local_queue = NULL;
+    }
+    return res;
+  }
+}
+
+/* вернет NULL, если все очереди пусты */
+static struct r05_aterm *dequeue_aterm_no_lock(struct r05_state* state) {
+#ifdef R05_THREAD_DEBUG
+  fprintf(stderr, "thread %d dequeue no lock\n", state->thread_id);
+#endif /* R05_THREAD_DEBUG */
+  if (state->begin_local_queue == NULL) {
+    pthread_mutex_lock(&s_aterm_queue_lock);
+    struct r05_aterm *res = s_begin_aterm_queue; /* NULL, если очередь пуста */
+    if (s_begin_aterm_queue != NULL) {
+      s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
+      if (s_begin_aterm_queue == NULL) {
+        s_end_aterm_queue = NULL;
+      }
     }
     pthread_mutex_unlock(&s_aterm_queue_lock);
     return res;
@@ -1909,7 +1929,7 @@ int main(int argc, char **argv) {
     /* aterm_counter */
     0,
     /* is_primary */
-    1,
+    1
     /* thread_id */
     -1,
     /* memory_use */
@@ -1940,17 +1960,37 @@ int main(int argc, char **argv) {
   fprintf(stderr, "threads started\n");
 #endif /* R05_THREAD_DEBUG */
   while (1) {
+    struct r05_node *function;
+    struct r05_aterm *next_aterm = dequeue_aterm_no_lock(&state);
+    if (next_aterm != NULL) {
+      state.arg_begin = next_aterm->arg_begin;
+      state.arg_end = next_aterm->arg_end;
+#if R05_SHOW_DEBUG
+      if (state->step_counter >= (unsigned long) R05_SHOW_DEBUG) {
+      make_dump(&state);
+    }
+#endif  /* R05_SHOW_DEBUG */
+
+      function = state.arg_begin->next;
+#ifdef R05_THREAD_DEBUG
+      fprintf(stderr, "thread %d dequeue ok %p func %s\n",
+      state.thread_id, next_aterm, function->info.function->name);
+#endif /* R05_THREAD_DEBUG */
+      if (R05_DATATAG_FUNCTION == function->tag) {
+        (function->info.function->ptr)(
+          next_aterm, &state
+        );
+      } else {
+        r05_recognition_impossible(&state);
+      }
+      after_step(&state);
+
+      ++ state.step_counter;
+    }
     process_aterm_list(&state);
-    Sleep(1);
-//    pthread_mutex_lock(&s_primary_thread_lock);
-//    while (s_need_to_process_aterm_list == 0) {
-//      pthread_cond_wait(&s_primary_thread_cond, &s_primary_thread_lock);
-//    }
-//    s_need_to_process_aterm_list = 0;
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "primary thread: process aterm list\n");
 #endif /* R05_THREAD_DEBUG */
-//    pthread_mutex_unlock(&s_primary_thread_lock);
   }
 
 #ifndef R05_NORETURN_DEFINED

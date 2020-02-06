@@ -12,6 +12,6 @@ cd src
 call makeself.bat %STABLE%
 call makeself.bat
 cd ..\autotests
-call run.bat
+::call run.bat
 cd ..
 endlocal
