@@ -155,6 +155,7 @@ CCompile-SwSetEnv {
       e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
       <Map compilerutils_IncludeFlag <R05-LoadPath>>
       <Map compilerutils_QuoteFile e.CSources>
+      ' ' <GetEnv 'R05CFLAGSSUF'>
     >;
 }
 

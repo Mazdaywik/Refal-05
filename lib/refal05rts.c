@@ -19,7 +19,6 @@
 #define ATERM_TO_GLOBAL_QUEUE 4096
 #define NUM_THREADS 4
 
-
 /*==============================================================================
    Операции сопоставления с образцом
 ==============================================================================*/
@@ -1144,16 +1143,12 @@ void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
 #endif /* R05_THREAD_DEBUG */
 }
 
-static struct r05_aterm *s_begin_aterm_queue = NULL;
-static struct r05_aterm *s_end_aterm_queue = NULL;
+/* Безблокировачная очередь, неограниченная, безопасна для параллельного
+ * добавления элементов и параллельного забора элементов */
+struct lfds711_queue_umm_state s_aterm_queue;
 
-pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
-
-//pthread_mutex_t s_primary_thread_lock = PTHREAD_MUTEX_INITIALIZER;
-//pthread_cond_t s_primary_thread_cond = PTHREAD_COND_INITIALIZER;
-//static sig_atomic_t s_need_to_process_aterm_list;
-
+/* Макрос для вставки в локальную очередь (или любую другую, реализованную
+ * с помощью двух указателей: на начало и конец очереди) */
 #define enqueue(begin_queue, end_queue, elem) \
   if ((begin_queue) == NULL) { \
     (begin_queue) = (elem); \
@@ -1164,81 +1159,31 @@ pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
   }
 
 void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
-#ifdef R05_THREAD_DEBUG
-  fprintf(stderr, "thread %d enqueue %p\n", state->thread_id, aterm);
-#endif /* R05_THREAD_DEBUG */
   ++ state->aterm_counter;
-  if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE) {
+  if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE && !state->is_primary) {
+#ifdef R05_THREAD_DEBUG
+    fprintf(stderr, "thread %d enqueue local %p\n", state->thread_id, aterm);
+#endif /* R05_THREAD_DEBUG */
     enqueue(state->begin_local_queue, state->end_local_queue, aterm)
   } else {
-    pthread_mutex_lock(&s_aterm_queue_lock);
-    enqueue(s_begin_aterm_queue, s_end_aterm_queue, aterm)
-    pthread_cond_signal(&s_aterm_queue_empty_cond);
-    pthread_mutex_unlock(&s_aterm_queue_lock);
+#ifdef R05_THREAD_DEBUG
+    fprintf(stderr, "thread %d enqueue global %p\n", state->thread_id, aterm);
+#endif /* R05_THREAD_DEBUG */
+    LFDS711_QUEUE_UMM_SET_VALUE_IN_ELEMENT(aterm->queue_wrap, aterm);
+    lfds711_queue_umm_enqueue(&s_aterm_queue, &aterm->queue_wrap);
   }
 }
 
-/* встанет на ожидание, если все очереди пусты */
-static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
-#ifdef R05_THREAD_DEBUG
-  fprintf(stderr, "thread %d dequeue\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-  if (state->begin_local_queue == NULL) {
-    pthread_mutex_lock(&s_aterm_queue_lock);
-    struct r05_aterm *res = NULL;
-    if (s_begin_aterm_queue == NULL) {
-#ifdef R05_THREAD_DEBUG
-      fprintf(stderr, "thread %d wait\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-
-      while (s_begin_aterm_queue == NULL) {
-        pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
-      }
-#ifdef R05_THREAD_DEBUG
-      fprintf(stderr, "thread %d signalled\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-    }
-    res = s_begin_aterm_queue;
-    s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
-    if (s_begin_aterm_queue == NULL) {
-      s_end_aterm_queue = NULL;
-    }
-    pthread_mutex_unlock(&s_aterm_queue_lock);
-    return res;
-  } else {
-    struct r05_aterm *res = state->begin_local_queue;
+/* Вернет NULL, если локальная очередь потока пуста */
+static struct r05_aterm *dequeue_local_aterm(struct r05_state *state) {
+  struct r05_aterm *res = state->begin_local_queue;
+  if (res != NULL) {
     state->begin_local_queue = state->begin_local_queue->queue_next;
     if (state->begin_local_queue == NULL) {
       state->end_local_queue = NULL;
     }
-    return res;
   }
-}
-
-/* вернет NULL, если все очереди пусты */
-static struct r05_aterm *dequeue_aterm_no_lock(struct r05_state* state) {
-#ifdef R05_THREAD_DEBUG
-  fprintf(stderr, "thread %d dequeue no lock\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-  if (state->begin_local_queue == NULL) {
-    pthread_mutex_lock(&s_aterm_queue_lock);
-    struct r05_aterm *res = s_begin_aterm_queue; /* NULL, если очередь пуста */
-    if (s_begin_aterm_queue != NULL) {
-      s_begin_aterm_queue = s_begin_aterm_queue->queue_next;
-      if (s_begin_aterm_queue == NULL) {
-        s_end_aterm_queue = NULL;
-      }
-    }
-    pthread_mutex_unlock(&s_aterm_queue_lock);
-    return res;
-  } else {
-    struct r05_aterm *res = state->begin_local_queue;
-    state->begin_local_queue = state->begin_local_queue->queue_next;
-    if (state->begin_local_queue == NULL) {
-      state->end_local_queue = NULL;
-    }
-    return res;
-  }
+  return res;
 }
 
 /* Работа с А-термами, как со списком теней */
@@ -1281,16 +1226,13 @@ void r05_aterm_category_complete(struct r05_aterm *aterm) {
 
 /* исполняет приостановленные функции и удаляет а-термы исполненных */
 static void process_aterm_list(struct r05_state *state) {
-  struct r05_aterm *uselessAterm;
   struct r05_node *function;
   while (
     s_aterm_list_ptr != NULL
     && s_aterm_list_ptr->category != ATERM_CAT_ACTIVE
   ) {
     if (s_aterm_list_ptr->category == ATERM_CAT_COMPLETE) {
-      uselessAterm = s_aterm_list_ptr;
       s_aterm_list_ptr = s_aterm_list_ptr->next;
-      free(uselessAterm);
     } else if (s_aterm_list_ptr->category == ATERM_CAT_SUSPENDED) {
 #ifdef R05_THREAD_DEBUG
       fprintf(stderr, "exec from shadow list\n");
@@ -1409,7 +1351,10 @@ static void init_view_field(struct r05_state *state) {
   stop->next = NULL;
   stop->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);
-  enqueue(s_begin_aterm_queue, s_end_aterm_queue, s_aterm_list_ptr)
+  LFDS711_QUEUE_UMM_SET_VALUE_IN_ELEMENT(
+    s_aterm_list_ptr->queue_wrap, s_aterm_list_ptr
+  );
+  lfds711_queue_umm_enqueue(&s_aterm_queue, &s_aterm_list_ptr->queue_wrap);
 }
 
 static void print_seq(struct r05_node *begin, struct r05_node *end);
@@ -1452,12 +1397,22 @@ static void *thread_main(void *arg) {
   state.free_ptr = &state.end_free_list;
   weld(&state.begin_free_list, &state.end_free_list);
   start_profiler(&state);
+
+  /* init s_aterm_queue */
+  LFDS711_MISC_MAKE_VALID_ON_CURRENT_LOGICAL_CORE_INITS_COMPLETED_BEFORE_NOW_ON_ANY_OTHER_LOGICAL_CORE;
+
 #ifdef R05_THREAD_DEBUG
   fprintf(stderr, "thread %d state initialized\n", thread_id);
 #endif /* R05_THREAD_DEBUG */
   while (1) {
     struct r05_node *function;
-    struct r05_aterm *next_aterm = dequeue_aterm(&state);
+    struct lfds711_queue_umm_element *queue_wrap;
+    struct r05_aterm *next_aterm = dequeue_local_aterm(&state);
+    if (next_aterm == NULL) {
+      while (!lfds711_queue_umm_dequeue(&s_aterm_queue, &queue_wrap)) {
+      }
+      next_aterm = LFDS711_QUEUE_UMM_GET_VALUE_FROM_ELEMENT(*queue_wrap);
+    }
     state.arg_begin = next_aterm->arg_begin;
     state.arg_end = next_aterm->arg_end;
 #if R05_SHOW_DEBUG
@@ -1941,10 +1896,14 @@ int main(int argc, char **argv) {
   state.free_ptr = &state.end_free_list;
   weld(&state.begin_free_list, &state.end_free_list);
 
-  init_view_field(&state);
   start_profiler(&state);
+
+  /* init s_aterm_queue */
+  struct lfds711_queue_umm_element queue_dummy;
+  lfds711_queue_umm_init_valid_on_current_logical_core(
+    &s_aterm_queue, &queue_dummy, NULL
+  );
   /* start threads */
-//  s_need_to_process_aterm_list = 0;
   pthread_t threads[NUM_THREADS];
   struct thread_data ids[NUM_THREADS];
   int i, rc;
@@ -1956,12 +1915,19 @@ int main(int argc, char **argv) {
       r05_builtin_error(message, &state);
     }
   }
+  init_view_field(&state);
 #ifdef R05_THREAD_DEBUG
   fprintf(stderr, "threads started\n");
 #endif /* R05_THREAD_DEBUG */
   while (1) {
     struct r05_node *function;
-    struct r05_aterm *next_aterm = dequeue_aterm_no_lock(&state);
+    struct lfds711_queue_umm_element *queue_wrap;
+    struct r05_aterm *next_aterm = dequeue_local_aterm(&state);
+    if (next_aterm == NULL) {
+      if (lfds711_queue_umm_dequeue(&s_aterm_queue, &queue_wrap)) {
+        next_aterm = queue_wrap->value;
+      }
+    }
     if (next_aterm != NULL) {
       state.arg_begin = next_aterm->arg_begin;
       state.arg_end = next_aterm->arg_end;
@@ -1974,7 +1940,7 @@ int main(int argc, char **argv) {
       function = state.arg_begin->next;
 #ifdef R05_THREAD_DEBUG
       fprintf(stderr, "thread %d dequeue ok %p func %s\n",
-      state.thread_id, next_aterm, function->info.function->name);
+              state.thread_id, next_aterm, function->info.function->name);
 #endif /* R05_THREAD_DEBUG */
       if (R05_DATATAG_FUNCTION == function->tag) {
         (function->info.function->ptr)(
@@ -1987,10 +1953,10 @@ int main(int argc, char **argv) {
 
       ++ state.step_counter;
     }
-    process_aterm_list(&state);
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "primary thread: process aterm list\n");
 #endif /* R05_THREAD_DEBUG */
+    process_aterm_list(&state);
   }
 
 #ifndef R05_NORETURN_DEFINED

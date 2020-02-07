@@ -19,7 +19,7 @@ run_test_aux() {
     exit
   fi
 
-  $CLINE -I../lib -o$EXE $CFILE ../lib/Library.c ../lib/refal05rts.c
+  $CLINE -I../lib -o$EXE $CFILE ../lib/Library.c ../lib/refal05rts.c $R05CFLAGSSUF
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit

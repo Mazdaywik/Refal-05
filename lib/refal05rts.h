@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <stdatomic.h>
-
+#include "liblfds711.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -117,6 +117,7 @@ struct r05_aterm {
   struct r05_aterm *queue_next; /* for queue structure */
   struct r05_node *arg_begin; /* open call bracket */
   struct r05_node *arg_end; /* close call bracket */
+  struct lfds711_queue_umm_element queue_wrap; /* for lockless queue */
   volatile sig_atomic_t category; /* represents shadow state */
   volatile sig_atomic_t child_aterms; /* counter for child aterms in tree */
 };
