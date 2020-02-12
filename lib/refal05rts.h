@@ -127,7 +127,7 @@ struct r05_aterm {
 
 void r05_prepare_argument(
   struct r05_node **left, struct r05_node **right,
-  struct r05_node *arg_begin, struct r05_node *arg_end
+  struct r05_state *state
 );
 
 int r05_empty_seq(struct r05_node *begin, struct r05_node *end);

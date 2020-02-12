@@ -116,7 +116,6 @@ R05-Generate-Aux {
   (e.Declarations) e.Definitions =
     ('/* Automatically generated file. Don\'t edit! */')
     ('#include "refal05rts.h"')
-    ('#include <stdio.h>')
     ()
     ()
     e.Declarations
@@ -292,8 +291,7 @@ CmdInitB0 {
   (e.Indent) =
     (
       e.Indent
-      'r05_prepare_argument(' <RangeVarsPtr 0>
-      ', state->arg_begin, state->arg_end);'
+      'r05_prepare_argument(' <RangeVarsPtr 0> ', state);'
     );
 }
 

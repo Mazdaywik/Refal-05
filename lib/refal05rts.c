@@ -25,10 +25,10 @@
 
 void r05_prepare_argument(
   struct r05_node **left, struct r05_node **right,
-  struct r05_node *arg_begin, struct r05_node *arg_end
+  struct r05_state *state
 ) {
-  *left = arg_begin->next->next;
-  *right = arg_end->prev;
+  *left = state->arg_begin->next->next;
+  *right = state->arg_end->prev;
   if ((*right)->next == *left) {
     *left = 0;
     *right = 0;
@@ -77,6 +77,7 @@ int r05_function_left(
   struct r05_function *fn, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -96,6 +97,7 @@ int r05_function_right(
   struct r05_function *fn, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -115,6 +117,7 @@ int r05_char_left(
   char ch, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -134,6 +137,7 @@ int r05_char_right(
   char ch, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -153,6 +157,7 @@ int r05_number_left(
   r05_number num, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -172,6 +177,7 @@ int r05_number_right(
   r05_number num, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -192,6 +198,7 @@ int r05_brackets_left(
   struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -227,6 +234,7 @@ int r05_brackets_right(
   struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -264,6 +272,7 @@ int r05_svar_left(
   struct r05_node **svar, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -282,6 +291,7 @@ int r05_svar_right(
   struct r05_node **svar, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -300,6 +310,7 @@ int r05_tvar_left(
   struct r05_node **tvar, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -323,6 +334,7 @@ int r05_tvar_right(
   struct r05_node **tvar, struct r05_node **first, struct r05_node **last,
   struct r05_state *state
 ) {
+  (void) state;
   assert((*first == 0) == (*last == 0));
 
   if (r05_empty_seq(*first, *last)) {
@@ -1131,6 +1143,7 @@ void r05_reuse_aterm(
   struct r05_node *arg_begin, struct r05_node *arg_end,
   struct r05_aterm *aterm, struct r05_state *state
 ) {
+  (void) state;
   aterm->arg_begin = arg_begin;
   aterm->arg_end = arg_end;
   aterm->queue_next = NULL;
@@ -1290,9 +1303,7 @@ R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ *
   r05_splice_to_freelist(state->arg_begin, open_bracket, state);
   r05_splice_to_freelist(close_bracket, close_bracket, state);
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
-  int old_counter = 0;
-  if (aterm->parent != NULL)
-    old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
     r05_enqueue_aterm(aterm->parent, state);
   r05_aterm_category_complete(aterm);
@@ -1415,11 +1426,6 @@ static void *thread_main(void *arg) {
     }
     state.arg_begin = next_aterm->arg_begin;
     state.arg_end = next_aterm->arg_end;
-#if R05_SHOW_DEBUG
-    if (state->step_counter >= (unsigned long) R05_SHOW_DEBUG) {
-      make_dump(&state);
-    }
-#endif  /* R05_SHOW_DEBUG */
 
     function = state.arg_begin->next;
 #ifdef R05_THREAD_DEBUG
@@ -1771,7 +1777,7 @@ static void brrp_impl(
 
   key_b = NULL;
   key_e = NULL;
-  r05_prepare_argument(&val_b, &val_e, state->arg_begin, state->arg_end);
+  r05_prepare_argument(&val_b, &val_e, state);
   do {
     if (r05_char_left('=', &val_b, &val_e, state)) {
       struct buried_query query;
@@ -1812,7 +1818,7 @@ static void dgcp_impl(
   struct buried_query query;
   int found;
 
-  r05_prepare_argument(&key_begin, &key_end, state->arg_begin, state->arg_end);
+  r05_prepare_argument(&key_begin, &key_end, state);
   r05_reset_allocator(state);
 
   found = buried_query(&query, key_begin, key_end, state);
@@ -1853,6 +1859,7 @@ void r05_rp(struct r05_aterm *aterm, struct r05_state *state) {
 
 
 static void dump_buried(struct r05_state *state) {
+  (void) state;
 #ifdef R05_DUMP_BURIED
   fprintf(stderr, "\nBURIED:\n");
   print_seq(&s_begin_buried, &s_end_buried);
@@ -1925,7 +1932,7 @@ int main(int argc, char **argv) {
     struct r05_aterm *next_aterm = dequeue_local_aterm(&state);
     if (next_aterm == NULL) {
       if (lfds711_queue_umm_dequeue(&s_aterm_queue, &queue_wrap)) {
-        next_aterm = queue_wrap->value;
+        next_aterm = LFDS711_QUEUE_UMM_GET_VALUE_FROM_ELEMENT(*queue_wrap);
       }
     }
     if (next_aterm != NULL) {

@@ -260,7 +260,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   struct r05_node *ePrefix_b, *ePrefix_e, *eSuffix_b, *eSuffix_e;
   struct r05_node *left_bracket, *right_bracket, *pos;
 
-  r05_prepare_argument(&eItems_b, &eItems_e, state->arg_begin, state->arg_end);
+  r05_prepare_argument(&eItems_b, &eItems_e, state);
 
   if (
     ! r05_svar_left(&sLen, &eItems_b, &eItems_e, state)
@@ -385,7 +385,7 @@ R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
   struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm;
   r05_number counter = 0;
 
-  r05_prepare_argument(&eItems_b, &eItems_e, state->arg_begin, state->arg_end);
+  r05_prepare_argument(&eItems_b, &eItems_e, state);
   sLen = state->arg_begin->next;
 
   while (r05_tvar_left(&tTerm, &eItems_b, &eItems_e, state)) {
@@ -504,7 +504,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   char filename[FILENAME_LEN + 1] = { '\0' };
   size_t filename_len;
 
-  r05_prepare_argument(&eFileName_b, &eFileName_e, state->arg_begin, state->arg_end);
+  r05_prepare_argument(&eFileName_b, &eFileName_e, state);
 
   if (
     ! r05_svar_left(&sMode, &eFileName_b, &eFileName_e, state)
@@ -949,9 +949,7 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
   size_t env_name_len;
   const char *env_value;
 
-  r05_prepare_argument(
-    &eEnvName_b, &eEnvName_e, state->arg_begin, state->arg_end
-  );
+  r05_prepare_argument(&eEnvName_b, &eEnvName_e, state);
   env_name_len =
     r05_read_chars(env_name, sizeof(env_name) - 1, &eEnvName_b, &eEnvName_e);
 
@@ -992,9 +990,7 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
   size_t command_len;
   int retcode;
 
-  r05_prepare_argument(
-    &eCommand_b, &eCommand_e, state->arg_begin, state->arg_end
-  );
+  r05_prepare_argument(&eCommand_b, &eCommand_e, state);
   command_len =
     r05_read_chars(command, sizeof(command) - 1, &eCommand_b, &eCommand_e);
 
@@ -1116,9 +1112,7 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   size_t filename_len;
   FILE *file;
 
-  r05_prepare_argument(
-    &eFileName_b, &eFileName_e, state->arg_begin, state->arg_end
-  );
+  r05_prepare_argument(&eFileName_b, &eFileName_e, state);
   filename_len =
     r05_read_chars(filename, sizeof(filename) - 1, &eFileName_b, &eFileName_e);
 
@@ -1168,8 +1162,7 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
   const char *message;
 
   r05_prepare_argument(
-    &eFileName_b, &eFileName_e, state->arg_begin, state->arg_end
-  );
+    &eFileName_b, &eFileName_e, state);
   filename_len =
     r05_read_chars(filename, sizeof(filename) - 1, &eFileName_b, &eFileName_e);
 
