@@ -81,8 +81,9 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
-  struct r05_aterm *begin_local_queue;
-  struct r05_aterm *end_local_queue;
+  struct lfds711_queue_umm_state *all_queues;
+  struct lfds711_queue_umm_state *queue;
+  struct lfds711_queue_umm_element *last_dequeued;
   int aterm_counter; /* счетчик созданных А-термов */
   int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   int thread_id;
