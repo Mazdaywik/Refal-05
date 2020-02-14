@@ -73,8 +73,6 @@ struct r05_node {
 
 struct memory_chunk;
 
-struct aterm_queue;
-
 struct r05_state {
   struct r05_node begin_free_list;
   struct r05_node end_free_list;
@@ -82,8 +80,13 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
-  struct aterm_queue *queue;
-  struct aterm_queue *all_queues;
+  struct r05_state *all_states;
+  struct r05_aterm *begin_global;
+  struct r05_aterm *end_global;
+  pthread_mutex_t lock;
+  pthread_cond_t empty_cond;
+  struct r05_aterm *begin_local;
+  struct r05_aterm *end_local;
   int aterm_counter; /* счетчик созданных А-термов */
   int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   int thread_id;
