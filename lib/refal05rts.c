@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <synchapi.h>
 
 #include "refal05rts.h"
 
@@ -1207,10 +1208,7 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
 
 #define dequeue(begin_queue, end_queue, to_elem) \
   (to_elem) = (begin_queue); \
-  (begin_queue) = (begin_queue)->queue_next; \
-  if ((begin_queue) == NULL) { \
-    (end_queue) = NULL; \
-  }
+  (begin_queue) = (begin_queue)->queue_next;
 
 /* встанет на ожидание, если все очереди пусты */
 static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
@@ -1218,23 +1216,26 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
   fprintf(stderr, "thread %d dequeue\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
   if (state->begin_local == NULL) {
-    pthread_mutex_lock(&(state->lock));
     struct r05_aterm *res = NULL;
     if (state->begin_global == NULL) {
+      pthread_mutex_lock(&(state->lock));
 #ifdef R05_THREAD_DEBUG
-      fprintf(stderr, "thread %d wait\n", state->thread_id);
+        fprintf(stderr, "thread %d wait\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
 
       while (state->begin_global == NULL) {
         pthread_cond_wait(&(state->empty_cond), &(state->lock));
       }
 #ifdef R05_THREAD_DEBUG
-      fprintf(stderr, "thread %d signalled\n", state->thread_id);
+        fprintf(stderr, "thread %d signalled\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
+      dequeue(state->begin_global, state->end_global, res)
+      pthread_mutex_unlock(&(state->lock));
+      return res;
+    } else {
+      dequeue(state->begin_global, state->end_global, res)
+      return res;
     }
-    dequeue(state->begin_global, state->end_global, res)
-    pthread_mutex_unlock(&(state->lock));
-    return res;
   } else {
     struct r05_aterm *res;
     dequeue(state->begin_local, state->end_local, res)
@@ -1921,7 +1922,7 @@ int main(int argc, char **argv) {
     /* step_counter */
     0
   };
-
+  start_profiler(&state);
   struct r05_state states[NUM_THREADS];
   state.all_states = states;
 
@@ -1936,7 +1937,6 @@ int main(int argc, char **argv) {
   }
   state.free_ptr = &state.end_free_list;
   weld(&state.begin_free_list, &state.end_free_list);
-  start_profiler(&state);
   init_view_field(&state);
   /* start threads */
   pthread_t threads[NUM_THREADS];
