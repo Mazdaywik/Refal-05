@@ -6,7 +6,6 @@
 #include <signal.h>
 #include <pthread.h>
 #include <stdatomic.h>
-#include "liblfds711.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,6 +73,8 @@ struct r05_node {
 
 struct memory_chunk;
 
+struct aterm_queue;
+
 struct r05_state {
   struct r05_node begin_free_list;
   struct r05_node end_free_list;
@@ -81,9 +82,8 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
-  struct lfds711_queue_umm_state *all_queues;
-  struct lfds711_queue_umm_state *queue;
-  struct lfds711_queue_umm_element *last_dequeued;
+  struct aterm_queue *queue;
+  struct aterm_queue *all_queues;
   int aterm_counter; /* счетчик созданных А-термов */
   int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   int thread_id;
@@ -118,7 +118,6 @@ struct r05_aterm {
   struct r05_aterm *queue_next; /* for queue structure */
   struct r05_node *arg_begin; /* open call bracket */
   struct r05_node *arg_end; /* close call bracket */
-  struct lfds711_queue_umm_element queue_wrap; /* for lockless queue */
   volatile sig_atomic_t category; /* represents shadow state */
   volatile sig_atomic_t child_aterms; /* counter for child aterms in tree */
 };
