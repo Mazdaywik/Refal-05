@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <synchapi.h>
 
 #include "refal05rts.h"
 
@@ -1167,7 +1166,10 @@ void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
 
 void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
   ++ state->aterm_counter;
-  if (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE && !state->is_primary) {
+  if (
+    (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE || state->begin_local == NULL)
+    && !state->is_primary
+  ) {
 #ifdef R05_THREAD_DEBUG
     fprintf(
       stderr, "thread %d enqueue local %p\n",
@@ -1176,7 +1178,7 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
 #endif /* R05_THREAD_DEBUG */
     enqueue(state->begin_local, state->end_local, aterm)
   } else {
-    int next_thread = rand() % NUM_THREADS;
+    int next_thread = state->thread_counter++ % NUM_THREADS;
 #ifdef R05_THREAD_DEBUG
     fprintf(
       stderr, "thread %d enqueue to thread %d val %p\n",
@@ -1908,6 +1910,8 @@ int main(int argc, char **argv) {
     NULL,
     /* aterm_counter */
     0,
+    /* thread_counter */
+    0,
     /* is_primary */
     1,
     /* thread_id */
@@ -1926,6 +1930,7 @@ int main(int argc, char **argv) {
     states[i].free_ptr = &states[i].end_free_list;
     states[i].is_primary = 0;
     states[i].thread_id = i;
+    states[i].thread_counter = rand() % NUM_THREADS;
     weld(&states[i].begin_free_list, &states[i].end_free_list);
     start_profiler(&states[i]);
   }
@@ -1951,7 +1956,6 @@ int main(int argc, char **argv) {
     fprintf(stderr, "primary thread: process aterm list\n");
 #endif /* R05_THREAD_DEBUG */
     process_aterm_list(&state);
-    Sleep(1);
   }
 
 #ifndef R05_NORETURN_DEFINED

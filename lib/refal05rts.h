@@ -88,6 +88,7 @@ struct r05_state {
   struct r05_aterm *begin_local;
   struct r05_aterm *end_local;
   int aterm_counter; /* счетчик созданных А-термов */
+  int thread_counter; /* номер потока, в который положен а-терм */
   int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   int thread_id;
   /* Переменные профилировщика */
