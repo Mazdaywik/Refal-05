@@ -80,7 +80,6 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
-  struct r05_state *all_states;
   struct r05_aterm *begin_global;
   struct r05_aterm *end_global;
   pthread_mutex_t lock;

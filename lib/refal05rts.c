@@ -1156,6 +1156,8 @@ void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
 #endif /* R05_THREAD_DEBUG */
 }
 
+struct r05_state states[NUM_THREADS];
+
 #define enqueue(begin_queue, end_queue, elem) \
   if ((begin_queue) == NULL) { \
     (begin_queue) = (elem); \
@@ -1186,20 +1188,20 @@ void r05_enqueue_aterm(struct r05_aterm *aterm, struct r05_state *state) {
       state->thread_id, next_thread, aterm
     );
 #endif /* R05_THREAD_DEBUG */
-    pthread_mutex_lock(&(state->all_states[next_thread].lock));
+    pthread_mutex_lock(&(states[next_thread].lock));
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "thread %d before enqueue\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
     enqueue(
-      state->all_states[next_thread].begin_global,
-      state->all_states[next_thread].end_global,
+      states[next_thread].begin_global,
+      states[next_thread].end_global,
       aterm
     )
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "thread %d after enqueue\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
-    pthread_cond_signal(&(state->all_states[next_thread].empty_cond));
-    pthread_mutex_unlock(&(state->all_states[next_thread].lock));
+    pthread_cond_signal(&(states[next_thread].empty_cond));
+    pthread_mutex_unlock(&(states[next_thread].lock));
   }
 #ifdef R05_THREAD_DEBUG
   fprintf(stderr, "thread %d enqueue succeed\n", state->thread_id);
@@ -1411,8 +1413,8 @@ static void init_view_field(struct r05_state *state) {
   stop->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);
   enqueue(
-    state->all_states[0].begin_local,
-    state->all_states[0].end_local,
+    states[0].begin_local,
+    states[0].end_local,
     s_aterm_list_ptr
   )
 }
@@ -1895,8 +1897,6 @@ int main(int argc, char **argv) {
     NULL,
     /* pool of memory_chunks */
     NULL,
-    /* all_states */
-    NULL,
     /* begin_global */
     NULL,
     /* end_global */
@@ -1923,8 +1923,6 @@ int main(int argc, char **argv) {
     0
   };
   start_profiler(&state);
-  struct r05_state states[NUM_THREADS];
-  state.all_states = states;
 
   for (int i = 0; i < NUM_THREADS; i++) {
     states[i] = state;
