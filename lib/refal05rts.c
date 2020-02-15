@@ -17,6 +17,7 @@
 #define EXIT_CODE_BUILTIN_ERROR 203
 
 #define ATERM_TO_GLOBAL_QUEUE 1024
+#define MAX_GLOBAL_QUEUE_SIZE 4
 #define NUM_THREADS 4
 
 /*==============================================================================
@@ -1160,6 +1161,7 @@ struct r05_state states[NUM_THREADS];
 
 static struct r05_aterm *s_begin_aterm_queue = NULL;
 static struct r05_aterm *s_end_aterm_queue = NULL;
+volatile int s_aterm_queue_size = 0;
 pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
 
@@ -1185,6 +1187,7 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
     pthread_mutex_lock(&s_aterm_queue_lock);
     for (; *aterm_ptr != NULL; aterm_ptr++) {
       enqueue(s_begin_aterm_queue, s_end_aterm_queue, *aterm_ptr)
+      s_aterm_queue_size++;
       state->aterm_counter++;
     }
     pthread_cond_signal(&s_aterm_queue_empty_cond);
@@ -1195,6 +1198,7 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
     struct r05_aterm **aterm_ptr = &aterms + 1;
     if (
       state->aterm_counter % ATERM_TO_GLOBAL_QUEUE
+      || s_aterm_queue_size > MAX_GLOBAL_QUEUE_SIZE
       || state->begin_local == NULL
     ) {
       for (; *aterm_ptr != NULL; aterm_ptr++) {
@@ -1205,6 +1209,7 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
       pthread_mutex_lock(&s_aterm_queue_lock);
       for (; *aterm_ptr != NULL; aterm_ptr++) {
         enqueue(s_begin_aterm_queue, s_end_aterm_queue, *aterm_ptr)
+        s_aterm_queue_size++;
         state->aterm_counter++;
       }
       pthread_cond_signal(&s_aterm_queue_empty_cond);
@@ -1218,7 +1223,7 @@ void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm) {
   fprintf(
       stderr,
       "thread %d, aterm_counter %d, enqueue one %p\n",
-      state->thread_id, state->aterm_counter, aterms
+      state->thread_id, state->aterm_counter, aterm
     );
 #endif /* R05_THREAD_DEBUG */
     if (state->is_primary) {
@@ -1227,6 +1232,7 @@ void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm) {
       pthread_cond_signal(&s_aterm_queue_empty_cond);
       pthread_mutex_unlock(&s_aterm_queue_lock);
       state->aterm_counter++;
+      s_aterm_queue_size++;
     } else {
       enqueue(state->begin_local, state->end_local, aterm)
       state->aterm_counter++;
@@ -1249,6 +1255,7 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
       dequeue(s_begin_aterm_queue, s_end_aterm_queue, res)
+      s_aterm_queue_size--;
       pthread_mutex_unlock(&s_aterm_queue_lock);
       return res;
   } else {
