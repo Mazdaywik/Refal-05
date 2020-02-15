@@ -43,7 +43,10 @@ $ENTRY R05-Generate-ToLines {
   на <Cat@ (<Function1 e.arg1>) <Function2 e.arg2>>
 */
 InsertConcatenators {
-  e.AST = (Extern (NO-POS 'Cat@')) <Map InsertConcatenators-Aux e.AST>;
+  e.AST
+    = (Extern (NO-POS 'Cat@'))
+      (Extern (NO-POS 'Cat3@'))
+      <Map InsertConcatenators-Aux e.AST>;
 }
 
 $ENTRY InsertConcatenators-Aux {
@@ -68,20 +71,50 @@ $ENTRY InsertConcatenators-Sentences {
 }
 
 InsertConcatenators-Result {
+  /* Оптимизация, вставка Cat3@, если идут три вызова подряд */
+  (Call t.ScrPos1 (e.Name1) e.MoreTerms)
+  e.ZeroOrMoreEVars1
+  (Call t.ScrPos2 (e.Name2) e.MoreTerms2)
+  e.ZeroOrMoreEVars2
+  (Call t.ScrPos3 (e.Name3) e.MoreTerms3)
+  e.TermsTail
+    , <And
+        <IsEvarSequence e.ZeroOrMoreEVars1>
+        <IsEvarSequence e.ZeroOrMoreEVars2>
+      > : True
+    = <InsertConcatenators-Result
+        (
+          Call NO-POS ('Cat3@')
+          (
+            Brackets
+            (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
+          )
+          e.ZeroOrMoreEVars1
+          (
+            Brackets
+            (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
+          )
+          e.ZeroOrMoreEVars2
+          (Call t.ScrPos3 (e.Name3) <InsertConcatenators-Result e.MoreTerms3>)
+        )
+        e.TermsTail
+      >;
   (Call t.ScrPos1 (e.Name1) e.MoreTerms)
   e.ZeroOrMoreEVars
   (Call t.ScrPos2 (e.Name2) e.MoreTerms2)
   e.TermsTail
     , <IsEvarSequence e.ZeroOrMoreEVars> : True
     = <InsertConcatenators-Result
-      (Call NO-POS ('Cat@')
-            (Brackets
-              (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
-            )
-            e.ZeroOrMoreEVars
-            (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
-      )
-      e.TermsTail
+        (
+          Call NO-POS ('Cat@')
+          (
+            Brackets
+            (Call t.ScrPos1 (e.Name1) <InsertConcatenators-Result e.MoreTerms>)
+          )
+          e.ZeroOrMoreEVars
+          (Call t.ScrPos2 (e.Name2) <InsertConcatenators-Result e.MoreTerms2>)
+        )
+        e.TermsTail
       >;
 
   (Call t.SrcPos (e.Name) e.MoreTerms) e.TermsTail

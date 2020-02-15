@@ -1352,6 +1352,26 @@ R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ *
 }
 
 /**
+   <Cat3@ (e.Exr1) (e.Expr2) e.Expr2> == e.Expr1 e.Expr2 e.Expr2
+*/
+
+R05_DEFINE_ENTRY_FUNCTION(Cat3a_, "Cat3@") { /* @ декодируется в a_ */
+  struct r05_node *cat = state->arg_begin->next;
+  struct r05_node *open_bracket = cat->next;
+  struct r05_node *close_bracket = open_bracket->info.link;
+  struct r05_node *open_bracket2 = close_bracket->next;
+  struct r05_node *close_bracket2 = open_bracket2->info.link;
+  r05_splice_to_freelist(state->arg_begin, open_bracket, state);
+  r05_splice_to_freelist(close_bracket, open_bracket2, state);
+  r05_splice_to_freelist(close_bracket2, close_bracket2, state);
+  r05_splice_to_freelist(state->arg_end, state->arg_end, state);
+  int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
+  if (old_counter == 1)
+    r05_enqueue_aterm(state, aterm->parent, NULL);
+  r05_aterm_category_complete(aterm);
+}
+
+/**
    <Stop@ <Go>>
 */
 
