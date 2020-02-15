@@ -497,7 +497,7 @@ CmdDecParentAtermCounter {
         'int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
       )
       (e.Indent 'if (old_counter == 1)')
-      (e.Indent '  r05_enqueue_aterm(aterm->parent, state);');
+      (e.Indent '  r05_enqueue_aterm(state, aterm->parent, NULL);');
 }
 
 CmdSaveParentAterm {
@@ -505,12 +505,15 @@ CmdSaveParentAterm {
 }
 
 CmdEnqueueAtermArray {
-  (e.Indent) s.AtermNumber
-    = (e.Indent 'r05_enqueue_aterm(' <Aterm s.AtermNumber> ', state);');
+  (e.Indent) e.AtermNumbers
+    = (
+        e.Indent
+        'r05_enqueue_aterm(state, ' <Map AtermComma e.AtermNumbers> 'NULL);'
+      );
 }
 
 CmdEnqueueAtermReused {
-  (e.Indent) = (e.Indent 'r05_enqueue_aterm(aterm, state);')
+  (e.Indent) = (e.Indent 'r05_enqueue_aterm(state, aterm, NULL);')
 }
 
 CmdInsertVar {
@@ -590,7 +593,8 @@ EVar-E { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_e_' <Symb s.Usings> }
 Elem { s.Number = 'n[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'n+' <Symb s.Number> }
 
-Aterm { s.Number = 'aterms[' <Symb s.Number> ']'}
+$ENTRY Aterm { s.Number = 'aterms[' <Symb s.Number> ']'}
+$ENTRY AtermComma { s.Number = <Aterm s.Number> ', ' }
 
 /*
   Декорирование отличается от декорирования имён функций, поскольку мы хотим
@@ -1227,18 +1231,22 @@ MakeEnqueueAtermsCommand {
   /* Частный случай, когда не создавалось массива А-термов */
   e.Parents 1 = (CmdEnqueueAtermReused);
   e.Parents s.CallCounter
-    = <MakeEnqueueAtermsCommand-Aux e.Parents 0 s.CallCounter>;
+    = <MakeEnqueueAtermsCommand-Aux (/* equeue */) e.Parents 0 s.CallCounter>;
 }
 
 MakeEnqueueAtermsCommand-Aux {
-  e.Parents s.CallCounter s.CallCounter = /* пусто */;
-  e.Parents-B s.CurrentCounter e.Parents-E s.CurrentCounter s.CallCounter
+  (/* пусто */) e.Parents s.CallCounter s.CallCounter = /* пусто */;
+  (e.ToEnqueue) e.Parents s.CallCounter s.CallCounter
+    = (CmdEnqueueAtermArray e.ToEnqueue);
+  (e.ToEnqueue) e.Parents-B s.CurrentCounter e.Parents-E
+  s.CurrentCounter s.CallCounter
     = <MakeEnqueueAtermsCommand-Aux
-        e.Parents-B e.Parents-E <Inc s.CurrentCounter> s.CallCounter
+        (e.ToEnqueue) e.Parents-B e.Parents-E
+        <Inc s.CurrentCounter> s.CallCounter
       >;
-  e.Parents s.CurrentCounter s.CallCounter
-    = (CmdEnqueueAtermArray s.CurrentCounter)
-      <MakeEnqueueAtermsCommand-Aux
+  (e.ToEnqueue) e.Parents s.CurrentCounter s.CallCounter
+    = <MakeEnqueueAtermsCommand-Aux
+        (e.ToEnqueue s.CurrentCounter)
         e.Parents <Inc s.CurrentCounter> s.CallCounter
       >;
 }
