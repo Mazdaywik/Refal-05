@@ -80,15 +80,9 @@ struct r05_state {
   struct r05_node *arg_begin;
   struct r05_node *arg_end;
   struct memory_chunk *pool;
-  struct r05_aterm *begin_global;
-  struct r05_aterm *end_global;
-  pthread_mutex_t lock;
-  pthread_cond_t empty_cond;
-  sig_atomic_t is_waiting;
   struct r05_aterm *begin_local;
   struct r05_aterm *end_local;
   int aterm_counter; /* счетчик созданных А-термов */
-  int thread_counter; /* номер потока, в который положен а-терм */
   int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   int thread_id;
   /* Переменные профилировщика */

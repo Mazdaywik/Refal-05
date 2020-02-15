@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <synchapi.h>
+#include <unistd.h>
 
 #include "refal05rts.h"
 
@@ -16,7 +16,7 @@
 #define EXIT_CODE_NO_MEMORY 202
 #define EXIT_CODE_BUILTIN_ERROR 203
 
-#define ATERM_TO_GLOBAL_QUEUE 4096
+#define ATERM_TO_GLOBAL_QUEUE 1024
 #define NUM_THREADS 4
 
 /*==============================================================================
@@ -1158,6 +1158,11 @@ void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
 
 struct r05_state states[NUM_THREADS];
 
+static struct r05_aterm *s_begin_aterm_queue = NULL;
+static struct r05_aterm *s_end_aterm_queue = NULL;
+pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
+
 #define enqueue(begin_queue, end_queue, elem) \
   if ((begin_queue) == NULL) { \
     (begin_queue) = (elem); \
@@ -1168,59 +1173,43 @@ struct r05_state states[NUM_THREADS];
   }
 
 void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
-  struct r05_aterm **aterm_ptr;
-  int first = 1;
-  for (aterm_ptr = &aterms; *aterm_ptr != NULL; aterm_ptr++, first = 0) {
-    struct r05_aterm *aterm = *aterm_ptr;
-    ++ state->aterm_counter;
-    if (
-      (
-        first
-        || state->begin_local == NULL
-        || state->aterm_counter % ATERM_TO_GLOBAL_QUEUE
-      )
-      && !state->is_primary
-    ) {
 #ifdef R05_THREAD_DEBUG
-      fprintf(
-      stderr, "thread %d enqueue local %p\n",
-      state->thread_id, aterm
+    fprintf(
+      stderr,
+      "thread %d, aterm_counter %d, enqueue %p\n",
+      state->thread_id, state->aterm_counter, aterms
     );
 #endif /* R05_THREAD_DEBUG */
-      enqueue(state->begin_local, state->end_local, aterm)
-    } else {
-      int next_thread;
-      for (int i = 0; i < NUM_THREADS; i++) {
-        next_thread = (state->thread_counter + i) % NUM_THREADS;
-        if (states[next_thread].is_waiting) {
-          state->thread_counter+=i;
-          break;
-        }
-      }
-#ifdef R05_THREAD_DEBUG
-      fprintf(
-      stderr, "thread %d enqueue to thread %d val %p\n",
-      state->thread_id, next_thread, aterm
-    );
-#endif /* R05_THREAD_DEBUG */
-      pthread_mutex_lock(&(states[next_thread].lock));
-#ifdef R05_THREAD_DEBUG
-      fprintf(stderr, "thread %d before enqueue\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-      enqueue(
-        states[next_thread].begin_global,
-        states[next_thread].end_global,
-        aterm
-      )
-#ifdef R05_THREAD_DEBUG
-      fprintf(stderr, "thread %d after enqueue\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-      pthread_cond_signal(&(states[next_thread].empty_cond));
-      pthread_mutex_unlock(&(states[next_thread].lock));
+  if (state->is_primary) {
+    struct r05_aterm **aterm_ptr = &aterms;
+    pthread_mutex_lock(&s_aterm_queue_lock);
+    for (; *aterm_ptr != NULL; aterm_ptr++) {
+      enqueue(s_begin_aterm_queue, s_end_aterm_queue, *aterm_ptr)
+      state->aterm_counter++;
     }
-#ifdef R05_THREAD_DEBUG
-    fprintf(stderr, "thread %d enqueue succeed\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
+    pthread_cond_signal(&s_aterm_queue_empty_cond);
+    pthread_mutex_unlock(&s_aterm_queue_lock);
+  } else {
+    enqueue(state->begin_local, state->end_local, aterms)
+    state->aterm_counter++;
+    struct r05_aterm **aterm_ptr = &aterms + 1;
+    if (
+      state->aterm_counter % ATERM_TO_GLOBAL_QUEUE
+      || state->begin_local == NULL
+    ) {
+      for (; *aterm_ptr != NULL; aterm_ptr++) {
+        enqueue(state->begin_local, state->end_local, *aterm_ptr)
+        state->aterm_counter++;
+      }
+    } else {
+      pthread_mutex_lock(&s_aterm_queue_lock);
+      for (; *aterm_ptr != NULL; aterm_ptr++) {
+        enqueue(s_begin_aterm_queue, s_end_aterm_queue, *aterm_ptr)
+        state->aterm_counter++;
+      }
+      pthread_cond_signal(&s_aterm_queue_empty_cond);
+      pthread_mutex_unlock(&s_aterm_queue_lock);
+    }
   }
 }
 
@@ -1233,31 +1222,16 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
 #ifdef R05_THREAD_DEBUG
   fprintf(stderr, "thread %d dequeue\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
+  struct r05_aterm *res;
   if (state->begin_local == NULL) {
-    struct r05_aterm *res = NULL;
-    if (state->begin_global == NULL) {
-      pthread_mutex_lock(&(state->lock));
-      state->is_waiting = 1;
-#ifdef R05_THREAD_DEBUG
-        fprintf(stderr, "thread %d wait\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-
-      while (state->begin_global == NULL) {
-        pthread_cond_wait(&(state->empty_cond), &(state->lock));
+      pthread_mutex_lock(&s_aterm_queue_lock);
+      while (s_begin_aterm_queue == NULL) {
+        pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
-#ifdef R05_THREAD_DEBUG
-        fprintf(stderr, "thread %d signalled\n", state->thread_id);
-#endif /* R05_THREAD_DEBUG */
-      dequeue(state->begin_global, state->end_global, res)
-      state->is_waiting = 0;
-      pthread_mutex_unlock(&(state->lock));
+      dequeue(s_begin_aterm_queue, s_end_aterm_queue, res)
+      pthread_mutex_unlock(&s_aterm_queue_lock);
       return res;
-    } else {
-      dequeue(state->begin_global, state->end_global, res)
-      return res;
-    }
   } else {
-    struct r05_aterm *res;
     dequeue(state->begin_local, state->end_local, res)
     return res;
   }
@@ -1915,23 +1889,11 @@ int main(int argc, char **argv) {
     NULL,
     /* pool of memory_chunks */
     NULL,
-    /* begin_global */
-    NULL,
-    /* end_global */
-    NULL,
-    /* lock */
-    PTHREAD_MUTEX_INITIALIZER,
-    /* cond */
-    PTHREAD_COND_INITIALIZER,
-    /* is_waiting */
-    0,
     /* begin_local*/
     NULL,
     /* end_local */
     NULL,
     /* aterm_counter */
-    0,
-    /* thread_counter */
     0,
     /* is_primary */
     1,
@@ -1949,7 +1911,6 @@ int main(int argc, char **argv) {
     states[i].free_ptr = &states[i].end_free_list;
     states[i].is_primary = 0;
     states[i].thread_id = i;
-    states[i].thread_counter = rand() % NUM_THREADS;
     weld(&states[i].begin_free_list, &states[i].end_free_list);
     start_profiler(&states[i]);
   }
@@ -1973,6 +1934,9 @@ int main(int argc, char **argv) {
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "primary thread: process aterm list\n");
 #endif /* R05_THREAD_DEBUG */
+    while (s_aterm_list_ptr->category == ATERM_CAT_ACTIVE) {
+      sleep(0); /* чтобы передать управление следующему потоку */
+    }
     process_aterm_list(&state);
   }
 
