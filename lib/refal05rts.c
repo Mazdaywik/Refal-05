@@ -1189,7 +1189,14 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
 #endif /* R05_THREAD_DEBUG */
       enqueue(state->begin_local, state->end_local, aterm)
     } else {
-      int next_thread = state->thread_counter++ % NUM_THREADS;
+      int next_thread;
+      for (int i = 0; i < NUM_THREADS; i++) {
+        next_thread = (state->thread_counter + i) % NUM_THREADS;
+        if (states[next_thread].is_waiting) {
+          state->thread_counter+=i;
+          break;
+        }
+      }
 #ifdef R05_THREAD_DEBUG
       fprintf(
       stderr, "thread %d enqueue to thread %d val %p\n",
@@ -1230,6 +1237,7 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
     struct r05_aterm *res = NULL;
     if (state->begin_global == NULL) {
       pthread_mutex_lock(&(state->lock));
+      state->is_waiting = 1;
 #ifdef R05_THREAD_DEBUG
         fprintf(stderr, "thread %d wait\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
@@ -1241,6 +1249,7 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
         fprintf(stderr, "thread %d signalled\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
       dequeue(state->begin_global, state->end_global, res)
+      state->is_waiting = 0;
       pthread_mutex_unlock(&(state->lock));
       return res;
     } else {
@@ -1914,6 +1923,8 @@ int main(int argc, char **argv) {
     PTHREAD_MUTEX_INITIALIZER,
     /* cond */
     PTHREAD_COND_INITIALIZER,
+    /* is_waiting */
+    0,
     /* begin_local*/
     NULL,
     /* end_local */

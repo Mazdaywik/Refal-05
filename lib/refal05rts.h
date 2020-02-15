@@ -84,6 +84,7 @@ struct r05_state {
   struct r05_aterm *end_global;
   pthread_mutex_t lock;
   pthread_cond_t empty_cond;
+  sig_atomic_t is_waiting;
   struct r05_aterm *begin_local;
   struct r05_aterm *end_local;
   int aterm_counter; /* счетчик созданных А-термов */
