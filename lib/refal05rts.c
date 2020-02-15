@@ -1213,6 +1213,26 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
   }
 }
 
+void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm) {
+#ifdef R05_THREAD_DEBUG
+  fprintf(
+      stderr,
+      "thread %d, aterm_counter %d, enqueue one %p\n",
+      state->thread_id, state->aterm_counter, aterms
+    );
+#endif /* R05_THREAD_DEBUG */
+    if (state->is_primary) {
+      pthread_mutex_lock(&s_aterm_queue_lock);
+      enqueue(s_begin_aterm_queue, s_end_aterm_queue, aterm)
+      pthread_cond_signal(&s_aterm_queue_empty_cond);
+      pthread_mutex_unlock(&s_aterm_queue_lock);
+      state->aterm_counter++;
+    } else {
+      enqueue(state->begin_local, state->end_local, aterm)
+      state->aterm_counter++;
+    }
+}
+
 #define dequeue(begin_queue, end_queue, to_elem) \
   (to_elem) = (begin_queue); \
   (begin_queue) = (begin_queue)->queue_next;

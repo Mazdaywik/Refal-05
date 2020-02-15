@@ -530,7 +530,7 @@ CmdDecParentAtermCounter {
         'int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);'
       )
       (e.Indent 'if (old_counter == 1)')
-      (e.Indent '  r05_enqueue_aterm(state, aterm->parent, NULL);');
+      (e.Indent '  r05_enqueue_one_aterm(state, aterm->parent);');
 }
 
 CmdSaveParentAterm {
@@ -538,6 +538,11 @@ CmdSaveParentAterm {
 }
 
 CmdEnqueueAtermArray {
+  (e.Indent) t.Number /* оптимизация для одного а-терма */
+    = (
+        e.Indent
+        'r05_enqueue_one_aterm(state, ' <Aterm t.Number>');'
+      );
   (e.Indent) e.AtermNumbers
     = (
         e.Indent
@@ -546,7 +551,7 @@ CmdEnqueueAtermArray {
 }
 
 CmdEnqueueAtermReused {
-  (e.Indent) = (e.Indent 'r05_enqueue_aterm(state, aterm, NULL);')
+  (e.Indent) = (e.Indent 'r05_enqueue_one_aterm(state, aterm);')
 }
 
 CmdInsertVar {
