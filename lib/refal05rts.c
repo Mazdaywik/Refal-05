@@ -1169,11 +1169,16 @@ struct r05_state states[NUM_THREADS];
 
 void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
   struct r05_aterm **aterm_ptr;
-  for (aterm_ptr = &aterms; *aterm_ptr != NULL; aterm_ptr++) {
+  int first = 1;
+  for (aterm_ptr = &aterms; *aterm_ptr != NULL; aterm_ptr++, first = 0) {
     struct r05_aterm *aterm = *aterm_ptr;
     ++ state->aterm_counter;
     if (
-      (state->aterm_counter % ATERM_TO_GLOBAL_QUEUE || state->begin_local == NULL)
+      (
+        first
+        || state->begin_local == NULL
+        || state->aterm_counter % ATERM_TO_GLOBAL_QUEUE
+      )
       && !state->is_primary
     ) {
 #ifdef R05_THREAD_DEBUG
