@@ -1406,6 +1406,9 @@ R05_DEFINE_ENTRY_FUNCTION(Stopa_, "Stop@") { /* @ декодируется в a_
 #ifdef R05_THREAD_DEBUG
   printf("Stop@");
 #endif /* R05_THREAD_DEBUG */
+  if (!r05_is_ready_to_exec(aterm))
+    return;
+
   r05_exit(0, state);
 }
 
@@ -1443,11 +1446,9 @@ static void init_view_field(struct r05_state *state) {
   stop = r05_alloc_aterm(openStop, closeStop, state);
   s_aterm_list_ptr = r05_alloc_aterm(openGo, closeGo, state);
   /* достаточно обнулить указатели только здесь */
-  s_aterm_list_ptr->next = NULL;
+  s_aterm_list_ptr->next = stop;
   s_aterm_list_ptr->parent = stop;
   atomic_fetch_add(&(stop->child_aterms), 1);
-  /* Stop не кладется в список теней, так как это чистая функция,
-   * и она будет вызвана последней */
   stop->next = NULL;
   stop->parent = NULL;
   r05_splice_from_freelist(s_begin_view_field.next, state);

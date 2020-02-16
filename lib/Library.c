@@ -816,6 +816,9 @@ R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
   32. <Time> == s.CHAR+
 */
 R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
+  if (!r05_is_ready_to_exec(aterm))
+    return;
+
   char *time_str, *n;
   time_t now;
 
