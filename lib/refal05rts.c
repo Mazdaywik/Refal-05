@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#include <synchapi.h>
 
 #include "refal05rts.h"
 
@@ -1161,7 +1161,7 @@ struct r05_state states[NUM_THREADS];
 
 static struct r05_aterm *s_begin_aterm_queue = NULL;
 static struct r05_aterm *s_end_aterm_queue = NULL;
-volatile int s_aterm_queue_size = 0;
+volatile sig_atomic_t s_aterm_queue_size = 0;
 pthread_mutex_t s_aterm_queue_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t s_aterm_queue_empty_cond = PTHREAD_COND_INITIALIZER;
 
@@ -1374,7 +1374,7 @@ R05_DEFINE_ENTRY_FUNCTION(Cata_, "Cat@") { /* @ декодируется в a_ *
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
   int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
-    r05_enqueue_aterm(state, aterm->parent, NULL);
+    r05_enqueue_one_aterm(state, aterm->parent);
   r05_aterm_category_complete(aterm);
 }
 
@@ -1394,7 +1394,7 @@ R05_DEFINE_ENTRY_FUNCTION(Cat3a_, "Cat3@") { /* @ декодируется в a_
   r05_splice_to_freelist(state->arg_end, state->arg_end, state);
   int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
-    r05_enqueue_aterm(state, aterm->parent, NULL);
+    r05_enqueue_one_aterm(state, aterm->parent);
   r05_aterm_category_complete(aterm);
 }
 
@@ -1850,7 +1850,7 @@ static void brrp_impl(
       r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
       int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
       if (old_counter == 1)
-        r05_enqueue_aterm(state, aterm->parent, NULL);
+        r05_enqueue_one_aterm(state, aterm->parent);
       r05_aterm_category_complete(aterm);
       return;
     }
@@ -1889,7 +1889,7 @@ static void dgcp_impl(
   r05_splice_to_freelist(state->arg_begin, state->arg_end, state);
   int old_counter = atomic_fetch_sub(&(aterm->parent->child_aterms), 1);
   if (old_counter == 1)
-    r05_enqueue_aterm(state, aterm->parent, NULL);
+    r05_enqueue_one_aterm(state, aterm->parent);
   r05_aterm_category_complete(aterm);
 }
 
@@ -1981,10 +1981,8 @@ int main(int argc, char **argv) {
 #ifdef R05_THREAD_DEBUG
     fprintf(stderr, "primary thread: process aterm list\n");
 #endif /* R05_THREAD_DEBUG */
-    while (s_aterm_list_ptr->category == ATERM_CAT_ACTIVE) {
-      sleep(0); /* чтобы передать управление следующему потоку */
-    }
     process_aterm_list(&state);
+    Sleep(0); /* чтобы передать управление следующему потоку */
   }
 
 #ifndef R05_NORETURN_DEFINED
