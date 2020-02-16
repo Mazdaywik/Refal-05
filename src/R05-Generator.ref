@@ -31,7 +31,7 @@ $ENTRY R05-Generate-ToLines {
   e.Tree
     = <R05-Generate-Aux
         <MapAccum
-          generator_GenTreeItem (/* declarations */)
+          r05-generator_GenTreeItem (/* declarations */)
           <InsertConcatenators <Transform e.Tree>>
         >
       >;
@@ -46,10 +46,10 @@ InsertConcatenators {
   e.AST
     = (Extern (NO-POS 'Cat@'))
       (Extern (NO-POS 'Cat3@'))
-      <Map InsertConcatenators-Aux e.AST>;
+      <Map r05-generator_InsertConcatenators-Aux e.AST>;
 }
 
-$ENTRY InsertConcatenators-Aux {
+$ENTRY r05-generator_InsertConcatenators-Aux {
   (Extern e.externBody) = (Extern e.externBody);
 
   (SpecialComment e.CommentBody) = (SpecialComment e.CommentBody);
@@ -57,11 +57,11 @@ $ENTRY InsertConcatenators-Aux {
   (Function t.SrcPos (e.Name) s.Scope e.Sentences)
     = (
         Function t.SrcPos (e.Name) s.Scope
-        <Map InsertConcatenators-Sentences e.Sentences>
+        <Map r05-generator_InsertConcatenators-Sentences e.Sentences>
       );
 }
 
-$ENTRY InsertConcatenators-Sentences {
+$ENTRY r05-generator_InsertConcatenators-Sentences {
   (t.Pattern RETURN (e.Result))
     = (
         t.Pattern
@@ -132,10 +132,10 @@ InsertConcatenators-Result {
 }
 
 IsEvarSequence {
-  e.expr = <And <Map IsEvar e.expr>>;
+  e.expr = <And <Map r05-generator_IsEvar e.expr>>;
 }
 
-$ENTRY IsEvar {
+$ENTRY r05-generator_IsEvar {
   (Variable t.SrcPos 'e' e.Index) = True;
   e.AnyOther = False;
 }
@@ -158,7 +158,7 @@ R05-Generate-Aux {
     ('/* End of file */')
 }
 
-$ENTRY generator_GenTreeItem {
+$ENTRY r05-generator_GenTreeItem {
   (e.Declarations) (Extern e.Names) =
     (e.Declarations <Map r05-generator_GenExtern e.Names>)
     /* пусто */;
@@ -204,7 +204,7 @@ GenFunction {
   s.ScopeClass (e.Name) e.Sentences =
     ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
     ('  r05_this_is_generated_function(state);')
-    <Map generator_GenSentence <AddFailCommand e.Sentences>>
+    <Map r05-generator_GenSentence <AddFailCommand e.Sentences>>
     ('}')
     ();
 }
@@ -241,13 +241,13 @@ AddFailCommand {
   e.Sentences = e.Sentences ReturnRecognitionImpossible;
 }
 
-$ENTRY generator_GenSentence {
+$ENTRY r05-generator_GenSentence {
   ((e.Pattern) RETURN (e.Result)) =
     ()
     ('  do {')
     <SkipIndentAccum
       <MapAccum
-        generator_GenCommand
+        r05-generator_GenCommand
         ('    ' /* отступ */)
         <CompileSentence (e.Pattern) (e.Result)>
       >
@@ -286,7 +286,7 @@ SafeComment {
   e.Comment = e.Comment;
 }
 
-$ENTRY generator_GenCommand {
+$ENTRY r05-generator_GenCommand {
   (e.Indent)
   (CmdOpenedE-Start s.BracketNumber 'e' e.Index) =
     (e.Indent '  ')
@@ -459,7 +459,7 @@ CmdAllocAterm {
   (e.Indent) s.OpenCallElemNumber s.CloseCallElemNumber s.AtermNumber
     = (
         e.Indent
-        <Aterm s.AtermNumber> ' = '
+        <r05-generator_Aterm s.AtermNumber> ' = '
         'r05_alloc_aterm('
         <Elem s.OpenCallElemNumber> ', '
         <Elem s.CloseCallElemNumber> ', '
@@ -489,7 +489,8 @@ CmdInsertAtermList {
   (e.Indent) s.AtermNumber
     = (
         e.Indent
-        'aterm = r05_insert_aterm_list(aterm, ' <Aterm s.AtermNumber>');'
+        'aterm = r05_insert_aterm_list(aterm, '
+         <r05-generator_Aterm s.AtermNumber> ');'
       );
 }
 
@@ -497,13 +498,15 @@ CmdLinkAtermWithParent {
   (e.Indent) s.ChildAtermNumber 'x'
     = (
         e.Indent
-        'r05_link_aterm_tree('<Aterm s.ChildAtermNumber>', parent);'
+        'r05_link_aterm_tree('
+        <r05-generator_Aterm s.ChildAtermNumber>
+        ', parent);'
       );
   (e.Indent) s.ChildAtermNumber s.ParentAtermNumber
     = (
         e.Indent
-        'r05_link_aterm_tree(' <Aterm s.ChildAtermNumber>
-        ', ' <Aterm s.ParentAtermNumber> ');'
+        'r05_link_aterm_tree(' <r05-generator_Aterm s.ChildAtermNumber>
+        ', ' <r05-generator_Aterm s.ParentAtermNumber> ');'
       );
 }
 
@@ -518,7 +521,7 @@ CmdIncParentAtermCounter {
     = (
         e.Indent
         'atomic_fetch_add('
-        '&(' <Aterm s.ParentAtermNumber> '->child_aterms), '
+        '&(' <r05-generator_Aterm s.ParentAtermNumber> '->child_aterms), '
         <Symb s.Value> ');'
       );
 }
@@ -541,12 +544,13 @@ CmdEnqueueAtermArray {
   (e.Indent) t.Number /* оптимизация для одного а-терма */
     = (
         e.Indent
-        'r05_enqueue_one_aterm(state, ' <Aterm t.Number>');'
+        'r05_enqueue_one_aterm(state, ' <r05-generator_Aterm t.Number>');'
       );
   (e.Indent) e.AtermNumbers
     = (
         e.Indent
-        'r05_enqueue_aterm(state, ' <Map AtermComma e.AtermNumbers> 'NULL);'
+        'r05_enqueue_aterm(state, '
+        <Map r05-generator_AtermComma e.AtermNumbers> 'NULL);'
       );
 }
 
@@ -631,8 +635,8 @@ EVar-E { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_e_' <Symb s.Usings> }
 Elem { s.Number = 'n[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'n+' <Symb s.Number> }
 
-$ENTRY Aterm { s.Number = 'aterms[' <Symb s.Number> ']'}
-$ENTRY AtermComma { s.Number = <Aterm s.Number> ', ' }
+$ENTRY r05-generator_Aterm { s.Number = 'aterms[' <Symb s.Number> ']'}
+$ENTRY r05-generator_AtermComma { s.Number = <r05-generator_Aterm s.Number> ', ' }
 
 /*
   Декорирование отличается от декорирования имён функций, поскольку мы хотим
@@ -1349,7 +1353,7 @@ ComposeSentenceCommands-Aux {
   (e.LinkAtermsCommands (e.Parents))
   (e.PatternVars) e.PatternCommands =
     <GenerateResult-OpenELoops
-      <Map generator_MakeDeclaration e.PatternVars>
+      <Map r05-generator_MakeDeclaration e.PatternVars>
       (CmdRangeArray s.NumRanges)
       <MakeCmdResultCommand s.ResultCounter>
       <MakeCmdAtermArrayCommand s.CallCounter>
@@ -1366,7 +1370,7 @@ ComposeSentenceCommands-Aux {
     >;
 }
 
-$ENTRY generator_MakeDeclaration {
+$ENTRY r05-generator_MakeDeclaration {
   (s.Usings s.Mode e.Index) =
     (CmdDeclareVar s.Usings s.Mode e.Index)
     <MakeDeclaration-Aux s.Usings s.Mode e.Index>;
@@ -1376,7 +1380,7 @@ MakeDeclaration-Aux {
   1 s.Mode e.Index = /* это была последняя */;
 
   s.Usings s.Mode e.Index =
-    <generator_MakeDeclaration (<Dec s.Usings> s.Mode e.Index)>;
+    <r05-generator_MakeDeclaration (<Dec s.Usings> s.Mode e.Index)>;
 }
 
 MakeCmdResultCommand {
