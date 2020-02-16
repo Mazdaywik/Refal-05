@@ -82,7 +82,7 @@ struct r05_state {
   struct memory_chunk *pool;
   struct r05_aterm *begin_local;
   struct r05_aterm *end_local;
-  int aterm_counter; /* счетчик созданных А-термов */
+  unsigned long aterm_counter; /* счетчик созданных А-термов */
   int is_primary; /* флаг первичного потока, ипользуется в enqueue */
   int thread_id;
   /* Переменные профилировщика */
@@ -102,6 +102,16 @@ struct r05_state {
   clock_t total_e_loop;
   clock_t total_match_repeated_tvar_time_outside_e;
   clock_t total_match_repeated_evar_time_outside_e;
+  clock_t start_enqueue_global;
+  clock_t total_enqueue_global;
+  clock_t start_enqueue;
+  clock_t total_enqueue; /* включает total_enqueue_global */
+  clock_t start_dequeue_waiting;
+  clock_t total_dequeue_waiting; /* время ожидания во время dequeue */
+  clock_t start_dequeue_global;
+  clock_t total_dequeue_global; /* включает время ожидания */
+  clock_t start_dequeue;
+  clock_t total_dequeue; /* время всех dequeue, включая время ожидания */
 };
 
 enum r05_aterm_category {

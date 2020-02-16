@@ -747,17 +747,6 @@ static void free_memory(struct r05_state *state) {
     free(state->pool);
     state->pool = next;
   }
-
-#ifdef R05_SHOW_STAT
-  fprintf(
-    stderr,
-    "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
-    (unsigned long int) state->memory_use,
-    (unsigned long int) state->memory_use,
-    (unsigned long int) sizeof(struct r05_node),
-    (unsigned long int) (state->memory_use * sizeof(struct r05_node))
-  );
-#endif  /* R05_SHOW_STAT */
 }
 
 
@@ -1021,7 +1010,7 @@ static void print_profile(struct r05_state *state) {
   clock_t eloop_time;
   clock_t repeated_time_outside_e;
 
-  enum { nItems = 11 };
+  enum { nItems = 16 };
   struct time_item items[nItems];
 
   size_t i;
@@ -1065,6 +1054,16 @@ static void print_profile(struct r05_state *state) {
   items[9].counter = state->total_match_repeated_tvar_time_outside_e;
   items[10].name = "t- and e-var copy time";
   items[10].counter = state->total_copy_tevar_time;
+  items[11].name = "Total enqueue time";
+  items[11].counter = state->total_enqueue;
+  items[12].name = "Enqueue to global queue time";
+  items[12].counter = state->total_enqueue_global;
+  items[13].name = "Total dequeue time";
+  items[13].counter = state->total_dequeue;
+  items[14].name = "Dequeue from global queue time";
+  items[14].counter = state->total_dequeue_global;
+  items[15].name = "Global dequeue waiting time";
+  items[15].counter = state->total_dequeue_waiting;
 
   qsort(items, nItems, sizeof(items[0]), reverse_compare);
 
@@ -1082,14 +1081,6 @@ static void print_profile(struct r05_state *state) {
 }
 
 #endif  /* R05_SHOW_STAT */
-
-static void end_profiler(struct r05_state *state) {
-  after_step(state);
-
-#ifdef R05_SHOW_STAT
-  print_profile(state);
-#endif  /* R05_SHOW_STAT */
-}
 
 
 void r05_start_e_loop(struct r05_state *state) {
@@ -1158,6 +1149,7 @@ void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent) {
 }
 
 struct r05_state states[NUM_THREADS];
+struct r05_state *main_thread_state;
 
 static struct r05_aterm *s_begin_aterm_queue = NULL;
 static struct r05_aterm *s_end_aterm_queue = NULL;
@@ -1182,7 +1174,13 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
       state->thread_id, state->aterm_counter, aterms
     );
 #endif /* R05_THREAD_DEBUG */
+#ifdef R05_SHOW_STAT
+    state->start_enqueue = clock();
+#endif /* R05_SHOW_STAT */
   if (state->is_primary) {
+#ifdef R05_SHOW_STAT
+    state->start_enqueue_global = clock();
+#endif /* R05_SHOW_STAT */
     struct r05_aterm **aterm_ptr = &aterms;
     pthread_mutex_lock(&s_aterm_queue_lock);
     for (; *aterm_ptr != NULL; aterm_ptr++) {
@@ -1192,6 +1190,9 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
     }
     pthread_cond_signal(&s_aterm_queue_empty_cond);
     pthread_mutex_unlock(&s_aterm_queue_lock);
+#ifdef R05_SHOW_STAT
+    state->total_enqueue_global += (clock() - state->start_enqueue_global);
+#endif /* R05_SHOW_STAT */
   } else {
     enqueue(state->begin_local, state->end_local, aterms)
     state->aterm_counter++;
@@ -1206,6 +1207,9 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
         state->aterm_counter++;
       }
     } else {
+#ifdef R05_SHOW_STAT
+      state->start_enqueue_global = clock();
+#endif /* R05_SHOW_STAT */
       pthread_mutex_lock(&s_aterm_queue_lock);
       for (; *aterm_ptr != NULL; aterm_ptr++) {
         enqueue(s_begin_aterm_queue, s_end_aterm_queue, *aterm_ptr)
@@ -1214,8 +1218,14 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
       }
       pthread_cond_signal(&s_aterm_queue_empty_cond);
       pthread_mutex_unlock(&s_aterm_queue_lock);
+#ifdef R05_SHOW_STAT
+      state->total_enqueue_global += (clock() - state->start_enqueue_global);
+#endif /* R05_SHOW_STAT */
     }
   }
+#ifdef R05_SHOW_STAT
+  state->total_enqueue += (clock() - state->start_enqueue);
+#endif /* R05_SHOW_STAT */
 }
 
 void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm) {
@@ -1226,17 +1236,29 @@ void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm) {
       state->thread_id, state->aterm_counter, aterm
     );
 #endif /* R05_THREAD_DEBUG */
-    if (state->is_primary) {
-      pthread_mutex_lock(&s_aterm_queue_lock);
-      enqueue(s_begin_aterm_queue, s_end_aterm_queue, aterm)
-      pthread_cond_signal(&s_aterm_queue_empty_cond);
-      pthread_mutex_unlock(&s_aterm_queue_lock);
-      state->aterm_counter++;
-      s_aterm_queue_size++;
-    } else {
-      enqueue(state->begin_local, state->end_local, aterm)
-      state->aterm_counter++;
-    }
+#ifdef R05_SHOW_STAT
+  state->start_enqueue = clock();
+#endif /* R05_SHOW_STAT */
+  if (state->is_primary) {
+#ifdef R05_SHOW_STAT
+    state->start_enqueue_global = clock();
+#endif /* R05_SHOW_STAT */
+    pthread_mutex_lock(&s_aterm_queue_lock);
+    enqueue(s_begin_aterm_queue, s_end_aterm_queue, aterm)
+    pthread_cond_signal(&s_aterm_queue_empty_cond);
+    pthread_mutex_unlock(&s_aterm_queue_lock);
+    state->aterm_counter++;
+    s_aterm_queue_size++;
+#ifdef R05_SHOW_STAT
+    state->total_enqueue_global += (clock() - state->start_enqueue_global);
+#endif /* R05_SHOW_STAT */
+  } else {
+    enqueue(state->begin_local, state->end_local, aterm)
+    state->aterm_counter++;
+  }
+#ifdef R05_SHOW_STAT
+  state->total_enqueue += (clock() - state->start_enqueue);
+#endif /* R05_SHOW_STAT */
 }
 
 #define dequeue(begin_queue, end_queue, to_elem) \
@@ -1248,20 +1270,37 @@ static struct r05_aterm *dequeue_aterm(struct r05_state *state) {
 #ifdef R05_THREAD_DEBUG
   fprintf(stderr, "thread %d dequeue\n", state->thread_id);
 #endif /* R05_THREAD_DEBUG */
+#ifdef R05_SHOW_STAT
+  state->start_dequeue = clock();
+#endif /* R05_SHOW_STAT */
   struct r05_aterm *res;
   if (state->begin_local == NULL) {
+#ifdef R05_SHOW_STAT
+    state->start_dequeue_global = clock();
+#endif /* R05_SHOW_STAT */
       pthread_mutex_lock(&s_aterm_queue_lock);
+#ifdef R05_SHOW_STAT
+      state->start_dequeue_waiting = clock();
+#endif /* R05_SHOW_STAT */
       while (s_begin_aterm_queue == NULL) {
         pthread_cond_wait(&s_aterm_queue_empty_cond, &s_aterm_queue_lock);
       }
+#ifdef R05_SHOW_STAT
+      state->total_dequeue_waiting += (clock() - state->start_dequeue_waiting);
+#endif /* R05_SHOW_STAT */
       dequeue(s_begin_aterm_queue, s_end_aterm_queue, res)
       s_aterm_queue_size--;
       pthread_mutex_unlock(&s_aterm_queue_lock);
-      return res;
+#ifdef R05_SHOW_STAT
+      state->total_dequeue_global += (clock() - state->start_dequeue_global);
+#endif /* R05_SHOW_STAT */
   } else {
     dequeue(state->begin_local, state->end_local, res)
-    return res;
   }
+#ifdef R05_SHOW_STAT
+  state->total_dequeue += (clock() - state->start_dequeue);
+#endif /* R05_SHOW_STAT */
+  return res;
 }
 
 /* Работа с А-термами, как со списком теней */
@@ -1692,16 +1731,65 @@ static void make_dump(struct r05_state *state) {
 
 
 R05_NORETURN void r05_exit(int retcode, struct r05_state *state) {
-  dump_buried(state);
+  /* Суммирование переменных профилировщика из разных потоков.
+   * Чтобы гарантированно суммировать правильно, копируется main_thread_state.
+   * Копирование необходимо для корректного завершения не из первичного потока
+   * (иначе могут возникнуть одновременные записи из разных потоков)*/
+  struct r05_state total = *main_thread_state;
+  for (int i = 0; i < NUM_THREADS; i++) {
+#ifdef R05_SHOW_STAT
+    total.aterm_counter += states[i].aterm_counter;
+    total.memory_use += states[i].memory_use;
+    total.step_counter += states[i].step_counter;
+    total.in_generated += states[i].in_generated;
+    total.in_e_loop += states[i].in_e_loop;
+    total.total_pattern_match_time += states[i].total_pattern_match_time;
+    total.total_building_result_time += states[i].total_building_result_time;
+    total.total_copy_tevar_time += states[i].total_copy_tevar_time;
+    total.total_match_repeated_tvar_time
+      += states[i].total_match_repeated_tvar_time;
+    total.total_match_repeated_evar_time
+      += states[i].total_match_repeated_evar_time;
+    total.total_e_loop += states[i].total_e_loop;
+    total.total_match_repeated_tvar_time_outside_e
+      += states[i].total_match_repeated_tvar_time_outside_e;
+    total.total_match_repeated_evar_time_outside_e
+      += states[i].total_match_repeated_evar_time_outside_e;
+    total.total_enqueue_global += states[i].total_enqueue_global;
+    total.total_enqueue += states[i].total_enqueue;
+    total.total_dequeue_waiting += states[i].total_dequeue_waiting;
+    total.total_dequeue_global += states[i].total_dequeue_global;
+    total.total_dequeue += states[i].total_dequeue;
+#endif /* R05_SHOW_STAT */
+    after_step(&states[i]);
+  }
+  after_step(&total);
+  dump_buried(&total);
   fflush(stderr);
   fflush(stdout);
-  end_profiler(state);
 
 #ifdef R05_SHOW_STAT
-  fprintf(stderr, "Step count %lu\n", state->step_counter);
+  print_profile(&total);
 #endif  /* R05_SHOW_STAT */
 
-  free_memory(state);
+#ifdef R05_SHOW_STAT
+  fprintf(stderr, "Step count %lu\n", total.step_counter);
+  fprintf(stderr, "Aterm count %lu\n", total.aterm_counter);
+#endif  /* R05_SHOW_STAT */
+  free_memory(&total);
+  for (int i = 0; i < NUM_THREADS; i++) {
+    free_memory(&states[i]);
+  }
+#ifdef R05_SHOW_STAT
+  fprintf(
+    stderr,
+    "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
+    (unsigned long int) total.memory_use,
+    (unsigned long int) total.memory_use,
+    (unsigned long int) sizeof(struct r05_node),
+    (unsigned long int) (total.memory_use * sizeof(struct r05_node))
+  );
+#endif  /* R05_SHOW_STAT */
   fflush(stdout);
 
   exit(retcode);
@@ -1950,8 +2038,9 @@ int main(int argc, char **argv) {
     /* memory_use */
     0,
     /* step_counter */
-    0
+    0,
   };
+  main_thread_state = &state;
   start_profiler(&state);
 
   for (int i = 0; i < NUM_THREADS; i++) {
