@@ -16,7 +16,9 @@
 #define EXIT_CODE_NO_MEMORY 202
 #define EXIT_CODE_BUILTIN_ERROR 203
 
+#ifndef NUM_THREADS
 #define NUM_THREADS 4
+#endif /* NUM_THREADS */
 
 /*==============================================================================
    Операции сопоставления с образцом
