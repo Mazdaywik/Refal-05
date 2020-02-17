@@ -16,8 +16,6 @@
 #define EXIT_CODE_NO_MEMORY 202
 #define EXIT_CODE_BUILTIN_ERROR 203
 
-#define ATERM_TO_GLOBAL_QUEUE 1024
-#define MAX_GLOBAL_QUEUE_SIZE 4
 #define NUM_THREADS 4
 
 /*==============================================================================
@@ -1194,33 +1192,10 @@ void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...) {
     state->total_enqueue_global += (clock() - state->start_enqueue_global);
 #endif /* R05_SHOW_STAT */
   } else {
-    enqueue(state->begin_local, state->end_local, aterms)
-    state->aterm_counter++;
-    struct r05_aterm **aterm_ptr = &aterms + 1;
-    if (
-      state->aterm_counter % ATERM_TO_GLOBAL_QUEUE
-      || s_aterm_queue_size > MAX_GLOBAL_QUEUE_SIZE
-      || state->begin_local == NULL
-    ) {
-      for (; *aterm_ptr != NULL; aterm_ptr++) {
-        enqueue(state->begin_local, state->end_local, *aterm_ptr)
-        state->aterm_counter++;
-      }
-    } else {
-#ifdef R05_SHOW_STAT
-      state->start_enqueue_global = clock();
-#endif /* R05_SHOW_STAT */
-      pthread_mutex_lock(&s_aterm_queue_lock);
-      for (; *aterm_ptr != NULL; aterm_ptr++) {
-        enqueue(s_begin_aterm_queue, s_end_aterm_queue, *aterm_ptr)
-        s_aterm_queue_size++;
-        state->aterm_counter++;
-      }
-      pthread_cond_signal(&s_aterm_queue_empty_cond);
-      pthread_mutex_unlock(&s_aterm_queue_lock);
-#ifdef R05_SHOW_STAT
-      state->total_enqueue_global += (clock() - state->start_enqueue_global);
-#endif /* R05_SHOW_STAT */
+    struct r05_aterm **aterm_ptr = &aterms;
+    for (; *aterm_ptr != NULL; aterm_ptr++) {
+      enqueue(state->begin_local, state->end_local, *aterm_ptr)
+      state->aterm_counter++;
     }
   }
 #ifdef R05_SHOW_STAT
@@ -1257,6 +1232,25 @@ void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm) {
     state->aterm_counter++;
   }
 #ifdef R05_SHOW_STAT
+  state->total_enqueue += (clock() - state->start_enqueue);
+#endif /* R05_SHOW_STAT */
+}
+
+void r05_enqueue_one_aterm_async(
+  struct r05_state *state, struct r05_aterm *aterm
+) {
+#ifdef R05_SHOW_STAT
+  state->start_enqueue = clock();
+  state->start_enqueue_global = clock();
+#endif /* R05_SHOW_STAT */
+  pthread_mutex_lock(&s_aterm_queue_lock);
+  enqueue(s_begin_aterm_queue, s_end_aterm_queue, aterm)
+  pthread_cond_signal(&s_aterm_queue_empty_cond);
+  pthread_mutex_unlock(&s_aterm_queue_lock);
+  state->aterm_counter++;
+  s_aterm_queue_size++;
+#ifdef R05_SHOW_STAT
+  state->total_enqueue_global += (clock() - state->start_enqueue_global);
   state->total_enqueue += (clock() - state->start_enqueue);
 #endif /* R05_SHOW_STAT */
 }
