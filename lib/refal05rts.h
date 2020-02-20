@@ -253,9 +253,6 @@ void r05_link_aterm_tree(struct r05_aterm *child, struct r05_aterm *parent);
 void r05_enqueue_aterm(struct r05_state *state, struct r05_aterm *aterms, ...);
 
 void r05_enqueue_one_aterm(struct r05_state *state, struct r05_aterm *aterm);
-void r05_enqueue_one_aterm_async(
-  struct r05_state *state, struct r05_aterm *aterm
-);
 
 /* Работа с А-термами, как со списком теней */
 

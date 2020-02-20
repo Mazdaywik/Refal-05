@@ -939,22 +939,6 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
   r05_aterm_category_complete(aterm);
 }
 
-/**
-   50. <Residue s.Func e.Arg> == <s.Func e.Arg>
-*/
-R05_DEFINE_ENTRY_FUNCTION(Residue, "Residue") {
-  struct r05_node *residue = state->arg_begin->next;
-  struct r05_node *callable = residue->next;
-  if (callable->tag != R05_DATATAG_FUNCTION) {
-    r05_recognition_impossible(state);
-  }
-
-  r05_reuse_aterm(
-    state->arg_begin, state->arg_end, aterm, state
-  );
-  r05_splice_to_freelist(residue, residue, state);
-  r05_enqueue_one_aterm_async(state, aterm);
-}
 
 /**
   51. <GetEnv e.EnvName> == e.EnvValue
@@ -1492,7 +1476,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(47, Dn, regular) */
   /* ALLOC_BUILTIN(48, Up, special) */
   /* ALLOC_BUILTIN(49, Ev_met, special) */
-  ALLOC_BUILTIN(50, Residue, special)
+  /* ALLOC_BUILTIN(50, Residue, special) */
   ALLOC_BUILTIN(51, GetEnv, regular)
   ALLOC_BUILTIN(52, System, regular)
   ALLOC_BUILTIN(53, Exit, regular)
