@@ -1,6 +1,14 @@
 Установка и использование, конфигурирование, отладка
 ====================================================
 
+<div id="toc"></div>
+<script src="toc.js"></script>
+<script>
+makeTOC.localizedHeader = "Содержание"
+makeTOC.localizedShow = "Показать";
+makeTOC.localizedHide = "Скрыть";
+</script>
+
 Сборка компилятора
 ------------------
 

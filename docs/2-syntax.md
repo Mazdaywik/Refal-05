@@ -1,6 +1,14 @@
 Язык Рефал-05, его отличия от Рефала-5 и общее подмножество
 ===========================================================
 
+<div id="toc"></div>
+<script src="toc.js"></script>
+<script>
+makeTOC.localizedHeader = "Содержание"
+makeTOC.localizedShow = "Показать";
+makeTOC.localizedHide = "Скрыть";
+</script>
+
 Синтаксис Рефала-05
 -------------------
 

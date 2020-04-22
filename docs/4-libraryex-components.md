@@ -1,6 +1,14 @@
 Библиотека компонентов компилятора
 ==================================
 
+<div id="toc"></div>
+<script src="toc.js"></script>
+<script>
+makeTOC.localizedHeader = "Содержание"
+makeTOC.localizedShow = "Показать";
+makeTOC.localizedHide = "Скрыть";
+</script>
+
 В данном разделе будут рассмотрены исходные тексты, лежащие в каталоге `src`
 дистрибутива Рефала-05.
 
