@@ -9,6 +9,10 @@ makeTOC.localizedShow = "Показать";
 makeTOC.localizedHide = "Скрыть";
 </script>
 
+<font color="red">
+**Внимание!** Эта страница документации немножко устарела.
+</font>
+
 Синтаксис Рефала-05
 -------------------
 
