@@ -2,7 +2,7 @@
 $EXTERN MapAccum, OneOf, Map, Reduce, Unique;
 *$EXTERN Success, Fails
 
-*$FROM Refal5-Parser
+*$FROM R5FW-Parser
 $EXTERN ScanString-FromPos, Parse, Scan, TokName;
 
 *$FROM R5FW-Parser-Defs
@@ -11,7 +11,7 @@ $EXTERN Builtins;
 *$EXTERN TkEOF, Function, Condition, RETURN, CALL-BLOCK, Symbol, Word
 *$EXTERN Brackets, Call, TkError
 
-*$FROM Libarary
+*$FROM Library
 *$EXTERN True, False
 
 *$FROM R5FW-Transformer
