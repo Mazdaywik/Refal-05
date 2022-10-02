@@ -106,8 +106,6 @@ $ENTRY parser_MakeListFunction {
 CheckAST {
   t.ErrorList e.AST
     = <CheckAST-ExternsArePlained t.ErrorList <PlainExterns e.AST>>;
-
-  'xxx' = CheckAST-Aux;
 }
 
 CheckAST-ExternsArePlained {
@@ -312,129 +310,8 @@ CastAST-JoinExterns {
 }
 
 
-CheckAST-Aux {
-  (t.ErrorList e.References) e.AST
-    , <CheckAST-Functions t.ErrorList e.References>
-    : {
-        e.UsedBuiltins (/* no errors */) = Success e.UsedBuiltins e.AST;
-        e.UsedBuiltins (e.Errors) = Fails e.Errors;
-      }
-}
-
-CheckAST-Functions {
-  t.ErrorList e.ReferenceBags
-    = <CheckAST-Functions-Aux
-        <CheckAST-Functions-Calls
-          t.ErrorList
-          <MapAccum r05-parser_PlainBags (/* func names */) e.ReferenceBags>
-        >
-        (e.ReferenceBags)
-      >;
-}
-
-$ENTRY r05-parser_PlainBags {
-  (e.FuncNames) (t.SrcPos (e.FuncName) s.ScopeEx e.References)
-    = (e.FuncNames (e.FuncName))
-      <Map (r05-parser_PlainBags-Reference t.SrcPos (e.FuncName)) e.References>;
-}
-
 $ENTRY r05-parser_PlainBags-Reference {
   t.SrcPos (e.FuncName) (e.Reference) = ((t.SrcPos e.FuncName) e.Reference);
-}
-
-CheckAST-Functions-Aux {
-  e.UsedBuiltins t.ErrorList (e.ReferenceBags)
-    = e.UsedBuiltins
-      (<EL-Destroy <CheckAST-Functions-Unused t.ErrorList e.ReferenceBags>>);
-}
-
-CheckAST-Functions-Calls {
-  t.ErrorList (e.FuncNames) e.References
-    = <CheckAST-Functions-DoCalls t.ErrorList (e.FuncNames) e.References>;
-}
-
-CheckAST-Functions-DoCalls {
-  t.ErrorList ((e.Name) e.FuncNames) e.References
-    = <CheckAST-Functions-DoCalls
-        t.ErrorList (e.FuncNames) <RemoveRef (e.Name) e.References>
-      >;
-
-  t.ErrorList (/* no names */) e.References
-    = <CheckAST-Functions-UsedBuiltins t.ErrorList <Builtins> (e.References)>;
-}
-
-RemoveRef {
-  (e.Name) e.References-B (t.Caller e.Name) e.References-E
-    = e.References-B <RemoveRef (e.Name) e.References-E>;
-
-  (e.Name) e.References = e.References;
-}
-
-CheckAST-Functions-UsedBuiltins {
-  t.ErrorList (e.Builtin) e.Builtins (e.Refs-B (t.Caller e.Builtin) e.Refs-E)
-    = (Extern (NO-POS e.Builtin))
-      <CheckAST-Functions-UsedBuiltins
-        t.ErrorList
-        e.Builtins (e.Refs-B <RemoveRef (e.Builtin) e.Refs-E>)
-      >;
-
-  t.ErrorList (e.Builtin) e.Builtins (e.References)
-    = <CheckAST-Functions-UsedBuiltins t.ErrorList e.Builtins (e.References)>;
-
-  t.ErrorList /* кончились встроенные */ (e.UndefinedReferences)
-    = <Reduce
-        r05-parser_UndefinedReferenceMessage t.ErrorList e.UndefinedReferences
-      >;
-}
-
-$ENTRY r05-parser_UndefinedReferenceMessage {
-  t.ErrorList ((t.FuncPos e.FuncName) e.Reference)
-    = <EL-AddErrorAt
-        t.ErrorList t.FuncPos
-        'Undefined symbol ' e.Reference ' in function ' e.FuncName
-      >;
-}
-
-CheckAST-Functions-Unused {
-  t.ErrorList e.ReferenceBags
-     = <FindUnusedFunctions
-          t.ErrorList
-          <PrepareBagsForFindUnusedFunctions e.ReferenceBags>
-       >;
-}
-
-PrepareBagsForFindUnusedFunctions {
-  e.ReferenceBags
-    = <MapAccum r05-parser_SelectEntries () e.ReferenceBags>;
-}
-
-$ENTRY r05-parser_SelectEntries {
-  (e.Entries) (t.SrcPos (e.Name) Entry e.References)
-    = (e.Entries (e.Name)) (t.SrcPos (e.Name) Entry e.References);
-
-  (e.Entries) (t.SrcPos (e.Name) s.ScopeEx e.References)
-    = (e.Entries) (t.SrcPos (e.Name) s.ScopeEx e.References);
-}
-
-FindUnusedFunctions {
-  t.ErrorList (e.UsedReferences) /* все функции вызваны */ = t.ErrorList;
-
-  t.ErrorList ((e.NextName) e.UsedReferences)
-  e.Functions-B (t.FunctionPos (e.NextName) s.Scope e.References) e.Functions-E
-    = <FindUnusedFunctions
-        t.ErrorList (e.UsedReferences e.References) e.Functions-B e.Functions-E
-      >;
-
-  t.ErrorList ((e.NextName) e.UsedReferences) e.Functions
-    = <FindUnusedFunctions t.ErrorList (e.UsedReferences) e.Functions>;
-
-  t.ErrorList (/* пусто */) e.UnusedFunctions
-    = <Reduce r05-parser_AddUnusedMessage t.ErrorList e.UnusedFunctions>;
-}
-
-$ENTRY r05-parser_AddUnusedMessage {
-  t.ErrorList (t.Pos (e.Name) s.Scope e.Body)
-    = <AddUnusedMessage t.ErrorList t.Pos s.Scope e.Name>;
 }
 
 AddUnusedMessage {
@@ -446,6 +323,7 @@ AddUnusedMessage {
   t.ErrorList t.Pos Extern e.Name
      = <EL-AddErrorAt t.ErrorList t.Pos 'Unused external declaration ' e.Name>;
 }
+
 
 /*
   <ExtractReferences e.Sentences> == (e.Name)*
