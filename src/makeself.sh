@@ -19,6 +19,10 @@
     echo
   fi
 
+  if [[ "$2" == "and_stop" ]]; then
+    exit
+  fi
+
   source ../c-plus-plus.conf.sh
   export R05CFLAGS="-orefal05c -DR05_SHOW_STAT $R05CFLAGS"
   export R05PATH=../lib

@@ -19,6 +19,8 @@ setlocal
     echo.
   )
 
+  if {%2}=={and_stop} goto :EOF
+
   call ..\c-plus-plus.conf.bat
   set R05CFLAGS=-DR05_SHOW_STAT %R05CFLAGS%
   set R05PATH=..\lib
