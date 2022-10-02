@@ -262,11 +262,8 @@ FindUnused-Loop {
 
   t.ErrorList (((t.CallerPos e.Caller) e.Name) e.References) e.AST
     = <FindUnused-Loop
-        <EL-AddErrorAt
-          t.ErrorList t.CallerPos
-          'Undefined symbol ' e.Name ' in function ' e.Caller
-        >
-        (e.References) e.AST
+        t.ErrorList (e.References)
+        e.AST (Function Used NO-POS (e.Name) Local /* пусто */)
       >;
 
    t.ErrorList (/* кончились ссылки */) e.AST

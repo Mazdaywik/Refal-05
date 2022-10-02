@@ -95,7 +95,7 @@ GenFunction {
 }
 
 DefName {
-  e.Name = <EscapeName e.Name> ', "' e.Name '"';
+  e.Name = <EscapeName e.Name> ', "' <EscapeString e.Name> '"';
 }
 
 /*
@@ -104,11 +104,52 @@ DefName {
   подряд в декорированном имени.
 */
 EscapeName {
-  '_' e.Name = 'u_' <EscapeName e.Name>;
-  '-' e.Name = 'm_' <EscapeName e.Name>;
-  '$' e.Name = 'd_' <EscapeName e.Name>;
-  s.Other e.Name = s.Other <EscapeName e.Name>;
+  e.Name = <EscapeName-GlueCodes <Map r05-generator_EscapeNameChar e.Name>>;
+}
+
+$ENTRY r05-generator_EscapeNameChar {
+  '_' = (e 'u_');
+  '-' = (e 'm-');
+  '$' = (e 'd$');
+
+  s.Other
+    , <Type s.Other>
+    : {
+        'L' s.st_ s.Letter = (c s.Letter);
+        'D' s.st_ s.Digit = (c s.Digit);
+
+        s.t_ s.st_ s.Encoded = (k <EscapeNameChar-Code s.Encoded>);
+      };
+}
+
+EscapeNameChar-Code {
+  s.Char, <Ord s.Char> : s.Code = <Hex </ s.Code 16>> <Hex <% s.Code 16>>;
+}
+
+EscapeName-GlueCodes {
+  (k e.Code1) (k e.Code2) e.Name
+    = <EscapeName-GlueCodes (k e.Code1 e.Code2) e.Name>;
+
+  (k e.Code1) (c s.Char) (k e.Code2) e.Name
+    = <EscapeName-GlueCodes
+        (k e.Code1 <EscapeNameChar-Code s.Char> e.Code2) e.Name
+      >;
+
+  (k e.Code1) (e s.Escape_ s.Char) (k e.Code2) e.Name
+    = <EscapeName-GlueCodes
+        (k e.Code1 <EscapeNameChar-Code s.Char> e.Code2) e.Name
+      >;
+
+  (k e.Code) e.Name = 'k' e.Code '_' <EscapeName-GlueCodes e.Name>;
+  (e s.Escape s.Char_) e.Name = s.Escape '_' <EscapeName-GlueCodes e.Name>;
+  (c s.Char) e.Name = s.Char <EscapeName-GlueCodes e.Name>;
   /* пусто */ = /* пусто */;
+}
+
+Hex {
+  10 = 'A'; 11 = 'B'; 12 = 'C'; 13 = 'D'; 14 = 'E'; 15 = 'F';
+
+  s.Dec = <Symb s.Dec>;
 }
 
 *$ENUM ReturnRecognitionImpossible
