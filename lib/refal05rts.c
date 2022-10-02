@@ -71,15 +71,8 @@ int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
 }
 
 
-static int equal_functions(
-  struct r05_function *left, struct r05_function *right
-) {
-#if 1
-  return strcmp(left->name, right->name) == 0;
-#else
-  return left == right;
-#endif
-}
+#define equal_functions(left, right) \
+  (strcmp((left)->name, (right)->name) == 0)
 
 
 int r05_function_left(
