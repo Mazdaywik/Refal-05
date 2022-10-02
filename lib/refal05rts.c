@@ -71,6 +71,17 @@ int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
 }
 
 
+static int equal_functions(
+  struct r05_function *left, struct r05_function *right
+) {
+#if 1
+  return strcmp(left->name, right->name) == 0;
+#else
+  return left == right;
+#endif
+}
+
+
 int r05_function_left(
   struct r05_function *fn, struct r05_node **first, struct r05_node **last
 ) {
@@ -80,7 +91,7 @@ int r05_function_left(
     return 0;
   } else if ((*first)->tag != R05_DATATAG_FUNCTION) {
     return 0;
-  } else if ((*first)->info.function != fn) {
+  } else if (! equal_functions((*first)->info.function, fn)) {
     return 0;
   } else {
     move_left(first, last);
@@ -98,7 +109,7 @@ int r05_function_right(
     return 0;
   } else if (R05_DATATAG_FUNCTION != (*last)->tag) {
     return 0;
-  } else if ((*last)->info.function != fn) {
+  } else if (! equal_functions((*last)->info.function, fn)) {
     return 0;
   } else {
     move_right(first, last);
@@ -337,7 +348,7 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
         return (node1->info.number == node2->info.number);
 
       case R05_DATATAG_FUNCTION:
-        return (node1->info.function == node2->info.function);
+        return equal_functions(node1->info.function, node2->info.function);
 
       /*
         Сведения о связях между скобками нужны для других целей, здесь
