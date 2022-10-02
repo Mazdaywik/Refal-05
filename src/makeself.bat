@@ -14,8 +14,9 @@ setlocal
     set EXECUTABLE=..\bin\refal05c.exe
   )
 
+  :: В опцию -o нельзя вставлять %EXECUTABLE%, приводит к ошибке.
   if {%1}=={lambda} (
-    call rlmake --debug -o%EXECUTABLE% --ref5rsl refal05c.ref
+    call rlmake --debug -o..\bin\refal05c.exe --ref5rsl refal05c.ref
     echo.
   )
 
