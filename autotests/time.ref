@@ -1,17 +1,24 @@
 $ENTRY Go {
-  = <CheckTime <Time>>
+  = <CheckTime <Print <Time>>>
 }
 
 CheckTime {
-  e.W ' ' e.M ' ' e.D ' ' e.h ':' e.m ':' e.s ' ' e.Y
+  e.Time
+    , <Split e.Time> : (e.W) (e.M) (e.D) (e.h ':' e.m ':' e.s) (e.Y)
     , e.W : s.W1 s.W2 s.W3  /* letters */
     , e.M : s.M1 s.M2 s.M3  /* letters */
     , <Digits e.D> <Digits e.h> <Digits e.m> <Digits e.s> <Digits e.Y>
     : =
 }
 
+Split {
+  ' ' e.Line = <Split e.Line>;
+  e.Field ' ' e.Line = (e.Field) <Split e.Line>;
+  /* empty */ = /* empty */;
+  e.Field = (e.Field);
+}
+
 Digits {
-  ' ' e.Digits, <Digits-Aux e.Digits> : = ;
   e.Digits, <Digits-Aux e.Digits> : = ;
 }
 
