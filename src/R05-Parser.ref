@@ -105,55 +105,114 @@ $ENTRY parser_MakeListFunction {
 
 CheckAST {
   t.ErrorList e.AST
-    = <CheckAST-Aux <FindRedefinitions t.ErrorList e.AST> e.AST>;
+    = <CheckAST-ExternsArePlained t.ErrorList <PlainExterns e.AST>>;
+
+  'xxx' = CheckAST-Aux;
 }
+
+CheckAST-ExternsArePlained {
+  t.ErrorList e.AST
+    = <CheckAST-RedefinitionsAreFound
+        <FindRedefinitions t.ErrorList e.AST>
+      >;
+}
+
+CheckAST-RedefinitionsAreFound {
+  t.ErrorList e.AST
+    = <CheckAST-UnusedsAreFound
+        <FindUnused t.ErrorList e.AST>
+      >;
+}
+
+CheckAST-UnusedsAreFound {
+  t.ErrorList e.AST
+    , <EL-Destroy t.ErrorList>
+    : {
+        /* нет ошибок */ = Success <CastAST e.AST>;
+        e.Errors = Fails e.Errors;
+      };
+}
+
+
+PlainExterns {
+  e.AST
+    = <Map r05-parser_BuiltinExtern <Builtins>>
+      <Map r05-parser_PlainExterns e.AST>;
+}
+
+$ENTRY r05-parser_BuiltinExtern {
+  (e.Builtin) = (Function NO-POS (e.Builtin) Extern /* пусто */);
+}
+
+$ENTRY r05-parser_PlainExterns {
+  (Extern e.Names) = <Map r05-parser_PlainExterns-Name e.Names>;
+
+  (Function t.Pos (e.Name) s.Scope e.Body)
+    = (Function t.Pos (e.Name) s.Scope e.Body);
+
+  (SpecialComment t.Pos e.Text) = (SpecialComment t.Pos e.Text);
+}
+
+$ENTRY r05-parser_PlainExterns-Name {
+  (t.Pos e.Name) = (Function t.Pos (e.Name) Extern /* пусто */);
+}
+
+
 
 FindRedefinitions {
   t.ErrorList e.AST
-    = <Reduce
-        r05-parser_FindRedefinitions-Item
-        (t.ErrorList /* items */)
-        e.AST
+    = <FindRedefinitions-Aux
+        <Reduce
+          r05-parser_FindRedefinitions-Item
+          (t.ErrorList /* items */)
+          e.AST
+        >
       >;
 }
 
+FindRedefinitions-Aux {
+  (t.ErrorList e.AST) = t.ErrorList e.AST;
+}
+
 $ENTRY r05-parser_FindRedefinitions-Item {
-  (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.Scope e.Body) e.Items-E)
-  (Extern (t.Pos e.Name) e.Names)
-    = <r05-parser_FindRedefinitions-Item
-        (
-          <AddRedudand t.ErrorList t.Pos Extern e.Name>
-          e.Items-B (t.KnownPos (e.Name) s.Scope e.Body) e.Items-E
-        )
-        (Extern e.Names)
-      >;
-
-  (t.ErrorList e.Items) (Extern (t.Pos e.Name) e.Names)
-    = <r05-parser_FindRedefinitions-Item
-        (t.ErrorList e.Items (t.Pos (e.Name) Extern /* пусто */))
-        (Extern e.Names)
-      >;
-
-  (t.ErrorList e.Items) (Extern /* пусто */) = (t.ErrorList e.Items);
-
-  (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.KnownScope /* пусто */) e.Items-E)
-  (Function t.Pos (e.Name) s.Scope e.Body)
+  (
+    t.ErrorList
+    e.Items-B
+    (Function NO-POS (e.Name) Extern /* пусто */)  /* встроенная */
+    e.Items-E
+  )
+  (Function t.NewPos (e.Name) s.NewScope e.NewBody)
     = (
-        <AddRedudand t.ErrorList t.KnownPos s.KnownScope e.Name>
-        e.Items-B e.Items-E (t.Pos (e.Name) s.Scope <ExtractReferences e.Body>)
+        t.ErrorList
+/*
+        <AddRedudand t.ErrorList t.NewPos s.NewScope e.Name>
+*/
+        e.Items-B
+        (Function NO-POS (e.Name) Extern /* пусто */)
+        e.Items-E
       );
 
-  (t.ErrorList e.Items-B (t.KnownPos (e.Name) s.KnownScope e.Body) e.Items-E)
-  (Function t.Pos (e.Name) s.Scope /* пусто */)
+  (
+    t.ErrorList
+    e.Items-B (Function t.OldPos (e.Name) s.OldScope e.OldBody) e.Items-E
+  )
+  (Function t.NewPos (e.Name) s.NewScope /* пусто */)
     = (
-        <AddRedudand t.ErrorList t.Pos s.Scope e.Name>
-        e.Items-B (t.KnownPos (e.Name) s.KnownScope e.Body) e.Items-E
+        <AddRedudand t.ErrorList t.NewPos s.NewScope e.Name>
+        e.Items-B (Function t.OldPos (e.Name) s.OldScope e.OldBody) e.Items-E
       );
 
-  (t.ErrorList e.Items) (Function t.Pos (e.Name) s.Scope e.Body)
-    = (t.ErrorList e.Items (t.Pos (e.Name) s.Scope <ExtractReferences e.Body>));
+  (
+    t.ErrorList
+    e.Items-B (Function t.OldPos (e.Name) s.OldScope /* пусто */) e.Items-E
+  )
+  (Function t.NewPos (e.Name) s.NewScope e.NewBody)
+    = (
+        <AddRedudand t.ErrorList t.OldPos s.OldScope e.Name>
+        e.Items-B e.Items-E (Function t.NewPos (e.Name) s.NewScope e.NewBody)
+      );
 
-  (t.ErrorList e.Items) (SpecialComment t.Pos e.Text) = (t.ErrorList e.Items);
+  (t.ErrorList e.Items) t.Item = (t.ErrorList e.Items t.Item);
 }
 
 AddRedudand {
@@ -166,6 +225,92 @@ AddRedudand {
         'Empty function ' e.Name ' redefines other function'
       >;
 }
+
+
+FindUnused {
+  t.ErrorList e.AST
+    = <FindUnused-Loop
+        t.ErrorList
+        <MapAccum r05-parser_FindUnused-InitialUsage () e.AST>
+      >;
+}
+
+$ENTRY r05-parser_FindUnused-InitialUsage {
+  (e.Entries) (Function t.Pos (e.Name) Entry e.Body)
+    = (e.Entries (EntryCaller e.Name))
+      (Function Unused t.Pos (e.Name) Entry e.Body);
+
+  (e.Entries) (Function t.Pos (e.Name) s.Scope e.Body)
+    = (e.Entries) (Function Unused t.Pos (e.Name) s.Scope e.Body);
+
+  (e.Entries) (SpecialComment t.Pos e.Comment)
+    = (e.Entries) (SpecialComment t.Pos e.Comment);
+}
+
+*$ENUM EntryCaller Used Unused
+
+FindUnused-Loop {
+  t.ErrorList ((t.Caller e.Name) e.References)
+  e.AST-B (Function Unused t.Pos (e.Name) s.Scope e.Body) e.AST-E
+    = <FindUnused-Loop
+        t.ErrorList
+        (e.References <AddCaller t.Pos (e.Name) <ExtractReferences e.Body>>)
+        e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
+      >;
+
+  t.ErrorList ((t.Caller e.Name) e.References)
+  e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
+    = <FindUnused-Loop
+        t.ErrorList (e.References)
+        e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
+      >;
+
+  t.ErrorList (((t.CallerPos e.Caller) e.Name) e.References) e.AST
+    = <FindUnused-Loop
+        <EL-AddErrorAt
+          t.ErrorList t.CallerPos
+          'Undefined symbol ' e.Name ' in function ' e.Caller
+        >
+        (e.References) e.AST
+      >;
+
+   t.ErrorList (/* кончились ссылки */) e.AST
+     = <MapAccum r05-parser_FindUnused-Loop-UnusedErrors t.ErrorList e.AST>;
+}
+
+AddCaller {
+  t.CallerPos (e.Caller) e.Callees
+    = <Map (r05-parser_PlainBags-Reference t.CallerPos (e.Caller)) e.Callees>;
+}
+
+$ENTRY r05-parser_FindUnused-Loop-UnusedErrors {
+  t.ErrorList (Function Unused t.Pos (e.Name) s.Scope e.Body)
+    = <AddUnusedMessage t.ErrorList t.Pos s.Scope e.Name>;
+
+  t.ErrorList t.Other = t.ErrorList t.Other;
+}
+
+
+CastAST {
+  e.AST = <CastAST-JoinExterns <Map r05-parser_CastAST-Item e.AST>>;
+}
+
+$ENTRY r05-parser_CastAST-Item {
+  (Function Used t.Pos (e.Name) Extern /* пусто */) = (Extern (t.Pos e.Name));
+
+  (Function Used t.Pos (e.Name) s.Scope e.Body)
+    = (Function t.Pos (e.Name) s.Scope e.Body);
+
+  (SpecialComment t.Pos e.Comment) = (SpecialComment t.Pos e.Comment);
+}
+
+CastAST-JoinExterns {
+  e.AST-B (Extern e.Externs1) (Extern e.Externs2) e.AST-E
+    = e.AST-B <CastAST-JoinExterns (Extern e.Externs1 e.Externs2) e.AST-E>;
+
+  e.AST = e.AST;
+}
+
 
 CheckAST-Aux {
   (t.ErrorList e.References) e.AST
@@ -293,6 +438,8 @@ $ENTRY r05-parser_AddUnusedMessage {
 }
 
 AddUnusedMessage {
+  t.ErrorList NO-POS Extern e.Name = t.ErrorList;  /* встроенная */
+
   t.ErrorList t.Pos Local e.Name
      = <EL-AddErrorAt t.ErrorList t.Pos 'Unused local function ' e.Name>;
 
