@@ -15,9 +15,8 @@ setlocal
   )
 
   if {%1}=={lambda} (
-    call srmake -o..\bin\refal05c.exe refal05c.ref
+    call rlmake --debug -o%EXECUTABLE% --ref5rsl refal05c.ref
     echo.
-    erase *.rasl
   )
 
   call ..\c-plus-plus.conf.bat
