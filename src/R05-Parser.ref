@@ -181,10 +181,7 @@ $ENTRY r05-parser_FindRedefinitions-Item {
   )
   (Function t.NewPos (e.Name) s.NewScope e.NewBody)
     = (
-        t.ErrorList
-/*
         <AddRedudand t.ErrorList t.NewPos s.NewScope e.Name>
-*/
         e.Items-B
         (Function NO-POS (e.Name) Extern /* пусто */)
         e.Items-E
