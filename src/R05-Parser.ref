@@ -1,8 +1,8 @@
 *$FROM LibraryEx
-$EXTERN MapAccum, OneOf, Map, Reduce, Unique;
+$EXTERN MapAccum, Map, Reduce, Unique;
 
 *$FROM R5FW-Parser
-$EXTERN ScanString-FromPos, Parse, Scan, TokName;
+$EXTERN Parse, Scan;
 
 *$FROM R5FW-Parser-Defs
 $EXTERN Builtins;
@@ -12,96 +12,10 @@ $EXTERN Builtins;
   <R05-PrepareAST e.AST>
     == Success e.R05-AST
     == Fails e.Errors
-
-  Function expands specific pseudocomments, checks specific errors
-  and transform to basic Refal
 */
 $ENTRY R05-PrepareAST {
-  e.AST = <CheckAST <ExpandComments e.AST>>;
+  e.AST = <CheckAST <EL-Create> e.AST>;
 }
-
-ExpandComments {
-  e.AST = <MapAccum r05-parser_ExpandComment <EL-Create> e.AST>;
-}
-
-$ENTRY r05-parser_ExpandComment {
-  t.ErrorList (SpecialComment t.SrcPos '*$' e.KeyWord s.Space e.Rest)
-    , <IsKeyWord e.KeyWord> : s.Scope
-    , <IsSpace s.Space> : True
-    = <ParseSpecialComment
-        s.Scope
-        <WarningSpecComment t.SrcPos e.KeyWord (s.Space e.Rest)>
-        <ScanString-FromPos t.SrcPos <Spaces '*$' e.KeyWord> e.Rest>
-        t.ErrorList
-      >;
-
-  t.ErrorList t.OtherNode = t.ErrorList t.OtherNode;
-}
-
-WarningSpecComment {
-  (s.Line s.Col e.FileName) e.KeyWord (e.Rest)
-    = <Prout
-        e.FileName ':' <Symb s.Line> ':' <Symb s.Col> ':'
-        'WARNING: Special comment *$' e.KeyWord
-      >
-      <Prout e.KeyWord  e.Rest>
-}
-
-IsKeyWord {
-  'ENUM' = Local;
-  'EENUM' = Entry;
-  'EXTRN' = Extern;
-  'EXTERN' = Extern;
-  'EXTERNAL' = Extern;
-
-  e.Other = /* пусто */;
-}
-
-IsSpace { ' ' = True; '\t' = True; s.Other = False }
-
-Spaces {
-  s.Char e.String = ' ' <Spaces e.String>;
-  /* пусто */ = /* пусто */
-}
-
-/*
-  Для простоты разбора синтаксис ослаблен — запятые и точки с запятой
-  игнорируются:
-
-  NameList = (Name | "," | ";")*.
-*/
-ParseSpecialComment {
-  s.Scope e.Tokens t.ErrorList
-    = <DoParseSpecialComment s.Scope (/* names */) e.Tokens t.ErrorList>;
-}
-
-DoParseSpecialComment {
-  s.Scope (e.Names) (TkName t.Pos e.Name) e.Tokens t.ErrorList
-    = <DoParseSpecialComment
-        s.Scope (e.Names (t.Pos e.Name)) e.Tokens t.ErrorList
-      >;
-
-  s.Scope (e.Names) (s.Sep t.Pos) e.Tokens t.ErrorList
-    , <OneOf s.Sep TkComma TkSemicolon> : True
-    = <DoParseSpecialComment s.Scope (e.Names) e.Tokens t.ErrorList>;
-
-  Extern (e.Names) (TkEOF t.Pos) t.ErrorList = t.ErrorList (Extern e.Names);
-
-  s.Scope (e.Names) (TkEOF t.Pos) t.ErrorList
-    = t.ErrorList <Map (parser_MakeListFunction s.Scope) e.Names>;
-
-  s.Scope (e.Names) t.Unexpected e.Tokens t.ErrorList
-    = <DoParseSpecialComment
-        s.Scope (e.Names) e.Tokens
-        <EL-AddUnexpected t.ErrorList t.Unexpected 'comma or name'>
-      >;
-}
-
-$ENTRY parser_MakeListFunction {
-  s.ScopeClass (t.SrcPos e.Name) =
-    (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */);
-}
-
 
 CheckAST {
   t.ErrorList e.AST
@@ -154,7 +68,6 @@ $ENTRY r05-parser_PlainExterns {
 $ENTRY r05-parser_PlainExterns-Name {
   (t.Pos e.Name) = (Function t.Pos (e.Name) Extern /* пусто */);
 }
-
 
 
 FindRedefinitions {
@@ -423,19 +336,6 @@ EL-Create {
 EL-AddErrorAt {
   (ErrorList e.Errors) t.SrcPos e.Message =
     (ErrorList e.Errors (t.SrcPos e.Message));
-}
-
-EL-AddUnexpected {
-  t.ErrorList (TkError t.SrcPos e.Message) e.Expected =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos e.Message
-    >;
-
-  t.ErrorList (s.Unexpected t.SrcPos e.Info) e.Expected =
-    <EL-AddErrorAt
-      t.ErrorList t.SrcPos
-      'Unexpected ' <TokName s.Unexpected> ', expected ' e.Expected
-    >;
 }
 
 EL-Destroy {
