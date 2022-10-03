@@ -702,17 +702,6 @@ GenResult {
 
 *$ENUM TkString, TkCloseBracket, TkCloseCall
 
-DesugarName {
-  '%' = 'Mod';
-  '*' = 'Mul';
-  '+' = 'Add';
-  '-' = 'Sub';
-  '/' = 'Div';
-  '?' = 'Residue';
-
-  e.Name = e.Name;
-}
-
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
@@ -775,7 +764,7 @@ DoGenResult {
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
       (e.Commands)
-      <Inc s.Counter> (Symbol Word <DesugarName e.Name>)
+      <Inc s.Counter> (Symbol Word e.Name)
       e.InBrackets (TkCloseCall s.Counter) e.Result
     >;
 

@@ -353,20 +353,9 @@ $ENTRY r05-parser_ExtractReferences-Term {
   (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
 
   (Call t.SrcPos (e.Name) e.Expr)
-    = (<DesugarName e.Name>) <ExtractReferences-Expr e.Expr>;
+    = (e.Name) <ExtractReferences-Expr e.Expr>;
 
   t.Other = /* пусто */;
-}
-
-DesugarName {
-  '%' = 'Mod';
-  '*' = 'Mul';
-  '+' = 'Add';
-  '-' = 'Sub';
-  '/' = 'Div';
-  '?' = 'Residue';
-
-  e.Name = e.Name;
 }
 
 /**
