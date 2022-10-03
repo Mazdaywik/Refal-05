@@ -85,6 +85,7 @@ FindRedefinitions-Aux {
   (t.ErrorList e.AST) = t.ErrorList e.AST;
 }
 
+* TODO: при реализации Mazdaywik/refal-5-framework#9 упростить логику здесь!!!
 $ENTRY r05-parser_FindRedefinitions-Item {
   (
     t.ErrorList
@@ -126,12 +127,6 @@ $ENTRY r05-parser_FindRedefinitions-Item {
 AddRedudand {
   t.ErrorList t.SrcPos Extern e.Name
     = <EL-AddErrorAt t.ErrorList t.SrcPos 'Redudand external name ' e.Name>;
-
-  t.ErrorList t.SrcPos s.Scope e.Name
-    = <EL-AddErrorAt
-        t.ErrorList t.SrcPos
-        'Empty function ' e.Name ' redefines other function'
-      >;
 }
 
 
@@ -145,7 +140,7 @@ FindUnused {
 
 $ENTRY r05-parser_FindUnused-InitialUsage {
   (e.Entries) (Function t.Pos (e.Name) Entry e.Body)
-    = (e.Entries (EntryCaller e.Name))
+    = (e.Entries (e.Name))
       (Function Unused t.Pos (e.Name) Entry e.Body);
 
   (e.Entries) (Function t.Pos (e.Name) s.Scope e.Body)
@@ -156,22 +151,22 @@ $ENTRY r05-parser_FindUnused-InitialUsage {
 }
 
 FindUnused-Loop {
-  t.ErrorList ((t.Caller e.Name) e.References)
+  t.ErrorList ((e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
         t.ErrorList
-        (e.References <AddCaller t.Pos (e.Name) <ExtractReferences e.Body>>)
+        (e.References <ExtractReferences e.Body>)
         e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  t.ErrorList ((t.Caller e.Name) e.References)
+  t.ErrorList ((e.Name) e.References)
   e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
         t.ErrorList (e.References)
         e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  t.ErrorList (((t.CallerPos e.Caller) e.Name) e.References) e.AST
+  t.ErrorList ((e.Name) e.References) e.AST
     = <FindUnused-Loop
         t.ErrorList (e.References)
         e.AST (Function Used NO-POS (e.Name) Local /* пусто */)
@@ -179,11 +174,6 @@ FindUnused-Loop {
 
    t.ErrorList (/* кончились ссылки */) e.AST
      = <MapAccum r05-parser_FindUnused-Loop-UnusedErrors t.ErrorList e.AST>;
-}
-
-AddCaller {
-  t.CallerPos (e.Caller) e.Callees
-    = <Map (r05-parser_PlainBags-Reference t.CallerPos (e.Caller)) e.Callees>;
 }
 
 $ENTRY r05-parser_FindUnused-Loop-UnusedErrors {
@@ -212,11 +202,6 @@ CastAST-JoinExterns {
     = e.AST-B <CastAST-JoinExterns (Extern e.Externs1 e.Externs2) e.AST-E>;
 
   e.AST = e.AST;
-}
-
-
-$ENTRY r05-parser_PlainBags-Reference {
-  t.SrcPos (e.FuncName) (e.Reference) = ((t.SrcPos e.FuncName) e.Reference);
 }
 
 AddUnusedMessage {
