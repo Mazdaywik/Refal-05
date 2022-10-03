@@ -1,16 +1,9 @@
 *$FROM LibraryEx
 $EXTERN Trim, Map;
 
-*$FROM Library
-$EXTERN True, False;
-
 *$FROM Platform
 $EXTERN PathSeparator, IsDirectorySeparator;
 
-
-*$EENUM Source, Output, NotFound
-
-*$ENUM Current
 
 /**
   <R05-LoadPath> == e.Folders

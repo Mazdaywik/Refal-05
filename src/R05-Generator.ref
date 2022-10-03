@@ -1,7 +1,3 @@
-*$FROM R5FW-Parser-Defs
-$EXTERN Extern, Entry, Function, SpecialComment, Local, Variable, RETURN, Symbol,
-  Brackets, Char, Number, Word, Call;
-
 *$FROM LibraryEx
 $EXTERN SaveFile, MapAccum, Map, Dec, Inc;
 

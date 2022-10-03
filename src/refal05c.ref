@@ -1,8 +1,8 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map, Success, Fails;
+$EXTERN ArgList, LoadFile, Map;
 
 *$FROM R05-CompilerUtils
-$EXTERN R05-FindFiles-Default, NotFound, Output, Source, R05-CCompile;
+$EXTERN R05-FindFiles-Default, R05-CCompile;
 
 *$FROM R05-Parser
 $EXTERN R05-Parse-File;

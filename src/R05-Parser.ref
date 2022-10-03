@@ -1,21 +1,11 @@
 *$FROM LibraryEx
 $EXTERN MapAccum, OneOf, Map, Reduce, Unique;
-*$EXTERN Success, Fails
 
 *$FROM R5FW-Parser
 $EXTERN ScanString-FromPos, Parse, Scan, TokName;
 
 *$FROM R5FW-Parser-Defs
 $EXTERN Builtins;
-*$EXTERN SpecialComment, Local, Entry, Extern, TkName, TkComma, TkSemicolon
-*$EXTERN TkEOF, Function, Condition, RETURN, CALL-BLOCK, Symbol, Word
-*$EXTERN Brackets, Call, TkError
-
-*$FROM Library
-*$EXTERN True, False
-
-*$FROM R5FW-Transformer
-*$EXTERN NO-POS
 
 
 /**
