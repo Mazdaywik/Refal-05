@@ -30,11 +30,21 @@ $ENTRY r05-parser_ExpandComment {
     , <IsSpace s.Space> : True
     = <ParseSpecialComment
         s.Scope
+        <WarningSpecComment t.SrcPos e.KeyWord (s.Space e.Rest)>
         <ScanString-FromPos t.SrcPos <Spaces '*$' e.KeyWord> e.Rest>
         t.ErrorList
       >;
 
   t.ErrorList t.OtherNode = t.ErrorList t.OtherNode;
+}
+
+WarningSpecComment {
+  (s.Line s.Col e.FileName) e.KeyWord (e.Rest)
+    = <Prout
+        e.FileName ':' <Symb s.Line> ':' <Symb s.Col> ':'
+        'WARNING: Special comment *$' e.KeyWord
+      >
+      <Prout e.KeyWord  e.Rest>
 }
 
 IsKeyWord {
