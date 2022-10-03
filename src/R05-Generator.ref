@@ -148,8 +148,6 @@ Hex {
   s.Dec = <Symb s.Dec>;
 }
 
-*$ENUM ReturnRecognitionImpossible
-
 AddFailCommand {
   /*
     если последнее предложение имеет вид
@@ -479,9 +477,6 @@ CompileSentence-Aux {
 * Генерация образца
 *===============================================================================
 
-* Направление распознавания
-*$ENUM AlgLeft, AlgRight
-
 /*
 Команды распознавания
   Символы, скобки, повторные переменные и s-, t-переменные:
@@ -516,9 +511,6 @@ CompileSentence-Aux {
   Комментарий, вносимый в исходный код:
     (CmdComment e.Text)
 */
-*$ENUM Repeated
-
-*$ENUM CmdOpenedE
 
 GenPattern {
   e.Pattern =
@@ -695,8 +687,6 @@ GenResult {
   2. Связывание крулых и угловых скобок и
   построение результата (в обратном порядке)
 */
-
-*$ENUM TkString, TkCloseBracket, TkCloseCall
 
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */

@@ -242,8 +242,6 @@ $ENTRY r05-parser_FindUnused-InitialUsage {
     = (e.Entries) (SpecialComment t.Pos e.Comment);
 }
 
-*$ENUM EntryCaller Used Unused
-
 FindUnused-Loop {
   t.ErrorList ((t.Caller e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) s.Scope e.Body) e.AST-E
@@ -417,8 +415,6 @@ CompareError {
     <Compare s.Row1 s.Row2>;
 }
 
-
-*$ENUM ErrorList
 
 EL-Create {
   e.Errors = (ErrorList e.Errors);

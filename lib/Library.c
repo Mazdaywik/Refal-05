@@ -464,12 +464,6 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
         |  r  |  w  |  a
         |  rb |  wb |  ab
 */
-R05_DEFINE_ENTRY_ENUM(r, "r")
-R05_DEFINE_ENTRY_ENUM(w, "w")
-R05_DEFINE_ENTRY_ENUM(a, "a")
-R05_DEFINE_ENTRY_ENUM(rb, "rb")
-R05_DEFINE_ENTRY_ENUM(wb, "wb")
-R05_DEFINE_ENTRY_ENUM(ab, "ab")
 
 static void ensure_close_stream(unsigned int file_no);
 

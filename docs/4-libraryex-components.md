@@ -51,8 +51,6 @@ makeTOC.localizedHide = "Скрыть";
 
 ### Функции `R05-FindFiles-Default` и `R05-FindFiles`
 
-    *$EENUM Source, Output, NotFound
-
     <R05-FindFiles-Default e.Files> == t.FoundFile*
     <R05-FindFiles (e.Folders) e.Files> == t.FoundFile*
 
