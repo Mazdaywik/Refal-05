@@ -29,17 +29,36 @@ DEFINE_ALIAS(k2F_, "/", Div);
 DEFINE_ALIAS(k3F_, "?", Residue);
 
 
+static struct r05_function *arithmetic_names[] = {
+  &r05f_k25_, &r05f_k2A_, &r05f_k2B_, &r05f_m_, &r05f_k2F_, &r05f_k3F_, NULL
+};
+
+
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
 R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   struct r05_node *mu = arg_begin->next;
   struct r05_node *callable = mu->next;
-  if (callable->tag != R05_DATATAG_FUNCTION) {
+
+  if (R05_DATATAG_FUNCTION == callable->tag) {
+    r05_splice_to_freelist(mu, mu);
+  } else if (R05_DATATAG_CHAR == callable->tag) {
+    struct r05_function **alias = arithmetic_names;
+    while (*alias != NULL && (*alias)->name[0] != callable->info.char_) {
+      ++alias;
+    }
+
+    if (*alias != NULL) {
+      mu->info.function = *alias;
+      r05_splice_to_freelist(callable, callable);
+    } else {
+      r05_recognition_impossible();
+    }
+  } else {
     r05_recognition_impossible();
   }
 
-  r05_splice_to_freelist(mu, mu);
   r05_push_stack(arg_end);
   r05_push_stack(arg_begin);
 }
