@@ -14,6 +14,21 @@
 #include "refal05rts.h"
 
 
+#define DEFINE_ALIAS(name, rep, origin) \
+  static void r05c_ ## origin( \
+    struct r05_node *arg_begin, struct r05_node *arg_end \
+  ); \
+  struct r05_function r05f_ ## name = { r05c_ ## origin, rep };
+
+
+DEFINE_ALIAS(k25_, "%", Mod);
+DEFINE_ALIAS(k2A_, "*", Mul);
+DEFINE_ALIAS(k2B_, "+", Add);
+DEFINE_ALIAS(m_, "-", Sub);
+DEFINE_ALIAS(k2F_, "/", Div);
+DEFINE_ALIAS(k3F_, "?", Residue);
+
+
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
@@ -853,6 +868,14 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 
 
 /**
+   50. <Residue s.Func e.Arg> == <s.Func e.Arg>
+*/
+R05_DEFINE_ENTRY_FUNCTION(Residue, "Residue") {
+  r05c_Mu(arg_begin, arg_end);
+}
+
+
+/**
   51. <GetEnv e.EnvName> == e.EnvValue
       e.EnvName, e.EnvValue ::= s.CHAR*
 */
@@ -1339,7 +1362,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(47, Dn, regular) */
   /* ALLOC_BUILTIN(48, Up, special) */
   /* ALLOC_BUILTIN(49, Ev_met, special) */
-  /* ALLOC_BUILTIN(50, Residue, special) */
+  ALLOC_BUILTIN(50, Residue, special)
   ALLOC_BUILTIN(51, GetEnv, regular)
   ALLOC_BUILTIN(52, System, regular)
   ALLOC_BUILTIN(53, Exit, regular)
