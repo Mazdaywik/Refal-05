@@ -31,7 +31,7 @@ DEFINE_ALIAS(k3F_, "?", Residue);
 #define is_ident_tail(c) (isalpha(c) || isdigit(c) || (c) == '_' || (c) == '-')
 
 
-static struct r05_function *arithmetic_names[] = {
+static struct r05_function *s_arithmetic_names[] = {
   &r05f_k25_, &r05f_k2A_, &r05f_k2B_, &r05f_m_, &r05f_k2F_, &r05f_k3F_, NULL
 };
 
@@ -55,7 +55,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
   if (R05_DATATAG_FUNCTION == callable->tag) {
     r05_splice_to_freelist(mu, mu);
   } else if (R05_DATATAG_CHAR == callable->tag) {
-    struct r05_function **alias = arithmetic_names;
+    struct r05_function **alias = s_arithmetic_names;
     while (*alias != NULL && (*alias)->name[0] != callable->info.char_) {
       ++alias;
     }
@@ -1319,7 +1319,7 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
 
 
 /**
-  12. <Explode_Ext s.FUNCTION> == s.CHAR+
+  59. <Explode_Ext s.FUNCTION> == s.CHAR+
 */
 struct r05_function r05f_Explodeu_Ext = { r05c_Explode, "Explode_Ext" };
 
