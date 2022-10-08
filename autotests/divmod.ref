@@ -1,0 +1,5 @@
+$ENTRY Go {
+  = <Eq (<Divmod 100 31>) (3) 7>
+}
+
+Eq { (e.X) e.X = /* ok */ }

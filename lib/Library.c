@@ -245,6 +245,27 @@ R05_DEFINE_ENTRY_FUNCTION(Div, "Div") {
 
 
 /**
+  11. <Divmod s.NUMBER s.NUMBER> == (s.NUMBER) s.NUMBER
+*/
+R05_DEFINE_ENTRY_FUNCTION(Divmod, "Divmod") {
+  r05_number div, mod;
+  ARITHM_PREFIX;
+  CHECK_ZERODIV;
+
+  div = sX->info.number / sY->info.number;
+  mod = sX->info.number % sY->info.number;
+
+  arg_begin->tag = R05_DATATAG_OPEN_BRACKET;
+  func_name->tag = R05_DATATAG_NUMBER;
+  func_name->info.number = div;
+  sX->tag = R05_DATATAG_CLOSE_BRACKET;
+  sY->info.number = mod;
+  r05_link_brackets(arg_begin, sX);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+
+
+/**
   12. <Explode s.FUNCTION> == s.CHAR+
 */
 R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
@@ -1508,7 +1529,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(8, Dg, regular)
   /* ALLOC_BUILTIN(9, Dgall, regular) */
   ALLOC_BUILTIN(10, Div, regular)
-  /* ALLOC_BUILTIN(11, Divmod, regular) */
+  ALLOC_BUILTIN(11, Divmod, regular)
   ALLOC_BUILTIN(12, Explode, regular)
   ALLOC_BUILTIN(13, First, regular)
   ALLOC_BUILTIN(14, Get, regular)
