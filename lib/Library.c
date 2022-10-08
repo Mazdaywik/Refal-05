@@ -1325,6 +1325,34 @@ struct r05_function r05f_Explodeu_Ext = { r05c_Explode, "Explode_Ext" };
 
 
 /**
+  60. <TimeElapsed 0?> == s.CHAR+
+*/
+R05_DEFINE_ENTRY_FUNCTION(TimeElapsed, "TimeElapsed") {
+  struct r05_node *func_name = arg_begin->next;
+  struct r05_node *maybe_zero = func_name->next;
+  double now = r05_time_elapsed();
+  char buffer[100];
+  static double last_cutoff = 0;
+
+  sprintf(buffer, "%.3f", now - last_cutoff);
+
+  if (
+    R05_DATATAG_NUMBER == maybe_zero->tag && 0 == maybe_zero->info.number
+    && maybe_zero->next == arg_end
+  ) {
+    last_cutoff = now;
+  } else if (maybe_zero != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  r05_reset_allocator();
+  r05_alloc_string(buffer);
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+
+
+/**
   61. <Compare s.X s.Y>
         == '-' | '0' | '+'
       s.X, s.Y ::= s.NUMBER
@@ -1572,7 +1600,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(57, RemoveFile, regular)
   /* ALLOC_BUILTIN(58, Implode_Ext, regular) */
   ALLOC_BUILTIN(59, Explodeu_Ext, regular)
-  /* ALLOC_BUILTIN(60, TimeElapsed, regular) */
+  ALLOC_BUILTIN(60, TimeElapsed, regular)
   ALLOC_BUILTIN(61, Compare, regular)
   /* ALLOC_BUILTIN(62, DeSysfun, regular) */
   /* ALLOC_BUILTIN(63, XMLParse, regular) */

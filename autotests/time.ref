@@ -1,5 +1,8 @@
 $ENTRY Go {
   = <CheckTime <Print <Time>>>
+    <CheckTimeElapsed <Print <TimeElapsed>>>
+    <CheckTimeElapsed <Print <TimeElapsed 0>>>
+    <CheckTimeElapsed <Print <TimeElapsed>>>
 }
 
 CheckTime {
@@ -29,4 +32,8 @@ Digits-Aux {
 
 Digit {
   s.Char, '0123456789' : e.B s.Char e.E = ;
+}
+
+CheckTimeElapsed {
+  e.Whole '.' e.Frac = <Digits e.Whole> <Digits e.Frac>
 }
