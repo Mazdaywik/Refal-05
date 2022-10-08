@@ -489,6 +489,7 @@ static struct r05_function *implode(
   struct r05_node *begin, struct r05_node *end
 ) {
   struct builtin_info *info;
+  struct r05_function **alias;
   struct r05_node *node, *limit = end->next;
   size_t len, hash, i;
   struct imploded **bucket, *known, *new;
@@ -496,6 +497,12 @@ static struct r05_function *implode(
   for (info = s_builtin_info; info->function != 0; ++info) {
     if (chain_str_eq(begin, end, info->function->name)) {
       return info->function;
+    }
+  }
+
+  for (alias = s_arithmetic_names; *alias != NULL; ++alias) {
+    if (chain_str_eq(begin, end, (*alias)->name)) {
+      return *alias;
     }
   }
 
@@ -1319,6 +1326,28 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
 
 
 /**
+  58. <Implode_Ext s.CHAR*> == s.FUNCTION
+*/
+R05_DEFINE_ENTRY_FUNCTION(Implodeu_Ext, "Implode_Ext") {
+  struct r05_node *func_name = arg_begin->next;
+  struct r05_node *current;
+
+  current = func_name->next;
+  while (R05_DATATAG_CHAR == current->tag) {
+    current = current->next;
+  }
+
+  if (current != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  arg_begin->tag = R05_DATATAG_FUNCTION;
+  arg_begin->info.function = implode(func_name->next, arg_end->prev);
+  r05_splice_to_freelist(func_name, arg_end);
+}
+
+
+/**
   59. <Explode_Ext s.FUNCTION> == s.CHAR+
 */
 struct r05_function r05f_Explodeu_Ext = { r05c_Explode, "Explode_Ext" };
@@ -1598,7 +1627,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(55, ExistFile, regular)
   /* ALLOC_BUILTIN(56, GetCurrentDirectory, regular) */
   ALLOC_BUILTIN(57, RemoveFile, regular)
-  /* ALLOC_BUILTIN(58, Implode_Ext, regular) */
+  ALLOC_BUILTIN(58, Implodeu_Ext, regular)
   ALLOC_BUILTIN(59, Explodeu_Ext, regular)
   ALLOC_BUILTIN(60, TimeElapsed, regular)
   ALLOC_BUILTIN(61, Compare, regular)

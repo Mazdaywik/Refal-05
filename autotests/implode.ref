@@ -3,6 +3,9 @@ $ENTRY Go {
     = <Eq (<Implode 'Ab-cd_ef$gh123!@#$%'>) "Ab-cd_ef$gh123" '!@#$%'>
       <Eq (<Implode '!@#$%^'>) 0 '!@#$%^'>
       <Eq (<Mu <Implode 'Add' 12 34>>) 46>
+      <Eq (<Implode_Ext '!@#$%^'>) "!@#$%^">
+*      <Eq (<Implode_Ext>) "">
+      <Eq (<Mu <Implode_Ext '+'> 12 34>) 46>
 }
 
 Eq { (e.Eq) e.Eq = }
