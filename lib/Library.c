@@ -383,6 +383,161 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
 
 
 /**
+  15. <Implode e.ValidPrefix e.Suffix> == s.FUNCTION e.Suffix
+      <Implode e.Suffix> == 0 e.Suffix
+
+  e.ValidPrefix ::= s.Lettern { s.Letter | s.Digit | '_' | '-' | '$' }
+  s.Letter ::= 'A' | … | 'Z' | 'a' | … | 'z'
+  s.Digit ::= '0' | … | '9'
+*/
+static struct r05_function *implode(
+  struct r05_node *begin, struct r05_node *end
+);
+
+
+R05_DEFINE_ENTRY_FUNCTION(Implode, "Implode") {
+  struct r05_node *sFunc, *sBegin, *sEnd;
+
+  sFunc = arg_begin->next;
+  sBegin = sFunc->next;
+
+  if (sBegin->tag != R05_DATATAG_CHAR || ! isalpha(sBegin->info.char_)) {
+    sFunc->tag = R05_DATATAG_NUMBER;
+    sFunc->info.number = 0;
+  } else {
+    sEnd = sBegin->next;
+
+#define is_implode_tail(c) (is_ident_tail(c) || (c) == '$')
+    while (sEnd->tag == R05_DATATAG_CHAR && is_implode_tail(sEnd->info.char_)) {
+      sEnd = sEnd->next;
+    }
+#undef is_implode_tail
+
+    sEnd = sEnd->prev;
+    sFunc->info.function = implode(sBegin, sEnd);
+    r05_splice_to_freelist(sBegin, sEnd);
+  }
+
+  r05_splice_to_freelist(arg_begin, arg_begin);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+
+
+static int chain_str_eq(
+  struct r05_node *begin, struct r05_node *end, const char *name
+) {
+  struct r05_node *node = begin, *limit = end->next;
+  const char *pc = name;
+  while (node != limit && *pc != '\0' && *pc == node->info.char_) {
+    node = node->next;
+    pc++;
+  }
+
+  return node == limit && *pc == '\0';
+}
+
+
+struct imploded {
+  struct r05_function function;
+  size_t hash;
+  struct imploded *next;
+  char name[1];
+};
+
+
+static struct imploded **s_imploded = NULL;
+static size_t s_imploded_size = 0;
+static size_t s_imploded_count = 0;
+
+
+static void cleanup_imploded_table(void) {
+  size_t i;
+  for (i = 0; i < s_imploded_size; ++i) {
+    struct imploded *item = s_imploded[i];
+    while (item != NULL) {
+      struct imploded *next = item->next;
+      free(item);
+      item = next;
+    }
+  }
+  free(s_imploded);
+}
+
+
+static struct r05_function *implode(
+  struct r05_node *begin, struct r05_node *end
+) {
+  struct builtin_info *info;
+  struct r05_node *node, *limit = end->next;
+  size_t len, hash, i;
+  struct imploded **bucket, *known, *new;
+
+  for (info = s_builtin_info; info->function != 0; ++info) {
+    if (chain_str_eq(begin, end, info->function->name)) {
+      return info->function;
+    }
+  }
+
+  len = 0;
+  hash = 7369; /* просто число */
+  for (node = begin; node != limit; node = node->next) {
+    len++;
+    hash *= 6007; /* простое число */
+    hash += (unsigned char) node->info.char_;
+  }
+
+  if (s_imploded == NULL) {
+    s_imploded_size = 100;
+    s_imploded = calloc(s_imploded_size, sizeof(s_imploded[0]));
+    atexit(cleanup_imploded_table);
+  }
+
+  bucket = &s_imploded[hash % s_imploded_size];
+  for (known = *bucket; known != NULL; known = known->next) {
+    if (chain_str_eq(begin, end, known->function.name)) {
+      return &known->function;
+    }
+  }
+
+  new = malloc(sizeof(struct imploded) + len);
+  new->function.ptr = r05_enum_function_code;
+  new->function.name = new->name;
+  new->hash = hash;
+  new->next = *bucket;
+
+  for (i = 0, node = begin; node != limit; node = node->next, i++) {
+    new->name[i] = node->info.char_;
+  }
+  new->name[i] = '\0';
+
+  *bucket = new;
+  s_imploded_count++;
+
+  if (s_imploded_count > 3 * s_imploded_size) {
+    size_t new_size = 3 * s_imploded_size / 2;
+    struct imploded **new_table = calloc(s_imploded_size, sizeof(new_table[0]));
+
+    for (i = 0; i < s_imploded_size; ++i) {
+      known = s_imploded[i];
+      while (known != NULL) {
+        struct imploded *next = known->next;
+        bucket = &new_table[known->hash % new_size];
+        known->next = *bucket;
+        *bucket = known;
+        known = next;
+      }
+    }
+
+    free(s_imploded);
+    s_imploded = new_table;
+    s_imploded_size = new_size;
+  }
+
+  return &new->function;
+}
+
+
+/**
   17. <Lenw e.Expr> == s.Len e.Expr
       s.Len ::= s.NUMBER, s.Len == |e.Expr|
 */
@@ -1357,7 +1512,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(12, Explode, regular)
   ALLOC_BUILTIN(13, First, regular)
   ALLOC_BUILTIN(14, Get, regular)
-  /* ALLOC_BUILTIN(15, Implode, regular) */
+  ALLOC_BUILTIN(15, Implode, regular)
   /* ALLOC_BUILTIN(16, Last, regular) */
   ALLOC_BUILTIN(17, Lenw, regular)
   ALLOC_BUILTIN(18, Lower, regular)
