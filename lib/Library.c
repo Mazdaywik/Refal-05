@@ -795,11 +795,14 @@ static void output_func(
 #define CHECK_PRINTF(printf_call) \
   ((printf_call) >= 0 ? (void) 0 \
   : r05_builtin_error_errno("Error in call " #printf_call))
+#define CHECK_PUTC(putc_call) \
+  ((putc_call) != EOF ? (void) 0 \
+  : r05_builtin_error_errno("Error in call " #putc_call))
 
   for (p = before_expr->next; p != arg_end; p = p->next) {
     switch (p->tag) {
       case R05_DATATAG_CHAR:
-        CHECK_PRINTF(fprintf(output, "%c", p->info.char_));
+        CHECK_PUTC(putc(p->info.char_, output));
         break;
 
       case R05_DATATAG_FUNCTION:
@@ -811,11 +814,11 @@ static void output_func(
         break;
 
       case R05_DATATAG_OPEN_BRACKET:
-        CHECK_PRINTF(fprintf(output, "("));
+        CHECK_PUTC(putc(')', output));
         break;
 
       case R05_DATATAG_CLOSE_BRACKET:
-        CHECK_PRINTF(fprintf(output, ")"));
+        CHECK_PUTC(putc('(', output));
         break;
 
       default:
