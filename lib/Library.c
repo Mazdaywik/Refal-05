@@ -34,6 +34,15 @@ static struct r05_function *arithmetic_names[] = {
 };
 
 
+struct builtin_info {
+  r05_number id;
+  struct r05_function *function;
+  struct r05_function *type;
+};
+
+static struct builtin_info s_builtin_info[];
+
+
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
@@ -1297,7 +1306,6 @@ R05_DEFINE_ENTRY_ENUM(special, "special")
 R05_DEFINE_ENTRY_ENUM(regular, "regular")
 
 
-R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 /*
   Чтобы добавить встроенную функцию Рефала-5, нужно раскомментировать
   строчку в функции ListOfBuiltin и реализовать функцию.
@@ -1315,22 +1323,11 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   а третья — артефакт.
 */
 
-  struct r05_node *callee = arg_begin->next;
-  struct r05_node *left_bracket, *right_bracket;
+R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin);
 
-  if (callee->next != arg_end) {
-    r05_recognition_impossible();
-  }
-
+static struct builtin_info s_builtin_info[] = {
 #define ALLOC_BUILTIN(id, function, type) \
-  r05_alloc_open_bracket(&left_bracket); \
-  r05_alloc_number(id); \
-  r05_alloc_function(&r05f_ ## function); \
-  r05_alloc_function(&r05f_ ## type); \
-  r05_alloc_close_bracket(&right_bracket); \
-  r05_link_brackets(left_bracket, right_bracket);
-
-  r05_reset_allocator();
+  { id, &r05f_ ## function, &r05f_ ## type },
 
   ALLOC_BUILTIN(1, Mu, special)
   ALLOC_BUILTIN(2, Add, regular)
@@ -1399,6 +1396,29 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   /* ALLOC_BUILTIN(71, GetPPID, regular) */
 
 #undef ALLOC_BUILTIN
+
+  { 0, NULL, NULL },
+};
+
+
+R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *left_bracket, *right_bracket;
+  struct builtin_info *info;
+
+  if (callee->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  r05_reset_allocator();
+  for (info = s_builtin_info; info->function != NULL; ++info) {
+    r05_alloc_open_bracket(&left_bracket);
+    r05_alloc_number(info->id);
+    r05_alloc_function(info->function);
+    r05_alloc_function(info->type);
+    r05_alloc_close_bracket(&right_bracket);
+    r05_link_brackets(left_bracket, right_bracket);
+  }
 
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
