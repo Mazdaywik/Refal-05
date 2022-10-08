@@ -1087,6 +1087,12 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 
 
 /**
+  44. Пустая функция с именем ""
+*/
+struct r05_function r05f_ = { r05_enum_function_code, "" };
+
+
+/**
    50. <Residue s.Func e.Arg> == <s.Func e.Arg>
 */
 R05_DEFINE_ENTRY_FUNCTION(Residue, "Residue") {
@@ -1564,10 +1570,8 @@ R05_DEFINE_ENTRY_ENUM(regular, "regular")
   В комментарии перед функцией должен быть кратко описан её тип в стиле
   принятой здесь нотации.
 
-  Функции с номерами 42 ("Imp$$"), 43 ("Stop$$") и 44 ("") определить
-  невозможно, поскольку они имеют специфическое имя, и не нужно, поскольку
-  первые две — деталь внутренней реализации Рефала-5 (версии PZ),
-  а третья — артефакт.
+  Функции с номерами 42 ("Imp$$") и 43 ("Stop$$") определять не нужно,
+  поскольку они — деталь внутренней реализации Рефала-5 (версии PZ).
 */
 
 R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin);
@@ -1613,7 +1617,7 @@ static struct builtin_info s_builtin_info[] = {
   /* ALLOC_BUILTIN(35, Sysfun, regular) */
   /* ALLOC_BUILTIN(42, Impd_d_, regular) */
   /* ALLOC_BUILTIN(43, Stopd_d_, regular) */
-  /* 44, "", regular */
+  { 44, &r05f_, &r05f_regular },
   /* ALLOC_BUILTIN(45, Freeze, regular) */
   /* ALLOC_BUILTIN(46, Freezer, regular) */
   /* ALLOC_BUILTIN(47, Dn, regular) */

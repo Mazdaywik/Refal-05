@@ -4,7 +4,7 @@ $ENTRY Go {
       <Eq (<Implode '!@#$%^'>) 0 '!@#$%^'>
       <Eq (<Mu <Implode 'Add' 12 34>>) 46>
       <Eq (<Implode_Ext '!@#$%^'>) "!@#$%^">
-*      <Eq (<Implode_Ext>) "">
+      <Eq (<Implode_Ext>) "">
       <Eq (<Mu <Implode_Ext '+'> 12 34>) 46>
 }
 

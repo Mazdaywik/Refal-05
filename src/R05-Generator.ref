@@ -73,12 +73,22 @@ Scope {
 }
 
 GenDeclaration {
+  /* поддержка пустого составного символа "" */
+  Entry /* пусто */ = ('extern struct r05_function r05f_;');
+  Local /* пусто */ = ('static struct r05_function r05f_;');
+
   s.ScopeClass e.Name =
     ('R05_DECLARE_' <Scope s.ScopeClass> '_FUNCTION(' <EscapeName e.Name> ')');
 }
 
 GenFunction {
+  /* поддержка пустого составного символа "" */
+  s.ScopeClass (/* пусто */) /* пусто */
+    = <AssertLocal s.ScopeClass>
+      ('static struct r05_function r05f_ = { r05_enum_function_code, "" };');
+
   s.ScopeClass (e.Name) /* пусто */ =
+    <AssertLocal s.ScopeClass>
     ('R05_DEFINE_' <Scope s.ScopeClass> '_ENUM(' <DefName e.Name> ')')
     ();
 
@@ -89,6 +99,8 @@ GenFunction {
     ('}')
     ();
 }
+
+AssertLocal { Local = }
 
 DefName {
   e.Name = <EscapeName e.Name> ', "' <EscapeString e.Name> '"';
