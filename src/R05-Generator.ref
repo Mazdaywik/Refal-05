@@ -44,6 +44,11 @@ $ENTRY generator_GenTreeItem {
     (e.Declarations <Map r05-generator_GenExtern e.Names>)
     /* пусто */;
 
+  (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */)
+    = (e.Declarations <GenEmptyDefinition e.Name s.ScopeClass>)
+      <AssertEq Local s.ScopeClass>
+      /* пусто */;
+
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body) =
     (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
     <GenFunction s.ScopeClass (e.Name) e.Body>;
@@ -72,26 +77,26 @@ Scope {
   Entry = 'ENTRY'; Local = 'LOCAL';
 }
 
+GenEmptyDefinition {
+  /* поддержка пустого составного символа "" */
+  /* пусто */ s.ScopeClass
+    = ('static struct r05_function r05f_ = { r05_enum_function_code, "" };');
+
+  e.Name s.ScopeClass
+    = ('R05_DEFINE_' <Scope s.ScopeClass> '_ENUM(' <DefName e.Name> ')');
+}
+
 GenDeclaration {
   /* поддержка пустого составного символа "" */
-  Entry /* пусто */ = ('extern struct r05_function r05f_;');
-  Local /* пусто */ = ('static struct r05_function r05f_;');
+  s.ScopeClass /* пусто */
+    = <AssertEq Entry s.ScopeClass>
+      ('extern struct r05_function r05f_;');
 
   s.ScopeClass e.Name =
     ('R05_DECLARE_' <Scope s.ScopeClass> '_FUNCTION(' <EscapeName e.Name> ')');
 }
 
 GenFunction {
-  /* поддержка пустого составного символа "" */
-  s.ScopeClass (/* пусто */) /* пусто */
-    = <AssertLocal s.ScopeClass>
-      ('static struct r05_function r05f_ = { r05_enum_function_code, "" };');
-
-  s.ScopeClass (e.Name) /* пусто */ =
-    <AssertLocal s.ScopeClass>
-    ('R05_DEFINE_' <Scope s.ScopeClass> '_ENUM(' <DefName e.Name> ')')
-    ();
-
   s.ScopeClass (e.Name) e.Sentences =
     ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
     ('  r05_this_is_generated_function();')
@@ -100,7 +105,8 @@ GenFunction {
     ();
 }
 
-AssertLocal { Local = }
+AssertEq { s.X s.X = }
+
 
 DefName {
   e.Name = <EscapeName e.Name> ', "' <EscapeString e.Name> '"';
