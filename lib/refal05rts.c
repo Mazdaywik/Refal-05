@@ -785,11 +785,12 @@ static void add_copy_tevar_time(clock_t duration);
 static void copy_nonempty_evar(
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
 ) {
+  struct r05_node *limit = evar_e_sample->next;
   clock_t start_copy_time = clock();
 
   struct r05_node *bracket_stack = 0;
 
-  while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
+  while (evar_b_sample != limit) {
     struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
 
     if (is_open_bracket(copy)) {
@@ -805,7 +806,7 @@ static void copy_nonempty_evar(
       copy->info = evar_b_sample->info;
     }
 
-    move_left(&evar_b_sample, &evar_e_sample);
+    evar_b_sample = evar_b_sample->next;
   }
 
   assert(bracket_stack == 0);
