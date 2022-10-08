@@ -1,0 +1,21 @@
+$ENTRY Go {
+  /* empty */
+    = <Eq <Type 'A!@#'> ('LuA!@#')>
+      <Eq <Type 'a!@#'> ('Lla!@#')>
+      <Eq <Type '1!@#'> ('D01!@#')>
+      <Eq <Type A '!@#'> ('Wi' A '!@#')>
+      <Eq <Type "!@#" '!@#'> ('Wq' "!@#" '!@#')>
+      <Eq <Type 1 '!@#'> ('N0' 1 '!@#')>
+      <Rex <Type '!@#'> ('P.!@#')>
+      <Rex <Type '\t!@#'> ('O.\t!@#')>
+      <Eq <Type () '!@#'> ('B0' () '!@#')>
+      <Eq <Type> ('*0')>
+}
+
+Eq { e.X (e.X) = /* ok */ }
+
+Rex {
+  s.Eq e.X (s.Eq e.Y) = <Rex e.X (e.Y)>;
+  s.1 e.X ('.' e.Y) =   <Rex e.X (e.Y)>;
+  /* empty */ (/* empty */) = /* ok */;
+}

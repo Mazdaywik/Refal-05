@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <ctype.h>
-#include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +26,9 @@ DEFINE_ALIAS(k2B_, "+", Add);
 DEFINE_ALIAS(m_, "-", Sub);
 DEFINE_ALIAS(k2F_, "/", Div);
 DEFINE_ALIAS(k3F_, "?", Residue);
+
+
+#define is_ident_tail(c) (isalpha(c) || isdigit(c) || (c) == '_' || (c) == '-')
 
 
 static struct r05_function *arithmetic_names[] = {
@@ -809,6 +811,7 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
         | 'Ll' — lowercase latin letter
         | 'D0' — decimal digit
         | 'Wi' — identifier (function)
+        | 'Wq' — quotted identifier
         | 'N0' — number
         | 'Pu' — isprint() && isupper()
         | 'Pl' — isprint() && ! isupper()
@@ -845,7 +848,18 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
     }
   } else if (R05_DATATAG_FUNCTION == first_term->tag) {
     type = 'W';
-    subtype = 'i';
+    subtype = 'q';
+
+    if (isalpha(first_term->info.function->name[0])) {
+      const char *p = &first_term->info.function->name[1];
+      while (*p != '\0' && is_ident_tail(*p)) {
+        p++;
+      }
+
+      if (*p == '\0') {
+        subtype = 'i';
+      }
+    }
   } else if (R05_DATATAG_NUMBER == first_term->tag) {
     type = 'N';
     subtype = '0';
