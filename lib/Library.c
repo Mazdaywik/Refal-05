@@ -17,7 +17,9 @@
   static void r05c_ ## origin( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
-  struct r05_function r05f_ ## name = { r05c_ ## origin, rep };
+  struct r05_function r05f_ ## name = { \
+    r05c_ ## origin, rep, R05_INIT_PROFILER \
+  };
 
 
 DEFINE_ALIAS(k25_, "%", Mod);
@@ -139,7 +141,7 @@ R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
 /**
   4. <Br e.Key '=' e.Value> == empty
 */
-struct r05_function r05f_Br = { r05_br, "Br" };
+struct r05_function r05f_Br = { r05_br, "Br", R05_INIT_PROFILER };
 
 
 /**
@@ -227,13 +229,13 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
 /**
   7. <Cp e.Key> == e.Value
 */
-struct r05_function r05f_Cp = { r05_cp, "Cp" };
+struct r05_function r05f_Cp = { r05_cp, "Cp", R05_INIT_PROFILER };
 
 
 /**
   8. <Dg e.Key> == e.Value
 */
-struct r05_function r05f_Dg = { r05_dg, "Dg" };
+struct r05_function r05f_Dg = { r05_dg, "Dg", R05_INIT_PROFILER };
 
 
 /**
@@ -873,7 +875,7 @@ R05_DEFINE_ENTRY_FUNCTION(Putout, "Putout") {
 /**
   28. <Rp e.Key '=' e.Value> == empty
 */
-struct r05_function r05f_Rp = { r05_rp, "Rp" };
+struct r05_function r05f_Rp = { r05_rp, "Rp", R05_INIT_PROFILER };
 
 
 /**
@@ -1089,7 +1091,7 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 /**
   44. Пустая функция с именем ""
 */
-struct r05_function r05f_ = { r05_enum_function_code, "" };
+struct r05_function r05f_ = { r05_enum_function_code, "", R05_INIT_PROFILER };
 
 
 /**
@@ -1356,7 +1358,9 @@ R05_DEFINE_ENTRY_FUNCTION(Implodeu_Ext, "Implode_Ext") {
 /**
   59. <Explode_Ext s.FUNCTION> == s.CHAR+
 */
-struct r05_function r05f_Explodeu_Ext = { r05c_Explode, "Explode_Ext" };
+struct r05_function r05f_Explodeu_Ext = {
+  r05c_Explode, "Explode_Ext", R05_INIT_PROFILER
+};
 
 
 /**

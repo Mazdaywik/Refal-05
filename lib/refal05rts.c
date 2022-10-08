@@ -921,6 +921,11 @@ static int s_in_generated;
 static int s_in_e_loop;
 
 
+#ifdef R05_PROFILER
+static struct r05_function *s_profiled_functions;
+#endif
+
+
 static void start_profiler(void) {
   s_start_program_time = clock();
   s_in_generated = 0;
@@ -995,6 +1000,10 @@ static int reverse_compare(const void *left_void, const void *right_void) {
   }
 }
 
+#ifdef R05_PROFILER
+static void print_functions_profile(double full_time_sec);
+#endif
+
 static void print_profile(void) {
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
 
@@ -1059,7 +1068,67 @@ static void print_profile(void) {
       );
     }
   }
+
+#ifdef R05_PROFILER
+  print_functions_profile(full_time * cfSECS_PER_CLOCK);
+#endif
 }
+
+#ifdef R05_PROFILER
+/* предобъявление, без инициализатора */
+static unsigned long s_step_counter;
+
+static void print_functions_profile(double full_time_sec) {
+  double mean_step_time = full_time_sec / s_step_counter;
+  struct r05_function *func, *sorted = NULL;
+  FILE *profile;
+  double increment = 0;
+  int no = 1;
+
+  while (s_profiled_functions != NULL) {
+    struct r05_function **parent;
+
+    func = s_profiled_functions;
+    s_profiled_functions = func->next;
+    parent = &sorted;
+    while (*parent != NULL && (*parent)->seconds > func->seconds) {
+      parent = &(*parent)->next;
+    }
+    func->next = *parent;
+    *parent = func;
+  }
+
+  s_profiled_functions = sorted;
+
+  profile = fopen("__profile-05.txt", "w");
+  if (profile == NULL) {
+    fprintf(stderr, "Can't open '__profile-05.txt' for writting.\n");
+    fprintf(stderr, "Profile will be written to stderr.\n\n");
+    profile = stderr;
+  }
+
+  fprintf(profile, "Total steps: %lu\n", s_step_counter);
+  fprintf(profile, "Total time: %.3f secs\n", full_time_sec);
+  fprintf(profile, "Mean step time: %.3f us\n\n", mean_step_time * 1e6);
+  for (
+    func = s_profiled_functions;
+    func != NULL && func->seconds > 0;
+    func = func->next, no++
+  ) {
+    double percent = func->seconds / full_time_sec * 100.0;
+    increment += percent;
+    fprintf(
+      profile,
+      "%3d. %-45s %10.3f ms (%6.2f %% += %6.2f %%), %10lu calls, %10.3f steps\n",
+      no, func->name, func->seconds * 1e3, percent, increment,
+      func->calls, func->seconds / func->calls / mean_step_time
+    );
+  }
+  if (profile != stderr) {
+    fclose(profile);
+  }
+}
+#endif
 
 #endif  /* R05_SHOW_STAT */
 
@@ -1149,8 +1218,13 @@ static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
 static void main_loop(void) {
+#ifdef R05_PROFILER
+  clock_t start_step = clock(), now;
+#endif
+
   while (! empty_stack()) {
     struct r05_node *function;
+    struct r05_function *callee;
 
     s_arg_begin = pop_stack();
     assert(! empty_stack());
@@ -1164,11 +1238,23 @@ static void main_loop(void) {
 
     function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
-      (function->info.function->ptr)(s_arg_begin, s_arg_end);
+      callee = function->info.function;
+      (callee->ptr)(s_arg_begin, s_arg_end);
     } else {
       r05_recognition_impossible();
     }
     after_step();
+
+#ifdef R05_PROFILER
+    now = clock();
+    if (callee->next == 0) {
+      callee->next = s_profiled_functions;
+      s_profiled_functions = callee;
+    }
+    callee->seconds += (now - start_step) / (double) CLOCKS_PER_SEC;
+    callee->calls += 1;
+    start_step = now;
+#endif
 
     ++ s_step_counter;
   }
