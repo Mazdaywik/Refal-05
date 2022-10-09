@@ -19,7 +19,7 @@
 [1]: 1-intro.md
 [2]: 2-syntax.md
 [3]: 3-install-and-usage.md
-[4]: 4-libraryex-components.md
+[4]: 4-components.md
 [5]: 5-implementation.md
 [A]: A-style-guide.md
 [B]: B-syntax-grammar.md
