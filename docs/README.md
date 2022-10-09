@@ -22,4 +22,3 @@
 [4]: 4-components.md
 [5]: 5-implementation.md
 [A]: A-style-guide.md
-[B]: B-syntax-grammar.md
