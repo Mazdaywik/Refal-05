@@ -2,10 +2,10 @@
 ## компилятора C++
 
 ## Компилятор GNU C++
-# export R05CCOMP='gcc -Wall -g -DR05_POSIX'
+# export R05CCOMP='gcc -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20'
 
 ## Компилятор Clang:
-# export R05CCOMP='clang -Wall -g -DR05_POSIX'
+# export R05CCOMP='clang -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20'
 
 ## Если ваш компилятор C++ отсутствует в списке ниже, впишите его сами:
 # export PATH=$PATH:…
@@ -15,5 +15,5 @@ echo>/dev/null
 
 ## По умолчанию используем GNU C++:
 if [ -z "$R05CCOMP" ]; then
-  export R05CCOMP='gcc -Wall -g -DR05_POSIX'
+  export R05CCOMP='gcc -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20'
 fi

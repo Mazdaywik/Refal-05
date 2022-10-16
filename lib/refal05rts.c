@@ -17,6 +17,24 @@
 #define EXIT_CODE_BUILTIN_ERROR 203
 
 
+#ifdef R05_CLOCK_SKIP
+
+static clock_t fast_clock(void) {
+  static clock_t prev = 0;
+  static int skip = 0;
+
+  if (skip++ % R05_CLOCK_SKIP == 0) {
+    prev = clock();
+  }
+
+  return prev;
+}
+
+#define clock() fast_clock()
+
+#endif  /* ifdef R05_CLOCK_SKIP */
+
+
 /*==============================================================================
    Операции сопоставления с образцом
 ==============================================================================*/
