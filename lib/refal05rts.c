@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +34,14 @@ static clock_t fast_clock(void) {
 #define clock() fast_clock()
 
 #endif  /* ifdef R05_CLOCK_SKIP */
+
+
+#define STATIC_ASSERT(message, expr) \
+  int message : ((expr) ? +1 : -1)
+
+struct static_asserts {
+  STATIC_ASSERT(r05_number_is_32bit, sizeof(r05_number) * CHAR_BIT == 32);
+};
 
 
 /*==============================================================================
@@ -1344,7 +1353,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             continue;
 
           case R05_DATATAG_NUMBER:
-            fprintf(stderr, "%lu ", begin->info.number);
+            fprintf(stderr, "%u ", begin->info.number);
             move_left(&begin, &end);
             continue;
 

@@ -55,7 +55,7 @@ struct r05_function {
 #endif
 };
 
-typedef unsigned long r05_number;
+typedef unsigned int r05_number;
 
 struct r05_node {
   struct r05_node *prev;
