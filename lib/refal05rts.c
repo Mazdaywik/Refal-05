@@ -941,7 +941,7 @@ static int s_in_e_loop;
 
 #ifdef R05_PROFILER
 static struct r05_function *s_profiled_functions;
-#endif
+#endif  /* R05_PROFILER */
 
 
 static void start_profiler(void) {
@@ -1020,7 +1020,7 @@ static int reverse_compare(const void *left_void, const void *right_void) {
 
 #ifdef R05_PROFILER
 static void print_functions_profile(double full_time_sec);
-#endif
+#endif  /* R05_PROFILER */
 
 static void print_profile(void) {
   const double cfSECS_PER_CLOCK = 1.0 / CLOCKS_PER_SEC;
@@ -1089,7 +1089,7 @@ static void print_profile(void) {
 
 #ifdef R05_PROFILER
   print_functions_profile(full_time * cfSECS_PER_CLOCK);
-#endif
+#endif  /* R05_PROFILER */
 }
 
 #ifdef R05_PROFILER
@@ -1146,7 +1146,7 @@ static void print_functions_profile(double full_time_sec) {
     fclose(profile);
   }
 }
-#endif
+#endif  /* R05_PROFILER */
 
 #endif  /* R05_SHOW_STAT */
 
@@ -1238,7 +1238,7 @@ static struct r05_node *s_arg_end;
 static void main_loop(void) {
 #ifdef R05_PROFILER
   clock_t start_step = clock(), now;
-#endif
+#endif  /* R05_PROFILER */
 
   while (! empty_stack()) {
     struct r05_node *function;
@@ -1272,7 +1272,7 @@ static void main_loop(void) {
     callee->seconds += (now - start_step) / (double) CLOCKS_PER_SEC;
     callee->calls += 1;
     start_step = now;
-#endif
+#endif  /* R05_PROFILER */
 
     ++ s_step_counter;
   }
