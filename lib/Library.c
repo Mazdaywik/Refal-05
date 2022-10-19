@@ -77,64 +77,147 @@ R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
 }
 
 
-#define ARITHM_PREFIX \
-  struct r05_node *func_name, *sX, *sY; \
-  func_name = arg_begin->next; \
-  \
-  sX = func_name->next; \
-  if (sX->tag != R05_DATATAG_NUMBER) { \
-    r05_recognition_impossible(); \
-  } \
-  \
-  sY = sX->next; \
-  if (sY->tag != R05_DATATAG_NUMBER) { \
-    r05_recognition_impossible(); \
-  } \
-  \
-  if (sY->next != arg_end) { \
-    r05_recognition_impossible(); \
+struct signed_number {
+  signed sign;
+  r05_number value;
+};
+
+
+static struct r05_node *parse_signed_number(
+  struct signed_number *sn, struct r05_node *p
+) {
+  if (R05_DATATAG_CHAR == p->tag) {
+    if ('-' == p->info.char_) {
+      sn->sign = -1;
+    } else if ('+' == p->info.char_) {
+      sn->sign = +1;
+    } else {
+      r05_recognition_impossible();
+    }
+
+    p = p->next;
+  } else {
+    sn->sign = +1;
   }
 
-#define ARITHM_OP(op, check) \
-  ARITHM_PREFIX \
-  \
-  check \
-  \
-  sX->info.number = sX->info.number op sY->info.number; \
-  \
-  r05_splice_to_freelist(arg_begin, func_name); \
-  r05_splice_to_freelist(sY, arg_end);
-
-#define NO_CHECK
-#define CHECK_ZERODIV \
-  if (sY->info.number == 0) { \
-    r05_builtin_error("divide by zero"); \
+  if (R05_DATATAG_NUMBER != p->tag) {
+    r05_recognition_impossible();
   }
+
+  sn->value = p->info.number;
+
+  if (0 == sn->value) {
+    sn->sign = +1;
+  }
+
+  return p->next;
+}
+
+
+struct arithm_arg {
+  struct signed_number x, y;
+};
+
+
+static void parse_arithm_arg(
+  struct arithm_arg *aa, struct r05_node *arg_begin, struct r05_node *arg_end
+) {
+  struct r05_node *func_name, *p;
+
+  func_name = arg_begin->next;
+  p = func_name->next;
+
+  if (R05_DATATAG_OPEN_BRACKET == p->tag) {
+    p = p->next;
+    p = parse_signed_number(&aa->x, p);
+
+    if (R05_DATATAG_CLOSE_BRACKET != p->tag) {
+      r05_recognition_impossible();
+    }
+
+    p = p->next;
+  } else {
+    p = parse_signed_number(&aa->x, p);
+  }
+
+  p = parse_signed_number(&aa->y, p);
+
+  if (p != arg_end) {
+    r05_recognition_impossible();
+  }
+}
 
 
 /**
-   2. <Add s.NUMBER s.NUMBER> == 1? s.NUMBER
+   2. <Add e.ArithmArg> == '-'? 1? s.NUMBER
+
+   e.ArithmArg ::=
+       (s.Sign? s.NUMBER) s.Sign? s.NUMBER
+     | s.Sign? s.NUMBER s.Sign? s.NUMBER
 */
+static void add(
+  const struct arithm_arg *aa,
+  struct r05_node *arg_begin, struct r05_node *arg_end
+);
+
+
 R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
-  r05_number res;
-  ARITHM_PREFIX
+  struct arithm_arg arg;
 
-  res = sX->info.number + sY->info.number;
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  add(&arg, arg_begin, arg_end);
+}
 
-  if (res >= sX->info.number) {
-    arg_begin->tag = R05_DATATAG_NUMBER;
-    arg_begin->info.number = res;
 
-    r05_splice_to_freelist(func_name, arg_end);
-  } else {
-    arg_begin->tag = R05_DATATAG_NUMBER;
-    arg_begin->info.number = 1;
-
-    func_name->tag = R05_DATATAG_NUMBER;
-    func_name->info.number = res;
-
-    r05_splice_to_freelist(sX, arg_end);
+static struct r05_node *emplace_number(
+  struct signed_number res, r05_number high, struct r05_node *p
+) {
+  if (res.sign < 0) {
+    p->tag = R05_DATATAG_CHAR;
+    p->info.char_ = '-';
+    p = p->next;
   }
+
+  if (high) {
+    p->tag = R05_DATATAG_NUMBER;
+    p->info.number = high;
+    p = p->next;
+  }
+
+  p->tag = R05_DATATAG_NUMBER;
+  p->info.number = res.value;
+  return p;
+}
+
+
+
+static void add(
+  const struct arithm_arg *aa,
+  struct r05_node *arg_begin, struct r05_node *arg_end
+) {
+  struct signed_number res;
+  r05_number carry = 0;
+  struct r05_node *p = arg_begin;
+
+  if (aa->x.sign == aa->y.sign) {
+    res.sign = aa->x.sign;
+    res.value = aa->x.value + aa->y.value;
+    if (res.value < aa->x.value) {
+      carry = 1;
+    }
+  } else if (aa->x.value > aa->y.value) {
+    res.sign = aa->x.sign;
+    res.value = aa->x.value - aa->y.value;
+  } else if (aa->x.value < aa->y.value) {
+    res.sign = aa->y.sign;
+    res.value = aa->y.value - aa->x.value;
+  } else {
+    res.sign = 0;
+    res.value = 0;
+  }
+
+  p = emplace_number(res, carry, p);
+  r05_splice_to_freelist(p->next, arg_end);
 }
 
 
@@ -239,31 +322,56 @@ struct r05_function r05f_Dg = { r05_dg, "Dg", R05_INIT_PROFILER };
 
 
 /**
-  10. <Div s.NUMBER s.NUMBER> == s.NUMBER
+  10. <Div e.ArithmArg> == '-'? s.NUMBER
 */
+struct divmod {
+  struct signed_number div, mod;
+};
+
+
+void divmod(const struct arithm_arg *aa, struct divmod *res) {
+  if (0 == aa->y.value) {
+    r05_builtin_error("divide by zero");
+  }
+
+  res->div.value = aa->x.value / aa->y.value;
+  res->div.sign = aa->x.sign * aa->y.sign;
+  res->mod.value = aa->x.value % aa->y.value;
+  res->mod.sign = aa->x.sign;
+}
+
+
 R05_DEFINE_ENTRY_FUNCTION(Div, "Div") {
-  ARITHM_OP(/, CHECK_ZERODIV);
+  struct arithm_arg arg;
+  struct divmod res;
+  struct r05_node *p = arg_begin;
+
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  divmod(&arg, &res);
+  p = emplace_number(res.div, 0, p);
+  r05_splice_to_freelist(p->next, arg_end);
 }
 
 
 /**
-  11. <Divmod s.NUMBER s.NUMBER> == (s.NUMBER) s.NUMBER
+  11. <Divmod e.ArithmArg> == ('-'? s.NUMBER) '-'? s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Divmod, "Divmod") {
-  r05_number div, mod;
-  ARITHM_PREFIX;
-  CHECK_ZERODIV;
+  struct arithm_arg arg;
+  struct divmod res;
+  struct r05_node *open = arg_begin, *close, *p;
 
-  div = sX->info.number / sY->info.number;
-  mod = sX->info.number % sY->info.number;
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  divmod(&arg, &res);
+  open->tag = R05_DATATAG_OPEN_BRACKET;
+  close = emplace_number(res.div, 0, open->next)->next;
+  close->tag = R05_DATATAG_CLOSE_BRACKET;
+  r05_link_brackets(open, close);
+  p = emplace_number(res.mod, 0, close->next);
 
-  arg_begin->tag = R05_DATATAG_OPEN_BRACKET;
-  func_name->tag = R05_DATATAG_NUMBER;
-  func_name->info.number = div;
-  sX->tag = R05_DATATAG_CLOSE_BRACKET;
-  sY->info.number = mod;
-  r05_link_brackets(arg_begin, sX);
-  r05_splice_to_freelist(arg_end, arg_end);
+  if (p != arg_end) {
+    r05_splice_to_freelist(p->next, arg_end);
+  }
 }
 
 
@@ -611,18 +719,65 @@ R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
 }
 
 /**
-  19. <Mod s.NUMBER s.NUMBER> == s.NUMBER
+  19. <Mod e.ArithmArg> == '-'? s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Mod, "Mod") {
-  ARITHM_OP(%, CHECK_ZERODIV);
+  struct arithm_arg arg;
+  struct divmod res;
+  struct r05_node *p = arg_begin;
+
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  divmod(&arg, &res);
+  p = emplace_number(res.mod, 0, p);
+  r05_splice_to_freelist(p->next, arg_end);
 }
 
 
 /**
-  20. <Mul s.NUMBER s.NUMBER> == s.NUMBER
+  20. <Mul e.ArithmArg> == '-'? s.NUMBER? s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
-  ARITHM_OP(*, NO_CHECK)
+  struct arithm_arg arg;
+  struct signed_number res;
+  r05_number high = 0;
+  struct r05_node *p = arg_begin;
+
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  res.sign = arg.x.sign * arg.y.sign;
+  res.value = arg.x.value * arg.y.value;
+
+  /* особая логика для переполнения */
+  if (arg.x.value != 0 && res.value / arg.x.value != arg.y.value) {
+    r05_number x = arg.x.value, y = arg.y.value, y_low, y_high;
+
+    if (x > y) {
+      r05_number prev_x = x;
+      x = y;
+      y = prev_x;
+    }
+
+    y_low = y;
+    y_high = 0;
+    res.value = 0;
+
+    while (x > 0) {
+      if (x & 1) {
+        res.value += y_low;
+        high += y_high;
+        if (res.value < y_low) {
+          high += 1;
+        }
+      }
+
+      y_high <<= 1;
+      y_high |= (y_low >> 31);
+      y_low <<= 1;
+      x >>= 1;
+    }
+  }
+
+  p = emplace_number(res, high, p);
+  r05_splice_to_freelist(p->next, arg_end);
 }
 
 
@@ -635,21 +790,39 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
 */
 R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   struct r05_node *callee = arg_begin->next;
-  struct r05_node *p;
+  struct r05_node *p = callee->next;
   r05_number result = 0;
+  signed sign = +1;
+
+  if (R05_DATATAG_CHAR == p->tag) {
+    if ('-' == p->info.char_) {
+      sign = -1;
+      p = p->next;
+    } else if ('+' == p->info.char_) {
+      p = p->next;
+    }
+  }
 
   for (
-    p = callee->next;
+    /* пусто */;
     p != arg_end && R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_);
     p = p->next
   ) {
     result = 10 * result + (p->info.char_ - '0');
   }
 
-  arg_begin->tag = R05_DATATAG_NUMBER;
-  arg_begin->info.number = result;
+  p = arg_begin;
 
-  r05_splice_to_freelist(callee, arg_end);
+  if (result != 0 && sign < 0) {
+    p->tag = R05_DATATAG_CHAR;
+    p->info.char_ = '-';
+    p = p->next;
+  }
+
+  p->tag = R05_DATATAG_NUMBER;
+  p->info.number = result;
+
+  r05_splice_to_freelist(p->next, arg_end);
 }
 
 
@@ -885,22 +1058,11 @@ struct r05_function r05f_Rp = { r05_rp, "Rp", R05_INIT_PROFILER };
   30. <Sub s.NUMBER s.NUMBER> == '-' s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
-  ARITHM_PREFIX
+  struct arithm_arg arg;
 
-  if (sX->info.number >= sY->info.number) {
-    arg_begin->tag = R05_DATATAG_NUMBER;
-    arg_begin->info.number = sX->info.number - sY->info.number;
-
-    r05_splice_to_freelist(func_name, arg_end);
-  } else {
-    arg_begin->tag = R05_DATATAG_CHAR;
-    arg_begin->info.char_ = '-';
-
-    func_name->tag = R05_DATATAG_NUMBER;
-    func_name->info.number = sY->info.number - sX->info.number;
-
-    r05_splice_to_freelist(sX, arg_end);
-  }
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  arg.y.sign = -arg.y.sign;
+  add(&arg, arg_begin, arg_end);
 }
 
 
@@ -1395,41 +1557,34 @@ R05_DEFINE_ENTRY_FUNCTION(TimeElapsed, "TimeElapsed") {
 
 
 /**
-  61. <Compare s.X s.Y>
+  61. <Compare e.ArithmArg>
         == '-' | '0' | '+'
       s.X, s.Y ::= s.NUMBER
 
   Функция возвращает знак разности между s.X и s.Y
 */
 R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
-  struct r05_node *func_name, *sX, *sY;
+  struct arithm_arg arg;
+  signed result;
 
-  func_name = arg_begin->next;
-  sX = func_name->next;
-  if (sX->tag != R05_DATATAG_NUMBER) {
-    r05_recognition_impossible();
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+
+  result =
+    arg.x.sign < arg.y.sign ? -1 :
+    arg.x.sign > arg.y.sign ? +1 : 0;
+
+  if (result == 0) {
+    result =
+      arg.x.value < arg.y.value ? -1 :
+      arg.x.value > arg.y.value ? +1 : 0;
+
+    result *= arg.x.sign;
   }
 
-  sY = sX->next;
-  if (sY->tag != R05_DATATAG_NUMBER) {
-    r05_recognition_impossible();
-  }
-
-  if (sY->next != arg_end) {
-    r05_recognition_impossible();
-  }
-
-  if (sX->info.number < sY->info.number) {
-    sX->info.char_ = '-';
-  } else if (sX->info.number > sY->info.number) {
-    sX->info.char_ = '+';
-  } else {
-    sX->info.char_ = '0';
-  }
-  sX->tag = R05_DATATAG_CHAR;
-
-  r05_splice_to_freelist(arg_begin, func_name);
-  r05_splice_to_freelist(sY, arg_end);
+  arg_begin->tag = R05_DATATAG_CHAR;
+  /* Suppress false warning in BCC 5.5.1 */
+  arg_begin->info.char_ = (char) (result < 0 ? '-' : result > 0 ? '+' : '0');
+  r05_splice_to_freelist(arg_begin->next, arg_end);
 }
 
 
