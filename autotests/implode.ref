@@ -6,6 +6,21 @@ $ENTRY Go {
       <Eq (<Implode_Ext '!@#$%^'>) "!@#$%^">
       <Eq (<Implode_Ext>) "">
       <Eq (<Mu <Implode_Ext '+'> 12 34>) 46>
+      <TestMany>
 }
 
 Eq { (e.Eq) e.Eq = }
+
+TestMany {
+  /* empty */
+    , <GenMany 0>
+    : {
+        x0 e.many x1000 = /* Ok */
+      }
+}
+
+GenMany {
+  1001 = /* stop */;
+
+  s.X = <Implode 'x' <Symb s.X>> <GenMany <+ s.X 1>>;
+}

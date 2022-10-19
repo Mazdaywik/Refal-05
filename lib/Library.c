@@ -653,7 +653,7 @@ static struct r05_function *implode(
 
   if (s_imploded_count > 3 * s_imploded_size) {
     size_t new_size = 3 * s_imploded_size / 2;
-    struct imploded **new_table = calloc(s_imploded_size, sizeof(new_table[0]));
+    struct imploded **new_table = calloc(new_size, sizeof(new_table[0]));
 
     for (i = 0; i < s_imploded_size; ++i) {
       known = s_imploded[i];
