@@ -57,7 +57,6 @@ $ENTRY Go {
     >;
 }
 
-*$ENUM L, A, V, let, letrec, in, Fix
 /*
   t.Expr ::=
       (let t.Expr in t.Expr)
@@ -68,7 +67,6 @@ $ENTRY Go {
     | (V s.NUMBER)
 */
 
-*$ENUM vClosure, vS, vNum, vFix, vPutNum, vGetNum
 /*
   t.Value ::=
       (vClosure t.Expr e.Stack)
@@ -109,7 +107,7 @@ Eval {
 
 Lookup {
   0 t.Val e.Stack = t.Val;
-  s.N t.Val e.Stack = <Lookup <Sub s.N 1> e.Stack>;
+  s.N t.Val e.Stack = <Lookup <- s.N 1> e.Stack>;
 }
 
 Apply {
@@ -119,7 +117,7 @@ Apply {
     <Apply <Eval t.Expr (vFix t.Expr e.Stack) e.Stack> t.Argument>;
 
   /* Встроенные операции */
-  vS (vNum s.n) = (vNum <Add 1 s.n>);
+  vS (vNum s.n) = (vNum <+ 1 s.n>);
   vPutNum t.Value = <PutNum t.Value>;
   vGetNum t.Value = <GetNum t.Value>;
 }
@@ -146,5 +144,5 @@ GetNum-MakeExpr {
 
 GetNum-DoMakeExpr {
   0 = (V 0);
-  s.N = (A (V 1) <GetNum-DoMakeExpr <Sub s.N 1>>);
+  s.N = (A (V 1) <GetNum-DoMakeExpr <- s.N 1>>);
 }
