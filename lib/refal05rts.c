@@ -787,10 +787,10 @@ struct r05_node *r05_insert_pos(void) {
 }
 
 
-static struct r05_node *list_splice(
+static void list_splice(
   struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
-  if ((res != begin) && ! r05_empty_seq(begin, end)) {
+  if (! r05_empty_seq(begin, end)) {
     struct r05_node *prev_res = res->prev;
     struct r05_node *prev_begin = begin->prev;
     struct r05_node *next_end = end->next;
@@ -798,12 +798,7 @@ static struct r05_node *list_splice(
     weld(prev_res, begin);
     weld(end, res);
     weld(prev_begin, next_end);
-  } else {
-    /* Цель достигнута сама по себе */
-    return res;
   }
-
-  return begin;
 }
 
 
@@ -907,8 +902,7 @@ void r05_splice_evar(
 
 
 void r05_splice_to_freelist(struct r05_node *begin, struct r05_node *end) {
-  s_free_ptr = s_begin_free_list.next;
-  s_free_ptr = list_splice(s_free_ptr, begin, end);
+  list_splice(s_free_ptr, begin, end);
 }
 
 
@@ -1659,10 +1653,10 @@ static void dgcp_impl(
       r05_splice_to_freelist(query.left_bracket, query.right_bracket);
     } else {
       r05_alloc_evar(query.value_begin, query.value_end);
+      r05_splice_from_freelist(arg_begin);
     }
   }
 
-  r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
 
