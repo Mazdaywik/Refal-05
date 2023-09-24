@@ -2054,7 +2054,7 @@ e-переменными такое присваивание нулей буде
         r05_alloc_open_call(n+4);
         r05_alloc_function(&r05f_Get);
         r05_alloc_open_call(n+5);
-        r05_alloc_function(&r05f_LOAD_SAVE_HANDLE);
+        r05_alloc_function(&r05f_LOADm_SAVEm_HANDLE);
         r05_alloc_close_call(n+6);
         r05_alloc_close_call(n+7);
         r05_alloc_close_call(n+8);
@@ -2493,7 +2493,7 @@ e-переменными такое присваивание нулей буде
             return (node1->info.number == node2->info.number);
 
           case R05_DATATAG_FUNCTION:
-            return (node1->info.function == node2->info.function);
+            return equal_functions(node1->info.function, node2->info.function);
 
           /*
             Сведения о связях между скобками нужны для других целей,
