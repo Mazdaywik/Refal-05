@@ -987,11 +987,11 @@ static void output_func(
         break;
 
       case R05_DATATAG_OPEN_BRACKET:
-        CHECK_PUTC(putc(')', output));
+        CHECK_PUTC(putc('(', output));
         break;
 
       case R05_DATATAG_CLOSE_BRACKET:
-        CHECK_PUTC(putc('(', output));
+        CHECK_PUTC(putc(')', output));
         break;
 
       default:
