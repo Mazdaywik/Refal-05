@@ -29,6 +29,9 @@ run_test_aux() {
   if [ $? -ge 200 ]; then
     echo TEST FAILED, SEE __dump.txt
     exit
+  elif [ $? -ge 0 ]; then
+    echo "TEST FAILED (INTERNAL ERROR)"
+    exit
   fi
 
   rm $CFILE $EXE

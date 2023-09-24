@@ -54,6 +54,11 @@ setlocal
     exit /b 1
   )
 
+  if errorlevel 1 (
+    echo TEST FAILED ^(INTERNAL ERROR^)
+    exit /b 1
+  )
+
   erase %CFILE% %EXE%
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
