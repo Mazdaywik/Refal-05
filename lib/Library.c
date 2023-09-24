@@ -782,7 +782,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
 
 
 /**
-  21. <Numb s.Digit* e.Skipped> == s.NUMBER
+  21. <Numb s.Digit* e.Skipped> == '-'? s.NUMBER
       s.Digit ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
       Если аргумент не начинается с последовательности цифр,
@@ -1557,11 +1557,9 @@ R05_DEFINE_ENTRY_FUNCTION(TimeElapsed, "TimeElapsed") {
 
 
 /**
-  61. <Compare e.ArithmArg>
-        == '-' | '0' | '+'
-      s.X, s.Y ::= s.NUMBER
+  61. <Compare e.ArithmArg> == '-' | '0' | '+'
 
-  Функция возвращает знак разности между s.X и s.Y
+  Функция возвращает знак разности между аргументами
 */
 R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
   struct arithm_arg arg;
