@@ -321,8 +321,8 @@ CmdClosedE {
 
 CmdOpenedE-Start {
   (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent <EVar-B 1 'e' e.Index> ' = 0;')
-    (e.Indent <EVar-E 1 'e' e.Index> ' = 0;')
+    (e.Indent <EVar-B 1 'e' e.Index> ' = bb[' <Symb s.BracketNumber> '];')
+    (e.Indent <EVar-E 1 'e' e.Index> ' = ' <EVar-B 1 'e' e.Index> '->prev;')
     (e.Indent 'r05_start_e_loop();')
     (e.Indent 'do {');
 }
@@ -382,6 +382,14 @@ CmdLinkBrackets {
 CmdPushStack {
   (e.Indent) s.ElemNumber =
     (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ');');
+}
+
+CmdCorrectVar {
+  (e.Indent) s.Usings 'e' e.Index
+    = (e.Indent 'r05_correct_evar(' <VarPtr s.Usings 'e' e.Index> ');');
+
+  (e.Indent) s.Usings s.Mode e.Index
+    = /* для остальных переменных ничего не делаем */;
 }
 
 CmdInsertVar {
@@ -696,6 +704,7 @@ GenResult {
 *  (CmdAllocateElem s.Number s.ElType e.Info)
 *  (CmdLinkBrackets s.Left s.Right)
 *  (CmdPushStack s.Number)
+*  (CmdCorrectVar s.Usings s.Mode e.Index)
 *  (CmdInsertVar s.Pos s.Usings s.Mode e.Index)
 
 
@@ -818,8 +827,14 @@ DoGenResult {
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
-      /* вставляем в конец списка команд */
+      /*
+        Коррекцию всех переменных нужно осуществлять до переносов
+        этих переменных. Переносы переменных выполняются в обратном
+        порядке, т.к. операция переноса вставляет значение перед
+        позицией вставки.
+      */
       (
+        (CmdCorrectVar s.Usings s.Mode e.Index)
         e.Commands
         (CmdInsertVar s.InsertPos s.Usings s.Mode e.Index)
       )
@@ -832,8 +847,14 @@ DoGenResult {
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.Counter))
-      /* вставляем в конец списка команд */
+      /*
+        Коррекцию всех переменных нужно осуществлять до переносов
+        этих переменных. Переносы переменных выполняются в обратном
+        порядке, т.к. операция переноса вставляет значение перед
+        позицией вставки.
+      */
       (
+        (CmdCorrectVar s.Usings s.Mode e.Index)
         e.Commands
         (CmdInsertVar s.Counter s.Usings s.Mode e.Index)
       )

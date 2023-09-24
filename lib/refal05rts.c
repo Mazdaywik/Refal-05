@@ -54,47 +54,17 @@ void r05_prepare_argument(
 ) {
   *left = arg_begin->next->next;
   *right = arg_end->prev;
-  if ((*right)->next == *left) {
-    *left = 0;
-    *right = 0;
-  }
 }
 
 
-static void move_left(struct r05_node **first, struct r05_node **last) {
-  /* assert((*first == 0) == (*last == 0)); */
-  if (*first == 0) assert (*last == 0);
-  if (*first != 0) assert (*last != 0);
-
-  if (*first == *last) {
-    *first = 0;
-    *last = 0;
-  } else {
-    *first = (*first)->next;
-  }
-}
-
-
-static void move_right(struct r05_node **first, struct r05_node **last) {
-  /* assert((*first == 0) == (*last == 0)); */
-  if (*first == 0) assert (*last == 0);
-  if (*first != 0) assert (*last != 0);
-
-  if (*first == *last) {
-    *first = 0;
-    *last = 0;
-  } else {
-    *last = (*last)->prev;
-  }
-}
+#define move_left(first, last)  ((*first) = (*first)->next)
+#define move_right(first, last)  ((*last) = (*last)->prev)
 
 
 int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
-  /* assert((first == 0) == (last == 0)); */
-  if (first == 0) assert (last == 0);
-  if (first != 0) assert (last != 0);
+  assert((first != 0) && (last != 0));
 
-  return (first == 0) && (last == 0);
+  return last->next == first;
 }
 
 
@@ -105,7 +75,7 @@ int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
 int r05_function_left(
   struct r05_function *fn, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -123,7 +93,7 @@ int r05_function_left(
 int r05_function_right(
   struct r05_function *fn, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -139,7 +109,7 @@ int r05_function_right(
 
 
 int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -155,7 +125,7 @@ int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
 
 
 int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -173,7 +143,7 @@ int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
 int r05_number_left(
   r05_number num, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -191,7 +161,7 @@ int r05_number_left(
 int r05_number_right(
   r05_number num, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -210,7 +180,7 @@ int r05_brackets_left(
   struct r05_node **res_first, struct r05_node **res_last,
   struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -220,20 +190,9 @@ int r05_brackets_left(
     struct r05_node *left_bracket = *first;
     struct r05_node *right_bracket = left_bracket->info.link;
 
-    if (left_bracket->next != right_bracket) {
-      *res_first = left_bracket->next;
-      *res_last = right_bracket->prev;
-    } else {
-      *res_first = 0;
-      *res_last = 0;
-    }
-
-    if (right_bracket == *last) {
-      *first = 0;
-      *last = 0;
-    } else {
-      *first = right_bracket->next;
-    }
+    *res_first = left_bracket->next;
+    *res_last = right_bracket->prev;
+    *first = right_bracket->next;
 
     return 1;
   }
@@ -244,7 +203,7 @@ int r05_brackets_right(
   struct r05_node **res_first, struct r05_node **res_last,
   struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -254,20 +213,9 @@ int r05_brackets_right(
     struct r05_node *right_bracket = *last;
     struct r05_node *left_bracket = right_bracket->info.link;
 
-    if (left_bracket->next != right_bracket) {
-      *res_first = left_bracket->next;
-      *res_last = right_bracket->prev;
-    } else {
-      *res_first = 0;
-      *res_last = 0;
-    }
-
-    if (*first == left_bracket) {
-      *first = 0;
-      *last = 0;
-    } else {
-      *last = left_bracket->prev;
-    }
+    *res_first = left_bracket->next;
+    *res_last = right_bracket->prev;
+    *last = left_bracket->prev;
 
     return 1;
   }
@@ -280,7 +228,7 @@ int r05_brackets_right(
 int r05_svar_left(
   struct r05_node **svar, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -297,7 +245,7 @@ int r05_svar_left(
 int r05_svar_right(
   struct r05_node **svar, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -314,7 +262,7 @@ int r05_svar_right(
 int r05_tvar_left(
   struct r05_node **tvar, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -336,7 +284,7 @@ int r05_tvar_left(
 int r05_tvar_right(
   struct r05_node **tvar, struct r05_node **first, struct r05_node **last
 ) {
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_empty_seq(*first, *last)) {
     return 0;
@@ -434,9 +382,9 @@ int r05_repeated_stvar_left(
   struct r05_node **first, struct r05_node **last
 ) {
   struct r05_node *left_term = 0;
-  struct r05_node *copy_last = *last;
+  struct r05_node *copy_last = *last; // XXX
 
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (! is_open_bracket(stvar_sample) && r05_svar_left(stvar, first, last)) {
     return equal_nodes(*stvar, stvar_sample);
@@ -473,9 +421,9 @@ int r05_repeated_stvar_right(
   struct r05_node **first, struct r05_node **last
 ) {
   struct r05_node *right_term = 0;
-  struct r05_node *old_last = *last;
+  struct r05_node *old_last = *last; // XXX
 
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (! is_open_bracket(stvar_sample) && r05_svar_right(stvar, first, last)) {
     return equal_nodes(*stvar, stvar_sample);
@@ -528,27 +476,15 @@ int r05_repeated_evar_left(
 
   /*
     Здесь r05_empty_seq(current, copy_last)
-      || r05_empty_seq(cur_sample, evar_e_sample
+      || r05_empty_seq(cur_sample, evar_e_sample)
       || ! equal_nodes(current, cur_sample)
   */
   if (r05_empty_seq(cur_sample, evar_e_sample)) {
     /* Это нормальное завершение цикла — вся образцовая переменная проверена */
 
-    if (r05_empty_seq(current, copy_last)) {
-      *evar_b = *first;
-      *evar_e = *last;
-
-      *first = 0;
-      *last = 0;
-    } else if (current != *first) {
-      *evar_b = *first;
-      *evar_e = current->prev;
-
-      *first = current;
-    } else {
-      *evar_b = 0;
-      *evar_e = 0;
-    }
+    *evar_b = *first;
+    *evar_e = current->prev;
+    *first = current;
 
     return 1;
   } else {
@@ -588,21 +524,9 @@ int r05_repeated_evar_right(
   if (r05_empty_seq(evar_b_sample, cur_sample)) {
     /* Это нормальное завершение цикла: вся переменная-образец просмотрена */
 
-    if (r05_empty_seq(copy_first, current)) {
-      *evar_b = *first;
-      *evar_e = *last;
-
-      *first = 0;
-      *last = 0;
-    } else if (current != *last) {
-      *evar_b = current->next;
-      *evar_e = *last;
-
-      *last = current;
-    } else {
-      *evar_b = 0;
-      *evar_e = 0;
-    }
+    *evar_b = current->next;
+    *evar_e = *last;
+    *last = current;
 
     return 1;
   } else {
@@ -616,14 +540,11 @@ int r05_open_evar_advance(
   struct r05_node **first, struct r05_node **last
 ) {
   struct r05_node *prev_first = 0;
+  (void) evar_b;
 
-  assert((*first == 0) == (*last == 0));
+  assert((*first != 0) && (*last != 0));
 
   if (r05_tvar_left(&prev_first, first, last)) {
-    if (! *evar_b) {
-      *evar_b = prev_first;
-    }
-
     if (is_open_bracket(prev_first)) {
       *evar_e = prev_first->info.link;
     } else {
@@ -790,7 +711,9 @@ struct r05_node *r05_insert_pos(void) {
 static void list_splice(
   struct r05_node *res, struct r05_node *begin, struct r05_node *end
 ) {
-  if (! r05_empty_seq(begin, end)) {
+  assert ((begin == 0) == (end == 0));
+
+  if (begin != 0) {
     struct r05_node *prev_res = res->prev;
     struct r05_node *prev_begin = begin->prev;
     struct r05_node *next_end = end->next;
@@ -803,6 +726,8 @@ static void list_splice(
 
 
 static void add_copy_tevar_time(clock_t duration);
+
+/* Может работать и с пустыми переменными с нахлёстом */
 
 static void copy_nonempty_evar(
   struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
@@ -856,9 +781,8 @@ void r05_alloc_tvar(struct r05_node *sample) {
 
 
 void r05_alloc_evar(struct r05_node *sample_b, struct r05_node *sample_e) {
-  if (! r05_empty_seq(sample_b, sample_e)) {
-    copy_nonempty_evar(sample_b, sample_e);
-  }
+  assert ((sample_b != 0) && (sample_e != 0));
+  copy_nonempty_evar(sample_b, sample_e);
 }
 
 
@@ -880,6 +804,14 @@ void r05_push_stack(struct r05_node *call_bracket) {
 void r05_link_brackets(struct r05_node *left, struct r05_node *right) {
   left->info.link = right;
   right->info.link = left;
+}
+
+
+void r05_correct_evar(struct r05_node **evar_b, struct r05_node **evar_e) {
+  if ((*evar_e)->next == (*evar_b)) {
+    *evar_b = 0;
+    *evar_e = 0;
+  }
 }
 
 
@@ -1604,14 +1536,16 @@ static void brrp_impl(
   struct r05_node *callee = arg_begin->next;
   struct r05_node *key_b, *key_e, *val_b, *val_e;
 
-  key_b = NULL;
-  key_e = NULL;
   r05_prepare_argument(&val_b, &val_e, arg_begin, arg_end);
+  key_b = val_b;
+  key_e = key_b->prev;
   do {
     if (r05_char_left('=', &val_b, &val_e)) {
       struct buried_query query;
 
       if (BRRP_RP == behavior && buried_query(&query, key_b, key_e)) {
+        r05_correct_evar(&val_b, &val_e);
+        r05_correct_evar(&query.value_begin, &query.value_end);
         list_splice(query.right_bracket, val_b, val_e);
         list_splice(arg_end, query.value_begin, query.value_end);
       } else {
@@ -1649,6 +1583,7 @@ static void dgcp_impl(
 
   if (found) {
     if (behavior == DGCP_DG) {
+      r05_correct_evar(&query.value_begin, &query.value_end);
       r05_splice_evar(arg_begin, query.value_begin, query.value_end);
       r05_splice_to_freelist(query.left_bracket, query.right_bracket);
     } else {

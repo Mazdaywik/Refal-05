@@ -1257,14 +1257,19 @@ s-переменным:
 Значением **e-переменных** является произвольное объектное выражение, в том
 числе пустое. В терминах спискового представления — произвольный участок
 списка. Изображается e-переменная парой указателей на начало и на конец —
-указывают они на первый и последний узел участка, пустое значение изображается
-парой нулевых указателей:
+указывают они на первый и последний узел участка.
 
     struct r05_node *eName_b_n;
     struct r05_node *eName_e_n;
 
 Переменная с суффиксом `…_b` содержит указатель на начало, с суффиксом `…_e` —
 на конец значения.
+
+На стадии сопоставления с образцом пустой участок представляется «перехлёстом»:
+переменная с суффиксом `…_b` хранит указатель на узел, предшествующий переменной
+с суффиксом `…_e`. На стадии сборки результатного выражения пустое значение
+представляется парой нулевых указателей (т.к. команды `r05_splice…` могут
+переместить звенья, представлявшие пустой диапазон).
 
 Переменные диапазонов описываются парой массивов
 
@@ -1273,8 +1278,7 @@ s-переменным:
 
 где `k` — количество диапазонов. В массиве `bb` хранятся указатели на начало
 (первые узлы участков), в `be` — на конец каждого диапазона (последние узлы).
-Пустой диапазон представляется также, как и пустая e-переменная — парой нулевых
-указателей.
+Пустой диапазон представляется также, как и пустая e-переменная — «перехлёстом».
 
 После описаний образов переменных и диапазонов следует массив указателей,
 используемых при построении правой части (может отсутствовать):
@@ -1303,7 +1307,8 @@ s-переменным:
 
 Если нулевой диапазон оказался пустым, т.е. первичное активное подвыражение
 состоит из трёх узлов: скобки, имени функции и скобки, переменным `bb[0]`
-и `be[0]` присваиваются нулевые указатели.
+и `be[0]` присваиваются указатель на закрывающую угловую скобку и имя функции
+соответственно. Именно так — *с нахлёстом*.
 
 **Команда сопоставления с пустотой** имеет вид:
 
@@ -1313,9 +1318,10 @@ s-переменным:
 (Здесь и далее переменные `i`, `j`, `k` будут метапеременными — в реальном коде
 на их месте будут располагаться конкретные целые числа.)
 
-Функция `r05_empty_seq()` принимает два указателя и проверяет, равны ли они оба
-нулю. Если равны, возвращает ненулевое значение, если оба не равны — нулевое.
-Если равен нулю только один — срабатывает `assert` внутри самой функции.
+Функция `r05_empty_seq(first, last)` принимает два указателя и проверяет,
+*перехлёствываются* ли они: `first->prev == last` или, что тоже самое,
+`last->next == first`. Указатели не могут быть нулевыми, иначе срабатывает
+`assert` внутри самой функции.
 
 **Команды сопоставления слева/справа** имеют вид
 
@@ -1406,8 +1412,8 @@ e-переменными такое присваивание нулей буде
 
 будет отображаться в
 
-    eX_b_1 = 0;
-    eX_e_1 = 0;
+    eX_b_1 = bb[i];
+    eX_e_1 = eX_b_1->prev;
     r05_start_e_loop();
     do {
       сохранение всех диапазонов, включая Bi ← Bj
@@ -1526,24 +1532,24 @@ e-переменными такое присваивание нулей буде
 Сгенерированный код:
 
     do {
-      struct r05_node *eSet1_B_b_1;
-      struct r05_node *eSet1_B_e_1;
+      struct r05_node *eSet1_mB_b_1;
+      struct r05_node *eSet1_mB_e_1;
       struct r05_node *tCommon_2;
       struct r05_node *tCommon_1;
-      struct r05_node *eSet2_B_b_1;
-      struct r05_node *eSet2_B_e_1;
+      struct r05_node *eSet2_mB_b_1;
+      struct r05_node *eSet2_mB_e_1;
       struct r05_node *bb[6] = { 0 };
       struct r05_node *be[6] = { 0 };
       r05_prepare_argument(bb+0, be+0, arg_begin, arg_end);
-      /* (e.Set1_B t.Common e.Set1_E) (e.Set2_B t.Common e.Set2_E) */
+      /* (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) */
       if (! r05_brackets_left(bb+1, be+1, bb+0, be+0))
         continue;
       if (! r05_brackets_left(bb+2, be+2, bb+0, be+0))
         continue;
       if (! r05_empty_seq(bb[0], be[0]))
         continue;
-      eSet1_B_b_1 = 0;
-      eSet1_B_e_1 = 0;
+      eSet1_mB_b_1 = bb[1];
+      eSet1_mB_e_1 = eSet1_mB_b_1->prev;
       r05_start_e_loop();
       do {
         bb[3] = bb[1];
@@ -1552,24 +1558,24 @@ e-переменными такое присваивание нулей буде
         be[4] = be[2];
         if (! r05_tvar_left(&tCommon_1, bb+3, be+3))
           continue;
-        /* Unused closed variable e.Set1_E */
-        eSet2_B_b_1 = 0;
-        eSet2_B_e_1 = 0;
+        /* Unused closed variable e.Set1-E */
+        eSet2_mB_b_1 = bb[4];
+        eSet2_mB_e_1 = eSet2_mB_b_1->prev;
         r05_start_e_loop();
         do {
           bb[5] = bb[4];
           be[5] = be[4];
           if (! r05_repeated_stvar_left(&tCommon_2, tCommon_1, bb+5, be+5))
             continue;
-          /* Unused closed variable e.Set2_E */
+          /* Unused closed variable e.Set2-E */
 
           r05_reset_allocator();
           r05_splice_from_freelist(arg_begin);
           r05_splice_to_freelist(arg_begin, arg_end);
           return;
-        } while (r05_open_evar_advance(&eSet2_B_b_1, &eSet2_B_e_1, bb+4, be+4));
+        } while (r05_open_evar_advance(&eSet2_mB_b_1, &eSet2_mB_e_1, bb+4, be+4));
         r05_stop_e_loop();
-      } while (r05_open_evar_advance(&eSet1_B_b_1, &eSet1_B_e_1, bb+1, be+1));
+      } while (r05_open_evar_advance(&eSet1_mB_b_1, &eSet1_mB_e_1, bb+1, be+1));
       r05_stop_e_loop();
     } while (0);
 
@@ -1609,8 +1615,8 @@ e-переменными такое присваивание нулей буде
       /* e.Begin (e.Inner) e.End (e.Left 'X' e.Inner) */
       if (! r05_brackets_right(bb+1, be+1, bb+0, be+0))
         continue;
-      eBegin_b_1 = 0;
-      eBegin_e_1 = 0;
+      eBegin_b_1 = bb[1];
+      eBegin_e_1 = eBegin_b_1->prev;
       r05_start_e_loop();
       do {
         bb[2] = bb[0];
@@ -1778,6 +1784,20 @@ e-переменными такое присваивание нулей буде
 
 Обе команды переносят значения переменных _перед_ сохранённым указателем.
 
+После сопоставления с образцом пустые e-переменные содержат пару указателей,
+ссылающихся на два соседних звена, причём второй указатель ссылается
+на предшествующее звено, а первый — на последующее.
+
+Операции переноса могут нарушить этот инвариант, если одно из этих звеньев
+принадлежит переносимой переменной. Поэтому всем операциям переноса переменных
+предшествуют **операции коррекции e-переменных**:
+
+    r05_correct_evar(&eVar_b_n, &eVar_e_n);
+
+которые для пустых переменных присваивают им пару нулевых указателей. Функция
+`r05_splice_evar()` распознаёт пару нулевых указателей как пустую переменную
+и не выполняет операцию переноса.
+
 **Перенос подготовленного результата в поле зрения:**
 
     r05_splice_from_freelist(arg_begin);
@@ -1838,6 +1858,7 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(n+2);
         r05_push_stack(n[2]);
         r05_push_stack(n[0]);
+        r05_correct_evar(&eArgument_b_1, &eArgument_e_1);
         r05_splice_evar(n[1], eArgument_b_1, eArgument_e_1);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
@@ -1871,6 +1892,8 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(n+2);
         r05_push_stack(n[2]);
         r05_push_stack(n[0]);
+        r05_correct_evar(&eArgument_b_1, &eArgument_e_1);
+        r05_correct_evar(&eBounded_b_1, &eBounded_e_1);
         r05_splice_tvar(n[1], tClosure_1);
         r05_splice_evar(n[1], eBounded_b_1, eBounded_e_1);
         r05_splice_evar(n[1], eArgument_b_1, eArgument_e_1);
@@ -1924,6 +1947,7 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(n+5);
         r05_push_stack(n[5]);
         r05_push_stack(n[3]);
+        r05_correct_evar(&eTail_b_1, &eTail_e_1);
         r05_push_stack(n[2]);
         r05_push_stack(n[0]);
         r05_splice_tvar(n[1], tFn_1);
@@ -2003,6 +2027,7 @@ e-переменными такое присваивание нулей буде
         r05_alloc_insert_pos(n+1);
         r05_alloc_close_bracket(n+2);
         r05_link_brackets(n[0], n[2]);
+        r05_correct_evar(&eLine_b_1, &eLine_e_1);
         r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
@@ -2040,6 +2065,7 @@ e-переменными такое присваивание нулей буде
         r05_push_stack(n[6]);
         r05_push_stack(n[5]);
         r05_link_brackets(n[0], n[2]);
+        r05_correct_evar(&eLine_b_1, &eLine_e_1);
         r05_splice_evar(n[1], eLine_b_1, eLine_e_1);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
@@ -2154,6 +2180,7 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(n+2);
         r05_push_stack(n[2]);
         r05_push_stack(n[0]);
+        r05_correct_evar(&eUserName_b_1, &eUserName_e_1);
         r05_splice_evar(n[1], eUserName_b_1, eUserName_e_1);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
@@ -2437,33 +2464,22 @@ e-переменными такое присваивание нулей буде
 
       /*
         Здесь r05_empty_seq(current, copy_last)
-          || r05_empty_seq(cur_sample, evar_e_sample
+          || r05_empty_seq(cur_sample, evar_e_sample)
           || ! equal_nodes(current, cur_sample)
       */
       if (r05_empty_seq(cur_sample, evar_e_sample)) {
         /* Это нормальное завершение цикла — вся образцовая переменная проверена */
 
-        if (r05_empty_seq(current, copy_last)) {
-          *evar_b = *first;
-          *evar_e = *last;
-
-          *first = 0;
-          *last = 0;
-        } else if (current != *first) {
-          *evar_b = *first;
-          *evar_e = current->prev;
-
-          *first = current;
-        } else {
-          *evar_b = 0;
-          *evar_e = 0;
-        }
+        *evar_b = *first;
+        *evar_e = current->prev;
+        *first = current;
 
         return 1;
       } else {
         return 0;
       }
     }
+
 
     static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
       if (node1->tag != node2->tag) {
@@ -2499,18 +2515,7 @@ e-переменными такое присваивание нулей буде
 
 Функция `move_left()`, упоминавшаяся выше, сужает диапазон на один узел:
 
-    static void move_left(struct r05_node **first, struct r05_node **last) {
-      /* assert((*first == 0) == (*last == 0)); */
-      if (*first == 0) assert (*last == 0);
-      if (*first != 0) assert (*last != 0);
-
-      if (*first == *last) {
-        *first = 0;
-        *last = 0;
-      } else {
-        *first = (*first)->next;
-      }
-    }
+    #define move_left(first, last)  ((*first) = (*first)->next)
 
 
 Написание функций на Си, которые можно вызывать из Рефала

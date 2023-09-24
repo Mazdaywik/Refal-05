@@ -159,6 +159,8 @@ size_t r05_read_chars(
 void r05_push_stack(struct r05_node *call_bracket);
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
 
+void r05_correct_evar(struct r05_node **evar_b, struct r05_node **evar_e);
+
 void r05_splice_tvar(struct r05_node *res, struct r05_node *var);
 void r05_splice_evar(
   struct r05_node *res, struct r05_node *first, struct r05_node *last

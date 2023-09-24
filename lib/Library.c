@@ -420,8 +420,8 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
 
   counter = sLen->info.number;
 
-  ePrefix_b = 0;
-  ePrefix_e = 0;
+  ePrefix_b = eItems_b;
+  ePrefix_e = ePrefix_b->prev;
   eSuffix_b = eItems_b;
   eSuffix_e = eItems_e;
   while (
@@ -437,6 +437,8 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   pos = r05_insert_pos();
 
   r05_link_brackets(left_bracket, right_bracket);
+  r05_correct_evar(&ePrefix_b, &ePrefix_e);
+  r05_correct_evar(&eSuffix_b, &eSuffix_e);
   r05_splice_evar(right_bracket, ePrefix_b, ePrefix_e);
   r05_splice_evar(pos, eSuffix_b, eSuffix_e);
   r05_splice_from_freelist(arg_begin);
