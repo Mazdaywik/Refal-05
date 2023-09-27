@@ -640,18 +640,14 @@ static void list_splice(
 
 static void add_copy_tevar_time(clock_t duration);
 
-/* Может работать и с пустыми переменными с нахлёстом */
-
-static void copy_nonempty_evar(
-  struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-) {
-  struct r05_node *limit = evar_e_sample->next;
+void r05_alloc_tevar(struct r05_node *sample_b, struct r05_node *sample_e) {
+  struct r05_node *limit = sample_e->next;
   clock_t start_copy_time = clock();
 
   struct r05_node *bracket_stack = 0;
 
-  while (evar_b_sample != limit) {
-    struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
+  while (sample_b != limit) {
+    struct r05_node *copy = r05_alloc_node(sample_b->tag);
 
     if (is_open_bracket(copy)) {
       copy->info.link = bracket_stack;
@@ -663,10 +659,10 @@ static void copy_nonempty_evar(
       bracket_stack = bracket_stack->info.link;
       r05_link_brackets(open_cobracket, copy);
     } else {
-      copy->info = evar_b_sample->info;
+      copy->info = sample_b->info;
     }
 
-    evar_b_sample = evar_b_sample->next;
+    sample_b = sample_b->next;
   }
 
   assert(bracket_stack == 0);
@@ -680,12 +676,6 @@ void r05_alloc_chars(const char buffer[], size_t len) {
   for (i = 0; i < len; ++i) {
     r05_alloc_char(buffer[i]);
   }
-}
-
-
-void r05_alloc_tevar(struct r05_node *sample_b, struct r05_node *sample_e) {
-  assert ((sample_b != 0) && (sample_e != 0));
-  copy_nonempty_evar(sample_b, sample_e);
 }
 
 

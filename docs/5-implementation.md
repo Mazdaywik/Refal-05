@@ -2405,22 +2405,13 @@ e-переменными такое присваивание нулей буде
     /* в файле refal05rts.c */
 
     void r05_alloc_tevar(struct r05_node *sample_b, struct r05_node *sample_e) {
-      if (! r05_empty_seq(sample_b, sample_e)) {
-        copy_nonempty_evar(sample_b, sample_e);
-      }
-    }
-
-
-    static void copy_nonempty_evar(
-      struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
-    ) {
-      struct r05_node *limit = evar_e_sample->next;
+      struct r05_node *limit = sample_e->next;
       clock_t start_copy_time = clock();
 
       struct r05_node *bracket_stack = 0;
 
-      while (evar_b_sample != limit) {
-        struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
+      while (sample_b != limit) {
+        struct r05_node *copy = r05_alloc_node(sample_b->tag);
 
         if (is_open_bracket(copy)) {
           copy->info.link = bracket_stack;
@@ -2432,10 +2423,10 @@ e-переменными такое присваивание нулей буде
           bracket_stack = bracket_stack->info.link;
           r05_link_brackets(open_cobracket, copy);
         } else {
-          copy->info = evar_b_sample->info;
+          copy->info = sample_b->info;
         }
 
-        evar_b_sample = evar_b_sample->next;
+        sample_b = sample_b->next;
       }
 
       assert(bracket_stack == 0);
