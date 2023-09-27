@@ -698,7 +698,7 @@ GenResult {
     <DoGenResult
       (e.PatternVars)
       (/* alloc commands */) (/* other commands */)
-      s.Stack /* счётчик новых элементов */
+      s.Stack
       e.Result
     >;
 }
@@ -720,113 +720,113 @@ GenResult {
 
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
   (Symbol Char s.Char1) (Symbol Char s.Char2) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+      (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
       (TkString 2 s.Char1 s.Char2) e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Symbol Char s.Value) e.Result =
+  s.Stack (Symbol Char s.Value) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElSymbol Char s.Value))
       (e.Commands)
-      s.Counter e.Result
+      s.Stack e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
   (TkString s.Len e.String) (Symbol Char s.Char) e.Result =
     <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+      (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
       (TkString <Inc s.Len> e.String s.Char) e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
   (TkString s.Len e.String) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElString s.Len e.String))
       (e.Commands)
-      s.Counter e.Result
+      s.Stack e.Result
     >;
 
   /* Создаём литералы */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Symbol s.Type e.Value) e.Result =
+  s.Stack (Symbol s.Type e.Value) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElSymbol s.Type e.Value))
       (e.Commands)
-      s.Counter e.Result
+      s.Stack e.Result
     >;
 
   /*
     Обработка открывающих скобок всех типов осуществляется похоже.
   */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Brackets e.InBrackets) e.Result =
+  s.Stack (Brackets e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Counter))
+      (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Stack))
       (e.Commands)
-      <Inc s.Counter> e.InBrackets (TkCloseBracket s.Counter) e.Result
+      <Inc s.Stack> e.InBrackets (TkCloseBracket s.Stack) e.Result
     >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
+  s.Stack (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElOpenCall s.Counter))
+      (e.AllocCommands (CmdAllocateElem ElOpenCall s.Stack))
       (e.Commands)
-      <Inc s.Counter> (Symbol Word e.Name)
-      e.InBrackets (TkCloseCall s.Counter) e.Result
+      <Inc s.Stack> (Symbol Word e.Name)
+      e.InBrackets (TkCloseCall s.Stack) e.Result
     >;
 
   /*
     Закрывающие скобки надо обрабатывать особым образом.
     Круглые скобки и АТД — слинковать, угловые — добавить в стек.
   */
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
-  (TkCloseBracket s.OpenCounter) e.Result =
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
+  (TkCloseBracket s.OpenPos) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElCloseBracket s.Counter))
+      (e.AllocCommands (CmdAllocateElem ElCloseBracket s.Stack))
       (
-        (CmdLinkBrackets s.OpenCounter s.Counter)
+        (CmdLinkBrackets s.OpenPos s.Stack)
         e.Commands
       )
-      <Inc s.Counter> e.Result
+      <Inc s.Stack> e.Result
     >;
 
-  (e.Vars) (e.AllocCommands) (e.Commands) s.Counter
-  (TkCloseCall s.OpenCounter) e.Result =
+  (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
+  (TkCloseCall s.OpenPos) e.Result =
     <DoGenResult
       (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElCloseCall s.Counter))
+      (e.AllocCommands (CmdAllocateElem ElCloseCall s.Stack))
       (
-        (CmdPushStack s.Counter)
-        (CmdPushStack s.OpenCounter)
+        (CmdPushStack s.Stack)
+        (CmdPushStack s.OpenPos)
         e.Commands
       )
-      <Inc s.Counter> e.Result
+      <Inc s.Stack> e.Result
     >;
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable t.SrcPos 's' e.Index) e.Result =
+  s.Stack (Variable t.SrcPos 's' e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
       (e.Commands)
-      s.Counter e.Result
+      s.Stack e.Result
     >;
 
   /* Переменная есть в образце — переносим, позиция подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
   (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos)) (e.Commands)
-  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
+  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
       (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
@@ -841,15 +841,15 @@ DoGenResult {
         e.Commands
         (CmdInsertVar s.InsertPos s.Usings s.Mode e.Index)
       )
-      s.Counter e.Result
+      s.Stack e.Result
     >;
 
   /* Переменная есть в образце — переносим, позиция не подготовлена */
   (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
+  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
-      (e.AllocCommands (CmdAllocateElem ElSavePos s.Counter))
+      (e.AllocCommands (CmdAllocateElem ElSavePos s.Stack))
       /*
         Коррекцию всех переменных нужно осуществлять до переносов
         этих переменных. Переносы переменных выполняются в обратном
@@ -859,24 +859,24 @@ DoGenResult {
       (
         (CmdCorrectVar s.Usings s.Mode e.Index)
         e.Commands
-        (CmdInsertVar s.Counter s.Usings s.Mode e.Index)
+        (CmdInsertVar s.Stack s.Usings s.Mode e.Index)
       )
-      <Inc s.Counter> e.Result
+      <Inc s.Stack> e.Result
     >;
 
   /* Переменной нет в образце — копируем */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Counter (Variable t.SrcPos s.Mode e.Index) e.Result =
+  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result =
     <DoGenResult
       (e.Vars)
       (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))
       (e.Commands)
-      s.Counter e.Result
+      s.Stack e.Result
     >;
 
   /* Завершение просмотра */
-  (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Counter =
-    s.Counter (e.UnusedVars) (e.AllocCommands e.Commands);
+  (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Stack =
+    s.Stack (e.UnusedVars) (e.AllocCommands e.Commands);
 }
 
 DecUsings {
