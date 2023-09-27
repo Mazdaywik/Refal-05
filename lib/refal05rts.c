@@ -57,10 +57,6 @@ void r05_prepare_argument(
 }
 
 
-#define move_left(first, last)  ((*first) = (*first)->next)
-#define move_right(first, last)  ((*last) = (*last)->prev)
-
-
 int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
   assert((first != 0) && (last != 0));
 
@@ -84,7 +80,7 @@ int r05_function_left(
   } else if (! equal_functions((*first)->info.function, fn)) {
     return 0;
   } else {
-    move_left(first, last);
+    *first = (*first)->next;
     return 1;
   }
 }
@@ -102,7 +98,7 @@ int r05_function_right(
   } else if (! equal_functions((*last)->info.function, fn)) {
     return 0;
   } else {
-    move_right(first, last);
+    *last = (*last)->prev;
     return 1;
   }
 }
@@ -118,7 +114,7 @@ int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
   } else if ((*first)->info.char_ != ch) {
     return 0;
   } else {
-    move_left(first, last);
+    *first = (*first)->next;
     return 1;
   }
 }
@@ -134,7 +130,7 @@ int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
   } else if ((*last)->info.char_ != ch) {
     return 0;
   } else {
-    move_right(first, last);
+    *last = (*last)->prev;
     return 1;
   }
 }
@@ -152,7 +148,7 @@ int r05_number_left(
   } else if ((*first)->info.number != num) {
     return 0;
   } else {
-    move_left(first, last);
+    *first = (*first)->next;
     return 1;
   }
 }
@@ -170,7 +166,7 @@ int r05_number_right(
   } else if ((*last)->info.number != num) {
     return 0;
   } else {
-    move_right(first, last);
+    *last = (*last)->prev;
     return 1;
   }
 }
@@ -236,7 +232,7 @@ int r05_svar_left(
     return 0;
   } else {
     *svar = *first;
-    move_left(first, last);
+    *first = (*first)->next;
     return 1;
   }
 }
@@ -253,7 +249,7 @@ int r05_svar_right(
     return 0;
   } else {
     *svar = *last;
-    move_right(first, last);
+    *last = (*last)->prev;
     return 1;
   }
 }
@@ -271,11 +267,11 @@ int r05_tvar_left(
 
     *tvar = *first;
     *first = right_bracket;
-    move_left(first, last);
+    *first = (*first)->next;
     return 1;
   } else {
     *tvar = *first;
-    move_left(first, last);
+    *first = (*first)->next;
     return 1;
   }
 }
@@ -294,11 +290,11 @@ int r05_tvar_right(
 
     *tvar = left_bracket;
     *last = left_bracket;
-    move_right(first, last);
+    *last = (*last)->prev;
     return 1;
   } else {
     *tvar = *last;
-    move_right(first, last);
+    *last = (*last)->prev;
     return 1;
   }
 }
@@ -356,8 +352,8 @@ static int equal_expressions(
     ! r05_empty_seq(first1, last1) && ! r05_empty_seq(first2, last2)
       && equal_nodes(first1, first2)
   ) {
-    move_left(&first1, &last1);
-    move_left(&first2, &last2);
+    first1 = first1->next;
+    first2 = first2->next;
   }
 
   /*
@@ -382,7 +378,6 @@ int r05_repeated_stvar_left(
   struct r05_node **first, struct r05_node **last
 ) {
   struct r05_node *left_term = 0;
-  struct r05_node *copy_last = *last; // XXX
 
   assert((*first != 0) && (*last != 0));
 
@@ -392,11 +387,7 @@ int r05_repeated_stvar_left(
     struct r05_node *left_term_e;
     struct r05_node *stvar_sample_e;
 
-    if (r05_empty_seq(*first, *last)) {
-      left_term_e = copy_last;
-    } else {
-      left_term_e = (*first)->prev;
-    }
+    left_term_e = (*first)->prev;
 
     if (is_open_bracket(stvar_sample)) {
       stvar_sample_e = stvar_sample->info.link;
@@ -468,8 +459,8 @@ int r05_repeated_evar_left(
       && !r05_empty_seq(cur_sample, evar_e_sample)
       && equal_nodes(current, cur_sample)
   ) {
-    move_left(&cur_sample, &evar_e_sample);
-    move_left(&current, &copy_last);
+    cur_sample = cur_sample->next;
+    current = current->next;
   }
 
   add_match_repeated_evar_time(clock() - start_match);
@@ -509,8 +500,8 @@ int r05_repeated_evar_right(
       && !r05_empty_seq(evar_b_sample, cur_sample)
       && equal_nodes(current, cur_sample)
   ) {
-    move_right(&copy_first, &current);
-    move_right(&evar_b_sample, &cur_sample);
+    current = current->prev;
+    cur_sample = cur_sample->prev;
   }
 
   add_match_repeated_evar_time(clock() - start_match);
@@ -569,7 +560,7 @@ size_t r05_read_chars(
   ) {
     buffer[read] = (*first)->info.char_;
     ++read;
-    move_left(first, last);
+    *first = (*first)->next;
   }
   return read;
 }
@@ -1270,7 +1261,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             } else {
               fprintf(stderr, "\n[NONE]");
             }
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           case R05_DATATAG_CHAR:
@@ -1280,12 +1271,12 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
           case R05_DATATAG_NUMBER:
             fprintf(stderr, "%u ", begin->info.number);
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           case R05_DATATAG_FUNCTION:
             fprintf(stderr, "%s ", begin->info.function->name);
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           case R05_DATATAG_OPEN_BRACKET:
@@ -1296,13 +1287,13 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             after_bracket = 1;
             reset_after_bracket = 0;
             fprintf(stderr, "(");
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           case R05_DATATAG_CLOSE_BRACKET:
             --indent;
             fprintf(stderr, ")");
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           case R05_DATATAG_OPEN_CALL:
@@ -1313,13 +1304,13 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             after_bracket = 1;
             reset_after_bracket = 0;
             fprintf(stderr, "<");
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           case R05_DATATAG_CLOSE_CALL:
             --indent;
             fprintf(stderr, ">");
-            move_left(&begin, &end);
+            begin = begin->next;
             continue;
 
           default:
@@ -1360,7 +1351,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
                 }
                 break;
               }
-              move_left(&begin, &end);
+              begin = begin->next;
               continue;
             }
 

@@ -2409,11 +2409,12 @@ e-переменными такое присваивание нулей буде
     static void copy_nonempty_evar(
       struct r05_node *evar_b_sample, struct r05_node *evar_e_sample
     ) {
+      struct r05_node *limit = evar_e_sample->next;
       clock_t start_copy_time = clock();
 
       struct r05_node *bracket_stack = 0;
 
-      while (! r05_empty_seq(evar_b_sample, evar_e_sample)) {
+      while (evar_b_sample != limit) {
         struct r05_node *copy = r05_alloc_node(evar_b_sample->tag);
 
         if (is_open_bracket(copy)) {
@@ -2429,7 +2430,7 @@ e-переменными такое присваивание нулей буде
           copy->info = evar_b_sample->info;
         }
 
-        move_left(&evar_b_sample, &evar_e_sample);
+        evar_b_sample = evar_b_sample->next;
       }
 
       assert(bracket_stack == 0);
@@ -2456,8 +2457,8 @@ e-переменными такое присваивание нулей буде
           && ! r05_empty_seq(cur_sample, evar_e_sample)
           && equal_nodes(current, cur_sample)
       ) {
-        move_left(&cur_sample, &evar_e_sample);
-        move_left(&current, &copy_last);
+        cur_sample = cur_sample->next;
+        current = current->next;
       }
 
       add_match_repeated_evar_time(clock() - start_match);
@@ -2512,11 +2513,6 @@ e-переменными такое присваивание нулей буде
         }
       }
     }
-
-Функция `move_left()`, упоминавшаяся выше, сужает диапазон на один узел:
-
-    #define move_left(first, last)  ((*first) = (*first)->next)
-
 
 Написание функций на Си, которые можно вызывать из Рефала
 ---------------------------------------------------------
