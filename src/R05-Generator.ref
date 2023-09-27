@@ -243,12 +243,12 @@ CmdComment {
 }
 
 CmdDeclareVar {
-  (e.Indent) s.Usings 'e' e.Index =
-    (e.Indent 'struct r05_node *' <EVar-B s.Usings 'e' e.Index> ';')
-    (e.Indent 'struct r05_node *' <EVar-E s.Usings 'e' e.Index> ';');
+  (e.Indent) s.Usings 's' e.Index
+    = (e.Indent 'struct r05_node *' <Var s.Usings 's' e.Index> ';');
 
-  (e.Indent) s.Usings s.Mode e.Index =
-    (e.Indent 'struct r05_node *' <Var s.Usings s.Mode e.Index> ';');
+  (e.Indent) s.Usings s.Mode e.Index
+    = (e.Indent 'struct r05_node *' <Var-B s.Usings s.Mode e.Index> ';')
+      (e.Indent 'struct r05_node *' <Var-E s.Usings s.Mode e.Index> ';');
 }
 
 CmdRangeArray {
@@ -274,8 +274,7 @@ CmdMatch {
 MatchFunc {
   Symbol s.Type e.Value = <SymbolFunc s.Type>;
   Brackets s.InnerNum = 'brackets';
-  Repeated s.Usings 'e' e.Index = 'repeated_evar';
-  Repeated s.Usings s.Mode e.Index = 'repeated_stvar';
+  Repeated s.Usings s.Mode e.Index = 'repeated_' s.Mode 'var';
   Variable 's' e.Index = 'svar';
   Variable 't' e.Index = 'tvar';
 }
@@ -315,14 +314,14 @@ CmdEmpty {
 
 CmdClosedE {
   (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent <EVar-B 1 'e' e.Index> ' = ' <RangeVar-B s.BracketNumber> ';')
-    (e.Indent <EVar-E 1 'e' e.Index> ' = ' <RangeVar-E s.BracketNumber> ';');
+    (e.Indent <Var-B 1 'e' e.Index> ' = ' <RangeVar-B s.BracketNumber> ';')
+    (e.Indent <Var-E 1 'e' e.Index> ' = ' <RangeVar-E s.BracketNumber> ';');
 }
 
 CmdOpenedE-Start {
   (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent <EVar-B 1 'e' e.Index> ' = bb[' <Symb s.BracketNumber> '];')
-    (e.Indent <EVar-E 1 'e' e.Index> ' = ' <EVar-B 1 'e' e.Index> '->prev;')
+    (e.Indent <Var-B 1 'e' e.Index> ' = bb[' <Symb s.BracketNumber> '];')
+    (e.Indent <Var-E 1 'e' e.Index> ' = ' <Var-B 1 'e' e.Index> '->prev;')
     (e.Indent 'r05_start_e_loop();')
     (e.Indent 'do {');
 }
@@ -440,21 +439,26 @@ EscapeChar-SwCompare {
 }
 
 Var {
-  s.Usings 'e' e.Index =
-    <EVar-B s.Usings 'e' e.Index> ', ' <EVar-E s.Usings 'e' e.Index>;
+  s.Usings 's' e.Index = 's' <EscapeVar e.Index> '_' <Symb s.Usings>;
 
-  s.Usings s.Mode e.Index = s.Mode <EscapeVar e.Index> '_' <Symb s.Usings>;
+  s.Usings s.Mode e.Index
+    = <Var-B s.Usings s.Mode e.Index> ', ' <Var-E s.Usings s.Mode e.Index>;
 }
 
 VarPtr {
-  s.Usings 'e' e.Index =
-    '&' <EVar-B s.Usings 'e' e.Index> ', &' <EVar-E s.Usings 'e' e.Index>;
+  s.Usings 's' e.Index = '&s' <EscapeVar e.Index> '_' <Symb s.Usings>;
 
-  s.Usings s.Mode e.Index = '&' s.Mode <EscapeVar e.Index> '_' <Symb s.Usings>;
+  s.Usings s.Mode e.Index
+    = '&' <Var-B s.Usings s.Mode e.Index> ', &' <Var-E s.Usings s.Mode e.Index>;
 }
 
-EVar-B { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_b_' <Symb s.Usings> }
-EVar-E { s.Usings 'e' e.Index = 'e' <EscapeVar e.Index> '_e_' <Symb s.Usings> }
+Var-B {
+  s.Usings s.Mode e.Index = s.Mode <EscapeVar e.Index> '_b_' <Symb s.Usings>;
+}
+
+Var-E {
+  s.Usings s.Mode e.Index = s.Mode <EscapeVar e.Index> '_e_' <Symb s.Usings>;
+}
 
 Elem { s.Number = 'n[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'n+' <Symb s.Number> }

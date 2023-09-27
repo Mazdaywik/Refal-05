@@ -682,13 +682,13 @@ static struct r05_function *implode(
       s.Len ::= s.NUMBER, s.Len == |e.Expr|
 */
 R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
-  struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm;
+  struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm_b, *tTerm_e;
   r05_number counter = 0;
 
   r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
   sLen = arg_begin->next;
 
-  while (r05_tvar_left(&tTerm, &eItems_b, &eItems_e)) {
+  while (r05_tvar_left(&tTerm_b, &tTerm_e, &eItems_b, &eItems_e)) {
     ++ counter;
   }
 
