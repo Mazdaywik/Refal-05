@@ -358,7 +358,7 @@ static int equal_expressions(
 
   /*
     Здесь r05_empty_seq(first1, last1) || r05_empty_seq(first2, last2)
-      || !equal_nodes(first1, first2)
+      || ! equal_nodes(first1, first2)
   */
 
   add_match_repeated_tvar_time(clock() - start_match);
@@ -455,8 +455,8 @@ int r05_repeated_evar_left(
 
   while (
     /* порядок условий важен */
-    !r05_empty_seq(current, copy_last)
-      && !r05_empty_seq(cur_sample, evar_e_sample)
+    ! r05_empty_seq(current, copy_last)
+      && ! r05_empty_seq(cur_sample, evar_e_sample)
       && equal_nodes(current, cur_sample)
   ) {
     cur_sample = cur_sample->next;
@@ -496,8 +496,8 @@ int r05_repeated_evar_right(
 
   while (
     /* порядок перечисления условий важен */
-    !r05_empty_seq(copy_first, current)
-      && !r05_empty_seq(evar_b_sample, cur_sample)
+    ! r05_empty_seq(copy_first, current)
+      && ! r05_empty_seq(evar_b_sample, cur_sample)
       && equal_nodes(current, cur_sample)
   ) {
     current = current->prev;
