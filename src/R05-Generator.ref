@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN SaveFile, MapAccum, Map, Dec, Inc;
+$EXTERN SaveFile, MapAccum, Map, Inc;
 
 *$FROM R5FW-Plainer
 $EXTERN InlineExpr;
@@ -243,15 +243,6 @@ CmdComment {
   (e.Indent) e.Text = (e.Indent '/* ' <SafeComment e.Text> ' */');
 }
 
-CmdDeclareVar {
-  (e.Indent) s.Usings 's' e.Index
-    = (e.Indent 'struct r05_node *' <Var s.Usings 's' e.Index> ';');
-
-  (e.Indent) s.Usings s.Mode e.Index
-    = (e.Indent 'struct r05_node *' <Var-B s.Usings s.Mode e.Index> ';')
-      (e.Indent 'struct r05_node *' <Var-E s.Usings s.Mode e.Index> ';');
-}
-
 CmdAllocStack {
   (e.Indent) 0 = /* пусто */;
 
@@ -276,9 +267,9 @@ CmdMatch {
 MatchFunc {
   Symbol s.Type e.Value = <SymbolFunc s.Type>;
   Brackets s.InnerNum = 'brackets';
-  Repeated s.Usings s.Mode e.Index = 'repeated_' s.Mode 'var';
-  Variable 's' e.Index = 'svar';
-  Variable 't' e.Index = 'tvar';
+  Repeated s.Mode s.Sample s.Var = 'repeated_' s.Mode 'var';
+  Variable 's' s.Stack = 'svar';
+  Variable 't' s.Stack = 'tvar';
 }
 
 SymbolFunc {
@@ -296,10 +287,10 @@ MatchArgs {
 
   Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
 
-  Repeated s.Usings s.Mode e.Index =
-    <VarPtr s.Usings s.Mode e.Index> ', ' <Var <Dec s.Usings> s.Mode e.Index>;
+  Repeated s.Mode s.SampleOffset s.Offset
+    = <VarPtr s.Mode s.Offset> ', ' <Var s.Mode s.SampleOffset>;
 
-  Variable s.Mode e.Index = <VarPtr 1 s.Mode e.Index>;
+  Variable s.Mode s.Offset = <VarPtr s.Mode s.Offset>;
 }
 
 SymbolTextRep {
@@ -315,24 +306,24 @@ CmdEmpty {
 }
 
 CmdClosedE {
-  (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent <Var-B 1 'e' e.Index> ' = ' <RangeVar-B s.BracketNumber> ';')
-    (e.Indent <Var-E 1 'e' e.Index> ' = ' <RangeVar-E s.BracketNumber> ';');
+  (e.Indent) s.BracketNumber 'e' s.Offset =
+    (e.Indent <Var-B s.Offset> ' = ' <RangeVar-B s.BracketNumber> ';')
+    (e.Indent <Var-E s.Offset> ' = ' <RangeVar-E s.BracketNumber> ';');
 }
 
 CmdOpenedE-Start {
-  (e.Indent) s.BracketNumber 'e' e.Index =
-    (e.Indent <Var-B 1 'e' e.Index> ' = p[' <Symb s.BracketNumber> '];')
-    (e.Indent <Var-E 1 'e' e.Index> ' = ' <Var-B 1 'e' e.Index> '->prev;')
+  (e.Indent) s.BracketNumber 'e' s.Offset =
+    (e.Indent <Var-B s.Offset> ' = p[' <Symb s.BracketNumber> '];')
+    (e.Indent <Var-E s.Offset> ' = ' <Var-B s.Offset> '->prev;')
     (e.Indent 'r05_start_e_loop();')
     (e.Indent 'do {');
 }
 
 CmdOpenedE-End {
-  (e.Indent) s.BracketNumber 'e' e.Index =
+  (e.Indent) s.BracketNumber 'e' s.Offset =
     (e.Indent
       '} while (r05_open_evar_advance('
-      <VarPtr 1 'e' e.Index> ', ' <RangeVarsPtr s.BracketNumber>
+      <VarPtr 'e' s.Offset> ', ' <RangeVarsPtr s.BracketNumber>
       '));'
     )
     (e.Indent 'r05_stop_e_loop();');
@@ -368,7 +359,7 @@ ElCloseCall { s.Pos = 'close_call(' <ElemPtr s.Pos> ');' }
 
 ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ');' }
 
-ElVariable { s.Mode e.Index = s.Mode 'var(' <Var 1 s.Mode e.Index> ');' }
+ElVariable { s.Mode s.Offset = s.Mode 'var(' <Var s.Mode s.Offset> ');' }
 
 CmdLinkBrackets {
   (e.Indent) s.Left s.Right =
@@ -381,19 +372,17 @@ CmdPushStack {
 }
 
 CmdCorrectVar {
-  (e.Indent) s.Usings 'e' e.Index
-    = (e.Indent 'r05_correct_evar(' <VarPtr s.Usings 'e' e.Index> ');');
+  (e.Indent) 'e' s.Offset
+    = (e.Indent 'r05_correct_evar(' <VarPtr 'e' s.Offset> ');');
 
-  (e.Indent) s.Usings s.Mode e.Index
-    = /* для остальных переменных ничего не делаем */;
+  (e.Indent) s.Mode s.Offset = /* для остальных переменных ничего не делаем */;
 }
 
 CmdInsertVar {
-  (e.Indent) s.Pos s.Usings s.Mode e.Index =
-    (e.Indent
-      'r05_splice_' s.Mode 'var'
-      '(' <Elem s.Pos> ', ' <Var s.Usings s.Mode e.Index> ');'
-    );
+  (e.Indent) s.Pos s.Mode s.Offset
+    = (e.Indent
+        'r05_splice_' s.Mode 'var(' <Elem s.Pos> ', ' <Var s.Mode s.Offset> ');'
+      );
 }
 
 CmdReturnResult {
@@ -436,47 +425,20 @@ EscapeChar-SwCompare {
 }
 
 Var {
-  s.Usings 's' e.Index = 's' <EscapeVar e.Index> '_' <Symb s.Usings>;
-
-  s.Usings s.Mode e.Index
-    = <Var-B s.Usings s.Mode e.Index> ', ' <Var-E s.Usings s.Mode e.Index>;
+  's' s.Offset = <Elem s.Offset>;
+  s.Mode s.Offset = <Elem s.Offset> ', ' <Elem <Inc s.Offset>>;
 }
 
 VarPtr {
-  s.Usings 's' e.Index = '&s' <EscapeVar e.Index> '_' <Symb s.Usings>;
-
-  s.Usings s.Mode e.Index
-    = '&' <Var-B s.Usings s.Mode e.Index> ', &' <Var-E s.Usings s.Mode e.Index>;
+  's' s.Offset = <ElemPtr s.Offset>;
+  s.Mode s.Offset = <ElemPtr s.Offset> ', ' <ElemPtr <Inc s.Offset>>;
 }
 
-Var-B {
-  s.Usings s.Mode e.Index = s.Mode <EscapeVar e.Index> '_b_' <Symb s.Usings>;
-}
-
-Var-E {
-  s.Usings s.Mode e.Index = s.Mode <EscapeVar e.Index> '_e_' <Symb s.Usings>;
-}
+Var-B { s.Offset = <Elem s.Offset> }
+Var-E { s.Offset = <Elem <Inc s.Offset>> }
 
 Elem { s.Number = 'p[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'p+' <Symb s.Number> }
-
-/*
-  Декорирование отличается от декорирования имён функций, поскольку мы хотим
-  избежать двух прочерков подряд в именах переменных.
-*/
-EscapeVar {
-  e.Name = <EscapeVar-Dash <EscapeVar-Underline e.Name>>;
-}
-
-EscapeVar-Underline {
-  e.Name-B '_' e.Name-E = e.Name-B '_u' <EscapeVar-Underline e.Name-E>;
-  e.Name = e.Name;
-}
-
-EscapeVar-Dash {
-  e.Name-B '-' e.Name-E = e.Name-B '_m' <EscapeVar-Dash e.Name-E>;
-  e.Name = e.Name;
-}
 
 
 *===============================================================================
@@ -522,8 +484,8 @@ CompileSentence-Aux {
 }
 
 RemoveUnusedEVars {
-  (e.PatternVars-B (1 'e' e.Index) e.PatternVars-E)
-  (e.PatternCommands-B (CmdClosedE s.Num 'e' e.Index) e.PatternCommands-E)
+  (e.PatternVars-B ('e' e.Index s.Offset (s.Offset)) e.PatternVars-E)
+  (e.PatternCommands-B (CmdClosedE s.Num 'e' s.Offset) e.PatternCommands-E)
   e.Vars-B (e.Index ONE) e.Vars-E
     = <RemoveUnusedEVars
         (e.PatternVars-B e.PatternVars-E)
@@ -555,7 +517,8 @@ $ENTRY r05-generator-MarkUnusedVars-Term {
 }
 
 /*
-  e.Vars ::= (s.Count s.Mode e.Index)*
+  e.Vars ::= (s.Mode e.Index s.SampleOffset (e.Instances))*
+  e.Instances ::= s.Offset+
 */
 
 *===============================================================================
@@ -574,21 +537,21 @@ $ENTRY r05-generator-MarkUnusedVars-Term {
       | Symbol Number s.Number
       | Symbol Word t.SrcPos? e.Name
       | Brackets s.InnerNum
-      | Repeated s.Usings s.Mode e.Index
-      | Variable t.SrcPos s.Mode e.Index
+      | Repeated s.Mode s.Sample s.Offset
+      | Variable t.SrcPos s.Mode s.Offset
 
   Пустые скобки:
     (CmdEmpty s.BracketNum),
 
   Открытые e-переменные до обработки:
-    (CmdOpenedE s.BracketNum 'e' e.Index)
+    (CmdOpenedE s.BracketNum 'e' s.Offset)
 
   Открытые e-переменные после обработки:
-    (CmdOpenedE-Start s.BracketNum 'e' e.Index)
-    (CmdOpenedE-End s.BracketNum 'e' e.Index)
+    (CmdOpenedE-Start s.BracketNum 'e' s.Offset)
+    (CmdOpenedE-End s.BracketNum 'e' s.Offset)
 
   Закрытые e-переменные:
-    (CmdClosedE s.BracketNum 'e' e.Index)
+    (CmdClosedE s.BracketNum 'e' s.Offset)
 
   Команды сохранения скобок:
     (CmdSave s.OldNumber e.NewNumber)
@@ -609,6 +572,12 @@ GenPattern {
 }
 
 Inc2 { s.N = <+ s.N 2> }
+
+VarSize {
+  's' = 1; 't' = 2; 'e' = 3;
+}
+
+IncMode { s.N s.Mode = <+ s.N <VarSize s.Mode>> }
 
 DoGenPattern {
   /* Распознавание литералов (символьных, целочисленных, имён) */
@@ -658,77 +627,78 @@ DoGenPattern {
   /* Распознавание переменных */
   s.Stack
   e.Ranges-B (s.Num (Variable t.SrcPos s.Mode e.Index) e.Range) e.Ranges-E
-  (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars-B (<Inc s.Count> s.Mode e.Index) e.Vars-E)
-      (e.Commands (CmdMatch AlgLeft s.Num Repeated <Inc s.Count> s.Mode e.Index))
-    >;
+  (e.Vars-B (s.Mode e.Index s.Sample (e.Insts)) e.Vars-E) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack s.Mode> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars-B (s.Mode e.Index s.Sample (e.Insts s.Stack)) e.Vars-E)
+        (e.Commands (CmdMatch AlgLeft s.Num Repeated s.Mode s.Sample s.Stack))
+      >;
 
   s.Stack
   e.Ranges-B (s.Num e.Range (Variable t.SrcPos s.Mode e.Index)) e.Ranges-E
-  (e.Vars-B (s.Count s.Mode e.Index) e.Vars-E) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars-B (<Inc s.Count> s.Mode e.Index) e.Vars-E)
-      (e.Commands (CmdMatch AlgRight s.Num Repeated <Inc s.Count> s.Mode e.Index))
-    >;
+  (e.Vars-B (s.Mode e.Index s.Sample (e.Insts)) e.Vars-E) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack s.Mode> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars-B (s.Mode e.Index s.Sample (e.Insts s.Stack)) e.Vars-E)
+        (e.Commands (CmdMatch AlgRight s.Num Repeated s.Mode s.Sample s.Stack))
+      >;
 
   /* Диапазон с закрытой переменной */
   s.Stack e.Ranges-B (s.Num (Variable t.SrcPos 'e' e.Index)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B e.Ranges-E
-      (e.Vars (1 'e' e.Index))
-      (e.Commands (CmdClosedE s.Num 'e' e.Index))
-    >;
+  (e.Vars) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack 'e'> e.Ranges-B e.Ranges-E
+        (e.Vars ('e' e.Index s.Stack (s.Stack)))
+        (e.Commands (CmdClosedE s.Num 'e' s.Stack))
+      >;
 
   s.Stack
   e.Ranges-B (s.Num (Variable t.SrcPos 's' e.Index) e.Range) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars (1 's' e.Index))
-      (e.Commands (CmdMatch AlgLeft s.Num Variable 's' e.Index))
-    >;
+  (e.Vars) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack 's'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars ('s' e.Index s.Stack (s.Stack)))
+        (e.Commands (CmdMatch AlgLeft s.Num Variable 's' s.Stack))
+      >;
 
   s.Stack
   e.Ranges-B (s.Num (Variable t.SrcPos 't' e.Index) e.Range) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars (1 't' e.Index))
-      (e.Commands (CmdMatch AlgLeft s.Num Variable 't' e.Index))
-    >;
+  (e.Vars) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack 't'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars ('t' e.Index s.Stack (s.Stack)))
+        (e.Commands (CmdMatch AlgLeft s.Num Variable 't' s.Stack))
+      >;
 
   s.Stack
   e.Ranges-B (s.Num e.Range (Variable t.SrcPos 's' e.Index)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars (1 's' e.Index))
-      (e.Commands (CmdMatch AlgRight s.Num Variable 's' e.Index))
-    >;
+  (e.Vars) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack 's'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars ('s' e.Index s.Stack (s.Stack)))
+        (e.Commands (CmdMatch AlgRight s.Num Variable 's' s.Stack))
+      >;
 
   s.Stack
   e.Ranges-B (s.Num e.Range (Variable t.SrcPos 't' e.Index)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars (1 't' e.Index))
-      (e.Commands (CmdMatch AlgRight s.Num Variable 't' e.Index))
-    >;
+  (e.Vars) (e.Commands)
+    = <DoGenPattern
+        <IncMode s.Stack 't'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        (e.Vars ('t' e.Index s.Stack (s.Stack)))
+        (e.Commands (CmdMatch AlgRight s.Num Variable 't' s.Stack))
+      >;
 
   s.Stack
   e.Ranges-B (s.Num (Variable t.SrcPos 'e' e.Index) e.Range) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      <SaveRanges
-        s.Stack (/* scanned */) e.Ranges-B (s.Num e.Range) e.Ranges-E
-        (e.Vars (1 'e' e.Index))
-        (e.Commands (CmdOpenedE s.Num 'e' e.Index))
-      >
-    >;
+  (e.Vars) (e.Commands)
+    = <DoGenPattern
+        <SaveRanges
+          <IncMode s.Stack 'e'>
+          (/* scanned */) e.Ranges-B (s.Num e.Range) e.Ranges-E
+          (e.Vars ('e' e.Index s.Stack (s.Stack)))
+          (e.Commands (CmdOpenedE s.Num 'e' s.Stack))
+        >
+      >;
 
   /* Завершение разбора. */
   s.Stack /* пусто */ (e.Vars) (e.Commands) =
@@ -872,74 +842,72 @@ DoGenResult {
     >;
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Stack (Variable t.SrcPos 's' e.Index) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElVariable 's' e.Index))
-      (e.Commands)
-      s.Stack e.Result
-    >;
+  (e.Vars-B ('s' e.Index s.Sample (e.Insts)) e.Vars-E)
+  (e.AllocCommands) (e.Commands)
+  s.Stack (Variable t.SrcPos 's' e.Index) e.Result
+    = <DoGenResult
+        (e.Vars-B ('s' e.Index s.Sample (e.Insts)) e.Vars-E)
+        (e.AllocCommands (CmdAllocateElem ElVariable 's' s.Sample))
+        (e.Commands)
+        s.Stack e.Result
+      >;
 
   /* Переменная есть в образце — переносим, позиция подготовлена */
-  (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E)
+  (e.Vars-B (s.Mode e.Index s.Sample (s.Inst e.Insts)) e.Vars-E)
   (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos)) (e.Commands)
-  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result =
-    <DoGenResult
-      (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
-      (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
-      /*
-        Коррекцию всех переменных нужно осуществлять до переносов
-        этих переменных. Переносы переменных выполняются в обратном
-        порядке, т.к. операция переноса вставляет значение перед
-        позицией вставки.
-      */
-      (
-        (CmdCorrectVar s.Usings s.Mode e.Index)
-        e.Commands
-        (CmdInsertVar s.InsertPos s.Usings s.Mode e.Index)
-      )
-      s.Stack e.Result
-    >;
+  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result
+    = <DoGenResult
+        (e.Vars-B (s.Mode e.Index s.Sample (e.Insts)) e.Vars-E)
+        (e.AllocCommands (CmdAllocateElem ElSavePos s.InsertPos))
+        /*
+          Коррекцию всех переменных нужно осуществлять до переносов
+          этих переменных. Переносы переменных выполняются в обратном
+          порядке, т.к. операция переноса вставляет значение перед
+          позицией вставки.
+        */
+        (
+          (CmdCorrectVar s.Mode s.Inst)
+          e.Commands
+          (CmdInsertVar s.InsertPos s.Mode s.Inst)
+        )
+        s.Stack e.Result
+      >;
 
   /* Переменная есть в образце — переносим, позиция не подготовлена */
-  (e.Vars-B (s.Usings s.Mode e.Index) e.Vars-E) (e.AllocCommands) (e.Commands)
-  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result =
-    <DoGenResult
-      (e.Vars-B <DecUsings s.Usings s.Mode e.Index> e.Vars-E)
-      (e.AllocCommands (CmdAllocateElem ElSavePos s.Stack))
-      /*
-        Коррекцию всех переменных нужно осуществлять до переносов
-        этих переменных. Переносы переменных выполняются в обратном
-        порядке, т.к. операция переноса вставляет значение перед
-        позицией вставки.
-      */
-      (
-        (CmdCorrectVar s.Usings s.Mode e.Index)
-        e.Commands
-        (CmdInsertVar s.Stack s.Usings s.Mode e.Index)
-      )
-      <Inc s.Stack> e.Result
-    >;
+  (e.Vars-B (s.Mode e.Index s.Sample (s.Inst e.Insts)) e.Vars-E)
+  (e.AllocCommands) (e.Commands)
+  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result
+    = <DoGenResult
+        (e.Vars-B (s.Mode e.Index s.Sample (e.Insts)) e.Vars-E)
+        (e.AllocCommands (CmdAllocateElem ElSavePos s.Stack))
+        /*
+          Коррекцию всех переменных нужно осуществлять до переносов
+          этих переменных. Переносы переменных выполняются в обратном
+          порядке, т.к. операция переноса вставляет значение перед
+          позицией вставки.
+        */
+        (
+          (CmdCorrectVar s.Mode s.Inst)
+          e.Commands
+          (CmdInsertVar s.Stack s.Mode s.Inst)
+        )
+        <Inc s.Stack> e.Result
+      >;
 
   /* Переменной нет в образце — копируем */
-  (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElVariable s.Mode e.Index))
-      (e.Commands)
-      s.Stack e.Result
-    >;
+  (e.Vars-B (s.Mode e.Index s.Sample ()) e.Vars-E)
+  (e.AllocCommands) (e.Commands)
+  s.Stack (Variable t.SrcPos s.Mode e.Index) e.Result
+    = <DoGenResult
+        (e.Vars-B (s.Mode e.Index s.Sample ()) e.Vars-E)
+        (e.AllocCommands (CmdAllocateElem ElVariable s.Mode s.Sample))
+        (e.Commands)
+        s.Stack e.Result
+      >;
 
   /* Завершение просмотра */
-  (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Stack =
-    s.Stack e.AllocCommands e.Commands;
-}
-
-DecUsings {
-  1 s.Mode e.Index = /* пусто */;
-  s.Usings s.Mode e.Index = (<Dec s.Usings> s.Mode e.Index);
+  (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Stack
+    = s.Stack e.AllocCommands e.Commands;
 }
 
 
@@ -958,17 +926,14 @@ ComposeSentenceCommands {
 }
 
 $ENTRY generator_MakeDeclaration {
-  (s.Usings s.Mode e.Index) =
-    (CmdDeclareVar s.Usings s.Mode e.Index)
-    <MakeDeclaration-Aux s.Usings s.Mode e.Index>;
+  (s.Mode e.Index s.Sample (s.Inst e.Insts))
+    = (CmdComment
+        s.Mode '.' e.Index ': '
+        <Symb s.Inst> <Map r05-generator-SymbInst e.Insts>
+      );
 }
 
-MakeDeclaration-Aux {
-  1 s.Mode e.Index = /* это была последняя */;
-
-  s.Usings s.Mode e.Index =
-    <generator_MakeDeclaration (<Dec s.Usings> s.Mode e.Index)>;
-}
+$ENTRY r05-generator-SymbInst { s.Inst = ', ' <Symb s.Inst> }
 
 GenerateResult-OpenELoops {
   e.Commands-B (CmdOpenedE s.BracketNum 'e' e.Index) e.Commands-E =
