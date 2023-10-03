@@ -665,8 +665,8 @@ _повторной,)_ то для неё запоминаются все вх�
         r05_alloc_chars("$EXTERN ", 8);
         r05_alloc_insert_pos(p+5);
         r05_alloc_chars(";\n", 2);
-        r05_correct_evar(p+2, p+3);
-        r05_splice_evar(p[5], p[2], p[3]);
+        r05_correct_evar(p+2);
+        r05_splice_evar(p[5], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1277,6 +1277,12 @@ e-переменная — «перехлёстом».
 соответствуют парам ячеек `p[4]`, `p[5]` и `p[16]`, `p[17]` соответственно.
 Переменная `e.Values-B` располагается в паре ячеек `p[7]`, `p[8]`.
 
+В функции сопоставления с образцом и построения результата передаётся адрес
+первой ячейки массива, соответствующего переменной, т.к. t- и e-переменные
+всегда занимают смежные ячейки. Поэтому вместо `p[i]` и `p[i′]` достаточно
+передать `p+i`. Для s-переменных тоже передаётся ссылка, однако она передаётся
+для единообразия генерации кода.
+
 Также этот массив используется при построении результата, о чём будет сказано
 в следующем параграфе.
 
@@ -1335,13 +1341,10 @@ e-переменная — «перехлёстом».
 `number`         | целое число с суффиксом `UL`, например `42UL`
 `brackets`       | указатели на поддиапазон `bb+j, be+j`
 `svar`           | указатель на s-переменную `p+i`
-`tvar`           | указатель на t-переменную `p+i`, `p+i′`
-`repeated_svar`  | указатели на новую и старую переменные, `p+i, p+j`
-`repeated_tvar`  | пары указателей на новую и старую переменные `p+i, p+i′, p[j], p[j′]`
-`repeated_evar`  | пары указателей на новую и старую переменные `p+i, p+i′, p[j], p[j′]`
-
-<!-- ↑ намеренно нарушен стиль оформления, поскольку правильность отображения
-в GitHub и GitHub Pages важнее -->
+`tvar`           | указатель на t-переменную `p+i`
+`repeated_svar`  | указатели на новую и старую переменные, `p+i`
+`repeated_tvar`  | пары указателей на новую и старую переменные `p+i, p+j`
+`repeated_evar`  | пары указателей на новую и старую переменные `p+i, p+j`
 
 Эти команды сопоставления проверяют, что диапазон начинается либо заканчивается
 на указанное значение: конкретный символ, произвольный символ, произвольный
@@ -1415,7 +1418,7 @@ e-переменными такое присваивание нулей буде
       операции сопоставления
       построение результата
       return;
-    } while (r05_open_evar_advance(p+k, p+k′, p+j, p+j′));
+    } while (r05_open_evar_advance(p+k, p+j));
     r05_stop_e_loop();
 
 На первой итерации цикла длина открытой переменной равна нулю, уменьшаемый
@@ -1472,7 +1475,7 @@ e-переменными такое присваивание нулей буде
           continue;
         if (! r05_brackets_left(p+14, p+15, p+12, p+13))
           continue;
-        if (! r05_repeated_evar_left(p+16, p+17, p[4], p[5], p+14, p+15))
+        if (! r05_repeated_evar_left(p+16, p+4, p+14, p+15))
           continue;
         if (! r05_empty_seq(p[14], p[15]))
           continue;
@@ -1483,7 +1486,7 @@ e-переменными такое присваивание нулей буде
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
-      } while (r05_open_evar_advance(p+7, p+8, p+0, p+1));
+      } while (r05_open_evar_advance(p+7, p+0, p+1));
       r05_stop_e_loop();
     } while (0);
 
@@ -1542,7 +1545,7 @@ e-переменными такое присваивание нулей буде
         p[10] = p[3];
         p[11] = p[4];
         p[12] = p[5];
-        if (! r05_tvar_left(p+13, p+14, p+9, p+10))
+        if (! r05_tvar_left(p+13, p+9, p+10))
           continue;
         /* Unused closed variable e.Set1-E */
         p[18] = p[11];
@@ -1551,7 +1554,7 @@ e-переменными такое присваивание нулей буде
         do {
           p[21] = p[11];
           p[22] = p[12];
-          if (! r05_repeated_tvar_left(p+23, p+24, p[13], p[14], p+21, p+22))
+          if (! r05_repeated_tvar_left(p+23, p+13, p+21, p+22))
             continue;
           /* Unused closed variable e.Set2-E */
 
@@ -1559,9 +1562,9 @@ e-переменными такое присваивание нулей буде
           r05_splice_from_freelist(arg_begin);
           r05_splice_to_freelist(arg_begin, arg_end);
           return;
-        } while (r05_open_evar_advance(p+18, p+19, p+11, p+12));
+        } while (r05_open_evar_advance(p+18, p+11, p+12));
         r05_stop_e_loop();
-      } while (r05_open_evar_advance(p+6, p+7, p+2, p+3));
+      } while (r05_open_evar_advance(p+6, p+2, p+3));
       r05_stop_e_loop();
     } while (0);
 
@@ -1608,7 +1611,7 @@ e-переменными такое присваивание нулей буде
           continue;
         p[13] = p[11];
         p[14] = p[12];
-        if (! r05_repeated_evar_right(p+16, p+17, p[13], p[14], p+9, p+10))
+        if (! r05_repeated_evar_right(p+16, p+13, p+9, p+10))
           continue;
         if (! r05_char_right('X', p+9, p+10))
           continue;
@@ -1619,7 +1622,7 @@ e-переменными такое присваивание нулей буде
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
-      } while (r05_open_evar_advance(p+4, p+5, p+0, p+1));
+      } while (r05_open_evar_advance(p+4, p+0, p+1));
       r05_stop_e_loop();
     } while (0);
 
@@ -1691,9 +1694,9 @@ e-переменными такое присваивание нулей буде
 `open_call`     | позиция, `p+j`
 `close_call`    | позиция, `p+j`
 `insert_pos`    | позиция, `p+j`
-`svar`          | s-переменная, `p[i]`
-`tvar`          | t-переменная, пара указателей: `p[i], p[i′]`
-`evar`          | e-переменная, пара указателей: `p[i], p[i′]`
+`svar`          | s-переменная, `p+i`
+`tvar`          | t-переменная, пара указателей: `p+i`
+`evar`          | e-переменная, пара указателей: `p+i`
 
 Функция `r05_alloc_chars()` добавлена для оптимизации случая, когда несколько
 литер идут подряд. Аналогичной оптимизации для левой части не предусмотрено,
@@ -1755,9 +1758,9 @@ e-переменными такое присваивание нулей буде
 
 **Перенос переменных в их позиции** выполняется командами
 
-    r05_splice_tvar(p[j], p[i], p[i′]);
+    r05_splice_tvar(p[j], p+i);
 
-    r05_splice_evar(p[j], p[i], p[i′]);
+    r05_splice_evar(p[j], p+i);
 
 Обе команды переносят значения переменных _перед_ сохранённым указателем.
 
@@ -1769,7 +1772,7 @@ e-переменными такое присваивание нулей буде
 принадлежит переносимой переменной. Поэтому всем операциям переноса переменных
 предшествуют **операции коррекции e-переменных**:
 
-    r05_correct_evar(p+i, p+i′);
+    r05_correct_evar(p+i);
 
 которые для пустых переменных присваивают им пару нулевых указателей. Функция
 `r05_splice_evar()` распознаёт пару нулевых указателей как пустую переменную
@@ -1827,13 +1830,13 @@ e-переменными такое присваивание нулей буде
         r05_reset_allocator();
         r05_alloc_open_call(p+6);
         r05_alloc_function(&r05f_Mu);
-        r05_alloc_svar(p[2]);
+        r05_alloc_svar(p+2);
         r05_alloc_insert_pos(p+7);
         r05_alloc_close_call(p+8);
         r05_push_stack(p[8]);
         r05_push_stack(p[6]);
-        r05_correct_evar(p+3, p+4);
-        r05_splice_evar(p[7], p[3], p[4]);
+        r05_correct_evar(p+3);
+        r05_splice_evar(p[7], p+3);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1850,7 +1853,7 @@ e-переменными такое присваивание нулей буде
           continue;
         p[4] = p[0];
         p[5] = p[1];
-        if (! r05_tvar_left(p+7, p+8, p+2, p+3))
+        if (! r05_tvar_left(p+7, p+2, p+3))
           continue;
         p[9] = p[2];
         p[10] = p[3];
@@ -1862,11 +1865,11 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(p+14);
         r05_push_stack(p[14]);
         r05_push_stack(p[12]);
-        r05_correct_evar(p+4, p+5);
-        r05_correct_evar(p+9, p+10);
-        r05_splice_tvar(p[13], p[7], p[8]);
-        r05_splice_evar(p[13], p[9], p[10]);
-        r05_splice_evar(p[13], p[4], p[5]);
+        r05_correct_evar(p+4);
+        r05_correct_evar(p+9);
+        r05_splice_tvar(p[13], p+7);
+        r05_splice_evar(p[13], p+9);
+        r05_splice_evar(p[13], p+4);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1895,9 +1898,9 @@ e-переменными такое присваивание нулей буде
         struct r05_node *p[15] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* t.Fn t.Next e.Tail */
-        if (! r05_tvar_left(p+2, p+3, p+0, p+1))
+        if (! r05_tvar_left(p+2, p+0, p+1))
           continue;
-        if (! r05_tvar_left(p+4, p+5, p+0, p+1))
+        if (! r05_tvar_left(p+4, p+0, p+1))
           continue;
         p[6] = p[0];
         p[7] = p[1];
@@ -1909,17 +1912,17 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(p+11);
         r05_alloc_open_call(p+12);
         r05_alloc_function(&r05f_Map);
-        r05_alloc_tvar(p[2], p[3]);
+        r05_alloc_tvar(p+2);
         r05_alloc_insert_pos(p+13);
         r05_alloc_close_call(p+14);
         r05_push_stack(p[14]);
         r05_push_stack(p[12]);
-        r05_correct_evar(p+6, p+7);
+        r05_correct_evar(p+6);
         r05_push_stack(p[11]);
         r05_push_stack(p[9]);
-        r05_splice_tvar(p[10], p[2], p[3]);
-        r05_splice_tvar(p[10], p[4], p[5]);
-        r05_splice_evar(p[13], p[6], p[7]);
+        r05_splice_tvar(p[10], p+2);
+        r05_splice_tvar(p[10], p+4);
+        r05_splice_evar(p[13], p+6);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1930,7 +1933,7 @@ e-переменными такое присваивание нулей буде
         struct r05_node *p[4] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* t.Fn */
-        if (! r05_tvar_left(p+2, p+3, p+0, p+1))
+        if (! r05_tvar_left(p+2, p+0, p+1))
           continue;
         if (! r05_empty_seq(p[0], p[1]))
           continue;
@@ -1989,8 +1992,8 @@ e-переменными такое присваивание нулей буде
         r05_alloc_insert_pos(p+6);
         r05_alloc_close_bracket(p+7);
         r05_link_brackets(p[5], p[7]);
-        r05_correct_evar(p+2, p+3);
-        r05_splice_evar(p[6], p[2], p[3]);
+        r05_correct_evar(p+2);
+        r05_splice_evar(p[6], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -2024,8 +2027,8 @@ e-переменными такое присваивание нулей буде
         r05_push_stack(p[11]);
         r05_push_stack(p[10]);
         r05_link_brackets(p[5], p[7]);
-        r05_correct_evar(p+2, p+3);
-        r05_splice_evar(p[6], p[2], p[3]);
+        r05_correct_evar(p+2);
+        r05_splice_evar(p[6], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -2132,8 +2135,8 @@ e-переменными такое присваивание нулей буде
         r05_alloc_close_call(p+7);
         r05_push_stack(p[7]);
         r05_push_stack(p[5]);
-        r05_correct_evar(p+2, p+3);
-        r05_splice_evar(p[6], p[2], p[3]);
+        r05_correct_evar(p+2);
+        r05_splice_evar(p[6], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -2348,14 +2351,14 @@ e-переменными такое присваивание нулей буде
 
     /* в файле refal05rts.c */
 
-    void r05_alloc_tevar(struct r05_node *sample_b, struct r05_node *sample_e) {
-      struct r05_node *limit = sample_e->next;
+    void r05_alloc_tevar(struct r05_node **sample) {
+      struct r05_node *p, *limit;
       clock_t start_copy_time = clock();
 
       struct r05_node *bracket_stack = 0;
 
-      while (sample_b != limit) {
-        struct r05_node *copy = r05_alloc_node(sample_b->tag);
+      for (p = sample[0], limit = sample[1]->next; p != limit; p = p->next) {
+        struct r05_node *copy = r05_alloc_node(p->tag);
 
         if (is_open_bracket(copy)) {
           copy->info.link = bracket_stack;
@@ -2367,10 +2370,8 @@ e-переменными такое присваивание нулей буде
           bracket_stack = bracket_stack->info.link;
           r05_link_brackets(open_cobracket, copy);
         } else {
-          copy->info = sample_b->info;
+          copy->info = p->info;
         }
-
-        sample_b = sample_b->next;
       }
 
       assert(bracket_stack == 0);
@@ -2382,19 +2383,18 @@ e-переменными такое присваивание нулей буде
 Аналогично не требуется рекурсии и для сравнения выражений на равенство:
 
     int r05_repeated_tevar_left(
-      struct r05_node **tevar_b, struct r05_node **tevar_e,
-      struct r05_node *tevar_b_sample, struct r05_node *tevar_e_sample,
+      struct r05_node **tevar, struct r05_node **tevar_sample,
       struct r05_node **first, struct r05_node **last, char type
     ) {
       clock_t start_match = clock();
       struct r05_node *current = *first;
-      struct r05_node *cur_sample = tevar_b_sample;
+      struct r05_node *cur_sample = tevar_sample[0];
       struct r05_node *copy_last = *last;
 
       while (
         /* порядок условий важен */
         ! r05_empty_seq(current, copy_last)
-          && ! r05_empty_seq(cur_sample, tevar_e_sample)
+          && ! r05_empty_seq(cur_sample, tevar_sample[1])
           && equal_nodes(current, cur_sample)
       ) {
         cur_sample = cur_sample->next;
@@ -2407,14 +2407,14 @@ e-переменными такое присваивание нулей буде
 
       /*
         Здесь r05_empty_seq(current, copy_last)
-          || r05_empty_seq(cur_sample, tevar_e_sample)
+          || r05_empty_seq(cur_sample, tevar_sample[1])
           || ! equal_nodes(current, cur_sample)
       */
-      if (r05_empty_seq(cur_sample, tevar_e_sample)) {
+      if (r05_empty_seq(cur_sample, tevar_sample[1])) {
         /* Это нормальное завершение цикла — вся образцовая переменная проверена */
 
-        *tevar_b = *first;
-        *tevar_e = current->prev;
+        tevar[0] = *first;
+        tevar[1] = current->prev;
         *first = current;
 
         return 1;

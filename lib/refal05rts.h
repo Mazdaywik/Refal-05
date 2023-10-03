@@ -115,52 +115,47 @@ int r05_svar_right(
 );
 
 int r05_tvar_left(
-  struct r05_node **tvar_b, struct r05_node **tvar_e,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
 );
 
 int r05_tvar_right(
-  struct r05_node **tvar_b, struct r05_node **tvar_e,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
 );
 
 int r05_repeated_svar_left(
-  struct r05_node **svar, struct r05_node *svar_sample,
+  struct r05_node **svar, struct r05_node **svar_sample,
   struct r05_node **first, struct r05_node **last
 );
 
 int r05_repeated_svar_right(
-  struct r05_node **svar, struct r05_node *svar_sample,
+  struct r05_node **svar, struct r05_node **svar_sample,
   struct r05_node **first, struct r05_node **last
 );
 
-#define r05_repeated_tvar_left(vb, ve, sb, se, f, l) \
-  r05_repeated_tevar_left(vb, ve, sb, se, f, l, 't')
+#define r05_repeated_tvar_left(v, s, f, l) \
+  r05_repeated_tevar_left(v, s, f, l, 't')
 
-#define r05_repeated_tvar_right(vb, ve, sb, se, f, l) \
-  r05_repeated_tevar_right(vb, ve, sb, se, f, l, 't')
+#define r05_repeated_tvar_right(v, s, f, l) \
+  r05_repeated_tevar_right(v, s, f, l, 't')
 
-#define r05_repeated_evar_left(vb, ve, sb, se, f, l) \
-  r05_repeated_tevar_left(vb, ve, sb, se, f, l, 'e')
+#define r05_repeated_evar_left(v, s, f, l) \
+  r05_repeated_tevar_left(v, s, f, l, 'e')
 
-#define r05_repeated_evar_right(vb, ve, sb, se, f, l) \
-  r05_repeated_tevar_right(vb, ve, sb, se, f, l, 'e')
+#define r05_repeated_evar_right(v, s, f, l) \
+  r05_repeated_tevar_right(v, s, f, l, 'e')
 
 int r05_repeated_tevar_left(
-  struct r05_node **tevar_b, struct r05_node **tevar_e,
-  struct r05_node *tevar_b_sample, struct r05_node *tevar_e_sample,
+  struct r05_node **tevar, struct r05_node **tevar_sample,
   struct r05_node **first, struct r05_node **last, char type
 );
 
 int r05_repeated_tevar_right(
-  struct r05_node **tevar_b, struct r05_node **tevar_e,
-  struct r05_node *tevar_b_sample, struct r05_node *tevar_e_sample,
+  struct r05_node **tevar, struct r05_node **tevar_sample,
   struct r05_node **first, struct r05_node **last, char type
 );
 
 int r05_open_evar_advance(
-  struct r05_node **evar_b, struct r05_node **evar_e,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **evar, struct r05_node **first, struct r05_node **last
 );
 
 size_t r05_read_chars(
@@ -173,14 +168,12 @@ size_t r05_read_chars(
 void r05_push_stack(struct r05_node *call_bracket);
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
 
-void r05_correct_evar(struct r05_node **evar_b, struct r05_node **evar_e);
+void r05_correct_evar(struct r05_node **evar);
 
 #define r05_splice_tvar r05_splice_tevar
 #define r05_splice_evar r05_splice_tevar
 
-void r05_splice_tevar(
-  struct r05_node *res, struct r05_node *first, struct r05_node *last
-);
+void r05_splice_tevar(struct r05_node *res, struct r05_node **tevar);
 
 void r05_splice_to_freelist(struct r05_node *first, struct r05_node *last);
 void r05_splice_from_freelist(struct r05_node *pos);
@@ -217,12 +210,12 @@ void r05_alloc_chars(const char buffer[], size_t len);
 #define r05_alloc_insert_pos(pos) (*(pos) = r05_insert_pos());
 
 #define r05_alloc_svar(sample) \
-  (r05_alloc_node((sample)->tag)->info = (sample)->info);
+  (r05_alloc_node((*(sample))->tag)->info = (*(sample))->info);
 
 #define r05_alloc_tvar r05_alloc_tevar
 #define r05_alloc_evar r05_alloc_tevar
 
-void r05_alloc_tevar(struct r05_node *sample_b, struct r05_node *sample_e);
+void r05_alloc_tevar(struct r05_node **sample);
 void r05_alloc_string(const char *string);
 
 

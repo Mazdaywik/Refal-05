@@ -406,7 +406,7 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
 R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   struct r05_node *sLen, *eItems_b, *eItems_e;
   r05_number counter;
-  struct r05_node *ePrefix_b, *ePrefix_e, *eSuffix_b, *eSuffix_e;
+  struct r05_node *ePrefix[2], *eSuffix[2];
   struct r05_node *left_bracket, *right_bracket, *pos;
 
   r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
@@ -420,13 +420,12 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
 
   counter = sLen->info.number;
 
-  ePrefix_b = eItems_b;
-  ePrefix_e = ePrefix_b->prev;
-  eSuffix_b = eItems_b;
-  eSuffix_e = eItems_e;
+  ePrefix[0] = eItems_b;
+  ePrefix[1] = ePrefix[0]->prev;
+  eSuffix[0] = eItems_b;
+  eSuffix[1] = eItems_e;
   while (
-    counter > 0
-    && r05_open_evar_advance(&ePrefix_b, &ePrefix_e, &eSuffix_b, &eSuffix_e)
+    counter > 0 && r05_open_evar_advance(ePrefix, &eSuffix[0], &eSuffix[1])
   ) {
     -- counter;
   }
@@ -437,10 +436,10 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   pos = r05_insert_pos();
 
   r05_link_brackets(left_bracket, right_bracket);
-  r05_correct_evar(&ePrefix_b, &ePrefix_e);
-  r05_correct_evar(&eSuffix_b, &eSuffix_e);
-  r05_splice_evar(right_bracket, ePrefix_b, ePrefix_e);
-  r05_splice_evar(pos, eSuffix_b, eSuffix_e);
+  r05_correct_evar(ePrefix);
+  r05_correct_evar(eSuffix);
+  r05_splice_evar(right_bracket, ePrefix);
+  r05_splice_evar(pos, eSuffix);
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
@@ -682,13 +681,13 @@ static struct r05_function *implode(
       s.Len ::= s.NUMBER, s.Len == |e.Expr|
 */
 R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
-  struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm_b, *tTerm_e;
+  struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm[2];
   r05_number counter = 0;
 
   r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
   sLen = arg_begin->next;
 
-  while (r05_tvar_left(&tTerm_b, &tTerm_e, &eItems_b, &eItems_e)) {
+  while (r05_tvar_left(tTerm, &eItems_b, &eItems_e)) {
     ++ counter;
   }
 

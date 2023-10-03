@@ -288,9 +288,9 @@ MatchArgs {
   Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
 
   Repeated s.Mode s.SampleOffset s.Offset
-    = <VarPtr s.Mode s.Offset> ', ' <Var s.Mode s.SampleOffset>;
+    = <ElemPtr s.Offset> ', ' <ElemPtr s.SampleOffset>;
 
-  Variable s.Mode s.Offset = <VarPtr s.Mode s.Offset>;
+  Variable s.Mode s.Offset = <ElemPtr s.Offset>;
 }
 
 SymbolTextRep {
@@ -323,7 +323,7 @@ CmdOpenedE-End {
   (e.Indent) s.BracketNumber 'e' s.Offset =
     (e.Indent
       '} while (r05_open_evar_advance('
-      <VarPtr 'e' s.Offset> ', ' <RangeVarsPtr s.BracketNumber>
+      <ElemPtr s.Offset> ', ' <RangeVarsPtr s.BracketNumber>
       '));'
     )
     (e.Indent 'r05_stop_e_loop();');
@@ -359,7 +359,7 @@ ElCloseCall { s.Pos = 'close_call(' <ElemPtr s.Pos> ');' }
 
 ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ');' }
 
-ElVariable { s.Mode s.Offset = s.Mode 'var(' <Var s.Mode s.Offset> ');' }
+ElVariable { s.Mode s.Offset = s.Mode 'var(' <ElemPtr s.Offset> ');' }
 
 CmdLinkBrackets {
   (e.Indent) s.Left s.Right =
@@ -373,7 +373,7 @@ CmdPushStack {
 
 CmdCorrectVar {
   (e.Indent) 'e' s.Offset
-    = (e.Indent 'r05_correct_evar(' <VarPtr 'e' s.Offset> ');');
+    = (e.Indent 'r05_correct_evar(' <ElemPtr s.Offset> ');');
 
   (e.Indent) s.Mode s.Offset = /* для остальных переменных ничего не делаем */;
 }
@@ -381,7 +381,7 @@ CmdCorrectVar {
 CmdInsertVar {
   (e.Indent) s.Pos s.Mode s.Offset
     = (e.Indent
-        'r05_splice_' s.Mode 'var(' <Elem s.Pos> ', ' <Var s.Mode s.Offset> ');'
+        'r05_splice_' s.Mode 'var(' <Elem s.Pos> ', ' <ElemPtr s.Offset> ');'
       );
 }
 
@@ -422,16 +422,6 @@ EscapeChar-SwCompare {
     <Symb <Div s.Code 64>>
     <Symb <Mod <Div s.Code 8> 8>>
     <Symb <Mod s.Code 8>>;
-}
-
-Var {
-  's' s.Offset = <Elem s.Offset>;
-  s.Mode s.Offset = <Elem s.Offset> ', ' <Elem <Inc s.Offset>>;
-}
-
-VarPtr {
-  's' s.Offset = <ElemPtr s.Offset>;
-  s.Mode s.Offset = <ElemPtr s.Offset> ', ' <ElemPtr <Inc s.Offset>>;
 }
 
 Var-B { s.Offset = <Elem s.Offset> }
