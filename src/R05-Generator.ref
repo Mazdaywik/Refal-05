@@ -437,11 +437,38 @@ ElemPtr { s.Number = 'p+' <Symb s.Number> }
 
 CompileSentence {
   (e.Pattern) (e.Result)
-    , <GenPattern e.Pattern> : s.Stack (e.PatternVars) (e.PatternCommands)
-    = <ComposeSentenceCommands
-        (e.PatternVars) (e.PatternCommands)
-        <GenResult s.Stack (e.PatternVars) e.Result>
+    , <GenPattern e.Pattern> : s.PatStack (e.PatternVars) (e.PatternCommands)
+    , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
+    = <CompileSentence-OpenELoops
+        <Map generator_MakeDeclaration e.PatternVars>
+        (CmdAllocStack s.Stack)
+        (CmdInitB0)
+        (CmdComment <InlineExpr e.Pattern>)
+        e.PatternCommands
+        (CmdEmptyResult)
+        e.ResultCommands
+        (CmdReturnResult)
       >;
+}
+
+$ENTRY generator_MakeDeclaration {
+  (s.Mode e.Index s.Sample (s.Inst e.Insts))
+    = (CmdComment
+        s.Mode '.' e.Index ': '
+        <Symb s.Inst> <Map r05-generator-SymbInst e.Insts>
+      );
+}
+
+$ENTRY r05-generator-SymbInst { s.Inst = ', ' <Symb s.Inst> }
+
+CompileSentence-OpenELoops {
+  e.Commands-B (CmdOpenedE s.BracketNum 'e' e.Index) e.Commands-E
+    = e.Commands-B
+      (CmdOpenedE-Start s.BracketNum 'e' e.Index)
+      <CompileSentence-OpenELoops e.Commands-E>
+      (CmdOpenedE-End s.BracketNum 'e' e.Index);
+
+  e.Commands = e.Commands;
 }
 
 /*
@@ -489,14 +516,7 @@ CompileSentence {
 */
 
 GenPattern {
-  e.Pattern =
-    <DoGenPattern
-      2 (0 e.Pattern) (/* vars */)
-      (
-        (CmdComment <InlineExpr e.Pattern>)
-        /* commands */
-      )
-    >;
+  e.Pattern = <DoGenPattern 2 (0 e.Pattern) (/* vars */) (/* commands */)>;
 }
 
 Inc2 { s.N = <+ s.N 2> }
@@ -836,39 +856,4 @@ DoGenResult {
   /* Завершение просмотра */
   (e.UnusedVars) (e.AllocCommands) (e.Commands) s.Stack
     = s.Stack e.AllocCommands e.Commands;
-}
-
-
-ComposeSentenceCommands {
-  (e.PatternVars) (e.PatternCommands)
-  s.Stack e.ResultCommands =
-    <GenerateResult-OpenELoops
-      <Map generator_MakeDeclaration e.PatternVars>
-      (CmdAllocStack s.Stack)
-      (CmdInitB0)
-      e.PatternCommands
-      (CmdEmptyResult)
-      e.ResultCommands
-      (CmdReturnResult)
-    >;
-}
-
-$ENTRY generator_MakeDeclaration {
-  (s.Mode e.Index s.Sample (s.Inst e.Insts))
-    = (CmdComment
-        s.Mode '.' e.Index ': '
-        <Symb s.Inst> <Map r05-generator-SymbInst e.Insts>
-      );
-}
-
-$ENTRY r05-generator-SymbInst { s.Inst = ', ' <Symb s.Inst> }
-
-GenerateResult-OpenELoops {
-  e.Commands-B (CmdOpenedE s.BracketNum 'e' e.Index) e.Commands-E =
-    e.Commands-B
-    (CmdOpenedE-Start s.BracketNum 'e' e.Index)
-    <GenerateResult-OpenELoops e.Commands-E>
-    (CmdOpenedE-End s.BracketNum 'e' e.Index);
-
-  e.Commands = e.Commands;
 }
