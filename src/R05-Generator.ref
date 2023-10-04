@@ -437,73 +437,11 @@ ElemPtr { s.Number = 'p+' <Symb s.Number> }
 
 CompileSentence {
   (e.Pattern) (e.Result)
-    = <CompileSentence-Aux
-        <GenPattern e.Pattern>
-        (<CountVars e.Pattern e.Result (/* vars */)>)
-        e.Result
-      >;
-}
-
-CountVars {
-  (Brackets e.Nested) e.Expr (e.Vars)
-    = <CountVars e.Nested e.Expr (e.Vars)>;
-
-  (Call t.SrcPos (e.Name) e.Nested) e.Expr (e.Vars)
-    = <CountVars e.Nested e.Expr (e.Vars)>;
-
-  (Variable t.SrcPos 'e' e.Index) e.Expr (e.Vars)
-    , e.Vars
-    : {
-        e.Vars-B (e.Index s.Count) e.Vars-E
-          = <CountVars e.Expr (e.Vars-B (e.Index MANY) e.Vars-E)>;
-
-        e.Vars_ = <CountVars e.Expr (e.Vars_ (e.Index ONE))>;
-      };
-
-   t.Term e.Expr (e.Vars) = <CountVars e.Expr (e.Vars)>;
-
-   /* пусто */ (e.Vars) = e.Vars;
-}
-
-CompileSentence-Aux {
-  s.Stack (e.PatternVars) (e.PatternCommands) (e.EVarsCount) e.Result
+    , <GenPattern e.Pattern> : s.Stack (e.PatternVars) (e.PatternCommands)
     = <ComposeSentenceCommands
-        <RemoveUnusedEVars (e.PatternVars) (e.PatternCommands) e.EVarsCount>
+        (e.PatternVars) (e.PatternCommands)
         <GenResult s.Stack (e.PatternVars) e.Result>
       >;
-}
-
-RemoveUnusedEVars {
-  (e.PatternVars-B ('e' e.Index s.Offset (s.Offset)) e.PatternVars-E)
-  (e.PatternCommands-B (CmdClosedE s.Num 'e' s.Offset) e.PatternCommands-E)
-  e.Vars-B (e.Index ONE) e.Vars-E
-    = <RemoveUnusedEVars
-        (e.PatternVars-B e.PatternVars-E)
-        (
-          e.PatternCommands-B
-          (CmdComment 'Unused closed variable e.' e.Index)
-          e.PatternCommands-E
-        )
-        e.Vars-B e.Vars-E
-      >;
-
-  (e.PatternVars) (e.PatternCommands) e.Vars
-    = (e.PatternVars) (e.PatternCommands);
-}
-
-MarkUnusedVars {
-  e.Pattern (e.Vars)
-    = <Map (r05-generator-MarkUnusedVars-Term e.Vars) e.Pattern>;
-}
-
-$ENTRY r05-generator-MarkUnusedVars-Term {
-  e.Vars (Brackets e.Nested)
-    = (Brackets <MarkUnusedVars e.Nested (e.Vars)>);
-
-  e.Vars-B (e.Index ONE) e.Vars-E (Variable t.SrcPos 'e' e.Index)
-    = (Variable t.SrcPos 'e' SINGLE e.Index);
-
-  e.Vars t.Term = t.Term;
 }
 
 /*
