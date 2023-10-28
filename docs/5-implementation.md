@@ -655,7 +655,7 @@ _повторной,)_ то для неё запоминаются все вх�
 
       do {
         /* e.Name: 2 */
-        struct r05_node *p[6] = { 0 };
+        struct r05_node *p[5] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* e.Name */
         p[2] = p[0];
@@ -663,10 +663,10 @@ _повторной,)_ то для неё запоминаются все вх�
 
         r05_reset_allocator();
         r05_alloc_chars("$EXTERN ", 8);
-        r05_alloc_insert_pos(p+5);
+        r05_alloc_insert_pos(p+4);
         r05_alloc_chars(";\n", 2);
         r05_correct_evar(p+2);
-        r05_splice_evar(p[5], p+2);
+        r05_splice_evar(p[4], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1449,41 +1449,41 @@ e-переменными такое присваивание нулей буде
 Сгенерированный код:
 
     do {
-      /* e.Name: 4, 16 */
-      /* e.Values-B: 7 */
-      /* e.Value: 19 */
-      /* e.Values-E: 22 */
-      struct r05_node *p[25] = { 0 };
+      /* e.Name: 4, 14 */
+      /* e.Values-B: 6 */
+      /* e.Value: 16 */
+      /* e.Values-E: 18 */
+      struct r05_node *p[20] = { 0 };
       r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
       /* (e.Name) e.Values-B ((e.Name) e.Value) e.Values-E */
       if (! r05_brackets_left(p+2, p+3, p+0, p+1))
         continue;
       p[4] = p[2];
       p[5] = p[3];
-      p[7] = p[0];
-      p[8] = p[7]->prev;
+      p[6] = p[0];
+      p[7] = p[6]->prev;
       r05_start_e_loop();
       do {
-        p[10] = p[0];
-        p[11] = p[1];
+        p[8] = p[0];
+        p[9] = p[1];
+        if (! r05_brackets_left(p+10, p+11, p+8, p+9))
+          continue;
         if (! r05_brackets_left(p+12, p+13, p+10, p+11))
           continue;
-        if (! r05_brackets_left(p+14, p+15, p+12, p+13))
+        if (! r05_repeated_evar_left(p+14, p+4, p+12, p+13))
           continue;
-        if (! r05_repeated_evar_left(p+16, p+4, p+14, p+15))
+        if (! r05_empty_seq(p[12], p[13]))
           continue;
-        if (! r05_empty_seq(p[14], p[15]))
-          continue;
-        p[19] = p[12];
-        p[20] = p[13];
-        p[22] = p[10];
-        p[23] = p[11];
+        p[16] = p[10];
+        p[17] = p[11];
+        p[18] = p[8];
+        p[19] = p[9];
 
         r05_reset_allocator();
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
-      } while (r05_open_evar_advance(p+7, p+0, p+1));
+      } while (r05_open_evar_advance(p+6, p+0, p+1));
       r05_stop_e_loop();
     } while (0);
 
@@ -1518,11 +1518,11 @@ e-переменными такое присваивание нулей буде
 
     do {
       /* e.Set1-B: 6 */
-      /* t.Common: 13, 23 */
-      /* e.Set1-E: 15 */
-      /* e.Set2-B: 18 */
-      /* e.Set2-E: 25 */
-      struct r05_node *p[28] = { 0 };
+      /* t.Common: 12, 20 */
+      /* e.Set1-E: 14 */
+      /* e.Set2-B: 16 */
+      /* e.Set2-E: 22 */
+      struct r05_node *p[24] = { 0 };
       r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
       /* (e.Set1-B t.Common e.Set1-E) (e.Set2-B t.Common e.Set2-E) */
       if (! r05_brackets_left(p+2, p+3, p+0, p+1))
@@ -1535,30 +1535,30 @@ e-переменными такое присваивание нулей буде
       p[7] = p[6]->prev;
       r05_start_e_loop();
       do {
-        p[9] = p[2];
-        p[10] = p[3];
-        p[11] = p[4];
-        p[12] = p[5];
-        if (! r05_tvar_left(p+13, p+9, p+10))
+        p[8] = p[2];
+        p[9] = p[3];
+        p[10] = p[4];
+        p[11] = p[5];
+        if (! r05_tvar_left(p+12, p+8, p+9))
           continue;
+        p[14] = p[8];
         p[15] = p[9];
         p[16] = p[10];
-        p[18] = p[11];
-        p[19] = p[18]->prev;
+        p[17] = p[16]->prev;
         r05_start_e_loop();
         do {
-          p[21] = p[11];
-          p[22] = p[12];
-          if (! r05_repeated_tvar_left(p+23, p+13, p+21, p+22))
+          p[18] = p[10];
+          p[19] = p[11];
+          if (! r05_repeated_tvar_left(p+20, p+12, p+18, p+19))
             continue;
-          p[25] = p[21];
-          p[26] = p[22];
+          p[22] = p[18];
+          p[23] = p[19];
 
           r05_reset_allocator();
           r05_splice_from_freelist(arg_begin);
           r05_splice_to_freelist(arg_begin, arg_end);
           return;
-        } while (r05_open_evar_advance(p+18, p+11, p+12));
+        } while (r05_open_evar_advance(p+16, p+10, p+11));
         r05_stop_e_loop();
       } while (r05_open_evar_advance(p+6, p+2, p+3));
       r05_stop_e_loop();
@@ -1589,10 +1589,10 @@ e-переменными такое присваивание нулей буде
 
     do {
       /* e.Begin: 4 */
-      /* e.Inner: 13, 16 */
-      /* e.End: 19 */
-      /* e.Left: 22 */
-      struct r05_node *p[25] = { 0 };
+      /* e.Inner: 12, 14 */
+      /* e.End: 16 */
+      /* e.Left: 18 */
+      struct r05_node *p[20] = { 0 };
       r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
       /* e.Begin (e.Inner) e.End (e.Left 'X' e.Inner) */
       if (! r05_brackets_right(p+2, p+3, p+0, p+1))
@@ -1601,22 +1601,22 @@ e-переменными такое присваивание нулей буде
       p[5] = p[4]->prev;
       r05_start_e_loop();
       do {
-        p[7] = p[0];
-        p[8] = p[1];
-        p[9] = p[2];
-        p[10] = p[3];
-        if (! r05_brackets_left(p+11, p+12, p+7, p+8))
+        p[6] = p[0];
+        p[7] = p[1];
+        p[8] = p[2];
+        p[9] = p[3];
+        if (! r05_brackets_left(p+10, p+11, p+6, p+7))
           continue;
+        p[12] = p[10];
         p[13] = p[11];
-        p[14] = p[12];
-        if (! r05_repeated_evar_right(p+16, p+13, p+9, p+10))
+        if (! r05_repeated_evar_right(p+14, p+12, p+8, p+9))
           continue;
-        if (! r05_char_right('X', p+9, p+10))
+        if (! r05_char_right('X', p+8, p+9))
           continue;
-        p[19] = p[7];
-        p[20] = p[8];
-        p[22] = p[9];
-        p[23] = p[10];
+        p[16] = p[6];
+        p[17] = p[7];
+        p[18] = p[8];
+        p[19] = p[9];
 
         r05_reset_allocator();
         r05_splice_from_freelist(arg_begin);
@@ -1819,7 +1819,7 @@ e-переменными такое присваивание нулей буде
       do {
         /* s.Fn: 2 */
         /* e.Argument: 3 */
-        struct r05_node *p[9] = { 0 };
+        struct r05_node *p[8] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* s.Fn e.Argument */
         if (! r05_svar_left(p+2, p+0, p+1))
@@ -1828,15 +1828,15 @@ e-переменными такое присваивание нулей буде
         p[4] = p[1];
 
         r05_reset_allocator();
-        r05_alloc_open_call(p+6);
+        r05_alloc_open_call(p+5);
         r05_alloc_function(&r05f_Mu);
         r05_alloc_svar(p+2);
-        r05_alloc_insert_pos(p+7);
-        r05_alloc_close_call(p+8);
-        r05_push_stack(p[8]);
-        r05_push_stack(p[6]);
+        r05_alloc_insert_pos(p+6);
+        r05_alloc_close_call(p+7);
+        r05_push_stack(p[7]);
+        r05_push_stack(p[5]);
         r05_correct_evar(p+3);
-        r05_splice_evar(p[7], p+3);
+        r05_splice_evar(p[6], p+3);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1844,32 +1844,32 @@ e-переменными такое присваивание нулей буде
 
       do {
         /* e.Argument: 4 */
-        /* t.Closure: 7 */
-        /* e.Bounded: 9 */
-        struct r05_node *p[15] = { 0 };
+        /* t.Closure: 6 */
+        /* e.Bounded: 8 */
+        struct r05_node *p[13] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* (t.Closure e.Bounded) e.Argument */
         if (! r05_brackets_left(p+2, p+3, p+0, p+1))
           continue;
         p[4] = p[0];
         p[5] = p[1];
-        if (! r05_tvar_left(p+7, p+2, p+3))
+        if (! r05_tvar_left(p+6, p+2, p+3))
           continue;
-        p[9] = p[2];
-        p[10] = p[3];
+        p[8] = p[2];
+        p[9] = p[3];
 
         r05_reset_allocator();
-        r05_alloc_open_call(p+12);
+        r05_alloc_open_call(p+10);
         r05_alloc_function(&r05f_Apply);
-        r05_alloc_insert_pos(p+13);
-        r05_alloc_close_call(p+14);
-        r05_push_stack(p[14]);
+        r05_alloc_insert_pos(p+11);
+        r05_alloc_close_call(p+12);
         r05_push_stack(p[12]);
+        r05_push_stack(p[10]);
         r05_correct_evar(p+4);
-        r05_correct_evar(p+9);
-        r05_splice_tvar(p[13], p+7);
-        r05_splice_evar(p[13], p+9);
-        r05_splice_evar(p[13], p+4);
+        r05_correct_evar(p+8);
+        r05_splice_tvar(p[11], p+6);
+        r05_splice_evar(p[11], p+8);
+        r05_splice_evar(p[11], p+4);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1895,7 +1895,7 @@ e-переменными такое присваивание нулей буде
         /* t.Fn: 2 */
         /* t.Next: 4 */
         /* e.Tail: 6 */
-        struct r05_node *p[15] = { 0 };
+        struct r05_node *p[14] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* t.Fn t.Next e.Tail */
         if (! r05_tvar_left(p+2, p+0, p+1))
@@ -1906,23 +1906,23 @@ e-переменными такое присваивание нулей буде
         p[7] = p[1];
 
         r05_reset_allocator();
-        r05_alloc_open_call(p+9);
+        r05_alloc_open_call(p+8);
         r05_alloc_function(&r05f_Apply);
-        r05_alloc_insert_pos(p+10);
-        r05_alloc_close_call(p+11);
-        r05_alloc_open_call(p+12);
+        r05_alloc_insert_pos(p+9);
+        r05_alloc_close_call(p+10);
+        r05_alloc_open_call(p+11);
         r05_alloc_function(&r05f_Map);
         r05_alloc_tvar(p+2);
-        r05_alloc_insert_pos(p+13);
-        r05_alloc_close_call(p+14);
-        r05_push_stack(p[14]);
-        r05_push_stack(p[12]);
-        r05_correct_evar(p+6);
+        r05_alloc_insert_pos(p+12);
+        r05_alloc_close_call(p+13);
+        r05_push_stack(p[13]);
         r05_push_stack(p[11]);
-        r05_push_stack(p[9]);
-        r05_splice_tvar(p[10], p+2);
-        r05_splice_tvar(p[10], p+4);
-        r05_splice_evar(p[13], p+6);
+        r05_correct_evar(p+6);
+        r05_push_stack(p[10]);
+        r05_push_stack(p[8]);
+        r05_splice_tvar(p[9], p+2);
+        r05_splice_tvar(p[9], p+4);
+        r05_splice_evar(p[12], p+6);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -1979,7 +1979,7 @@ e-переменными такое присваивание нулей буде
 
       do {
         /* e.Line: 2 */
-        struct r05_node *p[8] = { 0 };
+        struct r05_node *p[7] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* e.Line 0 */
         if (! r05_number_right(0UL, p+0, p+1))
@@ -1988,12 +1988,12 @@ e-переменными такое присваивание нулей буде
         p[3] = p[1];
 
         r05_reset_allocator();
-        r05_alloc_open_bracket(p+5);
-        r05_alloc_insert_pos(p+6);
-        r05_alloc_close_bracket(p+7);
-        r05_link_brackets(p[5], p[7]);
+        r05_alloc_open_bracket(p+4);
+        r05_alloc_insert_pos(p+5);
+        r05_alloc_close_bracket(p+6);
+        r05_link_brackets(p[4], p[6]);
         r05_correct_evar(p+2);
-        r05_splice_evar(p[6], p+2);
+        r05_splice_evar(p[5], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -2001,34 +2001,34 @@ e-переменными такое присваивание нулей буде
 
       do {
         /* e.Line: 2 */
-        struct r05_node *p[14] = { 0 };
+        struct r05_node *p[13] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* e.Line */
         p[2] = p[0];
         p[3] = p[1];
 
         r05_reset_allocator();
-        r05_alloc_open_bracket(p+5);
-        r05_alloc_insert_pos(p+6);
-        r05_alloc_close_bracket(p+7);
-        r05_alloc_open_call(p+8);
+        r05_alloc_open_bracket(p+4);
+        r05_alloc_insert_pos(p+5);
+        r05_alloc_close_bracket(p+6);
+        r05_alloc_open_call(p+7);
         r05_alloc_function(&r05f_DoLoadFile);
-        r05_alloc_open_call(p+9);
+        r05_alloc_open_call(p+8);
         r05_alloc_function(&r05f_Get);
-        r05_alloc_open_call(p+10);
+        r05_alloc_open_call(p+9);
         r05_alloc_function(&r05f_LOADm_SAVEm_HANDLE);
+        r05_alloc_close_call(p+10);
         r05_alloc_close_call(p+11);
         r05_alloc_close_call(p+12);
-        r05_alloc_close_call(p+13);
-        r05_push_stack(p[13]);
-        r05_push_stack(p[8]);
         r05_push_stack(p[12]);
-        r05_push_stack(p[9]);
+        r05_push_stack(p[7]);
         r05_push_stack(p[11]);
+        r05_push_stack(p[8]);
         r05_push_stack(p[10]);
-        r05_link_brackets(p[5], p[7]);
+        r05_push_stack(p[9]);
+        r05_link_brackets(p[4], p[6]);
         r05_correct_evar(p+2);
-        r05_splice_evar(p[6], p+2);
+        r05_splice_evar(p[5], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;
@@ -2120,23 +2120,23 @@ e-переменными такое присваивание нулей буде
 
       do {
         /* e.UserName: 2 */
-        struct r05_node *p[8] = { 0 };
+        struct r05_node *p[7] = { 0 };
         r05_prepare_argument(p+0, p+1, arg_begin, arg_end);
         /* e.UserName */
         p[2] = p[0];
         p[3] = p[1];
 
         r05_reset_allocator();
-        r05_alloc_open_call(p+5);
+        r05_alloc_open_call(p+4);
         r05_alloc_function(&r05f_Prout);
         r05_alloc_chars("Hello, ", 7);
-        r05_alloc_insert_pos(p+6);
+        r05_alloc_insert_pos(p+5);
         r05_alloc_char('!');
-        r05_alloc_close_call(p+7);
-        r05_push_stack(p[7]);
-        r05_push_stack(p[5]);
+        r05_alloc_close_call(p+6);
+        r05_push_stack(p[6]);
+        r05_push_stack(p[4]);
         r05_correct_evar(p+2);
-        r05_splice_evar(p[6], p+2);
+        r05_splice_evar(p[5], p+2);
         r05_splice_from_freelist(arg_begin);
         r05_splice_to_freelist(arg_begin, arg_end);
         return;

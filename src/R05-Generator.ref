@@ -522,7 +522,7 @@ GenPattern {
 Inc2 { s.N = <+ s.N 2> }
 
 VarSize {
-  's' = 1; 't' = 2; 'e' = 3;
+  's' = 1; 't' = 2; 'e' = 2;
 }
 
 IncMode { s.N s.Mode = <+ s.N <VarSize s.Mode>> }
