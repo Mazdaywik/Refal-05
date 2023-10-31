@@ -1203,7 +1203,7 @@ struct buried_query {
   struct r05_node *value[2];
 };
 
-int buried_query(struct buried_query *res, struct r05_node *key[]) {
+static int buried_query(struct buried_query *res, struct r05_node *key[]) {
   struct r05_node *buried_begin = s_begin_buried.next;
   struct r05_node *left_bracket, *right_bracket, *eq;
   int found = 0;
