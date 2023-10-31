@@ -404,15 +404,13 @@ R05_DEFINE_ENTRY_FUNCTION(Explode, "Explode") {
   |e.Prefix| == s.Len || { |e.Prefix| < s.Len && |e.Suffix| == 0 }
 */
 R05_DEFINE_ENTRY_FUNCTION(First, "First") {
-  struct r05_node *sLen, *eItems_b, *eItems_e;
+  struct r05_node *sLen;
   r05_number counter;
   struct r05_node *ePrefix[2], *eSuffix[2];
   struct r05_node *left_bracket, *right_bracket, *pos;
 
-  r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
-
   if (
-    ! r05_svar_left(&sLen, &eItems_b, &eItems_e)
+    ! r05_svar_left(&sLen, arg_begin->next, arg_end)
     || sLen->tag != R05_DATATAG_NUMBER
   ) {
     r05_recognition_impossible();
@@ -420,15 +418,14 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
 
   counter = sLen->info.number;
 
-  ePrefix[0] = eItems_b;
-  ePrefix[1] = ePrefix[0]->prev;
-  eSuffix[0] = eItems_b;
-  eSuffix[1] = eItems_e;
-  while (
-    counter > 0 && r05_open_evar_advance(ePrefix, &eSuffix[0], &eSuffix[1])
-  ) {
+  ePrefix[0] = sLen->next;
+  ePrefix[1] = sLen;
+  while (counter > 0 && r05_open_evar_advance(ePrefix, arg_end)) {
     -- counter;
   }
+
+  eSuffix[0] = ePrefix[1]->next;
+  eSuffix[1] = arg_end->prev;
 
   r05_reset_allocator();
   r05_alloc_open_bracket(&left_bracket);
@@ -681,13 +678,12 @@ static struct r05_function *implode(
       s.Len ::= s.NUMBER, s.Len == |e.Expr|
 */
 R05_DEFINE_ENTRY_FUNCTION(Lenw, "Lenw") {
-  struct r05_node *sLen, *eItems_b, *eItems_e, *tTerm[2];
+  struct r05_node *sLen, *tTerm[2];
   r05_number counter = 0;
 
-  r05_prepare_argument(&eItems_b, &eItems_e, arg_begin, arg_end);
-  sLen = arg_begin->next;
+  sLen = tTerm[1] = arg_begin->next;
 
-  while (r05_tvar_left(tTerm, &eItems_b, &eItems_e)) {
+  while (r05_tvar_left(tTerm, tTerm[1], arg_end)) {
     ++ counter;
   }
 
@@ -838,7 +834,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
 static void ensure_close_stream(unsigned int file_no);
 
 R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
-  struct r05_node *eFileName_b, *eFileName_e, *sMode, *sFileNo;
+  struct r05_node *eFileName[2], *sMode, *sFileNo;
   unsigned int file_no;
   char mode_str[2] = { '.', '\0' };
   const char *mode = mode_str;
@@ -850,19 +846,17 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   char filename[FILENAME_LEN + 1] = { '\0' };
   size_t filename_len;
 
-  r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
-
   if (
-    ! r05_svar_left(&sMode, &eFileName_b, &eFileName_e)
+    ! r05_svar_left(&sMode, arg_begin->next, arg_end)
     || (R05_DATATAG_CHAR != sMode->tag && R05_DATATAG_FUNCTION != sMode->tag)
-    || ! r05_svar_left(&sFileNo, &eFileName_b, &eFileName_e)
+    || ! r05_svar_left(&sFileNo, sMode, arg_end)
     || R05_DATATAG_NUMBER != sFileNo->tag
   ) {
     r05_recognition_impossible();
   }
 
   filename_len =
-    r05_read_chars(filename, FILENAME_LEN, &eFileName_b, &eFileName_e);
+    r05_read_chars(eFileName, filename, FILENAME_LEN, sFileNo, arg_end);
 
   file_no = sFileNo->info.number % FILE_LIMIT;
 
@@ -882,7 +876,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
     mode = sMode->info.function->name;
   }
 
-  if (! r05_empty_seq(eFileName_b, eFileName_e)) {
+  if (! r05_empty_hole(eFileName[1], arg_end)) {
     static const char error_format[] =
       "Very long file name, maximum available is %u";
     char error[sizeof(error_format) + UINT_DIGITS];
@@ -1273,17 +1267,17 @@ R05_DEFINE_ENTRY_FUNCTION(Residue, "Residue") {
       e.EnvName, e.EnvValue ::= s.CHAR*
 */
 R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
-  struct r05_node *eEnvName_b, *eEnvName_e;
-  char env_name[2001];
+  struct r05_node *eEnvName[2];
+  enum { MAX_ENV = 2000 };
+  char env_name[MAX_ENV + 1];
   size_t env_name_len;
   const char *env_value;
 
-  r05_prepare_argument(&eEnvName_b, &eEnvName_e, arg_begin, arg_end);
   env_name_len =
-    r05_read_chars(env_name, sizeof(env_name) - 1, &eEnvName_b, &eEnvName_e);
+    r05_read_chars(eEnvName, env_name, MAX_ENV, arg_begin->next, arg_end);
 
-  if (! r05_empty_seq(eEnvName_b, eEnvName_e)) {
-    if (R05_DATATAG_CHAR == eEnvName_b->tag) {
+  if (! r05_empty_hole(eEnvName[1], arg_end)) {
+    if (R05_DATATAG_CHAR == eEnvName[1]->next->tag) {
       r05_builtin_error("very long environment variable name");
     } else {
       r05_recognition_impossible();
@@ -1308,17 +1302,17 @@ R05_DEFINE_ENTRY_FUNCTION(GetEnv, "GetEnv") {
       e.RetCode ::= '-'? s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(System, "System") {
-  struct r05_node *eCommand_b, *eCommand_e;
-  char command[2001];
+  struct r05_node *eCommand[2];
+  enum { MAX_COMMAND = 2000 };
+  char command[MAX_COMMAND + 1];
   size_t command_len;
   int retcode;
 
-  r05_prepare_argument(&eCommand_b, &eCommand_e, arg_begin, arg_end);
   command_len =
-    r05_read_chars(command, sizeof(command) - 1, &eCommand_b, &eCommand_e);
+    r05_read_chars(eCommand, command, MAX_COMMAND, arg_begin->next, arg_end);
 
-  if (! r05_empty_seq(eCommand_b, eCommand_e)) {
-    if (R05_DATATAG_CHAR == eCommand_b->tag) {
+  if (! r05_empty_hole(eCommand[1], arg_end)) {
+    if (R05_DATATAG_CHAR == eCommand[1]->next->tag) {
       r05_builtin_error("very long command line");
     } else {
       r05_recognition_impossible();
@@ -1416,17 +1410,16 @@ R05_DEFINE_ENTRY_ENUM(False, "False")
 
 R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   struct r05_node *callee = arg_begin->next;
-  struct r05_node *eFileName_b, *eFileName_e;
+  struct r05_node *eFileName[2];
   char filename[FILENAME_MAX + 1];
   size_t filename_len;
   FILE *file;
 
-  r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
   filename_len =
-    r05_read_chars(filename, sizeof(filename) - 1, &eFileName_b, &eFileName_e);
+    r05_read_chars(eFileName, filename, FILENAME_MAX, callee, arg_end);
 
-  if (! r05_empty_seq(eFileName_b, eFileName_e)) {
-    if (R05_DATATAG_CHAR == eFileName_b->tag) {
+  if (! r05_empty_hole(eFileName[1], arg_end)) {
+    if (R05_DATATAG_CHAR == eFileName[1]->next->tag) {
       r05_builtin_error("very long filename");
     } else {
       r05_recognition_impossible();
@@ -1457,19 +1450,18 @@ R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
       e.Message ::= s.CHAR*
 */
 R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
-  struct r05_node *eFileName_b, *eFileName_e, *left_bracket, *right_bracket;
+  struct r05_node *eFileName[2], *left_bracket, *right_bracket;
   char filename[FILENAME_MAX + 1];
   size_t filename_len;
   int res;
   struct r05_function *sign;
   const char *message;
 
-  r05_prepare_argument(&eFileName_b, &eFileName_e, arg_begin, arg_end);
   filename_len =
-    r05_read_chars(filename, sizeof(filename) - 1, &eFileName_b, &eFileName_e);
+    r05_read_chars(eFileName, filename, FILENAME_MAX, arg_begin->next, arg_end);
 
-  if (! r05_empty_seq(eFileName_b, eFileName_e)) {
-    if (R05_DATATAG_CHAR == eFileName_b->tag) {
+  if (! r05_empty_hole(eFileName[1], arg_end)) {
+    if (R05_DATATAG_CHAR == eFileName[1]->next->tag) {
       r05_builtin_error("very long filename");
     } else {
       r05_recognition_impossible();

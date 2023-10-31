@@ -6,7 +6,7 @@
   <FileSize s.CHAR+> == s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(FileSize, "FileSize") {
-  struct r05_node *fname_b, *fname_e;
+  struct r05_node *fname[2];
   char filename[FILENAME_MAX + 1];
   size_t filename_len;
   FILE *f;
@@ -14,22 +14,21 @@ R05_DEFINE_ENTRY_FUNCTION(FileSize, "FileSize") {
   struct r05_node *callee = arg_begin->next;
 
   /* сопоставление с образцом */
-  r05_prepare_argument(&fname_b, &fname_e, arg_begin, arg_end);
   filename_len =
-    r05_read_chars(filename, FILENAME_MAX, &fname_b, &fname_e);
+    r05_read_chars(fname, filename, FILENAME_MAX, callee, arg_end);
   filename[filename_len] = '\0';
 
   if (filename_len == 0) {
     r05_recognition_impossible();
   }
 
-  if (! r05_empty_seq(fname_b, fname_e)) {
-    struct r05_node *p = fname_b;
-    while (p != fname_e->next && p->tag == R05_DATATAG_CHAR) {
+  if (! r05_empty_hole(fname[1], arg_end)) {
+    struct r05_node *p = fname[1]->next;
+    while (p != arg_end && p->tag == R05_DATATAG_CHAR) {
       p = p->next;
     }
 
-    if (p == fname_e->next) {
+    if (p == arg_end) {
       r05_builtin_error("very long filename");
     } else {
       r05_recognition_impossible();

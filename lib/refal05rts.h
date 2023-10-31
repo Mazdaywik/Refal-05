@@ -72,95 +72,100 @@ struct r05_node {
 
 /* Операции сопоставления с образцом */
 
-void r05_prepare_argument(
-  struct r05_node **left, struct r05_node **right,
-  struct r05_node *arg_begin, struct r05_node *arg_end
-);
-
-int r05_empty_seq(struct r05_node *begin, struct r05_node *end);
+#define r05_empty_hole(left, right) ((left)->next == (right))
 
 int r05_function_left(
-  struct r05_function *func, struct r05_node **first, struct r05_node **last
-);
-int r05_function_right(
-  struct r05_function *func, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  struct r05_function *function
 );
 
-int r05_char_left(char ch, struct r05_node **first, struct r05_node **last);
-int r05_char_right(char ch, struct r05_node **first, struct r05_node **last);
+int r05_function_right(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  struct r05_function *function
+);
+
+int r05_char_left(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
+);
+
+int r05_char_right(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
+);
 
 int r05_number_left(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  r05_number number
 );
+
 int r05_number_right(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  r05_number number
 );
 
 int r05_brackets_left(
-  struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **brackets, struct r05_node *left, struct r05_node *right
 );
 
 int r05_brackets_right(
-  struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **brackets, struct r05_node *left, struct r05_node *right
 );
 
 int r05_svar_left(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right
 );
 
 int r05_svar_right(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right
 );
 
 int r05_tvar_left(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node *left, struct r05_node *right
 );
 
 int r05_tvar_right(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node *left, struct r05_node *right
 );
 
 int r05_repeated_svar_left(
-  struct r05_node **svar, struct r05_node **svar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **svar_sample
 );
 
 int r05_repeated_svar_right(
-  struct r05_node **svar, struct r05_node **svar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **svar_sample
 );
 
-#define r05_repeated_tvar_left(v, s, f, l) \
-  r05_repeated_tevar_left(v, s, f, l, 't')
+#define r05_repeated_tvar_left(v, l, r, s) \
+  r05_repeated_tevar_left(v, l, r, s, 't')
 
-#define r05_repeated_tvar_right(v, s, f, l) \
-  r05_repeated_tevar_right(v, s, f, l, 't')
+#define r05_repeated_tvar_right(v, l, r, s) \
+  r05_repeated_tevar_right(v, l, r, s, 't')
 
-#define r05_repeated_evar_left(v, s, f, l) \
-  r05_repeated_tevar_left(v, s, f, l, 'e')
+#define r05_repeated_evar_left(v, l, r, s) \
+  r05_repeated_tevar_left(v, l, r, s, 'e')
 
-#define r05_repeated_evar_right(v, s, f, l) \
-  r05_repeated_tevar_right(v, s, f, l, 'e')
+#define r05_repeated_evar_right(v, l, r, s) \
+  r05_repeated_tevar_right(v, l, r, s, 'e')
 
 int r05_repeated_tevar_left(
-  struct r05_node **tevar, struct r05_node **tevar_sample,
-  struct r05_node **first, struct r05_node **last, char type
+  struct r05_node **tevar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **tevar_sample, char type
 );
 
 int r05_repeated_tevar_right(
-  struct r05_node **tevar, struct r05_node **tevar_sample,
-  struct r05_node **first, struct r05_node **last, char type
+  struct r05_node **tevar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **tevar_sample, char type
 );
 
-int r05_open_evar_advance(
-  struct r05_node **evar, struct r05_node **first, struct r05_node **last
-);
+#define r05_close_evar(evar, left, right) \
+  ((evar)[0] = (left)->next, (evar)[1] = (right)->prev)
+
+int r05_open_evar_advance(struct r05_node **evar, struct r05_node *right);
 
 size_t r05_read_chars(
-  char buffer[], size_t buflen,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **char_interval, char buffer[], size_t buflen,
+  struct r05_node *left, struct r05_node *right
 );
 
 /* Операции построения результата */

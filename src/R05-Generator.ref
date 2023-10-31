@@ -201,19 +201,6 @@ SkipIndentAccum {
   ('    ') e.Generated = e.Generated;
 }
 
-RangeVar-B { s.BracketNumber = 'p[' <Symb s.BracketNumber> ']' }
-RangeVar-E { s.BracketNumber = 'p[' <Symb <Inc s.BracketNumber>> ']' }
-
-RangeVars {
-  s.BracketNumber =
-    <RangeVar-B s.BracketNumber> ', ' <RangeVar-E s.BracketNumber>;
-}
-
-RangeVarsPtr {
-  s.BracketNumber
-    = 'p+' <Symb s.BracketNumber> ', p+' <Symb <Inc s.BracketNumber>>;
-}
-
 SafeComment {
   e.Comment-B '/*' e.Comment-E =
     <SafeComment e.Comment-B '/\' \'*' e.Comment-E>;
@@ -225,18 +212,13 @@ SafeComment {
 }
 
 $ENTRY generator_GenCommand {
-  (e.Indent)
-  (CmdOpenedE-Start s.BracketNumber 'e' e.Index) =
-    (e.Indent '  ')
-    <CmdOpenedE-Start (e.Indent) s.BracketNumber 'e' e.Index>;
+  (e.Indent) (CmdOpenedE-Start s.L s.R 'e' e.Index)
+    = (e.Indent '  ') <CmdOpenedE-Start (e.Indent) s.L s.R 'e' e.Index>;
 
-  (e.Indent '  ')
-  (CmdOpenedE-End s.BracketNumber 'e' e.Index) =
-    (e.Indent)
-    <CmdOpenedE-End (e.Indent) s.BracketNumber 'e' e.Index>;
+  (e.Indent '  ') (CmdOpenedE-End s.L s.R 'e' e.Index)
+    = (e.Indent) <CmdOpenedE-End (e.Indent) s.L s.R 'e' e.Index>;
 
-  (e.Indent) (s.Command e.Args) =
-    (e.Indent) <Mu s.Command (e.Indent) e.Args>;
+  (e.Indent) (s.Command e.Args) = (e.Indent) <Mu s.Command (e.Indent) e.Args>;
 }
 
 CmdComment {
@@ -250,26 +232,27 @@ CmdAllocStack {
     = (e.Indent 'struct r05_node *p[' <Symb s.Size> '] = { 0 };');
 }
 
-CmdInitB0 {
-  (e.Indent) =
-    (e.Indent 'r05_prepare_argument(' <RangeVarsPtr 0> ', arg_begin, arg_end);');
+CmdInitHole0 {
+  (e.Indent)
+    = (e.Indent <Elem 0> ' = arg_begin->next;')
+      (e.Indent <Elem 1> ' = arg_end;');
 }
 
 CmdMatch {
-  (e.Indent) s.Direction s.BracketNumber s.Type e.Value =
-    (e.Indent
-      'if (! r05_' <MatchFunc s.Type e.Value> '_' <StrFromDirection s.Direction>
-      '(' <MatchArgs s.Type e.Value> ', ' <RangeVarsPtr s.BracketNumber> '))'
-    )
-    (e.Indent '  continue;');
+  (e.Indent) s.Dir s.L s.R s.Stack s.Type e.Value
+    , 'r05_' <MatchFunc s.Type e.Value> '_' <StrFromDir s.Dir> : e.Func
+    , <ElemPtr s.Stack> ', ' <ElemLR s.L s.R> <MatchArgs s.Type e.Value>
+    : e.Args
+    = (e.Indent 'if (! ' e.Func '(' e.Args '))')
+      (e.Indent '  continue;');
 }
 
 MatchFunc {
   Symbol s.Type e.Value = <SymbolFunc s.Type>;
-  Brackets s.InnerNum = 'brackets';
-  Repeated s.Mode s.Sample s.Var = 'repeated_' s.Mode 'var';
-  Variable 's' s.Stack = 'svar';
-  Variable 't' s.Stack = 'tvar';
+  Brackets = 'brackets';
+  Repeated s.Mode s.SampleOffset = 'repeated_' s.Mode 'var';
+  Variable 's' = 'svar';
+  Variable 't' = 'tvar';
 }
 
 SymbolFunc {
@@ -278,19 +261,15 @@ SymbolFunc {
   Word = 'function';
 }
 
-StrFromDirection {
-  AlgLeft = 'left'; AlgRight = 'right';
+StrFromDir {
+  LEFT = 'left'; RIGHT = 'right';
 }
 
 MatchArgs {
-  Symbol s.Type e.Value = <SymbolTextRep s.Type e.Value>;
-
-  Brackets s.InnerNum = <RangeVarsPtr s.InnerNum>;
-
-  Repeated s.Mode s.SampleOffset s.Offset
-    = <ElemPtr s.Offset> ', ' <ElemPtr s.SampleOffset>;
-
-  Variable s.Mode s.Offset = <ElemPtr s.Offset>;
+  Symbol s.Type e.Value = ', ' <SymbolTextRep s.Type e.Value>;
+  Brackets = /* пусто */;
+  Repeated s.Mode s.SampleOffset = ', ' <ElemPtr s.SampleOffset>;
+  Variable s.Mode = /* пусто */;
 }
 
 SymbolTextRep {
@@ -300,39 +279,34 @@ SymbolTextRep {
 }
 
 CmdEmpty {
-  (e.Indent) s.BracketNumber =
-    (e.Indent 'if (! r05_empty_seq(' <RangeVars s.BracketNumber> '))')
-    (e.Indent '  continue;');
+  (e.Indent) s.L s.R
+    = (e.Indent 'if (! r05_empty_hole(' <ElemLR s.L s.R> '))')
+      (e.Indent '  continue;');
 }
 
 CmdClosedE {
-  (e.Indent) s.BracketNumber 'e' s.Offset =
-    (e.Indent <Var-B s.Offset> ' = ' <RangeVar-B s.BracketNumber> ';')
-    (e.Indent <Var-E s.Offset> ' = ' <RangeVar-E s.BracketNumber> ';');
+  (e.Indent) s.L s.R 'e' s.Offset
+    = (e.Indent
+        'r05_close_evar(' <ElemPtr s.Offset> ', ' <ElemLR s.L s.R> ');'
+      );
 }
 
 CmdOpenedE-Start {
-  (e.Indent) s.BracketNumber 'e' s.Offset =
-    (e.Indent <Var-B s.Offset> ' = p[' <Symb s.BracketNumber> '];')
-    (e.Indent <Var-E s.Offset> ' = ' <Var-B s.Offset> '->prev;')
-    (e.Indent 'r05_start_e_loop();')
-    (e.Indent 'do {');
+  (e.Indent) s.L s.R 'e' s.Offset
+    = (e.Indent <Elem s.Offset> ' = ' <Elem s.L> '->next;')
+      (e.Indent <Elem <Inc s.Offset>> ' = ' <Elem s.L> ';')
+      (e.Indent 'r05_start_e_loop();')
+      (e.Indent 'do {');
 }
 
 CmdOpenedE-End {
-  (e.Indent) s.BracketNumber 'e' s.Offset =
-    (e.Indent
-      '} while (r05_open_evar_advance('
-      <ElemPtr s.Offset> ', ' <RangeVarsPtr s.BracketNumber>
-      '));'
-    )
-    (e.Indent 'r05_stop_e_loop();');
-}
-
-CmdSave {
-  (e.Indent) s.Old s.New =
-    (e.Indent <RangeVar-B s.New> ' = ' <RangeVar-B s.Old> ';')
-    (e.Indent <RangeVar-E s.New> ' = ' <RangeVar-E s.Old> ';');
+  (e.Indent) s.L s.R 'e' s.Offset
+    = (e.Indent
+        '} while (r05_open_evar_advance('
+        <ElemPtr s.Offset> ', ' <Elem s.R>
+        '));'
+      )
+      (e.Indent 'r05_stop_e_loop();');
 }
 
 CmdEmptyResult {
@@ -424,11 +398,9 @@ EscapeChar-SwCompare {
     <Symb <Mod s.Code 8>>;
 }
 
-Var-B { s.Offset = <Elem s.Offset> }
-Var-E { s.Offset = <Elem <Inc s.Offset>> }
-
 Elem { s.Number = 'p[' <Symb s.Number> ']' }
 ElemPtr { s.Number = 'p+' <Symb s.Number> }
+ElemLR { s.L s.R = <Elem s.L> ', ' <Elem s.R> }
 
 
 *===============================================================================
@@ -442,7 +414,6 @@ CompileSentence {
     = <CompileSentence-OpenELoops
         <Map generator_MakeDeclaration e.PatternVars>
         (CmdAllocStack s.Stack)
-        (CmdInitB0)
         (CmdComment <InlineExpr e.Pattern>)
         e.PatternCommands
         (CmdEmptyResult)
@@ -462,11 +433,11 @@ $ENTRY generator_MakeDeclaration {
 $ENTRY r05-generator-SymbInst { s.Inst = ', ' <Symb s.Inst> }
 
 CompileSentence-OpenELoops {
-  e.Commands-B (CmdOpenedE s.BracketNum 'e' e.Index) e.Commands-E
+  e.Commands-B (CmdOpenedE s.L s.R 'e' s.Stack) e.Commands-E
     = e.Commands-B
-      (CmdOpenedE-Start s.BracketNum 'e' e.Index)
+      (CmdOpenedE-Start s.L s.R 'e' s.Stack)
       <CompileSentence-OpenELoops e.Commands-E>
-      (CmdOpenedE-End s.BracketNum 'e' e.Index);
+      (CmdOpenedE-End s.L s.R 'e' s.Stack);
 
   e.Commands = e.Commands;
 }
@@ -483,40 +454,37 @@ CompileSentence-OpenELoops {
 /*
 Команды распознавания
   Символы, скобки, повторные переменные и s-, t-переменные:
-    (CmdMatch s.Direction s.BracketNum s.MatchType e.MatchValue)
+    (CmdMatch s.Direction s.L s.R s.ElemPtr s.MatchType e.MatchValue)
 
-    s.Direction ::= AlgLeft | AlgRight
+    s.Direction ::= LEFT | RIGHT
 
     s.MatchType e.MatchValue ::=
         Symbol Char s.Char
       | Symbol Number s.Number
-      | Symbol Word t.SrcPos? e.Name
-      | Brackets s.InnerNum
-      | Repeated s.Mode s.Sample s.Offset
-      | Variable t.SrcPos s.Mode s.Offset
+      | Symbol Word e.Name
+      | Brackets
+      | Repeated s.Mode s.Sample
+      | Variable s.Mode
 
   Пустые скобки:
-    (CmdEmpty s.BracketNum),
+    (CmdEmpty s.L s.R),
 
   Открытые e-переменные до обработки:
-    (CmdOpenedE s.BracketNum 'e' s.Offset)
+    (CmdOpenedE s.L s.R 'e' s.Offset)
 
   Открытые e-переменные после обработки:
-    (CmdOpenedE-Start s.BracketNum 'e' s.Offset)
-    (CmdOpenedE-End s.BracketNum 'e' s.Offset)
+    (CmdOpenedE-Start s.L s.R 'e' s.Offset)
+    (CmdOpenedE-End s.L s.R 'e' s.Offset)
 
   Закрытые e-переменные:
-    (CmdClosedE s.BracketNum 'e' s.Offset)
-
-  Команды сохранения скобок:
-    (CmdSave s.OldNumber e.NewNumber)
+    (CmdClosedE s.L s.R 'e' s.Offset)
 
   Комментарий, вносимый в исходный код:
     (CmdComment e.Text)
 */
 
 GenPattern {
-  e.Pattern = <DoGenPattern 2 (0 e.Pattern) (/* vars */) (/* commands */)>;
+  e.Pattern = <DoGenPattern 2 (0 e.Pattern 1) (/* vars */) ((CmdInitHole0))>;
 }
 
 Inc2 { s.N = <+ s.N 2> }
@@ -527,142 +495,132 @@ VarSize {
 
 IncMode { s.N s.Mode = <+ s.N <VarSize s.Mode>> }
 
+VarRightSide {
+  s.N 's' = s.N;
+  s.N s.TE = <Inc s.N>;
+}
+
 DoGenPattern {
   /* Распознавание литералов (символьных, целочисленных, имён) */
-  s.Stack e.Ranges-B (s.Num (Symbol s.Type e.Value) e.Range) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdMatch AlgLeft s.Num Symbol s.Type e.Value))
-    >;
+  s.Stack e.Holes-B (s.L (Symbol s.Type e.Value) e.Hole s.R) e.Holes-E (e.Vars)
+  (e.Commands)
+    = <DoGenPattern
+        <Inc s.Stack> e.Holes-B (s.Stack e.Hole s.R) e.Holes-E (e.Vars)
+        (e.Commands (CmdMatch LEFT s.L s.R s.Stack Symbol s.Type e.Value))
+      >;
 
-  s.Stack e.Ranges-B (s.Num e.Range (Symbol s.Type e.Value)) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdMatch AlgRight s.Num Symbol s.Type e.Value))
-    >;
+  s.Stack e.Holes-B (s.L e.Hole (Symbol s.Type e.Value) s.R) e.Holes-E (e.Vars)
+  (e.Commands)
+    = <DoGenPattern
+        <Inc s.Stack> e.Holes-B (s.L e.Hole s.Stack) e.Holes-E (e.Vars)
+        (e.Commands (CmdMatch RIGHT s.L s.R s.Stack Symbol s.Type e.Value))
+      >;
 
   /* Распознавание скобок */
-  s.Stack e.Ranges-B
-  (s.Num (Brackets e.SubRange) e.Range)
-  e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      <Inc2 s.Stack>
-      e.Ranges-B (s.Stack e.SubRange) (s.Num e.Range) e.Ranges-E
-      (e.Vars) (e.Commands (CmdMatch AlgLeft s.Num Brackets s.Stack))
-    >;
+  s.Stack e.Holes-B (s.L (Brackets e.SubHole) e.Hole s.R) e.Holes-E (e.Vars)
+  (e.Commands)
+    , s.Stack : s.LB
+    , <Inc s.Stack> : s.RB
+    = <DoGenPattern
+        <Inc2 s.Stack>
+        e.Holes-B (s.LB e.SubHole s.RB) (s.RB e.Hole s.R) e.Holes-E
+        (e.Vars)
+        (e.Commands (CmdMatch LEFT s.L s.R s.LB Brackets))
+      >;
 
-  s.Stack e.Ranges-B
-  (s.Num e.Range (Brackets e.SubRange))
-  e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      <Inc2 s.Stack>
-      e.Ranges-B (s.Num e.Range) (s.Stack e.SubRange) e.Ranges-E
-      (e.Vars) (e.Commands (CmdMatch AlgRight s.Num Brackets s.Stack))
-    >;
+  s.Stack e.Holes-B (s.L e.Hole (Brackets e.SubHole) s.R) e.Holes-E (e.Vars)
+  (e.Commands)
+    , s.Stack : s.LB
+    , <Inc s.Stack> : s.RB
+    = <DoGenPattern
+        <Inc2 s.Stack>
+        e.Holes-B (s.L e.Hole s.LB) (s.LB e.SubHole s.RB) e.Holes-E
+        (e.Vars)
+        (e.Commands (CmdMatch RIGHT s.L s.R s.LB Brackets))
+      >;
 
   /* Пустой диапазон */
-  s.Stack e.Ranges-B (s.Num /* пусто */) e.Ranges-E
-  (e.Vars) (e.Commands) =
-    <DoGenPattern
-      s.Stack e.Ranges-B e.Ranges-E
-      (e.Vars) (e.Commands (CmdEmpty s.Num))
-    >;
+  s.Stack e.Holes-B (s.L /* пусто */ s.R) e.Holes-E (e.Vars) (e.Commands)
+    = <DoGenPattern
+        s.Stack e.Holes-B e.Holes-E (e.Vars) (e.Commands (CmdEmpty s.L s.R))
+      >;
 
   /* Распознавание переменных */
   s.Stack
-  e.Ranges-B (s.Num (Variable t.SrcPos s.Mode e.Index) e.Range) e.Ranges-E
+  e.Holes-B (s.L (Variable t.SrcPos s.Mode e.Index) e.Hole s.R) e.Holes-E
   (e.Vars-B (s.Mode e.Index s.Sample (e.Insts)) e.Vars-E) (e.Commands)
+    , <VarRightSide s.Stack s.Mode> : s.VarRight
     = <DoGenPattern
-        <IncMode s.Stack s.Mode> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        <IncMode s.Stack s.Mode> e.Holes-B (s.VarRight e.Hole s.R) e.Holes-E
         (e.Vars-B (s.Mode e.Index s.Sample (e.Insts s.Stack)) e.Vars-E)
-        (e.Commands (CmdMatch AlgLeft s.Num Repeated s.Mode s.Sample s.Stack))
+        (e.Commands (CmdMatch LEFT s.L s.R s.Stack Repeated s.Mode s.Sample))
       >;
 
   s.Stack
-  e.Ranges-B (s.Num e.Range (Variable t.SrcPos s.Mode e.Index)) e.Ranges-E
+  e.Holes-B (s.L e.Hole (Variable t.SrcPos s.Mode e.Index) s.R) e.Holes-E
   (e.Vars-B (s.Mode e.Index s.Sample (e.Insts)) e.Vars-E) (e.Commands)
+    , <VarRightSide s.Stack s.Mode> : s.VarRight
     = <DoGenPattern
-        <IncMode s.Stack s.Mode> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        <IncMode s.Stack s.Mode> e.Holes-B (s.L e.Hole s.Stack) e.Holes-E
         (e.Vars-B (s.Mode e.Index s.Sample (e.Insts s.Stack)) e.Vars-E)
-        (e.Commands (CmdMatch AlgRight s.Num Repeated s.Mode s.Sample s.Stack))
+        (e.Commands (CmdMatch RIGHT s.L s.R s.Stack Repeated s.Mode s.Sample))
       >;
 
   /* Диапазон с закрытой переменной */
-  s.Stack e.Ranges-B (s.Num (Variable t.SrcPos 'e' e.Index)) e.Ranges-E
+  s.Stack e.Holes-B (s.L (Variable t.SrcPos 'e' e.Index) s.R) e.Holes-E
   (e.Vars) (e.Commands)
     = <DoGenPattern
-        <IncMode s.Stack 'e'> e.Ranges-B e.Ranges-E
+        <IncMode s.Stack 'e'> e.Holes-B e.Holes-E
         (e.Vars ('e' e.Index s.Stack (s.Stack)))
-        (e.Commands (CmdClosedE s.Num 'e' s.Stack))
+        (e.Commands (CmdClosedE s.L s.R 'e' s.Stack))
       >;
 
-  s.Stack
-  e.Ranges-B (s.Num (Variable t.SrcPos 's' e.Index) e.Range) e.Ranges-E
+  s.Stack e.Holes-B (s.L (Variable t.SrcPos 's' e.Index) e.Hole s.R) e.Holes-E
   (e.Vars) (e.Commands)
+    , <VarRightSide s.Stack 's'> : s.VarRight
     = <DoGenPattern
-        <IncMode s.Stack 's'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        <IncMode s.Stack 's'> e.Holes-B (s.VarRight e.Hole s.R) e.Holes-E
         (e.Vars ('s' e.Index s.Stack (s.Stack)))
-        (e.Commands (CmdMatch AlgLeft s.Num Variable 's' s.Stack))
+        (e.Commands (CmdMatch LEFT s.L s.R s.Stack Variable 's'))
       >;
 
-  s.Stack
-  e.Ranges-B (s.Num (Variable t.SrcPos 't' e.Index) e.Range) e.Ranges-E
+  s.Stack e.Holes-B (s.L (Variable t.SrcPos 't' e.Index) e.Hole s.R) e.Holes-E
   (e.Vars) (e.Commands)
+    , <VarRightSide s.Stack 't'> : s.VarRight
     = <DoGenPattern
-        <IncMode s.Stack 't'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        <IncMode s.Stack 't'> e.Holes-B (s.VarRight e.Hole s.R) e.Holes-E
         (e.Vars ('t' e.Index s.Stack (s.Stack)))
-        (e.Commands (CmdMatch AlgLeft s.Num Variable 't' s.Stack))
+        (e.Commands (CmdMatch LEFT s.L s.R s.Stack Variable 't'))
       >;
 
-  s.Stack
-  e.Ranges-B (s.Num e.Range (Variable t.SrcPos 's' e.Index)) e.Ranges-E
+  s.Stack e.Holes-B (s.L e.Hole (Variable t.SrcPos 's' e.Index) s.R) e.Holes-E
   (e.Vars) (e.Commands)
     = <DoGenPattern
-        <IncMode s.Stack 's'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        <IncMode s.Stack 's'> e.Holes-B (s.L e.Hole s.Stack) e.Holes-E
         (e.Vars ('s' e.Index s.Stack (s.Stack)))
-        (e.Commands (CmdMatch AlgRight s.Num Variable 's' s.Stack))
+        (e.Commands (CmdMatch RIGHT s.L s.R s.Stack Variable 's'))
       >;
 
-  s.Stack
-  e.Ranges-B (s.Num e.Range (Variable t.SrcPos 't' e.Index)) e.Ranges-E
+  s.Stack e.Holes-B (s.L e.Hole (Variable t.SrcPos 't' e.Index) s.R) e.Holes-E
   (e.Vars) (e.Commands)
     = <DoGenPattern
-        <IncMode s.Stack 't'> e.Ranges-B (s.Num e.Range) e.Ranges-E
+        <IncMode s.Stack 't'> e.Holes-B (s.L e.Hole s.Stack) e.Holes-E
         (e.Vars ('t' e.Index s.Stack (s.Stack)))
-        (e.Commands (CmdMatch AlgRight s.Num Variable 't' s.Stack))
+        (e.Commands (CmdMatch RIGHT s.L s.R s.Stack Variable 't'))
       >;
 
-  s.Stack
-  e.Ranges-B (s.Num (Variable t.SrcPos 'e' e.Index) e.Range) e.Ranges-E
+  s.Stack e.Holes-B (s.L (Variable t.SrcPos 'e' e.Index) e.Hole s.R) e.Holes-E
   (e.Vars) (e.Commands)
+    , <VarRightSide s.Stack 'e'> : s.VarRight
     = <DoGenPattern
-        <SaveRanges
-          <IncMode s.Stack 'e'>
-          (/* scanned */) e.Ranges-B (s.Num e.Range) e.Ranges-E
-          (e.Vars ('e' e.Index s.Stack (s.Stack)))
-          (e.Commands (CmdOpenedE s.Num 'e' s.Stack))
-        >
+        <IncMode s.Stack 'e'> e.Holes-B (s.VarRight e.Hole s.R) e.Holes-E
+        (e.Vars ('e' e.Index s.Stack (s.Stack)))
+        (e.Commands (CmdOpenedE s.L s.R 'e' s.Stack))
       >;
 
   /* Завершение разбора. */
   s.Stack /* пусто */ (e.Vars) (e.Commands) =
     s.Stack (e.Vars) (e.Commands);
-}
-
-SaveRanges {
-  s.Stack (e.ScannedRanges) (s.Num e.Range) e.Ranges
-  (e.Vars) (e.Commands) =
-    <SaveRanges
-      <Inc2 s.Stack> (e.ScannedRanges (s.Stack e.Range)) e.Ranges
-      (e.Vars) (e.Commands (CmdSave s.Num s.Stack))
-    >;
-
-  s.Stack (e.ScannedRanges) /* пусто */ (e.Vars) (e.Commands) =
-    s.Stack e.ScannedRanges (e.Vars) (e.Commands);
 }
 
 *===============================================================================

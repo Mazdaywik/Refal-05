@@ -48,172 +48,108 @@ struct static_asserts {
    Операции сопоставления с образцом
 ==============================================================================*/
 
-void r05_prepare_argument(
-  struct r05_node **left, struct r05_node **right,
-  struct r05_node *arg_begin, struct r05_node *arg_end
-) {
-  *left = arg_begin->next->next;
-  *right = arg_end->prev;
-}
-
-
-int r05_empty_seq(struct r05_node *first, struct r05_node *last) {
-  assert((first != 0) && (last != 0));
-
-  return last->next == first;
-}
-
 
 #define equal_functions(left, right) \
   (strcmp((left)->name, (right)->name) == 0)
 
 
 int r05_function_left(
-  struct r05_function *fn, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  struct r05_function *function
 ) {
-  assert((*first != 0) && (*last != 0));
+  left = left->next;
+  *res = left;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if ((*first)->tag != R05_DATATAG_FUNCTION) {
-    return 0;
-  } else if (! equal_functions((*first)->info.function, fn)) {
-    return 0;
-  } else {
-    *first = (*first)->next;
-    return 1;
-  }
+  return left != right && R05_DATATAG_FUNCTION == left->tag
+    && equal_functions(left->info.function, function);
 }
 
 
 int r05_function_right(
-  struct r05_function *fn, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  struct r05_function *function
 ) {
-  assert((*first != 0) && (*last != 0));
+  right = right->prev;
+  *res = right;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_FUNCTION != (*last)->tag) {
-    return 0;
-  } else if (! equal_functions((*last)->info.function, fn)) {
-    return 0;
-  } else {
-    *last = (*last)->prev;
-    return 1;
-  }
+  return left != right && R05_DATATAG_FUNCTION == right->tag
+    && equal_functions(right->info.function, function);
 }
 
 
-int r05_char_left(char ch, struct r05_node **first, struct r05_node **last) {
-  assert((*first != 0) && (*last != 0));
+int r05_char_left(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
+) {
+  left = left->next;
+  *res = left;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_CHAR != (*first)->tag) {
-    return 0;
-  } else if ((*first)->info.char_ != ch) {
-    return 0;
-  } else {
-    *first = (*first)->next;
-    return 1;
-  }
+  return left != right && R05_DATATAG_CHAR == left->tag
+    && left->info.char_ == ch;
 }
 
 
-int r05_char_right(char ch, struct r05_node **first, struct r05_node **last) {
-  assert((*first != 0) && (*last != 0));
+int r05_char_right(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
+) {
+  right = right->prev;
+  *res = right;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_CHAR != (*last)->tag) {
-    return 0;
-  } else if ((*last)->info.char_ != ch) {
-    return 0;
-  } else {
-    *last = (*last)->prev;
-    return 1;
-  }
+  return left != right && R05_DATATAG_CHAR == right->tag
+    && right->info.char_ == ch;
 }
 
 
 int r05_number_left(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  r05_number number
 ) {
-  assert((*first != 0) && (*last != 0));
+  left = left->next;
+  *res = left;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_NUMBER != (*first)->tag) {
-    return 0;
-  } else if ((*first)->info.number != num) {
-    return 0;
-  } else {
-    *first = (*first)->next;
-    return 1;
-  }
+  return left != right && R05_DATATAG_NUMBER == left->tag
+    && left->info.number == number;
 }
 
 
 int r05_number_right(
-  r05_number num, struct r05_node **first, struct r05_node **last
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  r05_number number
 ) {
-  assert((*first != 0) && (*last != 0));
+  *res = right = right->prev;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_NUMBER != (*last)->tag) {
-    return 0;
-  } else if ((*last)->info.number != num) {
-    return 0;
-  } else {
-    *last = (*last)->prev;
-    return 1;
-  }
+  return left != right && R05_DATATAG_NUMBER == right->tag
+    && right->info.number == number;
 }
 
 
 int r05_brackets_left(
-  struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **brackets, struct r05_node *left, struct r05_node *right
 ) {
-  assert((*first != 0) && (*last != 0));
+  left = left->next;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_OPEN_BRACKET != (*first)->tag) {
-    return 0;
-  } else {
-    struct r05_node *left_bracket = *first;
-    struct r05_node *right_bracket = left_bracket->info.link;
-
-    *res_first = left_bracket->next;
-    *res_last = right_bracket->prev;
-    *first = right_bracket->next;
+  if (left != right && R05_DATATAG_OPEN_BRACKET == left->tag) {
+    brackets[0] = left;
+    brackets[1] = left->info.link;
 
     return 1;
+  } else {
+    return 0;
   }
 }
 
 
 int r05_brackets_right(
-  struct r05_node **res_first, struct r05_node **res_last,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **brackets, struct r05_node *left, struct r05_node *right
 ) {
-  assert((*first != 0) && (*last != 0));
+  right = right->prev;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (R05_DATATAG_CLOSE_BRACKET != (*last)->tag) {
-    return 0;
-  } else {
-    struct r05_node *right_bracket = *last;
-    struct r05_node *left_bracket = right_bracket->info.link;
-
-    *res_first = left_bracket->next;
-    *res_last = right_bracket->prev;
-    *last = left_bracket->prev;
+  if (left != right && R05_DATATAG_CLOSE_BRACKET == right->tag) {
+    brackets[0] = right->info.link;
+    brackets[1] = right;
 
     return 1;
+  } else {
+    return 0;
   }
 }
 
@@ -222,78 +158,50 @@ int r05_brackets_right(
 #define is_close_bracket(node) (R05_DATATAG_CLOSE_BRACKET == (node)->tag)
 
 int r05_svar_left(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right
 ) {
-  assert((*first != 0) && (*last != 0));
+  left = left->next;
+  *svar = left;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (is_open_bracket(*first)) {
-    return 0;
-  } else {
-    *svar = *first;
-    *first = (*first)->next;
-    return 1;
-  }
+  return left != right && ! is_open_bracket(left);
 }
 
 
 int r05_svar_right(
-  struct r05_node **svar, struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right
 ) {
-  assert((*first != 0) && (*last != 0));
+  right = right->prev;
+  *svar = right;
 
-  if (r05_empty_seq(*first, *last)) {
-    return 0;
-  } else if (is_close_bracket(*last)) {
-    return 0;
-  } else {
-    *svar = *last;
-    *last = (*last)->prev;
-    return 1;
-  }
+  return left != right && ! is_close_bracket(right);
 }
 
 
 int r05_tvar_left(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node *left, struct r05_node *right
 ) {
-  assert((*first != 0) && (*last != 0));
+  left = left->next;
 
-  if (r05_empty_seq(*first, *last)) {
+  if (left == right) {
     return 0;
   } else {
-    tvar[0] = *first;
-
-    if (is_open_bracket(*first)) {
-      tvar[1] = (*first)->info.link;
-    } else {
-      tvar[1] = *first;
-    }
-
-    *first = tvar[1]->next;
+    tvar[0] = left;
+    tvar[1] = is_open_bracket(left) ? left->info.link : left;
     return 1;
   }
 }
 
 
 int r05_tvar_right(
-  struct r05_node **tvar, struct r05_node **first, struct r05_node **last
+  struct r05_node **tvar, struct r05_node *left, struct r05_node *right
 ) {
-  assert((*first != 0) && (*last != 0));
+  right = right->prev;
 
-  if (r05_empty_seq(*first, *last)) {
+  if (left == right) {
     return 0;
   } else {
-    tvar[1] = *last;
-
-    if (is_close_bracket(*last)) {
-      tvar[0] = (*last)->info.link;
-    } else {
-      tvar[0] = *last;
-    }
-
-    *last = tvar[0]->prev;
+    tvar[0] = is_close_bracket(right) ? right->info.link : right;
+    tvar[1] = right;
     return 1;
   }
 }
@@ -336,29 +244,22 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
 
 
 int r05_repeated_svar_left(
-  struct r05_node **svar, struct r05_node **svar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **svar_sample
 ) {
-  assert((*first != 0) && (*last != 0));
+  left = left->next;
+  *svar = left;
 
-  if (r05_svar_left(svar, first, last)) {
-    return equal_nodes(*svar, *svar_sample);
-  } else {
-    return 0;
-  }
+  return left != right && equal_nodes(left, *svar_sample);
 }
 
 int r05_repeated_svar_right(
-  struct r05_node **svar, struct r05_node **svar_sample,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **svar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **svar_sample
 ) {
-  assert((*first != 0) && (*last != 0));
+  *svar = right = right->prev;
 
-  if (r05_svar_right(svar, first, last)) {
-    return equal_nodes(*svar, *svar_sample);
-  } else {
-    return 0;
-  }
+  return left != right && equal_nodes(right, *svar_sample);
 }
 
 
@@ -366,18 +267,18 @@ static void add_match_repeated_tvar_time(clock_t duration);
 static void add_match_repeated_evar_time(clock_t duration);
 
 int r05_repeated_tevar_left(
-  struct r05_node **tevar, struct r05_node **tevar_sample,
-  struct r05_node **first, struct r05_node **last, char type
+  struct r05_node **tevar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **tevar_sample, char type
 ) {
   clock_t start_match = clock();
-  struct r05_node *current = *first;
+  struct r05_node *current = left->next;
+  struct r05_node *limit = right;
   struct r05_node *cur_sample = tevar_sample[0];
-  struct r05_node *copy_last = *last;
+  struct r05_node *limit_sample = tevar_sample[1]->next;
 
   while (
     /* порядок условий важен */
-    ! r05_empty_seq(current, copy_last)
-      && ! r05_empty_seq(cur_sample, tevar_sample[1])
+    current != limit && cur_sample != limit_sample
       && equal_nodes(current, cur_sample)
   ) {
     cur_sample = cur_sample->next;
@@ -389,17 +290,13 @@ int r05_repeated_tevar_left(
   );
 
   /*
-    Здесь r05_empty_seq(current, copy_last)
-      || r05_empty_seq(cur_sample, tevar_sample[1])
+    Здесь current == limit || cur_sample == limit_sample
       || ! equal_nodes(current, cur_sample)
   */
-  if (r05_empty_seq(cur_sample, tevar_sample[1])) {
+  if (cur_sample == limit_sample) {
     /* Это нормальное завершение цикла — вся образцовая переменная проверена */
-
-    tevar[0] = *first;
+    tevar[0] = left->next;
     tevar[1] = current->prev;
-    *first = current;
-
     return 1;
   } else {
     return 0;
@@ -408,18 +305,18 @@ int r05_repeated_tevar_left(
 
 
 int r05_repeated_tevar_right(
-  struct r05_node **tevar, struct r05_node **tevar_sample,
-  struct r05_node **first, struct r05_node **last, char type
+  struct r05_node **tevar, struct r05_node *left, struct r05_node *right,
+  struct r05_node **tevar_sample, char type
 ) {
   clock_t start_match = clock();
-  struct r05_node *current = *last;
+  struct r05_node *current = right->prev;
+  struct r05_node *limit = left;
   struct r05_node *cur_sample = tevar_sample[1];
-  struct r05_node *copy_first = *first;
+  struct r05_node *limit_sample = tevar_sample[0]->prev;
 
   while (
-    /* порядок перечисления условий важен */
-    ! r05_empty_seq(copy_first, current)
-      && ! r05_empty_seq(tevar_sample[0], cur_sample)
+    /* порядок условий важен */
+    current != limit && cur_sample != limit_sample
       && equal_nodes(current, cur_sample)
   ) {
     current = current->prev;
@@ -431,18 +328,13 @@ int r05_repeated_tevar_right(
   );
 
   /*
-    Здесь r05_empty_seq(copy_first, current)
-      || r05_empty_seq(tevar_sample[0], cur_sample)
+    Здесь current == limit || cur_sample == limit_sample
       || ! equal_nodes(current, cur_sample)
   */
-
-  if (r05_empty_seq(tevar_sample[0], cur_sample)) {
-    /* Это нормальное завершение цикла: вся переменная-образец просмотрена */
-
+  if (cur_sample == limit_sample) {
+    /* Это нормальное завершение цикла — вся образцовая переменная проверена */
     tevar[0] = current->next;
-    tevar[1] = *last;
-    *last = current;
-
+    tevar[1] = right->prev;
     return 1;
   } else {
     return 0;
@@ -450,14 +342,10 @@ int r05_repeated_tevar_right(
 }
 
 
-int r05_open_evar_advance(
-  struct r05_node **evar, struct r05_node **first, struct r05_node **last
-) {
+int r05_open_evar_advance(struct r05_node **evar, struct r05_node *right) {
   struct r05_node *term[2];
 
-  assert((*first != 0) && (*last != 0));
-
-  if (r05_tvar_left(term, first, last)) {
+  if (r05_tvar_left(term, evar[1], right)) {
     evar[1] = term[1];
     return 1;
   } else {
@@ -467,19 +355,19 @@ int r05_open_evar_advance(
 
 
 size_t r05_read_chars(
-  char buffer[], size_t buflen,
-  struct r05_node **first, struct r05_node **last
+  struct r05_node **char_interval, char buffer[], size_t buflen,
+  struct r05_node *left, struct r05_node *right
 ) {
-  size_t read = 0;
-  while (
-    read != buflen && ! r05_empty_seq(*first, *last)
-      && (*first)->tag == R05_DATATAG_CHAR
-  ) {
-    buffer[read] = (*first)->info.char_;
-    ++read;
-    *first = (*first)->next;
+  size_t nread = 0;
+  struct r05_node *cur = char_interval[0] = left->next;
+  while (nread < buflen && cur != right && R05_DATATAG_CHAR == cur->tag) {
+    buffer[nread] = cur->info.char_;
+    ++nread;
+    cur = cur->next;
   }
-  return read;
+
+  char_interval[1] = cur->prev;
+  return nread;
 }
 
 
@@ -693,16 +581,11 @@ void r05_link_brackets(struct r05_node *left, struct r05_node *right) {
 }
 
 
-static void correct_range(struct r05_node **begin, struct r05_node **end) {
-  if ((*end)->next == (*begin)) {
-    *begin = 0;
-    *end = 0;
-  }
-}
-
-
 void r05_correct_evar(struct r05_node **evar) {
-  correct_range(evar+0, evar+1);
+  if (evar[1]->next == evar[0]) {
+    evar[0] = 0;
+    evar[1] = 0;
+  }
 }
 
 
@@ -1126,7 +1009,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
   int after_bracket = 0;
   int reset_after_bracket = 1;
 
-  while ((state != cStateFinish) && ! r05_empty_seq(begin, end)) {
+  while ((state != cStateFinish) && end->next != begin) {
     if (reset_after_bracket) {
       after_bracket = 0;
       reset_after_bracket = 0;
@@ -1368,8 +1251,7 @@ struct buried_query {
 
 int buried_query(struct buried_query *res, struct r05_node *key[]) {
   struct r05_node *buried_begin = s_begin_buried.next;
-  struct r05_node *left_bracket, *right_bracket;
-  struct r05_node *in_brackets_b, *in_brackets_e;
+  struct r05_node *left_bracket, *right_bracket, *eq;
   int found = 0;
 
   while (buried_begin != &s_end_buried && ! found) {
@@ -1377,11 +1259,9 @@ int buried_query(struct buried_query *res, struct r05_node *key[]) {
 
     left_bracket = buried_begin;
     right_bracket = left_bracket->info.link;
-    in_brackets_b = left_bracket->next;
-    in_brackets_e = right_bracket->prev;
 
-    found = r05_repeated_evar_left(rep_key, key, &in_brackets_b, &in_brackets_e)
-      && r05_char_left('=', &in_brackets_b, &in_brackets_e);
+    found = r05_repeated_evar_left(rep_key, left_bracket, right_bracket, key)
+      && r05_char_left(&eq, rep_key[1], right_bracket, '=');
 
     buried_begin = right_bracket->next;
   }
@@ -1389,8 +1269,8 @@ int buried_query(struct buried_query *res, struct r05_node *key[]) {
   if (found) {
     res->left_bracket = left_bracket;
     res->right_bracket = right_bracket;
-    res->value[0] = in_brackets_b;
-    res->value[1] = in_brackets_e;
+    res->value[0] = eq->next;
+    res->value[1] = right_bracket->prev;
   }
 
   return found;
@@ -1404,19 +1284,20 @@ static void brrp_impl(
   enum brrp_behavior behavior
 ) {
   struct r05_node *callee = arg_begin->next;
-  struct r05_node *key[2], *val_b, *val_e;
+  struct r05_node *key[2], *eq;
 
-  r05_prepare_argument(&val_b, &val_e, arg_begin, arg_end);
-  key[0] = val_b;
+  key[0] = callee->next;
   key[1] = key[0]->prev;
   do {
-    if (r05_char_left('=', &val_b, &val_e)) {
+    if (r05_char_left(&eq, key[1], arg_end, '=')) {
       struct buried_query query;
 
       if (BRRP_RP == behavior && buried_query(&query, key)) {
-        correct_range(&val_b, &val_e);
+        struct r05_node *val[2];
+        r05_close_evar(val, eq, arg_end);
+        r05_correct_evar(val);
         r05_correct_evar(query.value);
-        list_splice(query.right_bracket, val_b, val_e);
+        r05_splice_tevar(query.right_bracket, val);
         r05_splice_tevar(arg_end, query.value);
       } else {
         struct r05_node *left_bracket = callee;
@@ -1430,7 +1311,7 @@ static void brrp_impl(
       r05_splice_to_freelist(arg_begin, arg_end);
       return;
     }
-  } while (r05_open_evar_advance(key, &val_b, &val_e));
+  } while (r05_open_evar_advance(key, arg_end));
 
   r05_recognition_impossible();
 }
@@ -1446,7 +1327,8 @@ static void dgcp_impl(
   struct buried_query query;
   int found;
 
-  r05_prepare_argument(&key[0], &key[1], arg_begin, arg_end);
+  key[0] = arg_begin->next->next;
+  key[1] = arg_end->prev;
   r05_reset_allocator();
 
   found = buried_query(&query, key);
