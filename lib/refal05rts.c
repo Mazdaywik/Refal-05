@@ -117,8 +117,7 @@ int r05_brackets_right(
 int r05_svar_left(
   struct r05_node **svar, struct r05_node *left, struct r05_node *right
 ) {
-  left = left->next;
-  *svar = left;
+  *svar = left = left->next;
 
   return left != right && ! is_open_bracket(left);
 }
@@ -127,8 +126,7 @@ int r05_svar_left(
 int r05_svar_right(
   struct r05_node **svar, struct r05_node *left, struct r05_node *right
 ) {
-  right = right->prev;
-  *svar = right;
+  *svar = right = right->prev;
 
   return left != right && ! is_close_bracket(right);
 }
@@ -204,8 +202,7 @@ int r05_repeated_svar_left(
   struct r05_node **svar, struct r05_node *left, struct r05_node *right,
   struct r05_node **svar_sample
 ) {
-  left = left->next;
-  *svar = left;
+  *svar = left = left->next;
 
   return left != right && equal_nodes(left, *svar_sample);
 }
