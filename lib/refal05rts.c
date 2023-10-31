@@ -53,73 +53,30 @@ struct static_asserts {
   (strcmp((left)->name, (right)->name) == 0)
 
 
-int r05_function_left(
-  struct r05_node **res, struct r05_node *left, struct r05_node *right,
-  struct r05_function *function
-) {
-  left = left->next;
-  *res = left;
-
-  return left != right && R05_DATATAG_FUNCTION == left->tag
-    && equal_functions(left->info.function, function);
-}
-
-
-int r05_function_right(
-  struct r05_node **res, struct r05_node *left, struct r05_node *right,
-  struct r05_function *function
-) {
-  right = right->prev;
-  *res = right;
-
-  return left != right && R05_DATATAG_FUNCTION == right->tag
-    && equal_functions(right->info.function, function);
-}
+#define match_symbol_func(type, side, dir, param_type, tag_suf, field) \
+  int r05_ ## type ## _ ## side( \
+    struct r05_node **res, struct r05_node *left, struct r05_node *right, \
+    param_type value \
+  ) { \
+    *res = side = side->dir; \
+    \
+    return left != right && R05_DATATAG_ ## tag_suf == side->tag \
+      && equal_ ## type ## s(side->info.field, value); \
+  }
 
 
-int r05_char_left(
-  struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
-) {
-  left = left->next;
-  *res = left;
-
-  return left != right && R05_DATATAG_CHAR == left->tag
-    && left->info.char_ == ch;
-}
+#define match_symbol_funcs(type, param_type, tag_suf, field) \
+  match_symbol_func(type, left, next, param_type, tag_suf, field) \
+  match_symbol_func(type, right, prev, param_type, tag_suf, field)
 
 
-int r05_char_right(
-  struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
-) {
-  right = right->prev;
-  *res = right;
-
-  return left != right && R05_DATATAG_CHAR == right->tag
-    && right->info.char_ == ch;
-}
+#define equal_chars(x, y) ((x) == (y))
+#define equal_numbers(x, y) ((x) == (y))
 
 
-int r05_number_left(
-  struct r05_node **res, struct r05_node *left, struct r05_node *right,
-  r05_number number
-) {
-  left = left->next;
-  *res = left;
-
-  return left != right && R05_DATATAG_NUMBER == left->tag
-    && left->info.number == number;
-}
-
-
-int r05_number_right(
-  struct r05_node **res, struct r05_node *left, struct r05_node *right,
-  r05_number number
-) {
-  *res = right = right->prev;
-
-  return left != right && R05_DATATAG_NUMBER == right->tag
-    && right->info.number == number;
-}
+match_symbol_funcs(function, struct r05_function *, FUNCTION, function);
+match_symbol_funcs(char, char, CHAR, char_);
+match_symbol_funcs(number, r05_number, NUMBER, number);
 
 
 int r05_brackets_left(
