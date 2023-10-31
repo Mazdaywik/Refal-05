@@ -2417,6 +2417,10 @@ T-переменная слева, закрытая переменная:
 Видно, что для копирования объектных выражений рекурсивных вызовов не требуется.
 Аналогично не требуется рекурсии и для сравнения выражений на равенство:
 
+    #define r05_repeated_tvar_left(v, l, r, s) \
+      r05_repeated_tevar_left(v, l, r, s, 't')
+
+
     int r05_repeated_tevar_left(
       struct r05_node **tevar, struct r05_node *left, struct r05_node *right,
       struct r05_node **tevar_sample, char type
