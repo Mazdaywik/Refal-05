@@ -1,14 +1,17 @@
-#include <assert.h>
-#include <ctype.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#ifndef LAMELIB
+  #include <assert.h>
+  #include <ctype.h>
+  #include <errno.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <time.h>
 
-#ifdef R05_POSIX
-#include <sys/wait.h>
-#endif  /* R05_POSIX */
+  #ifdef R05_POSIX
+    #include <sys/wait.h>
+  #endif  /* R05_POSIX */
+
+#endif /* LAMELIB */
 
 #include "refal05rts.h"
 

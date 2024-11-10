@@ -1,11 +1,21 @@
-#include <assert.h>
-#include <errno.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#ifdef LAMELIB
+  #define LAMESTD_IMPLEMENTATION
+  #include "lamestd.h"
+  #undef LAMESTD_IMPLEMENTATION
+#endif /* LAMELIB */
 
+
+#ifndef LAMELIB
+  #include <assert.h>
+  #include <errno.h>
+  #include <limits.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <time.h>
+#endif /* LAMELIB */
+
+#include <limits.h>
 #include "refal05rts.h"
 
 #ifndef R05_SHOW_DEBUG
@@ -768,12 +778,13 @@ static void print_functions_profile(double full_time_sec) {
 
   s_profiled_functions = sorted;
 
-  profile = fopen("__profile-05.txt", "w");
-  if (profile == NULL) {
-    fprintf(stderr, "Can't open '__profile-05.txt' for writting.\n");
-    fprintf(stderr, "Profile will be written to stderr.\n\n");
-    profile = stderr;
-  }
+  // profile = fopen("__profile-05.txt", "w");
+  profile = stderr;
+  // if (profile == NULL) {
+  //   fprintf(stderr, "Can't open '__profile-05.txt' for writting.\n");
+  //   fprintf(stderr, "Profile will be written to stderr.\n\n");
+  //   profile = stderr;
+  // }
 
   fprintf(profile, "Total steps: %lu\n", s_step_counter);
   fprintf(profile, "Total time: %.3f secs\n", full_time_sec);
@@ -1327,9 +1338,9 @@ static void dump_buried(void) {
 }
 
 
-int main(int argc, char **argv) {
-  s_argc = argc;
-  s_argv = argv;
+int main() {
+  // s_argc = argc;
+  // s_argv = argv;
 
   init_view_field();
   start_profiler();

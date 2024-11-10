@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WASM Test</title>
+    </head>
+    <body>
+        <h1>Refal compiled to WebAssembly test</h1>
+        <button id="wasmButton">Call main() from Refal</button>
+        <canvas id="wasmCanvas" width="100px" height="100px"></canvas>
+        <script type="module">
+            import { getLameWasmEnv, lamePostInit } from "./lamelib.js";
+            import { canvasPostInit, getCanvasWasmEnv } from "./canvas.js";
+
+            const canvas = document.getElementById("wasmCanvas");
+            const ctx = canvas.getContext("2d");
+
+            async function loadWasmModule() {
+                const response = await fetch("main.wasm");
+                const buffer = await response.arrayBuffer();
+
+                const { instance } = await WebAssembly.instantiate(buffer, {
+                    env: {
+                        ...getCanvasWasmEnv(ctx),
+                        ...getLameWasmEnv(),
+                    },
+                });
+                lamePostInit(instance);
+                canvasPostInit(instance);
+                return instance;
+            }
+
+            async function callWasmMain() {
+                try {
+                    const wasmInstance = await loadWasmModule();
+
+                    if (typeof wasmInstance.exports.main === "function") {
+                        wasmInstance.exports.main();
+                    } else {
+                        console.error(
+                            "The 'main' function is not exported or not callable."
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        "Error loading or calling the WASM module:",
+                        error
+                    );
+                }
+            }
+
+            document
+                .getElementById("wasmButton")
+                .addEventListener("click", callWasmMain);
+        </script>
+    </body>
+</html>

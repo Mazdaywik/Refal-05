@@ -1,0 +1,19 @@
+*FROM Canvas
+$EXTERN FillRect, SetFillStyle;
+
+
+$ENTRY Go {
+  =
+    <SetFillStyle 'rgb(228 3 3)'>
+    <FillRect 0 0 200 10>
+    <SetFillStyle 'rgb(255 140 0)'>
+    <FillRect 0 10 200 10>
+    <SetFillStyle 'rgb(255 237 0)'>
+    <FillRect 0 20 200 10>
+    <SetFillStyle 'rgb(0 128 38)'>
+    <FillRect 0 30 200 10>
+    <SetFillStyle 'rgb(0 77 255)'>
+    <FillRect 0 40 200 10>
+    <SetFillStyle 'rgb(117 7 135)'>
+    <FillRect 0 50 200 10>
+}

@@ -1,6 +1,10 @@
 #ifndef Refal05RTS_H_
 #define Refal05RTS_H_
 
+#ifdef LAMELIB
+  #include "lamestd.h"
+#endif /* LAMELIB */
+
 #include <stddef.h>
 
 
