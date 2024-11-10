@@ -482,7 +482,6 @@ R05_DEFINE_ENTRY_FUNCTION(SetFillStyle, "SetFillStyle") {
 
   color[color_len] = '\0';
 
-  printf("color: %s\n", color);
   setFillStyle(color);
 }
 

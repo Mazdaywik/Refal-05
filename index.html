@@ -10,14 +10,14 @@
         <button id="wasmButton">Call main() from Refal</button>
         <canvas id="wasmCanvas" width="100px" height="100px"></canvas>
         <script type="module">
-            import { getLameWasmEnv, lamePostInit } from "./lamelib.js";
-            import { canvasPostInit, getCanvasWasmEnv } from "./canvas.js";
+            import { getLameWasmEnv, lamePostInit } from "./lib/lamelib.js";
+            import { canvasPostInit, getCanvasWasmEnv } from "./examples/canvas/canvas.js";
 
             const canvas = document.getElementById("wasmCanvas");
             const ctx = canvas.getContext("2d");
 
             async function loadWasmModule() {
-                const response = await fetch("main.wasm");
+                const response = await fetch("./examples/canvas/main.wasm");
                 const buffer = await response.arrayBuffer();
 
                 const { instance } = await WebAssembly.instantiate(buffer, {
