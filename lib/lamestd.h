@@ -34,12 +34,12 @@ time_t time(time_t* t); // lamelib.js
 char* ctime(time_t* t); // lamelib.js
 
 // malloc.h
-#define MEMORY_POOL_SIZE 1024 * 1024 * 64
+#define LAME_POOL_SIZE 1024 * 1024 * 64
 
 void* malloc(size_t size);
 void* calloc(size_t num, size_t size);
 void free(void* ptr);
-void reset_allocator(void);
+void lame_pool_free(void);
 
 // stdio.h
 typedef void FILE;
@@ -181,16 +181,16 @@ int toupper(int c) {
 }
 
 // malloc.h
-static uint8_t memory_pool[MEMORY_POOL_SIZE];
-static size_t memory_offset = 0;
+static uint8_t s_lame_pool[LAME_POOL_SIZE];
+static size_t s_lame_memory_use = 0;
 
 void* malloc(size_t size) {
-    if (memory_offset + size > MEMORY_POOL_SIZE) {
+    if (s_lame_memory_use + size > LAME_POOL_SIZE) {
         return (void*)0;
     }
 
-    void* ptr = &memory_pool[memory_offset];
-    memory_offset += size;
+    void* ptr = &s_lame_pool[s_lame_memory_use];
+    s_lame_memory_use += size;
     return ptr;
 }
 
@@ -209,8 +209,8 @@ void* calloc(size_t num, size_t size) {
 
 void free(void* ptr) {}
 
-void reset_allocator(void) {
-    memory_offset = 0;
+void lame_pool_free(void) {
+    s_lame_memory_use = 0;
 }
 
 // stdio.h

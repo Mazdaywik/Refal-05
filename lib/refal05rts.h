@@ -13,7 +13,9 @@ extern "C" {
 #endif  /* __cplusplus */
 
 
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#ifdef LAMELIB
+#  define R05_NORETURN
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #  define R05_NORETURN _Noreturn
 #  define R05_NORETURN_DEFINED
 #elif defined(__cplusplus) && __cplusplus >= 201103L

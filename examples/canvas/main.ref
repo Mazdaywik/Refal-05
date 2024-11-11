@@ -3,17 +3,27 @@ $EXTERN FillRect, SetFillStyle;
 
 
 $ENTRY Go {
-  =
-    <SetFillStyle 'rgb(228 3 3)'>
-    <FillRect 0 0 200 10>
-    <SetFillStyle 'rgb(255 140 0)'>
-    <FillRect 0 10 200 10>
-    <SetFillStyle 'rgb(255 237 0)'>
-    <FillRect 0 20 200 10>
-    <SetFillStyle 'rgb(0 128 38)'>
-    <FillRect 0 30 200 10>
-    <SetFillStyle 'rgb(0 77 255)'>
-    <FillRect 0 40 200 10>
-    <SetFillStyle 'rgb(117 7 135)'>
-    <FillRect 0 50 200 10>
+  = <Draw <FFInteger <Arg 0>>>;
+}
+
+
+FFInteger {
+  e.Integer '.' e.Fractional = <Numb e.Integer>;
+}
+
+CanvasWidth { = 1000 }
+CanvasHeight { = 1000 }
+StripWidth { = 100 }
+StripHeight { = 10 }
+
+Draw {
+  e.Ts =
+    <SetFillStyle 'rgb(255 255 255)'> <FillRect 0 0 <CanvasWidth> <CanvasHeight>>
+
+    <SetFillStyle 'rgb(228 3 3)'  > <FillRect (e.Ts) <Add (e.Ts) <Mul <StripHeight> 0>> <StripWidth> <StripHeight>>
+    <SetFillStyle 'rgb(255 140 0)'> <FillRect (e.Ts) <Add (e.Ts) <Mul <StripHeight> 1>> <StripWidth> <StripHeight>>
+    <SetFillStyle 'rgb(255 237 0)'> <FillRect (e.Ts) <Add (e.Ts) <Mul <StripHeight> 2>> <StripWidth> <StripHeight>>
+    <SetFillStyle 'rgb(0 128 38)' > <FillRect (e.Ts) <Add (e.Ts) <Mul <StripHeight> 3>> <StripWidth> <StripHeight>>
+    <SetFillStyle 'rgb(0 77 255)' > <FillRect (e.Ts) <Add (e.Ts) <Mul <StripHeight> 4>> <StripWidth> <StripHeight>>
+    <SetFillStyle 'rgb(117 7 135)'> <FillRect (e.Ts) <Add (e.Ts) <Mul <StripHeight> 5>> <StripWidth> <StripHeight>>
 }

@@ -7,8 +7,13 @@
     </head>
     <body>
         <h1>Refal compiled to WebAssembly test</h1>
+
         <button id="wasmButton">Call main() from Refal</button>
-        <canvas id="wasmCanvas" width="100px" height="100px"></canvas>
+
+        <button id="stopButton">Stoooooop!</button>
+
+        <canvas id="wasmCanvas" width="1000px" height="1000px"></canvas>
+
         <script type="module">
             import { getLameWasmEnv, lamePostInit } from "./lib/lamelib.js";
             import { canvasPostInit, getCanvasWasmEnv } from "./examples/canvas/canvas.js";
@@ -16,43 +21,66 @@
             const canvas = document.getElementById("wasmCanvas");
             const ctx = canvas.getContext("2d");
 
-            async function loadWasmModule() {
-                const response = await fetch("./examples/canvas/main.wasm");
-                const buffer = await response.arrayBuffer();
+            const { instance } = await WebAssembly.instantiateStreaming(fetch("./examples/canvas/main.wasm"), {
+                env: {
+                    ...getCanvasWasmEnv(ctx),
+                    ...getLameWasmEnv(),
+                },
+            });
 
-                const { instance } = await WebAssembly.instantiate(buffer, {
-                    env: {
-                        ...getCanvasWasmEnv(ctx),
-                        ...getLameWasmEnv(),
-                    },
-                });
-                lamePostInit(instance);
-                canvasPostInit(instance);
-                return instance;
-            }
+            lamePostInit(instance);
+            canvasPostInit(instance);
 
-            async function callWasmMain() {
-                try {
-                    const wasmInstance = await loadWasmModule();
+            const data = new DataView(instance.exports.memory.buffer);
+            const encoder = new TextEncoder();
 
-                    if (typeof wasmInstance.exports.main === "function") {
-                        wasmInstance.exports.main();
-                    } else {
-                        console.error(
-                            "The 'main' function is not exported or not callable."
-                        );
-                    }
-                } catch (error) {
-                    console.error(
-                        "Error loading or calling the WASM module:",
-                        error
-                    );
+            let stop = false;
+            let dt;
+            let previous;
+
+            function next(timestamp) {
+                if (stop) {
+                    console.log("Stopped");
+                    return;
                 }
+
+                timestamp = timestamp / 100
+                dt = (timestamp - previous);
+                previous = timestamp;
+
+                const argv_ptr = instance.exports.malloc(1024);
+                const strings_ptr = instance.exports.malloc(1024);
+                data.setUint32(argv_ptr, strings_ptr, true);
+
+                const str = encoder.encode(timestamp.toFixed(16));
+                let i = 0;
+                while (i < str.length) {
+                    data.setUint8(strings_ptr + i, str[i]);
+                    i++;
+                }
+                data.setUint8(i, 0);
+
+
+                try {
+                    instance.exports.main(1, argv_ptr);
+                } catch (e) {
+                    if (e.message !== "Refal machine exited: 0") {
+                        console.error(e);
+                    }
+                }
+
+                window.requestAnimationFrame(next);
             }
 
-            document
-                .getElementById("wasmButton")
-                .addEventListener("click", callWasmMain);
+            window.requestAnimationFrame((timestamp) => {
+                previous = timestamp;
+                window.requestAnimationFrame(next);
+            });
+
+            document.getElementById("wasmButton").addEventListener("click", () => next(2222.69));
+            document.getElementById("stopButton").addEventListener("click", () => {
+                stop = true;
+            });
         </script>
     </body>
 </html>

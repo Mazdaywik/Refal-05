@@ -420,6 +420,10 @@ static void ensure_memory(void) {
 
 
 static void free_memory(void) {
+  #ifdef LAMELIB
+    lame_pool_free();
+  #endif /* LAMELIB */
+
   while (s_pool != 0) {
     struct memory_chunk *next = s_pool->next;
     free(s_pool);
@@ -1338,11 +1342,82 @@ static void dump_buried(void) {
 }
 
 
+void reset_static_vars() {
+  s_end_free_list = (struct r05_node ) {0};
+
+  s_begin_free_list = (struct r05_node) {
+    0, &s_end_free_list, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  s_end_free_list = (struct r05_node ) {
+    &s_begin_free_list, 0, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+
+  s_free_ptr = &s_end_free_list;
+
+  s_memory_use = 0;
+
+  s_pool = NULL;
+  s_stack_ptr = NULL;
+
+  s_start_program_time = 0;
+  s_start_pattern_match_time = 0;
+  s_total_pattern_match_time = 0;
+  s_start_building_result_time = 0;
+  s_total_building_result_time = 0;
+  s_total_copy_tevar_time = 0;
+  s_total_match_repeated_tvar_time = 0;
+  s_total_match_repeated_evar_time = 0;
+  s_start_e_loop = 0;
+  s_total_e_loop = 0;
+  s_total_match_repeated_tvar_time_outside_e = 0;
+  s_total_match_repeated_evar_time_outside_e = 0;
+
+  s_in_generated = 0;
+  s_in_e_loop = 0;
+
+  #ifdef R05_PROFILER
+  s_profiled_functions = NULL;
+  #endif  /* R05_PROFILER */
+
+  s_step_counter = 0;
+
+  s_end_view_field = (struct r05_node) {0};
+
+  s_begin_view_field = (struct r05_node) {
+    0, &s_end_view_field, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  s_end_view_field = (struct r05_node) {
+    &s_begin_view_field, 0, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+
+  s_stack_ptr = NULL;
+
+  s_step_counter = 0;
+
+  s_arg_begin = NULL;
+  s_arg_end = NULL;
+
+  s_argv = 0;
+  s_argc = 0;
+
+  s_end_buried = (struct r05_node) {0};
+
+  s_begin_buried = (struct r05_node ) {
+    0, &s_end_buried, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+  s_end_buried = (struct r05_node) {
+    &s_begin_buried, 0, R05_DATATAG_ILLEGAL, { '\0' }
+  };
+}
+
 int main(int argc, char** argv) {
+#ifdef LAMELIB
+  reset_static_vars();
+#endif
+
   s_argc = argc;
   s_argv = argv;
 
-  reset_allocator();
   init_view_field();
   start_profiler();
   main_loop();
