@@ -1338,10 +1338,11 @@ static void dump_buried(void) {
 }
 
 
-int main() {
-  // s_argc = argc;
-  // s_argv = argv;
+int main(int argc, char** argv) {
+  s_argc = argc;
+  s_argv = argv;
 
+  reset_allocator();
   init_view_field();
   start_profiler();
   main_loop();
