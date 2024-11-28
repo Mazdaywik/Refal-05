@@ -26,10 +26,12 @@ run_test_aux() {
   fi
 
   ./$EXE 2> __dump.txt
-  if [ $? -ge 200 ]; then
+  # команда [ в условии меняет код возврата, поэтому нужна переменная
+  EXIT_CODE=$?
+  if [ $EXIT_CODE -ge 200 ]; then
     echo TEST FAILED, SEE __dump.txt
     exit
-  elif [ $? -ge 0 ]; then
+  elif [ $EXIT_CODE -gt 0 ]; then
     echo "TEST FAILED (INTERNAL ERROR)"
     exit
   fi
