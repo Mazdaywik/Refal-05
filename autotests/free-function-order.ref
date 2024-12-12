@@ -5,5 +5,3 @@ $ENTRY Go {
 Hello {
   World = ;
 }
-
-*$ENUM World

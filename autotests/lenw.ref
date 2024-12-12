@@ -5,6 +5,4 @@ $ENTRY Go {
     <Eq (4 (A) (B) (3) (4)) <Lenw (A) (B) (3) (4)>>
 }
 
-*$ENUM A, B
-
 Eq { (e.Eq) e.Eq = }

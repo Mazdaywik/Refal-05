@@ -1,5 +1,0 @@
-*$ENUM Enum
-
-$ENTRY Go {
-  = Enum;
-}

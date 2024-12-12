@@ -1403,8 +1403,8 @@ R05_DEFINE_ENTRY_FUNCTION(Close, "Close") {
         == False
       e.FileName ::= s.CHAR+
 */
-R05_DEFINE_ENTRY_ENUM(True, "True")
-R05_DEFINE_ENTRY_ENUM(False, "False")
+R05_DEFINE_LOCAL_ENUM(True, "True")
+R05_DEFINE_LOCAL_ENUM(False, "False")
 
 R05_DEFINE_ENTRY_FUNCTION(ExistFile, "ExistFile") {
   struct r05_node *callee = arg_begin->next;
@@ -1706,8 +1706,8 @@ R05_DEFINE_ENTRY_FUNCTION(Write, "Write") {
       s.Name ::= s.FUNCTION
       s.Type ::= special | regular
 */
-R05_DEFINE_ENTRY_ENUM(special, "special")
-R05_DEFINE_ENTRY_ENUM(regular, "regular")
+R05_DEFINE_LOCAL_ENUM(special, "special")
+R05_DEFINE_LOCAL_ENUM(regular, "regular")
 
 
 /*
