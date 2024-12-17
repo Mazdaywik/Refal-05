@@ -1,5 +1,3 @@
-$EXTERN True;
-
 $ENTRY Go {
   = <Eq ('Hello' () 10 Go) <Print 'Hello' () 10 Go>>
     <Eq ()                 <Prout 'Hello' () 10 Go>>
