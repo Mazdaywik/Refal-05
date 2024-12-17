@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN MapAccum, Map, Reduce, Unique;
+$EXTERN MapAccum, Map, Unique;
 
 *$FROM R5FW-Parser
 $EXTERN Parse, Scan;
@@ -23,13 +23,6 @@ CheckAST {
 }
 
 CheckAST-ExternsArePlained {
-  t.ErrorList e.AST
-    = <CheckAST-RedefinitionsAreFound
-        <FindRedefinitions t.ErrorList e.AST>
-      >;
-}
-
-CheckAST-RedefinitionsAreFound {
   t.ErrorList e.AST
     = <CheckAST-UnusedsAreFound
         <FindUnused t.ErrorList e.AST>
@@ -67,66 +60,6 @@ $ENTRY r05-parser_PlainExterns {
 
 $ENTRY r05-parser_PlainExterns-Name {
   (t.Pos e.Name) = (Function t.Pos (e.Name) Extern /* пусто */);
-}
-
-
-FindRedefinitions {
-  t.ErrorList e.AST
-    = <FindRedefinitions-Aux
-        <Reduce
-          r05-parser_FindRedefinitions-Item
-          (t.ErrorList /* items */)
-          e.AST
-        >
-      >;
-}
-
-FindRedefinitions-Aux {
-  (t.ErrorList e.AST) = t.ErrorList e.AST;
-}
-
-* TODO: при реализации Mazdaywik/refal-5-framework#9 упростить логику здесь!!!
-$ENTRY r05-parser_FindRedefinitions-Item {
-  (
-    t.ErrorList
-    e.Items-B
-    (Function NO-POS (e.Name) Extern /* пусто */)  /* встроенная */
-    e.Items-E
-  )
-  (Function t.NewPos (e.Name) s.NewScope e.NewBody)
-    = (
-        <AddRedudand t.ErrorList t.NewPos s.NewScope e.Name>
-        e.Items-B
-        (Function NO-POS (e.Name) Extern /* пусто */)
-        e.Items-E
-      );
-
-  (
-    t.ErrorList
-    e.Items-B (Function t.OldPos (e.Name) s.OldScope e.OldBody) e.Items-E
-  )
-  (Function t.NewPos (e.Name) s.NewScope /* пусто */)
-    = (
-        <AddRedudand t.ErrorList t.NewPos s.NewScope e.Name>
-        e.Items-B (Function t.OldPos (e.Name) s.OldScope e.OldBody) e.Items-E
-      );
-
-  (
-    t.ErrorList
-    e.Items-B (Function t.OldPos (e.Name) s.OldScope /* пусто */) e.Items-E
-  )
-  (Function t.NewPos (e.Name) s.NewScope e.NewBody)
-    = (
-        <AddRedudand t.ErrorList t.OldPos s.OldScope e.Name>
-        e.Items-B e.Items-E (Function t.NewPos (e.Name) s.NewScope e.NewBody)
-      );
-
-  (t.ErrorList e.Items) t.Item = (t.ErrorList e.Items t.Item);
-}
-
-AddRedudand {
-  t.ErrorList t.SrcPos Extern e.Name
-    = <EL-AddErrorAt t.ErrorList t.SrcPos 'Redudand external name ' e.Name>;
 }
 
 
