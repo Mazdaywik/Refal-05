@@ -4,9 +4,6 @@ $EXTERN MapAccum, Map, Unique;
 *$FROM R5FW-Parser
 $EXTERN Parse, Scan;
 
-*$FROM R5FW-Parser-Defs
-$EXTERN Builtins;
-
 
 /**
   <R05-PrepareAST e.AST>
@@ -40,13 +37,7 @@ CheckAST-UnusedsAreFound {
 
 
 PlainExterns {
-  e.AST
-    = <Map r05-parser_BuiltinExtern <Builtins>>
-      <Map r05-parser_PlainExterns e.AST>;
-}
-
-$ENTRY r05-parser_BuiltinExtern {
-  (e.Builtin) = (Function NO-POS (e.Builtin) Extern /* пусто */);
+  e.AST = <Map r05-parser_PlainExterns e.AST>;
 }
 
 $ENTRY r05-parser_PlainExterns {
@@ -99,6 +90,21 @@ FindUnused-Loop {
         e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
+  t.ErrorList ((e.BuiltinName) e.References) e.AST
+    , <ListOfBuiltin> : e.1 (s.No s.FuncName s.FuncType) e.2
+    , <Explode s.FuncName> : e.BuiltinName
+    = <FindUnused-Loop
+        t.ErrorList (e.References)
+        e.AST (Function Used NO-POS (e.BuiltinName) Extern /* пусто */)
+      >;
+
+  t.ErrorList ((s.SugarName) e.References) e.AST
+    , '%*+-/?' : e.1 s.SugarName e.2
+    = <FindUnused-Loop
+        t.ErrorList (e.References)
+        e.AST (Function Used NO-POS (s.SugarName) Extern /* пусто */)
+      >;
+
   t.ErrorList ((e.Name) e.References) e.AST
     = <FindUnused-Loop
         t.ErrorList (e.References)
@@ -111,9 +117,14 @@ FindUnused-Loop {
 
 $ENTRY r05-parser_FindUnused-Loop-UnusedErrors {
   t.ErrorList (Function Unused t.Pos (e.Name) s.Scope e.Body)
-    = <AddUnusedMessage t.ErrorList t.Pos s.Scope e.Name>;
+    = <EL-AddErrorAt t.ErrorList t.Pos <UnusedMessage s.Scope> ' ' e.Name>;
 
   t.ErrorList t.Other = t.ErrorList t.Other;
+}
+
+UnusedMessage {
+  Local = 'Unused local function';
+  Extern = 'Unused external declaration';
 }
 
 
@@ -135,16 +146,6 @@ CastAST-JoinExterns {
     = e.AST-B <CastAST-JoinExterns (Extern e.Externs1 e.Externs2) e.AST-E>;
 
   e.AST = e.AST;
-}
-
-AddUnusedMessage {
-  t.ErrorList NO-POS Extern e.Name = t.ErrorList;  /* встроенная */
-
-  t.ErrorList t.Pos Local e.Name
-     = <EL-AddErrorAt t.ErrorList t.Pos 'Unused local function ' e.Name>;
-
-  t.ErrorList t.Pos Extern e.Name
-     = <EL-AddErrorAt t.ErrorList t.Pos 'Unused external declaration ' e.Name>;
 }
 
 
