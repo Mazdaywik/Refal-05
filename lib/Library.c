@@ -1261,6 +1261,19 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 struct r05_function r05f_ = { r05_enum_function_code, "", R05_INIT_PROFILER };
 
 
+
+/**
+  48. <Up ↓e.Expr> == e.Expr′
+*/
+R05_DEFINE_ENTRY_ENUM(Up, "Up")
+
+
+/**
+  49. <Ev-met ↓e.Expr> == { 0 | 1 | 2 } ↓e.Expr′
+*/
+R05_DEFINE_ENTRY_ENUM(Evm_met, "Ev-met")
+
+
 /**
    50. <Residue s.Func e.Arg> == <s.Func e.Arg>
 */
@@ -1781,8 +1794,8 @@ static struct builtin_info s_builtin_info[] = {
   /* ALLOC_BUILTIN(45, Freeze, regular) */
   /* ALLOC_BUILTIN(46, Freezer, regular) */
   /* ALLOC_BUILTIN(47, Dn, regular) */
-  /* ALLOC_BUILTIN(48, Up, special) */
-  /* ALLOC_BUILTIN(49, Ev_met, special) */
+  ALLOC_BUILTIN(48, Up, special)
+  ALLOC_BUILTIN(49, Evm_met, special)
   ALLOC_BUILTIN(50, Residue, special)
   ALLOC_BUILTIN(51, GetEnv, regular)
   ALLOC_BUILTIN(52, System, regular)

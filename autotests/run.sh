@@ -5,6 +5,8 @@ run_test_aux() {
   REF=$1
   CFILE=${REF%%.ref}.c
   EXE=${REF%%.ref}
+  SATELLITE=${REF%%.ref}.SATELLITE.ref
+  SATELLITEC=${REF%%.ref}.SATELLITE.c
 
   CLINE=$R05CCOMP
 
@@ -19,7 +21,17 @@ run_test_aux() {
     exit
   fi
 
-  $CLINE -I../lib -o$EXE $CFILE ../lib/Library.c ../lib/refal05rts.c
+  if [ -e $SATELLITE ]; then
+    ../bin/refal05c $SATELLITE
+    if [ ! -e $SATELLITEC ]; then
+      echo COMPILATION FAILED
+      exit
+    fi
+  else
+    set SATELLITEC=
+  fi
+
+  $CLINE -I../lib -o$EXE $CFILE $SATELLITEC ../lib/Library.c ../lib/refal05rts.c
   if [ $? -gt 0 ]; then
     echo COMPILATION FAILED
     exit
@@ -36,7 +48,7 @@ run_test_aux() {
     exit
   fi
 
-  rm $CFILE $EXE
+  rm $CFILE $EXE $SATELLITEC
   [ -e __dump.txt ] && rm __dump.txt
 
   echo
@@ -62,6 +74,9 @@ run_test_aux.BAD-SYNTAX() {
 
   echo "Ok! Compiler didn't crash on invalid syntax"
   echo
+}
+
+run_test_aux.SATELLITE() {
 }
 
 run_test() {

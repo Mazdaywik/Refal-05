@@ -1,4 +1,4 @@
 $ENTRY GO { = }
 
-Foo { = Bar }
-Bar { = Bar }
+Foo { = <Bar> }
+Bar { = <Foo> }

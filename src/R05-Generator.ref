@@ -20,6 +20,14 @@ $ENTRY R05-Generate-ToFile {
   <R05-Generate-ToLines e.Tree> == (s.CHAR*)*
 */
 $ENTRY R05-Generate-ToLines {
+  e.Tree-B (Metatable e.Functions) e.Tree-E =
+    <R05-Generate-Aux
+      <MapAccum
+        generator_GenTreeItem (/* declarations */)
+        <Transform e.Tree-B e.Tree-E> (Metatable e.Functions)
+      >
+    >;
+
   e.Tree =
     <R05-Generate-Aux
       <MapAccum generator_GenTreeItem (/* declarations */) <Transform e.Tree>>
@@ -44,6 +52,10 @@ $ENTRY generator_GenTreeItem {
     (e.Declarations <Map r05-generator_GenExtern e.Names>)
     /* пусто */;
 
+  (e.Declarations) (Function t.SrcPos (e.Name) Meta /* пусто */)
+    = (e.Declarations <GenDeclaration Entry e.Name>) /* TODO: временно */
+      /* пусто */;
+
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */)
     = (e.Declarations <GenEmptyDefinition e.Name s.ScopeClass>)
       <AssertEq Local s.ScopeClass>
@@ -58,6 +70,13 @@ $ENTRY generator_GenTreeItem {
     ('/*')
     (<SafeSpecialComment e.Text>)
     ('*/');
+
+  (e.Declarations) (Metatable e.Names)
+    = (e.Declarations)
+      ('/*')
+      <Map r05-generator_MetatableName e.Names>
+      ('*/')
+      ();
 }
 
 SafeSpecialComment {
@@ -66,6 +85,10 @@ SafeSpecialComment {
   '*/' e.Comment = '*!/' <SafeSpecialComment e.Comment>;
   s.Other e.Comment = s.Other <SafeSpecialComment e.Comment>;
   /* пусто */ = /* пусто */;
+}
+
+$ENTRY r05-generator_MetatableName {
+  (e.Name) = (e.Name);
 }
 
 $ENTRY r05-generator_GenExtern {

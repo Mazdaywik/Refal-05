@@ -64,7 +64,7 @@ FindUnused {
 
 $ENTRY r05-parser_FindUnused-InitialUsage {
   (e.Entries) (Function t.Pos (e.Name) Entry e.Body)
-    = (e.Entries (e.Name))
+    = (e.Entries (Call e.Name))
       (Function Unused t.Pos (e.Name) Entry e.Body);
 
   (e.Entries) (Function t.Pos (e.Name) s.Scope e.Body)
@@ -75,7 +75,14 @@ $ENTRY r05-parser_FindUnused-InitialUsage {
 }
 
 FindUnused-Loop {
-  t.ErrorList ((e.Name) e.References)
+  t.ErrorList ((s.How e.Name) e.References)
+  e.AST-B (Function Unused t.Pos (e.Name) Extern /* пусто */) e.AST-E
+    = <FindUnused-Loop
+        t.ErrorList (e.References)
+        e.AST-B (Function Used t.Pos (e.Name) Extern /* пусто */) e.AST-E
+      >;
+
+  t.ErrorList ((Call e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
         t.ErrorList
@@ -83,29 +90,36 @@ FindUnused-Loop {
         e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  t.ErrorList ((e.Name) e.References)
-  e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
+  t.ErrorList ((s.How e.Name) e.References)
+  e.AST-B (Function s.Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
         t.ErrorList (e.References)
-        e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
+        e.AST-B (Function s.Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  t.ErrorList ((e.BuiltinName) e.References) e.AST
-    , <ListOfBuiltin> : e.1 (s.No s.FuncName s.FuncType) e.2
+  t.ErrorList ((s.How e.BuiltinName) e.References) e.AST
+    , <ListOfBuiltin> : e.1 (s.No s.FuncName regular) e.2
     , <Explode s.FuncName> : e.BuiltinName
     = <FindUnused-Loop
         t.ErrorList (e.References)
         e.AST (Function Used NO-POS (e.BuiltinName) Extern /* пусто */)
       >;
 
-  t.ErrorList ((s.SugarName) e.References) e.AST
+  t.ErrorList ((Call e.BuiltinName) e.References) e.AST
+    , <ListOfBuiltin> : e.1 (s.No s.FuncName special) e.2
+    , <Explode s.FuncName> : e.BuiltinName
+    = <FindUnused-Loop
+        t.ErrorList <AddMetatable (e.References) e.AST>
+      >;
+
+  t.ErrorList ((s.How s.SugarName) e.References) e.AST
     , '%*+-/?' : e.1 s.SugarName e.2
     = <FindUnused-Loop
         t.ErrorList (e.References)
         e.AST (Function Used NO-POS (s.SugarName) Extern /* пусто */)
       >;
 
-  t.ErrorList ((e.Name) e.References) e.AST
+  t.ErrorList ((s.How e.Name) e.References) e.AST
     = <FindUnused-Loop
         t.ErrorList (e.References)
         e.AST (Function Used NO-POS (e.Name) Local /* пусто */)
@@ -113,6 +127,56 @@ FindUnused-Loop {
 
    t.ErrorList (/* кончились ссылки */) e.AST
      = <MapAccum r05-parser_FindUnused-Loop-UnusedErrors t.ErrorList e.AST>;
+}
+
+AddMetatable {
+  (e.References) e.AST
+    = <AddMetatable-Aux
+        (e.References)
+        <MapAccum
+          r05-parser_AddMetatable-AddFunction (/* пусто */)
+          e.AST
+          <Map r05-parser_AddMetatable-MakeMetafunction <ListOfBuiltin>>
+          (Function Used NO-POS ('?') Meta /* пусто */)
+        >
+      >;
+}
+
+$ENTRY r05-parser_AddMetatable-AddFunction {
+  (e.AllFunctions) (Function s.Used NO-POS (e.Builtin) Extern /* пусто */)
+    = (e.AllFunctions)
+      (Function s.Used NO-POS (e.Builtin) Extern /* пусто */);
+
+  (e.AllFunctions) (Function s.Used t.Pos (e.Name) Extern /* пусто */)
+    = (e.AllFunctions (e.Name))
+      (Function s.Used t.Pos (e.Name) Extern /* пусто */);
+
+  (e.AllFunctions) (Function Used NO-POS (e.Ident) Local /* пусто */)
+    = (e.AllFunctions) (Function Used NO-POS (e.Ident) Local /* пусто */);
+
+  (e.AllFunctions) (Function s.Used t.Pos (e.Name) s.Scope e.Body)
+    = (e.AllFunctions (e.Name))
+      (Function s.Used t.Pos (e.Name) s.Scope e.Body);
+
+  (e.AllFunctions) (SpecialComment t.Pos e.Comment)
+    = (e.AllFunctions) (SpecialComment t.Pos e.Comment);
+}
+
+$ENTRY r05-parser_AddMetatable-MakeMetafunction {
+  (s.No s.Name special)
+    = (Function Used NO-POS (<Explode s.Name>) Meta /* пусто */);
+
+  t.Regular = /* пусто */;
+}
+
+AddMetatable-Aux {
+  (e.References) (e.AllFunctions) e.AST
+    = (e.References <Map r05-parser_AddHowCall e.AllFunctions>)
+      e.AST (Metatable e.AllFunctions);
+}
+
+$ENTRY r05-parser_AddHowCall {
+  (e.Name) = (Call e.Name);
 }
 
 $ENTRY r05-parser_FindUnused-Loop-UnusedErrors {
@@ -139,6 +203,8 @@ $ENTRY r05-parser_CastAST-Item {
     = (Function t.Pos (e.Name) s.Scope e.Body);
 
   (SpecialComment t.Pos e.Comment) = (SpecialComment t.Pos e.Comment);
+
+  (Metatable e.Functions) = (Metatable e.Functions);
 }
 
 CastAST-JoinExterns {
@@ -178,12 +244,12 @@ ExtractReferences-Expr {
 }
 
 $ENTRY r05-parser_ExtractReferences-Term {
-  (Symbol Word e.Name) = (e.Name);
+  (Symbol Word e.Name) = (Ident e.Name);
 
   (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
 
   (Call t.SrcPos (e.Name) e.Expr)
-    = (e.Name) <ExtractReferences-Expr e.Expr>;
+    = (Call e.Name) <ExtractReferences-Expr e.Expr>;
 
   t.Other = /* пусто */;
 }

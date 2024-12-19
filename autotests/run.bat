@@ -25,6 +25,8 @@ setlocal
   set REF=%1
   set CFILE=%~n1.c
   set EXE=%~n1.exe
+  set SATELLITE=%~n1.SATELLITE.ref
+  set SATELLITEC=%~n1.SATELLITE.c
 
   set CLINE=%R05CCOMP%
   set R05CCOMP=
@@ -41,7 +43,17 @@ setlocal
     exit /b 1
   )
 
-  %CLINE% -I../lib %CFILE% ../lib/Library.c ../lib/refal05rts.c
+  if exist %SATELLITE% (
+    ..\bin\refal05c %SATELLITE%
+    if not exist %SATELLITEC% (
+      echo COMPILATION FAILED
+      exit /b 1
+    )
+  ) else (
+    set SATELLITEC=
+  )
+
+  %CLINE% -I../lib %CFILE% %SATELLITEC% ../lib/Library.c ../lib/refal05rts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit /b 1
@@ -59,7 +71,7 @@ setlocal
     exit /b 1
   )
 
-  erase %CFILE% %EXE%
+  erase %CFILE% %EXE% %SATELLITEC%
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
   if exist __dump.txt erase __dump.txt
@@ -90,4 +102,7 @@ setlocal
   echo Ok! Compiler didn't crash on invalid syntax
   echo.
 endlocal
+goto :EOF
+
+:RUN_TEST_AUX.SATELLITE
 goto :EOF
