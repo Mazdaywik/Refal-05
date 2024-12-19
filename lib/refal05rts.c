@@ -952,6 +952,32 @@ static void print_indent(int level) {
 }
 
 
+static int is_ident_name(const char *name) {
+#define in_range(min, c, max) ((min) <= (c) && (c) <= (max))
+
+  if (! in_range('a', *name, 'z') && ! in_range('A', *name, 'Z')) {
+    return 0;
+  }
+
+  while (
+    *name != 0
+    && (
+      in_range('a', *name, 'z') || in_range('A', *name, 'Z')
+      || in_range('0', *name, '9') || *name == '_' || *name == '-'
+    )
+  ) {
+    ++name;
+  }
+
+  return *name == 0;
+#undef in_range
+}
+
+static const char escapes[][2] = {
+  "\tt", "\nn", "\rr", "\"\"", "''", "((", "))", "<<", ">>", "\\\\", "\0\0",
+};
+
+
 static void print_seq(struct r05_node *begin, struct r05_node *end) {
   enum {
     cStateView = 100,
@@ -999,7 +1025,26 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             continue;
 
           case R05_DATATAG_FUNCTION:
-            fprintf(stderr, "%s ", begin->info.function->name);
+            if (is_ident_name(begin->info.function->name)) {
+              fprintf(stderr, "%s ", begin->info.function->name);
+            } else {
+              const char *p;
+              fprintf(stderr, "\"");
+              for (p = begin->info.function->name; *p != 0; ++p) {
+                size_t i = 0;
+                while (escapes[i][0] != '\0' && escapes[i][0] != *p) {
+                  ++i;
+                }
+                if (escapes[i][0] != '\0') {
+                  fprintf(stderr, "\\%c", escapes[i][1]);
+                } else if (' ' <= *p && *p < 127) {
+                  fprintf(stderr, "%c", *p);
+                } else {
+                  fprintf(stderr, "\\x%02X", *p);
+                }
+              }
+              fprintf(stderr, "\" ");
+            }
             begin = begin->next;
             continue;
 
