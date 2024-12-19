@@ -13,13 +13,17 @@
 #include "refal05rts.h"
 
 
+#define ALIAS_DESCRIPTOR(name, rep, origin) \
+  struct r05_function r05f_ ## name = { \
+    origin, rep, R05_INIT_PROFILER \
+  };
+
+
 #define DEFINE_ALIAS(name, rep, origin) \
   static void r05c_ ## origin( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
-  struct r05_function r05f_ ## name = { \
-    r05c_ ## origin, rep, R05_INIT_PROFILER \
-  };
+  ALIAS_DESCRIPTOR(name, rep, r05c_ ## origin)
 
 
 DEFINE_ALIAS(k25_, "%", Mod);
@@ -224,7 +228,7 @@ static void add(
 /**
   4. <Br e.Key '=' e.Value> == empty
 */
-struct r05_function r05f_Br = { r05_br, "Br", R05_INIT_PROFILER };
+ALIAS_DESCRIPTOR(Br, "Br", r05_br);
 
 
 /**
@@ -312,13 +316,13 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
 /**
   7. <Cp e.Key> == e.Value
 */
-struct r05_function r05f_Cp = { r05_cp, "Cp", R05_INIT_PROFILER };
+ALIAS_DESCRIPTOR(Cp, "Cp", r05_cp);
 
 
 /**
   8. <Dg e.Key> == e.Value
 */
-struct r05_function r05f_Dg = { r05_dg, "Dg", R05_INIT_PROFILER };
+ALIAS_DESCRIPTOR(Dg, "Dg", r05_dg);
 
 
 /**
@@ -1053,7 +1057,7 @@ R05_DEFINE_ENTRY_FUNCTION(Putout, "Putout") {
 /**
   28. <Rp e.Key '=' e.Value> == empty
 */
-struct r05_function r05f_Rp = { r05_rp, "Rp", R05_INIT_PROFILER };
+ALIAS_DESCRIPTOR(Rp, "Rp", r05_rp);
 
 
 /**
@@ -1536,9 +1540,7 @@ R05_DEFINE_ENTRY_FUNCTION(Implodeu_Ext, "Implode_Ext") {
 /**
   59. <Explode_Ext s.FUNCTION> == s.CHAR+
 */
-struct r05_function r05f_Explodeu_Ext = {
-  r05c_Explode, "Explode_Ext", R05_INIT_PROFILER
-};
+ALIAS_DESCRIPTOR(Explodeu_Ext, "Explode_Ext", r05c_Explode)
 
 
 /**
