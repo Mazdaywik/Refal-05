@@ -1,6 +1,6 @@
 $EXTERN CapturedExtern;
 
-$ENTRY Go {
+$ENTRY GO {
   = <Mu CapturedExtern> <Mu CapturedLocal>
 }
 

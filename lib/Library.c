@@ -15,7 +15,7 @@
 
 #define ALIAS_DESCRIPTOR(name, rep, origin) \
   struct r05_function r05f_ ## name = { \
-    origin, rep, R05_INIT_PROFILER \
+    origin, rep, 1, NULL, R05_INIT_PROFILER \
   };
 
 
@@ -31,14 +31,13 @@ DEFINE_ALIAS(k2A_, "*", Mul);
 DEFINE_ALIAS(k2B_, "+", Add);
 DEFINE_ALIAS(m_, "-", Sub);
 DEFINE_ALIAS(k2F_, "/", Div);
-DEFINE_ALIAS(k3F_, "?", Residue);
 
 
 #define is_ident_tail(c) (isalpha(c) || isdigit(c) || (c) == '_' || (c) == '-')
 
 
 static struct r05_function *s_arithmetic_names[] = {
-  &r05f_k25_, &r05f_k2A_, &r05f_k2B_, &r05f_m_, &r05f_k2F_, &r05f_k3F_, NULL
+  &r05f_k25_, &r05f_k2A_, &r05f_k2B_, &r05f_m_, &r05f_k2F_, NULL
 };
 
 
@@ -54,24 +53,49 @@ static struct builtin_info s_builtin_info[];
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
-R05_DEFINE_ENTRY_FUNCTION(Mu, "Mu") {
+R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
   struct r05_node *mu = arg_begin->next;
   struct r05_node *callable = mu->next;
+  struct r05_metatable *metatable = mu->info.function->metatable;
+  struct r05_function **cur, **end;
+
+  assert(metatable != NULL);
+  cur = metatable->functions;
+  end = metatable->functions + metatable->size;
 
   if (R05_DATATAG_FUNCTION == callable->tag) {
+    const char *name = callable->info.function->name;
+    while (cur < end && strcmp((*cur)->name, name) != 0) {
+      ++cur;
+    }
+    if (cur < end) {
+      callable->info.function = *cur;
+    } else if (! callable->info.function->entry) {
+      r05_recognition_impossible();
+    }
     r05_splice_to_freelist(mu, mu);
   } else if (R05_DATATAG_CHAR == callable->tag) {
+    char name = callable->info.char_;
     struct r05_function **alias = s_arithmetic_names;
-    while (*alias != NULL && (*alias)->name[0] != callable->info.char_) {
+    while (*alias != NULL && (*alias)->name[0] != name) {
       ++alias;
     }
 
     if (*alias != NULL) {
       mu->info.function = *alias;
-      r05_splice_to_freelist(callable, callable);
     } else {
-      r05_recognition_impossible();
+      while (
+        cur < end && ((*cur)->name[0] != name || (*cur)->name[1] != '\0')
+      ) {
+        ++cur;
+      }
+      if (cur < end) {
+        mu->info.function = *cur;
+      } else {
+        r05_recognition_impossible();
+      }
     }
+    r05_splice_to_freelist(callable, callable);
   } else {
     r05_recognition_impossible();
   }
@@ -1262,27 +1286,39 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 /**
   44. Пустая функция с именем ""
 */
-struct r05_function r05f_ = { r05_enum_function_code, "", R05_INIT_PROFILER };
+struct r05_function r05f_ = {
+  r05_enum_function_code, "", 1, NULL, R05_INIT_PROFILER
+};
 
 
 
 /**
   48. <Up ↓e.Expr> == e.Expr′
 */
-R05_DEFINE_ENTRY_ENUM(Up, "Up")
+R05_IMPLEMENT_METAFUNCTION(Up, "Up") {
+  (void) arg_begin, (void) arg_end;
+  r05_builtin_error("Metafunction Up is not implemented yet");
+}
 
 
 /**
   49. <Ev-met ↓e.Expr> == { 0 | 1 | 2 } ↓e.Expr′
 */
-R05_DEFINE_ENTRY_ENUM(Evm_met, "Ev-met")
+R05_IMPLEMENT_METAFUNCTION(Evm_met, "Ev-met") {
+  (void) arg_begin, (void) arg_end;
+  r05_builtin_error("Metafunction Ev-met is not implemented yet");
+}
 
 
 /**
    50. <Residue s.Func e.Arg> == <s.Func e.Arg>
 */
-R05_DEFINE_ENTRY_FUNCTION(Residue, "Residue") {
+R05_IMPLEMENT_METAFUNCTION(Residue, "Residue") {
   r05c_Mu(arg_begin, arg_end);
+}
+
+void r05c_k3F_(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  r05c_Residue(arg_begin, arg_end);
 }
 
 

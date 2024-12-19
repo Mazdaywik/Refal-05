@@ -1,0 +1,11 @@
+$EXTERN MainEntry;
+
+$ENTRY SatMu {
+  e.Arg = <Mu e.Arg>;
+}
+
+Local { = "Satellite Local" }
+Override { = "Satellite Override" }
+
+$ENTRY SatEntry1 { = "Satellite Entry 1" }
+$ENTRY SatEntry2 { = "Satellite Entry 2" }

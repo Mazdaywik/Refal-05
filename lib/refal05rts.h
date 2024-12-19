@@ -48,6 +48,8 @@ typedef void (*r05_function_ptr) (struct r05_node *begin, struct r05_node *end);
 struct r05_function {
   r05_function_ptr ptr;
   const char *name;
+  int entry;
+  struct r05_metatable *metatable;
 #ifdef R05_PROFILER
   double seconds;
   unsigned long calls;
@@ -260,12 +262,12 @@ R05_NORETURN void r05_switch_default_violation_impl(
 
 #define R05_DEFINE_ENTRY_ENUM(name, rep) \
   struct r05_function r05f_ ## name = { \
-    r05_enum_function_code, rep, \
+    r05_enum_function_code, rep, 1, NULL, \
     R05_INIT_PROFILER \
   };
 #define R05_DEFINE_LOCAL_ENUM(name, rep) \
   static struct r05_function r05f_ ## name = { \
-    r05_enum_function_code, rep, \
+    r05_enum_function_code, rep, 0, NULL \
     R05_INIT_PROFILER \
   };
 
@@ -277,18 +279,45 @@ R05_NORETURN void r05_switch_default_violation_impl(
 
 
 #define R05_DEFINE_ENTRY_FUNCTION(name, rep) \
-  R05_DEFINE_FUNCTION_AUX(name, /* пусто */, rep)
+  R05_DEFINE_FUNCTION_AUX(name, /* пусто */, rep, 1)
 #define R05_DEFINE_LOCAL_FUNCTION(name, rep) \
-  R05_DEFINE_FUNCTION_AUX(name, static, rep)
+  R05_DEFINE_FUNCTION_AUX(name, static, rep, 0)
 
-#define R05_DEFINE_FUNCTION_AUX(name, scope, rep) \
+#define R05_DEFINE_FUNCTION_AUX(name, scope, rep, entry) \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
   scope struct r05_function r05f_ ## name = { \
-    r05c_ ## name, rep, R05_INIT_PROFILER \
+    r05c_ ## name, rep, entry, NULL, R05_INIT_PROFILER \
   }; \
   static void r05c_ ## name( \
+    struct r05_node *arg_begin, struct r05_node *arg_end \
+  )
+
+
+struct r05_metatable {
+  size_t size;
+  struct r05_function **functions;
+};
+
+
+#define R05_DEFINE_METAFUNCTION(name, rep) \
+  extern void r05c_ ## name( \
+    struct r05_node *arg_begin, struct r05_node *arg_end \
+  ); \
+  static struct r05_metatable metatable; \
+  static struct r05_function r05f_ ## name = { \
+    r05c_ ## name, rep, 0, &metatable, R05_INIT_PROFILER \
+  };
+
+#define R05_IMPLEMENT_METAFUNCTION(name, rep) \
+  extern void r05c_ ## name( \
+    struct r05_node *arg_begin, struct r05_node *arg_end \
+  ); \
+  static struct r05_function r05f_ ## name = { \
+    r05c_ ## name, rep, 0, NULL, R05_INIT_PROFILER \
+  }; \
+  void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   )
 

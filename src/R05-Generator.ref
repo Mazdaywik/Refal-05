@@ -52,13 +52,9 @@ $ENTRY generator_GenTreeItem {
     (e.Declarations <Map r05-generator_GenExtern e.Names>)
     /* пусто */;
 
-  (e.Declarations) (Function t.SrcPos (e.Name) Meta /* пусто */)
-    = (e.Declarations <GenDeclaration Entry e.Name>) /* TODO: временно */
-      /* пусто */;
-
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */)
     = (e.Declarations <GenEmptyDefinition e.Name s.ScopeClass>)
-      <AssertEq Local s.ScopeClass>
+      <AssertOneOf s.ScopeClass in (Local Meta)>
       /* пусто */;
 
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body) =
@@ -73,9 +69,14 @@ $ENTRY generator_GenTreeItem {
 
   (e.Declarations) (Metatable e.Names)
     = (e.Declarations)
-      ('/*')
+      ('static struct r05_function *metatable_entries[] = {')
       <Map r05-generator_MetatableName e.Names>
-      ('*/')
+      ('};')
+      ()
+      ('static struct r05_metatable metatable = {')
+      ('  sizeof(metatable_entries) / sizeof(metatable_entries[0]),')
+      ('  metatable_entries')
+      ('};')
       ();
 }
 
@@ -88,7 +89,7 @@ SafeSpecialComment {
 }
 
 $ENTRY r05-generator_MetatableName {
-  (e.Name) = (e.Name);
+  (e.Name) = ('  &r05f_' <EscapeName e.Name> ',');
 }
 
 $ENTRY r05-generator_GenExtern {
@@ -105,6 +106,8 @@ GenEmptyDefinition {
   /* пусто */ s.ScopeClass
     = ('static struct r05_function r05f_ = { r05_enum_function_code, "" };');
 
+  e.Name Meta = ('R05_DEFINE_METAFUNCTION(' <DefName e.Name> ')');
+
   e.Name s.ScopeClass
     = ('R05_DEFINE_' <Scope s.ScopeClass> '_ENUM(' <DefName e.Name> ')');
 }
@@ -112,7 +115,7 @@ GenEmptyDefinition {
 GenDeclaration {
   /* поддержка пустого составного символа "" */
   s.ScopeClass /* пусто */
-    = <AssertEq Entry s.ScopeClass>
+    = <AssertOneOf s.ScopeClass in (Entry)>
       ('extern struct r05_function r05f_;');
 
   s.ScopeClass e.Name =
@@ -128,7 +131,7 @@ GenFunction {
     ();
 }
 
-AssertEq { s.X s.X = }
+AssertOneOf { s.One in (e.Variants-B s.One e.Variants-E) = }
 
 
 DefName {
