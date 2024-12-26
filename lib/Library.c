@@ -50,6 +50,11 @@ struct builtin_info {
 static struct builtin_info s_builtin_info[];
 
 
+static int chain_str_eq(
+  struct r05_node *begin, struct r05_node *end, const char *name
+);
+
+
 /**
    1. <Mu s.Func e.Arg> == <s.Func e.Arg>
 */
@@ -58,6 +63,7 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
   struct r05_node *callable = mu->next;
   struct r05_metatable *metatable = mu->info.function->metatable;
   struct r05_function **cur, **end;
+  struct r05_node *brackets[2];
 
   assert(metatable != NULL);
   cur = metatable->functions;
@@ -96,6 +102,55 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
       }
     }
     r05_splice_to_freelist(callable, callable);
+  } else if (
+    r05_brackets_left(brackets, mu, arg_end)
+    && brackets[0]->next != brackets[1]
+  ) {
+    struct r05_node *p = brackets[0]->next;
+    struct r05_node *name_b = brackets[0]->next;
+    struct r05_node *name_e = brackets[1]->prev;
+    struct r05_function *callee = NULL;
+    struct builtin_info *bi = s_builtin_info;
+    struct r05_function **alias = s_arithmetic_names;
+
+    while (p != brackets[1] && R05_DATATAG_CHAR == p->tag) {
+      p = p->next;
+    }
+    if (p != brackets[1]) {
+      r05_recognition_impossible();
+    }
+
+    while (cur < end && ! chain_str_eq(name_b, name_e, (*cur)->name)) {
+      ++cur;
+    }
+    if (cur < end) {
+      callee = *cur;
+    }
+
+    while (
+      bi->function != NULL && ! chain_str_eq(name_b, name_e, bi->function->name)
+    ) {
+      ++bi;
+    }
+    if (bi->function != NULL) {
+      assert(callee == NULL);
+      callee = bi->function;
+    }
+
+    while (*alias != NULL && ! chain_str_eq(name_b, name_e, (*alias)->name)) {
+      ++alias;
+    }
+    if (*alias != NULL) {
+      assert(callee == NULL);
+      callee = *alias;
+    }
+
+    if (callee) {
+      mu->info.function = callee;
+    } else {
+      r05_recognition_impossible();
+    }
+    r05_splice_to_freelist(brackets[0], brackets[1]);
   } else {
     r05_recognition_impossible();
   }

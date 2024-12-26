@@ -19,6 +19,10 @@ $ENTRY GO {
       <Eq <SatMu "?" Local> "Satellite Local">
       <Eq <SatMu '?' Local> "Satellite Local">
       <Eq <? "?" '?' SatMu '?' "?" Local> "Satellite Local">
+      <Eq <Mu ('Local')> "Main Local">
+      <Eq <SatMu ('Local')> "Satellite Local">
+      <Eq <Mu ('Add') 10 20> 30>
+      <Eq <Mu ('+') 10 20> 30>
 }
 
 Eq { s.X s.X = }
