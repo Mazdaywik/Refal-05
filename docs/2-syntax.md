@@ -130,10 +130,10 @@ makeTOC.localizedHide = "Скрыть";
 
     $ENTRY GO {
       /* пусто */
-        = <Mu Hello>                       /* напечатает «Hello!» */
-          <Prout <Mu Add 2 3>>             /* напечатает «5» */
-          <Prout <Mu 72 101 108 108 111>>  /* напечатает «Hello» */
-          <Mu Bye>                         /* напечатает «Bye» */
+        = <Mu Hello>                           /* напечатает «Hello!» */
+          <Prout <Mu Add 2 3>>                 /* напечатает «5» */
+          <Prout <Mu Chr 72 101 108 108 111>>  /* напечатает «Hello» */
+          <Mu Bye>                             /* напечатает «Bye» */
     }
 
     Bye {
