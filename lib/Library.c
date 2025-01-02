@@ -788,6 +788,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   struct r05_node *p = callee->next;
   r05_number result = 0;
   signed sign = +1;
+  int overflow = 0;
 
   if (R05_DATATAG_CHAR == p->tag) {
     if ('-' == p->info.char_) {
@@ -800,10 +801,18 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
 
   for (
     /* пусто */;
-    p != arg_end && R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_);
+    R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_) && ! overflow;
     p = p->next
   ) {
-    result = 10 * result + (p->info.char_ - '0');
+    r05_number digit = p->info.char_ - '0', next = 10 * result;
+    overflow |= next / 10 != result;
+    next += digit;
+    overflow |= next < digit;
+    result = next;
+  }
+
+  if (overflow) {
+    r05_builtin_error("integer overflow");
   }
 
   p = arg_begin;
