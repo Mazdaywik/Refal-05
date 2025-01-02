@@ -305,13 +305,7 @@ static void add(
 
 
 /**
-  4. <Br e.Key '=' e.Value> == empty
-*/
-ALIAS_DESCRIPTOR(Br, "Br", r05_br);
-
-
-/**
-   3. <Ars s.ArgNo> == e.Argument
+   3. <Arg s.ArgNo> == e.Argument
 
       s.ArgNo ::= s.NUMBER
       e.Argument ::= s.CHAR*
@@ -336,6 +330,12 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 }
+
+
+/**
+  4. <Br e.Key '=' e.Value> == empty
+*/
+ALIAS_DESCRIPTOR(Br, "Br", r05_br);
 
 
 /**
@@ -1807,7 +1807,7 @@ static r05_number random_digit(void) {
 
 
 /**
-  66. <Write e.Expr> == []
+  66. <Write s.FileNo e.Expr> == []
 */
 R05_DEFINE_ENTRY_FUNCTION(Write, "Write") {
   output_func(arg_begin, arg_end, WRITE);
