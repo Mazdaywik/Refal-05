@@ -1,4 +1,4 @@
-$ENTRY Go {
+$ENTRY GO {
   /* empty */
     = <Eq (<Implode 'Ab-cd_ef$gh123!@#$%'>) "Ab-cd_ef$gh123" '!@#$%'>
       <Eq (<Implode '!@#$%^'>) 0 '!@#$%^'>

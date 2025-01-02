@@ -1,2 +1,2 @@
-$EXTERN Go;
-$ENTRY Go { = }
+$EXTERN GO;
+$ENTRY GO { = }

@@ -1,4 +1,4 @@
 $EXTERN Foo, Bar;
 $EXTERN Foo, Bar;
 
-$ENTRY Go { = Foo Bar }
+$ENTRY GO { = Foo Bar }

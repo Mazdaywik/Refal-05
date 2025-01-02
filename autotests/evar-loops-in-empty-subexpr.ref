@@ -2,7 +2,7 @@ WithE {
   (e.Prefix e.Suffix) e.Prefixes-B (e.Prefix) e.Suffix = ;
 }
 
-$ENTRY Go {
+$ENTRY GO {
   =
     <WithE ('prefix') ('prefix')>
     <WithE () ()>;

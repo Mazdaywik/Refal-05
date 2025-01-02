@@ -1,4 +1,4 @@
-$ENTRY Go {
+$ENTRY GO {
   = <Eq (('ABC'      ) 'DEF'      ) <First 3 'ABCDEF'>>
     <Eq ((/* пусто */) /* пусто */) <First 3 /* пусто */>>
     <Eq (('ABC'      ) /* пусто */) <First 10 'ABC'>>

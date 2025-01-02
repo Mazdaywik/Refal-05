@@ -1,4 +1,4 @@
-$ENTRY Go {
+$ENTRY GO {
   = <Eq (('ABC' 10) 'DEF' ('123GH')) <Upper ('aBc' 10) 'deF' ('123gh')>>
     <Eq (('abc' 10) 'def' ('123gh')) <Lower ('aBc' 10) 'deF' ('123GH')>>
 }

@@ -11,7 +11,7 @@ $EXTERN R05-Parse-File;
 $EXTERN R05-Generate-ToFile;
 
 
-$ENTRY Go {
+$ENTRY GO {
   = <Main <ArgList>>;
 }
 

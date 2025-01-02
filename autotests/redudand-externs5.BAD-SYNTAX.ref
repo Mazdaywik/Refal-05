@@ -1,2 +1,2 @@
 $EXTERN Prout;
-$ENTRY Go { = <Prout 'Hello!'> }
+$ENTRY GO { = <Prout 'Hello!'> }

@@ -165,7 +165,7 @@
 
 Классический пример — Hello, World!:
 ```
-$ENTRY Go {
+$ENTRY GO {
   = <Prout 'Hello, World!'>
 }
 ```

@@ -868,14 +868,14 @@ static int empty_stack(void) {
 }
 
 
-extern struct r05_function r05f_Go;
+extern struct r05_function r05f_GO;
 
 static void init_view_field(void) {
   struct r05_node *open, *close;
 
   r05_reset_allocator();
   r05_alloc_open_call(&open);
-  r05_alloc_function(&r05f_Go);
+  r05_alloc_function(&r05f_GO);
   r05_alloc_close_call(&close);
   r05_push_stack(close);
   r05_push_stack(open);

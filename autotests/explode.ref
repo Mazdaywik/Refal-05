@@ -1,5 +1,5 @@
-$ENTRY Go {
-  = <Eq ('Go') <Explode Go>>
+$ENTRY GO {
+  = <Eq ('GO') <Explode GO>>
     <Eq ('Explode') <Explode Explode>>
     <Eq ('Explode_Ext') <Explode_Ext Explode_Ext>>
 }

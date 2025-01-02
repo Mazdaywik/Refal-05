@@ -2071,7 +2071,7 @@ T-переменная слева, закрытая переменная:
 
 **Пример.** Программа
 
-    $ENTRY Go {
+    $ENTRY GO {
       = <Prout 'What is your name?'> <Hello <Card>>;
     }
 
@@ -2088,10 +2088,10 @@ T-переменная слева, закрытая переменная:
 
     R05_DECLARE_ENTRY_FUNCTION(Card)
     R05_DECLARE_ENTRY_FUNCTION(Prout)
-    R05_DECLARE_ENTRY_FUNCTION(Go)
+    R05_DECLARE_ENTRY_FUNCTION(GO)
     R05_DECLARE_LOCAL_FUNCTION(Hello)
 
-    R05_DEFINE_ENTRY_FUNCTION(Go, "Go") {
+    R05_DEFINE_ENTRY_FUNCTION(GO, "GO") {
       r05_this_is_generated_function();
 
       do {
@@ -2206,7 +2206,7 @@ T-переменная слева, закрытая переменная:
 
 Глобальные (статические) переменные `s_argc` и `s_argv` сохраняют значения
 аргументов командной строки для того, чтобы их могла прочитать встроенная
-функция `Arg`. Функция `init_view_field()` создаёт вызов `<Go>` в поле зрения.
+функция `Arg`. Функция `init_view_field()` создаёт вызов `<GO>` в поле зрения.
 `start_profiler()` засекает время начала выполнения программы. `main_loop()` —
 главный цикл преобразования поля зрения. Функция `r05_exit()` завершает работу
 рефал-машины и всей программы целиком.
@@ -2222,7 +2222,7 @@ T-переменная слева, закрытая переменная:
 
       r05_reset_allocator();
       r05_alloc_open_call(&open);
-      r05_alloc_function(&r05f_Go);
+      r05_alloc_function(&r05f_GO);
       r05_alloc_close_call(&close);
       r05_push_stack(close);
       r05_push_stack(open);
@@ -2506,7 +2506,7 @@ T-переменная слева, закрытая переменная:
     #include <stdio.h>
     #include "refal05rts.h"
 
-    R05_DEFINE_ENTRY_FUNCTION(Go, "Go") {
+    R05_DEFINE_ENTRY_FUNCTION(GO, "GO") {
       printf("Hello, World!\n");
       r05_splice_to_freelist(arg_begin, arg_end);
     }
@@ -2673,7 +2673,7 @@ API рантайма.
     *$FROM filesize
     $EXTERN FileSize;
 
-    $ENTRY Go {
+    $ENTRY GO {
       = <PrintSize 'filesize.c'> <PrintSize 'filesize-test.ref'>;
     }
 

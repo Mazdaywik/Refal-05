@@ -1,4 +1,4 @@
-$ENTRY Go {
+$ENTRY GO {
   = <Eq (5 'ABCDE')         <Lenw 'ABCDE'>>
     <Eq (0 /* пусто */)     <Lenw /* пусто */>>
     <Eq (5 () () () () ())  <Lenw () () () () ()>>

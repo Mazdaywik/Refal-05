@@ -1,9 +1,9 @@
-$ENTRY Go {
-  = <Eq ('Hello' () 10 Go) <Print 'Hello' () 10 Go>>
-    <Eq ()                 <Prout 'Hello' () 10 Go>>
+$ENTRY GO {
+  = <Eq ('Hello' () 10 GO) <Print 'Hello' () 10 GO>>
+    <Eq ()                 <Prout 'Hello' () 10 GO>>
     <Eq ()                 <Open 'w' 10 'put.tmp'>>
-    <Eq ('Hello' () 10 Go) <Put 10 'Hello' () 10 Go>>
-    <Eq ()                 <Putout 10 'Hello' () 10 Go>>
+    <Eq ('Hello' () 10 GO) <Put 10 'Hello' () 10 GO>>
+    <Eq ()                 <Putout 10 'Hello' () 10 GO>>
     <Eq ()                 <Close 10>>
     <Eq (True ())          <RemoveFile 'put.tmp'>>
 }
