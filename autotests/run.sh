@@ -77,6 +77,8 @@ run_test_aux.BAD-SYNTAX() {
 }
 
 run_test_aux.SATELLITE() {
+  # echo нужен, так как bash не позволяет объявлять пустые функции
+  echo "Skip run_test_aux.SATELLITE"
 }
 
 run_test() {
