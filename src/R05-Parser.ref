@@ -112,8 +112,14 @@ FindUnused-Loop {
         t.ErrorList <AddMetatable (e.References) e.AST>
       >;
 
+  t.ErrorList ((s.How s.MetaSugarName) e.References) e.AST
+    , '?' : e.1 s.MetaSugarName e.2
+    = <FindUnused-Loop
+        t.ErrorList <AddMetatable (e.References) e.AST>
+      >;
+
   t.ErrorList ((s.How s.SugarName) e.References) e.AST
-    , '%*+-/?' : e.1 s.SugarName e.2
+    , '%*+-/' : e.1 s.SugarName e.2
     = <FindUnused-Loop
         t.ErrorList (e.References)
         e.AST (Function Used NO-POS (s.SugarName) Extern /* пусто */)
