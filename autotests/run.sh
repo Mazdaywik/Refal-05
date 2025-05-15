@@ -28,7 +28,7 @@ run_test_aux() {
       exit
     fi
   else
-    set SATELLITEC=
+    SATELLITEC=
   fi
 
   $CLINE -I../lib -o$EXE $CFILE $SATELLITEC ../lib/Library.c ../lib/refal05rts.c
@@ -77,6 +77,7 @@ run_test_aux.BAD-SYNTAX() {
 }
 
 run_test_aux.SATELLITE() {
+  :
 }
 
 run_test() {
