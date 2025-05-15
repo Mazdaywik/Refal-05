@@ -98,7 +98,7 @@ FindUnused-Loop {
       >;
 
   t.ErrorList ((s.How e.BuiltinName) e.References) e.AST
-    , <ListOfBuiltin> : e.1 (s.No s.FuncName regular) e.2
+    , <ListOfBuiltin-WithSugar> : e.1 (s.No s.FuncName regular) e.2
     , <Explode s.FuncName> : e.BuiltinName
     = <FindUnused-Loop
         t.ErrorList (e.References)
@@ -106,17 +106,10 @@ FindUnused-Loop {
       >;
 
   t.ErrorList ((Call e.BuiltinName) e.References) e.AST
-    , <ListOfBuiltin> : e.1 (s.No s.FuncName special) e.2
+    , <ListOfBuiltin-WithSugar> : e.1 (s.No s.FuncName special) e.2
     , <Explode s.FuncName> : e.BuiltinName
     = <FindUnused-Loop
         t.ErrorList <AddMetatable (e.References) e.AST>
-      >;
-
-  t.ErrorList ((s.How s.SugarName) e.References) e.AST
-    , '%*+-/?' : e.1 s.SugarName e.2
-    = <FindUnused-Loop
-        t.ErrorList (e.References)
-        e.AST (Function Used NO-POS (s.SugarName) Extern /* пусто */)
       >;
 
   t.ErrorList ((s.How e.Name) e.References) e.AST
@@ -129,6 +122,16 @@ FindUnused-Loop {
      = <MapAccum r05-parser_FindUnused-Loop-UnusedErrors t.ErrorList e.AST>;
 }
 
+ListOfBuiltin-WithSugar {
+  = <ListOfBuiltin>
+    (0 "%" regular)
+    (0 "*" regular)
+    (0 "+" regular)
+    (0 "-" regular)
+    (0 "/" regular)
+    (0 "?" special)
+}
+
 AddMetatable {
   (e.References) e.AST
     = <AddMetatable-Aux
@@ -136,8 +139,7 @@ AddMetatable {
         <MapAccum
           r05-parser_AddMetatable-AddFunction (/* пусто */)
           e.AST
-          <Map r05-parser_AddMetatable-MakeMetafunction <ListOfBuiltin>>
-          (Function Used NO-POS ('?') Meta /* пусто */)
+          <Map r05-parser_AddMetatable-MakeMetafunction <ListOfBuiltin-WithSugar>>
         >
       >;
 }
