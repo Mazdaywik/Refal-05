@@ -1542,24 +1542,39 @@ T-переменная слева, закрытая переменная:
 Сгенерированный код:
 
     do {
-      /* e.Name: 2 */
-      struct r05_node *p[5] = { 0 };
-      /* e.Name */
+      /* e.Name: 4, 12 */
+      /* e.Values-B: 6 */
+      /* e.Value: 14 */
+      /* e.Values-E: 16 */
+      struct r05_node *p[18] = { 0 };
+      /* (e.Name) e.Values-B ((e.Name) e.Value) e.Values-E */
       p[0] = arg_begin->next;
       p[1] = arg_end;
-      r05_close_evar(p+2, p[0], p[1]);
+      if (! r05_brackets_left(p+2, p[0], p[1]))
+        continue;
+      r05_close_evar(p+4, p[2], p[3]);
+      p[6] = p[3]->next;
+      p[7] = p[3];
+      r05_start_e_loop();
+      do {
+        if (! r05_brackets_left(p+8, p[7], p[1]))
+          continue;
+        if (! r05_brackets_left(p+10, p[8], p[9]))
+          continue;
+        if (! r05_repeated_evar_left(p+12, p[10], p[11], p+4))
+          continue;
+        if (! r05_empty_hole(p[13], p[11]))
+          continue;
+        r05_close_evar(p+14, p[11], p[9]);
+        r05_close_evar(p+16, p[9], p[1]);
 
-      r05_reset_allocator();
-      r05_alloc_chars("$EXTERN ", 8);
-      r05_alloc_insert_pos(p+4);
-      r05_alloc_chars(";\n", 2);
-      r05_correct_evar(p+2);
-      r05_splice_evar(p[4], p+2);
-      r05_splice_from_freelist(arg_begin);
-      r05_splice_to_freelist(arg_begin, arg_end);
-      return;
+        r05_reset_allocator();
+        r05_splice_from_freelist(arg_begin);
+        r05_splice_to_freelist(arg_begin, arg_end);
+        return;
+      } while (r05_open_evar_advance(p+6, p[1]));
+      r05_stop_e_loop();
     } while (0);
-  }
 
 Комментарий с текстом образца после определения массива `p` формируется
 автоматически.
