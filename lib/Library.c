@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +12,14 @@
 #endif  /* R05_POSIX */
 
 #include "refal05rts.h"
+
+
+#define STATIC_ASSERT(message, expr) \
+  int message : ((expr) ? +1 : -1)
+
+struct static_asserts {
+  STATIC_ASSERT(char_bit_is_8, CHAR_BIT == 8);
+};
 
 
 #define ALIAS_DESCRIPTOR(name, rep, origin) \
@@ -860,7 +869,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
 
 
 /**
-  21. <Numb s.Digit* e.Skipped> == '-'? s.NUMBER
+  21. <Numb s.Digit* e.Skipped> == '-'? s.NUMBER+
       s.Digit ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
       Если аргумент не начинается с последовательности цифр,
@@ -869,9 +878,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
 R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
-  r05_number result = 0;
   signed sign = +1;
-  int overflow = 0;
 
   if (R05_DATATAG_CHAR == p->tag) {
     if ('-' == p->info.char_) {
@@ -882,34 +889,126 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
     }
   }
 
-  for (
-    /* пусто */;
-    R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_) && ! overflow;
-    p = p->next
-  ) {
-    r05_number digit = p->info.char_ - '0', next = 10 * result;
-    overflow |= next / 10 != result;
-    next += digit;
-    overflow |= next < digit;
-    result = next;
-  }
-
-  if (overflow) {
-    r05_builtin_error("integer overflow");
-  }
-
-  p = arg_begin;
-
-  if (result != 0 && sign < 0) {
-    p->tag = R05_DATATAG_CHAR;
-    p->info.char_ = '-';
+  /* Игнорируем начальные нули */
+  while (R05_DATATAG_CHAR == p->tag && '0' == p->info.char_) {
     p = p->next;
   }
 
-  p->tag = R05_DATATAG_NUMBER;
-  p->info.number = result;
+  if (R05_DATATAG_CHAR != p->tag || ! isdigit(p->info.char_)) {
+    arg_begin->tag = R05_DATATAG_NUMBER;
+    arg_begin->info.number = 0;
+    r05_splice_to_freelist(callee, arg_end);
+  } else {
+    struct r05_node *first_digit, *target;
+    size_t ndigits;
+    r05_number accum;
+    struct r05_node *first_10p, *last_10p;
 
-  r05_splice_to_freelist(p->next, arg_end);
+    enum {
+      BITS_PORTION = 2 * sizeof(r05_number),
+      PORTION_MASK = (1 << BITS_PORTION) - 1,
+    };
+
+    /* Подсчитываем число значимых цифр */
+    first_digit = p;
+    ndigits = 0;
+    while (R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_)) {
+      p = p->next;
+      ndigits += 1;
+    }
+
+    /*
+      Переводим число в систему по основанию 10 ** BITS_PORTION,
+      first_10p и last_10p — первая и последняя цифры
+    */
+    accum = 0;
+    p = first_digit;
+    target = first_10p = arg_begin->next;
+    do {
+      accum = accum * 10 + p->info.char_ - '0';
+      p = p->next;
+      ndigits -= 1;
+      if (ndigits % BITS_PORTION == 0) {
+        /* Тег можно не устанавливать, это просто для красоты */
+        target->tag = R05_DATATAG_NUMBER;
+        target->info.number = accum;
+        target = target->next;
+        accum = 0;
+      }
+    } while (ndigits > 0);
+    last_10p = target->prev;
+
+    if (first_10p == last_10p) {
+      /* Заведомо одна макроцифра в результате */
+      if (first_10p->info.number > 0 && sign < 0) {
+        arg_begin->tag = R05_DATATAG_CHAR;
+        arg_begin->info.char_ = '-';
+      } else {
+        r05_splice_to_freelist(arg_begin, first_10p->prev);
+      }
+      r05_splice_to_freelist(last_10p->next, arg_end);
+    } else {
+      /* Вытягиваем порции бит из [first_10p, last_10p] */
+      int offset, power;
+      r05_number power5 = 1;
+
+      for (power = 1; power < BITS_PORTION / 2; ++power) {
+        power5 *= 25;
+      }
+
+      /*
+        Пользуемся тем, что
+        (y * (10**BITS_PORTION) + x) >> BITS_PORTION
+          == y * (5**BITS_PORTION) + (x >> BITS_PORTION)
+          == y * power5 + (x >> BITS_PORTION)
+      */
+
+      offset = 0;
+      accum = 0;
+      target = arg_end;
+      do {
+          accum |= (last_10p->info.number & PORTION_MASK) << offset;
+
+          if (offset < 3 * BITS_PORTION) {
+            offset += BITS_PORTION;
+          } else {
+            target->tag = R05_DATATAG_NUMBER;
+            target->info.number = accum;
+            target = target->prev;
+            accum = 0;
+            offset = 0;
+          }
+
+          p = last_10p;
+          while (p != first_10p) {
+            struct r05_node *prev = p->prev;
+            p->info.number =
+              (prev->info.number & PORTION_MASK) * power5
+              + (p->info.number >> BITS_PORTION);
+            p = prev;
+          }
+          first_10p->info.number >>= BITS_PORTION;
+
+          if (first_10p->info.number == 0) {
+            first_10p = first_10p->next;
+          }
+      } while (first_10p->prev != last_10p);
+
+      if (accum > 0) {
+        target->tag = R05_DATATAG_NUMBER;
+        target->info.number = accum;
+        target = target->prev;
+      }
+
+      if (sign < 0) {
+        target->tag = R05_DATATAG_CHAR;
+        target->info.char_ = '-';
+        target = target->prev;
+      }
+
+      r05_splice_to_freelist(arg_begin, target);
+    }
+  }
 }
 
 
