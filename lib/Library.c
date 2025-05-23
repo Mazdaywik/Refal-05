@@ -42,7 +42,8 @@ DEFINE_ALIAS(m_, "-", Sub);
 DEFINE_ALIAS(k2F_, "/", Div);
 
 
-#define is_ident_tail(c) (isalpha(c) || isdigit(c) || (c) == '_' || (c) == '-')
+#define is_ident_tail(c) \
+  (isalpha((int) (c)) || isdigit((int) (c)) || (c) == '_' || (c) == '-')
 
 
 static struct r05_function *s_arithmetic_names[] = {
@@ -620,7 +621,7 @@ R05_DEFINE_ENTRY_FUNCTION(Implode, "Implode") {
   sFunc = arg_begin->next;
   sBegin = sFunc->next;
 
-  if (sBegin->tag != R05_DATATAG_CHAR || ! isalpha(sBegin->info.char_)) {
+  if (sBegin->tag != R05_DATATAG_CHAR || ! isalpha((int) sBegin->info.char_)) {
     sFunc->tag = R05_DATATAG_NUMBER;
     sFunc->info.number = 0;
   } else {
@@ -903,7 +904,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
     p = p->next;
   }
 
-  if (R05_DATATAG_CHAR != p->tag || ! isdigit(p->info.char_)) {
+  if (R05_DATATAG_CHAR != p->tag || ! isdigit((int) p->info.char_)) {
     arg_begin->tag = R05_DATATAG_NUMBER;
     arg_begin->info.number = 0;
     r05_splice_to_freelist(callee, arg_end);
@@ -921,7 +922,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
     /* Подсчитываем число значимых цифр */
     first_digit = p;
     ndigits = 0;
-    while (R05_DATATAG_CHAR == p->tag && isdigit(p->info.char_)) {
+    while (R05_DATATAG_CHAR == p->tag && isdigit((int) p->info.char_)) {
       p = p->next;
       ndigits += 1;
     }
@@ -1403,7 +1404,7 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
     type = 'W';
     subtype = 'q';
 
-    if (isalpha(first_term->info.function->name[0])) {
+    if (isalpha((int) first_term->info.function->name[0])) {
       const char *p = &first_term->info.function->name[1];
       while (*p != '\0' && is_ident_tail(*p)) {
         p++;
