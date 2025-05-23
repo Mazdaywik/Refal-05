@@ -869,7 +869,9 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
 
 
 /**
-  21. <Numb s.Digit* e.Skipped> == '-'? s.NUMBER+
+  21. <Numb s.Space* s.Sign? s.Digit* e.Skipped> == '-'? s.NUMBER+
+      s.Space ::= ' ' | '\t'
+      s.Sign ::= '+' | '-'
       s.Digit ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
       Если аргумент не начинается с последовательности цифр,
@@ -879,6 +881,13 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *p = callee->next;
   signed sign = +1;
+
+  while (
+    R05_DATATAG_CHAR == p->tag
+    && (' ' == p->info.char_ || '\t' == p->info.char_)
+  ) {
+    p = p->next;
+  }
 
   if (R05_DATATAG_CHAR == p->tag) {
     if ('-' == p->info.char_) {
