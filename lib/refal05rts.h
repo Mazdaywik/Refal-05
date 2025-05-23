@@ -243,6 +243,7 @@ R05_NORETURN void r05_exit(int retcode);
 R05_NORETURN void r05_builtin_error(const char *message);
 R05_NORETURN void r05_builtin_error_errno(const char *message);
 
+r05_number r05_step_count(void);
 const char *r05_arg(int no);
 
 #define r05_switch_default_violation(value) \

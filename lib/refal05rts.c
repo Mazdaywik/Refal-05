@@ -1206,6 +1206,11 @@ R05_NORETURN void r05_builtin_error_errno(const char *message) {
 }
 
 
+r05_number r05_step_count(void) {
+  return s_step_counter;
+}
+
+
 static char **s_argv = 0;
 static int s_argc = 0;
 

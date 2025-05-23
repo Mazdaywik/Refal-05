@@ -1239,6 +1239,16 @@ ALIAS_DESCRIPTOR(Rp, "Rp", r05_rp);
 
 
 /**
+  29. <Step> == s.NUMBER
+*/
+R05_DEFINE_ENTRY_FUNCTION(Step, "Step") {
+  arg_begin->tag = R05_DATATAG_NUMBER;
+  arg_begin->info.number = r05_step_count();
+  r05_splice_to_freelist(arg_begin->next, arg_end);
+}
+
+
+/**
   30. <Sub s.NUMBER s.NUMBER> == '-' s.NUMBER
 */
 R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
@@ -1973,7 +1983,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(26, Put, regular)
   ALLOC_BUILTIN(27, Putout, regular)
   ALLOC_BUILTIN(28, Rp, regular)
-  /* ALLOC_BUILTIN(29, Step, regular) */
+  ALLOC_BUILTIN(29, Step, regular)
   ALLOC_BUILTIN(30, Sub, regular)
   ALLOC_BUILTIN(31, Symb, regular)
   ALLOC_BUILTIN(32, Time, regular)

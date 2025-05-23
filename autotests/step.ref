@@ -1,0 +1,14 @@
+$ENTRY GO {
+  = <Eq <Step> 1>
+    <Eq <+ 10 <* 20 30>> 610>
+    <Eq <Step> 6>
+    <Eq <B A> 1>
+    <Eq <B B> 2>
+    <Eq <Step> 14>
+}
+
+Eq { s.X s.X = }
+
+B {
+  s.X, s.X : { A = 1; B = 2 }
+}
