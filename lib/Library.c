@@ -14,11 +14,19 @@
 #include "refal05rts.h"
 
 
+enum {
+  R05_NUMBER_BITS = CHAR_BIT * sizeof(r05_number),
+};
+
+
 #define STATIC_ASSERT(message, expr) \
   int message : ((expr) ? +1 : -1)
 
 struct static_asserts {
   STATIC_ASSERT(char_bit_is_8, CHAR_BIT == 8);
+  STATIC_ASSERT(
+    platform_32_or_64, R05_NUMBER_BITS == 32 || R05_NUMBER_BITS == 64
+  );
 };
 
 
@@ -1271,64 +1279,119 @@ R05_DEFINE_ENTRY_FUNCTION(Sub, "Sub") {
 
 
 /**
-  31. <Symb e.Sign s.NUMBER> == e.Sign s.CHAR+
+  31. <Symb e.Sign s.NUMBER+> == e.Sign s.CHAR+
       e.Sign ::= '+' | '-' | пусто
 */
 R05_DEFINE_ENTRY_FUNCTION(Symb, "Symb") {
   struct r05_node *callable = arg_begin->next;
-  struct r05_node *pnumber = callable->next;
-  r05_number number;
-  char sign = '\0';
+  struct r05_node *number_start = callable->next;
+  struct r05_node *p;
 
-  /*
-    Длина десятичного числа = 0,3 * длина двоичного числа,
-    т.к. lg(2) = 0,3. Хрен с ним, что много. Главное, что не мало.
-  */
-  enum { cMaxNumberLen = 8 * sizeof(r05_number) * 3 / 10 + 2 };
 
-  char buffer[cMaxNumberLen + 1] = { '\0' };
-  char *cur_digit = buffer + cMaxNumberLen;
-
-  if (R05_DATATAG_CHAR == pnumber->tag) {
-    sign = pnumber->info.char_;
+  if (R05_DATATAG_CHAR == number_start->tag) {
+    char sign = number_start->info.char_;
 
     if (sign != '+' && sign != '-') {
       r05_recognition_impossible();
     }
-
-    pnumber = pnumber->next;
+    number_start = number_start->next;
   }
 
-  if (
-    pnumber == arg_end
-    || R05_DATATAG_NUMBER != pnumber->tag
-    || pnumber->next != arg_end
-  ) {
+  if (R05_DATATAG_NUMBER != number_start->tag) {
     r05_recognition_impossible();
   }
+  p = number_start;
 
-  number = pnumber->info.number;
-
-  r05_reset_allocator();
-
-  if (sign != '\0') {
-    r05_alloc_char(sign);
+  /* Пропускаем лидирующие нули */
+  while (R05_DATATAG_NUMBER == p->tag && 0 == p->info.number) {
+    p = p->next;
   }
 
-  if (number > 0) {
-    while (number != 0) {
-      -- cur_digit;
-      *cur_digit = (char) ((number % 10) + '0');
-      number /= 10;
+  if (p == arg_end) {
+    /* Число состоит из нулей, результат — ноль */
+    number_start->tag = R05_DATATAG_CHAR;
+    number_start->info.char_ = '0';
+    r05_splice_to_freelist(arg_begin, callable);
+    r05_splice_to_freelist(number_start->next, arg_end);
+  } else if (R05_DATATAG_NUMBER == p->tag) {
+    /* Есть ненулевые цифры, подсчитываем их */
+    size_t nmacrodigits;
+    struct r05_node *pvalue_start = p;
+
+    nmacrodigits = 0;
+    while (R05_DATATAG_NUMBER == p->tag) {
+      nmacrodigits += 1;
+      p = p->next;
     }
 
-    r05_alloc_string(cur_digit);
-  } else {
-    r05_alloc_string("0");
-  }
+    if (p == arg_end) {
+      /*
+        Длина десятичного числа = lg(2) × длина двоичного числа
+        lg(2) = 0.30102… ≈ 28 / 93 = 0.30107…, т.е. 28 / 93 — оценка сверху.
+        Это хорошая оценка, для числа из 1000 32-битных макроцифр даёт
+        ошибку только в 2 лишние десятичные цифры.
+      */
+      size_t nbits = nmacrodigits * R05_NUMBER_BITS;
+      size_t ndecdigits = (nbits * 28 + 92) / 93;
+      size_t i;
+      struct r05_node *insert_pos, *last_dec_digit;
+      r05_number rem;
+      int last_loop;
 
-  r05_splice_from_freelist(arg_begin);
-  r05_splice_to_freelist(arg_begin, arg_end);
+      enum {
+        DEC_CHUNK = R05_NUMBER_BITS == 32 ? 4 : 9,
+        DEC_POWER = R05_NUMBER_BITS == 32 ? 10 * 1000 : 1000 * 1000 * 1000,
+        HALF = R05_NUMBER_BITS / 2,
+      };
+
+      const r05_number HALF_MASK = ((r05_number) 1 << HALF) - 1;
+
+      r05_reset_allocator();
+      for (i = 0; i < ndecdigits; ++i) {
+        r05_alloc_char('0');
+      }
+      insert_pos = arg_end->next;
+      r05_splice_from_freelist(insert_pos);
+      last_dec_digit = insert_pos->prev;
+
+      do {
+        rem = 0;
+        p = pvalue_start;
+        do {
+          r05_number high, low;
+
+          high = (rem << HALF) | (p->info.number >> HALF);
+          rem = high % DEC_POWER;
+          high /= DEC_POWER;
+
+          low = (rem << HALF) | (p->info.number & HALF_MASK);
+          rem = low % DEC_POWER;
+          low /= DEC_POWER;
+
+          p->info.number = (high << HALF) | low;
+          p = p->next;
+        } while (p != arg_end);
+
+        if (0 == pvalue_start->info.number) {
+          pvalue_start = pvalue_start->next;
+        }
+
+        last_loop = pvalue_start == arg_end;
+        for (i = 0; last_loop ? rem > 0 : i < DEC_CHUNK; ++i) {
+          last_dec_digit->info.char_ += (char) (rem % 10);
+          rem /= 10;
+          last_dec_digit = last_dec_digit->prev;
+        }
+      } while (! last_loop);
+
+      r05_splice_to_freelist(arg_begin, callable);
+      r05_splice_to_freelist(number_start, last_dec_digit);
+    } else {
+      r05_recognition_impossible();
+    }
+  } else {
+    r05_recognition_impossible();
+  }
 }
 
 
