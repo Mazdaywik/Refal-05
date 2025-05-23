@@ -952,7 +952,7 @@ R05_DEFINE_ENTRY_FUNCTION(Numb, "Numb") {
       int offset, power;
       r05_number power5 = 1;
 
-      for (power = 1; power < BITS_PORTION / 2; ++power) {
+      for (power = 0; power < BITS_PORTION / 2; ++power) {
         power5 *= 25;
       }
 
