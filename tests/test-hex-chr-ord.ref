@@ -1,0 +1,41 @@
+* Test ChrHex and OrdHex functions with Unicode
+
+$ENTRY Go {
+  = <TestASCII>
+    <TestUnicode>
+    <TestEmoji>
+    <TestRoundtrip>;
+}
+
+* Test ASCII range with hex
+TestASCII {
+  = <Prout 'Testing ASCII with hex:'>
+    <Prout '  ChrHex 0x41 = ' <ChrHex '0x41'>>
+    <Prout '  OrdHex A = ' <OrdHex 'A'>>
+    <Prout '  ChrHex 0x61 = ' <ChrHex '0x61'>>
+    <Prout '  OrdHex a = ' <OrdHex 'a'>>;
+}
+
+* Test Unicode range with hex
+TestUnicode {
+  = <Prout 'Testing Unicode with hex:'>
+    <Prout '  ChrHex 0x416 (Ж) = ' <ChrHex '0x416'>>
+    <Prout '  OrdHex Ж = ' <OrdHex 'Ж'>>
+    <Prout '  ChrHex 0x4E2D (中) = ' <ChrHex '0x4E2D'>>
+    <Prout '  OrdHex 中 = ' <OrdHex '中'>>;
+}
+
+* Test emoji range with hex
+TestEmoji {
+  = <Prout 'Testing Emoji with hex:'>
+    <Prout '  ChrHex 0x1F389 (🎉) = ' <ChrHex '0x1F389'>>
+    <Prout '  OrdHex 🎉 = ' <OrdHex '🎉'>>;
+}
+
+* Test roundtrip conversion
+TestRoundtrip {
+  = <Prout 'Testing roundtrip:'>
+    <Prout '  ASCII: 0x41 -> ChrHex -> OrdHex = ' <OrdHex <ChrHex '0x41'>>>
+    <Prout '  Unicode: 0x4E2D -> ChrHex -> OrdHex = ' <OrdHex <ChrHex '0x4E2D'>>>
+    <Prout '  Emoji: 0x1F389 -> ChrHex -> OrdHex = ' <OrdHex <ChrHex '0x1F389'>>>;
+}

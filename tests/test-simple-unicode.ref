@@ -1,0 +1,9 @@
+* Simple Unicode test
+
+$ENTRY Go {
+  = <Prout 'Testing ASCII: OK'>
+    <Prout 'Testing Cyrillic: АБВ'>
+    <Prout 'Testing Chinese: 中文'>
+    <Prout 'Testing Upper: ' <Upper 'hello'>>
+    <Prout 'Testing Lower: ' <Lower 'WORLD'>>;
+}

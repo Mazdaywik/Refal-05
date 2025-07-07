@@ -1,0 +1,26 @@
+* Test Unicode strings only (no Unicode identifiers)
+
+$ENTRY Go {
+  = <TestUnicodeStrings>
+    <TestHexUnicode>;
+}
+
+TestUnicodeStrings {
+  = <Prout 'Testing Unicode in strings:'>
+    <Prout '  Russian: Привет, мир!'>
+    <Prout '  Chinese: 你好世界'>
+    <Prout '  Japanese: こんにちは世界'>
+    <Prout '  Arabic: مرحبا بالعالم'>
+    <Prout '  Hebrew: שלום עולם'>
+    <Prout '  Korean: 안녕하세요'>
+    <Prout '  Emoji: 🌍🌎🌏 ❤️ 🎉'>;
+}
+
+TestHexUnicode {
+  = <Prout 'Unicode via hex literals:'>
+    <Prout '  U+0410 (А): ' <Chr 0x0410>>
+    <Prout '  U+4E2D (中): ' <Chr 0x4E2D>>
+    <Prout '  U+1F389 (🎉): ' <Chr 0x1F389>>
+    <Prout '  U+05E9 (ש): ' <Chr 0x05E9>>
+    <Prout '  U+0627 (ا): ' <Chr 0x0627>>;
+}

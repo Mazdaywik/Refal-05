@@ -1,0 +1,63 @@
+* Test advanced Unicode features
+
+$ENTRY Go {
+  = <TestCharTypes>
+    <TestCaseConversion>
+    <TestPatternMatching>
+    <TestMixedStrings>;
+}
+
+* Test character types
+TestCharTypes {
+  = <Prout 'Testing character types:'>
+    <Prout '  Type of A: ' <ShowType <Type 'A'>>>
+    <Prout '  Type of 5: ' <ShowType <Type '5'>>>
+    <Prout '  Type of Ж: ' <ShowType <Type 'Ж'>>>
+    <Prout '  Type of 中: ' <ShowType <Type '中'>>>
+    <Prout '  Type of 🎉: ' <ShowType <Type '🎉'>>>
+    <Prout '  Type of space: ' <ShowType <Type ' '>>>;
+}
+
+ShowType {
+  'L' s.Sub e.Rest = 'Letter (' s.Sub ')';
+  'D' s.Digit = 'Digit';
+  'W' s.Sub e.Rest = 'Word (' s.Sub ')';
+  'P' s.Sub e.Rest = 'Punctuation (' s.Sub ')';
+  'S' s.Sub e.Rest = 'Space (' s.Sub ')';
+  e.Other = e.Other;
+}
+
+* Test case conversion
+TestCaseConversion {
+  = <Prout 'Testing case conversion:'>
+    <Prout '  Upper(hello мир): ' <Upper 'hello мир'>>
+    <Prout '  Lower(HELLO МИР): ' <Lower 'HELLO МИР'>>
+    <Prout '  Mixed case: ' <Upper 'a'> <Lower 'B'> <Upper 'ж'> <Lower 'Щ'>>;
+}
+
+* Test pattern matching with Unicode
+TestPatternMatching {
+  = <Prout 'Testing pattern matching:'>
+    <TestMatch ('АБВ') ('АБВ')>
+    <TestMatch ('ABC') ('АБВ')>
+    <TestMatch ('中文') ('中文')>
+    <TestMatch ('🌍🌎🌏') ('🌍🌎🌏')>;
+}
+
+TestMatch {
+  (e.X) (e.X) = <Prout '  Match ' e.X ' = ' e.X ': YES'>;
+  (e.X) (e.Y) = <Prout '  Match ' e.X ' != ' e.Y ': NO'>;
+}
+
+* Test mixed ASCII/Unicode strings
+TestMixedStrings {
+  = <Prout 'Testing mixed strings:'>
+    <ParseMixed 'Hello, мир! 你好 🌍'>
+    <ParseMixed 'Test123テスト'>;
+}
+
+ParseMixed {
+  s.Char e.Rest = <Prout '  Char: ' s.Char ' (code ' <Ord s.Char> ')'>
+                  <ParseMixed e.Rest>;
+  /* empty */ = /* done */;
+}

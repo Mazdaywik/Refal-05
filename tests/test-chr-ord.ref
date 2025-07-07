@@ -1,0 +1,32 @@
+* Test Chr and Ord functions with Unicode
+
+$ENTRY Go {
+  = <TestASCII>
+    <TestUnicode>
+    <TestEmoji>;
+}
+
+* Test ASCII range
+TestASCII {
+  = <Prout 'Testing ASCII:'>
+    <Prout '  Chr 65 = ' <Chr 65>>
+    <Prout '  Ord A = ' <Ord 'A'>>
+    <Prout '  Chr 97 = ' <Chr 97>>
+    <Prout '  Ord a = ' <Ord 'a'>>;
+}
+
+* Test Unicode range
+TestUnicode {
+  = <Prout 'Testing Unicode:'>
+    <Prout '  Chr 1046 (Ж) = ' <Chr 1046>>
+    <Prout '  Ord Ж = ' <Ord 'Ж'>>
+    <Prout '  Chr 20013 (中) = ' <Chr 20013>>
+    <Prout '  Ord 中 = ' <Ord '中'>>;
+}
+
+* Test emoji range
+TestEmoji {
+  = <Prout 'Testing Emoji:'>
+    <Prout '  Chr 127881 (🎉) = ' <Chr 127881>>
+    <Prout '  Ord 🎉 = ' <Ord '🎉'>>;
+}
