@@ -268,7 +268,7 @@ R05_NORETURN void r05_switch_default_violation_impl(
   };
 #define R05_DEFINE_LOCAL_ENUM(name, rep) \
   static struct r05_function r05f_ ## name = { \
-    r05_enum_function_code, rep, 0, NULL \
+    r05_enum_function_code, rep, 0, NULL, \
     R05_INIT_PROFILER \
   };
 
