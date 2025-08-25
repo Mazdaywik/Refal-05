@@ -56,9 +56,12 @@ $ENTRY r05-parser_PlainExterns-Name {
 
 FindUnused {
   t.ErrorList e.AST
-    = <FindUnused-Loop
+    = <MapAccum
+        r05-parser_FindUnused-Loop-UnusedErrors
         t.ErrorList
-        <MapAccum r05-parser_FindUnused-InitialUsage () e.AST>
+        <FindUnused-Loop
+          <MapAccum r05-parser_FindUnused-InitialUsage () e.AST>
+        >
       >;
 }
 
@@ -75,51 +78,46 @@ $ENTRY r05-parser_FindUnused-InitialUsage {
 }
 
 FindUnused-Loop {
-  t.ErrorList ((s.How e.Name) e.References)
+  ((s.How e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) Extern /* пусто */) e.AST-E
     = <FindUnused-Loop
-        t.ErrorList (e.References)
+        (e.References)
         e.AST-B (Function Used t.Pos (e.Name) Extern /* пусто */) e.AST-E
       >;
 
-  t.ErrorList ((Call e.Name) e.References)
+  ((Call e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
-        t.ErrorList
         (e.References <ExtractReferences e.Body>)
         e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  t.ErrorList ((s.How e.Name) e.References)
+  ((s.How e.Name) e.References)
   e.AST-B (Function s.Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
-        t.ErrorList (e.References)
+        (e.References)
         e.AST-B (Function s.Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  t.ErrorList ((s.How e.BuiltinName) e.References) e.AST
+  ((s.How e.BuiltinName) e.References) e.AST
     , <ListOfBuiltin-WithSugar> : e.1 (s.No s.FuncName regular) e.2
     , <Explode s.FuncName> : e.BuiltinName
     = <FindUnused-Loop
-        t.ErrorList (e.References)
+        (e.References)
         e.AST (Function Used NO-POS (e.BuiltinName) Extern /* пусто */)
       >;
 
-  t.ErrorList ((Call e.BuiltinName) e.References) e.AST
+  ((Call e.BuiltinName) e.References) e.AST
     , <ListOfBuiltin-WithSugar> : e.1 (s.No s.FuncName special) e.2
     , <Explode s.FuncName> : e.BuiltinName
+    = <FindUnused-Loop <AddMetatable (e.References) e.AST>>;
+
+  ((s.How e.Name) e.References) e.AST
     = <FindUnused-Loop
-        t.ErrorList <AddMetatable (e.References) e.AST>
+        (e.References) e.AST (Function Used NO-POS (e.Name) Local /* пусто */)
       >;
 
-  t.ErrorList ((s.How e.Name) e.References) e.AST
-    = <FindUnused-Loop
-        t.ErrorList (e.References)
-        e.AST (Function Used NO-POS (e.Name) Local /* пусто */)
-      >;
-
-   t.ErrorList (/* кончились ссылки */) e.AST
-     = <MapAccum r05-parser_FindUnused-Loop-UnusedErrors t.ErrorList e.AST>;
+   (/* кончились ссылки */) e.AST = e.AST;
 }
 
 ListOfBuiltin-WithSugar {
