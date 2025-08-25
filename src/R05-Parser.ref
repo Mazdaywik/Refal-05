@@ -60,6 +60,7 @@ FindUnused {
         r05-parser_FindUnused-Loop-UnusedErrors
         t.ErrorList
         <FindUnused-Loop
+          (/* enums */)
           <MapAccum r05-parser_FindUnused-InitialUsage () e.AST>
         >
       >;
@@ -78,46 +79,58 @@ $ENTRY r05-parser_FindUnused-InitialUsage {
 }
 
 FindUnused-Loop {
-  ((s.How e.Name) e.References)
+  (e.Enums) ((s.How e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) Extern /* пусто */) e.AST-E
     = <FindUnused-Loop
-        (e.References)
+        (e.Enums) (e.References)
         e.AST-B (Function Used t.Pos (e.Name) Extern /* пусто */) e.AST-E
       >;
 
-  ((Call e.Name) e.References)
+  (e.Enums) ((Call e.Name) e.References)
   e.AST-B (Function Unused t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
-        (e.References <ExtractReferences e.Body>)
+        (e.Enums) (e.References <ExtractReferences e.Body>)
         e.AST-B (Function Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  ((s.How e.Name) e.References)
+  (e.Enums) ((s.How e.Name) e.References)
   e.AST-B (Function s.Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
     = <FindUnused-Loop
-        (e.References)
+        (e.Enums) (e.References)
         e.AST-B (Function s.Used t.Pos (e.Name) s.Scope e.Body) e.AST-E
       >;
 
-  ((s.How e.BuiltinName) e.References) e.AST
+  (e.Enums) ((s.How e.BuiltinName) e.References) e.AST
     , <ListOfBuiltin-WithSugar> : e.1 (s.No s.FuncName regular) e.2
     , <Explode s.FuncName> : e.BuiltinName
     = <FindUnused-Loop
-        (e.References)
+        (e.Enums) (e.References)
         e.AST (Function Used NO-POS (e.BuiltinName) Extern /* пусто */)
       >;
 
-  ((Call e.BuiltinName) e.References) e.AST
+  (e.Enums) ((Call e.BuiltinName) e.References) e.AST
     , <ListOfBuiltin-WithSugar> : e.1 (s.No s.FuncName special) e.2
     , <Explode s.FuncName> : e.BuiltinName
-    = <FindUnused-Loop <AddMetatable (e.References) e.AST>>;
+    = <FindUnused-Loop (e.Enums) <AddMetatable (e.References) e.AST>>;
 
-  ((s.How e.Name) e.References) e.AST
+  (e.Enums-B (e.Name) e.Enums-E) ((s.How e.Name) e.References) e.AST
     = <FindUnused-Loop
-        (e.References) e.AST (Function Used NO-POS (e.Name) Local /* пусто */)
+        (e.Enums-B (e.Name) e.Enums-E) (e.References) e.AST
       >;
 
-   (/* кончились ссылки */) e.AST = e.AST;
+  (e.Enums) ((s.How e.Name) e.References) e.AST
+    = <FindUnused-Loop (e.Enums (e.Name)) (e.References) e.AST>;
+
+   (e.Enums-B (e.Meta) e.Enums-E)
+   (/* кончились ссылки */)
+   e.AST-B (Function Used NO-POS (e.Meta) Meta /* пусто */) e.AST-E
+     = <FindUnused-Loop
+         (e.Enums-B e.Enums-E) (/* кончились ссылки */)
+         e.AST-B (Function Used NO-POS (e.Meta) Meta /* пусто */) e.AST-E
+       >;
+
+   (e.Enums) (/* кончились ссылки */) e.AST
+     = e.AST <Map r05-parser_MakeEnum e.Enums>;
 }
 
 ListOfBuiltin-WithSugar {
@@ -177,6 +190,10 @@ AddMetatable-Aux {
 
 $ENTRY r05-parser_AddHowCall {
   (e.Name) = (Call e.Name);
+}
+
+$ENTRY r05-parser_MakeEnum {
+  (e.Name) = (Function Used NO-POS (e.Name) Local /* пусто */);
 }
 
 $ENTRY r05-parser_FindUnused-Loop-UnusedErrors {
