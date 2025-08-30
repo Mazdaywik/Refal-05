@@ -399,8 +399,23 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
 
   while (p != arg_end) {
     if (p->tag == R05_DATATAG_NUMBER) {
+#ifdef R05_UNICODE
+      r05_number value = p->info.number;
+      if (value <= 0x10FFFF) {
+        /* For ASCII, use legacy char nodes for compatibility */
+        if (value < 128) {
+          p->tag = R05_DATATAG_CHAR;
+          p->info.char_ = (char)value;
+        } else {
+          p->tag = R05_DATATAG_UNICODE;
+          p->info.unicode_ = (r05_unicode_char)value;
+        }
+      }
+      /* Values > 0x10FFFF remain as numbers (invalid Unicode) */
+#else
       p->tag = R05_DATATAG_CHAR;
       p->info.char_ = (unsigned char) p->info.number;
+#endif
     }
     p = p->next;
   }
@@ -408,6 +423,39 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
 }
+
+
+#ifdef R05_UNICODE
+/**
+   <ChrU e.Expr> == e.Expr'
+   Unicode version of Chr - converts numbers to Unicode characters
+*/
+R05_DEFINE_ENTRY_FUNCTION(ChrU, "ChrU") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_NUMBER) {
+      r05_number value = p->info.number;
+      if (value <= 0x10FFFF) {
+        /* For ASCII, use legacy char nodes for compatibility */
+        if (value < 128) {
+          p->tag = R05_DATATAG_CHAR;
+          p->info.char_ = (char)value;
+        } else {
+          p->tag = R05_DATATAG_UNICODE;
+          p->info.unicode_ = (r05_unicode_char)value;
+        }
+      }
+      /* Values > 0x10FFFF remain as numbers (invalid Unicode) */
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+#endif /* R05_UNICODE */
 
 
 /**
@@ -807,6 +855,18 @@ R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
     if (p->tag == R05_DATATAG_CHAR) {
       p->info.char_ = (char) tolower(p->info.char_);
     }
+#ifdef R05_UNICODE
+    else if (p->tag == R05_DATATAG_UNICODE) {
+      r05_unicode_char lower = r05_to_lower(p->info.unicode_);
+      /* Keep ASCII in char nodes for performance */
+      if (lower < 128) {
+        p->tag = R05_DATATAG_CHAR;
+        p->info.char_ = (char)lower;
+      } else {
+        p->info.unicode_ = lower;
+      }
+    }
+#endif
     p = p->next;
   }
 
@@ -1131,12 +1191,206 @@ R05_DEFINE_ENTRY_FUNCTION(Ord, "Ord") {
       p->tag = R05_DATATAG_NUMBER;
       p->info.number = (unsigned char) p->info.char_;
     }
+#ifdef R05_UNICODE
+    else if (p->tag == R05_DATATAG_UNICODE) {
+      p->tag = R05_DATATAG_NUMBER;
+      p->info.number = (r05_number) p->info.unicode_;
+    }
+#endif
     p = p->next;
   }
 
   r05_splice_to_freelist(arg_begin, callee);
   r05_splice_to_freelist(arg_end, arg_end);
 }
+
+
+#ifdef R05_UNICODE
+/**
+   <OrdU e.Expr> == e.Expr'
+   Unicode version of Ord - converts Unicode characters to their code points
+*/
+R05_DEFINE_ENTRY_FUNCTION(OrdU, "OrdU") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_CHAR) {
+      p->tag = R05_DATATAG_NUMBER;
+      p->info.number = (unsigned char) p->info.char_;
+    } else if (p->tag == R05_DATATAG_UNICODE) {
+      p->tag = R05_DATATAG_NUMBER;
+      p->info.number = (r05_number) p->info.unicode_;
+    }
+    p = p->next;
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+#endif /* R05_UNICODE */
+
+
+#ifdef R05_UNICODE
+/**
+   <ChrHex e.Expr> == e.Expr'
+   Hexadecimal version of Chr - converts hex numbers (0x prefix) to Unicode characters
+*/
+R05_DEFINE_ENTRY_FUNCTION(ChrHex, "ChrHex") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+  
+  while (p != arg_end) {
+    /* Look for pattern: '0' 'x' followed by hex digits */
+    if (p->tag == R05_DATATAG_CHAR && p->info.char_ == '0' && 
+        p->next != arg_end && p->next->tag == R05_DATATAG_CHAR && p->next->info.char_ == 'x') {
+      
+      struct r05_node *x_node = p->next;
+      struct r05_node *hex_start = x_node->next;
+      struct r05_node *hex_end = hex_start;
+      r05_number value = 0;
+      int valid_hex = 0;
+      
+      /* Parse hex digits */
+      while (hex_end != arg_end && hex_end->tag == R05_DATATAG_CHAR) {
+        char ch = hex_end->info.char_;
+        int digit_value = -1;
+        
+        if (ch >= '0' && ch <= '9') {
+          digit_value = ch - '0';
+        } else if (ch >= 'A' && ch <= 'F') {
+          digit_value = ch - 'A' + 10;
+        } else if (ch >= 'a' && ch <= 'f') {
+          digit_value = ch - 'a' + 10;
+        }
+        
+        if (digit_value >= 0) {
+          value = (value << 4) | digit_value;
+          valid_hex = 1;
+          hex_end = hex_end->next;
+        } else {
+          break;
+        }
+      }
+      
+      /* If we found valid hex digits, convert to character */
+      if (valid_hex && value <= 0x10FFFF) {
+        /* For ASCII, use legacy char nodes for compatibility */
+        if (value < 128) {
+          p->tag = R05_DATATAG_CHAR;
+          p->info.char_ = (char)value;
+        } else {
+          p->tag = R05_DATATAG_UNICODE;
+          p->info.unicode_ = (r05_unicode_char)value;
+        }
+        /* Remove 'x' and hex digit nodes */
+        p->next = hex_end;
+        if (hex_end) {
+          hex_end->prev = p;
+        }
+        /* Free the nodes from x_node to hex_end-1 */
+        if (hex_end != x_node->next) {
+          r05_splice_to_freelist(x_node, hex_end->prev);
+        } else {
+          r05_splice_to_freelist(x_node, x_node);
+        }
+      } else {
+        /* Not a valid hex sequence or value too large, skip past '0' */
+        p = p->next;
+      }
+    } else if (p->tag == R05_DATATAG_CHAR && p->info.char_ == '0' && 
+               p->next != arg_end && p->next->tag == R05_DATATAG_CHAR && p->next->info.char_ == 'x' &&
+               p->next->next != arg_end && p->next->next->tag == R05_DATATAG_NUMBER) {
+      /* Also handle the original pattern: '0' 'x' NUMBER */
+      struct r05_node *x_node = p->next;
+      struct r05_node *num_node = x_node->next;
+      r05_number value = num_node->info.number;
+      
+      if (value <= 0x10FFFF) {
+        /* For ASCII, use legacy char nodes for compatibility */
+        if (value < 128) {
+          p->tag = R05_DATATAG_CHAR;
+          p->info.char_ = (char)value;
+        } else {
+          p->tag = R05_DATATAG_UNICODE;
+          p->info.unicode_ = (r05_unicode_char)value;
+        }
+        /* Remove 'x' and number nodes */
+        p->next = num_node->next;
+        if (num_node->next) {
+          num_node->next->prev = p;
+        }
+        r05_splice_to_freelist(x_node, num_node);
+      } else {
+        /* Skip invalid Unicode values - move past the number */
+        p = num_node;
+      }
+    } else {
+      p = p->next;
+    }
+  }
+
+  r05_splice_to_freelist(arg_begin, callee);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+
+
+/**
+   <OrdHex e.Expr> == e.Expr'
+   Hexadecimal version of Ord - converts characters to hex format (0x prefix)
+*/
+R05_DEFINE_ENTRY_FUNCTION(OrdHex, "OrdHex") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *p = callee->next;
+
+  r05_reset_allocator();
+  
+  while (p != arg_end) {
+    if (p->tag == R05_DATATAG_CHAR) {
+      unsigned int value = (unsigned char) p->info.char_;
+      char hex[20];
+      snprintf(hex, sizeof(hex), "0x%X", value);
+      r05_alloc_string(hex);
+    } else if (p->tag == R05_DATATAG_UNICODE) {
+      r05_number value = p->info.unicode_;
+      char hex[20];
+      snprintf(hex, sizeof(hex), "0x%X", (unsigned int)value);
+      r05_alloc_string(hex);
+    } else {
+      /* Copy other nodes as-is */
+      switch (p->tag) {
+        case R05_DATATAG_NUMBER:
+          r05_alloc_number(p->info.number);
+          break;
+        case R05_DATATAG_FUNCTION:
+          r05_alloc_function(p->info.function);
+          break;
+        case R05_DATATAG_OPEN_BRACKET: {
+          struct r05_node *bracket;
+          r05_alloc_open_bracket(&bracket);
+          break;
+        }
+        case R05_DATATAG_CLOSE_BRACKET: {
+          struct r05_node *bracket;
+          r05_alloc_close_bracket(&bracket);
+          break;
+        }
+        case R05_DATATAG_CHAR:
+        case R05_DATATAG_UNICODE:
+          /* Already handled above */
+          break;
+        default:
+          /* Skip other types */
+          break;
+      }
+    }
+    p = p->next;
+  }
+
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+#endif /* R05_UNICODE */
 
 
 enum output_func_type {
@@ -1179,6 +1433,18 @@ static void output_func(
       case R05_DATATAG_CHAR:
         CHECK_PUTC(putc(p->info.char_, output));
         break;
+
+#ifdef R05_UNICODE
+      case R05_DATATAG_UNICODE: {
+        char utf8[5];
+        int len = r05_utf32_char_to_utf8(p->info.unicode_, utf8);
+        int i;
+        for (i = 0; i < len; i++) {
+          CHECK_PUTC(putc(utf8[i], output));
+        }
+        break;
+      }
+#endif
 
       case R05_DATATAG_FUNCTION:
         CHECK_PRINTF(fprintf(output, "%s ", p->info.function->name));
@@ -1463,7 +1729,29 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
     } else {
       type = 'O';
     }
-  } else if (R05_DATATAG_FUNCTION == first_term->tag) {
+  }
+#ifdef R05_UNICODE
+  else if (R05_DATATAG_UNICODE == first_term->tag) {
+    r05_unicode_char ch = first_term->info.unicode_;
+    
+    if (r05_is_upper(ch)) {
+      subtype = 'u';
+    } else {
+      subtype = 'l';
+    }
+    if (r05_is_alphabetic(ch)) {
+      type = 'L';
+    } else if (r05_is_digit(ch)) {
+      type = 'D';
+      subtype = '0';
+    } else if (r05_is_printable(ch)) {
+      type = 'P';
+    } else {
+      type = 'O';
+    }
+  }
+#endif
+  else if (R05_DATATAG_FUNCTION == first_term->tag) {
     type = 'W';
     subtype = 'q';
 
@@ -1512,6 +1800,18 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
     if (p->tag == R05_DATATAG_CHAR) {
       p->info.char_ = (char) toupper(p->info.char_);
     }
+#ifdef R05_UNICODE
+    else if (p->tag == R05_DATATAG_UNICODE) {
+      r05_unicode_char upper = r05_to_upper(p->info.unicode_);
+      /* Keep ASCII in char nodes for performance */
+      if (upper < 128) {
+        p->tag = R05_DATATAG_CHAR;
+        p->info.char_ = (char)upper;
+      } else {
+        p->info.unicode_ = upper;
+      }
+    }
+#endif
     p = p->next;
   }
 
@@ -2007,6 +2307,55 @@ R05_DEFINE_LOCAL_ENUM(special, "special")
 R05_DEFINE_LOCAL_ENUM(regular, "regular")
 
 
+/**
+  Platform functions
+*/
+R05_DEFINE_ENTRY_FUNCTION(PathSeparator, "PathSeparator") {
+  struct r05_node *callee = arg_begin->next;
+  
+  if (callee->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  r05_reset_allocator();
+#ifdef _WIN32
+  r05_alloc_char(';');
+#else
+  r05_alloc_char(':');
+#endif
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+
+R05_DEFINE_ENTRY_FUNCTION(IsDirectorySeparator, "IsDirectorySeparator") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *ch = callee->next;
+  int is_separator = 0;
+  
+  if (ch == arg_end || ch->tag != R05_DATATAG_CHAR || ch->next != arg_end) {
+    r05_recognition_impossible();
+  }
+
+  if (ch->info.char_ == '/') {
+    is_separator = 1;
+  }
+#ifdef _WIN32
+  else if (ch->info.char_ == '\\') {
+    is_separator = 1;
+  }
+#endif
+
+  r05_reset_allocator();
+  if (is_separator) {
+    r05_alloc_function(&r05f_True);
+  } else {
+    r05_alloc_function(&r05f_False);
+  }
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
+}
+
+
 /*
   Чтобы добавить встроенную функцию Рефала-5, нужно раскомментировать
   строчку в функции ListOfBuiltin и реализовать функцию.
@@ -2023,6 +2372,11 @@ R05_DEFINE_LOCAL_ENUM(regular, "regular")
 */
 
 R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin);
+
+#ifdef R05_UNICODE
+R05_DECLARE_ENTRY_FUNCTION(ChrHex);
+R05_DECLARE_ENTRY_FUNCTION(OrdHex);
+#endif
 
 static struct builtin_info s_builtin_info[] = {
 #define ALLOC_BUILTIN(id, function, type) \
@@ -2093,6 +2447,10 @@ static struct builtin_info s_builtin_info[] = {
   /* ALLOC_BUILTIN(69, GetPID, regular) */
   /* ALLOC_BUILTIN(70, int4fab_1, regular) */
   /* ALLOC_BUILTIN(71, GetPPID, regular) */
+#ifdef R05_UNICODE
+  ALLOC_BUILTIN(72, ChrHex, regular)
+  ALLOC_BUILTIN(73, OrdHex, regular)
+#endif
 
 #undef ALLOC_BUILTIN
 

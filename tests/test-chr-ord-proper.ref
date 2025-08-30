@@ -1,0 +1,26 @@
+* Test Chr and Ord functions with proper Unicode handling
+
+$ENTRY Go {
+  = <Test1>
+    <Test2>
+    <Test3>;
+}
+
+* Test ASCII roundtrip
+Test1 {
+  = <Prout 'ASCII roundtrip:'>
+    <Prout '  65 -> Chr -> Ord = ' <Ord <Chr 65>>>;
+}
+
+* Test Unicode roundtrip
+Test2 {
+  = <Prout 'Unicode roundtrip:'>
+    <Prout '  1046 -> Chr -> Ord = ' <Ord <Chr 1046>>>
+    <Prout '  20013 -> Chr -> Ord = ' <Ord <Chr 20013>>>;
+}
+
+* Test emoji roundtrip
+Test3 {
+  = <Prout 'Emoji roundtrip:'>
+    <Prout '  127881 -> Chr -> Ord = ' <Ord <Chr 127881>>>;
+}

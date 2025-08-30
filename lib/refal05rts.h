@@ -2,6 +2,7 @@
 #define Refal05RTS_H_
 
 #include <stddef.h>
+#include "r05-unicode.h"
 
 
 #ifdef __cplusplus
@@ -39,6 +40,8 @@ enum r05_datatag {
   R05_DATATAG_CLOSE_BRACKET,
   R05_DATATAG_OPEN_CALL,
   R05_DATATAG_CLOSE_CALL,
+  
+  R05_DATATAG_UNICODE,    /* UTF-32 character */
 };
 
 struct r05_node;
@@ -68,6 +71,7 @@ struct r05_node {
     struct r05_function *function;
     r05_number number;
     struct r05_node *link;
+    r05_unicode_char unicode_;    /* UTF-32 character */
   } info;
 };
 
@@ -92,6 +96,16 @@ int r05_char_left(
 
 int r05_char_right(
   struct r05_node **res, struct r05_node *left, struct r05_node *right, char ch
+);
+
+int r05_unicode_left(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  r05_unicode_char ch
+);
+
+int r05_unicode_right(
+  struct r05_node **res, struct r05_node *left, struct r05_node *right,
+  r05_unicode_char ch
 );
 
 int r05_number_left(
@@ -194,7 +208,14 @@ struct r05_node *r05_insert_pos(void);
 #define r05_alloc_char(ch) \
   (r05_alloc_node(R05_DATATAG_CHAR)->info.char_ = (ch))
 
+#define r05_alloc_unicode(ch) \
+  (r05_alloc_node(R05_DATATAG_UNICODE)->info.unicode_ = (ch))
+
 void r05_alloc_chars(const char buffer[], size_t len);
+
+void r05_alloc_unicode_string(const r05_unicode_char *string, size_t len);
+
+void r05_alloc_utf8_string(const char *utf8);
 
 #define r05_alloc_number(num) \
   (r05_alloc_node(R05_DATATAG_NUMBER)->info.number = (num))

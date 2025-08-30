@@ -1,0 +1,83 @@
+/**
+  t.Token ::= (s.TokType t.Pos e.TokValue)
+
+  s.TokType ~ e.TokValue ::=
+    TkName ~ char*
+    TkCompound ~ char*
+    TkMacroDigit ~ macrodigit
+    TkChar ~ char
+    TkVariable ~ s.VarType e.VarName
+    TkOpenBracket, TkCloseBracket, TkCloseCall,
+    TkOpenBlock, TkCloseBlock ~ пусто
+    TkOpenCall ~ char* -- имя функции
+    TkComma, TkColon, TkAssign, TkSemicolon ~ пусто
+    TkExtern, TkEntry ~ пусто
+    TkSpecComment ~ char*
+    TkEOF ~ пусто
+    TkError ~ char* -- сообщение об ошибке в лексике
+  s.VarType ::= 's' | 't' | 'e'
+*/
+
+
+/**
+  <TokName s.TokType> == s.CHAR*
+*/
+$ENTRY TokName {
+  TkName = 'identifier';
+  TkCompound = 'compound symbol';
+  TkMacroDigit = 'number';
+  TkChar = 'character';
+  TkVariable = 'variable';
+  TkOpenBracket = '\'(\'';
+  TkCloseBracket = '\')\'';
+  TkOpenBlock = '\'{\'';
+  TkCloseBlock = '\'}\'';
+  TkOpenCall = '\'<\'';
+  TkCloseCall = '\'>\'';
+  TkComma = '\',\'';
+  TkColon = '\':\'';
+  TkAssign = '\'=\'';
+  TkSemicolon = '\';\'';
+  TkExtern = '$EXTERN';
+  TkEntry = '$ENTRY';
+  TkSpecComment = '\'*$\'-comment';
+  TkEOF = 'end of file';
+}
+
+
+/**
+  t.Refal5-AST ::= t.Unit*
+  t.Unit ::= t.Function | t.Extern | t.SpecialComment
+  t.Extern ::= (Extern (t.SrcPos e.Name)*)
+  t.SpecialComment ::= (SpecialComment t.SrcPos e.Text)
+
+  t.Function ::= (Function t.SrcPos (e.Name) s.Scope t.Sentence*)
+  s.Scope ::= Entry | Local
+  t.Sentence ::= (t.Pattern (Condition t.Result t.Pattern)* e.SentenceTail)
+  e.SentenceTail ::= RETURN t.Result | CALL-BLOCK t.Result t.Sentence*
+
+  t.Pattern, t.Result ::= (t.Term*)
+  t.Term ::=
+      (Symbol Word e.Chars*)
+    | (Symbol Number s.Number)
+    | (Symbol Char s.Char)
+    | (Variable t.SrcPos s.VarType e.Index)
+    | (Brackets t.Term*)
+    | (Call t.SrcPos (e.Function) t.Terms*)
+  s.VarType ::= 's' | 't' | 'e'
+*/
+
+
+/**
+  <Builtins> == (e.FunctionName)*
+*/
+$ENTRY Builtins {
+  = ('+') ('-') ('*') ('/') ('%') ('?') <DoBuiltins <ListOfBuiltin>>;
+}
+
+DoBuiltins {
+  (s.Number s.Name s.Type) e.Builtins
+    = (<Explode s.Name>) <DoBuiltins e.Builtins>;
+
+  /* пусто */ = /* пусто */;
+}

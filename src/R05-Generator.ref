@@ -349,7 +349,22 @@ ElSymbol {
 }
 
 ElString {
-  s.Len e.String = 'chars("' <EscapeString e.String> '", ' <Symb s.Len> ');';
+  s.Len e.String = <ElString-Aux <HasNonASCII e.String> s.Len e.String>;
+}
+
+ElString-Aux {
+  True s.Len e.String = 'utf8_string("' <EscapeString e.String> '");';
+  False s.Len e.String = 'chars("' <EscapeString e.String> '", ' <Symb s.Len> ');';
+}
+
+HasNonASCII {
+  /* empty */ = False;
+  s.Char e.Rest = <HasNonASCII-Check <Ord s.Char> e.Rest>;
+}
+
+HasNonASCII-Check {
+  s.Code e.Rest, <Compare s.Code 128> : '+' = True;
+  s.Code e.Rest = <HasNonASCII e.Rest>;
 }
 
 ElOpenBracket { s.Pos = 'open_bracket(' <ElemPtr s.Pos> ');' }

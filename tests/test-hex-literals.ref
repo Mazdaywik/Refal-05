@@ -1,0 +1,56 @@
+* Test hexadecimal literals in Refal
+
+$ENTRY Go {
+  = <TestDecimal>
+    <TestHex>
+    <TestHexEquality>
+    <TestUnicodeHex>
+    <TestHexMath>;
+}
+
+* Test decimal numbers
+TestDecimal {
+  = <Prout 'Testing decimal literals:'>
+    <Prout '  65 = ' 65>
+    <Prout '  255 = ' 255>
+    <Prout '  1046 = ' 1046>;
+}
+
+* Test hexadecimal numbers
+TestHex {
+  = <Prout 'Testing hex literals:'>
+    <Prout '  0x41 = ' 0x41>
+    <Prout '  0xFF = ' 0xFF>
+    <Prout '  0x416 = ' 0x416>;
+}
+
+* Test hex/decimal equality
+TestHexEquality {
+  = <Prout 'Testing hex/decimal equality:'>
+    <CompareNums 0x41 65>
+    <CompareNums 0xFF 255>
+    <CompareNums 0x416 1046>
+    <CompareNums 0x4E2D 20013>;
+}
+
+CompareNums {
+  s.X s.X = <Prout '  ' <Symb s.X> ' == ' <Symb s.X> ': EQUAL'>;
+  s.X s.Y = <Prout '  ' <Symb s.X> ' != ' <Symb s.Y> ': NOT EQUAL'>;
+}
+
+* Test Unicode with hex
+TestUnicodeHex {
+  = <Prout 'Testing Unicode with hex:'>
+    <Prout '  Chr 0x41 = ' <Chr 0x41>>
+    <Prout '  Chr 0x416 = ' <Chr 0x416>>
+    <Prout '  Chr 0x4E2D = ' <Chr 0x4E2D>>
+    <Prout '  Chr 0x1F389 = ' <Chr 0x1F389>>;
+}
+
+* Test hex in math operations
+TestHexMath {
+  = <Prout 'Testing hex in math:'>
+    <Prout '  0x10 + 0x20 = ' <Add 0x10 0x20>>
+    <Prout '  0xFF - 0x0F = ' <Sub 0xFF 0x0F>>
+    <Prout '  0x10 * 0x10 = ' <Mul 0x10 0x10>>;
+}

@@ -72,11 +72,13 @@ struct static_asserts {
 
 #define equal_chars(x, y) ((x) == (y))
 #define equal_numbers(x, y) ((x) == (y))
+#define equal_unicodes(x, y) ((x) == (y))
 
 
 match_symbol_funcs(function, struct r05_function *, FUNCTION, function);
 match_symbol_funcs(char, char, CHAR, char_);
 match_symbol_funcs(number, r05_number, NUMBER, number);
+match_symbol_funcs(unicode, r05_unicode_char, UNICODE, unicode_);
 
 
 int r05_brackets_left(
@@ -175,6 +177,9 @@ static int equal_nodes(struct r05_node *node1, struct r05_node *node2) {
 
       case R05_DATATAG_FUNCTION:
         return equal_functions(node1->info.function, node2->info.function);
+
+      case R05_DATATAG_UNICODE:
+        return (node1->info.unicode_ == node2->info.unicode_);
 
       /*
         Сведения о связях между скобками нужны для других целей,
@@ -517,6 +522,32 @@ void r05_alloc_chars(const char buffer[], size_t len) {
 void r05_alloc_string(const char *string) {
   for (/* пусто */; *string != '\0'; ++string) {
     r05_alloc_char(*string);
+  }
+}
+
+
+void r05_alloc_unicode_string(const r05_unicode_char *string, size_t len) {
+  size_t i;
+  for (i = 0; i < len; ++i) {
+    r05_alloc_unicode(string[i]);
+  }
+}
+
+
+void r05_alloc_utf8_string(const char *utf8) {
+  const char *ptr = utf8;
+  r05_unicode_char ch;
+  
+  while (*ptr) {
+    ch = r05_utf8_decode_char(&ptr);
+    if (ch != R05_INVALID_UNICODE) {
+      /* For ASCII, use legacy char nodes for compatibility */
+      if (ch < 128) {
+        r05_alloc_char((char)ch);
+      } else {
+        r05_alloc_unicode(ch);
+      }
+    }
   }
 }
 
@@ -1019,6 +1050,11 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             fprintf(stderr, "\'");
             continue;
 
+          case R05_DATATAG_UNICODE:
+            state = cStateString;
+            fprintf(stderr, "\'");
+            continue;
+
           case R05_DATATAG_NUMBER:
             fprintf(stderr, "%u ", begin->info.number);
             begin = begin->next;
@@ -1124,6 +1160,33 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
               continue;
             }
 
+          case R05_DATATAG_UNICODE: {
+            r05_unicode_char ch = begin->info.unicode_;
+            if (ch == '(' || ch == ')' || ch == '<' || ch == '>') {
+              fprintf(stderr, "\\%c", (char)ch);
+            } else if (ch == '\n') {
+              fprintf(stderr, "\\n");
+            } else if (ch == '\t') {
+              fprintf(stderr, "\\t");
+            } else if (ch == '\\') {
+              fprintf(stderr, "\\\\");
+            } else if (ch == '\'') {
+              fprintf(stderr, "\\'");
+            } else if (ch < 0x20 || ch > 0x10FFFF) {
+              fprintf(stderr, "\\u{%X}", ch);
+            } else if (ch < 128) {
+              fprintf(stderr, "%c", (char)ch);
+            } else {
+              /* Print as UTF-8 */
+              char utf8[5];
+              int len = r05_utf32_char_to_utf8(ch, utf8);
+              utf8[len] = '\0';
+              fprintf(stderr, "%s", utf8);
+            }
+            begin = begin->next;
+            continue;
+          }
+
           default:
             state = cStateView;
             fprintf(stderr, "\' ");
@@ -1177,6 +1240,11 @@ R05_NORETURN void r05_exit(int retcode) {
 
   free_memory();
   fflush(stdout);
+
+#ifdef R05_UNICODE
+  /* Cleanup Unicode support */
+  r05_unicode_cleanup();
+#endif
 
   exit(retcode);
 }
@@ -1380,6 +1448,13 @@ static void dump_buried(void) {
 int main(int argc, char **argv) {
   s_argc = argc;
   s_argv = argv;
+
+#ifdef R05_UNICODE
+  /* Initialize Unicode support */
+  if (!r05_unicode_init()) {
+    fprintf(stderr, "Warning: Failed to initialize Unicode support\n");
+  }
+#endif
 
   init_view_field();
   start_profiler();

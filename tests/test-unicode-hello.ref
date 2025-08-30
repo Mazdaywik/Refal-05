@@ -1,0 +1,11 @@
+* Test basic Unicode string handling
+* This test verifies that ASCII remains as legacy char nodes
+* and Unicode characters are stored as Unicode nodes
+
+$ENTRY Go {
+  = <Prout 'Hello, World!'>
+    <Prout 'Привет, мир!'>
+    <Prout '你好，世界！'>
+    <Prout 'こんにちは、世界！'>
+    <Prout '🌍🌎🌏 Unicode Test 🎉'>
+}

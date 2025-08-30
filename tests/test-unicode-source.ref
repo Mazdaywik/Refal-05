@@ -1,0 +1,47 @@
+* Test Unicode in source code with comments in multiple languages
+* Тест Unicode в исходном коде
+* 测试源代码中的Unicode
+* テスト Unicode ソースコード
+
+$ENTRY Go {
+  = <Test1>
+    <Test2>
+    <Test3>;
+}
+
+* Function with Unicode name (Russian)
+Привет {
+  = <Prout 'Привет, мир!'>;
+}
+
+* Function with Chinese characters
+你好 {
+  = <Prout '你好世界'>;
+}
+
+* Function mixing languages
+Test1 {
+  = <Prout 'Testing Unicode function names:'>
+    <Привет>
+    <你好>;
+}
+
+* Test Unicode strings
+Test2 {
+  = <Prout 'Unicode strings:'>
+    <Prout '  Русский: АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'>
+    <Prout '  中文: 你好世界'>
+    <Prout '  日本語: こんにちは世界'>
+    <Prout '  العربية: مرحبا بالعالم'>
+    <Prout '  עברית: שלום עולם'>
+    <Prout '  한국어: 안녕하세요'>
+    <Prout '  Emoji: 🌍🌎🌏 ❤️ 🎉'>;
+}
+
+* Test hex literals with Unicode
+Test3 {
+  = <Prout 'Hex literals for Unicode:'>
+    <Prout '  U+4E2D (中): ' <Chr 0x4E2D>>
+    <Prout '  U+1F389 (🎉): ' <Chr 0x1F389>>
+    <Prout '  U+0416 (Ж): ' <Chr 0x0416>>;
+}

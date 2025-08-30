@@ -1,0 +1,27 @@
+## Раскомментируйте строчку ниже в зависимости от используемого
+## компилятора C++
+
+## Компилятор GNU C++ с поддержкой Unicode через ICU
+# export R05CCOMP='gcc -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20 -DR05_UNICODE $(icu-config --cppflags --ldflags --ldflags-libsonly)'
+
+## Компилятор Clang с поддержкой Unicode через ICU:
+# export R05CCOMP='clang -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20 -DR05_UNICODE $(icu-config --cppflags --ldflags --ldflags-libsonly)'
+
+## Если ваш компилятор C++ отсутствует в списке ниже, впишите его сами:
+# export PATH=$PATH:…
+# export R05CCOMP=…
+
+echo>/dev/null
+
+## По умолчанию используем GNU C++ с ICU:
+if [ -z "$R05CCOMP" ]; then
+  # Check if ICU is available
+  if command -v icu-config >/dev/null 2>&1; then
+    export R05CCOMP="gcc -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20 -DR05_UNICODE $(icu-config --cppflags --ldflags --ldflags-libsonly)"
+    echo "Building with Unicode support (ICU detected)"
+  else
+    export R05CCOMP='gcc -Wall -g -DR05_POSIX -DR05_CLOCK_SKIP=20'
+    echo "Building without Unicode support (ICU not found)"
+    echo "Install ICU development packages for Unicode support"
+  fi
+fi

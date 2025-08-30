@@ -1,0 +1,70 @@
+* Comprehensive Unicode test
+
+$ENTRY Go {
+  = <TestNormalization>
+    <TestScripts>
+    <TestBoundaries>
+    <TestSorting>;
+}
+
+* Test Unicode normalization
+TestNormalization {
+  = <Prout 'Testing normalization:'>
+    <Prout '  Café (é as single char) vs Café (e + combining accent)'>
+    <CompareNorm ('Café') ('Café')>;
+}
+
+CompareNorm {
+  (e.X) (e.X) = <Prout '  Normalized match: YES'>;
+  (e.X) (e.Y) = <Prout '  Normalized match: NO (different byte sequences)'>;
+}
+
+* Test different scripts
+TestScripts {
+  = <Prout 'Testing different scripts:'>
+    <TestScript 'Latin' 'Hello'>
+    <TestScript 'Cyrillic' 'Привет'>
+    <TestScript 'Greek' 'Γειά'>
+    <TestScript 'Arabic' 'مرحبا'>
+    <TestScript 'Hebrew' 'שלום'>
+    <TestScript 'Devanagari' 'नमस्ते'>
+    <TestScript 'Bengali' 'হ্যালো'>
+    <TestScript 'Thai' 'สวัสดี'>
+    <TestScript 'Korean' '안녕'>
+    <TestScript 'Japanese Hiragana' 'こんにちは'>
+    <TestScript 'Japanese Katakana' 'コンニチハ'>;
+}
+
+TestScript {
+  e.Name e.Text = <Prout '  ' e.Name ': ' e.Text ' (length ' <Lenw e.Text> ')'>;
+}
+
+* Test boundary cases
+TestBoundaries {
+  = <Prout 'Testing boundary cases:'>
+    <TestBoundary 'ASCII max' <Chr 127>>
+    <TestBoundary 'First Unicode' <Chr 128>>
+    <TestBoundary 'BMP boundary' <Chr 65535>>
+    <TestBoundary 'First SMP' <Chr 65536>>
+    <TestBoundary 'High emoji' <Chr 128512>>
+    <TestBoundary 'Math symbol' <Chr 8721>>;
+}
+
+TestBoundary {
+  e.Name s.Char = <Prout '  ' e.Name ': ' s.Char ' (code ' <Ord s.Char> ')'>;
+}
+
+* Test sorting/comparison
+TestSorting {
+  = <Prout 'Testing character codes:'>
+    <CompareChars 'A' 'B'>
+    <CompareChars 'Z' 'a'>
+    <CompareChars 'А' 'Б'>
+    <CompareChars 'Я' 'а'>
+    <CompareChars '中' '国'>
+    <CompareChars '🌍' '🌎'>;
+}
+
+CompareChars {
+  s.A s.B = <Prout '  ' s.A ' (' <Ord s.A> ') vs ' s.B ' (' <Ord s.B> ')'>;
+}

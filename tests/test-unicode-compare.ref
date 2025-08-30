@@ -1,0 +1,48 @@
+* Test Unicode character comparison and pattern matching
+
+$ENTRY Go {
+  = <Prout <TestASCII>>
+    <Prout <TestUnicode>>
+    <Prout <TestMixed>>
+    <Prout <TestEmoji>>
+    <Prout <TestCase>>;
+}
+
+* Test ASCII character comparison
+TestASCII {
+  = <CompareChars 'A' 'A'>
+}
+
+* Test Unicode character comparison
+TestUnicode {
+  = <CompareChars 'Ж' 'Ж'>
+}
+
+* Test mixed ASCII and Unicode comparison
+TestMixed {
+  = <CompareStrings 'Hello, мир!' 'Hello, мир!'>
+}
+
+* Test emoji comparison
+TestEmoji {
+  = <CompareChars '🎉' '🎉'>
+}
+
+* Test case conversion
+TestCase {
+  = <Prout 'Upper of a: ' <Upper 'a'>>
+    <Prout 'Upper of ж: ' <Upper 'ж'>>
+    <Prout 'Lower of A: ' <Lower 'A'>>
+    <Prout 'Lower of Ж: ' <Lower 'Ж'>>
+    'Case conversion: OK';
+}
+
+CompareChars {
+  s.X s.X = 'Character compare: OK';
+  s.X s.Y = 'Character compare: FAILED';
+}
+
+CompareStrings {
+  (e.X) (e.X) = 'String compare: OK';
+  e.Other = 'String compare: FAILED';
+}

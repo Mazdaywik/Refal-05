@@ -1,0 +1,43 @@
+* Debug Unicode issues
+
+$ENTRY Go {
+  = <TestOrd>
+    <TestCharComparison>
+    <TestSimplePattern>;
+}
+
+* Test Ord function
+TestOrd {
+  = <Prout 'Testing Ord function:'>
+    <Prout '  Ord A = ' <Ord 'A'>>
+    <Prout '  Ord Ж = ' <Ord 'Ж'>>
+    <Prout '  Ord 中 = ' <Ord '中'>>
+    <Prout '  Chr 1046 = ' <Chr 1046>>
+    <Prout '  Chr 20013 = ' <Chr 20013>>;
+}
+
+* Test character comparison
+TestCharComparison {
+  = <Prout 'Testing character comparison:'>
+    <CompareChar 'A' 'A'>
+    <CompareChar 'Ж' 'Ж'>
+    <CompareChar '中' '中'>;
+}
+
+CompareChar {
+  s.X s.X = <Prout '  ' s.X ' == ' s.X ': Match'>;
+  s.X s.Y = <Prout '  ' s.X ' != ' s.Y ': No match'>;
+}
+
+* Test simple pattern matching
+TestSimplePattern {
+  = <Prout 'Testing simple patterns:'>
+    <MatchString ('ABC') ('ABC')>
+    <MatchString ('АБВ') ('АБВ')>
+    <MatchString ('中文') ('中文')>;
+}
+
+MatchString {
+  (e.X) (e.X) = <Prout '  String match: ' e.X>;
+  (e.X) (e.Y) = <Prout '  String no match: ' e.X ' != ' e.Y>;
+}

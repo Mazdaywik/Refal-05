@@ -1,0 +1,14 @@
+Refal-05-Unicode 1.0.0
+
+Based on: Refal-05 (original by Alexander Konovalov)
+Unicode Implementation: 2025-01-07
+ICU Library: 77.1
+
+Features:
+- Full Unicode support via ICU
+- UTF-32 internal representation
+- UTF-8 input/output
+- Unicode-aware pattern matching
+- Extended built-in functions for Unicode
+
+Build with: ./bootstrap.sh (requires ICU development libraries)
