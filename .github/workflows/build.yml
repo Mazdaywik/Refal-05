@@ -1,0 +1,38 @@
+name: Build Refal-05
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup environment
+      run: |
+        echo "R05CCOMP=gcc -Wall -O3 -g -DR05_POSIX" >> $GITHUB_ENV
+        echo "R05PATH=${{ github.workspace }}/lib:${{ github.workspace }}/src" >> $GITHUB_ENV
+        chmod +x bin/refal05c
+    
+    - name: Build new compiler using previous version
+      run: |
+        cd src
+        ../bin/refal05c refal05c refal05rts Library LibraryEx R5FW-Parser-Defs R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
+        gcc -Wall -O3 -g -DR05_POSIX -o refal05c refal05c.c ../lib/refal05rts.c ../lib/Library.c ../lib/LibraryEx.c ../lib/R5FW-Parser-Defs.c ../lib/R5FW-Parser.c ../lib/R5FW-Plainer.c ../lib/R5FW-Transformer.c ../lib/Platform.c
+    
+    - name: Run autotests
+      run: |
+        cd autotests
+        ./run.sh
+    
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: refal05c-binary
+        path: src/refal05c
+        retention-days: 30
