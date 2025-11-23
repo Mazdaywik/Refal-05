@@ -59,13 +59,9 @@ static struct r05_function *s_arithmetic_names[] = {
 };
 
 
-struct builtin_info {
-  r05_number id;
-  struct r05_function *function;
-  struct r05_function *type;
-};
-
-static struct builtin_info s_builtin_info[];
+static struct r05_function *lookup_builtin(
+  struct r05_node *name_b, struct r05_node *name_e
+);
 
 
 static int chain_str_eq(
@@ -127,9 +123,7 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
     struct r05_node *p = brackets[0]->next;
     struct r05_node *name_b = brackets[0]->next;
     struct r05_node *name_e = brackets[1]->prev;
-    struct r05_function *callee = NULL;
-    struct builtin_info *bi = s_builtin_info;
-    struct r05_function **alias = s_arithmetic_names;
+    struct r05_function *callee = NULL, *builtin;
 
     while (p != brackets[1] && R05_DATATAG_CHAR == p->tag) {
       p = p->next;
@@ -145,22 +139,10 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
       callee = *cur;
     }
 
-    while (
-      bi->function != NULL && ! chain_str_eq(name_b, name_e, bi->function->name)
-    ) {
-      ++bi;
-    }
-    if (bi->function != NULL) {
+    builtin = lookup_builtin(name_b, name_e);
+    if (builtin != NULL) {
       assert(callee == NULL);
-      callee = bi->function;
-    }
-
-    while (*alias != NULL && ! chain_str_eq(name_b, name_e, (*alias)->name)) {
-      ++alias;
-    }
-    if (*alias != NULL) {
-      assert(callee == NULL);
-      callee = *alias;
+      callee = builtin;
     }
 
     if (callee) {
@@ -695,22 +677,14 @@ static void cleanup_imploded_table(void) {
 static struct r05_function *implode(
   struct r05_node *begin, struct r05_node *end
 ) {
-  struct builtin_info *info;
-  struct r05_function **alias;
+  struct r05_function *builtin;
   struct r05_node *node, *limit = end->next;
   size_t len, hash, i;
   struct imploded **bucket, *known, *new;
 
-  for (info = s_builtin_info; info->function != 0; ++info) {
-    if (chain_str_eq(begin, end, info->function->name)) {
-      return info->function;
-    }
-  }
-
-  for (alias = s_arithmetic_names; *alias != NULL; ++alias) {
-    if (chain_str_eq(begin, end, (*alias)->name)) {
-      return *alias;
-    }
+  builtin = lookup_builtin(begin, end);
+  if (builtin != NULL) {
+    return builtin;
   }
 
   len = 0;
@@ -2022,6 +1996,12 @@ R05_DEFINE_LOCAL_ENUM(regular, "regular")
   поскольку они — деталь внутренней реализации Рефала-5 (версии PZ).
 */
 
+struct builtin_info {
+  r05_number id;
+  struct r05_function *function;
+  struct r05_function *type;
+};
+
 R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin);
 
 static struct builtin_info s_builtin_info[] = {
@@ -2122,3 +2102,31 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
 };
+
+
+static struct r05_function *lookup_builtin(
+  struct r05_node *name_b, struct r05_node *name_e
+) {
+  struct r05_function *callee = NULL;
+  struct builtin_info *bi = s_builtin_info;
+  struct r05_function **alias = s_arithmetic_names;
+
+  while (
+    bi->function != NULL && ! chain_str_eq(name_b, name_e, bi->function->name)
+  ) {
+    ++bi;
+  }
+  if (bi->function != NULL) {
+    callee = bi->function;
+  }
+
+  while (*alias != NULL && ! chain_str_eq(name_b, name_e, (*alias)->name)) {
+    ++alias;
+  }
+  if (*alias != NULL) {
+    assert(callee == NULL);
+    callee = *alias;
+  }
+
+  return callee;
+}
