@@ -1971,7 +1971,7 @@ R05_DEFINE_ENTRY_FUNCTION(Write, "Write") {
 
 
 /**
-  67. <ListOfBuiltin> == (s.No s.Name s.Type)*
+  67. <ListOfBuiltin> == (s.No s.Name s.Type)+
 
       s.No ::= s.NUMBER
       s.Name ::= s.FUNCTION
