@@ -1192,7 +1192,7 @@ R05_NORETURN void r05_recognition_impossible(void) {
 R05_NORETURN void r05_builtin_error(const char *message) {
   fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
   make_dump();
-  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  r05_exit(EXIT_CODE_BUILTIN_ERROR);
 }
 
 
@@ -1202,7 +1202,7 @@ R05_NORETURN void r05_builtin_error_errno(const char *message) {
     message, errno, strerror(errno)
   );
   make_dump();
-  r05_exit(EXIT_CODE_RECOGNITION_IMPOSSIBLE);
+  r05_exit(EXIT_CODE_BUILTIN_ERROR);
 }
 
 
