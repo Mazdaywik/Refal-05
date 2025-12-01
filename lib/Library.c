@@ -694,6 +694,9 @@ static struct r05_function *implode(
   if (s_imploded == NULL) {
     s_imploded_size = 100;
     s_imploded = calloc(s_imploded_size, sizeof(s_imploded[0]));
+    if (NULL == s_imploded) {
+      r05_builtin_error("No memory for identifier table");
+    }
     atexit(cleanup_imploded_table);
   }
 
@@ -705,6 +708,10 @@ static struct r05_function *implode(
   }
 
   new = malloc(sizeof(struct imploded) + len);
+  if (NULL == new) {
+    r05_builtin_error("No memory for new identifier");
+  }
+
   new->function.ptr = r05_enum_function_code;
   new->function.name = new->name;
   new->hash = hash;
@@ -721,21 +728,22 @@ static struct r05_function *implode(
   if (s_imploded_count > 3 * s_imploded_size) {
     size_t new_size = 3 * s_imploded_size / 2;
     struct imploded **new_table = calloc(new_size, sizeof(new_table[0]));
-
-    for (i = 0; i < s_imploded_size; ++i) {
-      known = s_imploded[i];
-      while (known != NULL) {
-        struct imploded *next = known->next;
-        bucket = &new_table[known->hash % new_size];
-        known->next = *bucket;
-        *bucket = known;
-        known = next;
+    if (NULL != new_table) {
+      for (i = 0; i < s_imploded_size; ++i) {
+        known = s_imploded[i];
+        while (known != NULL) {
+          struct imploded *next = known->next;
+          bucket = &new_table[known->hash % new_size];
+          known->next = *bucket;
+          *bucket = known;
+          known = next;
+        }
       }
-    }
 
-    free(s_imploded);
-    s_imploded = new_table;
-    s_imploded_size = new_size;
+      free(s_imploded);
+      s_imploded = new_table;
+      s_imploded_size = new_size;
+    }
   }
 
   return &new->function;
@@ -1044,11 +1052,11 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   }
 
   if (R05_DATATAG_CHAR == sMode->tag) {
-    char mode = sMode->info.char_;
-    if (mode != 'r' && mode != 'w' && mode != 'a') {
-      r05_builtin_error("Bad file mode %c, expected 'r', 'w' or 'a'", mode);
+    char cmode = sMode->info.char_;
+    if (cmode != 'r' && cmode != 'w' && cmode != 'a') {
+      r05_builtin_error("Bad file mode %c, expected 'r', 'w' or 'a'", cmode);
     }
-    mode_str[0] = mode;
+    mode_str[0] = cmode;
   } else {
     mode = sMode->info.function->name;
   }
