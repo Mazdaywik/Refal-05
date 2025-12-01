@@ -580,11 +580,7 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
     s_streams[file_no] = fopen(filename, mode_str);
 
     if (s_streams[file_no] == NULL) {
-      static const char error_format[] = "Can't open REFAL%u.DAT as \"%c\"";
-      char error[sizeof(error_format) + UINT_DIGITS];
-
-      sprintf(error, error_format, file_no, mode);
-      r05_builtin_error_errno(error);
+      r05_builtin_error_errno("Can't open REFAL%u.DAT as \"%c\"", file_no, mode);
     }
   }
 
@@ -1050,7 +1046,7 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   if (R05_DATATAG_CHAR == sMode->tag) {
     char mode = sMode->info.char_;
     if (mode != 'r' && mode != 'w' && mode != 'a') {
-      r05_builtin_error("Bad file mode, expected 'r', 'w' or 'a'");
+      r05_builtin_error("Bad file mode %c, expected 'r', 'w' or 'a'", mode);
     }
     mode_str[0] = mode;
   } else {
@@ -1058,25 +1054,17 @@ R05_DEFINE_ENTRY_FUNCTION(Open, "Open") {
   }
 
   if (! r05_empty_hole(eFileName[1], arg_end)) {
-    static const char error_format[] =
-      "Very long file name, maximum available is %u";
-    char error[sizeof(error_format) + UINT_DIGITS];
-
-    sprintf(error, error_format, (unsigned int) FILENAME_MAX);
-    r05_builtin_error(error);
+    r05_builtin_error(
+      "Very long file name, maximum available is %u",
+      (unsigned int) FILENAME_MAX
+    );
   }
 
   ensure_close_stream(file_no);
 
   s_streams[file_no] = fopen(filename, mode);
   if (s_streams[file_no] == NULL) {
-    char mode_buffer[100] = { '\0' };
-    static const char error_format[] = "Can't open %s for \"%s\"";
-    char error[sizeof(error_format) + FILENAME_MAX + sizeof(mode_buffer)];
-
-    strncpy(mode_buffer, mode, sizeof(mode_buffer) - 1);
-    sprintf(error, error_format, filename, mode_buffer);
-    r05_builtin_error_errno(error);
+    r05_builtin_error_errno("Can't open %s for \"%s\"", filename, mode);
   }
 
   r05_splice_to_freelist(arg_begin, arg_end);
@@ -1143,10 +1131,10 @@ static void output_func(
 
 #define CHECK_PRINTF(printf_call) \
   ((printf_call) >= 0 ? (void) 0 \
-  : r05_builtin_error_errno("Error in call " #printf_call))
+  : r05_builtin_error_errno("Error in call %s", #printf_call))
 #define CHECK_PUTC(putc_call) \
   ((putc_call) != EOF ? (void) 0 \
-  : r05_builtin_error_errno("Error in call " #putc_call))
+  : r05_builtin_error_errno("Error in call %s", #putc_call))
 
   for (p = before_expr->next; p != arg_end; p = p->next) {
     switch (p->tag) {

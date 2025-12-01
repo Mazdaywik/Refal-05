@@ -2616,8 +2616,8 @@ T-переменная слева, закрытая переменная:
 
     void r05_recognition_impossible(void);
     void r05_exit(int retcode);
-    void r05_builtin_error(const char *message);
-    void r05_builtin_error_errno(const char *message);
+    void r05_builtin_error(const char *message, ...);
+    void r05_builtin_error_errno(const char *message, ...);
 
     const char *r05_arg(int no);
 
@@ -2637,7 +2637,8 @@ API рантайма.
 программу с выдачей пользовательского сообщения об ошибке, аварийным дампом
 и устанавливают код возврата в `203`. Вторая функция тажке распечатывает
 значение `errno` и его строковое представление, формируемое функцией
-`strerror()` стандартной библиотеки Си.
+`strerror()` стандартной библиотеки Си. Обе функции могут принимать
+дополнительные параметры в стиле `printf()`.
 
 В пользовательских функциях на Си рекомендуется различать
 `r05_recognition_impossible()` с одной стороны, и `r05_builtin_error***()`
@@ -2752,7 +2753,9 @@ API рантайма.
         }
 
         if (p == arg_end) {
-          r05_builtin_error("very long filename");
+          r05_builtin_error(
+            "very long filename (max available %u)", FILENAME_MAX
+          );
         } else {
           r05_recognition_impossible();
         }
@@ -2859,7 +2862,9 @@ API рантайма.
         }
 
         if (p == arg_end) {
-          r05_builtin_error("very long filename");
+          r05_builtin_error(
+            "very long filename (max available %u)", FILENAME_MAX
+          );
         } else {
           r05_recognition_impossible();
         }

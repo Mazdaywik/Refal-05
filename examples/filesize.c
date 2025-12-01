@@ -29,7 +29,9 @@ R05_DEFINE_ENTRY_FUNCTION(FileSize, "FileSize") {
     }
 
     if (p == arg_end) {
-      r05_builtin_error("very long filename");
+      r05_builtin_error(
+        "very long filename (max available %u)", FILENAME_MAX
+      );
     } else {
       r05_recognition_impossible();
     }

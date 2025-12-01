@@ -4,6 +4,27 @@
 #include <stddef.h>
 
 
+/* https://stackoverflow.com/questions/2354784 */
+#if defined(_MSC_VER) && _MSC_VER >= 1400
+#  include <sal.h>
+#  if _MSC_VER > 1400
+#    define R05_PRINTF_PARAM _Printf_format_string_
+#  else
+#    define R05_PRINTF_PARAM __format_string
+#  endif
+#else
+#  define R05_PRINTF_PARAM
+#endif
+
+
+/* https://gcc.gnu.org/onlinedocs/gcc-8.5.0/gcc/Common-Function-Attributes.html */
+#if defined(__GNUC__) || defined(__clang__)
+#  define R05_PRINTF_LIKE_FUNCTION __attribute__((format(printf, 1, 2)))
+#else
+#  define R05_PRINTF_LIKE_FUNCTION
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif  /* __cplusplus */
@@ -240,8 +261,13 @@ double r05_time_elapsed(void);
 
 R05_NORETURN void r05_recognition_impossible(void);
 R05_NORETURN void r05_exit(int retcode);
-R05_NORETURN void r05_builtin_error(const char *message);
-R05_NORETURN void r05_builtin_error_errno(const char *message);
+R05_NORETURN R05_PRINTF_LIKE_FUNCTION void r05_builtin_error(
+  R05_PRINTF_PARAM const char *message, ...
+);
+R05_NORETURN R05_PRINTF_LIKE_FUNCTION void r05_builtin_error_errno(
+  R05_PRINTF_PARAM const char *message,
+  ...
+);
 
 r05_number r05_step_count(void);
 const char *r05_arg(int no);

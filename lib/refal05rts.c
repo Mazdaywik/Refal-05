@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1189,18 +1190,29 @@ R05_NORETURN void r05_recognition_impossible(void) {
 }
 
 
-R05_NORETURN void r05_builtin_error(const char *message) {
-  fprintf(stderr, "\nBUILTIN FUNCTION ERROR: %s\n\n", message);
+R05_NORETURN R05_PRINTF_LIKE_FUNCTION void r05_builtin_error(
+  R05_PRINTF_PARAM const char *message, ...
+) {
+  va_list args;
+  va_start(args, message);
+  fprintf(stderr, "\nBUILTIN FUNCTION ERROR: ");
+  vfprintf(stderr, message, args);
+  va_end(args);
+  fprintf(stderr, "\n\n");
   make_dump();
   r05_exit(EXIT_CODE_BUILTIN_ERROR);
 }
 
 
-R05_NORETURN void r05_builtin_error_errno(const char *message) {
-  fprintf(
-    stderr, "\nBUILTIN FUNCTION ERROR: %s\n(errno = %d: %s)\n\n",
-    message, errno, strerror(errno)
-  );
+R05_NORETURN R05_PRINTF_LIKE_FUNCTION void r05_builtin_error_errno(
+  R05_PRINTF_PARAM const char *message, ...
+) {
+  va_list args;
+  va_start(args, message);
+  fprintf(stderr, "\nBUILTIN FUNCTION ERROR: ");
+  vfprintf(stderr, message, args);
+  va_end(args);
+  fprintf(stderr, "\n(errno = %d: %s)\n\n", errno, strerror(errno));
   make_dump();
   r05_exit(EXIT_CODE_BUILTIN_ERROR);
 }
