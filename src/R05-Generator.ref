@@ -20,21 +20,22 @@ $ENTRY R05-Generate-ToFile {
   <R05-Generate-ToLines e.Tree> == (s.CHAR*)*
 */
 $ENTRY R05-Generate-ToLines {
-  e.Tree-B (Metatable e.Functions) e.Tree-E =
-    <R05-Generate-Aux
-      <MapAccum
-        generator_GenTreeItem (/* declarations */)
+  e.Tree-B (Metatable e.Functions) e.Tree-E
+    = <R05-Generate-Items
         <Transform e.Tree-B e.Tree-E> (Metatable e.Functions)
-      >
-    >;
+      >;
 
-  e.Tree =
-    <R05-Generate-Aux
-      <MapAccum generator_GenTreeItem (/* declarations */) <Transform e.Tree>>
-    >;
+  e.Tree = <R05-Generate-Items <Transform e.Tree>>;
 }
 
-R05-Generate-Aux {
+R05-Generate-Items {
+  e.TreeItems
+    = <R05-Generate-Combine
+        <MapAccum r05-generator_GenTreeItem (/* declarations */) e.TreeItems>
+      >;
+}
+
+R05-Generate-Combine {
   (e.Declarations) e.Definitions =
     ('/* Automatically generated file. Don\'t edit! */')
     ('#include "refal05rts.h"')
@@ -47,7 +48,7 @@ R05-Generate-Aux {
     ('/* End of file */')
 }
 
-$ENTRY generator_GenTreeItem {
+$ENTRY r05-generator_GenTreeItem {
   (e.Declarations) (Extern e.Names) =
     (e.Declarations <Map r05-generator_GenExtern e.Names>)
     /* пусто */;
@@ -126,7 +127,7 @@ GenFunction {
   s.ScopeClass (e.Name) e.Sentences =
     ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
     ('  r05_this_is_generated_function();')
-    <Map generator_GenSentence <AddFailCommand e.Sentences>>
+    <Map r05-generator_GenSentence <AddFailCommand e.Sentences>>
     ('}')
     ();
 }
@@ -204,13 +205,13 @@ AddFailCommand {
   e.Sentences = e.Sentences ReturnRecognitionImpossible;
 }
 
-$ENTRY generator_GenSentence {
+$ENTRY r05-generator_GenSentence {
   ((e.Pattern) RETURN (e.Result)) =
     ()
     ('  do {')
     <SkipIndentAccum
       <MapAccum
-        generator_GenCommand
+        r05-generator_GenCommand
         ('    ' /* отступ */)
         <CompileSentence (e.Pattern) (e.Result)>
       >
@@ -237,7 +238,7 @@ SafeComment {
   e.Comment = e.Comment;
 }
 
-$ENTRY generator_GenCommand {
+$ENTRY r05-generator_GenCommand {
   (e.Indent) (CmdOpenedE-Start s.L s.R 'e' e.Index)
     = (e.Indent '  ') <CmdOpenedE-Start (e.Indent) s.L s.R 'e' e.Index>;
 
@@ -438,7 +439,7 @@ CompileSentence {
     , <GenPattern e.Pattern> : s.PatStack (e.PatternVars) (e.PatternCommands)
     , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
     = <CompileSentence-OpenELoops
-        <Map generator_MakeDeclaration e.PatternVars>
+        <Map r05-generator_MakeDeclaration e.PatternVars>
         (CmdAllocStack s.Stack)
         (CmdComment <InlineExpr e.Pattern>)
         e.PatternCommands
@@ -448,7 +449,7 @@ CompileSentence {
       >;
 }
 
-$ENTRY generator_MakeDeclaration {
+$ENTRY r05-generator_MakeDeclaration {
   (s.Mode e.Index s.Sample (s.Inst e.Insts))
     = (CmdComment
         s.Mode '.' e.Index ': '
