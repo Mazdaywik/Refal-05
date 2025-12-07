@@ -1,7 +1,7 @@
 #!/bin/bash
 (
   MODULES="refal05c R05-CompilerUtils R05-Generator R05-Parser"
-  LIBS="LibraryEx R5FW-Parser-Defs R5FW-Parser R5FW-Plainer"
+  LIBS="LibraryEx R5FW-Parser R5FW-Plainer"
   LIBS="${LIBS} R5FW-Transformer Platform"
 
   mkdir -p ../bin
