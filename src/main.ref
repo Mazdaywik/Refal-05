@@ -1,14 +1,14 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map;
-
-*$FROM CompilerUtils
-$EXTERN R05-FindFiles-Default, R05-CCompile;
+$EXTERN ArgList, LoadFile, Map, Trim;
 
 *$FROM parser
 $EXTERN R05-Parse-File;
 
 *$FROM generator
 $EXTERN R05-Generate-ToFile;
+
+*$FROM Platform
+$EXTERN PathSeparator, IsDirectorySeparator;
 
 
 $ENTRY GO {
@@ -20,7 +20,7 @@ Main {
     <Main (e.ProgName) <LoadFile e.Config>>;
 
   (e.ProgName) e.Files =
-    <FindFiles-SwFound <R05-FindFiles-Default e.Files>>;
+    <FindFiles-SwFound <FindFiles-Default e.Files>>;
 }
 
 FindFiles-SwFound {
@@ -78,7 +78,7 @@ CheckCompilationResult {
     <Prout '*** COMPILATION FAILED ***'>
     <Exit 1>;
 
-  e.Outputs = <CheckRetcode <R05-CCompile e.Outputs>>;
+  e.Outputs = <CheckRetcode <CCompile e.Outputs>>;
 }
 
 CheckRetcode {
@@ -91,4 +91,135 @@ CheckRetcode {
       '(C COMPILER FAILED, RETCODE: ' <Symb e.RetCode>')***'
     >
     <Exit e.RetCode>;
+}
+
+LoadPath {
+  = <ParsePath <GetEnv 'R05PATH'>>
+    <ParsePath <GetEnv 'REF5RSL'>>
+}
+
+ParsePath {
+  e.Folder s.Sep e.Path
+    , <PathSeparator> : s.Sep
+    = <ParseFolder e.Folder> <ParsePath e.Path>;
+  e.Folder = <ParseFolder e.Folder>;
+}
+
+ParseFolder {
+  e.Folder = <ParseFolder-CheckEmpty <Trim e.Folder>>;
+}
+
+ParseFolder-CheckEmpty {
+  /* пусто */ = /* пусто */;
+  e.Folder = (e.Folder);
+}
+
+FindFiles-Default {
+  e.Files = <FindFiles (<LoadPath>) e.Files>;
+}
+
+FindFiles {
+  (e.Folders) e.Files =
+    <Map (findfile_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
+}
+
+$ENTRY findfile_AnalyzeFile-ByFolders {
+  e.Folders (e.FileName) =
+    <AnalyzeFile-CheckNotFound
+      (e.FileName)
+      <Map (findfile_AnalyzeInFolder e.FileName) e.Folders>
+    >;
+}
+
+$ENTRY findfile_AnalyzeInFolder {
+  e.FileName Current = <AnalyzeFile e.FileName>;
+
+  e.FileName (e.Folder) = <AnalyzeFile e.Folder '/' e.FileName>;
+}
+
+AnalyzeFile-CheckNotFound {
+  (e.FileName) (Source (e.Source) e.Output) e.Variants =
+    (Source (e.Source) e.Output);
+
+  (e.FileName) (Output e.Output) e.Variants =
+    (Output e.Output);
+
+  (e.FileName) (NotFound e.NotFoundPath) e.Variants =
+    <AnalyzeFile-CheckNotFound (e.FileName) e.Variants>;
+
+  (e.FileName) = (NotFound e.FileName);
+}
+
+ExistFile-T {
+  e.FileName = <ExistFile e.FileName> e.FileName;
+}
+
+AnalyzeFile {
+  e.FileName '.ref' =
+    <AnalyzeSource-CheckExist
+      <ExistFile-T e.FileName '.ref'>
+    >;
+
+  e.FileName '.c' =
+    <AnalyzeOutput-CheckExist
+      <ExistFile-T e.FileName '.c'>
+    >;
+
+  e.FileName =
+    <AnalyzeBoth-CheckExist
+      (<ExistFile-T e.FileName '.ref'>) <ExistFile-T e.FileName '.c'>
+    >;
+}
+
+AnalyzeSource-CheckExist {
+  True e.UnitName '.ref'
+     = (Source (e.UnitName '.ref') <CutFolder e.UnitName '.c'>);
+
+  False e.SourceName = (NotFound e.SourceName);
+}
+
+AnalyzeOutput-CheckExist {
+  True e.OutName = (Output e.OutName);
+
+  False e.OutName = (NotFound e.OutName);
+}
+
+AnalyzeBoth-CheckExist {
+  (True e.SoureName) s.Res e.OutName
+    = (Source (e.SoureName) <CutFolder e.OutName>);
+
+  (False e.SoureName) True e.OutName = (Output e.OutName);
+
+  (False e.UnitName '.ref') False e.UnitName '.c' = (NotFound e.UnitName);
+}
+
+CutFolder {
+  e.Folder s.Sep e.FileName, <IsDirectorySeparator s.Sep> : True
+     = <CutFolder e.FileName>;
+
+  e.FileName = e.FileName;
+}
+
+
+CCompile {
+  e.CSources = <CCompile-SwSetEnv (<GetEnv 'R05CCOMP'>) e.CSources>;
+}
+
+CCompile-SwSetEnv {
+  (/* не установлена R05CCOMP */) e.CSources = 0;
+
+  (e.CommandLine) e.CSources =
+    <System
+      e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
+      <Map compilerutils_IncludeFlag <LoadPath>>
+      <Map compilerutils_QuoteFile e.CSources>
+    >;
+}
+
+$ENTRY compilerutils_IncludeFlag {
+  (e.PathEntry) = ' -I"' e.PathEntry '"';
+}
+
+$ENTRY compilerutils_QuoteFile {
+  (e.FileName) = ' "' e.FileName '"';
 }
