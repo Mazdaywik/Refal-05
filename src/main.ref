@@ -5,7 +5,7 @@ $EXTERN ArgList, LoadFile, Map, Trim;
 $EXTERN Parse-File;
 
 *$FROM generator
-$EXTERN R05-Generate-ToFile;
+$EXTERN Generate-ToFile;
 
 *$FROM Platform
 $EXTERN PathSeparator, IsDirectorySeparator, DirectorySeparator;
@@ -65,7 +65,7 @@ $ENTRY main_ProcessEachSource {
       <Parse-File e.Source>
     : {
         Success e.Tree
-          = <R05-Generate-ToFile (e.OutputName) e.Tree>
+          = <Generate-ToFile (e.OutputName) e.Tree>
             (e.OutputName);
 
         Fails e.Errors

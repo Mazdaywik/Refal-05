@@ -9,26 +9,26 @@ $EXTERN Transform;
 
 
 /**
-  <R05-Generate-ToFile (e.OutputFile) e.Tree> == пусто
+  <Generate-ToFile (e.OutputFile) e.Tree> == пусто
 */
-$ENTRY R05-Generate-ToFile {
+$ENTRY Generate-ToFile {
   (e.OutputFile) e.Tree =
     <SaveFile (e.OutputFile) <Generate-ToLines e.Tree>>;
 }
 
 Generate-ToLines {
   e.Tree-B (Metatable e.Functions) e.Tree-E
-    = <R05-Generate-Items
+    = <Generate-Items
         <Transform e.Tree-B e.Tree-E> (Metatable e.Functions)
       >;
 
-  e.Tree = <R05-Generate-Items <Transform e.Tree>>;
+  e.Tree = <Generate-Items <Transform e.Tree>>;
 }
 
-R05-Generate-Items {
+Generate-Items {
   e.TreeItems
     = <R05-Generate-Combine
-        <MapAccum r05-generator_GenTreeItem (/* declarations */) e.TreeItems>
+        <MapAccum generator_GenTreeItem (/* declarations */) e.TreeItems>
       >;
 }
 
@@ -45,9 +45,9 @@ R05-Generate-Combine {
     ('/* End of file */')
 }
 
-$ENTRY r05-generator_GenTreeItem {
+$ENTRY generator_GenTreeItem {
   (e.Declarations) (Extern e.Names) =
-    (e.Declarations <Map r05-generator_GenExtern e.Names>)
+    (e.Declarations <Map generator_GenExtern e.Names>)
     /* пусто */;
 
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */)
@@ -68,7 +68,7 @@ $ENTRY r05-generator_GenTreeItem {
   (e.Declarations) (Metatable e.Names)
     = (e.Declarations)
       ('static struct r05_function *metatable_entries[] = {')
-      <Map r05-generator_MetatableName e.Names>
+      <Map generator_MetatableName e.Names>
       ('};')
       ()
       ('static struct r05_metatable metatable = {')
@@ -86,11 +86,11 @@ SafeSpecialComment {
   /* пусто */ = /* пусто */;
 }
 
-$ENTRY r05-generator_MetatableName {
+$ENTRY generator_MetatableName {
   (e.Name) = ('  &r05f_' <EscapeName e.Name> ',');
 }
 
-$ENTRY r05-generator_GenExtern {
+$ENTRY generator_GenExtern {
   (t.SrcPos e.Name) = <GenDeclaration Entry e.Name>;
 }
 
@@ -124,7 +124,7 @@ GenFunction {
   s.ScopeClass (e.Name) e.Sentences =
     ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
     ('  r05_this_is_generated_function();')
-    <Map r05-generator_GenSentence <AddFailCommand e.Sentences>>
+    <Map generator_GenSentence <AddFailCommand e.Sentences>>
     ('}')
     ();
 }
@@ -142,10 +142,10 @@ DefName {
   подряд в декорированном имени.
 */
 EscapeName {
-  e.Name = <EscapeName-GlueCodes <Map r05-generator_EscapeNameChar e.Name>>;
+  e.Name = <EscapeName-GlueCodes <Map generator_EscapeNameChar e.Name>>;
 }
 
-$ENTRY r05-generator_EscapeNameChar {
+$ENTRY generator_EscapeNameChar {
   '_' = (e 'u_');
   '-' = (e 'm-');
   '$' = (e 'd$');
@@ -202,13 +202,13 @@ AddFailCommand {
   e.Sentences = e.Sentences ReturnRecognitionImpossible;
 }
 
-$ENTRY r05-generator_GenSentence {
+$ENTRY generator_GenSentence {
   ((e.Pattern) RETURN (e.Result)) =
     ()
     ('  do {')
     <SkipIndentAccum
       <MapAccum
-        r05-generator_GenCommand
+        generator_GenCommand
         ('    ' /* отступ */)
         <CompileSentence (e.Pattern) (e.Result)>
       >
@@ -235,7 +235,7 @@ SafeComment {
   e.Comment = e.Comment;
 }
 
-$ENTRY r05-generator_GenCommand {
+$ENTRY generator_GenCommand {
   (e.Indent) (CmdOpenedE-Start s.L s.R 'e' e.Index)
     = (e.Indent '  ') <CmdOpenedE-Start (e.Indent) s.L s.R 'e' e.Index>;
 
@@ -297,7 +297,7 @@ MatchArgs {
 }
 
 SymbolTextRep {
-  Char s.Char = '\'' <r05-generator_EscapeChar s.Char> '\'';
+  Char s.Char = '\'' <generator_EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
   Word e.Name = '&r05f_' <EscapeName e.Name>;
 }
@@ -391,10 +391,10 @@ CmdReturnResult {
 }
 
 EscapeString {
-  e.String = <Map r05-generator_EscapeChar e.String>;
+  e.String = <Map generator_EscapeChar e.String>;
 }
 
-$ENTRY r05-generator_EscapeChar {
+$ENTRY generator_EscapeChar {
   '\n' = '\\n';
   '\t' = '\\t';
   '\r' = '\\r';
@@ -436,7 +436,7 @@ CompileSentence {
     , <GenPattern e.Pattern> : s.PatStack (e.PatternVars) (e.PatternCommands)
     , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
     = <CompileSentence-OpenELoops
-        <Map r05-generator_MakeDeclaration e.PatternVars>
+        <Map generator_MakeDeclaration e.PatternVars>
         (CmdAllocStack s.Stack)
         (CmdComment <InlineExpr e.Pattern>)
         e.PatternCommands
@@ -446,7 +446,7 @@ CompileSentence {
       >;
 }
 
-$ENTRY r05-generator_MakeDeclaration {
+$ENTRY generator_MakeDeclaration {
   (s.Mode e.Index s.Sample (s.Inst e.Insts))
     = (CmdComment
         s.Mode '.' e.Index ': '
