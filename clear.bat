@@ -1,1 +1,1 @@
-rd /s /q bin src\cfiles
+rd /s /q bin src\cfiles src\rsl

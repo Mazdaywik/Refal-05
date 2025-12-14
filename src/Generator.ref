@@ -13,13 +13,10 @@ $EXTERN Transform;
 */
 $ENTRY R05-Generate-ToFile {
   (e.OutputFile) e.Tree =
-    <SaveFile (e.OutputFile) <R05-Generate-ToLines e.Tree>>;
+    <SaveFile (e.OutputFile) <Generate-ToLines e.Tree>>;
 }
 
-/**
-  <R05-Generate-ToLines e.Tree> == (s.CHAR*)*
-*/
-$ENTRY R05-Generate-ToLines {
+Generate-ToLines {
   e.Tree-B (Metatable e.Functions) e.Tree-E
     = <R05-Generate-Items
         <Transform e.Tree-B e.Tree-E> (Metatable e.Functions)

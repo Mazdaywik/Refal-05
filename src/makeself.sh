@@ -1,15 +1,14 @@
 #!/bin/bash
 (
-  MODULES="refal05c R05-CompilerUtils R05-Generator R05-Parser"
-  LIBS="LibraryEx R5FW-Parser R5FW-Plainer"
-  LIBS="${LIBS} R5FW-Transformer Platform"
+  MODULES="refal05c CompilerUtils Generator Parser"
+  LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
 
-  mkdir -p ../bin
+  mkdir -p ../bin rsl
 
   if [[ "$1" == "stable" ]]; then
     refc ${MODULES}
-    mv *.rsl ../bin
-    EXECUTABLE="refgo -l20 ../bin(${MODULES// /+})+${LIBS// /+}"
+    mv *.rsl rsl
+    EXECUTABLE="refgo -l20 rsl(${MODULES// /+})+${LIBS// /+}"
   else
     EXECUTABLE="../bin/refal05c"
   fi

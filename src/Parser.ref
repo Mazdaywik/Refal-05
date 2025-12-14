@@ -5,12 +5,7 @@ $EXTERN MapAccum, Map, Unique;
 $EXTERN Parse, Scan;
 
 
-/**
-  <R05-PrepareAST e.AST>
-    == Success e.R05-AST
-    == Fails e.Errors
-*/
-$ENTRY R05-PrepareAST {
+PrepareAST {
   e.AST = <CheckAST <EL-Create> e.AST>;
 }
 
@@ -283,7 +278,7 @@ $ENTRY R05-Parse-File {
     , <Parse <Scan e.SourceFile>>
     : {
         Success e.AST
-          , <R05-PrepareAST e.AST>
+          , <PrepareAST e.AST>
           : {
             Success e.PreparedAST = Success e.PreparedAST;
 

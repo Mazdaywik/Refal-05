@@ -5,12 +5,7 @@ $EXTERN Trim, Map;
 $EXTERN PathSeparator, IsDirectorySeparator;
 
 
-/**
-  <R05-LoadPath> == e.Folders
-
-  e.Folders ::= (e.Folder)*
-*/
-$ENTRY R05-LoadPath {
+LoadPath {
   = <ParsePath <GetEnv 'R05PATH'>>
     <ParsePath <GetEnv 'REF5RSL'>>
 }
@@ -41,14 +36,10 @@ ParseFolder-CheckEmpty {
     (NotFound e.FileName)
 */
 $ENTRY R05-FindFiles-Default {
-  e.Files = <R05-FindFiles (<R05-LoadPath>) e.Files>;
+  e.Files = <FindFiles (<LoadPath>) e.Files>;
 }
 
-/**
-  <R05-FindFiles (e.Folders) e.Files>
-    == t.FoundFile*
-*/
-$ENTRY R05-FindFiles {
+FindFiles {
   (e.Folders) e.Files =
     <Map (findfile_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
 }
@@ -146,7 +137,7 @@ CCompile-SwSetEnv {
   (e.CommandLine) e.CSources =
     <System
       e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
-      <Map compilerutils_IncludeFlag <R05-LoadPath>>
+      <Map compilerutils_IncludeFlag <LoadPath>>
       <Map compilerutils_QuoteFile e.CSources>
     >;
 }

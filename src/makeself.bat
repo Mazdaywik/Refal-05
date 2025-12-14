@@ -1,15 +1,15 @@
 @echo off
 setlocal
-  set MODULES=refal05c R05-CompilerUtils R05-Generator R05-Parser
-  set LIBS=LibraryEx R5FW-Parser R5FW-Plainer
-  set LIBS=%LIBS% R5FW-Transformer Platform
+  set MODULES=refal05c CompilerUtils Generator Parser
+  set LIBS=LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
 
   md ..\bin 2>NUL
+  md rsl 2>NUL
 
   if {%1}=={stable} (
     refc %MODULES%
-    move *.rsl ..\bin >NUL
-    set EXECUTABLE=refgo -l20 ../bin^(%MODULES: =+%^)+%LIBS: =+%
+    move *.rsl rsl >NUL
+    set EXECUTABLE=refgo -l20 rsl^(%MODULES: =+%^)+%LIBS: =+%
   ) else (
     set EXECUTABLE=..\bin\refal05c.exe
   )
