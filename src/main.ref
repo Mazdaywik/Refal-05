@@ -25,15 +25,15 @@ Main {
 
 FindFiles-SwFound {
   e.Files-B (NotFound e.FileName) e.Files-E =
-    <Map refal05c_PrintNotFound (NotFound e.FileName) e.Files-E>;
+    <Map main_PrintNotFound (NotFound e.FileName) e.Files-E>;
 
   e.FoundFiles =
     <CheckCompilationResult
-      <Map refal05c_ProcessEachSource e.FoundFiles>
+      <Map main_ProcessEachSource e.FoundFiles>
     >;
 }
 
-$ENTRY refal05c_PrintNotFound {
+$ENTRY main_PrintNotFound {
   (NotFound e.FileName) =
     <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
 
@@ -42,7 +42,7 @@ $ENTRY refal05c_PrintNotFound {
   (Source (e.Source) e.Output) = ;
 }
 
-$ENTRY refal05c_ProcessEachSource {
+$ENTRY main_ProcessEachSource {
   (Output e.OutputName) =
     <Prout '+Linking ' e.OutputName> (e.OutputName);
 
@@ -59,11 +59,11 @@ CompileSource-SwSuccessedParse {
     (e.OutputName);
 
   (e.SrcName) (e.OutputName) Fails e.Errors =
-    <Map (refal05c_WriteError e.SrcName) e.Errors>
+    <Map (main_WriteError e.SrcName) e.Errors>
     Fails;
 }
 
-$ENTRY refal05c_WriteError {
+$ENTRY main_WriteError {
   e.FileName (t.SrcPos e.Message) =
     <Prout e.FileName ':' <StrFromSrcPos t.SrcPos> ':ERROR: ' e.Message>;
 }
@@ -120,18 +120,18 @@ FindFiles-Default {
 
 FindFiles {
   (e.Folders) e.Files =
-    <Map (findfile_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
+    <Map (main_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
 }
 
-$ENTRY findfile_AnalyzeFile-ByFolders {
+$ENTRY main_AnalyzeFile-ByFolders {
   e.Folders (e.FileName) =
     <AnalyzeFile-CheckNotFound
       (e.FileName)
-      <Map (findfile_AnalyzeInFolder e.FileName) e.Folders>
+      <Map (main_AnalyzeInFolder e.FileName) e.Folders>
     >;
 }
 
-$ENTRY findfile_AnalyzeInFolder {
+$ENTRY main_AnalyzeInFolder {
   e.FileName Current = <AnalyzeFile e.FileName>;
 
   e.FileName (e.Folder) = <AnalyzeFile e.Folder '/' e.FileName>;
@@ -211,15 +211,15 @@ CCompile-SwSetEnv {
   (e.CommandLine) e.CSources =
     <System
       e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
-      <Map compilerutils_IncludeFlag <LoadPath>>
-      <Map compilerutils_QuoteFile e.CSources>
+      <Map main_IncludeFlag <LoadPath>>
+      <Map main_QuoteFile e.CSources>
     >;
 }
 
-$ENTRY compilerutils_IncludeFlag {
+$ENTRY main_IncludeFlag {
   (e.PathEntry) = ' -I"' e.PathEntry '"';
 }
 
-$ENTRY compilerutils_QuoteFile {
+$ENTRY main_QuoteFile {
   (e.FileName) = ' "' e.FileName '"';
 }
