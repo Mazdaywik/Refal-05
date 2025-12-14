@@ -1,6 +1,6 @@
 #!/bin/bash
 (
-  MODULES="refal05c CompilerUtils generator parser"
+  MODULES="main CompilerUtils generator parser"
   LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
 
   mkdir -p ../bin rsl
@@ -14,7 +14,7 @@
   fi
 
   if [[ "$1" == "lambda" ]]; then
-    rlmake --debug -o${EXECUTABLE} --ref5rsl refal05c.ref
+    rlmake --debug -o${EXECUTABLE} --ref5rsl main.ref
     echo
   fi
 
