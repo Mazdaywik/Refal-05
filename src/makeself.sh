@@ -1,6 +1,6 @@
 #!/bin/bash
 (
-  MODULES="refal05c CompilerUtils generator parser"
+  MODULES="refal05c main generator parser"
   LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
 
   mkdir -p ../bin rsl

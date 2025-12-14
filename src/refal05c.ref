@@ -1,7 +1,7 @@
 *$FROM LibraryEx
 $EXTERN ArgList, LoadFile, Map;
 
-*$FROM CompilerUtils
+*$FROM main
 $EXTERN R05-FindFiles-Default, R05-CCompile;
 
 *$FROM parser
