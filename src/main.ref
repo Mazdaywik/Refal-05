@@ -2,7 +2,7 @@
 $EXTERN ArgList, LoadFile, Map, Trim;
 
 *$FROM parser
-$EXTERN R05-Parse-File;
+$EXTERN Parse-File;
 
 *$FROM generator
 $EXTERN R05-Generate-ToFile;
@@ -62,7 +62,7 @@ $ENTRY main_ProcessEachSource {
 
   (Source (e.Source) e.OutputName)
     , <Prout '*Compiling ' e.Source ':'>
-      <R05-Parse-File e.Source>
+      <Parse-File e.Source>
     : {
         Success e.Tree
           = <R05-Generate-ToFile (e.OutputName) e.Tree>

@@ -5,20 +5,16 @@ $EXTERN MapAccum, Map, Unique;
 $EXTERN Parse, Scan;
 
 
-PrepareAST {
-  e.AST = <CheckAST <EL-Create> e.AST>;
-}
-
 CheckAST {
-  t.ErrorList e.AST
-    = <CheckAST-ExternsArePlained t.ErrorList <PlainExterns e.AST>>;
-}
-
-CheckAST-ExternsArePlained {
-  t.ErrorList e.AST
+  Success e.AST
     = <CheckAST-UnusedsAreFound
-        <FindUnused t.ErrorList e.AST>
+        <FindUnused
+          <EL-Create>
+          <Map parser_PlainExterns e.AST>
+        >
       >;
+
+  Fails e.ParserErrors = Fails <SortErrors e.ParserErrors>;
 }
 
 CheckAST-UnusedsAreFound {
@@ -26,17 +22,14 @@ CheckAST-UnusedsAreFound {
     , <EL-Destroy t.ErrorList>
     : {
         /* нет ошибок */ = Success <CastAST e.AST>;
+
         e.Errors = Fails e.Errors;
       };
 }
 
 
-PlainExterns {
-  e.AST = <Map r05-parser_PlainExterns e.AST>;
-}
-
-$ENTRY r05-parser_PlainExterns {
-  (Extern e.Names) = <Map r05-parser_PlainExterns-Name e.Names>;
+$ENTRY parser_PlainExterns {
+  (Extern e.Names) = <Map parser_PlainExterns-Name e.Names>;
 
   (Function t.Pos (e.Name) s.Scope e.Body)
     = (Function t.Pos (e.Name) s.Scope e.Body);
@@ -44,7 +37,7 @@ $ENTRY r05-parser_PlainExterns {
   (SpecialComment t.Pos e.Text) = (SpecialComment t.Pos e.Text);
 }
 
-$ENTRY r05-parser_PlainExterns-Name {
+$ENTRY parser_PlainExterns-Name {
   (t.Pos e.Name) = (Function t.Pos (e.Name) Extern /* пусто */);
 }
 
@@ -52,16 +45,16 @@ $ENTRY r05-parser_PlainExterns-Name {
 FindUnused {
   t.ErrorList e.AST
     = <MapAccum
-        r05-parser_FindUnused-Loop-UnusedErrors
+        parser_FindUnused-Loop-UnusedErrors
         t.ErrorList
         <FindUnused-Loop
           (/* enums */)
-          <MapAccum r05-parser_FindUnused-InitialUsage () e.AST>
+          <MapAccum parser_FindUnused-InitialUsage () e.AST>
         >
       >;
 }
 
-$ENTRY r05-parser_FindUnused-InitialUsage {
+$ENTRY parser_FindUnused-InitialUsage {
   (e.Entries) (Function t.Pos (e.Name) Entry e.Body)
     = (e.Entries (Call e.Name))
       (Function Unused t.Pos (e.Name) Entry e.Body);
@@ -125,7 +118,7 @@ FindUnused-Loop {
        >;
 
    (e.Enums) (/* кончились ссылки */) e.AST
-     = e.AST <Map r05-parser_MakeEnum e.Enums>;
+     = e.AST <Map parser_MakeEnum e.Enums>;
 }
 
 ListOfBuiltin-WithSugar {
@@ -143,14 +136,14 @@ AddMetatable {
     = <AddMetatable-Aux
         (e.References)
         <MapAccum
-          r05-parser_AddMetatable-AddFunction (/* пусто */)
+          parser_AddMetatable-AddFunction (/* пусто */)
           e.AST
-          <Map r05-parser_AddMetatable-MakeMetafunction <ListOfBuiltin-WithSugar>>
+          <Map parser_AddMetatable-MakeMetafunction <ListOfBuiltin-WithSugar>>
         >
       >;
 }
 
-$ENTRY r05-parser_AddMetatable-AddFunction {
+$ENTRY parser_AddMetatable-AddFunction {
   (e.AllFunctions) (Function s.Used NO-POS (e.Builtin) Extern /* пусто */)
     = (e.AllFunctions)
       (Function s.Used NO-POS (e.Builtin) Extern /* пусто */);
@@ -170,7 +163,7 @@ $ENTRY r05-parser_AddMetatable-AddFunction {
     = (e.AllFunctions) (SpecialComment t.Pos e.Comment);
 }
 
-$ENTRY r05-parser_AddMetatable-MakeMetafunction {
+$ENTRY parser_AddMetatable-MakeMetafunction {
   (s.No s.Name special)
     = (Function Used NO-POS (<Explode s.Name>) Meta /* пусто */);
 
@@ -179,19 +172,19 @@ $ENTRY r05-parser_AddMetatable-MakeMetafunction {
 
 AddMetatable-Aux {
   (e.References) (e.AllFunctions) e.AST
-    = (e.References <Map r05-parser_AddHowCall e.AllFunctions>)
+    = (e.References <Map parser_AddHowCall e.AllFunctions>)
       e.AST (Metatable e.AllFunctions);
 }
 
-$ENTRY r05-parser_AddHowCall {
+$ENTRY parser_AddHowCall {
   (e.Name) = (Call e.Name);
 }
 
-$ENTRY r05-parser_MakeEnum {
+$ENTRY parser_MakeEnum {
   (e.Name) = (Function Used NO-POS (e.Name) Local /* пусто */);
 }
 
-$ENTRY r05-parser_FindUnused-Loop-UnusedErrors {
+$ENTRY parser_FindUnused-Loop-UnusedErrors {
   t.ErrorList (Function Unused t.Pos (e.Name) s.Scope e.Body)
     = <EL-AddErrorAt t.ErrorList t.Pos <UnusedMessage s.Scope> ' ' e.Name>;
 
@@ -205,10 +198,10 @@ UnusedMessage {
 
 
 CastAST {
-  e.AST = <CastAST-JoinExterns <Map r05-parser_CastAST-Item e.AST>>;
+  e.AST = <CastAST-JoinExterns <Map parser_CastAST-Item e.AST>>;
 }
 
-$ENTRY r05-parser_CastAST-Item {
+$ENTRY parser_CastAST-Item {
   (Function Used t.Pos (e.Name) Extern /* пусто */) = (Extern (t.Pos e.Name));
 
   (Function Used t.Pos (e.Name) s.Scope e.Body)
@@ -231,10 +224,10 @@ CastAST-JoinExterns {
   <ExtractReferences e.Sentences> == (e.Name)*
 */
 ExtractReferences {
-  e.Sentences = <Unique <Map r05-parser_ExtractReferences-Sentence e.Sentences>>;
+  e.Sentences = <Unique <Map parser_ExtractReferences-Sentence e.Sentences>>;
 }
 
-$ENTRY r05-parser_ExtractReferences-Sentence {
+$ENTRY parser_ExtractReferences-Sentence {
   ((e.Pattern) e.Tail)
     = <ExtractReferences-Expr e.Pattern> <ExtractReferences-Tail e.Tail>;
 }
@@ -252,10 +245,10 @@ ExtractReferences-Tail {
 }
 
 ExtractReferences-Expr {
-  e.Expr = <Map r05-parser_ExtractReferences-Term e.Expr>;
+  e.Expr = <Map parser_ExtractReferences-Term e.Expr>;
 }
 
-$ENTRY r05-parser_ExtractReferences-Term {
+$ENTRY parser_ExtractReferences-Term {
   (Symbol Word e.Name) = (Ident e.Name);
 
   (Brackets e.Expr) = <ExtractReferences-Expr e.Expr>;
@@ -266,26 +259,21 @@ $ENTRY r05-parser_ExtractReferences-Term {
   t.Other = /* пусто */;
 }
 
+
 /**
-  <R05-Parse-File e.SourceFile>
+  <Parse-File e.SourceFile>
     == Success e.Tree
     == Fails e.Errors
 
   e.Errors ::= ((s.Row s.Col) e.Message)*
 */
-$ENTRY R05-Parse-File {
+$ENTRY Parse-File {
   e.SourceFile
-    , <Parse <Scan e.SourceFile>>
+    , <CheckAST <Parse <Scan e.SourceFile>>>
     : {
-        Success e.AST
-          , <PrepareAST e.AST>
-          : {
-            Success e.PreparedAST = Success e.PreparedAST;
+        Success e.PreparedAST = Success e.PreparedAST;
 
-            Fails e.SemanticErrors = Fails <SortErrors e.SemanticErrors>;
-          };
-
-        Fails e.ParserErrors = Fails <SortErrors e.ParserErrors>;
+        Fails e.SemanticErrors = Fails <SortErrors e.SemanticErrors>;
       };
 }
 
