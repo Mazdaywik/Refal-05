@@ -4,10 +4,10 @@ $EXTERN ArgList, LoadFile, Map;
 *$FROM CompilerUtils
 $EXTERN R05-FindFiles-Default, R05-CCompile;
 
-*$FROM Parser
+*$FROM parser
 $EXTERN R05-Parse-File;
 
-*$FROM Generator
+*$FROM generator
 $EXTERN R05-Generate-ToFile;
 
 

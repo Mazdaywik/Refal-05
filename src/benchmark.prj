@@ -1,7 +1,7 @@
 refal05c.ref
 CompilerUtils.ref
-Generator.ref
-Parser.ref
+generator.ref
+parser.ref
 LibraryEx.ref
 R5FW-Parser.ref
 R5FW-Plainer.ref
@@ -9,8 +9,8 @@ R5FW-Transformer.ref
 Platform.ref
 refal05c.ref
 CompilerUtils.ref
-Generator.ref
-Parser.ref
+generator.ref
+parser.ref
 LibraryEx.ref
 R5FW-Parser.ref
 R5FW-Plainer.ref
@@ -18,8 +18,8 @@ R5FW-Transformer.ref
 Platform.ref
 refal05c.ref
 CompilerUtils.ref
-Generator.ref
-Parser.ref
+generator.ref
+parser.ref
 LibraryEx.ref
 R5FW-Parser.ref
 R5FW-Plainer.ref
@@ -27,8 +27,8 @@ R5FW-Transformer.ref
 Platform.ref
 refal05c.ref
 CompilerUtils.ref
-Generator.ref
-Parser.ref
+generator.ref
+parser.ref
 LibraryEx.ref
 R5FW-Parser.ref
 R5FW-Plainer.ref
@@ -36,8 +36,8 @@ R5FW-Transformer.ref
 Platform.ref
 refal05c.ref
 CompilerUtils.ref
-Generator.ref
-Parser.ref
+generator.ref
+parser.ref
 LibraryEx.ref
 R5FW-Parser.ref
 R5FW-Plainer.ref

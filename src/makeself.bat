@@ -1,6 +1,6 @@
 @echo off
 setlocal
-  set MODULES=refal05c CompilerUtils Generator Parser
+  set MODULES=refal05c CompilerUtils generator parser
   set LIBS=LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
 
   md ..\bin 2>NUL
