@@ -8,7 +8,7 @@ $EXTERN R05-Parse-File;
 $EXTERN R05-Generate-ToFile;
 
 *$FROM Platform
-$EXTERN PathSeparator, IsDirectorySeparator;
+$EXTERN PathSeparator, IsDirectorySeparator, DirectorySeparator;
 
 
 $ENTRY GO {
@@ -16,21 +16,36 @@ $ENTRY GO {
 }
 
 Main {
-  (e.ProgName) ('@' e.Config) =
-    <Main (e.ProgName) <LoadFile e.Config>>;
+  (e.ProgName) ('@' e.Config) = <Main (e.ProgName) <LoadFile e.Config>>;
 
-  (e.ProgName) e.Files =
-    <FindFiles-SwFound <FindFiles-Default e.Files>>;
-}
+  (e.ProgName) e.Files
+    , <FindFiles e.Files>
+    : {
+        e.Files-B (NotFound e.FileName) e.Files-E
+          = <Map main_PrintNotFound (NotFound e.FileName) e.Files-E>;
 
-FindFiles-SwFound {
-  e.Files-B (NotFound e.FileName) e.Files-E =
-    <Map main_PrintNotFound (NotFound e.FileName) e.Files-E>;
+        e.FoundFiles
+          , <Map main_ProcessEachSource e.FoundFiles>
+          : {
+              e.Outputs-B Fails e.Outputs-E
+                = <Prout '*** COMPILATION FAILED ***'>
+                  <Exit 1>;
 
-  e.FoundFiles =
-    <CheckCompilationResult
-      <Map main_ProcessEachSource e.FoundFiles>
-    >;
+              e.Outputs
+                , <CCompile e.Outputs>
+                : {
+                    /* Не установлена R05CCOMP или компиляция прошла успешно */
+                    0 = <Prout '*** Compilation successed ***'>;
+
+                    e.RetCode
+                      = <Prout
+                          '*** COMPILATION FAILED '
+                          '(C COMPILER FAILED, RETCODE: ' <Symb e.RetCode>')***'
+                        >
+                        <Exit e.RetCode>;
+                  };
+            };
+      };
 }
 
 $ENTRY main_PrintNotFound {
@@ -43,24 +58,20 @@ $ENTRY main_PrintNotFound {
 }
 
 $ENTRY main_ProcessEachSource {
-  (Output e.OutputName) =
-    <Prout '+Linking ' e.OutputName> (e.OutputName);
+  (Output e.OutputName) = <Prout '+Linking ' e.OutputName> (e.OutputName);
 
-  (Source (e.Source) e.OutputName) =
-    <Prout '*Compiling ' e.Source ':'>
-    <CompileSource-SwSuccessedParse
-      (e.Source) (e.OutputName) <R05-Parse-File e.Source>
-    >
-}
+  (Source (e.Source) e.OutputName)
+    , <Prout '*Compiling ' e.Source ':'>
+      <R05-Parse-File e.Source>
+    : {
+        Success e.Tree
+          = <R05-Generate-ToFile (e.OutputName) e.Tree>
+            (e.OutputName);
 
-CompileSource-SwSuccessedParse {
-  (e.SrcName) (e.OutputName) Success e.Tree =
-    <R05-Generate-ToFile (e.OutputName) e.Tree>
-    (e.OutputName);
-
-  (e.SrcName) (e.OutputName) Fails e.Errors =
-    <Map (main_WriteError e.SrcName) e.Errors>
-    Fails;
+        Fails e.Errors
+          = <Map (main_WriteError e.Source) e.Errors>
+            Fails;
+      };
 }
 
 $ENTRY main_WriteError {
@@ -73,26 +84,6 @@ StrFromSrcPos {
 }
 
 
-CheckCompilationResult {
-  e.Outputs-B Fails e.Outputs-E =
-    <Prout '*** COMPILATION FAILED ***'>
-    <Exit 1>;
-
-  e.Outputs = <CheckRetcode <CCompile e.Outputs>>;
-}
-
-CheckRetcode {
-  /* Не установлена R05CCOMP или компиляция прошла успешно */
-  0 = <Prout '*** Compilation successed ***'>;
-
-  e.RetCode =
-    <Prout
-      '*** COMPILATION FAILED '
-      '(C COMPILER FAILED, RETCODE: ' <Symb e.RetCode>')***'
-    >
-    <Exit e.RetCode>;
-}
-
 LoadPath {
   = <ParsePath <GetEnv 'R05PATH'>>
     <ParsePath <GetEnv 'REF5RSL'>>
@@ -102,95 +93,65 @@ ParsePath {
   e.Folder s.Sep e.Path
     , <PathSeparator> : s.Sep
     = <ParseFolder e.Folder> <ParsePath e.Path>;
+
   e.Folder = <ParseFolder e.Folder>;
 }
 
 ParseFolder {
-  e.Folder = <ParseFolder-CheckEmpty <Trim e.Folder>>;
-}
-
-ParseFolder-CheckEmpty {
-  /* пусто */ = /* пусто */;
-  e.Folder = (e.Folder);
-}
-
-FindFiles-Default {
-  e.Files = <FindFiles (<LoadPath>) e.Files>;
+  e.Folder
+    , <Trim e.Folder>
+    : {
+        /* пусто */ = /* пусто */;
+        e.TrimmedFolder = (e.TrimmedFolder);
+      };
 }
 
 FindFiles {
-  (e.Folders) e.Files =
-    <Map (main_AnalyzeFile-ByFolders Current e.Folders) e.Files>;
+  e.Files = <Map (main_AnalyzeFile-ByFolders Current <LoadPath>) e.Files>
 }
 
 $ENTRY main_AnalyzeFile-ByFolders {
-  e.Folders (e.FileName) =
-    <AnalyzeFile-CheckNotFound
-      (e.FileName)
-      <Map (main_AnalyzeInFolder e.FileName) e.Folders>
-    >;
+  e.Folders (e.FileName)
+    , <Map (main_AnalyzeInFolder e.FileName) e.Folders>
+    : {
+        (Source (e.Source) e.Output) e.Variants
+          = (Source (e.Source) <CutFolder e.Output>);
+
+        (Output e.Output) e.Variants = (Output e.Output);
+
+        /* пусто */ = (NotFound e.FileName);
+      };
 }
 
 $ENTRY main_AnalyzeInFolder {
   e.FileName Current = <AnalyzeFile e.FileName>;
 
-  e.FileName (e.Folder) = <AnalyzeFile e.Folder '/' e.FileName>;
-}
-
-AnalyzeFile-CheckNotFound {
-  (e.FileName) (Source (e.Source) e.Output) e.Variants =
-    (Source (e.Source) e.Output);
-
-  (e.FileName) (Output e.Output) e.Variants =
-    (Output e.Output);
-
-  (e.FileName) (NotFound e.NotFoundPath) e.Variants =
-    <AnalyzeFile-CheckNotFound (e.FileName) e.Variants>;
-
-  (e.FileName) = (NotFound e.FileName);
-}
-
-ExistFile-T {
-  e.FileName = <ExistFile e.FileName> e.FileName;
+  e.FileName (e.Folder)
+    = <AnalyzeFile e.Folder <DirectorySeparator> e.FileName>;
 }
 
 AnalyzeFile {
-  e.FileName '.ref' =
-    <AnalyzeSource-CheckExist
-      <ExistFile-T e.FileName '.ref'>
-    >;
+  e.SourceName
+    , e.SourceName : e.BaseName '.ref'
+    , <ExistFile e.SourceName> : True
+    = (Source (e.SourceName) e.BaseName '.c');
 
-  e.FileName '.c' =
-    <AnalyzeOutput-CheckExist
-      <ExistFile-T e.FileName '.c'>
-    >;
+  e.OutName
+    , e.OutName : e.BaseName '.c'
+    , <ExistFile e.OutName> : True
+    = (Output e.OutName);
 
-  e.FileName =
-    <AnalyzeBoth-CheckExist
-      (<ExistFile-T e.FileName '.ref'>) <ExistFile-T e.FileName '.c'>
-    >;
-}
+  e.BaseName
+    , e.BaseName '.ref' : e.SourceName
+    , <ExistFile e.SourceName> : True
+    = (Source (e.SourceName) e.BaseName '.c');
 
-AnalyzeSource-CheckExist {
-  True e.UnitName '.ref'
-     = (Source (e.UnitName '.ref') <CutFolder e.UnitName '.c'>);
+  e.BaseName
+    , e.BaseName '.c' : e.OutName
+    , <ExistFile e.OutName> : True
+    = (Output e.OutName);
 
-  False e.SourceName = (NotFound e.SourceName);
-}
-
-AnalyzeOutput-CheckExist {
-  True e.OutName = (Output e.OutName);
-
-  False e.OutName = (NotFound e.OutName);
-}
-
-AnalyzeBoth-CheckExist {
-  (True e.SoureName) s.Res e.OutName
-    = (Source (e.SoureName) <CutFolder e.OutName>);
-
-  (False e.SoureName) True e.OutName = (Output e.OutName);
-
-  (False e.UnitName '.ref') False e.UnitName '.c' = (NotFound e.UnitName);
+  e.FileName = /* пусто */;
 }
 
 CutFolder {
@@ -200,20 +161,19 @@ CutFolder {
   e.FileName = e.FileName;
 }
 
-
 CCompile {
-  e.CSources = <CCompile-SwSetEnv (<GetEnv 'R05CCOMP'>) e.CSources>;
-}
+  e.CSources
+    , <GetEnv 'R05CCOMP'>
+    : {
+        /* не установлена R05CCOMP */ = 0;
 
-CCompile-SwSetEnv {
-  (/* не установлена R05CCOMP */) e.CSources = 0;
-
-  (e.CommandLine) e.CSources =
-    <System
-      e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
-      <Map main_IncludeFlag <LoadPath>>
-      <Map main_QuoteFile e.CSources>
-    >;
+        e.CommandLine
+          = <System
+              e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
+              <Map main_IncludeFlag <LoadPath>>
+              <Map main_QuoteFile e.CSources>
+            >;
+      }
 }
 
 $ENTRY main_IncludeFlag {
