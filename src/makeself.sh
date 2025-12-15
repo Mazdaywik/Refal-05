@@ -3,10 +3,11 @@
   MODULES="main generator parser"
   LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
 
-  mkdir -p ../bin rsl
+  mkdir -p ../bin
 
   if [[ "$1" == "stable" ]]; then
     refc ${MODULES}
+    mkdir -p rsl
     mv *.rsl rsl
     EXECUTABLE="refgo -l20 rsl(${MODULES// /+})+${LIBS// /+}"
   else

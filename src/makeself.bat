@@ -4,10 +4,10 @@ setlocal
   set LIBS=LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
 
   md ..\bin 2>NUL
-  md rsl 2>NUL
 
   if {%1}=={stable} (
     refc %MODULES%
+    md rsl 2>NUL
     move *.rsl rsl >NUL
     set EXECUTABLE=refgo -l20 rsl^(%MODULES: =+%^)+%LIBS: =+%
   ) else (
