@@ -165,7 +165,8 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
 
 struct signed_number {
   signed sign;
-  r05_number value;
+  int len;
+  struct r05_node *begin, *end;
 };
 
 
@@ -186,17 +187,65 @@ static struct r05_node *parse_signed_number(
     sn->sign = +1;
   }
 
-  if (R05_DATATAG_NUMBER != p->tag) {
+  sn->begin = p;
+  sn->len = 0;
+
+  while (R05_DATATAG_NUMBER == p->tag) {
+    p = p->next;
+    sn->len += 1;
+  }
+
+  if (0 == sn->len) {
     r05_recognition_impossible();
   }
 
-  sn->value = p->info.number;
+  sn->end = p->prev;
 
-  if (0 == sn->value) {
+  while (sn->begin != sn->end && 0 == sn->begin->info.number) {
+    sn->begin = sn->begin->next;
+    sn->len -= 1;
+  }
+
+  if (sn->len == 1 && 0 == sn->begin->info.number) {
     sn->sign = +1;
   }
 
-  return p->next;
+  return p;
+}
+
+
+static struct r05_node *parse_short_signed_number(
+  struct signed_number *sn, struct r05_node *p
+) {
+  if (R05_DATATAG_CHAR == p->tag) {
+    if ('-' == p->info.char_) {
+      sn->sign = -1;
+    } else if ('+' == p->info.char_) {
+      sn->sign = +1;
+    } else {
+      r05_recognition_impossible();
+    }
+
+    p = p->next;
+  } else {
+    sn->sign = +1;
+  }
+
+  if (R05_DATATAG_NUMBER == p->tag) {
+    sn->begin = p;
+    sn->end = p;
+    sn->len = 1;
+
+    if (0 == sn->begin->info.number) {
+      sn->sign = +1;
+    }
+
+    p = p->next;
+  } else {
+    r05_recognition_impossible();
+  }
+
+  return p;
 }
 
 
@@ -223,7 +272,7 @@ static void parse_arithm_arg(
 
     p = p->next;
   } else {
-    p = parse_signed_number(&aa->x, p);
+    p = parse_short_signed_number(&aa->x, p);
   }
 
   p = parse_signed_number(&aa->y, p);
@@ -242,7 +291,7 @@ static void parse_arithm_arg(
      | s.Sign? s.NUMBER s.Sign? s.NUMBER
 */
 static void add(
-  const struct arithm_arg *aa,
+  struct arithm_arg *aa,
   struct r05_node *arg_begin, struct r05_node *arg_end
 );
 
@@ -255,55 +304,104 @@ R05_DEFINE_ENTRY_FUNCTION(Add, "Add") {
 }
 
 
-static struct r05_node *emplace_number(
-  struct signed_number res, r05_number high, struct r05_node *p
-) {
-  if (res.sign < 0) {
-    p->tag = R05_DATATAG_CHAR;
-    p->info.char_ = '-';
-    p = p->next;
-  }
-
-  if (high) {
-    p->tag = R05_DATATAG_NUMBER;
-    p->info.number = high;
-    p = p->next;
-  }
-
-  p->tag = R05_DATATAG_NUMBER;
-  p->info.number = res.value;
-  return p;
+static void swap_args(struct arithm_arg *aa) {
+  struct signed_number old_x = aa->x;
+  aa->x = aa->y;
+  aa->y = old_x;
 }
 
 
+static int propagate_add_carry(struct r05_node *cur, struct r05_node *lim) {
+  do {
+    cur = cur->prev;
+    assert(cur == lim || R05_DATATAG_NUMBER == cur->tag);
+  } while (cur != lim && 0 == ++cur->info.number);
+  return cur == lim;
+}
+
+
+static int propagate_sub_borrow(struct r05_node *cur, struct r05_node *lim) {
+  do {
+    cur = cur->prev;
+    assert(cur == lim || R05_DATATAG_NUMBER == cur->tag);
+  } while (cur != lim && 0 == cur->info.number--);
+
+  return cur == lim;
+}
+
 
 static void add(
-  const struct arithm_arg *aa,
+  struct arithm_arg *aa,
   struct r05_node *arg_begin, struct r05_node *arg_end
 ) {
-  struct signed_number res;
-  r05_number carry = 0;
-  struct r05_node *p = arg_begin;
+  struct r05_node *px, *py, *xlim, *ylim;
+  int i, carry = 0;
 
-  if (aa->x.sign == aa->y.sign) {
-    res.sign = aa->x.sign;
-    res.value = aa->x.value + aa->y.value;
-    if (res.value < aa->x.value) {
-      carry = 1;
+  if (aa->x.len < aa->y.len) {
+    swap_args(aa);
+  } else if (aa->x.len == aa->y.len && aa->x.sign != aa->y.sign) {
+    int len = aa->x.len;
+    px = aa->x.begin;
+    py = aa->y.begin;
+    i = 0;
+
+    while (i < len && px->info.number == py->info.number) {
+      ++i;
+      px = px->next;
+      py = py->next;
     }
-  } else if (aa->x.value > aa->y.value) {
-    res.sign = aa->x.sign;
-    res.value = aa->x.value - aa->y.value;
-  } else if (aa->x.value < aa->y.value) {
-    res.sign = aa->y.sign;
-    res.value = aa->y.value - aa->x.value;
-  } else {
-    res.sign = 0;
-    res.value = 0;
+
+    if (i < len && px->info.number < py->info.number) {
+      swap_args(aa);
+    }
   }
 
-  p = emplace_number(res, carry, p);
-  r05_splice_to_freelist(p->next, arg_end);
+  px = aa->x.end;
+  xlim = aa->x.begin->prev;
+  py = aa->y.end;
+  ylim = aa->y.begin->prev;
+
+  if (aa->x.sign == aa->y.sign) {
+    while (py != ylim) {
+      r05_number y = py->info.number;
+      r05_number res = (px->info.number += y);
+      if (res < y) {
+        carry |= propagate_add_carry(px, xlim);
+      }
+
+      px = px->prev;
+      py = py->prev;
+    }
+  } else {
+    while (py != ylim) {
+      r05_number x = px->info.number;
+      r05_number res = x - py->info.number;
+      px->info.number = res;
+      if (res > x) {
+        int carry = propagate_sub_borrow(px, xlim);
+        assert(0 == carry);
+      }
+
+      px = px->prev;
+      py = py->prev;
+    }
+  }
+
+  px = aa->x.begin;
+  if (carry != 0) {
+    px = px->prev;
+    px->tag = R05_DATATAG_NUMBER;
+    px->info.number = 1;
+  }
+
+  if (aa->x.sign < 0) {
+    px = px->prev;
+    px->tag = R05_DATATAG_CHAR;
+    px->info.char_ = '-';
+  }
+
+  r05_splice_to_freelist(arg_begin, px->prev);
+  r05_splice_to_freelist(aa->x.end->next, arg_end);
 }
 
 
@@ -410,32 +508,397 @@ ALIAS_DESCRIPTOR(Dg, "Dg", r05_dg);
 /**
   10. <Div e.ArithmArg> == '-'? s.NUMBER
 */
-struct divmod {
-  struct signed_number div, mod;
+static void weld(struct r05_node *left, struct r05_node *right) {
+  left->next = right;
+  right->prev = left;
+}
+
+
+struct mul_res {
+  r05_number high, low;
 };
 
 
-void divmod(const struct arithm_arg *aa, struct divmod *res) {
-  if (0 == aa->y.value) {
-    r05_builtin_error("divide by zero");
+static struct mul_res mul(r05_number x, r05_number y) {
+  enum { HALF = R05_NUMBER_BITS / 2 };
+  const r05_number HALF_MASK = ((r05_number) 1 << HALF) - 1;
+
+  r05_number x_high = x >> HALF;
+  r05_number x_low = x & HALF_MASK;
+  r05_number y_high = y >> HALF;
+  r05_number y_low = y & HALF_MASK;
+
+  r05_number hh = x_high * y_high;
+  r05_number hl = x_high * y_low;
+  r05_number lh = x_low * y_high;
+  r05_number ll = x_low * y_low;
+  r05_number mid = (ll >> HALF) + (hl & HALF_MASK) + (lh & HALF_MASK);
+
+  struct mul_res result;
+  result.high = hh + (hl >> HALF) + (lh >> HALF) + (mid >> HALF);
+  result.low = (ll & HALF_MASK) | (mid << HALF);
+  return result;
+}
+
+
+static int leading_zero_bits(r05_number val) {
+  int shift, res = 0;
+  for (shift = R05_NUMBER_BITS / 2; shift > 0; shift /= 2) {
+    r05_number shifted = val >> shift;
+    if (shifted != 0) {
+      val = shifted;
+    } else {
+      res += shift;
+    }
+  }
+  return res;
+}
+
+
+static void long_left_shift(
+  struct r05_node *begin, struct r05_node *end, int shift
+) {
+  struct r05_node *p = begin;
+
+  for ( ; ; ) {
+    p->info.number <<= shift;
+    if (p != end) {
+      struct r05_node *next = p->next;
+      p->info.number |= next->info.number >> (R05_NUMBER_BITS - shift);
+      p = next;
+    } else {
+      break;
+    }
+  }
+}
+
+
+static void long_right_shift(
+  struct r05_node *begin, struct r05_node *end, int shift
+) {
+  struct r05_node *p = end;
+
+  for ( ; ; ) {
+    p->info.number >>= shift;
+    if (p != begin) {
+      struct r05_node *prev = p->prev;
+      p->info.number |= prev->info.number << (R05_NUMBER_BITS - shift);
+      p = prev;
+    } else {
+      break;
+    }
+  }
+}
+
+
+struct div_res {
+  r05_number quot, rem;
+};
+
+
+/* Деление полутора слов на слово */
+static struct div_res div_sesquialter_words(
+  r05_number num_high_half, r05_number num_low, r05_number denom
+) {
+  enum { HALF = R05_NUMBER_BITS / 2 };
+  const r05_number HALF_MASK = ((r05_number) 1 << HALF) - 1;
+
+  r05_number num_high = (num_high_half << HALF) | (num_low >> HALF);
+  r05_number denom_high = denom >> HALF;
+  r05_number denom_low = denom & HALF_MASK;
+  r05_number guess = num_high / denom_high;
+  r05_number part_low = denom_low * guess;
+  r05_number part_high = denom_high * guess;
+  r05_number part_hl = part_high << HALF;
+  r05_number part_hh = part_high >> HALF;
+  struct div_res res;
+
+  part_low += part_hl;
+  if (part_low < part_hl) {
+    part_hh += 1;
   }
 
-  res->div.value = aa->x.value / aa->y.value;
-  res->div.sign = aa->x.sign * aa->y.sign;
-  res->mod.value = aa->x.value % aa->y.value;
-  res->mod.sign = aa->x.sign;
+  while (
+    part_hh > num_high_half
+    || (part_hh == num_high_half && part_low > num_low)
+  ) {
+    guess -= 1;
+    if (part_low < denom) {
+      part_hh -= 1;
+    }
+    part_low -= denom;
+  }
+
+  res.quot = guess;
+  res.rem = num_low - part_low;
+
+  return res;
+}
+
+
+/* Деление двух слов на слово */
+static struct div_res div_double_word(
+  r05_number num_high, r05_number num_low, r05_number denom
+) {
+  enum { HALF = R05_NUMBER_BITS / 2 };
+  const r05_number HALF_MASK = ((r05_number) 1 << HALF) - 1;
+
+  struct div_res res, res_high;
+
+  assert(num_high < denom);
+  assert(1 == (denom >> (R05_NUMBER_BITS - 1)));
+
+  res_high = div_sesquialter_words(
+    num_high >> HALF, (num_high << HALF) | (num_low >> HALF), denom
+  );
+  res = div_sesquialter_words(
+    res_high.rem >> HALF,
+    (res_high.rem << HALF) | (num_low & HALF_MASK),
+    denom
+  );
+  res.quot |= res_high.quot << HALF;
+
+  return res;
+}
+
+
+/* x — частное, y — остаток */
+struct arithm_arg divmod(struct r05_node *arg_begin, struct r05_node *arg_end) {
+  struct arithm_arg arg;
+  signed div_sign, mod_sign;
+
+  parse_arithm_arg(&arg, arg_begin, arg_end);
+  div_sign = arg.x.sign * arg.y.sign;
+  mod_sign = arg.x.sign;
+
+  if (1 == arg.y.len && 0 == arg.y.begin->info.number) {
+    r05_builtin_error("divide by zero");
+  } else if (1 == arg.x.len && 1 == arg.y.len) {
+    r05_number div_value, mod_value;
+    div_value = arg.x.begin->info.number / arg.y.begin->info.number;
+    mod_value = arg.x.begin->info.number % arg.y.begin->info.number;
+
+    arg.x.begin->info.number = div_value;
+    arg.x.sign = div_value != 0 ? div_sign : +1;
+    arg.y.begin->info.number = mod_value;
+    arg.y.sign = mod_value != 0 ? mod_sign : +1;
+  } else if (arg.x.len < arg.y.len) {
+    swap_args(&arg);
+    arg.x.begin->info.number = 0;
+    arg.x.end = arg.x.begin;
+    arg.x.sign = +1;
+  } else {
+    struct r05_node *x_begin = arg.x.begin, *x_end = arg.x.end;
+    struct r05_node *y_begin = arg.y.begin, *y_end = arg.y.end;
+    int shift = leading_zero_bits(y_begin->info.number);
+
+    /*
+      Нужно обеспечить, чтобы делимое было длиннее как минимум на одну
+      цифру делителя и первая цифра делимого была меньше первой цифры
+      делителя.
+    */
+    if (arg.x.len == arg.y.len) {
+      x_begin = x_begin->prev;
+      x_begin->tag = R05_DATATAG_NUMBER;
+      x_begin->info.number = 0;
+
+      if (shift > 0) {
+        long_left_shift(x_begin, x_end, shift);
+        long_left_shift(y_begin, y_end, shift);
+      }
+    } else {
+      if (shift > 0) {
+        x_begin = x_begin->prev;
+        x_begin->tag = R05_DATATAG_NUMBER;
+        x_begin->info.number = 0;
+        long_left_shift(x_begin, x_end, shift);
+        long_left_shift(y_begin, y_end, shift);
+
+        if (arg.x.len > arg.y.len && 0 == x_begin->info.number) {
+          x_begin = x_begin->next;
+        }
+      }
+
+      if (x_begin->info.number >= y_begin->info.number) {
+        x_begin = x_begin->prev;
+        x_begin->tag = R05_DATATAG_NUMBER;
+        x_begin->info.number = 0;
+      }
+    }
+
+    arg.x.begin = x_begin;
+
+    if (1 == arg.y.len) {
+      r05_number y = y_begin->info.number;
+
+      while (x_begin != x_end) {
+        r05_number high = x_begin->info.number;
+        r05_number next = x_begin->next->info.number;
+        struct div_res res = div_double_word(high, next, y);
+
+        x_begin->info.number = res.quot;
+        x_begin = x_begin->next;
+        x_begin->info.number = res.rem;
+      };
+
+      arg.x.end = x_begin->prev;
+      arg.x.sign = div_sign;
+
+      y = x_begin->info.number >> shift;
+      arg.y.sign = y != 0 ? mod_sign : +1;
+      arg.y.begin->info.number = y;
+    } else {
+      struct r05_node *const y_lim = y_begin->prev->prev;
+      struct r05_node *const x_lim = x_end->next;
+      r05_number y_high = y_begin->info.number;
+      struct r05_node *x_prefix_end = x_begin;
+      int i;
+
+      for (i = 0; i < arg.y.len; ++i) {
+        x_prefix_end = x_prefix_end->next;
+      }
+
+      y_lim->next->tag = R05_DATATAG_NUMBER;
+      y_lim->next->info.number = 0;
+
+      do {
+        r05_number high = x_begin->info.number;
+        r05_number next = x_begin->next->info.number;
+        r05_number guess = div_double_word(high, next, y_high).quot;
+        struct r05_node *y = y_end, *r = x_prefix_end;
+        r05_number carry_mul = 0, borrow = 0;
+
+        do {
+          struct mul_res mul_res = mul(guess, y->info.number);
+          r05_number rval = r->info.number;
+
+          mul_res.low += carry_mul;
+          if (mul_res.low < carry_mul) {
+            mul_res.high += 1;
+          }
+
+          /*
+            Тут двух переносов быть не может по той же причине,
+            что и в функции Mul: если первый перенос был, то
+            mul_res.low < carry_mul <= MAX(r05_number),
+            а borrow может быть только 0 или 1.
+          */
+
+          mul_res.low += borrow;
+          if (mul_res.low < borrow) {
+            mul_res.high += 1;
+          }
+
+          borrow = rval < mul_res.low ? 1 : 0;
+          r->info.number = rval - mul_res.low;
+          carry_mul = mul_res.high;
+
+          y = y->prev;
+          r = r->prev;
+        } while (y_lim != y);
+
+        r = r->next;
+        assert(r == x_begin);
+        assert(0 == carry_mul);
+
+        if (borrow) {
+          r05_number carry;
+
+          do {
+            carry = 0;
+            y = y_end;
+            r = x_prefix_end;
+            guess -= 1;
+
+            do {
+              r05_number yval = y->info.number, rval = r->info.number;
+              r05_number next_carry = 0;
+
+              rval += yval;
+              if (rval < yval) {
+                next_carry += 1;
+              }
+
+              rval += carry;
+              if (rval < carry) {
+                next_carry += 1;
+              }
+
+              r->info.number = rval;
+              carry = next_carry;
+              y = y->prev;
+              r = r->prev;
+            } while (y_lim != y);
+
+            r = r->next;
+            assert(r == x_begin);
+          } while (0 == carry);
+        }
+
+        x_begin->info.number = guess;
+        x_begin = x_begin->next;
+        x_prefix_end = x_prefix_end->next;
+      } while (x_prefix_end != x_lim);
+
+      arg.x.end = x_begin->prev;
+      arg.x.sign = div_sign;
+
+      arg.y.begin = x_begin;
+      arg.y.end = x_end;
+
+      if (shift > 0) {
+        long_right_shift(arg.y.begin, arg.y.end, shift);
+      }
+
+      while (arg.y.begin != arg.y.end && 0 == arg.y.begin->info.number) {
+        arg.y.begin = arg.y.begin->next;
+      }
+
+      arg.y.sign = arg.y.begin->info.number != 0 ? mod_sign : +1;
+    }
+  }
+
+  return arg;
+}
+
+
+static void extend_sign(struct signed_number *num) {
+  if (num->sign < 0) {
+    num->begin = num->begin->prev;
+    num->begin->tag = R05_DATATAG_CHAR;
+    num->begin->info.char_ = '-';
+  }
 }
 
 
 R05_DEFINE_ENTRY_FUNCTION(Div, "Div") {
   struct arithm_arg arg;
-  struct divmod res;
-  struct r05_node *p = arg_begin;
 
-  parse_arithm_arg(&arg, arg_begin, arg_end);
-  divmod(&arg, &res);
-  p = emplace_number(res.div, 0, p);
-  r05_splice_to_freelist(p->next, arg_end);
+  arg = divmod(arg_begin, arg_end);
+  extend_sign(&arg.x);
+
+  if (arg.x.begin != arg_begin) {
+    r05_splice_to_freelist(arg_begin, arg.x.begin->prev);
+  }
+  r05_splice_to_freelist(arg.x.end->next, arg_end);
+}
+
+
+static struct r05_node *emplace_number_after(
+  struct r05_node *pos, struct signed_number *num
+) {
+  struct r05_node *next;
+
+  if (num->sign < 0) {
+    pos = pos->next;
+    pos->tag = R05_DATATAG_CHAR;
+    pos->info.char_ = '-';
+  }
+
+  next = pos->next;
+  weld(pos, num->begin);
+  weld(num->end, next);
+  return next;
 }
 
 
@@ -444,19 +907,20 @@ R05_DEFINE_ENTRY_FUNCTION(Div, "Div") {
 */
 R05_DEFINE_ENTRY_FUNCTION(Divmod, "Divmod") {
   struct arithm_arg arg;
-  struct divmod res;
-  struct r05_node *open = arg_begin, *close, *p;
+  struct r05_node *open = arg_begin, *close, *p, *after_arg = arg_end->next;
 
-  parse_arithm_arg(&arg, arg_begin, arg_end);
-  divmod(&arg, &res);
+  arg = divmod(arg_begin, arg_end);
+  weld(arg.x.begin->prev, arg.x.end->next);
+  weld(arg.y.begin->prev, arg.y.end->next);
+
   open->tag = R05_DATATAG_OPEN_BRACKET;
-  close = emplace_number(res.div, 0, open->next)->next;
+  close = emplace_number_after(open, &arg.x);
   close->tag = R05_DATATAG_CLOSE_BRACKET;
   r05_link_brackets(open, close);
-  p = emplace_number(res.mod, 0, close->next);
+  p = emplace_number_after(close, &arg.y);
 
-  if (p != arg_end) {
-    r05_splice_to_freelist(p->next, arg_end);
+  if (p != after_arg) {
+    r05_splice_to_freelist(p, arg_end);
   }
 }
 
@@ -803,13 +1267,12 @@ R05_DEFINE_ENTRY_FUNCTION(Lower, "Lower") {
 */
 R05_DEFINE_ENTRY_FUNCTION(Mod, "Mod") {
   struct arithm_arg arg;
-  struct divmod res;
-  struct r05_node *p = arg_begin;
 
-  parse_arithm_arg(&arg, arg_begin, arg_end);
-  divmod(&arg, &res);
-  p = emplace_number(res.mod, 0, p);
-  r05_splice_to_freelist(p->next, arg_end);
+  arg = divmod(arg_begin, arg_end);
+  extend_sign(&arg.y);
+
+  r05_splice_to_freelist(arg_begin, arg.y.begin->prev);
+  r05_splice_to_freelist(arg.y.end->next, arg_end);
 }
 
 
@@ -818,46 +1281,130 @@ R05_DEFINE_ENTRY_FUNCTION(Mod, "Mod") {
 */
 R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
   struct arithm_arg arg;
-  struct signed_number res;
-  r05_number high = 0;
-  struct r05_node *p = arg_begin;
+  signed sign;
 
   parse_arithm_arg(&arg, arg_begin, arg_end);
-  res.sign = arg.x.sign * arg.y.sign;
-  res.value = arg.x.value * arg.y.value;
+  sign = arg.x.sign * arg.y.sign;
 
-  /* особая логика для переполнения */
-  if (arg.x.value != 0 && res.value / arg.x.value != arg.y.value) {
-    r05_number x = arg.x.value, y = arg.y.value, y_low, y_high;
-
-    if (x > y) {
-      r05_number prev_x = x;
-      x = y;
-      y = prev_x;
-    }
-
-    y_low = y;
-    y_high = 0;
-    res.value = 0;
-
-    while (x > 0) {
-      if (x & 1) {
-        res.value += y_low;
-        high += y_high;
-        if (res.value < y_low) {
-          high += 1;
-        }
-      }
-
-      y_high <<= 1;
-      y_high |= (y_low >> 31);
-      y_low <<= 1;
-      x >>= 1;
-    }
+  if (arg.x.len > arg.y.len) {
+    swap_args(&arg);
   }
 
-  p = emplace_number(res, high, p);
-  r05_splice_to_freelist(p->next, arg_end);
+  if (arg.y.len == 1) {
+    struct r05_node *p = arg_begin;
+    struct mul_res result =
+      mul(arg.x.begin->info.number, arg.y.begin->info.number);
+
+    if (sign < 0) {
+      p->tag = R05_DATATAG_CHAR;
+      p->info.char_ = '-';
+      p = p->next;
+    }
+
+    if (result.high > 0) {
+      p->tag = R05_DATATAG_NUMBER;
+      p->info.number = result.high;
+      p = p->next;
+    }
+
+    p->tag = R05_DATATAG_NUMBER;
+    p->info.number = result.low;
+    r05_splice_to_freelist(p->next, arg_end);
+  } else if (arg.x.len == 1) {
+    r05_number x = arg.x.begin->info.number;
+    struct r05_node *last_res = arg_end;
+    struct r05_node *y = arg.y.end;
+    struct r05_node *const y_lim = arg.y.begin->prev;
+    r05_number carry = 0;
+
+    while (y_lim != y) {
+      struct mul_res mul_res = mul(x, y->info.number);
+      mul_res.low += carry;
+      mul_res.high += mul_res.low < carry ? 1 : 0;
+      last_res->tag = R05_DATATAG_NUMBER;
+      last_res->info.number = mul_res.low;
+      carry = mul_res.high;
+      last_res = last_res->prev;
+      y = y->prev;
+    }
+
+    if (carry) {
+      last_res->tag = R05_DATATAG_NUMBER;
+      last_res->info.number = carry;
+      last_res = last_res->prev;
+    }
+
+    r05_splice_to_freelist(arg_begin, last_res);
+  } else {
+    struct r05_node *const x_last = arg.x.end, *const x_lim = arg.x.begin->prev;
+    struct r05_node *y = arg.y.end, *const y_lim = arg.y.begin->prev;
+    struct r05_node *res_begin, *res_end;
+    int i;
+
+    r05_reset_allocator();
+    res_begin = r05_insert_pos();
+    for (i = 1; i < arg.x.len; ++i) {
+      r05_alloc_number(0);
+    }
+    res_end = r05_insert_pos();
+    r05_alloc_number(0);
+
+    while (y_lim != y) {
+      r05_number yval = y->info.number;
+      struct r05_node *x = x_last, *r = res_end, *moved = y;
+      r05_number carry_part = 0, carry_res = 0;
+
+      y = y->prev;
+      moved->info.number = 0;
+      weld(moved->prev, moved->next);
+      weld(res_begin->prev, moved);
+      weld(moved, res_begin);
+      res_begin = moved;
+
+      while (x_lim != x) {
+        r05_number rval;
+        struct mul_res mul_res = mul(x->info.number, yval);
+
+        mul_res.low += carry_part;
+        if (mul_res.low < carry_part) {
+          mul_res.high += 1;
+        }
+
+        /*
+          Если был предыдущий перенос, то
+          mul_res.low < carry_part <= MAX(r05_number),
+          carry_res всегда 0 или 1, поэтому двух переносов
+          подряд быть не может.
+        */
+
+        mul_res.low += carry_res;
+        if (mul_res.low < carry_res) {
+          mul_res.high += 1;
+        }
+
+        rval = r->info.number + mul_res.low;
+        carry_part = mul_res.high;
+        carry_res = rval < mul_res.low ? 1 : 0;
+        r->info.number = rval;
+
+        x = x->prev;
+        r = r->prev;
+      }
+
+      assert(r->info.number == 0);
+      assert(r == res_begin);
+      r->info.number = carry_part + carry_res;
+      assert(r->info.number >= carry_part);
+      res_end = res_end->prev;
+    }
+
+    r05_splice_from_freelist(arg_end->next);
+    assert(arg_end->next == res_begin);
+    r05_splice_to_freelist(
+      arg_begin,
+      res_begin->info.number > 0 ? arg_end : res_begin
+    );
+  }
 }
 
 
@@ -1833,17 +2380,29 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
 
   parse_arithm_arg(&arg, arg_begin, arg_end);
 
-  result =
-    arg.x.sign < arg.y.sign ? -1 :
-    arg.x.sign > arg.y.sign ? +1 : 0;
+#define compare(x, y) ((x) < (y) ? -1 : (x) > (y) ? +1 : 0)
+  result = compare(arg.x.sign, arg.y.sign);
 
   if (result == 0) {
-    result =
-      arg.x.value < arg.y.value ? -1 :
-      arg.x.value > arg.y.value ? +1 : 0;
-
+    result = compare(arg.x.len, arg.y.len);
     result *= arg.x.sign;
   }
+
+  if (result == 0) {
+    struct r05_node *const x_lim = arg.x.end->next;
+    struct r05_node *x = arg.x.begin, *y = arg.y.begin;
+
+    while (x != x_lim && x->info.number == y->info.number) {
+      x = x->next;
+      y = y->next;
+    }
+
+    if (x != x_lim) {
+      result = compare(x->info.number, y->info.number);
+      result *= arg.x.sign;
+    }
+  }
+#undef compare
 
   arg_begin->tag = R05_DATATAG_CHAR;
   /* Suppress false warning in BCC 5.5.1 */
