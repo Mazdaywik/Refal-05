@@ -1,4 +1,5 @@
 bin
 src/cfiles
+src/rsl
 c-plus-plus.conf.bat
 c-plus-plus.conf.sh
