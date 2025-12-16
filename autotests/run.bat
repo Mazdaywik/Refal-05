@@ -53,7 +53,7 @@ setlocal
     set SATELLITEC=
   )
 
-  %CLINE% -I../lib %CFILE% %SATELLITEC% ../lib/Library.c ../lib/refal05rts.c
+  %CLINE% -I../lib %CFILE% %SATELLITEC% ../lib/refal05bif.c ../lib/refal05rts.c
   if errorlevel 1 (
     echo COMPILATION FAILED
     exit /b 1

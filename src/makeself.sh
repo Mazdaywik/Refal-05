@@ -26,7 +26,7 @@
   source ../c-plus-plus.conf.sh
   export R05CFLAGS="-orefal05c -DR05_SHOW_STAT $R05CFLAGS"
   export R05PATH=../lib
-  echo Y | ${EXECUTABLE} ${MODULES} ${LIBS} Library refal05rts
+  echo Y | ${EXECUTABLE} ${MODULES} ${LIBS} refal05bif refal05rts
 
   # Копирование необходимо при компиляции при помощи Cygwin или MSYS,
   # поскольку на платформе Windows невозможно перезаписать исполнимый

@@ -1,6 +1,3 @@
-*$FROM Library
-*$EXTERN True, False
-
 $ENTRY GO {
   = <Open 'w' 10 'write.tmp'>
     <Eq () <Write 10 'Hello, '>>
