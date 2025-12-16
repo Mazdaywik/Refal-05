@@ -5,13 +5,13 @@ if {%1}=={lambda} (
 ) else (
   set STABLE=stable
 )
-if not exist c-plus-plus.conf.bat (
-  copy lib\c-plus-plus.conf.bat.template c-plus-plus.conf.bat
+if not exist c-plus-plus.conf.cmd (
+  copy lib\c-plus-plus.conf.cmd.template c-plus-plus.conf.cmd
 )
 cd src
-call makeself.bat %STABLE%
-call makeself.bat
+call makeself.cmd %STABLE%
+call makeself.cmd
 cd ..\autotests
-call run.bat
+call run.cmd
 cd ..
 endlocal

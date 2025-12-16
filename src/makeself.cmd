@@ -22,7 +22,7 @@ setlocal
 
   if {%2}=={and_stop} goto :EOF
 
-  call ..\c-plus-plus.conf.bat
+  call ..\c-plus-plus.conf.cmd
   set R05CFLAGS=-DR05_SHOW_STAT %R05CFLAGS%
   set R05PATH=..\lib
   echo Y|%EXECUTABLE% %MODULES% %LIBS% refal05bif refal05rts

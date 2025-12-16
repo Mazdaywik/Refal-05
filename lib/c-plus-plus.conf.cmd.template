@@ -37,6 +37,6 @@ rem одинаковой.
 :: set R05CCOMP=clang -Wall -g
 
 if not "%R05CCOMP%" == "" goto END
-echo C++ compiler is not selected, please edit file c-plus-plus.conf.bat
+echo C++ compiler is not selected, please edit file c-plus-plus.conf.cmd
 exit 1
 :END

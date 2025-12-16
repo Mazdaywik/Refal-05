@@ -14,7 +14,7 @@ if {%~2}=={} (
 
 echo.
 echo Build refal05c with Refal-5-lambda...
-call makeself.bat lambda and_stop
+call makeself.cmd lambda and_stop
 
 echo.
 echo Run "..\bin\refal05c @benchmark.prj" with profile...
@@ -32,7 +32,7 @@ if exist _profile_count.txt move _profile_count.txt "%LOG%_profile_count.txt"
 
 echo.
 echo Build refal05c with itself...
-call makeself.bat
+call makeself.cmd
 
 echo.
 echo Run "..\bin\refal05c @benchmark.prj" %TIMES% times...

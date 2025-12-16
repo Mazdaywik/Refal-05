@@ -3,7 +3,7 @@
 # Тогда цели этого файла будут доступны для запуска через кнопку Run
 # или комбинацию Shift-F10.
 #
-# Цели с именами на -win запускают .bat-файлы, на -posix — Bash-скрипты.
+# Цели с именами на -win запускают .cmd-файлы, на -posix — Bash-скрипты.
 #
 # Можно пользоваться этим Makefile и обычным образом, запуская make
 # в командной строке. Но удобнее из командной строки запускать сами скрипты
@@ -15,13 +15,13 @@ all:
 
 
 all-win:
-	bootstrap.bat
+	bootstrap.cmd
 
 compiler-makeself-win:
-	cd src && makeself.bat
+	cd src && makeself.cmd
 
 compiler-makeself-s-win:
-	cd src && makeself.bat stable
+	cd src && makeself.cmd stable
 
 
 all-posix:

@@ -4,7 +4,7 @@ exit /b
 
 :MAIN
 setlocal
-  call ..\c-plus-plus.conf.bat
+  call ..\c-plus-plus.conf.cmd
   if {%1}=={} (
     for %%s in (*.ref) do call :RUN_TEST %%s || exit /b 1
   ) else (
