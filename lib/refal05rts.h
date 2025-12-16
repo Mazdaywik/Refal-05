@@ -25,6 +25,32 @@
 #endif
 
 
+/*
+  Положить эту сумму в макрос нельзя: неопределённое поведение,
+  см. warning C5105 MSVC++
+*/
+#if (defined(R05_NUMBER_INT) + defined(R05_NUMBER_LONG) \
+  + defined(R05_NUMBER_LONGLONG) + defined(R05_NUMBER_UINT32_T) \
+  + defined(R05_NUMBER_UINT64_T) + defined(R05_NUMBER_CUSTOM)) > 1
+#  error "Too many R05_NUMBER_... options"
+#elif (defined(R05_NUMBER_INT) + defined(R05_NUMBER_LONG) \
+  + defined(R05_NUMBER_LONGLONG) + defined(R05_NUMBER_UINT32_T) \
+  + defined(R05_NUMBER_UINT64_T) + defined(R05_NUMBER_CUSTOM)) == 0
+#  define R05_NUMBER_INT
+#endif
+
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L \
+     || defined(__cplusplus) && __cplusplus >= 201103L
+#  if defined(R05_NUMBER_UINT32_T) || defined(R05_NUMBER_UINT64_T)
+#    include <stdint.h>
+#    include <inttypes.h>
+#  endif
+#elif defined(R05_NUMBER_UINT32_T) || defined(R05_NUMBER_UINT64_T) \
+  || defined(R05_NUMBER_LONGLONG)
+#  error "Options R05_NUMBER_(LONGLONG|UINT(32|64)_T) requires C99+ or C++11+"
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif  /* __cplusplus */
@@ -78,7 +104,27 @@ struct r05_function {
 #endif
 };
 
-typedef unsigned int r05_number;
+#if defined(R05_NUMBER_INT)
+  typedef unsigned int r05_number;
+  #define PRIuR05 "u"
+#elif defined(R05_NUMBER_LONG)
+  typedef unsigned long r05_number;
+  #define PRIuR05 "lu"
+#elif defined(R05_NUMBER_LONGLONG)
+  typedef unsigned long long r05_number;
+  #define PRIuR05 "llu"
+#elif defined(R05_NUMBER_UINT32_T)
+  typedef uint32_t r05_number;
+  #define PRIuR05 PRIu32
+#elif defined(R05_NUMBER_UINT64_T)
+  typedef uint64_t r05_number;
+  #define PRIuR05 PRIu64
+#elif defined(R05_NUMBER_CUSTOM)
+  typedef R05_NUMBER_CUSTOM r05_number;
+  #if ! defined(PRIuR05)
+  #  error "Option R05_NUMBER_CUSTOM implies used defined PRIuR05"
+  #endif
+#endif
 
 struct r05_node {
   struct r05_node *prev;

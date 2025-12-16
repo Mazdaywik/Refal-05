@@ -1710,7 +1710,7 @@ static void output_func(
         break;
 
       case R05_DATATAG_NUMBER:
-        CHECK_PRINTF(fprintf(output, "%lu ", (long unsigned int) p->info.number));
+        CHECK_PRINTF(fprintf(output, "%" PRIuR05 " ", p->info.number));
         break;
 
       case R05_DATATAG_OPEN_BRACKET:

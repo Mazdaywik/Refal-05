@@ -41,7 +41,10 @@ static clock_t fast_clock(void) {
   int message : ((expr) ? +1 : -1)
 
 struct static_asserts {
-  STATIC_ASSERT(r05_number_is_32bit, sizeof(r05_number) * CHAR_BIT == 32);
+  STATIC_ASSERT(
+    r05_number_is_32_or_64_bit,
+    sizeof(r05_number) * CHAR_BIT == 32 || sizeof(r05_number) * CHAR_BIT == 64
+  );
 };
 
 
@@ -1021,7 +1024,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             continue;
 
           case R05_DATATAG_NUMBER:
-            fprintf(stderr, "%u ", begin->info.number);
+            fprintf(stderr, "%" PRIuR05 " ", begin->info.number);
             begin = begin->next;
             continue;
 
