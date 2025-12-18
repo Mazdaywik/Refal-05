@@ -2555,6 +2555,7 @@ struct builtin_info {
 };
 
 R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin);
+R05_DECLARE_ENTRY_FUNCTION(SizeOf);
 
 static struct builtin_info s_builtin_info[] = {
 #define ALLOC_BUILTIN(id, function, type) \
@@ -2621,7 +2622,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(65, RandomDigit, regular)
   ALLOC_BUILTIN(66, Write, regular)
   ALLOC_BUILTIN(67, ListOfBuiltin, regular)
-  /* ALLOC_BUILTIN(68, SizeOf, regular) */
+  ALLOC_BUILTIN(68, SizeOf, regular)
   /* ALLOC_BUILTIN(69, GetPID, regular) */
   /* ALLOC_BUILTIN(70, int4fab_1, regular) */
   /* ALLOC_BUILTIN(71, GetPPID, regular) */
@@ -2681,4 +2682,38 @@ static struct r05_function *lookup_builtin(
   }
 
   return callee;
+}
+
+
+/**
+  68. <SizeOf s.CharType> == s.NUMBER
+
+      s.CharType ::= 'c' | 's' | 'i' | 'l' | 'p'
+*/
+R05_DEFINE_ENTRY_FUNCTION(SizeOf, "SizeOf") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *type = callee->next;
+  size_t size;
+
+  if (type->next != arg_end || type->tag != R05_DATATAG_CHAR) {
+    r05_recognition_impossible();
+  }
+
+  switch (type->info.char_) {
+    case 'c': size = sizeof(char); break;
+    case 's': size = sizeof(short); break;
+    case 'i': size = sizeof(int); break;
+    case 'l': size = sizeof(long); break;
+    case 'p': size = sizeof(char *); break;
+
+    default:
+      r05_recognition_impossible();
+#ifndef R05_NORETURN_DEFINED
+      return;
+#endif
+  }
+
+  arg_begin->tag = R05_DATATAG_NUMBER;
+  arg_begin->info.number = (r05_number) size;
+  r05_splice_to_freelist(callee, arg_end);
 }

@@ -1,0 +1,10 @@
+$ENTRY GO {
+  = <Eq <SizeOf 'c'> 1>
+    <N <SizeOf 's'>>
+    <N <SizeOf 'i'>>
+    <N <SizeOf 'l'>>
+    <N <SizeOf 'p'>>;
+}
+
+Eq { s.X s.X = }
+N { s.Number, <Type s.Number> : 'N' e.1 = }
