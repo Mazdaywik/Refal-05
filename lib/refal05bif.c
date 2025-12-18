@@ -519,7 +519,7 @@ struct mul_res {
 };
 
 
-static struct mul_res mul(r05_number x, r05_number y) {
+static struct mul_res mul(r05_number x, r05_number y, r05_number acc) {
   enum { HALF = R05_NUMBER_BITS / 2 };
   const r05_number HALF_MASK = ((r05_number) 1 << HALF) - 1;
 
@@ -531,8 +531,9 @@ static struct mul_res mul(r05_number x, r05_number y) {
   r05_number hh = x_high * y_high;
   r05_number hl = x_high * y_low;
   r05_number lh = x_low * y_high;
-  r05_number ll = x_low * y_low;
-  r05_number mid = (ll >> HALF) + (hl & HALF_MASK) + (lh & HALF_MASK);
+  r05_number ll = x_low * y_low + (acc & HALF_MASK);
+  r05_number mid =
+    (ll >> HALF) + (hl & HALF_MASK) + (lh & HALF_MASK) + (acc >> HALF);
 
   struct mul_res result;
   result.high = hh + (hl >> HALF) + (lh >> HALF) + (mid >> HALF);
@@ -769,19 +770,15 @@ struct arithm_arg divmod(struct r05_node *arg_begin, struct r05_node *arg_end) {
         r05_number carry_mul = 0, borrow = 0;
 
         do {
-          struct mul_res mul_res = mul(guess, y->info.number);
+          struct mul_res mul_res = mul(guess, y->info.number, carry_mul);
           r05_number rval = r->info.number;
 
-          mul_res.low += carry_mul;
-          if (mul_res.low < carry_mul) {
-            mul_res.high += 1;
-          }
-
           /*
-            Тут двух переносов быть не может по той же причине,
-            что и в функции Mul: если первый перенос был, то
-            mul_res.low < carry_mul <= MAX(r05_number),
-            а borrow может быть только 0 или 1.
+            Здесь переполнения high быть не может: максимальный результат
+            умножения с накоплением:
+            (M - 1) * (M - 1) + (M - 1) = M² - 2 * M + 1 + M - 1 = (M - 1) * M
+            9 * 9 + 9 = 81 + 9 = 90
+            Прибавить единицу всегда возможно.
           */
 
           mul_res.low += borrow;
@@ -1293,7 +1290,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
   if (arg.y.len == 1) {
     struct r05_node *p = arg_begin;
     struct mul_res result =
-      mul(arg.x.begin->info.number, arg.y.begin->info.number);
+      mul(arg.x.begin->info.number, arg.y.begin->info.number, 0);
 
     if (sign < 0) {
       p->tag = R05_DATATAG_CHAR;
@@ -1318,9 +1315,7 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
     r05_number carry = 0;
 
     while (y_lim != y) {
-      struct mul_res mul_res = mul(x, y->info.number);
-      mul_res.low += carry;
-      mul_res.high += mul_res.low < carry ? 1 : 0;
+      struct mul_res mul_res = mul(x, y->info.number, carry);
       last_res->tag = R05_DATATAG_NUMBER;
       last_res->info.number = mul_res.low;
       carry = mul_res.high;
@@ -1363,18 +1358,12 @@ R05_DEFINE_ENTRY_FUNCTION(Mul, "Mul") {
 
       while (x_lim != x) {
         r05_number rval;
-        struct mul_res mul_res = mul(x->info.number, yval);
-
-        mul_res.low += carry_part;
-        if (mul_res.low < carry_part) {
-          mul_res.high += 1;
-        }
+        struct mul_res mul_res = mul(x->info.number, yval, carry_part);
 
         /*
-          Если был предыдущий перенос, то
-          mul_res.low < carry_part <= MAX(r05_number),
-          carry_res всегда 0 или 1, поэтому двух переносов
-          подряд быть не может.
+          Здесь переполнения high быть не может по той же причине, что и в Div:
+          максимальное значение произведения с накоплением (M - 1) * M,
+          9 * 9 + 9 = 90, см. комментарий в Div.
         */
 
         mul_res.low += carry_res;
