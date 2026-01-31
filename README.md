@@ -195,11 +195,13 @@ Hello, World!
 
 ## Форки
 
-* [Рефал-05 с параллельным выполнением][Santalov] — курсовая работа Станислава
+* **Рефал-05 с параллельным выполнением** — курсовая работа Станислава
   Санталова под моим руководством по распараллеливанию вызовов в Рефале-05.
   Станислав получил «отлично», хотя до конца распараллелить не получилось (мы
   тогда не понимали, что поток ввода-вывода — это не призвание, а должность).
-  Распараллеливаемый вариант находится в ветке `parallel-evaluation`.
+  Распараллеливаемый вариант находится в ветках `parallel-evaluation`
+  и `parallel-evaluation-auto` текущего репозитория. Ранее форк располагался
+  по адресу <https://github.com/Santalov/Refal-05>, однако был удалён.
 * [Ущербный рефал](https://github.com/butvinm/lame-refal) — форк Михаила
   Бутвина для платформы WASM.
 * [Рефал-05-Unicode](https://github.com/slavenskoj/Refal-05-Unicode) — форк
@@ -213,5 +215,4 @@ Hello, World!
 
 [doc]: https://mazdaywik.github.io/Refal-05
 [r5fw]: https://github.com/Mazdaywik/refal-5-framework
-[Santalov]: https://github.com/Santalov/Refal-05/tree/parallel-evaluation
 [Standalone]: https://github.com/butvinm/Refal-05-Standalone
