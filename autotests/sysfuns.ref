@@ -1,0 +1,36 @@
+$ENTRY GO {
+  /* пусто */
+    = <Open 'w' 1 'sysfuns.dat'>
+      <PutExprImage 1>
+      <Close 1>
+      <Eq <Sysfun 1 'sysfuns.dat'> (<Expr>)>
+
+      <Open 'w' 1 'sysfuns.dat'>
+      <Putout 1 '"+" 10 20'>
+      <Close 1>
+      <Eq <Mu <Sysfun 1 'sysfuns.dat'>> (30)>
+
+      <Remove-Ok <RemoveFile 'sysfuns.dat'>>
+}
+
+PutExprImage {
+  s.FileNo
+    = <Putout s.FileNo 'Hello "Hello!"123456'>
+      <Putout s.FileNo '789 "!@#$%^&*\\(\\)\\n\\'>
+      <Putout s.FileNo 't\\x01\\x02\\\"\\\'\\\\\"\'!@#'>
+      <Putout s.FileNo '$%^&*\\(\\)\\n\\t\\x01\\x0'>
+      <Putout s.FileNo '2\\\"\\\'\\\\\'\(((1 )(2 )(H'>
+      <Putout s.FileNo 'ello World ))) Prout'>
+      <Write s.FileNo ' "+"'>;
+}
+
+Expr {
+  /* пусто */
+    = Hello "Hello!" 123456789 "!@#$%^&*()\n\t\x01\x02\"\'\\"
+      '!@#$%^&*()\n\t\x01\x02\"\'\\' (((1) (2) (Hello World)))
+      Prout "+"
+}
+
+Eq { e.X (e.X) = }
+
+Remove-Ok { True () = }

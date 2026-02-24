@@ -2052,6 +2052,351 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 
 
 /**
+  35. <Sysfun 1 e.FileName> == e.Expr
+*/
+static int fgetc_no_newline(FILE *fin, int *line_no) {
+  int ch;
+  while (ch = fgetc(fin), '\n' == ch) {
+    ++*line_no;
+  }
+  return ch;
+}
+
+
+static struct imploded *new_compound(size_t capacity, int line_no);
+static void compound_add_char(
+  struct imploded **compound, size_t *len, size_t *capacity,
+  int ch, int line_no
+);
+static struct r05_function *compound_register(struct imploded *new);
+static void read_quote(char open_quote, FILE *fin, int *line_no);
+static int read_escaped_char(FILE *fin, int *line_no);
+
+
+R05_DEFINE_ENTRY_FUNCTION(Sysfun, "Sysfun") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *func_no = callee->next;
+
+  if (R05_DATATAG_NUMBER != func_no->tag) {
+    r05_recognition_impossible();
+  } else if (1 == func_no->info.number) {
+    struct r05_node *fname[2];
+    char filename[FILENAME_MAX + 1];
+    size_t filename_len;
+    FILE *fin;
+    int ch, line_no = 1, opened_bracket_line_no = 0;
+    struct r05_node *brackets_stack = NULL, *open_bracket, *close_bracket;
+
+    filename_len =
+      r05_read_chars(fname, filename, FILENAME_MAX, func_no, arg_end);
+    filename[filename_len] = '\0';
+
+    if (0 == filename_len) {
+      r05_recognition_impossible();
+    } else if (! r05_empty_hole(fname[1], arg_end)) {
+      struct r05_node *p = fname[1]->next;
+      while (R05_DATATAG_CHAR == p->tag) {
+        p = p->next;
+      }
+
+      if (p == arg_end) {
+        r05_builtin_error(
+          "very long filename (max available %u)", (unsigned) FILENAME_MAX
+        );
+      } else {
+        r05_recognition_impossible();
+      }
+    }
+
+    fin = fopen(filename, "r");
+    if (NULL == fin) {
+      r05_builtin_error_errno("can\'t open file %s", filename);
+    }
+
+    r05_reset_allocator();
+
+    ch = fgetc_no_newline(fin, &line_no);
+    for ( ; ; ) {
+      while (EOF != ch && isspace(ch)) {
+        ch = fgetc_no_newline(fin, &line_no);
+      }
+
+      if (EOF == ch) {
+        break;
+      }
+
+      switch (ch) {
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+          {
+            const r05_number MAX_NUM = ~(r05_number) 0;
+            const r05_number MAX_NUM_DIV_10 = MAX_NUM / 10;
+            const r05_number MAX_NUM_MOD_10 = MAX_NUM % 10;
+            r05_number result = ch - '0';
+            while (
+              ch = fgetc_no_newline(fin, &line_no),
+              '0' <= ch && ch <= '9'
+              && (
+                result < MAX_NUM_DIV_10
+                || (
+                  MAX_NUM_DIV_10 == result
+                  && (r05_number) (ch - '0') < MAX_NUM_MOD_10
+                )
+              )
+            ) {
+              result = result * 10 + (ch - '0');
+            }
+
+            if ('0' <= ch && ch <= '9') {
+              r05_builtin_error(
+                "Very long number constant in %s at line %d",
+                filename, line_no
+              );
+            }
+
+            r05_alloc_number(result);
+          }
+          continue;
+
+        case '(':
+          if (NULL == brackets_stack) {
+            opened_bracket_line_no = line_no;
+          }
+          r05_alloc_open_bracket(&open_bracket);
+          open_bracket->info.link = brackets_stack;
+          brackets_stack = open_bracket;
+          break;
+
+        case ')':
+          if (NULL == brackets_stack) {
+            r05_builtin_error("unbalanced ')' in line %d", line_no);
+          } else {
+            r05_alloc_close_bracket(&close_bracket);
+            open_bracket = brackets_stack;
+            brackets_stack = brackets_stack->info.link;
+            r05_link_brackets(open_bracket, close_bracket);
+          }
+          break;
+
+        case '\'': case '\"':
+          read_quote((char) ch, fin, &line_no);
+          break;
+
+        case '\\':
+          ch = read_escaped_char(fin, &line_no);
+          if (EOF == ch) {
+            r05_builtin_error(
+              "unexpected EOF in escape sequence at %d", line_no
+            );
+          }
+          r05_alloc_char((char) ch);
+          break;
+
+        default:
+          if (isalpha(ch)) {
+            struct imploded *compound;
+            size_t len, capacity;
+
+            capacity = 10;
+            len = 0;
+            compound = new_compound(capacity, line_no);
+
+            while (EOF != ch && is_ident_tail(ch)) {
+              compound_add_char(&compound, &len, &capacity, ch, line_no);
+              ch = fgetc_no_newline(fin, &line_no);
+            }
+
+            compound_add_char(&compound, &len, &capacity, '\0', line_no);
+            r05_alloc_function(compound_register(compound));
+            continue;
+          } else {
+            r05_alloc_char((char) ch);
+          }
+      }
+
+      ch = fgetc_no_newline(fin, &line_no);
+    }
+
+    if (brackets_stack != NULL) {
+      r05_builtin_error("unbalanced '(' in line %d", opened_bracket_line_no);
+    }
+
+    if (fclose(fin) == EOF) {
+      r05_builtin_error_errno("Can't close file %s", filename);
+    }
+
+    r05_splice_from_freelist(arg_begin);
+    r05_splice_to_freelist(arg_begin, arg_end);
+  } else {
+    r05_recognition_impossible();
+  }
+}
+
+
+static int decode_hex_digit(int digit) {
+  return
+    '0' <= digit && digit <= '9' ? digit - '0' :
+    'a' <= digit && digit <= 'f' ? digit - 'a' :
+    'A' <= digit && digit <= 'F' ? digit - 'A' :
+    digit;
+}
+
+
+static void read_quote(char open_quote, FILE *fin, int *line_no) {
+#define error_unclosed_quote() \
+  r05_builtin_error( \
+    "unclosed %c at EOF, opened in line %d", \
+    open_quote, open_quote_line_no \
+  )
+  int ch, open_quote_line_no = *line_no;
+  size_t capacity, len;
+  struct imploded *compound;
+
+  if ('"' == open_quote) {
+    capacity = 10;
+    len = 0;
+    compound = new_compound(capacity, *line_no);
+  }
+
+  while (
+    ch = fgetc_no_newline(fin, line_no),
+    EOF != ch && ch != open_quote
+  ) {
+    if ('\\' == ch) {
+      ch = read_escaped_char(fin, line_no);
+      if (EOF == ch) {
+        error_unclosed_quote();
+      }
+    }
+
+    if ('\'' == open_quote) {
+      r05_alloc_char((char) ch);
+    } else {
+      compound_add_char(&compound, &len, &capacity, ch, *line_no);
+    }
+  }
+
+  if (EOF == ch) {
+    error_unclosed_quote();
+  } else if ('"' == open_quote) {
+    compound_add_char(&compound, &len, &capacity, '\0', *line_no);
+    r05_alloc_function(compound_register(compound));
+  }
+}
+
+
+static int read_escaped_char(FILE *fin, int *line_no) {
+  int decoded, ch, high, low;
+
+  ch = fgetc_no_newline(fin, line_no);
+  switch (ch) {
+    case '\'': decoded = '\''; break;
+    case '\"': decoded = '\"'; break;
+    case '\\': decoded = '\\'; break;
+    case 'n': decoded = '\n'; break;
+    case 'r': decoded = '\r'; break;
+    case 't': decoded = '\t'; break;
+
+    case '(': case ')': case '<': case '>':
+      decoded = ch;
+      break;
+
+    case 'x':
+      high = fgetc_no_newline(fin, line_no);
+      if (EOF == high) {
+        decoded = EOF;
+        break;
+      }
+      low = fgetc_no_newline(fin, line_no);
+      if (EOF == low) {
+        decoded = EOF;
+        break;
+      }
+      decoded = decode_hex_digit(high) * 16 + decode_hex_digit(low);
+      break;
+
+    case EOF:
+      decoded = EOF;
+      break;
+
+    default:
+      r05_builtin_error("Unknown escape sequence \\%c at line ", ch, line_no);
+  }
+
+  return decoded;
+}
+
+
+static struct imploded *new_compound(size_t capacity, int line_no) {
+  struct imploded *new = malloc(sizeof(struct imploded) + capacity);
+  if (NULL == new) {
+    r05_builtin_error("No memory for new identifier, line %d", line_no);
+  }
+  new->function.ptr = r05_enum_function_code;
+  new->function.name = new->name;
+  new->hash = HASH_INIT;
+  return new;
+}
+
+
+static void compound_add_char(
+  struct imploded **compound, size_t *len, size_t *capacity,
+  int ch, int line_no
+) {
+  if (*len == *capacity) {
+    struct imploded *new;
+    *capacity += *capacity / 2;
+    new = realloc(*compound, sizeof(struct imploded) + *capacity);
+    if (NULL == new) {
+      r05_builtin_error("No memory for new identifier, line %d", line_no);
+    }
+    new->function.name = new->name;
+    *compound = new;
+  }
+
+  (*compound)->hash *= HASH_MULTIPLIER;
+  (*compound)->hash += (unsigned char) ch;
+  (*compound)->name[(*len)++] = (char) ch;
+}
+
+
+static struct r05_function *lookup_builtin_by_str(const char *name);
+
+
+static struct r05_function *compound_register(struct imploded *new) {
+  struct r05_function *callee = lookup_builtin_by_str(new->name);
+
+  if (callee != NULL) {
+    free(new);
+  } else {
+    struct imploded **bucket, *known;
+
+    ensure_imploded_table();
+    bucket = &s_imploded[new->hash % s_imploded_size];
+    known = *bucket;
+    while (
+      known != NULL
+      && strcmp(known->name, new->name) != 0
+    ) {
+      known = known->next;
+    }
+
+    if (known != NULL) {
+      free(new);
+      callee = &known->function;
+    } else {
+      new->next = *bucket;
+      *bucket = new;
+      ++s_imploded_count;
+      callee = &new->function;
+    }
+  }
+
+  return callee;
+}
+
+
+/**
   44. Пустая функция с именем ""
 */
 struct r05_function r05f_ = {
@@ -2612,7 +2957,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(32, Time, regular)
   ALLOC_BUILTIN(33, Type, regular)
   ALLOC_BUILTIN(34, Upper, regular)
-  /* ALLOC_BUILTIN(35, Sysfun, regular) */
+  ALLOC_BUILTIN(35, Sysfun, regular)
   /* ALLOC_BUILTIN(42, Impd_d_, regular) */
   /* ALLOC_BUILTIN(43, Stopd_d_, regular) */
   { 44, &r05f_, &r05f_regular },
@@ -2691,6 +3036,30 @@ static struct r05_function *lookup_builtin_by_chain(
   }
 
   while (*alias != NULL && ! chain_str_eq(name_b, name_e, (*alias)->name)) {
+    ++alias;
+  }
+  if (*alias != NULL) {
+    assert(callee == NULL);
+    callee = *alias;
+  }
+
+  return callee;
+}
+
+
+static struct r05_function *lookup_builtin_by_str(const char *name) {
+  struct builtin_info *bi = s_builtin_info;
+  struct r05_function **alias = s_arithmetic_names;
+  struct r05_function *callee = NULL;
+
+  while (bi->function != NULL && strcmp(name, bi->function->name) != 0) {
+    ++bi;
+  }
+  if (bi->function != NULL) {
+    callee = bi->function;
+  }
+
+  while (*alias != NULL && strcmp(name, (*alias)->name) != 0) {
     ++alias;
   }
   if (*alias != NULL) {
