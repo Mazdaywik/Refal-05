@@ -62,7 +62,7 @@ static struct r05_function *s_arithmetic_names[] = {
 };
 
 
-static struct r05_function *lookup_builtin(
+static struct r05_function *lookup_builtin_by_chain(
   struct r05_node *name_b, struct r05_node *name_e
 );
 
@@ -142,7 +142,7 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
       callee = *cur;
     }
 
-    builtin = lookup_builtin(name_b, name_e);
+    builtin = lookup_builtin_by_chain(name_b, name_e);
     if (builtin != NULL) {
       assert(callee == NULL);
       callee = builtin;
@@ -1137,27 +1137,13 @@ static void cleanup_imploded_table(void) {
 }
 
 
-static struct r05_function *implode(
-  struct r05_node *begin, struct r05_node *end
-) {
-  struct r05_function *builtin;
-  struct r05_node *node, *limit = end->next;
-  size_t len, hash, i;
-  struct imploded **bucket, *known, *new;
+enum {
+  HASH_INIT = 7369,       /* простое число */
+  HASH_MULTIPLIER = 6007, /* простое число */
+};
 
-  builtin = lookup_builtin(begin, end);
-  if (builtin != NULL) {
-    return builtin;
-  }
 
-  len = 0;
-  hash = 7369; /* просто число */
-  for (node = begin; node != limit; node = node->next) {
-    len++;
-    hash *= 6007; /* простое число */
-    hash += (unsigned char) node->info.char_;
-  }
-
+static void ensure_imploded_table(void) {
   if (s_imploded == NULL) {
     s_imploded_size = 100;
     s_imploded = calloc(s_imploded_size, sizeof(s_imploded[0]));
@@ -1166,6 +1152,56 @@ static struct r05_function *implode(
     }
     atexit(cleanup_imploded_table);
   }
+}
+
+
+static void resize_imploded_table_if_need(void) {
+  if (s_imploded_count > 3 * s_imploded_size) {
+    size_t new_size = 3 * s_imploded_size / 2;
+    struct imploded **new_table = calloc(new_size, sizeof(new_table[0]));
+    if (NULL != new_table) {
+      size_t i;
+      for (i = 0; i < s_imploded_size; ++i) {
+        struct imploded *known = s_imploded[i];
+        while (known != NULL) {
+          struct imploded *next = known->next;
+          struct imploded **bucket = &new_table[known->hash % new_size];
+          known->next = *bucket;
+          *bucket = known;
+          known = next;
+        }
+      }
+
+      free(s_imploded);
+      s_imploded = new_table;
+      s_imploded_size = new_size;
+    }
+  }
+}
+
+
+static struct r05_function *implode(
+  struct r05_node *begin, struct r05_node *end
+) {
+  struct r05_function *builtin;
+  struct r05_node *node, *limit = end->next;
+  size_t len, hash, i;
+  struct imploded **bucket, *known, *new;
+
+  builtin = lookup_builtin_by_chain(begin, end);
+  if (builtin != NULL) {
+    return builtin;
+  }
+
+  len = 0;
+  hash = HASH_INIT;
+  for (node = begin; node != limit; node = node->next) {
+    len++;
+    hash *= HASH_MULTIPLIER;
+    hash += (unsigned char) node->info.char_;
+  }
+
+  ensure_imploded_table();
 
   bucket = &s_imploded[hash % s_imploded_size];
   for (known = *bucket; known != NULL; known = known->next) {
@@ -1192,26 +1228,7 @@ static struct r05_function *implode(
   *bucket = new;
   s_imploded_count++;
 
-  if (s_imploded_count > 3 * s_imploded_size) {
-    size_t new_size = 3 * s_imploded_size / 2;
-    struct imploded **new_table = calloc(new_size, sizeof(new_table[0]));
-    if (NULL != new_table) {
-      for (i = 0; i < s_imploded_size; ++i) {
-        known = s_imploded[i];
-        while (known != NULL) {
-          struct imploded *next = known->next;
-          bucket = &new_table[known->hash % new_size];
-          known->next = *bucket;
-          *bucket = known;
-          known = next;
-        }
-      }
-
-      free(s_imploded);
-      s_imploded = new_table;
-      s_imploded_size = new_size;
-    }
-  }
+  resize_imploded_table_if_need();
 
   return &new->function;
 }
@@ -2657,7 +2674,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 };
 
 
-static struct r05_function *lookup_builtin(
+static struct r05_function *lookup_builtin_by_chain(
   struct r05_node *name_b, struct r05_node *name_e
 ) {
   struct r05_function *callee = NULL;
