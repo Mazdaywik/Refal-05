@@ -2557,7 +2557,7 @@ R05_DEFINE_ENTRY_FUNCTION(System, "System") {
 
 
 /**
-  53. <Exit e.RetCode>
+  53. <Exit { '+' | '-' }? s.NUMBER>
 */
 R05_DEFINE_ENTRY_FUNCTION(Exit, "Exit") {
   struct r05_node *callable = arg_begin->next;
@@ -2572,6 +2572,8 @@ R05_DEFINE_ENTRY_FUNCTION(Exit, "Exit") {
   if (R05_DATATAG_CHAR == pretcode->tag) {
     if ('-' == pretcode->info.char_) {
       sign = -1;
+      pretcode = pretcode->next;
+    } else if ('+' == pretcode->info.char_) {
       pretcode = pretcode->next;
     } else {
       r05_recognition_impossible();
