@@ -1235,6 +1235,47 @@ static struct r05_function *implode(
 
 
 /**
+  16. <Last s.Len e.Items> == (e.Prefix) e.Suffix
+
+  e.Items : e.Prefix e.Suffix
+  |e.Suffix| == s.Len || { |e.Suffix| < s.Len && |e.Suffix| == 0 }
+*/
+R05_DEFINE_ENTRY_FUNCTION(Last, "Last") {
+  struct r05_node *sLen;
+  r05_number counter;
+  struct r05_node *last_term[2], *callee;
+  struct r05_node *left_bracket, *right_bracket, *ePrefix[2];
+
+  callee = arg_begin->next;
+  sLen = callee->next;
+
+  if (sLen->tag != R05_DATATAG_NUMBER) {
+    r05_recognition_impossible();
+  }
+
+  counter = sLen->info.number;
+  last_term[0] = arg_end;
+  while (counter > 0 && r05_tvar_right(last_term, sLen, last_term[0])) {
+    -- counter;
+  }
+
+  r05_close_evar(ePrefix, sLen, last_term[0]);
+
+  left_bracket = callee;
+  right_bracket = sLen;
+  left_bracket->tag = R05_DATATAG_OPEN_BRACKET;
+  right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
+  r05_link_brackets(left_bracket, right_bracket);
+
+  r05_correct_evar(ePrefix);
+  r05_splice_evar(right_bracket, ePrefix);
+
+  r05_splice_to_freelist(arg_begin, arg_begin);
+  r05_splice_to_freelist(arg_end, arg_end);
+}
+
+
+/**
   17. <Lenw e.Expr> == s.Len e.Expr
       s.Len ::= s.NUMBER, s.Len == |e.Expr|
 */
@@ -2938,7 +2979,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(13, First, regular)
   ALLOC_BUILTIN(14, Get, regular)
   ALLOC_BUILTIN(15, Implode, regular)
-  /* ALLOC_BUILTIN(16, Last, regular) */
+  ALLOC_BUILTIN(16, Last, regular)
   ALLOC_BUILTIN(17, Lenw, regular)
   ALLOC_BUILTIN(18, Lower, regular)
   ALLOC_BUILTIN(19, Mod, regular)
