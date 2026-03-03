@@ -2095,12 +2095,23 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 /**
   35. <Sysfun 1 e.FileName> == e.Expr
 */
-static int fgetc_no_newline(FILE *fin, int *line_no) {
-  int ch;
-  while (ch = fgetc(fin), '\n' == ch) {
-    ++*line_no;
+static void sysfun_1(
+  struct r05_node *arg_begin,
+  struct r05_node *func_no,
+  struct r05_node *arg_end
+);
+
+R05_DEFINE_ENTRY_FUNCTION(Sysfun, "Sysfun") {
+  struct r05_node *callee = arg_begin->next;
+  struct r05_node *func_no = callee->next;
+
+  if (R05_DATATAG_NUMBER != func_no->tag) {
+    r05_recognition_impossible();
+  } else if (1 == func_no->info.number) {
+    sysfun_1(arg_begin, func_no, arg_end);
+  } else {
+    r05_recognition_impossible();
   }
-  return ch;
 }
 
 
@@ -2114,163 +2125,167 @@ static void read_quote(char open_quote, FILE *fin, int *line_no);
 static int read_escaped_char(FILE *fin, int *line_no);
 
 
-R05_DEFINE_ENTRY_FUNCTION(Sysfun, "Sysfun") {
-  struct r05_node *callee = arg_begin->next;
-  struct r05_node *func_no = callee->next;
+static int fgetc_no_newline(FILE *fin, int *line_no) {
+  int ch;
+  while (ch = fgetc(fin), '\n' == ch) {
+    ++*line_no;
+  }
+  return ch;
+}
 
-  if (R05_DATATAG_NUMBER != func_no->tag) {
+
+static void sysfun_1(
+  struct r05_node *arg_begin,
+  struct r05_node *func_no,
+  struct r05_node *arg_end
+) {
+  struct r05_node *fname[2];
+  char filename[FILENAME_MAX + 1];
+  size_t filename_len;
+  FILE *fin;
+  int ch, line_no = 1, opened_bracket_line_no = 0;
+  struct r05_node *brackets_stack = NULL, *open_bracket, *close_bracket;
+
+  filename_len =
+    r05_read_chars(fname, filename, FILENAME_MAX, func_no, arg_end);
+  filename[filename_len] = '\0';
+
+  if (0 == filename_len) {
     r05_recognition_impossible();
-  } else if (1 == func_no->info.number) {
-    struct r05_node *fname[2];
-    char filename[FILENAME_MAX + 1];
-    size_t filename_len;
-    FILE *fin;
-    int ch, line_no = 1, opened_bracket_line_no = 0;
-    struct r05_node *brackets_stack = NULL, *open_bracket, *close_bracket;
+  } else if (! r05_empty_hole(fname[1], arg_end)) {
+    struct r05_node *p = fname[1]->next;
+    while (R05_DATATAG_CHAR == p->tag) {
+      p = p->next;
+    }
 
-    filename_len =
-      r05_read_chars(fname, filename, FILENAME_MAX, func_no, arg_end);
-    filename[filename_len] = '\0';
-
-    if (0 == filename_len) {
+    if (p == arg_end) {
+      r05_builtin_error(
+        "very long filename (max available %u)", (unsigned) FILENAME_MAX
+      );
+    } else {
       r05_recognition_impossible();
-    } else if (! r05_empty_hole(fname[1], arg_end)) {
-      struct r05_node *p = fname[1]->next;
-      while (R05_DATATAG_CHAR == p->tag) {
-        p = p->next;
-      }
-
-      if (p == arg_end) {
-        r05_builtin_error(
-          "very long filename (max available %u)", (unsigned) FILENAME_MAX
-        );
-      } else {
-        r05_recognition_impossible();
-      }
     }
+  }
 
-    fin = fopen(filename, "r");
-    if (NULL == fin) {
-      r05_builtin_error_errno("can\'t open file %s", filename);
-    }
+  fin = fopen(filename, "r");
+  if (NULL == fin) {
+    r05_builtin_error_errno("can\'t open file %s", filename);
+  }
 
-    r05_reset_allocator();
+  r05_reset_allocator();
 
-    ch = fgetc_no_newline(fin, &line_no);
-    for ( ; ; ) {
-      while (EOF != ch && isspace(ch)) {
-        ch = fgetc_no_newline(fin, &line_no);
-      }
-
-      if (EOF == ch) {
-        break;
-      }
-
-      switch (ch) {
-        case '0': case '1': case '2': case '3': case '4':
-        case '5': case '6': case '7': case '8': case '9':
-          {
-            const r05_number MAX_NUM = ~(r05_number) 0;
-            const r05_number MAX_NUM_DIV_10 = MAX_NUM / 10;
-            const r05_number MAX_NUM_MOD_10 = MAX_NUM % 10;
-            r05_number result = ch - '0';
-            while (
-              ch = fgetc_no_newline(fin, &line_no),
-              '0' <= ch && ch <= '9'
-              && (
-                result < MAX_NUM_DIV_10
-                || (
-                  MAX_NUM_DIV_10 == result
-                  && (r05_number) (ch - '0') < MAX_NUM_MOD_10
-                )
-              )
-            ) {
-              result = result * 10 + (ch - '0');
-            }
-
-            if ('0' <= ch && ch <= '9') {
-              r05_builtin_error(
-                "Very long number constant in %s at line %d",
-                filename, line_no
-              );
-            }
-
-            r05_alloc_number(result);
-          }
-          continue;
-
-        case '(':
-          if (NULL == brackets_stack) {
-            opened_bracket_line_no = line_no;
-          }
-          r05_alloc_open_bracket(&open_bracket);
-          open_bracket->info.link = brackets_stack;
-          brackets_stack = open_bracket;
-          break;
-
-        case ')':
-          if (NULL == brackets_stack) {
-            r05_builtin_error("unbalanced ')' in line %d", line_no);
-          } else {
-            r05_alloc_close_bracket(&close_bracket);
-            open_bracket = brackets_stack;
-            brackets_stack = brackets_stack->info.link;
-            r05_link_brackets(open_bracket, close_bracket);
-          }
-          break;
-
-        case '\'': case '\"':
-          read_quote((char) ch, fin, &line_no);
-          break;
-
-        case '\\':
-          ch = read_escaped_char(fin, &line_no);
-          if (EOF == ch) {
-            r05_builtin_error(
-              "unexpected EOF in escape sequence at %d", line_no
-            );
-          }
-          r05_alloc_char((char) ch);
-          break;
-
-        default:
-          if (isalpha(ch)) {
-            struct imploded *compound;
-            size_t len, capacity;
-
-            capacity = 10;
-            len = 0;
-            compound = new_compound(capacity, line_no);
-
-            while (EOF != ch && is_ident_tail(ch)) {
-              compound_add_char(&compound, &len, &capacity, ch, line_no);
-              ch = fgetc_no_newline(fin, &line_no);
-            }
-
-            compound_add_char(&compound, &len, &capacity, '\0', line_no);
-            r05_alloc_function(compound_register(compound));
-            continue;
-          } else {
-            r05_alloc_char((char) ch);
-          }
-      }
-
+  ch = fgetc_no_newline(fin, &line_no);
+  for ( ; ; ) {
+    while (EOF != ch && isspace(ch)) {
       ch = fgetc_no_newline(fin, &line_no);
     }
 
-    if (brackets_stack != NULL) {
-      r05_builtin_error("unbalanced '(' in line %d", opened_bracket_line_no);
+    if (EOF == ch) {
+      break;
     }
 
-    if (fclose(fin) == EOF) {
-      r05_builtin_error_errno("Can't close file %s", filename);
+    switch (ch) {
+      case '0': case '1': case '2': case '3': case '4':
+      case '5': case '6': case '7': case '8': case '9':
+        {
+          const r05_number MAX_NUM = ~(r05_number) 0;
+          const r05_number MAX_NUM_DIV_10 = MAX_NUM / 10;
+          const r05_number MAX_NUM_MOD_10 = MAX_NUM % 10;
+          r05_number result = ch - '0';
+          while (
+            ch = fgetc_no_newline(fin, &line_no),
+            '0' <= ch && ch <= '9'
+            && (
+              result < MAX_NUM_DIV_10
+              || (
+                MAX_NUM_DIV_10 == result
+                && (r05_number) (ch - '0') < MAX_NUM_MOD_10
+              )
+            )
+          ) {
+            result = result * 10 + (ch - '0');
+          }
+
+          if ('0' <= ch && ch <= '9') {
+            r05_builtin_error(
+              "Very long number constant in %s at line %d",
+              filename, line_no
+            );
+          }
+
+          r05_alloc_number(result);
+        }
+        continue;
+
+      case '(':
+        if (NULL == brackets_stack) {
+          opened_bracket_line_no = line_no;
+        }
+        r05_alloc_open_bracket(&open_bracket);
+        open_bracket->info.link = brackets_stack;
+        brackets_stack = open_bracket;
+        break;
+
+      case ')':
+        if (NULL == brackets_stack) {
+          r05_builtin_error("unbalanced ')' in line %d", line_no);
+        } else {
+          r05_alloc_close_bracket(&close_bracket);
+          open_bracket = brackets_stack;
+          brackets_stack = brackets_stack->info.link;
+          r05_link_brackets(open_bracket, close_bracket);
+        }
+        break;
+
+      case '\'': case '\"':
+        read_quote((char) ch, fin, &line_no);
+        break;
+
+      case '\\':
+        ch = read_escaped_char(fin, &line_no);
+        if (EOF == ch) {
+          r05_builtin_error(
+            "unexpected EOF in escape sequence at %d", line_no
+          );
+        }
+        r05_alloc_char((char) ch);
+        break;
+
+      default:
+        if (isalpha(ch)) {
+          struct imploded *compound;
+          size_t len, capacity;
+
+          capacity = 10;
+          len = 0;
+          compound = new_compound(capacity, line_no);
+
+          while (EOF != ch && is_ident_tail(ch)) {
+            compound_add_char(&compound, &len, &capacity, ch, line_no);
+            ch = fgetc_no_newline(fin, &line_no);
+          }
+
+          compound_add_char(&compound, &len, &capacity, '\0', line_no);
+          r05_alloc_function(compound_register(compound));
+          continue;
+        } else {
+          r05_alloc_char((char) ch);
+        }
     }
 
-    r05_splice_from_freelist(arg_begin);
-    r05_splice_to_freelist(arg_begin, arg_end);
-  } else {
-    r05_recognition_impossible();
+    ch = fgetc_no_newline(fin, &line_no);
   }
+
+  if (brackets_stack != NULL) {
+    r05_builtin_error("unbalanced '(' in line %d", opened_bracket_line_no);
+  }
+
+  if (fclose(fin) == EOF) {
+    r05_builtin_error_errno("Can't close file %s", filename);
+  }
+
+  r05_splice_from_freelist(arg_begin);
+  r05_splice_to_freelist(arg_begin, arg_end);
 }
 
 
