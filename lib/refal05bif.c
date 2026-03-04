@@ -2108,7 +2108,7 @@ static void sysfun_1(
 
 static void sysfun_2(
   struct r05_node *arg_begin,
-  struct r05_node *func_no,
+  struct r05_node *before_arg,
   struct r05_node *arg_end
 );
 
@@ -2502,7 +2502,7 @@ static void fputc_width_escaped(
 
 static void sysfun_2(
   struct r05_node *arg_begin,
-  struct r05_node *func_no,
+  struct r05_node *before_arg,
   struct r05_node *arg_end
 ) {
   struct r05_node *fname[2], *open_bracket, *sWidth, *close_bracket, *p;
@@ -2512,7 +2512,7 @@ static void sysfun_2(
   r05_number width, rest;
 
   filename_len =
-    r05_read_chars(fname, filename, FILENAME_MAX, func_no, arg_end);
+    r05_read_chars(fname, filename, FILENAME_MAX, before_arg, arg_end);
   filename[filename_len] = '\0';
   open_bracket = fname[1]->next;
 
@@ -2979,6 +2979,15 @@ R05_DEFINE_ENTRY_FUNCTION(Compare, "Compare") {
 }
 
 
+/**
+  62. <DeSysfun e.FileName (s.Width e.Expr)> == пусто
+*/
+R05_DEFINE_ENTRY_FUNCTION(DeSysfun, "DeSysfun") {
+  fprintf(stderr, "DeSyfun is deprecated in Refal-05, use <Sysfun 2 ...>\n");
+  sysfun_2(arg_begin, arg_begin->next, arg_end);
+}
+
+
 static r05_number random_digit_in_range(r05_number max);
 static r05_number random_digit(void);
 
@@ -3195,7 +3204,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(59, Explodeu_Ext, regular)
   ALLOC_BUILTIN(60, TimeElapsed, regular)
   ALLOC_BUILTIN(61, Compare, regular)
-  /* ALLOC_BUILTIN(62, DeSysfun, regular) */
+  ALLOC_BUILTIN(62, DeSysfun, regular)
   /* ALLOC_BUILTIN(63, XMLParse, regular) */
   ALLOC_BUILTIN(64, Random, regular)
   ALLOC_BUILTIN(65, RandomDigit, regular)

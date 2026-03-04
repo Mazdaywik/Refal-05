@@ -6,11 +6,11 @@ $ENTRY GO {
       <Eq <Sysfun 1 'sysfuns.dat'> (<Expr>)>
 
       <Eq <Sysfun 2 'sysfuns2.dat' (20 <Expr>)> (/* пусто */)>
-      <Open 'r' 1 'sysfuns.dat'>
-      <Open 'r' 2 'sysfuns2.dat'>
-      <EqualFiles 1 2>
-      <Close 2>
-      <Close 1>
+      <EqualFiles ('sysfuns.dat') ('sysfuns2.dat')>
+      <Remove-Ok <RemoveFile 'sysfuns2.dat'>>
+
+      <Eq <DeSysfun 'sysfuns2.dat' (20 <Expr>)> (/* пусто */)>
+      <EqualFiles ('sysfuns.dat') ('sysfuns2.dat')>
       <Remove-Ok <RemoveFile 'sysfuns2.dat'>>
 
       <Open 'w' 1 'sysfuns.dat'>
@@ -42,11 +42,20 @@ Expr {
 Eq { e.X (e.X) = }
 
 EqualFiles {
+  (e.Left) (e.Right)
+    = <Open 'r' 1 e.Left>
+      <Open 'r' 2 e.Right>
+      <DoEqualFiles 1 2>
+      <Close 2>
+      <Close 1>;
+}
+
+DoEqualFiles {
   s.Left s.Right
     , (<Get s.Left>) (<Get s.Right>)
     : {
         (e.Equal 0) (e.Equal 0) = /* Ok */;
-        (e.Equal) (e.Equal) = <EqualFiles s.Left s.Right>;
+        (e.Equal) (e.Equal) = <DoEqualFiles s.Left s.Right>;
       };
 }
 
