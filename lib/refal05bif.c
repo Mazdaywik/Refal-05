@@ -2009,6 +2009,20 @@ R05_DEFINE_ENTRY_FUNCTION(Time, "Time") {
         | 'B0' — brackets
         | '*0' — empty expression
 */
+static int is_ident(const char *name) {
+  if (isalpha((unsigned char) name[0])) {
+    const char *p = name + 1;
+    while (*p != '\0' && is_ident_tail(*p)) {
+      ++p;
+    }
+
+    return *p == '\0';
+  } else {
+    return 0;
+  }
+}
+
+
 R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *first_term = callee->next;
@@ -2037,18 +2051,8 @@ R05_DEFINE_ENTRY_FUNCTION(Type, "Type") {
     }
   } else if (R05_DATATAG_FUNCTION == first_term->tag) {
     type = 'W';
-    subtype = 'q';
-
-    if (isalpha((unsigned char) first_term->info.function->name[0])) {
-      const char *p = &first_term->info.function->name[1];
-      while (*p != '\0' && is_ident_tail(*p)) {
-        p++;
-      }
-
-      if (*p == '\0') {
-        subtype = 'i';
-      }
-    }
+    /* Ложное предупреждение BCC 5.5.1 на потерю значимых цифр */
+    subtype = (char) (is_ident(first_term->info.function->name) ? 'i' : 'q');
   } else if (R05_DATATAG_NUMBER == first_term->tag) {
     type = 'N';
     subtype = '0';
@@ -2094,8 +2098,15 @@ R05_DEFINE_ENTRY_FUNCTION(Upper, "Upper") {
 
 /**
   35. <Sysfun 1 e.FileName> == e.Expr
+      <Sysfun 2 e.FileName (s.Width e.Expr)> == пусто
 */
 static void sysfun_1(
+  struct r05_node *arg_begin,
+  struct r05_node *func_no,
+  struct r05_node *arg_end
+);
+
+static void sysfun_2(
   struct r05_node *arg_begin,
   struct r05_node *func_no,
   struct r05_node *arg_end
@@ -2109,6 +2120,8 @@ R05_DEFINE_ENTRY_FUNCTION(Sysfun, "Sysfun") {
     r05_recognition_impossible();
   } else if (1 == func_no->info.number) {
     sysfun_1(arg_begin, func_no, arg_end);
+  } else if (2 == func_no->info.number) {
+    sysfun_2(arg_begin, func_no, arg_end);
   } else {
     r05_recognition_impossible();
   }
@@ -2449,6 +2462,152 @@ static struct r05_function *compound_register(struct imploded *new) {
   }
 
   return callee;
+}
+
+
+static void fputc_width(
+  FILE *fout, char ch, r05_number *rest, r05_number width
+) {
+  if(0 == *rest) {
+    fputc('\n', fout);
+    *rest = width;
+  }
+  fputc(ch, fout);
+  --*rest;
+}
+
+
+
+static void fputc_width_escaped(
+  FILE *fout, unsigned char ch, r05_number *rest, r05_number width
+) {
+  static const char ESCAPED[] = "\'\"\\\n\r\t()<>";
+  static const char DECODED[] = "\'\"\\nrt()<>";
+  const char *p = strchr(ESCAPED, (char) ch);
+
+  if (p != NULL) {
+    fputc_width(fout, '\\', rest, width);
+    fputc_width(fout, DECODED[p - ESCAPED], rest, width);
+  } else if (ch < 32 || 127 <= ch) {
+    static const char HEX[] = "0123456789ABCDEF";
+    fputc_width(fout, '\\', rest, width);
+    fputc_width(fout, 'x', rest, width);
+    fputc_width(fout, HEX[ch / 16], rest, width);
+    fputc_width(fout, HEX[ch % 16], rest, width);
+  } else {
+    fputc_width(fout, (char) ch, rest, width);
+  }
+}
+
+
+static void sysfun_2(
+  struct r05_node *arg_begin,
+  struct r05_node *func_no,
+  struct r05_node *arg_end
+) {
+  struct r05_node *fname[2], *open_bracket, *sWidth, *close_bracket, *p;
+  char filename[FILENAME_MAX + 1];
+  size_t filename_len;
+  FILE *fout;
+  r05_number width, rest;
+
+  filename_len =
+    r05_read_chars(fname, filename, FILENAME_MAX, func_no, arg_end);
+  filename[filename_len] = '\0';
+  open_bracket = fname[1]->next;
+
+  if (0 == filename_len) {
+    r05_recognition_impossible();
+  } else if (open_bracket->tag != R05_DATATAG_OPEN_BRACKET) {
+    struct r05_node *p = open_bracket;
+    while (R05_DATATAG_CHAR == p->tag) {
+      p = p->next;
+    }
+
+    if (p->tag == R05_DATATAG_OPEN_BRACKET) {
+      r05_builtin_error(
+        "very long filename (max available %u)", (unsigned) FILENAME_MAX
+      );
+    } else {
+      r05_recognition_impossible();
+    }
+  } else {
+    close_bracket = open_bracket->info.link;
+    sWidth = open_bracket->next;
+    if (
+      open_bracket->next == close_bracket
+      || sWidth->tag != R05_DATATAG_NUMBER
+      || close_bracket->next != arg_end
+    ) {
+      r05_recognition_impossible();
+    }
+  }
+
+  fout = fopen(filename, "w");
+  if (NULL == fout) {
+    r05_builtin_error("can\'t open file %s", filename);
+  }
+
+  width = sWidth->info.number;
+  rest = width;
+
+  for (p = sWidth->next; p != close_bracket; /* пусто */) {
+    /* По формуле см. комментарий в функции Symb + ' ' + '\0' */
+    char macrodigit_rep[(R05_NUMBER_BITS * 28 + 92) / 93 + 1 + 1];
+    const char *pc;
+    int quoted;
+
+    switch (p->tag) {
+      case R05_DATATAG_CHAR:
+        fputc_width(fout, '\'', &rest, width);
+        p = p;
+        do {
+          unsigned char ch = p->info.char_;
+          fputc_width_escaped(fout, ch, &rest, width);
+          p = p->next;
+        } while (R05_DATATAG_CHAR == p->tag);
+        fputc_width(fout, '\'', &rest, width);
+        continue;  /* пропускаем p = p->next в конце */
+
+      case R05_DATATAG_NUMBER:
+        sprintf(macrodigit_rep, "%" PRIuR05 " ", p->info.number);
+        for (pc = macrodigit_rep; *pc != '\0'; ++pc) {
+          fputc_width(fout, *pc, &rest, width);
+        }
+        break;
+
+      case R05_DATATAG_FUNCTION:
+        quoted = ! is_ident(p->info.function->name);
+        if (quoted) {
+          fputc_width(fout, '\"', &rest, width);
+        }
+        for (pc = p->info.function->name; *pc != '\0'; ++pc) {
+          fputc_width_escaped(fout, (unsigned char) *pc, &rest, width);
+        }
+        /* Ложное предупреждение BCC 5.5.1 на потерю значимых цифр */
+        fputc_width(fout, (char) (quoted ? '\"' : ' '), &rest, width);
+        break;
+
+      case R05_DATATAG_OPEN_BRACKET:
+        fputc_width(fout, '(', &rest, width);
+        break;
+
+      case R05_DATATAG_CLOSE_BRACKET:
+        fputc_width(fout, ')', &rest, width);
+        break;
+
+      default:
+        r05_switch_default_violation(p->tag);
+    }
+
+    p = p->next;
+  }
+
+  if (fclose(fout) == EOF) {
+    r05_builtin_error_errno("Can't close file %s", filename);
+  }
+
+  r05_splice_to_freelist(arg_begin, arg_end);
 }
 
 

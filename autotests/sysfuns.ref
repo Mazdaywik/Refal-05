@@ -5,6 +5,14 @@ $ENTRY GO {
       <Close 1>
       <Eq <Sysfun 1 'sysfuns.dat'> (<Expr>)>
 
+      <Eq <Sysfun 2 'sysfuns2.dat' (20 <Expr>)> (/* пусто */)>
+      <Open 'r' 1 'sysfuns.dat'>
+      <Open 'r' 2 'sysfuns2.dat'>
+      <EqualFiles 1 2>
+      <Close 2>
+      <Close 1>
+      <Remove-Ok <RemoveFile 'sysfuns2.dat'>>
+
       <Open 'w' 1 'sysfuns.dat'>
       <Putout 1 '"+" 10 20'>
       <Close 1>
@@ -20,8 +28,8 @@ PutExprImage {
       <Putout s.FileNo 't\\x01\\x02\\\"\\\'\\\\\"\'!@#'>
       <Putout s.FileNo '$%^&*\\(\\)\\n\\t\\x01\\x0'>
       <Putout s.FileNo '2\\\"\\\'\\\\\'\(((1 )(2 )(H'>
-      <Putout s.FileNo 'ello World ))) Prout'>
-      <Write s.FileNo ' "+"'>;
+      <Putout s.FileNo 'ello World )))Prout '>
+      <Write s.FileNo  '"+"'>;
 }
 
 Expr {
@@ -32,5 +40,14 @@ Expr {
 }
 
 Eq { e.X (e.X) = }
+
+EqualFiles {
+  s.Left s.Right
+    , (<Get s.Left>) (<Get s.Right>)
+    : {
+        (e.Equal 0) (e.Equal 0) = /* Ok */;
+        (e.Equal) (e.Equal) = <EqualFiles s.Left s.Right>;
+      };
+}
 
 Remove-Ok { True () = }
