@@ -2389,7 +2389,9 @@ static int read_escaped_char(FILE *fin, int *line_no) {
       break;
 
     default:
-      r05_builtin_error("Unknown escape sequence \\%c at line ", ch, line_no);
+      r05_builtin_error(
+        "Unknown escape sequence \\%c at line %d", ch, *line_no
+      );
   }
 
   return decoded;
