@@ -22,7 +22,7 @@ run_test_aux() {
   fi
 
   if [ -e $SATELLITE ]; then
-    ../bin/refal05c $SATELLITE
+    R05CCOMP= R05PATH= ../bin/refal05c $SATELLITE
     if [ ! -e $SATELLITEC ]; then
       echo COMPILATION FAILED
       exit
