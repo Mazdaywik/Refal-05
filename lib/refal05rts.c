@@ -682,21 +682,25 @@ static void after_step(void) {
 
 
 static void add_copy_tevar_time(fast_clock_t duration) {
-  s_total_copy_tevar_time += duration;
+  if (s_in_generated) {
+    s_total_copy_tevar_time += duration;
+  }
 }
 
 static void add_match_repeated_var_time(char type, fast_clock_t duration) {
-  if ('t' == type) {
-    if (s_in_e_loop) {
-      s_total_match_repeated_tvar_time_inside_e += duration;
+  if (s_in_generated) {
+    if ('t' == type) {
+      if (s_in_e_loop) {
+        s_total_match_repeated_tvar_time_inside_e += duration;
+      } else {
+        s_total_match_repeated_tvar_time_outside_e += duration;
+      }
     } else {
-      s_total_match_repeated_tvar_time_outside_e += duration;
-    }
-  } else {
-    if (s_in_e_loop) {
-      s_total_match_repeated_evar_time_inside_e += duration;
-    } else {
-      s_total_match_repeated_evar_time_outside_e += duration;
+      if (s_in_e_loop) {
+        s_total_match_repeated_evar_time_inside_e += duration;
+      } else {
+        s_total_match_repeated_evar_time_outside_e += duration;
+      }
     }
   }
 }
