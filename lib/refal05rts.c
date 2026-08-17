@@ -624,8 +624,8 @@ static fast_clock_t s_total_pattern_match_time;
 static fast_clock_t s_start_building_result_time;
 static fast_clock_t s_total_building_result_time;
 static fast_clock_t s_total_copy_tevar_time;
-static fast_clock_t s_total_match_repeated_tvar_time;
-static fast_clock_t s_total_match_repeated_evar_time;
+static fast_clock_t s_total_match_repeated_tvar_time_inside_e;
+static fast_clock_t s_total_match_repeated_evar_time_inside_e;
 static fast_clock_t s_start_e_loop;
 static fast_clock_t s_total_e_loop;
 static fast_clock_t s_total_match_repeated_tvar_time_outside_e;
@@ -688,13 +688,13 @@ static void add_copy_tevar_time(fast_clock_t duration) {
 static void add_match_repeated_var_time(char type, fast_clock_t duration) {
   if ('t' == type) {
     if (s_in_e_loop) {
-      s_total_match_repeated_tvar_time += duration;
+      s_total_match_repeated_tvar_time_inside_e += duration;
     } else {
       s_total_match_repeated_tvar_time_outside_e += duration;
     }
   } else {
     if (s_in_e_loop) {
-      s_total_match_repeated_evar_time += duration;
+      s_total_match_repeated_evar_time_inside_e += duration;
     } else {
       s_total_match_repeated_evar_time_outside_e += duration;
     }
@@ -739,7 +739,7 @@ static void print_profile(void) {
   fast_clock_t full_time = fast_clock() - s_start_program_time;
 #ifdef R05_SHOW_STAT_DETAILED
   fast_clock_t refal_time;
-  fast_clock_t repeated_time;
+  fast_clock_t repeated_time_inside_e;
   fast_clock_t eloop_time;
   fast_clock_t repeated_time_outside_e;
 
@@ -749,9 +749,10 @@ static void print_profile(void) {
   size_t i;
 
   refal_time = s_total_pattern_match_time + s_total_building_result_time;
-  repeated_time =
-    s_total_match_repeated_tvar_time + s_total_match_repeated_evar_time;
-  eloop_time = s_total_e_loop - repeated_time;
+  repeated_time_inside_e =
+    s_total_match_repeated_tvar_time_inside_e
+    + s_total_match_repeated_evar_time_inside_e;
+  eloop_time = s_total_e_loop - repeated_time_inside_e;
   repeated_time_outside_e =
     s_total_match_repeated_tvar_time_outside_e
     + s_total_match_repeated_evar_time_outside_e;
@@ -768,17 +769,17 @@ static void print_profile(void) {
   items[2].counter = refal_time;
   items[3].name = "Linear pattern time";
   items[3].counter = s_total_pattern_match_time
-    - (eloop_time + repeated_time + repeated_time_outside_e);
+    - (eloop_time + repeated_time_inside_e + repeated_time_outside_e);
   items[4].name = "Linear result time";
   items[4].counter = s_total_building_result_time - s_total_copy_tevar_time;
   items[5].name = "Open e-loop time (clear)";
   items[5].counter = eloop_time;
   items[6].name = "Repeated e-var match time (inside e-loops)";
-  items[6].counter = s_total_match_repeated_evar_time;
+  items[6].counter = s_total_match_repeated_evar_time_inside_e;
   items[7].name = "Repeated e-var match time (outside e-loops)";
   items[7].counter = s_total_match_repeated_tvar_time_outside_e;
   items[8].name = "Repeated t-var match time (inside e-loops)";
-  items[8].counter = s_total_match_repeated_tvar_time;
+  items[8].counter = s_total_match_repeated_tvar_time_inside_e;
   items[9].name = "Repeated t-var match time (outside e-loops)";
   items[9].counter = s_total_match_repeated_tvar_time_outside_e;
   items[10].name = "t- and e-var copy time";
