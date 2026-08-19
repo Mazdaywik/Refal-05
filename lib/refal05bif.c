@@ -3234,7 +3234,7 @@ static struct builtin_info s_builtin_info[] = {
   ALLOC_BUILTIN(34, Upper, regular)
   ALLOC_BUILTIN(35, Sysfun, regular)
   /* ALLOC_BUILTIN(42, Impd_d_, regular) */
-  /* ALLOC_BUILTIN(43, Stopd_d_, regular) */
+  ALLOC_BUILTIN(43, Stopd_d_, regular)
   { 44, &r05f_, &r05f_regular },
   /* ALLOC_BUILTIN(45, Freeze, regular) */
   /* ALLOC_BUILTIN(46, Freezer, regular) */

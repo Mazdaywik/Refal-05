@@ -2245,15 +2245,13 @@ T-переменная слева, закрытая переменная:
       init_view_field();
       start_profiler();
       main_loop();
-      r05_exit(0);
     }
 
 Глобальные (статические) переменные `s_argc` и `s_argv` сохраняют значения
 аргументов командной строки для того, чтобы их могла прочитать встроенная
 функция `Arg`. Функция `init_view_field()` создаёт вызов `<GO>` в поле зрения.
 `start_profiler()` засекает время начала выполнения программы. `main_loop()` —
-главный цикл преобразования поля зрения. Функция `r05_exit()` завершает работу
-рефал-машины и всей программы целиком.
+главный цикл преобразования поля зрения, из этой функции возврата нет.
 
 Подсистему профилирования мы рассматривать не будем, поскольку содержательно
 интересного в ней ничего нет — рефал-машина и без неё останется рефал-машиной.
@@ -2262,25 +2260,42 @@ T-переменная слева, закрытая переменная:
 уже известных нам функций построения результата:
 
     static void init_view_field(void) {
-      struct r05_node *open, *close;
+      struct r05_node *stop_open, *go_open, *go_close, *stop_close;
 
       r05_reset_allocator();
-      r05_alloc_open_call(&open);
+      r05_alloc_open_call(&stop_open);
+      r05_alloc_function(&r05f_Stopd_d_);
+      r05_alloc_open_call(&go_open);
       r05_alloc_function(&r05f_GO);
-      r05_alloc_close_call(&close);
-      r05_push_stack(close);
-      r05_push_stack(open);
+      r05_alloc_close_call(&go_close);
+      r05_alloc_close_call(&stop_close);
+      r05_push_stack(stop_close);
+      r05_push_stack(stop_open);
+      r05_push_stack(go_close);
+      r05_push_stack(go_open);
       r05_splice_from_freelist(s_begin_view_field.next);
+    }
+
+Поле зрения инициализируется как
+
+    <Stop$$ <Go>>
+
+Функция `Stop$$` завершает работу программы, вызывая `r05_exit(0)` (см. далее),
+поэтому возврат из основного цикла не нужен.
+
+    R05_DEFINE_ENTRY_FUNCTION(Stopd_d_, "Stop$$") {
+      r05_exit(0);
     }
 
 Основной цикл работы рефал-машины (с сокращениями):
 
     static void main_loop(void) {
-      while (! empty_stack()) {
+      for ( ; ; ) {
         struct r05_node *function;
 
-        s_arg_begin = pop_stack();
-        s_arg_end = pop_stack();
+        s_arg_begin = s_stack_ptr;
+        s_arg_end = s_arg_begin->info.link;
+        s_stack_ptr = s_arg_end->info.link;
 
         function = s_arg_begin->next;
         if (R05_DATATAG_FUNCTION == function->tag) {
@@ -2292,9 +2307,8 @@ T-переменная слева, закрытая переменная:
     }
 
 Скобки активации, которые располагаются в поле зрения, обязательно должны
-образовывать односвязный список — стек скобок активации. Поэтому условие,
-что рефал-машина выполняет шаги до тех пор, пока поле зрения активно — в нём
-есть вызовы функций, эквивалентно условию, что стек скобок активации не пуст.
+образовывать односвязный список — стек скобок активации. Стек заведомо не пуст,
+т.к. на дне лежит функция `Stop$$`, которая при активации завершит программу.
 
 На каждой итерации со стека снимаются левая и правая скобки — они соответствуют
 первичному активному подвыражению, из следующего после левой скобки узла
@@ -2303,23 +2317,14 @@ T-переменная слева, закрытая переменная:
 не оказалось — программа завершается с выдачей аварийного дампа и ошибки
 невозможности отождествления.
 
-Операции со стеком довольно очевидные — просто оперируют с односвязным списком:
+Функция `r05_push_stack` довольно очевидная — просто добавляет звено на вершину
+однонаправленного связного списка:
 
     static struct r05_node *s_stack_ptr = NULL;
 
     void r05_push_stack(struct r05_node *call_bracket) {
       call_bracket->info.link = s_stack_ptr;
       s_stack_ptr = call_bracket;
-    }
-
-    static struct r05_node *pop_stack(void) {
-      struct r05_node *res = s_stack_ptr;
-      s_stack_ptr = s_stack_ptr->info.link;
-      return res;
-    }
-
-    static int empty_stack(void) {
-      return (s_stack_ptr == 0);
     }
 
 Функция `r05_exit()` освобождает память и завершает программу вызовом функции

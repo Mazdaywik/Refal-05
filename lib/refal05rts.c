@@ -931,46 +931,40 @@ static struct r05_node *s_stack_ptr = NULL;
 static unsigned long s_step_counter = 0;
 
 
-static struct r05_node *pop_stack(void) {
-  struct r05_node *res = s_stack_ptr;
-  s_stack_ptr = s_stack_ptr->info.link;
-  return res;
-}
-
-static int empty_stack(void) {
-  return (s_stack_ptr == 0);
-}
-
-
 extern struct r05_function r05f_GO;
 
 static void init_view_field(void) {
-  struct r05_node *open, *close;
+  struct r05_node *stop_open, *go_open, *go_close, *stop_close;
 
   r05_reset_allocator();
-  r05_alloc_open_call(&open);
+  r05_alloc_open_call(&stop_open);
+  r05_alloc_function(&r05f_Stopd_d_);
+  r05_alloc_open_call(&go_open);
   r05_alloc_function(&r05f_GO);
-  r05_alloc_close_call(&close);
-  r05_push_stack(close);
-  r05_push_stack(open);
+  r05_alloc_close_call(&go_close);
+  r05_alloc_close_call(&stop_close);
+  r05_push_stack(stop_close);
+  r05_push_stack(stop_open);
+  r05_push_stack(go_close);
+  r05_push_stack(go_open);
   r05_splice_from_freelist(s_begin_view_field.next);
 }
 
 static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
-static void main_loop(void) {
+R05_NORETURN static void main_loop(void) {
 #ifdef R05_PROFILER
   fast_clock_t start_step = fast_clock(), now;
 #endif  /* R05_PROFILER */
 
-  while (! empty_stack()) {
+  for ( ; ; ) {
     struct r05_node *function;
     struct r05_function *callee;
 
-    s_arg_begin = pop_stack();
-    assert(! empty_stack());
-    s_arg_end = pop_stack();
+    s_arg_begin = s_stack_ptr;
+    s_arg_end = s_arg_begin->info.link;
+    s_stack_ptr = s_arg_end->info.link;
 
 #if R05_SHOW_DEBUG
     if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
@@ -1295,6 +1289,13 @@ R05_NORETURN R05_PRINTF_LIKE_FUNCTION void r05_builtin_error_errno(
 }
 
 
+R05_DEFINE_ENTRY_FUNCTION(Stopd_d_, "Stop$$") {
+  (void) arg_begin;
+  (void) arg_end;
+  r05_exit(0);
+}
+
+
 r05_number r05_step_count(void) {
   return s_step_counter;
 }
@@ -1473,7 +1474,6 @@ int main(int argc, char **argv) {
   init_view_field();
   start_profiler();
   main_loop();
-  r05_exit(0);
 
 #ifndef R05_NORETURN_DEFINED
   return 0;
