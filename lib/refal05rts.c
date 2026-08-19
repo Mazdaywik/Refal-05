@@ -1047,6 +1047,10 @@ static int is_ident_name(const char *name) {
 #undef in_range
 }
 
+#if defined(__GNUC__) && __GNUC__ >= 15 \
+     || defined(__clang_major__) && __clang_major__ >= 21
+__attribute__((nonstring))
+#endif  /* … && __GNUC__ >= 15 || … && __clang_major__ >= 21 */
 static const char escapes[][2] = {
   "\tt", "\nn", "\rr", "\"\"", "''", "((", "))", "<<", ">>", "\\\\", "\0\0",
 };
