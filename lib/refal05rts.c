@@ -618,8 +618,12 @@ void r05_enum_function_code(struct r05_node *begin, struct r05_node *end) {
 static fast_clock_t s_start_program_time;
 
 
+#if defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED)
+static fast_clock_t s_start_step;
+#endif  /* defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED) */
+
+
 #ifdef R05_SHOW_STAT_DETAILED
-static fast_clock_t s_start_pattern_match_time;
 static fast_clock_t s_total_pattern_match_time;
 static fast_clock_t s_start_building_result_time;
 static fast_clock_t s_total_building_result_time;
@@ -657,7 +661,7 @@ static void start_building_result(void) {
     fast_clock_t pattern_match;
 
     s_start_building_result_time = fast_clock();
-    pattern_match = s_start_building_result_time - s_start_pattern_match_time;
+    pattern_match = s_start_building_result_time - s_start_step;
     s_total_pattern_match_time += pattern_match;
 
     if (s_in_e_loop > 0) {
@@ -668,9 +672,9 @@ static void start_building_result(void) {
 }
 
 
-static void after_step(void) {
+static void after_step(fast_clock_t now) {
   if (s_in_generated) {
-    fast_clock_t building_result = fast_clock() - s_start_building_result_time;
+    fast_clock_t building_result = now - s_start_building_result_time;
     s_total_building_result_time += building_result;
   }
 
@@ -707,7 +711,7 @@ static void add_match_repeated_var_time(char type, fast_clock_t duration) {
 
 #else  /* R05_SHOW_STAT_DETAILED */
 
-#define after_step() ((void) 0)
+#define after_step(now) ((void) 0)
 
 #endif  /* R05_SHOW_STAT_DETAILED */
 
@@ -873,7 +877,7 @@ static void print_functions_profile(double full_time_sec) {
 #endif  /* R05_SHOW_STAT */
 
 static void end_profiler(void) {
-  after_step();
+  after_step(fast_clock());
 
 #ifdef R05_SHOW_STAT
   print_profile();
@@ -892,7 +896,6 @@ void r05_start_e_loop(void) {
 
 
 void r05_this_is_generated_function(void) {
-  s_start_pattern_match_time = fast_clock();
   s_in_generated = 1;
 }
 
@@ -954,9 +957,10 @@ static struct r05_node *s_arg_begin;
 static struct r05_node *s_arg_end;
 
 R05_NORETURN static void main_loop(void) {
-#ifdef R05_PROFILER
-  fast_clock_t start_step = fast_clock(), now;
-#endif  /* R05_PROFILER */
+#if defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED)
+  fast_clock_t now;
+  s_start_step = fast_clock();
+#endif  /* defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED) */
 
   for ( ; ; ) {
     struct r05_node *function;
@@ -979,18 +983,22 @@ R05_NORETURN static void main_loop(void) {
     } else {
       r05_recognition_impossible();
     }
-    after_step();
+
+#if defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED)
+    now = fast_clock();
+    after_step(now);
 
 #ifdef R05_PROFILER
-    now = fast_clock();
     if (callee->next == 0) {
       callee->next = s_profiled_functions;
       s_profiled_functions = callee;
     }
-    callee->seconds += (now - start_step) / (double) FAST_CLOCKS_PER_SEC;
+    callee->seconds += (now - s_start_step) / (double) FAST_CLOCKS_PER_SEC;
     callee->calls += 1;
-    start_step = now;
 #endif  /* R05_PROFILER */
+
+    s_start_step = now;
+#endif  /* defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED) */
 
     ++ s_step_counter;
   }
