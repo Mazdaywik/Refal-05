@@ -2486,9 +2486,7 @@ T-переменная слева, закрытая переменная:
         current = current->next;
       }
 
-      (type == 't' ? add_match_repeated_tvar_time : add_match_repeated_evar_time)(
-        clock() - start_match
-      );
+      add_match_repeated_var_time(type, fast_clock() - start_match);
 
       /*
         Здесь current == limit || cur_sample == limit_sample
