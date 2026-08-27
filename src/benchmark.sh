@@ -37,7 +37,7 @@ echo Run "../bin/refal05c @benchmark.prj" $TIMES times...
 for ((i = 1; i <= "$TIMES"; ++i)); do
   echo ${i}
   echo ${i}>>"$LOG".stdout
-  R05CCOMP= ../bin/refal05c @benchmark.prj 1>> "$LOG".stdout 2>> "$LOG".stderr
+  R05CCOMP= ../bin/refal05c -nts @benchmark.prj 1>> "$LOG".stdout 2>> "$LOG".stderr
 done
 
 sort "$LOG".stderr > "$LOG"_time.txt

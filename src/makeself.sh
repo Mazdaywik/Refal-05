@@ -2,6 +2,7 @@
 (
   MODULES="main generator parser"
   LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
+  OPTIONS=-ntsl20
 
   mkdir -p ../bin
 
@@ -9,13 +10,14 @@
     refc ${MODULES}
     mkdir -p rsl
     mv *.rsl rsl
-    EXECUTABLE="refgo -l20 rsl(${MODULES// /+})+${LIBS// /+}"
+    EXECUTABLE="refgo rsl(${MODULES// /+})+${LIBS// /+}"
   else
     EXECUTABLE="../bin/refal05c"
   fi
 
   if [[ "$1" == "lambda" ]]; then
     rlmake --debug -o${EXECUTABLE} --ref5rsl main.ref
+    OPTIONS=
     echo
   fi
 
@@ -26,7 +28,7 @@
   source ../c-plus-plus.conf.sh
   export R05CFLAGS="-orefal05c -DR05_SHOW_STAT $R05CFLAGS"
   export R05PATH=../lib
-  echo Y | ${EXECUTABLE} ${MODULES} ${LIBS} refal05bif refal05rts
+  echo Y | ${EXECUTABLE} ${OPTIONS} ${MODULES} ${LIBS} refal05bif refal05rts
 
   # Копирование необходимо при компиляции при помощи Cygwin или MSYS,
   # поскольку на платформе Windows невозможно перезаписать исполнимый

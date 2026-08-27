@@ -42,7 +42,7 @@ set R05CCOMP=
 for /L %%i in (1, 1, %TIMES%) do (
   echo %%i
   echo %%i>>"%LOG%.stdout"
-  ..\bin\refal05c @benchmark.prj 1>> "%LOG%.stdout" 2>> "%LOG%.stderr"
+  ..\bin\refal05c -nts @benchmark.prj 1>> "%LOG%.stdout" 2>> "%LOG%.stderr"
 )
 sort "%LOG%.stderr" > "%LOG%_time.txt"
 if exist *.c erase *.c

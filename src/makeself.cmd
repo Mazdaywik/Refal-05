@@ -2,6 +2,7 @@
 setlocal
   set MODULES=main generator parser
   set LIBS=LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
+  set OPTIONS=-ntsl20
 
   md ..\bin 2>NUL
 
@@ -9,7 +10,7 @@ setlocal
     refc %MODULES%
     md rsl 2>NUL
     move *.rsl rsl >NUL
-    set EXECUTABLE=refgo -l20 rsl^(%MODULES: =+%^)+%LIBS: =+%
+    set EXECUTABLE=refgo rsl^(%MODULES: =+%^)+%LIBS: =+%
   ) else (
     set EXECUTABLE=..\bin\refal05c.exe
   )
@@ -17,6 +18,7 @@ setlocal
   :: В опцию -o нельзя вставлять %EXECUTABLE%, приводит к ошибке.
   if {%1}=={lambda} (
     call rlmake --debug -o..\bin\refal05c.exe --ref5rsl main.ref
+    set OPTIONS=
     echo.
   )
 
@@ -25,7 +27,7 @@ setlocal
   call ..\c-plus-plus.conf.cmd
   set R05CFLAGS=-DR05_SHOW_STAT %R05CFLAGS%
   set R05PATH=..\lib
-  echo Y|%EXECUTABLE% %MODULES% %LIBS% refal05bif refal05rts
+  echo Y|%EXECUTABLE% %OPTIONS% %MODULES% %LIBS% refal05bif refal05rts
   if exist main.exe move main.exe refal05c.exe
   if exist a.exe move a.exe refal05c.exe
   if exist *.obj erase *.obj

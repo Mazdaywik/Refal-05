@@ -9,10 +9,6 @@
 
 #include "refal05rts.h"
 
-#ifndef R05_SHOW_DEBUG
-#define R05_SHOW_DEBUG 0
-#endif  /* ifdef R05_SHOW_DEBUG */
-
 
 #define EXIT_CODE_RECOGNITION_IMPOSSIBLE 201
 #define EXIT_CODE_NO_MEMORY 202
@@ -63,12 +59,9 @@ typedef clock_t fast_clock_t;
 
 #endif  /* R05_POSIX */
 
+#define cfSECS_PER_CLOCK (1.0 / FAST_CLOCKS_PER_SEC)
 
 #ifdef R05_SHOW_STAT_DETAILED
-
-#ifndef R05_SHOW_STAT
-#define R05_SHOW_STAT
-#endif  /* R05_SHOW_STAT */
 
 #define DEFINE_CLOCK_VAR(varname) fast_clock_t varname = fast_clock();
 static void add_match_repeated_var_time(char type, fast_clock_t duration);
@@ -94,6 +87,34 @@ struct static_asserts {
     sizeof(r05_number) * CHAR_BIT == 32 || sizeof(r05_number) * CHAR_BIT == 64
   );
 };
+
+
+static struct {
+  struct {
+    char step_count;
+    char view_field;
+    char buried;
+    char elapsed_time;
+    char max_memory;
+    char all_view_field;
+  } show;
+
+  size_t memory_limit; /* мегабайты */
+  unsigned long start_step_debug;
+} s_debug = {
+  { 0, 0, 0, 0, 0, 1 }, 0, 0,
+};
+
+#define show_new_line_before_report() \
+  if ( \
+    s_debug.show.step_count || \
+    s_debug.show.view_field || \
+    s_debug.show.buried || \
+    s_debug.show.elapsed_time || \
+    s_debug.show.max_memory \
+  ) { \
+    fprintf(stderr, "\n"); \
+  }
 
 
 /*==============================================================================
@@ -412,11 +433,12 @@ static int create_nodes(void) {
   size_t i;
   struct memory_chunk *chunk;
 
-#ifdef R05_MEMORY_LIMIT
-  if (s_memory_use >= R05_MEMORY_LIMIT) {
+#ifndef R05_NO_DEBUG
+  size_t megabytes = s_memory_use * sizeof(struct r05_node) / 1024 / 1024;
+  if (s_debug.memory_limit && megabytes >= s_debug.memory_limit) {
     return 0;
   }
-#endif  /* ifdef R05_MEMORY_LIMIT */
+#endif  /* ifndef R05_NO_DEBUG */
 
   chunk = malloc(sizeof(*chunk));
 
@@ -463,16 +485,18 @@ static void free_memory(void) {
     s_pool = next;
   }
 
-#ifdef R05_SHOW_STAT
-  fprintf(
-    stderr,
-    "Memory used %lu nodes, %lu * %lu = %lu bytes\n",
-    (unsigned long int) s_memory_use,
-    (unsigned long int) s_memory_use,
-    (unsigned long int) sizeof(struct r05_node),
-    (unsigned long int) (s_memory_use * sizeof(struct r05_node))
-  );
-#endif  /* R05_SHOW_STAT */
+#ifndef R05_NO_DEBUG
+  if (s_debug.show.max_memory) {
+    fprintf(
+      stderr,
+      "Memory used: %lu nodes, %lu * %lu = %lu bytes.\n",
+      (unsigned long int) s_memory_use,
+      (unsigned long int) s_memory_use,
+      (unsigned long int) sizeof(struct r05_node),
+      (unsigned long int) (s_memory_use * sizeof(struct r05_node))
+    );
+  }
+#endif  /* ! R05_NO_DEBUG */
 }
 
 
@@ -716,13 +740,14 @@ static void add_match_repeated_var_time(char type, fast_clock_t duration) {
 #endif  /* R05_SHOW_STAT_DETAILED */
 
 
-#ifdef R05_SHOW_STAT
+#ifndef R05_NO_DEBUG
+#  ifdef R05_SHOW_STAT_DETAILED
+
 struct time_item {
   const char *name;
   fast_clock_t counter;
 };
 
-#ifdef R05_SHOW_STAT_DETAILED
 static int reverse_compare(const void *left_void, const void *right_void) {
   const struct time_item *left = left_void;
   const struct time_item *right = right_void;
@@ -735,17 +760,8 @@ static int reverse_compare(const void *left_void, const void *right_void) {
     return 0;
   }
 }
-#endif  /* R05_SHOW_STAT_DETAILED */
 
-#ifdef R05_PROFILER
-static void print_functions_profile(double full_time_sec);
-#endif  /* R05_PROFILER */
-
-static void print_profile(void) {
-  const double cfSECS_PER_CLOCK = 1.0 / FAST_CLOCKS_PER_SEC;
-
-  fast_clock_t full_time = fast_clock() - s_start_program_time;
-#ifdef R05_SHOW_STAT_DETAILED
+static void print_profile(fast_clock_t full_time) {
   fast_clock_t refal_time;
   fast_clock_t repeated_time_inside_e;
   fast_clock_t eloop_time;
@@ -769,7 +785,7 @@ static void print_profile(void) {
     Ложное предупреждение BCC 5.5:
     компилятор не допускает инициализацию структур и массивов переменными.
   */
-  items[0].name = "\nTotal program time";
+  items[0].name = "Total program time";
   items[0].counter = full_time;
   items[1].name = "Builtin time";
   items[1].counter = full_time - refal_time;
@@ -806,17 +822,19 @@ static void print_profile(void) {
       );
     }
   }
-#else  /* R05_SHOW_STAT_DETAILED */
+}
+
+#  else  /* R05_SHOW_STAT_DETAILED */
+
+static void print_profile(fast_clock_t full_time) {
   fprintf(
-    stderr, "\nTotal program time: %.3f seconds.\n",
+    stderr, "Total program time: %.3f seconds.\n",
     full_time * cfSECS_PER_CLOCK
   );
-#endif  /* R05_SHOW_STAT_DETAILED */
-
-#ifdef R05_PROFILER
-  print_functions_profile(full_time * cfSECS_PER_CLOCK);
-#endif  /* R05_PROFILER */
 }
+
+#  endif  /* R05_SHOW_STAT_DETAILED */
+#endif  /* ! R05_NO_DEBUG */
 
 #ifdef R05_PROFILER
 /* предобъявление, без инициализатора */
@@ -874,14 +892,23 @@ static void print_functions_profile(double full_time_sec) {
 }
 #endif  /* R05_PROFILER */
 
-#endif  /* R05_SHOW_STAT */
-
 static void end_profiler(void) {
-  after_step(fast_clock());
+#if ! defined(R05_NO_DEBUG) || defined(R05_PROFILER)
+  fast_clock_t now = fast_clock();
+  fast_clock_t full_time = now - s_start_program_time;
+#endif  /* ! defined(R05_NO_DEBUG) || defined(R05_PROFILER) */
 
-#ifdef R05_SHOW_STAT
-  print_profile();
-#endif  /* R05_SHOW_STAT */
+  after_step(now);
+
+#ifndef R05_NO_DEBUG
+  if (s_debug.show.elapsed_time) {
+    print_profile(full_time);
+  }
+#endif  /* ! R05_NO_DEBUG */
+
+#ifdef R05_PROFILER
+  print_functions_profile(full_time * cfSECS_PER_CLOCK);
+#endif  /* R05_PROFILER */
 }
 
 
@@ -970,11 +997,13 @@ R05_NORETURN static void main_loop(void) {
     s_arg_end = s_arg_begin->info.link;
     s_stack_ptr = s_arg_end->info.link;
 
-#if R05_SHOW_DEBUG
-    if (s_step_counter >= (unsigned long) R05_SHOW_DEBUG) {
+#ifndef R05_NO_DEBUG
+    if (
+      s_debug.start_step_debug && s_step_counter >= s_debug.start_step_debug
+    ) {
       make_dump();
     }
-#endif  /* R05_SHOW_DEBUG */
+#endif  /* ! R05_NO_DEBUG */
 
     function = s_arg_begin->next;
     if (R05_DATATAG_FUNCTION == function->tag) {
@@ -1086,7 +1115,7 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
             if (0 == begin->prev) {
               fprintf(stderr, "[FIRST] ");
             } else if (0 == begin->next) {
-              fprintf(stderr, "\n[LAST]");
+              fprintf(stderr, "\n[LAST]\n");
               state = cStateFinish;
             } else {
               fprintf(stderr, "\n[NONE]");
@@ -1224,21 +1253,37 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 }
 
 
+#ifndef R05_NO_DEBUG
 static void dump_buried(void);
 
-static void make_dump(void) {
-  fprintf(stderr, "\nSTEP NUMBER %lu\n", s_step_counter);
-  fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION:\n");
-  print_seq(s_arg_begin, s_arg_end);
+
+static void dump_view_field(void) {
   fprintf(stderr, "\nVIEW FIELD:\n");
   print_seq(&s_begin_view_field, &s_end_view_field);
+}
 
-  dump_buried();
-
-#ifdef R05_DUMP_FREE_LIST
+#  ifdef R05_DUMP_FREE_LIST
+static void dump_free_list(void) {
   fprintf(stderr, "\nFREE LIST:\n");
   print_seq(&s_begin_free_list, &s_end_free_list);
-#endif  /* ifdef R05_DUMP_FREE_LIST */
+}
+#  else  /* R05_DUMP_FREE_LIST */
+#    define dump_free_list() ((void) 0)
+#  endif  /* R05_DUMP_FREE_LIST */
+#endif  /* ! R05_NO_DEBUG */
+
+static void make_dump(void) {
+  fprintf(stderr, "\nPRIMARY ACTIVE EXPRESSION (step %lu):\n", s_step_counter);
+  print_seq(s_arg_begin, s_arg_end);
+  fprintf(stderr, "\n");
+
+#ifndef R05_NO_DEBUG
+  if (s_debug.show.all_view_field) {
+    dump_view_field();
+    dump_buried();
+    dump_free_list();
+  }
+#endif  /* R05_NO_DEBUG */
 
   fprintf(stderr,"\nEnd dump\n");
   fflush(stderr);
@@ -1246,14 +1291,28 @@ static void make_dump(void) {
 
 
 R05_NORETURN void r05_exit(int retcode) {
-  dump_buried();
   fflush(stderr);
   fflush(stdout);
+  show_new_line_before_report();
   end_profiler();
 
-#ifdef R05_SHOW_STAT
-  fprintf(stderr, "Step count %lu\n", s_step_counter);
-#endif  /* R05_SHOW_STAT */
+#ifndef R05_NO_DEBUG
+  if (s_debug.show.step_count) {
+    fprintf(stderr, "Step count: %lu.\n", s_step_counter);
+  }
+
+  if (s_debug.show.view_field) {
+    dump_view_field();
+  }
+
+  if (s_debug.show.buried) {
+    dump_buried();
+  }
+
+  if (s_debug.show.view_field) {
+    dump_free_list();
+  }
+#endif  /* ! R05_NO_DEBUG */
 
   free_memory();
   fflush(stdout);
@@ -1467,17 +1526,152 @@ void r05_rp(struct r05_node *arg_begin, struct r05_node *arg_end) {
 }
 
 
+#ifndef R05_NO_DEBUG
 static void dump_buried(void) {
-#ifdef R05_DUMP_BURIED
   fprintf(stderr, "\nBURIED:\n");
   print_seq(&s_begin_buried, &s_end_buried);
-#endif  /* ifdef R05_DUMP_BURIED */
+}
+#endif  /* ! R05_NO_DEBUG */
+
+
+static const char *with_prefix(const char *str, const char *prefix) {
+  size_t len = strlen(prefix);
+  return strncmp(str, prefix, len) == 0 ? str + len : NULL;
 }
 
 
 int main(int argc, char **argv) {
-  s_argc = argc;
+  int i = 0, j = 1, show_help = 0;
+
+  s_argc = 0;
   s_argv = argv;
+
+  while (i < argc) {
+    if (argv[i][0] != '-') {
+      s_argv[s_argc++] = argv[i++];
+    } else if ('-' == argv[i][1]) {
+      if (with_prefix(argv[i], "--help")) {
+        show_help = 1;
+      }
+      ++i;
+    } else {
+      char letter = argv[i][j];
+      if ('\0' == letter) {
+        j = 1;
+        ++i;
+      } else if (strchr("nvktsaeh", letter)) {
+        switch (letter) {
+          case 'n': s_debug.show.step_count = 1; break;
+          case 'v': s_debug.show.view_field = 1; break;
+          case 'k': s_debug.show.buried = 1; break;
+          case 't': s_debug.show.elapsed_time = 1; break;
+          case 's': s_debug.show.max_memory = 1; break;
+
+          case 'a':
+            s_debug.show.step_count = 1;
+            s_debug.show.view_field = 1;
+            s_debug.show.buried = 1;
+            s_debug.show.elapsed_time = 1;
+            s_debug.show.max_memory = 1;
+            break;
+
+          case 'e': s_debug.show.all_view_field = 0; break;
+          case 'h': show_help = 1; break;
+
+          default:
+            r05_switch_default_violation(letter);
+        }
+        ++j;
+      } else if (strchr("CclVd", letter)) {
+        const char *str_value = "";
+        unsigned long num_value;
+
+        if (argv[i][j + 1] != '\0') {
+          str_value = argv[i] + j + 1;
+        } else if (letter != 'd' && i + 1 < argc) {
+          str_value = argv[++i];
+        } else {
+#ifndef R05_NO_DEBUG
+          fprintf(
+            stderr,
+            "WARNING: no value for parameter -%c.\nParameter is ignored\n",
+            letter
+          );
+#endif  /* ! R05_NO_DEBUG */
+        }
+
+        if (sscanf(str_value, "%ld", &num_value) == 1) {
+          switch (letter) {
+            case 'C':
+            case 'c':
+              /* игнорируем эту опцию */
+              break;
+
+            case 'l':
+              s_debug.memory_limit = num_value;
+              break;
+
+            case 'V':
+              /* игнорируем эту опцию */
+              break;
+
+            case 'd':
+              s_debug.start_step_debug = num_value;
+              break;
+
+            default:
+              r05_switch_default_violation(letter);
+          }
+        } else {
+#ifndef R05_NO_DEBUG
+          fprintf(
+            stderr,
+            "WARNING: expect number for parameter -%c.\nParameter is ignored\n",
+            letter
+          );
+#endif  /* ! R05_NO_DEBUG */
+        }
+
+        j = 1;
+        ++i;
+      } else {
+        ++j;
+      }
+    }
+  }
+
+#ifndef R05_NO_DEBUG
+  if (show_help) {
+    printf(
+      "Debug options:\n"
+      "\n"
+      " -n : upon normal stop print the number of steps.\n"
+      " -v :   \"   \"   \"   \"   \"   \"    view field.\n"
+      " -k :   \"   \"   \"   \"   \"   \"    buried data.\n"
+#ifdef R05_SHOW_STAT_DETAILED
+      " -t :   \"   \"   \"   \"   \"   \"    elapsed time (detailed report).\n"
+#else  /* R05_SHOW_STAT_DETAILED */
+      " -t :   \"   \"   \"   \"   \"   \"    elapsed time.\n"
+#endif  /* R05_SHOW_STAT_DETAILED */
+      " -s :   \"   \"   \"   \"   \"   \"    maximum allocated storage.\n"
+      " -a : all of the above.\n"
+      "\n"
+      " -e : upon internal error don't print all view field,\n"
+      "      print only failed expression.\n"
+      "\n"
+      " -l[ ]nnn : where 'nnn' is number - memory limit for the view field\n"
+      "            in megabytes.\n"
+      " -dnnn : where 'nnn' is number - show view field dump at each step\n"
+      "         after step 'nnn'\n"
+      "\n"
+      " -C[ ]nnn, -c[ ]nnn, -V[ ]nnn : skipped, added for compatibility.\n"
+      "\n"
+      " -h or --help : print this help message.\n"
+    );
+  }
+#else  /* ! R05_NO_DEBUG */
+  (void) show_help;
+#endif  /* ! R05_NO_DEBUG */
 
   init_view_field();
   start_profiler();

@@ -319,6 +319,10 @@ void r05_enum_function_code(struct r05_node *begin, struct r05_node *end);
 
 /* Профилирование */
 
+#if defined(R05_NO_DEBUG) && defined(R05_SHOW_STAT_DETAILED)
+#  undef R05_SHOW_STAT_DETAILED
+#endif  /* defined(R05_NO_DEBUG) && defined(R05_SHOW_STAT_DETAILED) */
+
 #ifdef R05_SHOW_STAT_DETAILED
 
 void r05_this_is_generated_function(void);
