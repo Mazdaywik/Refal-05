@@ -35,7 +35,7 @@ Main {
                 , <CCompile e.Outputs>
                 : {
                     /* Не установлена R05CCOMP или компиляция прошла успешно */
-                    0 = <Prout '*** Compilation successed ***'>;
+                    0 = <Prout '*** Compilation succeded ***'>;
 
                     e.RetCode
                       = <Prout
