@@ -2,7 +2,7 @@
 (
   MODULES="main generator parser"
   LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
-  OPTIONS=-ntsl20
+  OPTIONS='-nts -l20'
 
   mkdir -p ../bin
 
@@ -26,7 +26,7 @@
   fi
 
   source ../c-plus-plus.conf.sh
-  export R05CFLAGS="-orefal05c -DR05_SHOW_STAT $R05CFLAGS"
+  export R05CFLAGS="-orefal05c $R05CFLAGS"
   export R05PATH=../lib
   echo Y | ${EXECUTABLE} ${OPTIONS} ${MODULES} ${LIBS} refal05bif refal05rts
 

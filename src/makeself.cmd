@@ -2,7 +2,7 @@
 setlocal
   set MODULES=main generator parser
   set LIBS=LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
-  set OPTIONS=-ntsl20
+  set OPTIONS=-nts -l20
 
   md ..\bin 2>NUL
 
@@ -25,7 +25,6 @@ setlocal
   if {%2}=={and_stop} goto :EOF
 
   call ..\c-plus-plus.conf.cmd
-  set R05CFLAGS=-DR05_SHOW_STAT %R05CFLAGS%
   set R05PATH=..\lib
   echo Y|%EXECUTABLE% %OPTIONS% %MODULES% %LIBS% refal05bif refal05rts
   if exist main.exe move main.exe refal05c.exe
