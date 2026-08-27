@@ -29,7 +29,7 @@ mv "$INISAVE" "$INI"
 
 echo
 echo Build refal05c with itself...
-./makeself.sh
+./makeself.sh lambda
 
 echo
 echo Run "../bin/refal05c @benchmark.prj" $TIMES times...

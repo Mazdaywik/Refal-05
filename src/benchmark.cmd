@@ -32,7 +32,7 @@ if exist _profile_count.txt move _profile_count.txt "%LOG%_profile_count.txt"
 
 echo.
 echo Build refal05c with itself...
-call makeself.cmd
+call makeself.cmd lambda
 
 echo.
 echo Run "..\bin\refal05c @benchmark.prj" %TIMES% times...
