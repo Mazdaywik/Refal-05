@@ -55,4 +55,4 @@ for ((i = 1; i <= "$TIMES"; ++i)); do
 done
 
 sort "$LOG".stderr > "$LOG"_time.txt
-rm -f *.cpp
+rm -f *.c
