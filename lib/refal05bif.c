@@ -48,11 +48,11 @@ struct static_asserts {
   ALIAS_DESCRIPTOR(name, rep, r05c_ ## origin)
 
 
-DEFINE_ALIAS(k25_, "%", Mod);
-DEFINE_ALIAS(k2A_, "*", Mul);
-DEFINE_ALIAS(k2B_, "+", Add);
-DEFINE_ALIAS(m_, "-", Sub);
-DEFINE_ALIAS(k2F_, "/", Div);
+DEFINE_ALIAS(k25_, "%", Mod)
+DEFINE_ALIAS(k2A_, "*", Mul)
+DEFINE_ALIAS(k2B_, "+", Add)
+DEFINE_ALIAS(m_, "-", Sub)
+DEFINE_ALIAS(k2F_, "/", Div)
 
 
 #define is_ident_tail(c) \
@@ -441,7 +441,7 @@ R05_DEFINE_ENTRY_FUNCTION(Arg, "Arg") {
 /**
   4. <Br e.Key '=' e.Value> == empty
 */
-ALIAS_DESCRIPTOR(Br, "Br", r05_br);
+ALIAS_DESCRIPTOR(Br, "Br", r05_br)
 
 
 /**
@@ -501,13 +501,13 @@ R05_DEFINE_ENTRY_FUNCTION(Chr, "Chr") {
 /**
   7. <Cp e.Key> == e.Value
 */
-ALIAS_DESCRIPTOR(Cp, "Cp", r05_cp);
+ALIAS_DESCRIPTOR(Cp, "Cp", r05_cp)
 
 
 /**
   8. <Dg e.Key> == e.Value
 */
-ALIAS_DESCRIPTOR(Dg, "Dg", r05_dg);
+ALIAS_DESCRIPTOR(Dg, "Dg", r05_dg)
 
 
 /**
@@ -1830,7 +1830,7 @@ R05_DEFINE_ENTRY_FUNCTION(Putout, "Putout") {
 /**
   28. <Rp e.Key '=' e.Value> == empty
 */
-ALIAS_DESCRIPTOR(Rp, "Rp", r05_rp);
+ALIAS_DESCRIPTOR(Rp, "Rp", r05_rp)
 
 
 /**
@@ -3191,8 +3191,8 @@ struct builtin_info {
   struct r05_function *type;
 };
 
-R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin);
-R05_DECLARE_ENTRY_FUNCTION(SizeOf);
+R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin)
+R05_DECLARE_ENTRY_FUNCTION(SizeOf)
 
 static struct builtin_info s_builtin_info[] = {
 #define ALLOC_BUILTIN(id, function, type) \
@@ -3295,7 +3295,7 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 
   r05_splice_from_freelist(arg_begin);
   r05_splice_to_freelist(arg_begin, arg_end);
-};
+}
 
 
 static struct r05_function *lookup_builtin_by_chain(

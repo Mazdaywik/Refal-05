@@ -149,9 +149,9 @@ static struct {
 #define equal_numbers(x, y) ((x) == (y))
 
 
-match_symbol_funcs(function, struct r05_function *, FUNCTION, function);
-match_symbol_funcs(char, char, CHAR, char_);
-match_symbol_funcs(number, r05_number, NUMBER, number);
+match_symbol_funcs(function, struct r05_function *, FUNCTION, function)
+match_symbol_funcs(char, char, CHAR, char_)
+match_symbol_funcs(number, r05_number, NUMBER, number)
 
 
 int r05_brackets_left(
@@ -1594,7 +1594,7 @@ int main(int argc, char **argv) {
 #endif  /* ! R05_NO_DEBUG */
         }
 
-        if (sscanf(str_value, "%ld", &num_value) == 1) {
+        if (sscanf(str_value, "%lu", &num_value) == 1) {
           switch (letter) {
             case 'C':
             case 'c':

@@ -431,7 +431,7 @@ struct r05_metatable {
   )
 
 
-R05_DECLARE_ENTRY_FUNCTION(Stopd_d_);
+R05_DECLARE_ENTRY_FUNCTION(Stopd_d_)
 
 
 void r05_br(struct r05_node *arg_begin, struct r05_node *arg_end);
