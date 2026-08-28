@@ -59,12 +59,6 @@ $ENTRY generator_GenTreeItem {
     (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
     <GenFunction s.ScopeClass (e.Name) e.Body>;
 
-  (e.Declarations) (SpecialComment t.SrcPos e.Text) =
-    (e.Declarations)
-    ('/*')
-    (<SafeSpecialComment e.Text>)
-    ('*/');
-
   (e.Declarations) (Metatable e.Names)
     = (e.Declarations)
       ('static struct r05_function *metatable_entries[] = {')
@@ -76,14 +70,6 @@ $ENTRY generator_GenTreeItem {
       ('  metatable_entries')
       ('};')
       ();
-}
-
-SafeSpecialComment {
-  '!' e.Comment = '!!' <SafeSpecialComment e.Comment>;
-  '/*' e.Comment = '/!*' <SafeSpecialComment e.Comment>;
-  '*/' e.Comment = '*!/' <SafeSpecialComment e.Comment>;
-  s.Other e.Comment = s.Other <SafeSpecialComment e.Comment>;
-  /* пусто */ = /* пусто */;
 }
 
 $ENTRY generator_MetatableName {

@@ -34,7 +34,7 @@ $ENTRY parser_PlainExterns {
   (Function t.Pos (e.Name) s.Scope e.Body)
     = (Function t.Pos (e.Name) s.Scope e.Body);
 
-  (SpecialComment t.Pos e.Text) = (SpecialComment t.Pos e.Text);
+  (SpecialComment t.Pos e.Text) = /* игнорируем */;
 }
 
 $ENTRY parser_PlainExterns-Name {
@@ -61,9 +61,6 @@ $ENTRY parser_FindUnused-InitialUsage {
 
   (e.Entries) (Function t.Pos (e.Name) s.Scope e.Body)
     = (e.Entries) (Function Unused t.Pos (e.Name) s.Scope e.Body);
-
-  (e.Entries) (SpecialComment t.Pos e.Comment)
-    = (e.Entries) (SpecialComment t.Pos e.Comment);
 }
 
 FindUnused-Loop {
@@ -158,9 +155,6 @@ $ENTRY parser_AddMetatable-AddFunction {
   (e.AllFunctions) (Function s.Used t.Pos (e.Name) s.Scope e.Body)
     = (e.AllFunctions (e.Name))
       (Function s.Used t.Pos (e.Name) s.Scope e.Body);
-
-  (e.AllFunctions) (SpecialComment t.Pos e.Comment)
-    = (e.AllFunctions) (SpecialComment t.Pos e.Comment);
 }
 
 $ENTRY parser_AddMetatable-MakeMetafunction {
@@ -206,8 +200,6 @@ $ENTRY parser_CastAST-Item {
 
   (Function Used t.Pos (e.Name) s.Scope e.Body)
     = (Function t.Pos (e.Name) s.Scope e.Body);
-
-  (SpecialComment t.Pos e.Comment) = (SpecialComment t.Pos e.Comment);
 
   (Metatable e.Functions) = (Metatable e.Functions);
 }
