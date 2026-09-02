@@ -1787,10 +1787,13 @@ static void output_func(
   if (type == PRINT || type == PUT) {
     r05_splice_to_freelist(arg_begin, before_expr);
     r05_splice_to_freelist(arg_end, arg_end);
-  } else if (type == PROUT || type == PUTOUT || type == WRITE) {
-    r05_splice_to_freelist(arg_begin, arg_end);
   } else {
-    r05_switch_default_violation(type);
+    r05_splice_to_freelist(arg_begin, arg_end);
+    /*
+      Проверка на r05_switch_default_violation здесь избыточна,
+      т.к. аналогичная проверка есть в начале функции
+      и, если что, сработает она.
+    */
   }
 }
 
@@ -2569,7 +2572,6 @@ static void sysfun_2(
     switch (p->tag) {
       case R05_DATATAG_CHAR:
         fputc_width(fout, '\'', &rest, width);
-        p = p;
         do {
           unsigned char ch = p->info.char_;
           fputc_width_escaped(fout, ch, &rest, width);

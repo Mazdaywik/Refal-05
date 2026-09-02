@@ -1005,6 +1005,9 @@ R05_NORETURN static void main_loop(void) {
       (callee->ptr)(s_arg_begin, s_arg_end);
     } else {
       r05_recognition_impossible();
+#ifndef R05_NORETURN_DEFINED
+      return;
+#endif
     }
 
 #if defined(R05_PROFILER) || defined(R05_SHOW_STAT_DETAILED)
@@ -1187,6 +1190,9 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
           default:
             r05_switch_default_violation(begin->tag);
+#ifndef R05_NORETURN_DEFINED
+            return;
+#endif
         }
 
       case cStateString:
@@ -1238,6 +1244,9 @@ static void print_seq(struct r05_node *begin, struct r05_node *end) {
 
       default:
         r05_switch_default_violation(state);
+#ifndef R05_NORETURN_DEFINED
+        return;
+#endif
     }
   }
 
