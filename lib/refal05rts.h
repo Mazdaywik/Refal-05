@@ -288,7 +288,7 @@ void r05_alloc_chars(const char buffer[], size_t len);
   (r05_alloc_node(R05_DATATAG_NUMBER)->info.number = (num))
 
 #define r05_alloc_function(func) \
-  (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function = func)
+  (r05_alloc_node(R05_DATATAG_FUNCTION)->info.function = (func))
 
 #define r05_alloc_open_bracket(pos) \
   (*(pos) = r05_alloc_node(R05_DATATAG_OPEN_BRACKET))
