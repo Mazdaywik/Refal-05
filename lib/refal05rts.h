@@ -117,7 +117,7 @@ struct r05_function {
   r05_function_ptr ptr;
   const char *name;
   int entry;
-  struct r05_metatable *metatable;
+  const struct r05_metatable *metatable;
 };
 
 #if defined(R05_NUMBER_INT)
@@ -148,7 +148,7 @@ struct r05_node {
   enum r05_datatag tag;
   union {
     char char_;
-    struct r05_function *function;
+    const struct r05_function *function;
     r05_number number;
     struct r05_node *link;
   } info;
@@ -161,12 +161,12 @@ struct r05_node {
 
 int r05_function_left(
   struct r05_node **res, struct r05_node *left, struct r05_node *right,
-  struct r05_function *function
+  const struct r05_function *function
 );
 
 int r05_function_right(
   struct r05_node **res, struct r05_node *left, struct r05_node *right,
-  struct r05_function *function
+  const struct r05_function *function
 );
 
 int r05_char_left(
@@ -358,19 +358,19 @@ R05_NORETURN void r05_switch_default_violation_impl(
 
 
 #define R05_DEFINE_ENTRY_ENUM(name, rep) \
-  struct r05_function r05f_ ## name = { \
+  const struct r05_function r05f_ ## name = { \
     r05_enum_function_code, rep, 1, NULL, \
   };
 #define R05_DEFINE_LOCAL_ENUM(name, rep) \
-  static struct r05_function r05f_ ## name = { \
+  static const struct r05_function r05f_ ## name = { \
     r05_enum_function_code, rep, 0, NULL, \
   };
 
 
 #define R05_DECLARE_ENTRY_FUNCTION(name) \
-  extern struct r05_function r05f_ ## name;
+  extern const struct r05_function r05f_ ## name;
 #define R05_DECLARE_LOCAL_FUNCTION(name) \
-  static struct r05_function r05f_ ## name;
+  static const struct r05_function r05f_ ## name;
 
 
 #define R05_DEFINE_ENTRY_FUNCTION(name, rep) \
@@ -382,7 +382,7 @@ R05_NORETURN void r05_switch_default_violation_impl(
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
-  scope struct r05_function r05f_ ## name = { \
+  scope const struct r05_function r05f_ ## name = { \
     r05c_ ## name, rep, entry, NULL \
   }; \
   static void r05c_ ## name( \
@@ -392,7 +392,7 @@ R05_NORETURN void r05_switch_default_violation_impl(
 
 struct r05_metatable {
   size_t size;
-  struct r05_function **functions;
+  const struct r05_function *const *functions;
 };
 
 
@@ -400,7 +400,7 @@ struct r05_metatable {
   extern void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
-  static struct r05_metatable metatable; \
+  static const struct r05_metatable metatable; \
   static struct r05_function r05f_ ## name = { \
     r05c_ ## name, rep, 0, &metatable \
   };
@@ -409,7 +409,7 @@ struct r05_metatable {
   extern void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
-  static struct r05_function r05f_ ## name = { \
+  static const struct r05_function r05f_ ## name = { \
     r05c_ ## name, rep, 0, NULL \
   }; \
   void r05c_ ## name( \

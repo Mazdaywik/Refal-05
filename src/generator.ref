@@ -61,11 +61,11 @@ $ENTRY generator_GenTreeItem {
 
   (e.Declarations) (Metatable e.Names)
     = (e.Declarations)
-      ('static struct r05_function *metatable_entries[] = {')
+      ('static const struct r05_function *metatable_entries[] = {')
       <Map generator_MetatableName e.Names>
       ('};')
       ()
-      ('static struct r05_metatable metatable = {')
+      ('static const struct r05_metatable metatable = {')
       ('  sizeof(metatable_entries) / sizeof(metatable_entries[0]),')
       ('  metatable_entries')
       ('};')

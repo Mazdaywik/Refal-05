@@ -166,7 +166,7 @@ static struct {
 #define equal_numbers(x, y) ((x) == (y))
 
 
-match_symbol_funcs(function, struct r05_function *, FUNCTION, function)
+match_symbol_funcs(function, const struct r05_function *, FUNCTION, function)
 match_symbol_funcs(char, char, CHAR, char_)
 match_symbol_funcs(number, r05_number, NUMBER, number)
 
@@ -1048,7 +1048,7 @@ R05_NORETURN static void main_loop(void) {
 
   for ( ; ; ) {
     struct r05_node *function;
-    struct r05_function *callee;
+    const struct r05_function *callee;
 
     s_arg_begin = s_stack_ptr;
     s_arg_end = s_arg_begin->info.link;

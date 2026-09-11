@@ -36,7 +36,7 @@ struct static_asserts {
 
 
 #define ALIAS_DESCRIPTOR(name, rep, origin) \
-  struct r05_function r05f_ ## name = { origin, rep, 1, NULL };
+  const struct r05_function r05f_ ## name = { origin, rep, 1, NULL };
 
 
 #define DEFINE_ALIAS(name, rep, origin) \
@@ -60,12 +60,12 @@ DEFINE_ALIAS(k2F_, "/", Div)
   )
 
 
-static struct r05_function *s_arithmetic_names[] = {
+static const struct r05_function *const s_arithmetic_names[] = {
   &r05f_k25_, &r05f_k2A_, &r05f_k2B_, &r05f_m_, &r05f_k2F_, NULL
 };
 
 
-static struct r05_function *lookup_builtin_by_chain(
+static const struct r05_function *lookup_builtin_by_chain(
   struct r05_node *name_b, struct r05_node *name_e
 );
 
@@ -81,8 +81,8 @@ static int chain_str_eq(
 R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
   struct r05_node *mu = arg_begin->next;
   struct r05_node *callable = mu->next;
-  struct r05_metatable *metatable = mu->info.function->metatable;
-  struct r05_function **cur, **end;
+  const struct r05_metatable *metatable = mu->info.function->metatable;
+  const struct r05_function *const *cur, *const *end;
   struct r05_node *brackets[2];
 
   assert(metatable != NULL);
@@ -102,7 +102,7 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
     r05_splice_to_freelist(mu, mu);
   } else if (R05_DATATAG_CHAR == callable->tag) {
     char name = callable->info.char_;
-    struct r05_function **alias = s_arithmetic_names;
+    const struct r05_function *const *alias = s_arithmetic_names;
     while (*alias != NULL && (*alias)->name[0] != name) {
       ++alias;
     }
@@ -129,7 +129,7 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
     struct r05_node *p = brackets[0]->next;
     struct r05_node *name_b = brackets[0]->next;
     struct r05_node *name_e = brackets[1]->prev;
-    struct r05_function *callee = NULL, *builtin;
+    const struct r05_function *callee = NULL, *builtin;
 
     while (p != brackets[1] && R05_DATATAG_CHAR == p->tag) {
       p = p->next;
@@ -1051,7 +1051,7 @@ FILE *open_numbered(unsigned int file_no, const char mode) {
   s.Letter ::= 'A' | … | 'Z' | 'a' | … | 'z'
   s.Digit ::= '0' | … | '9'
 */
-static struct r05_function *implode(
+static const struct r05_function *implode(
   struct r05_node *begin, struct r05_node *end
 );
 
@@ -1171,10 +1171,10 @@ static void resize_imploded_table_if_need(void) {
 }
 
 
-static struct r05_function *implode(
+static const struct r05_function *implode(
   struct r05_node *begin, struct r05_node *end
 ) {
-  struct r05_function *builtin;
+  const struct r05_function *builtin;
   struct r05_node *node, *limit = end->next;
   size_t len, hash, i;
   struct imploded **bucket, *known, *new;
@@ -2139,7 +2139,7 @@ static void compound_add_char(
   struct imploded **compound, size_t *len, size_t *capacity,
   int ch, int line_no
 );
-static struct r05_function *compound_register(struct imploded *new);
+static const struct r05_function *compound_register(struct imploded *new);
 static void read_quote(char open_quote, FILE *fin, int *line_no);
 static int read_escaped_char(FILE *fin, int *line_no);
 
@@ -2439,11 +2439,11 @@ static void compound_add_char(
 }
 
 
-static struct r05_function *lookup_builtin_by_str(const char *name);
+static const struct r05_function *lookup_builtin_by_str(const char *name);
 
 
-static struct r05_function *compound_register(struct imploded *new) {
-  struct r05_function *callee = lookup_builtin_by_str(new->name);
+static const struct r05_function *compound_register(struct imploded *new) {
+  const struct r05_function *callee = lookup_builtin_by_str(new->name);
 
   if (callee != NULL) {
     free(new);
@@ -2891,7 +2891,7 @@ R05_DEFINE_ENTRY_FUNCTION(RemoveFile, "RemoveFile") {
   char filename[FILENAME_MAX + 1];
   size_t filename_len;
   int res;
-  struct r05_function *sign;
+  const struct r05_function *sign;
   const char *message;
 
   filename_len =
@@ -3185,14 +3185,14 @@ R05_DEFINE_LOCAL_ENUM(regular, "regular")
 
 struct builtin_info {
   r05_number id;
-  struct r05_function *function;
-  struct r05_function *type;
+  const struct r05_function *function;
+  const struct r05_function *type;
 };
 
 R05_DECLARE_ENTRY_FUNCTION(ListOfBuiltin)
 R05_DECLARE_ENTRY_FUNCTION(SizeOf)
 
-static struct builtin_info s_builtin_info[] = {
+static const struct builtin_info s_builtin_info[] = {
 #define ALLOC_BUILTIN(id, function, type) \
   { id, &r05f_ ## function, &r05f_ ## type },
 
@@ -3275,7 +3275,7 @@ static struct builtin_info s_builtin_info[] = {
 R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
   struct r05_node *callee = arg_begin->next;
   struct r05_node *left_bracket, *right_bracket;
-  struct builtin_info *info;
+  const struct builtin_info *info;
 
   if (callee->next != arg_end) {
     r05_recognition_impossible();
@@ -3296,12 +3296,12 @@ R05_DEFINE_ENTRY_FUNCTION(ListOfBuiltin, "ListOfBuiltin") {
 }
 
 
-static struct r05_function *lookup_builtin_by_chain(
+static const struct r05_function *lookup_builtin_by_chain(
   struct r05_node *name_b, struct r05_node *name_e
 ) {
-  struct r05_function *callee = NULL;
-  struct builtin_info *bi = s_builtin_info;
-  struct r05_function **alias = s_arithmetic_names;
+  const struct r05_function *callee = NULL;
+  const struct builtin_info *bi = s_builtin_info;
+  const struct r05_function *const *alias = s_arithmetic_names;
 
   while (
     bi->function != NULL && ! chain_str_eq(name_b, name_e, bi->function->name)
@@ -3324,10 +3324,10 @@ static struct r05_function *lookup_builtin_by_chain(
 }
 
 
-static struct r05_function *lookup_builtin_by_str(const char *name) {
-  struct builtin_info *bi = s_builtin_info;
-  struct r05_function **alias = s_arithmetic_names;
-  struct r05_function *callee = NULL;
+static const struct r05_function *lookup_builtin_by_str(const char *name) {
+  const struct builtin_info *bi = s_builtin_info;
+  const struct r05_function *const *alias = s_arithmetic_names;
+  const struct r05_function *callee = NULL;
 
   while (bi->function != NULL && strcmp(name, bi->function->name) != 0) {
     ++bi;
