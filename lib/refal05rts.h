@@ -118,11 +118,6 @@ struct r05_function {
   const char *name;
   int entry;
   struct r05_metatable *metatable;
-#ifdef R05_PROFILER
-  double seconds;
-  unsigned long calls;
-  struct r05_function *next;
-#endif
 };
 
 #if defined(R05_NUMBER_INT)
@@ -362,22 +357,13 @@ R05_NORETURN void r05_switch_default_violation_impl(
 );
 
 
-#ifdef R05_PROFILER
-#define R05_INIT_PROFILER 0, 0, NULL,
-#else
-#define R05_INIT_PROFILER
-#endif
-
-
 #define R05_DEFINE_ENTRY_ENUM(name, rep) \
   struct r05_function r05f_ ## name = { \
     r05_enum_function_code, rep, 1, NULL, \
-    R05_INIT_PROFILER \
   };
 #define R05_DEFINE_LOCAL_ENUM(name, rep) \
   static struct r05_function r05f_ ## name = { \
     r05_enum_function_code, rep, 0, NULL, \
-    R05_INIT_PROFILER \
   };
 
 
@@ -397,7 +383,7 @@ R05_NORETURN void r05_switch_default_violation_impl(
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
   scope struct r05_function r05f_ ## name = { \
-    r05c_ ## name, rep, entry, NULL, R05_INIT_PROFILER \
+    r05c_ ## name, rep, entry, NULL \
   }; \
   static void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
@@ -416,7 +402,7 @@ struct r05_metatable {
   ); \
   static struct r05_metatable metatable; \
   static struct r05_function r05f_ ## name = { \
-    r05c_ ## name, rep, 0, &metatable, R05_INIT_PROFILER \
+    r05c_ ## name, rep, 0, &metatable \
   };
 
 #define R05_IMPLEMENT_METAFUNCTION(name, rep) \
@@ -424,7 +410,7 @@ struct r05_metatable {
     struct r05_node *arg_begin, struct r05_node *arg_end \
   ); \
   static struct r05_function r05f_ ## name = { \
-    r05c_ ## name, rep, 0, NULL, R05_INIT_PROFILER \
+    r05c_ ## name, rep, 0, NULL \
   }; \
   void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \

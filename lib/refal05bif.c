@@ -36,9 +36,7 @@ struct static_asserts {
 
 
 #define ALIAS_DESCRIPTOR(name, rep, origin) \
-  struct r05_function r05f_ ## name = { \
-    origin, rep, 1, NULL, R05_INIT_PROFILER \
-  };
+  struct r05_function r05f_ ## name = { origin, rep, 1, NULL };
 
 
 #define DEFINE_ALIAS(name, rep, origin) \
@@ -2625,9 +2623,7 @@ static void sysfun_2(
 /**
   44. Пустая функция с именем ""
 */
-struct r05_function r05f_ = {
-  r05_enum_function_code, "", 1, NULL, R05_INIT_PROFILER
-};
+struct r05_function r05f_ = { r05_enum_function_code, "", 1, NULL };
 
 
 

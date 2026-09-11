@@ -7,6 +7,14 @@
 #include <string.h>
 #include <time.h>
 
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L \
+     || defined(__cplusplus) && __cplusplus >= 201103L
+#  include <stdint.h>
+typedef uintptr_t r05_uintptr_t;
+#else  /* … && __STDC_VERSION__ >= 199901L || … && __cplusplus >= 201103L */
+typedef size_t r05_uintptr_t;
+#endif  /* … && __STDC_VERSION__ >= 199901L || … && __cplusplus >= 201103L */
+
 #include "refal05rts.h"
 
 
@@ -87,6 +95,15 @@ struct static_asserts {
   STATIC_ASSERT(
     r05_number_is_32_or_64_bit,
     sizeof(r05_number) * CHAR_BIT == 32 || sizeof(r05_number) * CHAR_BIT == 64
+  );
+
+  /*
+    На C89 r05_uintptr_t определён как size_t, но Стандарт не гарантирует,
+    что size_t будет вмещать в себя указатель.
+  */
+  STATIC_ASSERT(
+    sizeof_pointer_is_less_equal_that_sizeof_r05_uintptr_t,
+    sizeof(struct r05_function*) <= sizeof(r05_uintptr_t)
   );
 };
 
@@ -668,7 +685,50 @@ static int s_in_e_loop;
 
 
 #ifdef R05_PROFILER
-static struct r05_function *s_profiled_functions;
+#  ifndef R05_PROFILER_TABLE_POWER
+#    define R05_PROFILER_TABLE_POWER 12
+#  endif  /* ! R05_PROFILER_TABLE_POWER */
+
+struct profiled_function {
+  struct r05_function *func;
+  unsigned long calls;
+  double seconds;
+};
+
+static struct profiled_function
+  s_profiled_functions[1 << R05_PROFILER_TABLE_POWER];
+
+static struct profiled_function* insert_lookup_profiled_function(
+  struct r05_function *function
+) {
+  enum { SIZE = (size_t) 1 << R05_PROFILER_TABLE_POWER };
+  r05_uintptr_t i = 0;
+  r05_uintptr_t hash =
+    (r05_uintptr_t) function / sizeof(struct r05_function) % SIZE;
+  struct profiled_function *profiled_function;
+
+  while (
+    profiled_function = &s_profiled_functions[(i + hash) % SIZE],
+    i < SIZE
+    && profiled_function->func != NULL
+    && profiled_function->func != function
+  ) {
+    ++i;
+  }
+
+  if (SIZE == i) {
+    fprintf(stderr, "PROFILER TABLE OVERFLOW (%u ITEMS)\n", (unsigned) SIZE);
+    fprintf(
+      stderr,
+      "Recompile program with greater parameter R05_PROFILER_TABLE_POWER\n"
+    );
+    r05_exit(EXIT_CODE_NO_MEMORY);
+  } else if (NULL == profiled_function->func) {
+    profiled_function->func = function;
+  }
+
+  return profiled_function;
+}
 #endif  /* R05_PROFILER */
 
 
@@ -750,7 +810,9 @@ struct time_item {
   fast_clock_t counter;
 };
 
-static int reverse_compare(const void *left_void, const void *right_void) {
+static int reverse_compare_detailed(
+  const void *left_void, const void *right_void
+) {
   const struct time_item *left = left_void;
   const struct time_item *right = right_void;
 
@@ -804,7 +866,7 @@ static void print_elapsed_time(fast_clock_t full_time) {
   items[10].name = "t- and e-var copy time";
   items[10].counter = s_total_copy_tevar_time;
 
-  qsort(items, nItems, sizeof(items[0]), reverse_compare);
+  qsort(items, nItems, sizeof(items[0]), reverse_compare_detailed);
 
   for (i = 0; i < nItems; ++i) {
     unsigned long value = items[i].counter;
@@ -834,27 +896,31 @@ static void print_elapsed_time(fast_clock_t full_time) {
 /* предобъявление, без инициализатора */
 static unsigned long s_step_counter;
 
+static int reverse_compare_functions(
+  const void *left_void, const void *right_void
+) {
+  const struct profiled_function *left = left_void;
+  const struct profiled_function *right = right_void;
+
+  double left_seconds = NULL == left->func ? -1 : left->seconds;
+  double right_seconds = NULL == right->func ? -1 : right->seconds;
+
+  return
+    left_seconds < right_seconds ? +1 :
+    left_seconds > right_seconds ? -1 : 0;
+}
+
 static void print_functions_profile(double full_time_sec) {
+  enum { SIZE = (size_t) 1 << R05_PROFILER_TABLE_POWER };
   double mean_step_time = full_time_sec / s_step_counter;
-  struct r05_function *func, *sorted = NULL;
   FILE *profile;
   double increment = 0;
-  int no = 1;
+  int i;
 
-  while (s_profiled_functions != NULL) {
-    struct r05_function **parent;
-
-    func = s_profiled_functions;
-    s_profiled_functions = func->next;
-    parent = &sorted;
-    while (*parent != NULL && (*parent)->seconds > func->seconds) {
-      parent = &(*parent)->next;
-    }
-    func->next = *parent;
-    *parent = func;
-  }
-
-  s_profiled_functions = sorted;
+  qsort(
+    s_profiled_functions, SIZE, sizeof(s_profiled_functions[0]),
+    reverse_compare_functions
+  );
 
   profile = fopen("__profile-05.txt", "w");
   if (profile == NULL) {
@@ -866,17 +932,14 @@ static void print_functions_profile(double full_time_sec) {
   fprintf(profile, "Total steps: %lu\n", s_step_counter);
   fprintf(profile, "Total time: %.3f secs\n", full_time_sec);
   fprintf(profile, "Mean step time: %.3f us\n\n", mean_step_time * 1e6);
-  for (
-    func = s_profiled_functions;
-    func != NULL && func->seconds > 0;
-    func = func->next, no++
-  ) {
+  for (i = 0; i < SIZE && s_profiled_functions[i].seconds > 0; ++i) {
+    struct profiled_function *func = &s_profiled_functions[i];
     double percent = func->seconds / full_time_sec * 100.0;
     increment += percent;
     fprintf(
       profile,
       "%3d. %-45s %10.3f ms (%6.2f %% += %6.2f %%), %10lu calls, %10.3f steps\n",
-      no, func->name, func->seconds * 1e3, percent, increment,
+      i + 1, func->func->name, func->seconds * 1e3, percent, increment,
       func->calls, func->seconds / func->calls / mean_step_time
     );
   }
@@ -1015,12 +1078,13 @@ R05_NORETURN static void main_loop(void) {
     after_step(now);
 
 #ifdef R05_PROFILER
-    if (callee->next == 0) {
-      callee->next = s_profiled_functions;
-      s_profiled_functions = callee;
+    {
+      struct profiled_function *profiled_function =
+        insert_lookup_profiled_function(callee);
+
+      profiled_function->seconds += (now - s_start_step) * FSECS_PER_CLOCK;
+      profiled_function->calls += 1;
     }
-    callee->seconds += (now - s_start_step) * FSECS_PER_CLOCK;
-    callee->calls += 1;
 #endif  /* R05_PROFILER */
 
     s_start_step = now;
