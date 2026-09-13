@@ -124,12 +124,14 @@ GenFunction-WrapBody {
 
 GenBody {
   e.Sentences
-    = <MapAccum
-        generator_GenSentence
-        (
-          0  /* максимальный размер стека */
-        )
-        <AddFailCommand e.Sentences>
+    , <CompileBody e.Sentences> : (s.MaxStack s.LastPattern) e.Commands
+    = (s.MaxStack)
+      <SkipIndentAccum
+        <MapAccum
+          generator_GenCommand
+          ('  ' /* отступ */)
+          e.Commands <AddFailCommand s.LastPattern>
+        >
       >;
 }
 
@@ -201,27 +203,8 @@ AddFailCommand {
     e.X = ...;, в конце не генерится вызов
     r05_recognition_impossible()
   */
-  e.Sentences (((Variable t.SrcPos 'e' e.Index)) RETURN (e.Result)) =
-    e.Sentences (((Variable t.SrcPos 'e' e.Index)) RETURN (e.Result));
-
-  e.Sentences = e.Sentences ReturnRecognitionImpossible;
-}
-
-$ENTRY generator_GenSentence {
-  (s.MaxStack) ((e.Pattern) RETURN (e.Result))
-    , <CompileSentence (e.Pattern) (e.Result)> : s.Stack e.Commands
-    = (<Max s.MaxStack s.Stack>)
-      ()
-      ('  do {')
-      <SkipIndentAccum
-        <MapAccum generator_GenCommand ('    ' /* отступ */) e.Commands>
-      >
-      ('  } while (0);');
-
-  (s.MaxStack) ReturnRecognitionImpossible
-    = (s.MaxStack)
-      ()
-      ('  r05_recognition_impossible();');
+  EXPattern = /* пусто */;
+  RegularPattern = (CmdReturnRecognitionImpossible);
 }
 
 Max {
@@ -231,7 +214,7 @@ Max {
 
 SkipIndentAccum {
   /* отступ должен остаться тем же */
-  ('    ') e.Generated = e.Generated;
+  ('  ') e.Generated = e.Generated;
 }
 
 SafeComment {
@@ -245,6 +228,9 @@ SafeComment {
 }
 
 $ENTRY generator_GenCommand {
+  (e.Indent) (CmdStartSentence) = (e.Indent '  ') () (e.Indent 'do {');
+  (e.Indent '  ') (CmdEndSentence) = (e.Indent) (e.Indent '} while (0);');
+
   (e.Indent) (CmdOpenedE-Start s.L s.R 'e' e.Index)
     = (e.Indent '  ') <CmdOpenedE-Start (e.Indent) s.L s.R 'e' e.Index>;
 
@@ -392,6 +378,10 @@ CmdReturnResult {
     (e.Indent 'return;');
 }
 
+CmdReturnRecognitionImpossible {
+  (e.Indent) = () (e.Indent 'r05_recognition_impossible();');
+}
+
 EscapeString {
   e.String = <Map generator_EscapeChar e.String>;
 }
@@ -433,11 +423,24 @@ ElemLR { s.L s.R = <Elem s.L> ', ' <Elem s.R> }
 * Генерация абстрактного кода для предложения
 *===============================================================================
 
-CompileSentence {
-  (e.Pattern) (e.Result)
+CompileBody {
+  e.Sentences
+    = <MapAccum
+        generator_CompileSentence
+        (
+          0  /* максимальный размер стека */
+          RegularPattern  /* тип образца: e.X или обычный */
+        )
+        e.Sentences
+      >;
+}
+
+$ENTRY generator_CompileSentence {
+  (s.MaxStack s.LastPattern) ((e.Pattern) RETURN (e.Result))
     , <GenPattern e.Pattern> : s.PatStack (e.PatternVars) (e.PatternCommands)
     , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
-    = s.Stack
+    = (<Max s.MaxStack s.Stack> <CompileSentence-PatternType e.PatternCommands>)
+      (CmdStartSentence)
       <CompileSentence-OpenELoops
         <Map generator_MakeDeclaration e.PatternVars>
         (CmdComment <InlineExpr e.Pattern>)
@@ -445,7 +448,13 @@ CompileSentence {
         (CmdEmptyResult)
         e.ResultCommands
         (CmdReturnResult)
-      >;
+      >
+      (CmdEndSentence);
+}
+
+CompileSentence-PatternType {
+  (CmdInitHole0) (CmdClosedE s.L s.R 'e' s.Pos) = EXPattern;
+  e.PatternCommands = RegularPattern;
 }
 
 $ENTRY generator_MakeDeclaration {
