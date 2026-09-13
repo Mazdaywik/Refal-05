@@ -107,12 +107,30 @@ GenDeclaration {
 }
 
 GenFunction {
-  s.ScopeClass (e.Name) e.Sentences =
-    ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
-    ('  r05_this_is_generated_function();')
-    <Map generator_GenSentence <AddFailCommand e.Sentences>>
-    ('}')
-    ();
+  s.ScopeClass (e.Name) e.Sentences
+    = <GenFunction-WrapBody s.ScopeClass (e.Name) <GenBody e.Sentences>>;
+}
+
+GenFunction-WrapBody {
+  s.ScopeClass (e.Name) (s.MaxStack) e.Lines
+    = ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
+      ('  struct r05_node *p[' <Symb s.MaxStack> '] = { 0 };')
+      ()
+      ('  r05_this_is_generated_function();')
+      e.Lines
+      ('}')
+      ();
+}
+
+GenBody {
+  e.Sentences
+    = <MapAccum
+        generator_GenSentence
+        (
+          0  /* максимальный размер стека */
+        )
+        <AddFailCommand e.Sentences>
+      >;
 }
 
 AssertOneOf { s.One in (e.Variants-B s.One e.Variants-E) = }
@@ -190,21 +208,25 @@ AddFailCommand {
 }
 
 $ENTRY generator_GenSentence {
-  ((e.Pattern) RETURN (e.Result)) =
-    ()
-    ('  do {')
-    <SkipIndentAccum
-      <MapAccum
-        generator_GenCommand
-        ('    ' /* отступ */)
-        <CompileSentence (e.Pattern) (e.Result)>
+  (s.MaxStack) ((e.Pattern) RETURN (e.Result))
+    , <CompileSentence (e.Pattern) (e.Result)> : s.Stack e.Commands
+    = (<Max s.MaxStack s.Stack>)
+      ()
+      ('  do {')
+      <SkipIndentAccum
+        <MapAccum generator_GenCommand ('    ' /* отступ */) e.Commands>
       >
-    >
-    ('  } while (0);');
+      ('  } while (0);');
 
-  ReturnRecognitionImpossible =
-    ()
-    ('  r05_recognition_impossible();');
+  (s.MaxStack) ReturnRecognitionImpossible
+    = (s.MaxStack)
+      ()
+      ('  r05_recognition_impossible();');
+}
+
+Max {
+  s.X s.Y, <Compare s.X s.Y> : '+' = s.X;
+  s.X s.Y = s.Y;
 }
 
 SkipIndentAccum {
@@ -234,13 +256,6 @@ $ENTRY generator_GenCommand {
 
 CmdComment {
   (e.Indent) e.Text = (e.Indent '/* ' <SafeComment e.Text> ' */');
-}
-
-CmdAllocStack {
-  (e.Indent) 0 = /* пусто */;
-
-  (e.Indent) s.Size
-    = (e.Indent 'struct r05_node *p[' <Symb s.Size> '] = { 0 };');
 }
 
 CmdInitHole0 {
@@ -422,9 +437,9 @@ CompileSentence {
   (e.Pattern) (e.Result)
     , <GenPattern e.Pattern> : s.PatStack (e.PatternVars) (e.PatternCommands)
     , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
-    = <CompileSentence-OpenELoops
+    = s.Stack
+      <CompileSentence-OpenELoops
         <Map generator_MakeDeclaration e.PatternVars>
-        (CmdAllocStack s.Stack)
         (CmdComment <InlineExpr e.Pattern>)
         e.PatternCommands
         (CmdEmptyResult)
