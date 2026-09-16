@@ -243,10 +243,14 @@ int r05_repeated_tevar_right(
   struct r05_node **tevar_sample, char type
 );
 
-#define r05_close_evar(evar, left, right) \
-  ((evar)[0] = (left)->next, (evar)[1] = (right)->prev)
+void r05_close_evar(
+  struct r05_node **evar, struct r05_node *left, struct r05_node *right
+);
 
 int r05_open_evar_advance(struct r05_node **evar, struct r05_node *right);
+
+#define r05_evar_true_begin(evar) \
+  (NULL == (evar)[0] ? (evar)[1]->next : (evar)[0])
 
 size_t r05_read_chars(
   struct r05_node **char_interval, char buffer[], size_t buflen,
@@ -257,8 +261,6 @@ size_t r05_read_chars(
 
 void r05_push_stack(struct r05_node *call_bracket);
 void r05_link_brackets(struct r05_node *left, struct r05_node *right);
-
-void r05_correct_evar(struct r05_node **evar);
 
 #define r05_splice_tvar r05_splice_tevar
 #define r05_splice_evar r05_splice_tevar

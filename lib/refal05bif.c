@@ -957,7 +957,7 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
 
   counter = sLen->info.number;
 
-  ePrefix[0] = sLen->next;
+  ePrefix[0] = NULL;
   ePrefix[1] = sLen;
   while (counter > 0 && r05_open_evar_advance(ePrefix, arg_end)) {
     -- counter;
@@ -970,7 +970,6 @@ R05_DEFINE_ENTRY_FUNCTION(First, "First") {
   right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
   r05_link_brackets(left_bracket, right_bracket);
 
-  r05_correct_evar(ePrefix);
   r05_splice_evar(right_bracket, ePrefix);
 
   r05_splice_to_freelist(arg_begin, arg_begin);
@@ -1258,7 +1257,6 @@ R05_DEFINE_ENTRY_FUNCTION(Last, "Last") {
   right_bracket->tag = R05_DATATAG_CLOSE_BRACKET;
   r05_link_brackets(left_bracket, right_bracket);
 
-  r05_correct_evar(ePrefix);
   r05_splice_evar(right_bracket, ePrefix);
 
   r05_splice_to_freelist(arg_begin, arg_begin);
