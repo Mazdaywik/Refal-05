@@ -1207,6 +1207,8 @@ static const struct r05_function *implode(
 
   new->function.ptr = r05_enum_function_code;
   new->function.name = new->name;
+  new->function.entry = 0;
+  new->function.metatable = NULL;
   new->hash = hash;
   new->next = *bucket;
 
@@ -2411,6 +2413,8 @@ static struct imploded *new_compound(size_t capacity, int line_no) {
   }
   new->function.ptr = r05_enum_function_code;
   new->function.name = new->name;
+  new->function.entry = 0;
+  new->function.metatable = NULL;
   new->hash = HASH_INIT;
   return new;
 }
