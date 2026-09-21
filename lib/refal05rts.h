@@ -116,7 +116,8 @@ typedef void (*r05_function_ptr) (struct r05_node *begin, struct r05_node *end);
 struct r05_function {
   r05_function_ptr ptr;
   const char *name;
-  int entry;
+  /* старшие биты — метка возврата, младший — признак entry */
+  unsigned int resume_entry;
   const struct r05_metatable *metatable;
 };
 
@@ -310,6 +311,11 @@ void r05_alloc_chars(const char buffer[], size_t len);
 void r05_alloc_tevar(struct r05_node **sample);
 void r05_alloc_string(const char *string);
 
+/* Сохранение и восстановление контекста */
+
+void r05_push_context(struct r05_node *vars[], size_t nvars);
+void r05_pop_context(struct r05_node *vars[], size_t nvars);
+
 
 void r05_enum_function_code(struct r05_node *begin, struct r05_node *end);
 
@@ -417,6 +423,11 @@ struct r05_metatable {
   void r05c_ ## name( \
     struct r05_node *arg_begin, struct r05_node *arg_end \
   )
+
+#define R05_DEFINE_COND_FUNCTION(base_name, rep, no) \
+  static const struct r05_function c ## no = { \
+    r05c_ ## base_name, rep, (no) << 1, NULL \
+  };
 
 
 R05_DECLARE_ENTRY_FUNCTION(Stopd_d_)

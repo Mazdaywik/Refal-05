@@ -4,31 +4,17 @@ $EXTERN SaveFile, MapAccum, Map, Inc;
 *$FROM R5FW-Plainer
 $EXTERN InlineExpr;
 
-*$FROM R5FW-Transformer
-$EXTERN Transform;
-
 
 /**
   <Generate-ToFile (e.OutputFile) e.Tree> == пусто
 */
 $ENTRY Generate-ToFile {
-  (e.OutputFile) e.Tree =
-    <SaveFile (e.OutputFile) <Generate-ToLines e.Tree>>;
-}
-
-Generate-ToLines {
-  e.Tree-B (Metatable e.Functions) e.Tree-E
-    = <Generate-Items
-        <Transform e.Tree-B e.Tree-E> (Metatable e.Functions)
-      >;
-
-  e.Tree = <Generate-Items <Transform e.Tree>>;
-}
-
-Generate-Items {
-  e.TreeItems
-    = <R05-Generate-Combine
-        <MapAccum generator_GenTreeItem (/* declarations */) e.TreeItems>
+  (e.OutputFile) e.Tree
+    = <SaveFile
+        (e.OutputFile)
+        <R05-Generate-Combine
+          <MapAccum generator_GenTreeItem (/* declarations */) e.Tree>
+        >
       >;
 }
 
@@ -112,8 +98,9 @@ GenFunction {
 }
 
 GenFunction-WrapBody {
-  s.ScopeClass (e.Name) (s.MaxStack) e.Lines
+  s.ScopeClass (e.Name) (s.MaxStack s.NCondFunctions) e.Lines
     = ('R05_DEFINE_' <Scope s.ScopeClass> '_FUNCTION(' <DefName e.Name> ') {')
+      <GenCondFunctions e.Name s.NCondFunctions>
       ('  struct r05_node *p[' <Symb s.MaxStack> '] = { 0 };')
       ()
       ('  r05_this_is_generated_function();')
@@ -122,18 +109,53 @@ GenFunction-WrapBody {
       ();
 }
 
+GenCondFunctions {
+  e.Name 0 = /* нет cond-функций */;
+
+  e.Name s.N
+    , <Symb s.N> : e.N
+    , <EscapeName e.Name> : e.EscName
+    , '"' <EscapeString e.Name '$' e.N> '"' : e.StrName
+    = <GenCondFunctions e.Name <- s.N 1>>
+      ('  R05_DEFINE_COND_FUNCTION(' e.EscName ', ' e.StrName ', ' e.N ')');
+}
+
 GenBody {
-  e.Sentences
-    , <CompileBody e.Sentences> : (s.MaxStack s.LastPattern) e.Commands
-    = (s.MaxStack)
+  e.Sentences = <GenBody-Aux <CompileBody 0 0 (/* контекст */) e.Sentences>>;
+}
+
+GenBody-Aux {
+  (s.MaxStack s.NCondFunctions s.LastPattern) e.Commands
+    = (s.MaxStack s.NCondFunctions)
       <SkipIndentAccum
         <MapAccum
           generator_GenCommand
           ('  ' /* отступ */)
-          e.Commands <AddFailCommand s.LastPattern>
+          <WrapSwitchIfNeed
+            s.NCondFunctions
+            (CmdInitHole0 0)
+            <BeautifySentences e.Commands <AddFailCommand s.LastPattern>>
+          >
         >
       >;
 }
+
+WrapSwitchIfNeed {
+  0 e.Commands = e.Commands;
+
+  s.NCondFunctions e.Commands
+    = (CmdStartSwitch) (CmdResume 0) e.Commands (CmdEndSwitch);
+}
+
+BeautifySentences {
+  e.Commands-B (CmdEndSentence) (CmdStartSentence) e.Commands-E
+    = e.Commands-B (CmdEndSentence) (CmdNL) (CmdStartSentence)
+      <BeautifySentences e.Commands-E>;
+
+  e.Commands = e.Commands;
+}
+
+CmdNL { (e.Indent) = () }
 
 AssertOneOf { s.One in (e.Variants-B s.One e.Variants-E) = }
 
@@ -228,7 +250,13 @@ SafeComment {
 }
 
 $ENTRY generator_GenCommand {
-  (e.Indent) (CmdStartSentence) = (e.Indent '  ') () (e.Indent 'do {');
+  (e.Indent) (CmdStartSwitch)
+    = (e.Indent '  ')
+      ('  switch (arg_begin->next->info.function->resume_entry >> 1) {');
+
+  (e.Indent '  ') (CmdEndSwitch) = (e.Indent) (e.Indent '}');
+
+  (e.Indent) (CmdStartSentence) = (e.Indent '  ') (e.Indent 'do {');
   (e.Indent '  ') (CmdEndSentence) = (e.Indent) (e.Indent '} while (0);');
 
   (e.Indent) (CmdOpenedE-Start s.L s.E s.R 'e' e.Index)
@@ -245,9 +273,11 @@ CmdComment {
 }
 
 CmdInitHole0 {
-  (e.Indent)
-    = (e.Indent <Elem 0> ' = arg_begin->next;')
-      (e.Indent <Elem 1> ' = arg_end;');
+  (e.Indent) s.StartStack
+    = (e.Indent <Elem s.StartStack> ' = arg_begin;')
+      (e.Indent <Elem <+ s.StartStack 1>> ' = arg_begin->next;')
+      (e.Indent <Elem <+ s.StartStack 2>> ' = arg_end;')
+      ();
 }
 
 CmdMatch {
@@ -286,6 +316,7 @@ MatchArgs {
 SymbolTextRep {
   Char s.Char = '\'' <generator_EscapeChar s.Char> '\'';
   Number s.Number = <Symb s.Number> 'UL';
+  Word CondFunction s.No = '&c' <Symb s.No>;
   Word e.Name = '&r05f_' <EscapeName e.Name>;
 }
 
@@ -306,8 +337,8 @@ CmdOpenedE-Start {
   (e.Indent) s.L s.E s.R 'e' s.Offset
     = (e.Indent <Elem s.Offset> ' = NULL;')
       (e.Indent <Elem <Inc s.Offset>> ' = ' <Elem s.L> ';')
-      (e.Indent 'r05_start_e_loop();')
-      (e.Indent 'do {');
+      (e.Indent 'do {')
+      (e.Indent '  r05_start_e_loop();');
 }
 
 CmdOpenedE-End {
@@ -316,8 +347,11 @@ CmdOpenedE-End {
         '} while (r05_open_evar_advance('
         <ElemPtr s.Offset> ', ' <ElemR s.E s.R>
         '));'
-      )
-      (e.Indent 'r05_stop_e_loop();');
+      );
+}
+
+CmdStopProfileELoop {
+  (e.Indent) = (e.Indent 'r05_stop_e_loop();');
 }
 
 CmdEmptyResult {
@@ -363,11 +397,34 @@ CmdInsertVar {
       );
 }
 
-CmdReturnResult {
-  (e.Indent) =
-    (e.Indent 'r05_splice_from_freelist(arg_begin);')
-    (e.Indent 'r05_splice_to_freelist(arg_begin, arg_end);')
-    (e.Indent 'return;');
+CmdSpliceFromFreeList {
+  (e.Indent) s.InsertPos
+    = (e.Indent 'r05_splice_from_freelist(' <Elem s.InsertPos> ');');
+}
+
+CmdSpliceToFreeList {
+  (e.Indent) s.Begin s.End
+    , <Elem s.Begin> ', ' <Elem s.End> : e.Range
+    = (e.Indent 'r05_splice_to_freelist(' e.Range ');');
+}
+
+CmdReturn {
+  (e.Indent) = (e.Indent 'return;');
+}
+
+CmdSaveContext {
+  (e.Indent) s.ContextSize
+    = (e.Indent 'r05_push_context(p, ' <Symb s.ContextSize> ');');
+}
+
+CmdResume {
+  (e.Indent) 0 = ('  case 0:');
+  (e.Indent) s.Point = () ('  case ' <Symb s.Point> ':');
+}
+
+CmdRestoreContext {
+  (e.Indent) s.ContextSize
+    = (e.Indent 'r05_pop_context(p, ' <Symb s.ContextSize> ');');
 }
 
 CmdReturnRecognitionImpossible {
@@ -415,36 +472,143 @@ ElemLR { s.L s.E s.R = <Elem s.L> ', ' <ElemR s.E s.R> }
 *===============================================================================
 
 CompileBody {
-  e.Sentences
+  s.StartStack s.NCondFunctions (e.Context) e.Sentences
     = <MapAccum
-        generator_CompileSentence
-        (
-          0  /* максимальный размер стека */
-          RegularPattern  /* тип образца: e.X или обычный */
-        )
+        (generator_CompileSentence s.StartStack e.Context)
+        (s.StartStack s.NCondFunctions RegularPattern)
         e.Sentences
       >;
 }
 
 $ENTRY generator_CompileSentence {
-  (s.MaxStack s.LastPattern) ((e.Pattern) RETURN (e.Result))
-    , <GenPattern e.Pattern> : s.PatStack (e.PatternVars) (e.PatternCommands)
-    , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
-    = (<Max s.MaxStack s.Stack> <CompileSentence-PatternType e.PatternCommands>)
-      (CmdStartSentence)
-      <CompileSentence-OpenELoops
-        <Map generator_MakeDeclaration e.PatternVars>
-        (CmdComment <InlineExpr e.Pattern>)
-        e.PatternCommands
-        (CmdEmptyResult)
-        e.ResultCommands
-        (CmdReturnResult)
+  s.StartStack e.Context
+  (s.MaxStack s.NCondFunctions s.LastPattern)
+  ((e.Pattern) e.SentenceTail)
+
+    , <GenPattern s.StartStack (e.Context) e.Pattern>
+    : s.PatStack (e.PatternVars) (e.PatternCommands)
+
+    , <CompileSentenceTail
+        s.PatStack s.NCondFunctions (e.PatternVars) e.SentenceTail
+      >
+    : s.Stack s.NewNCondFunctions e.TailCommands
+
+    = (
+        <Max s.MaxStack s.Stack>
+        s.NewNCondFunctions
+        <CompileSentence-PatternType e.PatternCommands>
+      )
+      <WrapSentence
+        (e.PatternVars) (e.Pattern) e.PatternCommands (e.TailCommands)
+      >;
+}
+
+WrapSentence {
+  (e.PatternVars) (e.Pattern) e.PatternCommands (e.TailCommands)
+    = (CmdStartSentence)
+      <AddStopProfileELoop
+        <CompileSentence-OpenELoops
+          <Map generator_MakeDeclaration e.PatternVars>
+          (CmdComment <InlineExpr e.Pattern>)
+          e.PatternCommands
+          (e.TailCommands)
+        >
       >
       (CmdEndSentence);
 }
 
+AddStopProfileELoop {
+  e.Commands (CmdOpenedE-End s.L s.E s.R 'e' s.Stack)
+    = e.Commands
+      (CmdOpenedE-End s.L s.E s.R 'e' s.Stack)
+      (CmdStopProfileELoop);
+
+  e.Commands = e.Commands;
+}
+
+CompileSentenceTail {
+  s.PatStack s.NCondFunctions (e.PatternVars)
+  RETURN (e.Result)
+    , <GenResult s.PatStack (e.PatternVars) e.Result> : s.Stack e.ResultCommands
+    = s.Stack s.NCondFunctions
+      (CmdEmptyResult)
+      e.ResultCommands
+      (CmdSpliceFromFreeList 0)
+      (CmdSpliceToFreeList 0 2)
+      (CmdReturn);
+
+  s.PatStack s.NCondFunctions (e.PatternVars)
+  CALL-BLOCK (e.Result) e.BlockSentences
+
+    , <Inc s.NCondFunctions> : s.CondFunction
+
+    , <GenResult
+        s.PatStack
+        (<Map generator_FreeseVars e.PatternVars>)
+        (Call NO-POS (CondFunction s.CondFunction) e.Result)
+      >
+    : s.ResStack e.ResultCommands
+
+    , <CompileBody
+        s.PatStack <Inc s.NCondFunctions> (e.PatternVars) e.BlockSentences
+      >
+    : (s.SentencesStack s.NewNCondFunctions s.LastPattern) e.SentencesCommands
+
+    = <Max s.ResStack s.SentencesStack> s.NewNCondFunctions
+      (CmdEmptyResult)
+      e.ResultCommands
+      (CmdSaveContext s.PatStack)
+      (CmdSpliceFromFreeList 2)
+      (CmdReturn)
+      (CmdResume s.CondFunction)
+      (CmdRestoreContext s.PatStack)
+      (CmdInitHole0 s.PatStack)
+      e.SentencesCommands <AddFailCommand s.LastPattern>;
+
+  s.PatStack s.NCondFunctions (e.PatternVars)
+  (Condition (e.CondResult) (e.CondPattern)) e.SentenceTail
+
+    , <Inc s.NCondFunctions> : s.CondFunction
+
+    , <GenResult
+        s.PatStack
+        (<Map generator_FreeseVars e.PatternVars>)
+        (Call NO-POS (CondFunction s.CondFunction) e.CondResult)
+      >
+    : s.ResStack e.ResultCommands
+
+    , <GenPattern s.PatStack (e.PatternVars) e.CondPattern>
+    : s.NewPatStack (e.NewPatternVars) (e.PatternCommands)
+
+    , <CompileSentenceTail
+        s.NewPatStack <+ s.NCondFunctions 1> (e.NewPatternVars) e.SentenceTail
+      >
+    : s.Stack s.NewNCondFunctions e.TailCommands
+
+    = <Max s.ResStack s.Stack> s.NewNCondFunctions
+      (CmdEmptyResult)
+      e.ResultCommands
+      (CmdSaveContext s.PatStack)
+      (CmdSpliceFromFreeList 2)
+      (CmdReturn)
+      (CmdResume s.CondFunction)
+      (CmdRestoreContext s.PatStack)
+      (CmdInitHole0 s.PatStack)
+      <WrapSentence
+        (e.NewPatternVars)
+        (e.CondPattern)
+        e.PatternCommands
+        (e.TailCommands)
+      >
+      (CmdSpliceToFreeList s.PatStack <+ s.PatStack 2>);
+}
+
+$ENTRY generator_FreeseVars {
+  (s.Mode e.Index s.Sample (e.Insts)) = (s.Mode e.Index s.Sample ());
+}
+
 CompileSentence-PatternType {
-  (CmdInitHole0) (CmdClosedE s.L s.E s.R 'e' s.Pos) = EXPattern;
+  (CmdClosedE s.L s.E s.R 'e' s.Pos) = EXPattern;
   e.PatternCommands = RegularPattern;
 }
 
@@ -459,13 +623,13 @@ $ENTRY generator_MakeDeclaration {
 $ENTRY r05-generator-SymbInst { s.Inst = ', ' <Symb s.Inst> }
 
 CompileSentence-OpenELoops {
-  e.Commands-B (CmdOpenedE s.L s.E s.R 'e' s.Stack) e.Commands-E
+  e.Commands-B (CmdOpenedE s.L s.E s.R 'e' s.Stack) e.Commands-E (e.TailCommands)
     = e.Commands-B
       (CmdOpenedE-Start s.L s.E s.R 'e' s.Stack)
-      <CompileSentence-OpenELoops e.Commands-E>
+      <CompileSentence-OpenELoops e.Commands-E (e.TailCommands)>
       (CmdOpenedE-End s.L s.E s.R 'e' s.Stack);
 
-  e.Commands = e.Commands;
+  e.Commands (e.TailCommands) = e.Commands e.TailCommands;
 }
 
 /*
@@ -511,7 +675,13 @@ CompileSentence-OpenELoops {
 */
 
 GenPattern {
-  e.Pattern = <DoGenPattern 2 (0 e.Pattern X 1) (/* vars */) ((CmdInitHole0))>;
+  s.StartStack (e.Context) e.Pattern
+    = <DoGenPattern
+        <+ s.StartStack 3>
+        (<+ s.StartStack 1> e.Pattern X <+ s.StartStack 2>)
+        (e.Context)
+        (/* команды */)
+      >;
 }
 
 Inc2 { s.N = <+ s.N 2> }

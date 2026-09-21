@@ -1,7 +1,7 @@
 @echo off
 setlocal
   set MODULES=main generator parser
-  set LIBS=LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform
+  set LIBS=LibraryEx R5FW-Parser R5FW-Plainer Platform
   set OPTIONS=-nts -l20
 
   md ..\bin 2>NUL

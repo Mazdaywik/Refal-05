@@ -1,7 +1,7 @@
 #!/bin/bash
 (
   MODULES="main generator parser"
-  LIBS="LibraryEx R5FW-Parser R5FW-Plainer R5FW-Transformer Platform"
+  LIBS="LibraryEx R5FW-Parser R5FW-Plainer Platform"
   OPTIONS='-nts -l20'
 
   mkdir -p ../bin

@@ -96,7 +96,7 @@ R05_IMPLEMENT_METAFUNCTION(Mu, "Mu") {
     }
     if (cur < end) {
       callable->info.function = *cur;
-    } else if (! callable->info.function->entry) {
+    } else if ((callable->info.function->resume_entry & 1) == 0) {
       r05_recognition_impossible();
     }
     r05_splice_to_freelist(mu, mu);
@@ -1207,7 +1207,7 @@ static const struct r05_function *implode(
 
   new->function.ptr = r05_enum_function_code;
   new->function.name = new->name;
-  new->function.entry = 0;
+  new->function.resume_entry = 0;
   new->function.metatable = NULL;
   new->hash = hash;
   new->next = *bucket;
@@ -2413,7 +2413,7 @@ static struct imploded *new_compound(size_t capacity, int line_no) {
   }
   new->function.ptr = r05_enum_function_code;
   new->function.name = new->name;
-  new->function.entry = 0;
+  new->function.resume_entry = 0;
   new->function.metatable = NULL;
   new->hash = HASH_INIT;
   return new;

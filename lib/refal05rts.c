@@ -775,7 +775,7 @@ static void start_building_result(void) {
     pattern_match = s_start_building_result_time - s_start_step;
     s_total_pattern_match_time += pattern_match;
 
-    if (s_in_e_loop > 0) {
+    if (s_in_e_loop) {
       s_total_e_loop += (s_start_building_result_time - s_start_e_loop);
       s_in_e_loop = 0;
     }
@@ -998,7 +998,8 @@ static void end_profiler(void) {
 void r05_start_e_loop(void) {
   assert(s_in_generated);
 
-  if (s_in_e_loop++ == 0) {
+  if (! s_in_e_loop) {
+    s_in_e_loop = 1;
     s_start_e_loop = fast_clock();
   }
 }
@@ -1012,8 +1013,9 @@ void r05_this_is_generated_function(void) {
 void r05_stop_e_loop(void) {
   assert(s_in_generated);
 
-  if (--s_in_e_loop == 0) {
+  if (s_in_e_loop) {
     s_total_e_loop += (fast_clock() - s_start_e_loop);
+    s_in_e_loop = 0;
   }
 }
 #endif  /* R05_SHOW_STAT_DETAILED */
@@ -1041,6 +1043,13 @@ static struct r05_node s_end_view_field = {
 static struct r05_node *s_stack_ptr = NULL;
 
 static unsigned long s_step_counter = 0;
+
+
+static struct {
+  struct r05_node **vars;
+  size_t used;
+  size_t reserved;
+} s_context = { NULL, 0, 0 };
 
 
 extern struct r05_function r05f_GO;
@@ -1117,6 +1126,47 @@ R05_NORETURN static void main_loop(void) {
 
     ++ s_step_counter;
   }
+}
+
+
+void r05_push_context(struct r05_node *vars[], size_t nvars) {
+  size_t new_used = s_context.used + nvars;
+
+  if (new_used > s_context.reserved) {
+    size_t new_reserved = s_context.reserved + (s_context.reserved >> 1);
+    struct r05_node **new_vars;
+
+    if (new_used > new_reserved) {
+      new_reserved = new_used;
+    }
+
+    new_vars =
+      realloc(s_context.vars, new_reserved * sizeof(s_context.vars[0]));
+
+    if (new_vars != NULL) {
+      s_context.vars = new_vars;
+      s_context.reserved = new_reserved;
+    } else {
+      fprintf(
+        stderr,
+        "NO MEMORY FOR SAVE CONTEXT "
+        "(used memory %lu items, required %lu items)\n",
+        (unsigned long) s_context.reserved,
+        (unsigned long) new_reserved
+      );
+      make_dump();
+      r05_exit(EXIT_CODE_NO_MEMORY);
+    }
+  }
+
+  memcpy(s_context.vars + s_context.used, vars, nvars * sizeof(vars[0]));
+  s_context.used = new_used;
+}
+
+void r05_pop_context(struct r05_node *vars[], size_t nvars) {
+  assert(s_context.used >= nvars);
+  s_context.used -= nvars;
+  memcpy(vars, s_context.vars + s_context.used, nvars * sizeof(vars[0]));
 }
 
 
