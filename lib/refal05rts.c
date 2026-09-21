@@ -715,7 +715,7 @@ static int s_in_e_loop;
 #  endif  /* ! R05_PROFILER_TABLE_POWER */
 
 struct profiled_function {
-  struct r05_function *func;
+  const struct r05_function *func;
   unsigned long calls;
   double seconds;
 };
@@ -724,7 +724,7 @@ static struct profiled_function
   s_profiled_functions[1 << R05_PROFILER_TABLE_POWER];
 
 static struct profiled_function* insert_lookup_profiled_function(
-  struct r05_function *function
+  const struct r05_function *function
 ) {
   enum { SIZE = (size_t) 1 << R05_PROFILER_TABLE_POWER };
   r05_uintptr_t i = 0;
