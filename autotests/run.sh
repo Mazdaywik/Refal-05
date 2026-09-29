@@ -56,6 +56,42 @@ run_test_aux() {
   echo
 }
 
+run_test_aux.INT() {
+  echo Passing $1...
+  REF="$1"
+  CFILE="${REF%%.ref}.c"
+  EXE="${REF%%.ref}"
+
+  R05PATH=../lib REF5RSL= R05CFLAGS=-o\""$EXE"\" \
+    ../bin/refal05c "$REF" refal05bif refal05rts 2>__error.txt
+  if [ $? -ge 200 ]; then
+    echo COMPILER ON $REF FAILS, SEE __error.txt
+    exit
+  fi
+  rm __error.txt
+
+  if [ ! -e "$EXE" ]; then
+    echo COMPILATION FAILED
+    exit
+  fi
+
+  ./"$EXE" 2> __dump.txt
+  # команда [ в условии меняет код возврата, поэтому нужна переменная
+  EXIT_CODE=$?
+  if [ $EXIT_CODE -ge 200 ]; then
+    echo TEST FAILED, SEE __dump.txt
+    exit
+  elif [ $EXIT_CODE -gt 0 ]; then
+    echo "TEST FAILED (INTERNAL ERROR)"
+    exit
+  fi
+
+  rm "$CFILE" "$EXE"
+  [ -e __dump.txt ] && rm __dump.txt
+
+  echo
+}
+
 run_test_aux.BAD-SYNTAX() {
   echo Passing $1...
   REF="$1"

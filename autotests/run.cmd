@@ -79,6 +79,47 @@ setlocal
 endlocal
 goto :EOF
 
+:RUN_TEST_AUX.INT
+setlocal
+  echo Passing %~1...
+  set REF="%~1"
+  set CFILE="%~n1.c"
+  set EXE="%~n1.exe"
+
+  set R05PATH=..\lib
+  set REF5RSL=
+  ..\bin\refal05c %1 refal05bif refal05rts 2> __error.txt
+  if errorlevel 200 (
+    echo COMPILER ON %1 FAILS, SEE __error.txt
+    exit /b 1
+  )
+  erase __error.txt
+
+  if exist a.exe move a.exe "%EXE%"
+  if not exist %EXE% (
+    echo COMPILATION FAILED
+    exit /b 1
+  )
+
+  %EXE% 2> __dump.txt
+  if errorlevel 200 (
+    echo TEST FAILED, SEE __dump.txt
+    exit /b 1
+  )
+
+  if errorlevel 1 (
+    echo TEST FAILED ^(INTERNAL ERROR^)
+    exit /b 1
+  )
+
+  erase %CFILE% %EXE%
+  if exist *.obj erase *.obj
+  if exist *.tds erase *.tds
+  if exist __dump.txt erase __dump.txt
+  echo.
+endlocal
+goto :EOF
+
 :RUN_TEST_AUX.BAD-SYNTAX
 setlocal
   echo Passing %~1 (syntax error recovering)...
