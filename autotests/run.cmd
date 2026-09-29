@@ -6,27 +6,27 @@ exit /b
 setlocal
   call ..\c-plus-plus.conf.cmd
   if {%1}=={} (
-    for %%s in (*.ref) do call :RUN_TEST %%s || exit /b 1
+    for %%s in (*.ref) do call :RUN_TEST "%%~s" || exit /b 1
   ) else (
-    for %%s in (%*) do call :RUN_TEST %%s || exit /b 1
+    for %%s in (%*) do call :RUN_TEST "%%~s" || exit /b 1
   )
 endlocal
 goto :EOF
 
 :RUN_TEST
 setlocal
-  for %%s in (%~n1) do call :RUN_TEST_AUX%%~xs %1 || exit /b 1
+  for %%s in ("%~n1") do call :RUN_TEST_AUX%%~xs "%~1" || exit /b 1
 endlocal
 goto :EOF
 
 :RUN_TEST_AUX
 setlocal
-  echo Passing %1...
-  set REF=%1
-  set CFILE=%~n1.c
-  set EXE=%~n1.exe
-  set SATELLITE=%~n1.SATELLITE.ref
-  set SATELLITEC=%~n1.SATELLITE.c
+  echo Passing %~1...
+  set REF="%~1"
+  set CFILE="%~n1.c"
+  set EXE="%~n1.exe"
+  set SATELLITE="%~n1.SATELLITE.ref"
+  set SATELLITEC="%~n1.SATELLITE.c"
 
   set CLINE=%R05CCOMP%
   set R05CCOMP=
@@ -81,9 +81,9 @@ goto :EOF
 
 :RUN_TEST_AUX.BAD-SYNTAX
 setlocal
-  echo Passing %1 (syntax error recovering)...
-  set REF=%1
-  set CFILE=%~n1.c
+  echo Passing %~1 (syntax error recovering)...
+  set REF="%1"
+  set CFILE="%~n1.c"
 
   set R05CCOMP=
   set R05PATH=

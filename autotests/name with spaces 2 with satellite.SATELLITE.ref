@@ -1,0 +1,3 @@
+$ENTRY SatGo {
+  /* пусто */ = <Prout "Ok:" <Arg 0>>;
+}

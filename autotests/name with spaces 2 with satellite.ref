@@ -1,0 +1,5 @@
+$EXTERN SatGo;
+
+$ENTRY GO {
+  /* пусто */ = <SatGo>;
+}
