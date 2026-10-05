@@ -170,26 +170,33 @@ CCompile {
   e.CSources
     , <Platform>
     : {
-        POSIX = <CCompile-POSIX e.CSources>;
+        POSIX = <System <MakeCommandLine e.CSources>>;
         Windows = <CCompile-Windows e.CSources>;
       };
 }
 
-CCompile-POSIX {
+MakeCommandLine {
   e.CSources
-    = <System
-        <GetEnv 'R05CCOMP'> ' ' <GetEnv 'R05CFLAGS'>
-        <Map main_IncludeFlag-POSIX <LoadPath>>
-        <Map main_QuoteFile-POSIX e.CSources>
-      >;
+    = <GetEnv 'R05CCOMP'> ' ' <GetEnv 'R05CFLAGS'>
+      <Map main_IncludeFlag <LoadPath>>
+      <Map main_QuoteFile e.CSources>
 }
 
-$ENTRY main_IncludeFlag-POSIX {
-  (e.PathEntry) = ' -I' <Quote-POSIX e.PathEntry>;
+$ENTRY main_IncludeFlag {
+  (e.PathEntry) = ' -I' <Quote e.PathEntry>;
 }
 
-$ENTRY main_QuoteFile-POSIX {
-  (e.FileName) = ' ' <Quote-POSIX e.FileName>;
+$ENTRY main_QuoteFile {
+  (e.FileName) = ' ' <Quote e.FileName>;
+}
+
+Quote {
+  e.FileName
+    , <Platform>
+    : {
+        POSIX = <Quote-POSIX e.FileName>;
+        Windows = '"' <Quote-Windows e.FileName> '"';
+      };
 }
 
 Quote-POSIX {
@@ -206,22 +213,10 @@ CCompile-Windows {
     = <SaveFile
         (<BATCH>)
         ('@if x"!COMSPEC!"==x"%COMSPEC%" @setlocal DisableDelayedExpansion')
-        (
-          '@' <GetEnv 'R05CCOMP'> ' ' <GetEnv 'R05CFLAGS'>
-          <Map main_IncludeFlag-Windows <LoadPath>>
-          <Map main_QuoteFile-Windows e.CSources>
-        )
+        ('@' <MakeCommandLine e.CSources>)
       >
       <System <BATCH>>
       <CheckedRemove <BATCH>>;
-}
-
-$ENTRY main_IncludeFlag-Windows {
-  (e.PathEntry) = ' -I"' <Quote-Windows e.PathEntry> '"';
-}
-
-$ENTRY main_QuoteFile-Windows {
-  (e.FileName) = ' "' <Quote-Windows e.FileName> '"';
 }
 
 Quote-Windows {
