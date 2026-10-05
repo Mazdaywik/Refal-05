@@ -62,7 +62,7 @@ run_test_aux.INT() {
   CFILE="${REF%%.ref}.c"
   EXE="${REF%%.ref}"
 
-  R05PATH=../lib REF5RSL= R05CFLAGS=-o\""$EXE"\" \
+  R05PATH=../lib REF5RSL= R05CFLAGS=-o"${EXE@Q}" \
     ../bin/refal05c "$REF" refal05bif refal05rts 2>__error.txt
   if [ $? -ge 200 ]; then
     echo COMPILER ON $REF FAILS, SEE __error.txt

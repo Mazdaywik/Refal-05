@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map, Trim;
+$EXTERN ArgList, LoadFile, Map, Trim, SaveFile;
 
 *$FROM parser
 $EXTERN Parse-File;
@@ -8,7 +8,7 @@ $EXTERN Parse-File;
 $EXTERN Generate-ToFile;
 
 *$FROM Platform
-$EXTERN PathSeparator, IsDirectorySeparator, DirectorySeparator;
+$EXTERN PathSeparator, IsDirectorySeparator, DirectorySeparator, Platform;
 
 
 $ENTRY GO {
@@ -90,11 +90,14 @@ LoadPath {
 }
 
 ParsePath {
-  e.Folder s.Sep e.Path
-    , <PathSeparator> : s.Sep
-    = <ParseFolder e.Folder> <ParsePath e.Path>;
+  e.Path = <DoParsePath <PathSeparator> e.Path>;
+}
 
-  e.Folder = <ParseFolder e.Folder>;
+DoParsePath {
+  s.Sep e.Folder s.Sep e.Path
+    = <ParseFolder e.Folder> <DoParsePath s.Sep e.Path>;
+
+  s.Sep e.Folder = <ParseFolder e.Folder>;
 }
 
 ParseFolder {
@@ -162,24 +165,79 @@ CutFolder {
 }
 
 CCompile {
+  e.CSources, <GetEnv 'R05CCOMP'> : /* не установлена R05CCOMP */ = 0;
+
   e.CSources
-    , <GetEnv 'R05CCOMP'>
+    , <Platform>
     : {
-        /* не установлена R05CCOMP */ = 0;
-
-        e.CommandLine
-          = <System
-              e.CommandLine ' ' <GetEnv 'R05CFLAGS'>
-              <Map main_IncludeFlag <LoadPath>>
-              <Map main_QuoteFile e.CSources>
-            >;
-      }
+        POSIX = <CCompile-POSIX e.CSources>;
+        Windows = <CCompile-Windows e.CSources>;
+      };
 }
 
-$ENTRY main_IncludeFlag {
-  (e.PathEntry) = ' -I"' e.PathEntry '"';
+CCompile-POSIX {
+  e.CSources
+    = <System
+        <GetEnv 'R05CCOMP'> ' ' <GetEnv 'R05CFLAGS'>
+        <Map main_IncludeFlag-POSIX <LoadPath>>
+        <Map main_QuoteFile-POSIX e.CSources>
+      >;
 }
 
-$ENTRY main_QuoteFile {
-  (e.FileName) = ' "' e.FileName '"';
+$ENTRY main_IncludeFlag-POSIX {
+  (e.PathEntry) = ' -I' <Quote-POSIX e.PathEntry>;
+}
+
+$ENTRY main_QuoteFile-POSIX {
+  (e.FileName) = ' ' <Quote-POSIX e.FileName>;
+}
+
+Quote-POSIX {
+  e.FileName-B '\'' e.FileName-E
+    = '\'' e.FileName-B '\'\\\'' <Quote-POSIX e.FileName-E>;
+
+  e.FileName = '\'' e.FileName '\'';
+}
+
+BATCH { = 'r05cc.tmp.bat' }
+
+CCompile-Windows {
+  e.CSources
+    = <SaveFile
+        (<BATCH>)
+        ('@if x"!COMSPEC!"==x"%COMSPEC%" @setlocal DisableDelayedExpansion')
+        (
+          '@' <GetEnv 'R05CCOMP'> ' ' <GetEnv 'R05CFLAGS'>
+          <Map main_IncludeFlag-Windows <LoadPath>>
+          <Map main_QuoteFile-Windows e.CSources>
+        )
+      >
+      <System <BATCH>>
+      <CheckedRemove <BATCH>>;
+}
+
+$ENTRY main_IncludeFlag-Windows {
+  (e.PathEntry) = ' -I"' <Quote-Windows e.PathEntry> '"';
+}
+
+$ENTRY main_QuoteFile-Windows {
+  (e.FileName) = ' "' <Quote-Windows e.FileName> '"';
+}
+
+Quote-Windows {
+  e.FileName-B '%' e.FileName-E
+    = e.FileName-B '%%' <Quote-Windows e.FileName-E>;
+
+  e.FileName = e.FileName;
+}
+
+CheckedRemove {
+  e.FileName
+    , <RemoveFile e.FileName>
+    : {
+        True () = /* ничего не делаем */;
+
+        False (e.Message)
+          = <Putout 0 'Error of delete file ' e.FileName ': ' e.Message>;
+     };
 }

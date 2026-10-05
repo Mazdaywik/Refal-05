@@ -6,10 +6,17 @@ exit /b
 setlocal
   call ..\c-plus-plus.conf.cmd
   if {%1}=={} (
-    for %%s in (*.ref) do call :RUN_TEST "%%~s" || exit /b 1
+    for %%s in (*.ref) do (
+      echo %%~s>filename.tmp
+      call :RUN_TEST "%%~s" || exit /b 1
+    )
   ) else (
-    for %%s in (%*) do call :RUN_TEST "%%~s" || exit /b 1
+    for %%s in (%*) do (
+      echo %%~s>filename.tmp
+      call :RUN_TEST "%%~s" || exit /b 1
+    )
   )
+  erase filename.tmp
 endlocal
 goto :EOF
 
@@ -81,16 +88,18 @@ goto :EOF
 
 :RUN_TEST_AUX.INT
 setlocal
-  echo Passing %~1...
-  set REF="%~1"
-  set CFILE="%~n1.c"
-  set EXE="%~n1.exe"
+  for /F "delims=/" %%i in (filename.tmp) do (
+    echo Passing %%~i...
+    set REF="%%~i"
+    set CFILE="%%~ni.c"
+    set EXE="%%~ni.exe"
+  )
 
   set R05PATH=..\lib
   set REF5RSL=
-  ..\bin\refal05c %1 refal05bif refal05rts 2> __error.txt
+  ..\bin\refal05c %REF% refal05bif refal05rts 2> __error.txt
   if errorlevel 200 (
-    echo COMPILER ON %1 FAILS, SEE __error.txt
+    echo COMPILER ON %REF% FAILS, SEE __error.txt
     exit /b 1
   )
   erase __error.txt
