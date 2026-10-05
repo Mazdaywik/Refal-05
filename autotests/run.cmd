@@ -1,4 +1,5 @@
 @echo off
+setlocal DisableDelayedExpansion
 call :MAIN %*
 exit /b
 
