@@ -3,20 +3,17 @@
 run_test_aux() {
   echo Passing $1...
   REF="$1"
-  CFILE="${REF%%.ref}.c"
   EXE="${REF%%.ref}"
   SATELLITE="${REF%%.ref}.SATELLITE.ref"
 
   if [ -e "$SATELLITE" ]; then
     SATELLITE=("$SATELLITE")
-    SATELLITEC=("${REF%%.ref}.SATELLITE.c")
   else
     SATELLITE=()
-    SATELLITEC=()
   fi
 
   R05PATH=../lib REF5RSL= R05CFLAGS=-o"${EXE@Q}" \
-    ../bin/refal05c "$REF" "${SATELLITE[@]}" refal05bif refal05rts \
+    ../bin/refal05c "$REF" "${SATELLITE[@]}" refal05bif ../lib/refal05rts \
     2>__error.txt
   if [ $? -ge 200 ]; then
     echo COMPILER ON $REF FAILS, SEE __error.txt
@@ -40,7 +37,7 @@ run_test_aux() {
     exit
   fi
 
-  rm "$CFILE" "$EXE" "${SATELLITEC[@]}"
+  rm *.c "$EXE"
   [ -e __dump.txt ] && rm __dump.txt
 
   echo

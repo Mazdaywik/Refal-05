@@ -1,5 +1,5 @@
 *$FROM LibraryEx
-$EXTERN ArgList, LoadFile, Map, Trim, SaveFile;
+$EXTERN ArgList, LoadFile, Map, Trim, DelAccumulator, MapAccum, SaveFile;
 
 *$FROM parser
 $EXTERN Parse-File;
@@ -110,7 +110,10 @@ ParseFolder {
 }
 
 FindFiles {
-  e.Files = <Map (main_AnalyzeFile-ByFolders Current <LoadPath>) e.Files>
+  e.Files
+    = <RenameTargets
+        <Map (main_AnalyzeFile-ByFolders Current <LoadPath>) e.Files>
+      >;
 }
 
 $ENTRY main_AnalyzeFile-ByFolders {
@@ -166,6 +169,60 @@ CutFolder {
     = e.FileName;
 
   e.FileName = e.FileName;
+}
+
+RenameTargets {
+  e.Files
+    = <DelAccumulator
+        <MapAccum
+          main_RenameTargets-RenameSources
+          (<Map main_RenameTargets-CollectOutputs e.Files>)
+          e.Files
+        >
+      >;
+}
+
+/*
+  Ряд компиляторов Си создают в текущей папке объектные файлы для исходных,
+  при этом если есть одноимённые исходники из разных папок на входе,
+  то они будут компилироваться в один и тот же .obj-файл. Предварительное
+  извлечение имён из Output-файлов предотвращает такой конфликт между Ouput-
+  и Source-файлами, но, к сожалению, не способно помочь в случае конфликта
+  имён между двумя Output-файлами — это остаётся ответственностью пользователя.
+*/
+
+$ENTRY main_RenameTargets-CollectOutputs {
+  (Output e.OutName)
+    , <CutFolder e.OutName> : e.OutNameBase '.' s.C
+    , <Lower s.C> : 'c'
+    = (e.OutNameBase);
+
+  (Source (e.Source) e.Output) = /* пусто */;
+  (NotFound e.FileName) = /* пусто */;
+}
+
+$ENTRY main_RenameTargets-RenameSources {
+  (e.UsedNames) (Source (e.Source) e.Output '.c')
+    , <NewName (e.UsedNames) e.Output> : (e.NewUsedNames) e.NewOutput
+    = (e.NewUsedNames) (Source (e.Source) e.NewOutput '.c');
+
+  (e.UsedNames) t.OutputOrNotFound = (e.UsedNames) t.OutputOrNotFound;
+}
+
+NewName {
+  (e.Names) e.Name
+    , e.Names : e.Names-B (e.Name) e.Names-E
+    = <NewName (e.Names) <IncName e.Name>>;
+
+  (e.Names) e.Name = (e.Names (e.Name)) e.Name;
+}
+
+IncName {
+  e.Name s.Digit, '0123456789' : e.Digits-B s.Digit s.NextDigit e.Digits-E
+    = e.Name s.NextDigit;
+
+  e.Name '9' = <IncName e.Name> '0';
+  e.Name = e.Name '1';
 }
 
 CCompile {

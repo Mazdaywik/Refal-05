@@ -32,26 +32,24 @@ setlocal
   for /F "delims=/" %%i in (filename.tmp) do (
     echo Passing %%~i...
     set REF="%%~i"
-    set CFILE="%%~ni.c"
     set EXE="%%~ni.exe"
     set SATELLITE="%%~ni.SATELLITE.ref"
-    set SATELLITEC="%%~ni.SATELLITE.c"
   )
 
   if not exist %SATELLITE% (
     set SATELLITE=
-    set SATELLITEC=
   )
 
   set REF5RSL=
   set R05PATH=..\lib
-  ..\bin\refal05c %REF% %SATELLITE% refal05bif refal05rts 2> __error.txt
+  ..\bin\refal05c ..\lib\refal05rts %REF% %SATELLITE% refal05bif 2> __error.txt
   if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit /b 1
   )
   erase __error.txt
 
+  if exist refal05rts.exe move refal05rts.exe %EXE%
   if exist a.exe move a.exe %EXE%
   if not exist %EXE% (
     echo COMPILATION FAILED
@@ -69,7 +67,7 @@ setlocal
     exit /b 1
   )
 
-  erase %CFILE% %EXE% %SATELLITEC%
+  erase *.c %EXE%
   if exist *.obj erase *.obj
   if exist *.tds erase *.tds
   if exist __dump.txt erase __dump.txt
