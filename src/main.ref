@@ -160,7 +160,7 @@ AnalyzeFile {
 
 CutFolder {
   e.Folder s.Sep e.FileName, <IsDirectorySeparator s.Sep> : True
-     = <CutFolder e.FileName>;
+    = <CutFolder e.FileName>;
 
   e.FileName = e.FileName;
 }
