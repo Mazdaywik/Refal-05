@@ -162,6 +162,9 @@ CutFolder {
   e.Folder s.Sep e.FileName, <IsDirectorySeparator s.Sep> : True
     = <CutFolder e.FileName>;
 
+  s.Disk ':' e.FileName, <Platform> : Windows, <Type s.Disk> : 'L' e.1
+    = e.FileName;
+
   e.FileName = e.FileName;
 }
 
