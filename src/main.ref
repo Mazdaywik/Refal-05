@@ -135,12 +135,13 @@ $ENTRY main_AnalyzeInFolder {
 
 AnalyzeFile {
   e.SourceName
-    , e.SourceName : e.BaseName '.ref'
+    , e.SourceName : e.BaseName '.' e.Ref
+    , <Lower e.Ref> : 'ref'
     , <ExistFile e.SourceName> : True
     = (Source (e.SourceName) e.BaseName '.c');
 
   e.OutName
-    , e.OutName : e.BaseName '.c'
+    , <Lower e.OutName> : e.BaseName '.c'
     , <ExistFile e.OutName> : True
     = (Output e.OutName);
 
