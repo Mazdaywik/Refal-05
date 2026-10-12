@@ -33,7 +33,7 @@ setlocal
     echo Passing %%~i...
     set REF="%%~i"
     set EXE="%%~ni.exe"
-    set SATELLITE="%%~ni.SATELLITE.ref"
+    set SATELLITE="satellite\%%~i"
   )
 
   if not exist %SATELLITE% (
@@ -98,7 +98,4 @@ setlocal
   echo Ok! Compiler didn't crash on invalid syntax
   echo.
 endlocal
-goto :EOF
-
-:RUN_TEST_AUX.SATELLITE
 goto :EOF

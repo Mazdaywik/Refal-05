@@ -4,7 +4,7 @@ run_test_aux() {
   echo Passing $1...
   REF="$1"
   EXE="${REF%%.ref}"
-  SATELLITE="${REF%%.ref}.SATELLITE.ref"
+  SATELLITE="satellite/$1"
 
   if [ -e "$SATELLITE" ]; then
     SATELLITE=("$SATELLITE")
@@ -63,10 +63,6 @@ run_test_aux.BAD-SYNTAX() {
 
   echo "Ok! Compiler didn't crash on invalid syntax"
   echo
-}
-
-run_test_aux.SATELLITE() {
-  :
 }
 
 run_test() {
