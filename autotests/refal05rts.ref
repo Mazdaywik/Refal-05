@@ -1,10 +1,12 @@
 * Коварный тест на переименование целевых файлов
 
+$EXTERN Eq;
+
 $ENTRY GO {
   /* пусто */
     = <Prout "Ok:" <Arg 0>>
       <Eq <ExistFile 'refal05rts.c'> False>
-      <Eq <ExistFile 'refal05rts1.c'> True>;
+      <Eq <ExistFile 'refal05rts1.c'> True>
+      <Eq <ExistFile 'refal05rts2.c'> True>
+      <Eq <ExistFile 'refal05rts3.c'> False>;
 }
-
-Eq { s.X s.X = }

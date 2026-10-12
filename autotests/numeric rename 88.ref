@@ -1,0 +1,10 @@
+$EXTERN Eq;
+
+$ENTRY GO {
+  /* пусто */
+    = <Prout "Ok:" <Arg 0>>
+      <Eq <ExistFile 'numeric rename 87.c'> False>
+      <Eq <ExistFile 'numeric rename 88.c'> True>
+      <Eq <ExistFile 'numeric rename 89.c'> True>
+      <Eq <ExistFile 'numeric rename 90.c'> False>;
+}
