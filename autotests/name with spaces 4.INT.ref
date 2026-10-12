@@ -1,3 +1,0 @@
-$ENTRY GO {
-  /* пусто */ = <Prout "Ok:" <Arg 0>>;
-}
