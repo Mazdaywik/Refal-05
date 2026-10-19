@@ -45,7 +45,7 @@ setlocal
   set R05PATH=..\lib
   ..\bin\refal05c %REF% %SATELLITE% ..\lib\refal05rts refal05bif 2> __error.txt
   if errorlevel 200 (
-    echo COMPILER ON %1 FAILS, SEE __error.txt
+    echo COMPILER ON %REF% FAILS, SEE __error.txt
     exit /b 1
   )
   erase __error.txt
