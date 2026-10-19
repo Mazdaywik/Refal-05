@@ -34,6 +34,7 @@ setlocal
     set REF="%%~i"
     set EXE="%%~ni.exe"
     set SATELLITE="satellite\%%~i"
+    set EXE1="%%~ni1.exe"
   )
 
   if not exist %SATELLITE% (
@@ -42,14 +43,14 @@ setlocal
 
   set REF5RSL=
   set R05PATH=..\lib
-  ..\bin\refal05c ..\lib\refal05rts %REF% %SATELLITE% refal05bif 2> __error.txt
+  ..\bin\refal05c %REF% %SATELLITE% ..\lib\refal05rts refal05bif 2> __error.txt
   if errorlevel 200 (
     echo COMPILER ON %1 FAILS, SEE __error.txt
     exit /b 1
   )
   erase __error.txt
 
-  if exist refal05rts.exe move refal05rts.exe %EXE%
+  if exist %EXE1% move %EXE1% %EXE%
   if exist a.exe move a.exe %EXE%
   if not exist %EXE% (
     echo COMPILATION FAILED
