@@ -337,8 +337,8 @@ s-переменные представляются
 не обойтись, если в правой части предложения некоторая переменная имеет больше
 вхождений, чем в левую. Например, для предложения
 
-    t.SymTable (e.Name) e.Name =
-      <Lookup t.SymTable e.Name> '+' <Lookup t.SymTable e.Name>
+    t.SymTable (e.Name) e.Name
+      = <Lookup t.SymTable e.Name> '+' <Lookup t.SymTable e.Name>
 
 переменную `t.SymTable` придётся скопировать, в то время как `e.Name` — нет.
 
@@ -1945,8 +1945,8 @@ NULL`, возвращает `evar[1]->next`.
     $ENTRY Apply {
       s.Fn e.Argument = <Mu s.Fn e.Argument>;
 
-      (t.Closure e.Bounded) e.Argument =
-        <Apply t.Closure e.Bounded e.Argument>;
+      (t.Closure e.Bounded) e.Argument
+        = <Apply t.Closure e.Bounded e.Argument>;
     }
 
 компилируется в

@@ -678,8 +678,8 @@ Mean step time: 0.666 us
     DoFib {
       s.N s.N s.Prev s.Cur = s.Cur;
 
-      s.K s.N s.Prev s.Cur =
-        <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
+      s.K s.N s.Prev s.Cur
+        = <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
     }
 
 Функция имеет два предложения, поэтому в принципе можно добавить отладочную
@@ -692,8 +692,8 @@ Mean step time: 0.666 us
     DoFib-DEBUG {
       s.N s.N s.Prev s.Cur = s.Cur;
 
-      s.K s.N s.Prev s.Cur =
-        <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
+      s.K s.N s.Prev s.Cur
+        = <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
     }
 
 Отлаживаемая функция имеет формат `<DoFib s.K s.N s.Prev s.Cur>`. Добавим
@@ -706,36 +706,36 @@ Mean step time: 0.666 us
 Удобно это делать _перед_ исследуемой функцией:
 
     DoFib {
-      s.K s.N s.Prev s.Cur =
-        <DoFib-DEBUG s.K s.N s.Prev s.Cur>;
+      s.K s.N s.Prev s.Cur
+        = <DoFib-DEBUG s.K s.N s.Prev s.Cur>;
     }
 
     DoFib-DEBUG {
       s.N s.N s.Prev s.Cur = s.Cur;
 
-      s.K s.N s.Prev s.Cur =
-        <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
+      s.K s.N s.Prev s.Cur
+        = <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
     }
 
 Теперь в функцию `DoFib` можно добавить вывод любой отладочной печати,
 например, всех переменных.
 
     DoFib {
-      s.K s.N s.Prev s.Cur =
-        <Putout 13 '<DoFib>'>
-        <Putout 13 '  s.K = ' s.K>
-        <Putout 13 '  s.N = ' s.N>
-        <Putout 13 '  s.Prev = ' s.Prev>
-        <Putout 13 '  s.Cur = ' s.Cur>
-        <Putout 13>
-        <DoFib-DEBUG s.K s.N s.Prev s.Cur>;
+      s.K s.N s.Prev s.Cur
+        = <Putout 13 '<DoFib>'>
+          <Putout 13 '  s.K = ' s.K>
+          <Putout 13 '  s.N = ' s.N>
+          <Putout 13 '  s.Prev = ' s.Prev>
+          <Putout 13 '  s.Cur = ' s.Cur>
+          <Putout 13>
+          <DoFib-DEBUG s.K s.N s.Prev s.Cur>;
     }
 
     DoFib-DEBUG {
       s.N s.N s.Prev s.Cur = s.Cur;
 
-      s.K s.N s.Prev s.Cur =
-        <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
+      s.K s.N s.Prev s.Cur
+        = <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
     }
 
 В этом примере отладочная печать будет писаться в файл `REFAL13.DAT`, который
@@ -747,21 +747,21 @@ Mean step time: 0.666 us
 (включая), удаляемые строки помечены крестиком:
 
       DoFib {
-    ×   s.K s.N s.Prev s.Cur =
-    ×     <Putout 13 '<DoFib>'>
-    ×     <Putout 13 '  s.K = ' s.K>
-    ×     <Putout 13 '  s.N = ' s.N>
-    ×     <Putout 13 '  s.Prev = ' s.Prev>
-    ×     <Putout 13 '  s.Cur = ' s.Cur>
-    ×     <Putout 13>
-    ×     <DoFib-DEBUG s.K s.N s.Prev s.Cur>;
+    ×   s.K s.N s.Prev s.Cur
+    ×     = <Putout 13 '<DoFib>'>
+    ×       <Putout 13 '  s.K = ' s.K>
+    ×       <Putout 13 '  s.N = ' s.N>
+    ×       <Putout 13 '  s.Prev = ' s.Prev>
+    ×       <Putout 13 '  s.Cur = ' s.Cur>
+    ×       <Putout 13>
+    ×       <DoFib-DEBUG s.K s.N s.Prev s.Cur>;
     × }
     ×
     × DoFib-DEBUG {
         s.N s.N s.Prev s.Cur = s.Cur;
 
-        s.K s.N s.Prev s.Cur =
-          <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
+        s.K s.N s.Prev s.Cur
+          = <DoFib <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
       }
 
 #### Как упростить отладку — соблюдать форматы функций
@@ -784,8 +784,8 @@ Mean step time: 0.666 us
 
       s.N s.N s.Prev s.Cur = s.Cur;
 
-      s.K s.N s.Prev s.Cur =
-        <Fibonacci <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
+      s.K s.N s.Prev s.Cur
+        = <Fibonacci <Add 1 s.K> s.N s.Cur <Add s.Prev s.Cur>>;
     }
 
 Здесь мы объединили функции `Fibonacci` и `DoFib`, пользуясь тем, что они
@@ -810,8 +810,8 @@ e-переменную на верхнем уровне, допустить о�
     * Это хороший пример
 
     $ENTRY refal05c_PrintNotFound {
-      (NotFound e.FileName) =
-        <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
+      (NotFound e.FileName)
+        = <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
 
       (Output e.FileName) = ;
 
@@ -823,8 +823,8 @@ e-переменную на верхнем уровне, допустить о�
     * А ЭТО ПЛОХОЙ ПРИМЕР, НЕ ПИШИТЕ ТАК!!!
 
     $ENTRY refal05c_PrintNotFound {
-      (NotFound e.FileName) =
-        <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
+      (NotFound e.FileName)
+        = <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
 
       e.Other = ;
     }
@@ -834,19 +834,19 @@ e-переменную на верхнем уровне, допустить о�
     * Это хороший пример
 
     DoParseBlock {
-      t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
-        (Sentences e.Sentences) t.ErrorList (e.References) e.Tail;
+      t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail
+        = (Sentences e.Sentences) t.ErrorList (e.References) e.Tail;
 
-      t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail =
-        (Sentences e.Sentences)
-        <EL-AddErrorAt
-          t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
-        >
-        (e.References)
-        (TkEOF t.SrcPos) e.Tail;
+      t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail
+        = (Sentences e.Sentences)
+          <EL-AddErrorAt
+            t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
+          >
+          (e.References)
+          (TkEOF t.SrcPos) e.Tail;
 
-      t.ErrorList (e.References) (e.Sentences) e.Tokens =
-        <ParseSentence t.ErrorList (e.References) (e.Sentences) e.Tokens>;
+      t.ErrorList (e.References) (e.Sentences) e.Tokens
+        = <ParseSentence t.ErrorList (e.References) (e.Sentences) e.Tokens>;
     }
 
 «упростить» так (см. последнее предложение):
@@ -854,16 +854,16 @@ e-переменную на верхнем уровне, допустить о�
     * А ЭТО ПЛОХОЙ ПРИМЕР, НЕ ПИШИТЕ ТАК!!!
 
     DoParseBlock {
-      t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail =
-        (Sentences e.Sentences) t.ErrorList (e.References) e.Tail;
+      t.ErrorList (e.References) (e.Sentences) (TkCloseBlock t.SrcPos) e.Tail
+        = (Sentences e.Sentences) t.ErrorList (e.References) e.Tail;
 
-      t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail =
-        (Sentences e.Sentences)
-        <EL-AddErrorAt
-          t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
-        >
-        (e.References)
-        (TkEOF t.SrcPos) e.Tail;
+      t.ErrorList (e.References) (e.Sentences) (TkEOF t.SrcPos) e.Tail
+        = (Sentences e.Sentences)
+          <EL-AddErrorAt
+            t.ErrorList t.SrcPos 'Unexpected EOF, expected "}"'
+          >
+          (e.References)
+          (TkEOF t.SrcPos) e.Tail;
 
       e.Args = <ParseSentence e.Args>;
     }

@@ -1428,8 +1428,8 @@ _Тип выражения_ записывается как образцовое
     StrFromExpr {
       (ExNumber s.Number) = <Symb s.Number>;
       (ExVariable e.Name) = e.Name;
-      (ExAdd t.Left t.Right) =
-         '(' <StrFromExpr t.Left> '+' <StrFromExpr t.Rigth ')';
+      (ExAdd t.Left t.Right)
+         = '(' <StrFromExpr t.Left> '+' <StrFromExpr t.Rigth ')';
       ...
     }
 
@@ -1445,8 +1445,8 @@ _Тип выражения_ записывается как образцовое
     }
 
     $ENTRY ExAdd {
-      (s.Left e.LeftVal) (s.Right e.RightVal) =
-        '(' <Mu s.Left e.LeftVal> '+' <Mu s.Right e.RightVal> ')';
+      (s.Left e.LeftVal) (s.Right e.RightVal)
+        = '(' <Mu s.Left e.LeftVal> '+' <Mu s.Right e.RightVal> ')';
     }
 
     ...
@@ -1472,37 +1472,37 @@ _Тип выражения_ записывается как образцовое
 Точка (`OPoint`) тоже может себя печатать и двигаться:
 
     ORect {
-      (ORect t.LeftTop t.RightBottom) MPrint =
-        'Rectangle [' <MPrint t.LeftTop> '-' <MPrint t.RightBottom> ']';
+      (ORect t.LeftTop t.RightBottom) MPrint
+        = 'Rectangle [' <MPrint t.LeftTop> '-' <MPrint t.RightBottom> ']';
 
-      (ORect t.LeftTop t.RightBottom) MMove t.Offset =
-        (ORect <MMove t.LeftTop t.Offset> <MMove t.RightBottom t.Offset>);
+      (ORect t.LeftTop t.RightBottom) MMove t.Offset
+        = (ORect <MMove t.LeftTop t.Offset> <MMove t.RightBottom t.Offset>);
 
       (ORect (OPoint s.Left s.Top) (OPoint s.Right s.Bottom))
-      MHasPoint (OPoint s.X s.Y) =
-        <And <InRange s.Left s.X s.Right> <InRange s.Bottom s.Y s.Top>>;
+      MHasPoint (OPoint s.X s.Y)
+        = <And <InRange s.Left s.X s.Right> <InRange s.Bottom s.Y s.Top>>;
     }
 
     OCircle {
-      (OCircle t.Center s.Radius) MPrint =
-        'Circle [center: ' <MPrint t.Center> ', radius: ' <Symb s.Radius> ']';
+      (OCircle t.Center s.Radius) MPrint
+        = 'Circle [center: ' <MPrint t.Center> ', radius: ' <Symb s.Radius> ']';
 
-      (OCircle t.Center s.Radius) MMove t.Offset =
-        (OCircle <MMove t.Center> s.Radius);
+      (OCircle t.Center s.Radius) MMove t.Offset
+        = (OCircle <MMove t.Center> s.Radius);
 
-      (OCircle (OPoint s.CX s.CY) s.Radius) MHasPoint (OPoint s.X s.Y) =
-        <InRange
-          0
-          <Add <Square <Dist s.CX s.X>> <Square <Dist s.CY s.Y>>>
-          <Square s.Radius>
-        >;
+      (OCircle (OPoint s.CX s.CY) s.Radius) MHasPoint (OPoint s.X s.Y)
+        = <InRange
+            0
+            <Add <Square <Dist s.CX s.X>> <Square <Dist s.CY s.Y>>>
+            <Square s.Radius>
+          >;
     }
 
     OPoint {
       (OPoint s.X s.Y) MPrint = '(' <Symb s.X> ', ' <Symb s.Y> ')';
 
-      (OPoint s.X s.Y) MMove (OPoint s.dX s.dY) =
-        (OPoint <Add s.X s.dX> <Add s.Y s.dY>);
+      (OPoint s.X s.Y) MMove (OPoint s.dX s.dY)
+        = (OPoint <Add s.X s.dX> <Add s.Y s.dY>);
     }
 
     MPrint {
@@ -1518,8 +1518,8 @@ _Тип выражения_ записывается как образцовое
     }
 
     Send {
-      (s.VTable e.Data) s.Method e.Args =
-        <Mu s.VTable (s.VTable e.Data) s.Method e.Args>;
+      (s.VTable e.Data) s.Method e.Args
+        = <Mu s.VTable (s.VTable e.Data) s.Method e.Args>;
     }
 
 (Функции `InRange`, `Dist` и `Square` имеют очевидную, но громоздкую реализацию,

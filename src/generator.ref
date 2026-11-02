@@ -19,16 +19,16 @@ $ENTRY Generate-ToFile {
 }
 
 R05-Generate-Combine {
-  (e.Declarations) e.Definitions =
-    ('/* Automatically generated file. Don\'t edit! */')
-    ('#include "refal05rts.h"')
-    ()
-    ()
-    e.Declarations
-    ()
-    e.Definitions
-    ()
-    ('/* End of file */')
+  (e.Declarations) e.Definitions
+    = ('/* Automatically generated file. Don\'t edit! */')
+      ('#include "refal05rts.h"')
+      ()
+      ()
+      e.Declarations
+      ()
+      e.Definitions
+      ()
+      ('/* End of file */')
 }
 
 $ENTRY generator_GenTreeItem {
@@ -37,9 +37,9 @@ $ENTRY generator_GenTreeItem {
       <AssertOneOf s.ScopeClass in (Extern Local Meta)>
       /* пусто */;
 
-  (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body) =
-    (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
-    <GenFunction s.ScopeClass (e.Name) e.Body>;
+  (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body)
+    = (e.Declarations <GenDeclaration s.ScopeClass e.Name>)
+      <GenFunction s.ScopeClass (e.Name) e.Body>;
 
   (e.Declarations) (Metatable e.Names)
     = (e.Declarations)
@@ -82,8 +82,8 @@ GenDeclaration {
     = <AssertOneOf s.ScopeClass in (Entry)>
       ('extern struct r05_function r05f_;');
 
-  s.ScopeClass e.Name =
-    ('R05_DECLARE_' <Scope s.ScopeClass> '_FUNCTION(' <EscapeName e.Name> ')');
+  s.ScopeClass e.Name
+    = ('R05_DECLARE_' <Scope s.ScopeClass> '_FUNCTION(' <EscapeName e.Name> ')');
 }
 
 GenFunction {
@@ -234,11 +234,11 @@ SkipIndentAccum {
 }
 
 SafeComment {
-  e.Comment-B '/*' e.Comment-E =
-    <SafeComment e.Comment-B '/\' \'*' e.Comment-E>;
+  e.Comment-B '/*' e.Comment-E
+    = <SafeComment e.Comment-B '/\' \'*' e.Comment-E>;
 
-  e.Comment-B '*/' e.Comment-E =
-    <SafeComment e.Comment-B '*\' \'/' e.Comment-E>;
+  e.Comment-B '*/' e.Comment-E
+    = <SafeComment e.Comment-B '*\' \'/' e.Comment-E>;
 
   e.Comment = e.Comment;
 }
@@ -353,8 +353,8 @@ CmdEmptyResult {
 }
 
 CmdAllocateElem {
-  (e.Indent) s.ElementType e.Info =
-    (e.Indent 'r05_alloc_' <Mu s.ElementType e.Info>);
+  (e.Indent) s.ElementType e.Info
+    = (e.Indent 'r05_alloc_' <Mu s.ElementType e.Info>);
 }
 
 ElSymbol {
@@ -375,13 +375,13 @@ ElSavePos { s.Pos = 'insert_pos(' <ElemPtr s.Pos> ');' }
 ElVariable { s.Mode s.Offset = s.Mode 'var(' <ElemPtr s.Offset> ');' }
 
 CmdLinkBrackets {
-  (e.Indent) s.Left s.Right =
-    (e.Indent 'r05_link_brackets(' <Elem s.Left> ', ' <Elem s.Right> ');');
+  (e.Indent) s.Left s.Right
+    = (e.Indent 'r05_link_brackets(' <Elem s.Left> ', ' <Elem s.Right> ');');
 }
 
 CmdPushStack {
-  (e.Indent) s.ElemNumber =
-    (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ');');
+  (e.Indent) s.ElemNumber
+    = (e.Indent 'r05_push_stack(' <Elem s.ElemNumber> ');');
 }
 
 CmdInsertVar {
@@ -826,8 +826,8 @@ DoGenPattern {
       >;
 
   /* Завершение разбора. */
-  s.Stack /* пусто */ (e.Vars) (e.Commands) =
-    s.Stack (e.Vars) (e.Commands);
+  s.Stack /* пусто */ (e.Vars) (e.Commands)
+    = s.Stack (e.Vars) (e.Commands);
 }
 
 *===============================================================================
@@ -835,13 +835,13 @@ DoGenPattern {
 *===============================================================================
 
 GenResult {
-  s.Stack (e.PatternVars) e.Result =
-    <DoGenResult
-      (e.PatternVars)
-      (/* alloc commands */) (/* other commands */)
-      s.Stack
-      e.Result
-    >;
+  s.Stack (e.PatternVars) e.Result
+    = <DoGenResult
+        (e.PatternVars)
+        (/* alloc commands */) (/* other commands */)
+        s.Stack
+        e.Result
+      >;
 }
 
 * Основные команды работы с образцом
@@ -861,97 +861,97 @@ GenResult {
 DoGenResult {
   /* Оптимизация для распределения последовательности char’ов */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-  (Symbol Char s.Char1) (Symbol Char s.Char2) e.Result =
-    <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-      (TkString 2 s.Char1 s.Char2) e.Result
-    >;
+  (Symbol Char s.Char1) (Symbol Char s.Char2) e.Result
+    = <DoGenResult
+        (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
+        (TkString 2 s.Char1 s.Char2) e.Result
+      >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Stack (Symbol Char s.Value) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElSymbol Char s.Value))
-      (e.Commands)
-      s.Stack e.Result
-    >;
+  s.Stack (Symbol Char s.Value) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElSymbol Char s.Value))
+        (e.Commands)
+        s.Stack e.Result
+      >;
 
   (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-  (TkString s.Len e.String) (Symbol Char s.Char) e.Result =
-    <DoGenResult
-      (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-      (TkString <Inc s.Len> e.String s.Char) e.Result
-    >;
+  (TkString s.Len e.String) (Symbol Char s.Char) e.Result
+    = <DoGenResult
+        (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
+        (TkString <Inc s.Len> e.String s.Char) e.Result
+      >;
 
   (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-  (TkString s.Len e.String) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElString s.Len e.String))
-      (e.Commands)
-      s.Stack e.Result
-    >;
+  (TkString s.Len e.String) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElString s.Len e.String))
+        (e.Commands)
+        s.Stack e.Result
+      >;
 
   /* Создаём литералы */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Stack (Symbol s.Type e.Value) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElSymbol s.Type e.Value))
-      (e.Commands)
-      s.Stack e.Result
-    >;
+  s.Stack (Symbol s.Type e.Value) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElSymbol s.Type e.Value))
+        (e.Commands)
+        s.Stack e.Result
+      >;
 
   /*
     Обработка открывающих скобок всех типов осуществляется похоже.
   */
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Stack (Brackets e.InBrackets) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Stack))
-      (e.Commands)
-      <Inc s.Stack> e.InBrackets (TkCloseBracket s.Stack) e.Result
-    >;
+  s.Stack (Brackets e.InBrackets) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElOpenBracket s.Stack))
+        (e.Commands)
+        <Inc s.Stack> e.InBrackets (TkCloseBracket s.Stack) e.Result
+      >;
 
   (e.Vars) (e.AllocCommands) (e.Commands)
-  s.Stack (Call t.SrcPos (e.Name) e.InBrackets) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElOpenCall s.Stack))
-      (e.Commands)
-      <Inc s.Stack> (Symbol Word e.Name)
-      e.InBrackets (TkCloseCall s.Stack) e.Result
-    >;
+  s.Stack (Call t.SrcPos (e.Name) e.InBrackets) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElOpenCall s.Stack))
+        (e.Commands)
+        <Inc s.Stack> (Symbol Word e.Name)
+        e.InBrackets (TkCloseCall s.Stack) e.Result
+      >;
 
   /*
     Закрывающие скобки надо обрабатывать особым образом.
     Круглые скобки — слинковать, угловые — добавить в стек.
   */
   (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-  (TkCloseBracket s.OpenPos) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElCloseBracket s.Stack))
-      (
-        (CmdLinkBrackets s.OpenPos s.Stack)
-        e.Commands
-      )
-      <Inc s.Stack> e.Result
-    >;
+  (TkCloseBracket s.OpenPos) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElCloseBracket s.Stack))
+        (
+          (CmdLinkBrackets s.OpenPos s.Stack)
+          e.Commands
+        )
+        <Inc s.Stack> e.Result
+      >;
 
   (e.Vars) (e.AllocCommands) (e.Commands) s.Stack
-  (TkCloseCall s.OpenPos) e.Result =
-    <DoGenResult
-      (e.Vars)
-      (e.AllocCommands (CmdAllocateElem ElCloseCall s.Stack))
-      (
-        (CmdPushStack s.Stack)
-        (CmdPushStack s.OpenPos)
-        e.Commands
-      )
-      <Inc s.Stack> e.Result
-    >;
+  (TkCloseCall s.OpenPos) e.Result
+    = <DoGenResult
+        (e.Vars)
+        (e.AllocCommands (CmdAllocateElem ElCloseCall s.Stack))
+        (
+          (CmdPushStack s.Stack)
+          (CmdPushStack s.OpenPos)
+          e.Commands
+        )
+        <Inc s.Stack> e.Result
+      >;
 
   /* Оптимизация: частный случай для s-переменных, их проще всегда копировать */
   (e.Vars-B ('s' e.Index s.Sample (e.Insts)) e.Vars-E)

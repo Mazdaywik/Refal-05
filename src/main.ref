@@ -49,8 +49,8 @@ Main {
 }
 
 $ENTRY main_PrintNotFound {
-  (NotFound e.FileName) =
-    <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
+  (NotFound e.FileName)
+    = <Prout 'COMMAND LINE ERROR: file ' e.FileName ' not found'>;
 
   (Output e.FileName) = ;
 
@@ -75,8 +75,8 @@ $ENTRY main_ProcessEachSource {
 }
 
 $ENTRY main_WriteError {
-  e.FileName (t.SrcPos e.Message) =
-    <Prout e.FileName ':' <StrFromSrcPos t.SrcPos> ':ERROR: ' e.Message>;
+  e.FileName (t.SrcPos e.Message)
+    = <Prout e.FileName ':' <StrFromSrcPos t.SrcPos> ':ERROR: ' e.Message>;
 }
 
 StrFromSrcPos {
