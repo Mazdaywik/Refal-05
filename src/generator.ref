@@ -235,10 +235,10 @@ SkipIndentAccum {
 
 SafeComment {
   e.Comment-B '/*' e.Comment-E
-    = <SafeComment e.Comment-B '/\' \'*' e.Comment-E>;
+    = <SafeComment e.Comment-B '/\\x2A' e.Comment-E>;
 
   e.Comment-B '*/' e.Comment-E
-    = <SafeComment e.Comment-B '*\' \'/' e.Comment-E>;
+    = <SafeComment e.Comment-B '\\x2A/' e.Comment-E>;
 
   e.Comment = e.Comment;
 }
