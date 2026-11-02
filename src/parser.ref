@@ -21,8 +21,7 @@ CheckAST-UnusedsAreFound {
   t.ErrorList e.AST
     , <EL-Destroy t.ErrorList>
     : {
-        /* нет ошибок */ = Success <CastAST e.AST>;
-
+        /* нет ошибок */ = Success e.AST;
         e.Errors = Fails e.Errors;
       };
 }
@@ -45,7 +44,7 @@ $ENTRY parser_PlainExterns-Name {
 FindUnused {
   t.ErrorList e.AST
     = <MapAccum
-        parser_FindUnused-Loop-UnusedErrors
+        parser_FindUnused-CastAST-and-CollectErrors
         t.ErrorList
         <FindUnused-Loop
           (/* enums */)
@@ -178,37 +177,19 @@ $ENTRY parser_MakeEnum {
   (e.Name) = (Function Used NO-POS (e.Name) Local /* пусто */);
 }
 
-$ENTRY parser_FindUnused-Loop-UnusedErrors {
+$ENTRY parser_FindUnused-CastAST-and-CollectErrors {
   t.ErrorList (Function Unused t.Pos (e.Name) s.Scope e.Body)
     = <EL-AddErrorAt t.ErrorList t.Pos <UnusedMessage s.Scope> ' ' e.Name>;
 
-  t.ErrorList t.Other = t.ErrorList t.Other;
+  t.ErrorList (Function Used t.Pos (e.Name) s.Scope e.Body)
+    = t.ErrorList (Function t.Pos (e.Name) s.Scope e.Body);
+
+  t.ErrorList (Metatable e.Functions) = t.ErrorList (Metatable e.Functions);
 }
 
 UnusedMessage {
   Local = 'Unused local function';
   Extern = 'Unused external declaration';
-}
-
-
-CastAST {
-  e.AST = <CastAST-JoinExterns <Map parser_CastAST-Item e.AST>>;
-}
-
-$ENTRY parser_CastAST-Item {
-  (Function Used t.Pos (e.Name) Extern /* пусто */) = (Extern (t.Pos e.Name));
-
-  (Function Used t.Pos (e.Name) s.Scope e.Body)
-    = (Function t.Pos (e.Name) s.Scope e.Body);
-
-  (Metatable e.Functions) = (Metatable e.Functions);
-}
-
-CastAST-JoinExterns {
-  e.AST-B (Extern e.Externs1) (Extern e.Externs2) e.AST-E
-    = e.AST-B <CastAST-JoinExterns (Extern e.Externs1 e.Externs2) e.AST-E>;
-
-  e.AST = e.AST;
 }
 
 

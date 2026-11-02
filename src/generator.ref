@@ -32,13 +32,9 @@ R05-Generate-Combine {
 }
 
 $ENTRY generator_GenTreeItem {
-  (e.Declarations) (Extern e.Names) =
-    (e.Declarations <Map generator_GenExtern e.Names>)
-    /* пусто */;
-
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass /* пусто */)
     = (e.Declarations <GenEmptyDefinition e.Name s.ScopeClass>)
-      <AssertOneOf s.ScopeClass in (Local Meta)>
+      <AssertOneOf s.ScopeClass in (Extern Local Meta)>
       /* пусто */;
 
   (e.Declarations) (Function t.SrcPos (e.Name) s.ScopeClass e.Body) =
@@ -62,16 +58,14 @@ $ENTRY generator_MetatableName {
   (e.Name) = ('  &r05f_' <EscapeName e.Name> ',');
 }
 
-$ENTRY generator_GenExtern {
-  (t.SrcPos e.Name) = <GenDeclaration Entry e.Name>;
-}
-
 
 Scope {
   Entry = 'ENTRY'; Local = 'LOCAL';
 }
 
 GenEmptyDefinition {
+  e.Name Extern = <GenDeclaration Entry e.Name>;
+
   /* поддержка пустого составного символа "" */
   /* пусто */ s.ScopeClass
     = ('static struct r05_function r05f_ = { r05_enum_function_code, "" };');
